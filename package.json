@@ -1,0 +1,48 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --disable-host-check --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "prod": "npm run production",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --config=node_modules/laravel-mix/setup/webpack.config.js"
+    },
+    "devDependencies": {
+        "@babel/preset-react": "^7.0.0",
+        "axios": "^0.19",
+        "bootstrap": "^4.0.0",
+        "cross-env": "^7.0",
+        "jquery": "^3.2",
+        "laravel-mix": "^5.0.1",
+        "lodash": "^4.17.20",
+        "popper.js": "^1.12",
+        "react": "^16.14.0",
+        "react-dom": "^16.2.0",
+        "resolve-url-loader": "^3.1.0",
+        "sass": "^1.15.2",
+        "sass-loader": "^8.0.0"
+    },
+    "dependencies": {
+        "@babel/plugin-proposal-class-properties": "^7.12.1",
+        "@babel/plugin-proposal-decorators": "^7.12.1",
+        "@emotion/core": "^10.1.1",
+        "@emotion/styled": "^10.0.3",
+        "@projectstorm/react-diagrams": "^6.0.1-beta.7",
+        "autoprefixer": "^10.0.2",
+        "closest": "0.0.1",
+        "dagre": "^0.8.5",
+        "ml-matrix": "^6.5.3",
+        "mobx": "^6.0.4",
+        "mobx-react": "^7.0.5",
+        "mousetrap": "^1.6.5",
+        "pathfinding": "^0.4.18",
+        "paths-js": "^0.4.11",
+        "postcss": "^8.1.9",
+        "react-modal": "^3.12.1",
+        "react-toastify": "^6.2.0",
+        "resize-observer-polyfill": "^1.5.1",
+        "tailwindcss": "^2.0.1"
+    }
+}

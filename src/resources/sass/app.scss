@@ -1,0 +1,29 @@
+@tailwind base;
+
+@tailwind components;
+
+@tailwind utilities;
+
+// React Diagrams must have explicit width and height
+.fullsize {
+    width: 100vw;
+    height: 70vh;
+}
+
+// Fixes link labels
+foreignObject > div > div{
+    background-color: transparent !important;
+    padding: 0px !important;
+    position:absolute  !important;
+    top:3px !important;
+}
+
+.Toastify__toast-body {
+    background: #E5E7EB;
+    font-family: monospace;
+    color: #4499AF;
+
+}
+.Toastify__toast {
+    background: #E5E7EB !important;
+}

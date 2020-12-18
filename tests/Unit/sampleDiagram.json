@@ -1,0 +1,312 @@
+{
+    "id": "64d59c35-fd32-4645-b5b2-ed1b6d6278e7",
+    "offsetX": -88,
+    "offsetY": 4,
+    "zoom": 100,
+    "gridSize": 0,
+    "layers": [
+        {
+            "id": "7d97bd9e-27d0-450c-ae1f-3fa9c5306c43",
+            "type": "diagram-links",
+            "isSvg": true,
+            "transformed": true,
+            "models": {
+                "1ad062d1-46fb-4f6f-8757-cc2144787be4": {
+                    "id": "1ad062d1-46fb-4f6f-8757-cc2144787be4",
+                    "type": "default",
+                    "source": "e8f57a22-b0ab-4824-951c-7b5e20c6c4cc",
+                    "sourcePort": "00f8d9ed-eddc-4de6-86bc-6559b447ead6",
+                    "target": "e5d406c2-8050-49d2-8506-521d02c7481b",
+                    "targetPort": "659dc23b-8767-4e75-87cb-d598c0c90e24",
+                    "points": [
+                        {
+                            "id": "739dc1af-d84f-4165-a4b3-d8e0e07d29c9",
+                            "type": "point",
+                            "x": 163.99857711791992,
+                            "y": 229.47442054748535
+                        },
+                        {
+                            "id": "c4631977-2396-4464-834b-1fb8eb9eba55",
+                            "type": "point",
+                            "x": 363.9985771179199,
+                            "y": 229.47442054748535
+                        }
+                    ],
+                    "labels": [],
+                    "width": 3,
+                    "color": "gray",
+                    "curvyness": 50,
+                    "selectedColor": "rgb(0,192,255)"
+                },
+                "b124a6aa-93f6-44d8-8693-3acf5d556849": {
+                    "id": "b124a6aa-93f6-44d8-8693-3acf5d556849",
+                    "type": "default",
+                    "source": "e5d406c2-8050-49d2-8506-521d02c7481b",
+                    "sourcePort": "6e8d130a-b36a-483d-a0ec-577d5cc68bad",
+                    "target": "4d7f8bf1-b39f-4b60-89da-268f6c703d41",
+                    "targetPort": "5f3ca495-a839-487e-b8b8-8c22ab050725",
+                    "points": [
+                        {
+                            "id": "ee937728-1f6e-47c2-8117-ef9ce254d2a8",
+                            "type": "point",
+                            "x": 363.9985771179199,
+                            "y": 254.90056800842285
+                        },
+                        {
+                            "id": "a96a3639-5c2f-42b0-8fc5-b005681064a8",
+                            "type": "point",
+                            "x": 563.9985466003418,
+                            "y": 229.47442054748535
+                        }
+                    ],
+                    "labels": [],
+                    "width": 3,
+                    "color": "gray",
+                    "curvyness": 50,
+                    "selectedColor": "rgb(0,192,255)"
+                },
+                "99bd65ed-e59e-44a2-aac1-72bb06ce9cd5": {
+                    "id": "99bd65ed-e59e-44a2-aac1-72bb06ce9cd5",
+                    "type": "default",
+                    "selected": true,
+                    "source": "ed2d55a3-856c-4e3e-adbe-2d1716cdf381",
+                    "sourcePort": "6465bb15-b854-4145-ac16-00db4c4a33b4",
+                    "target": "4d7f8bf1-b39f-4b60-89da-268f6c703d41",
+                    "targetPort": "5f3ca495-a839-487e-b8b8-8c22ab050725",
+                    "points": [
+                        {
+                            "id": "0884ba88-ba61-4c55-8842-0d7ef6367c5f",
+                            "type": "point",
+                            "x": 358.9985771179199,
+                            "y": 391.9005680084229
+                        },
+                        {
+                            "id": "1800fcc3-e37a-429e-a206-c99195850235",
+                            "type": "point",
+                            "x": 563.9985466003418,
+                            "y": 229.47442054748535
+                        }
+                    ],
+                    "labels": [],
+                    "width": 3,
+                    "color": "gray",
+                    "curvyness": 50,
+                    "selectedColor": "rgb(0,192,255)"
+                }
+            }
+        },
+        {
+            "id": "18ad5296-adbf-4e61-be08-46ef5cedc0ae",
+            "type": "diagram-nodes",
+            "isSvg": false,
+            "transformed": true,
+            "models": {
+                "e8f57a22-b0ab-4824-951c-7b5e20c6c4cc": {
+                    "id": "e8f57a22-b0ab-4824-951c-7b5e20c6c4cc",
+                    "type": "manipulator",
+                    "x": 100,
+                    "y": 191.34397887497533,
+                    "ports": [
+                        {
+                            "id": "00f8d9ed-eddc-4de6-86bc-6559b447ead6",
+                            "type": "default",
+                            "x": 100,
+                            "y": 216.7613525390625,
+                            "name": "Output",
+                            "alignment": "right",
+                            "parentNode": "e8f57a22-b0ab-4824-951c-7b5e20c6c4cc",
+                            "links": [
+                                "1ad062d1-46fb-4f6f-8757-cc2144787be4"
+                            ],
+                            "in": false,
+                            "label": "Output"
+                        }
+                    ],
+                    "options": {
+                        "id": "e8f57a22-b0ab-4824-951c-7b5e20c6c4cc",
+                        "serial": 1,
+                        "nodePhp": "DataStory\\Nodes\\EloquentReader",
+                        "nodeReact": "NodeModel",
+                        "key": "EloquentDataStory\\Nodes\\EloquentReaderUsers",
+                        "name": "Users",
+                        "category": "Eloquent",
+                        "summary": "User::where(...)",
+                        "inPorts": [],
+                        "outPorts": [
+                            "Output"
+                        ],
+                        "targetEloquentModel": "App\\Models\\User",
+                        "scopes": [],
+                        "whereStatements": [],
+                        "type": "manipulator"
+                    },
+                    "incomingPortOrigins": {}
+                },
+                "e5d406c2-8050-49d2-8506-521d02c7481b": {
+                    "id": "e5d406c2-8050-49d2-8506-521d02c7481b",
+                    "type": "manipulator",
+                    "x": 300,
+                    "y": 191.34397887497533,
+                    "ports": [
+                        {
+                            "id": "659dc23b-8767-4e75-87cb-d598c0c90e24",
+                            "type": "default",
+                            "x": 300,
+                            "y": 216.7613525390625,
+                            "name": "Input",
+                            "alignment": "left",
+                            "parentNode": "e5d406c2-8050-49d2-8506-521d02c7481b",
+                            "links": [
+                                "1ad062d1-46fb-4f6f-8757-cc2144787be4"
+                            ],
+                            "in": true,
+                            "label": "Input"
+                        },
+                        {
+                            "id": "6e8d130a-b36a-483d-a0ec-577d5cc68bad",
+                            "type": "default",
+                            "x": 300,
+                            "y": 242.1875,
+                            "name": "Output",
+                            "alignment": "right",
+                            "parentNode": "e5d406c2-8050-49d2-8506-521d02c7481b",
+                            "links": [
+                                "b124a6aa-93f6-44d8-8693-3acf5d556849"
+                            ],
+                            "in": false,
+                            "label": "Output"
+                        }
+                    ],
+                    "options": {
+                        "id": "e5d406c2-8050-49d2-8506-521d02c7481b",
+                        "serial": 2,
+                        "name": "Pass",
+                        "category": "Workflow",
+                        "summary": "This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet.",
+                        "key": "WorkflowPass",
+                        "nodePhp": "DataStory\\Nodes\\Pass",
+                        "nodeReact": "NodeModel",
+                        "inPorts": [
+                            "Input"
+                        ],
+                        "outPorts": [
+                            "Output"
+                        ],
+                        "type": "manipulator"
+                    },
+                    "incomingPortOrigins": {
+                        "659dc23b-8767-4e75-87cb-d598c0c90e24": [
+                            "00f8d9ed-eddc-4de6-86bc-6559b447ead6"
+                        ]
+                    }
+                },
+                "4d7f8bf1-b39f-4b60-89da-268f6c703d41": {
+                    "id": "4d7f8bf1-b39f-4b60-89da-268f6c703d41",
+                    "type": "manipulator",
+                    "x": 500,
+                    "y": 191.34397887497533,
+                    "ports": [
+                        {
+                            "id": "5f3ca495-a839-487e-b8b8-8c22ab050725",
+                            "type": "default",
+                            "x": 499.9999694824219,
+                            "y": 216.7613525390625,
+                            "name": "Input",
+                            "alignment": "left",
+                            "parentNode": "4d7f8bf1-b39f-4b60-89da-268f6c703d41",
+                            "links": [
+                                "b124a6aa-93f6-44d8-8693-3acf5d556849",
+                                "99bd65ed-e59e-44a2-aac1-72bb06ce9cd5"
+                            ],
+                            "in": true,
+                            "label": "Input"
+                        }
+                    ],
+                    "options": {
+                        "id": "4d7f8bf1-b39f-4b60-89da-268f6c703d41",
+                        "serial": 3,
+                        "name": "Inspector",
+                        "category": "Workflow",
+                        "summary": "This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet.",
+                        "key": "WorkflowInspector",
+                        "nodePhp": "DataStory\\Nodes\\Inspector",
+                        "nodeReact": "NodeModel",
+                        "inPorts": [
+                            "Input"
+                        ],
+                        "outPorts": [],
+                        "type": "manipulator"
+                    },
+                    "incomingPortOrigins": {
+                        "5f3ca495-a839-487e-b8b8-8c22ab050725": [
+                            "6e8d130a-b36a-483d-a0ec-577d5cc68bad",
+                            "6465bb15-b854-4145-ac16-00db4c4a33b4"
+                        ]
+                    }
+                },
+                "ed2d55a3-856c-4e3e-adbe-2d1716cdf381": {
+                    "id": "ed2d55a3-856c-4e3e-adbe-2d1716cdf381",
+                    "type": "manipulator",
+                    "selected": false,
+                    "x": 295,
+                    "y": 328.34397887497533,
+                    "ports": [
+                        {
+                            "id": "1b83cbbd-f02a-4dfb-b197-c89229565b1e",
+                            "type": "default",
+                            "x": 295,
+                            "y": 353.76135253906256,
+                            "name": "Input",
+                            "alignment": "left",
+                            "parentNode": "ed2d55a3-856c-4e3e-adbe-2d1716cdf381",
+                            "links": [],
+                            "in": true,
+                            "label": "Input"
+                        },
+                        {
+                            "id": "6465bb15-b854-4145-ac16-00db4c4a33b4",
+                            "type": "default",
+                            "x": 295,
+                            "y": 379.18750000000006,
+                            "name": "Output",
+                            "alignment": "right",
+                            "parentNode": "ed2d55a3-856c-4e3e-adbe-2d1716cdf381",
+                            "links": [
+                                "99bd65ed-e59e-44a2-aac1-72bb06ce9cd5"
+                            ],
+                            "in": false,
+                            "label": "Output"
+                        }
+                    ],
+                    "options": {
+                        "id": "ed2d55a3-856c-4e3e-adbe-2d1716cdf381",
+                        "serial": 4,
+                        "name": "Pass",
+                        "category": "Workflow",
+                        "summary": "This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet. This node is not documented yet.",
+                        "key": "WorkflowPass",
+                        "nodePhp": "DataStory\\Nodes\\Pass",
+                        "nodeReact": "NodeModel",
+                        "inPorts": [
+                            "Input"
+                        ],
+                        "outPorts": [
+                            "Output"
+                        ],
+                        "type": "manipulator",
+                        "selected": false
+                    },
+                    "incomingPortOrigins": {
+                        "1b83cbbd-f02a-4dfb-b197-c89229565b1e": []
+                    }
+                }
+            }
+        }
+    ],
+    "executionOrder": [
+        "e8f57a22-b0ab-4824-951c-7b5e20c6c4cc",
+        "e5d406c2-8050-49d2-8506-521d02c7481b",
+        "ed2d55a3-856c-4e3e-adbe-2d1716cdf381",
+        "4d7f8bf1-b39f-4b60-89da-268f6c703d41"
+    ]
+}
