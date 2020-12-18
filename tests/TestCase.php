@@ -19,6 +19,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getPackageAliases($app)
     {
+        dd("HEJ");
         return [
             'App\Models\User'                        => 'DataStory\Tests\Fake\App\Models\User',
             'Database\Factories\Models\UserFactory'  => 'DataStory\Tests\Fake\Database\Factories\UserFactory'
