@@ -4,7 +4,12 @@ Alpha in development
 ![image](https://user-images.githubusercontent.com/3457668/100412714-af94bf00-3075-11eb-9f6b-143fe77e4592.png)
 
 ## Installation
-This is still just a standard Laravel app
+```
+composer require ajthinking/data-story
+php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
+```
+
+That's it! Go to the workbench at `/datastory`
 
 ## Create custom node
 Run the command
