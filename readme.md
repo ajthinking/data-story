@@ -9,7 +9,7 @@ composer require ajthinking/data-story
 php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
 ```
 
-That's it! Go to the workbench at `/datastory`
+That's it! Go to the workbench at `/datastory`.
 
 ## Create custom node
 Run the command
@@ -62,3 +62,5 @@ After refreshing the page the `NewEpicNode` node is available in the story workb
 * Cloner
 * Inspector
 
+## License
+MIT
