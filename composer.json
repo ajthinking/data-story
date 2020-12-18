@@ -9,6 +9,7 @@
         "Workflow",
         "Process builder"
     ],
+    "license": "MIT",
     "authors": [
         {
             "name": "Anders Jürisoo",
