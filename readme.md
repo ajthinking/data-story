@@ -11,6 +11,12 @@ php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
 
 That's it! Go to the workbench at `/datastory`.
 
+## Screencast
+Coming soon
+
+## Configuration
+Coming soon
+
 ## Create custom node
 Run the command
 ```bash
