@@ -2,6 +2,7 @@ import React from 'react';
 import { inject, observer } from "mobx-react"
 import BaseControl from './BaseControl'
 var Mousetrap = require('mousetrap');
+import _ from 'lodash';
 
 @inject('store') @observer
 export default class NodeSearch extends React.Component {    
@@ -111,7 +112,10 @@ export default class NodeSearch extends React.Component {
 
         let key = event.target.getAttribute('data-node-model-variation-key')
         let nodeData = this.props.store.diagram.availableNodes.find(node => node.key == key)
-        this.props.store.addNode(nodeData)
+        this.props.store.addNode(
+            // Ensure the parameters will not be shared between two nodes of same type
+            _.cloneDeep(nodeData)
+        )
 
         this.props.onFinish()
     }

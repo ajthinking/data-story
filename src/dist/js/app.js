@@ -90703,6 +90703,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 /* harmony import */ var _BaseControl__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./BaseControl */ "./src/resources/js/components/controls/BaseControl.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var _dec, _class;
@@ -90734,6 +90736,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 var Mousetrap = __webpack_require__(/*! mousetrap */ "./node_modules/mousetrap/mousetrap.js");
+
 
 var NodeSearch = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])('store'), _dec(_class = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["observer"])(_class = /*#__PURE__*/function (_React$Component) {
   _inherits(NodeSearch, _React$Component);
@@ -90843,7 +90846,8 @@ var NodeSearch = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
       var nodeData = this.props.store.diagram.availableNodes.find(function (node) {
         return node.key == key;
       });
-      this.props.store.addNode(nodeData);
+      this.props.store.addNode( // Ensure the parameters will not be shared between two nodes of same type
+      lodash__WEBPACK_IMPORTED_MODULE_3___default.a.cloneDeep(nodeData));
       this.props.onFinish();
     }
   }]);
@@ -91315,6 +91319,7 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["in
     _classCallCheck(this, NodeWidgetModal);
 
     _this = _super.call(this, props);
+    console.log(_this.props.node.options.parameters);
     _this.state = {
       parameters: _this.props.node.options.parameters
     };

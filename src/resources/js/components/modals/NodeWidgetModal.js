@@ -9,6 +9,10 @@ export default class NodeWidgetModal extends React.Component {
     constructor(props) {
         super(props)
 
+        console.log(
+            this.props.node.options.parameters
+        )
+
         this.state = {
             parameters: this.props.node.options.parameters
         }
