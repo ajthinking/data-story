@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PortWidget } from '@projectstorm/react-diagrams';
 import Modal from 'react-modal';
+import _ from 'lodash'
 
 import { inject, observer } from "mobx-react"
 
@@ -14,7 +15,7 @@ export default class NodeWidgetModal extends React.Component {
         )
 
         this.state = {
-            parameters: this.props.node.options.parameters
+            parameters: _.cloneDeep(this.props.node.options.parameters)
         }
     }
     
