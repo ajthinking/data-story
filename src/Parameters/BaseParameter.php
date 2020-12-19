@@ -10,6 +10,8 @@ abstract class BaseParameter
 
     public $value;
 
+    public $placeholder = '';
+
     public function __construct($name)
     {
         $this->name = $name;
@@ -27,4 +29,11 @@ abstract class BaseParameter
 
         return $this;
     }
+
+    public function placeholder($placeholder)
+    {
+        $this->placeholder = $placeholder;
+
+        return $this;
+    }    
 }

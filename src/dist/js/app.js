@@ -90414,7 +90414,7 @@ var Toolbar = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])(
             return _this2.onClickInspectable(node);
           }.bind(node),
           className: _this2.inspectableLinkStyle(node)
-        }, node.getDisplayName() + ' #' + node.serial);
+        }, node.getDisplayName());
       }));
     }
   }, {
@@ -90429,10 +90429,11 @@ var Toolbar = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])(
     }
   }, {
     key: "inspectableLinkStyle",
-    value: function inspectableLinkStyle(node) {
+    value: function inspectableLinkStyle() {
+      var node = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var style = "mr-8 text-gray-200 hover:text-malibu-500 font-mono text-xs cursor-pointer ";
 
-      if (this.props.store.metadata.page == 'Inspector' && this.props.store.metadata.activeInspector == node.options.id) {
+      if (node && this.props.store.metadata.page == 'Inspector' && this.props.store.metadata.activeInspector == node.options.id) {
         style += 'text-malibu-500';
       }
 
@@ -91364,7 +91365,7 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["in
         className: "text-indigo-500"
       }, this.props.node.options.category), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", {
         className: ""
-      }, "::", this.props.node.getDisplayName())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
+      }, " / ", this.props.node.getDisplayName())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("p", {
         className: "text-sm font-medium text-bold text-gray-400 hover:text-gray-500",
         onClick: this.handleCancel.bind(this)
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("i", {

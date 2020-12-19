@@ -54,7 +54,12 @@ export default class NodeWidgetModal extends React.Component {
                 <div className="flex justify-between">
                     <p className="text-sm font-medium text-gray-900 text-bold">
                         <span className="text-indigo-500">{this.props.node.options.category}</span>
-                        <span className="">::{this.props.node.getDisplayName()}</span>
+                        <span className=""> / {this.props.node.getDisplayName()}</span>
+                        {/* <input
+                            onChange={e => {this.handleChange(e, 'node_name')}}
+                            className="px-2 py-1 rounded"
+                            value={this.state.parameters['node_name'].value}
+                        />                         */}
                     </p>
                     <p 
                         className="text-sm font-medium text-bold text-gray-400 hover:text-gray-500"

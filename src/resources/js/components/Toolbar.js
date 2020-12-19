@@ -40,10 +40,15 @@ export default class Toolbar extends React.Component {
                             key={node.getDisplayName() + node.options.id} 
                             onClick={((e) => this.onClickInspectable(node)).bind(node)}
                             className={this.inspectableLinkStyle(node)}>
-                            {node.getDisplayName() + ' #' + node.serial}
-                        </span>                        
+                            {node.getDisplayName()}
+                        </span>
                     )
                 })}
+                {/* {this.props.store.nodesWithInspectables().length > 0 ? <span
+                    onClick={((e) => this.props.store.setPage('Workbench'))}
+                    className={this.inspectableLinkStyle()}>
+                    <i className="fa fa-close"></i>
+                </span> : null} */}
             </span>
         );
     }
@@ -60,10 +65,11 @@ export default class Toolbar extends React.Component {
         this.props.store.setActiveInspector(node.options.id)
     }
 
-    inspectableLinkStyle(node) {
+    inspectableLinkStyle(node = null) {
         let style = "mr-8 text-gray-200 hover:text-malibu-500 font-mono text-xs cursor-pointer "
 
         if(
+            node &&
             this.props.store.metadata.page == 'Inspector' &&
             this.props.store.metadata.activeInspector == node.options.id
         ) {

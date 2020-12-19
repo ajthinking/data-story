@@ -14,7 +14,7 @@ return [
         DataStory\Nodes\AddAttribute::class,
         DataStory\Nodes\Cloner::class,
         DataStory\Nodes\Create::class,
-        DataStory\Nodes\EloquentReader::class,
+        DataStory\Nodes\EloquentQuery::class,
         DataStory\Nodes\Evaluate::class,
         DataStory\Nodes\Inspector::class,
         DataStory\Nodes\Pass::class,

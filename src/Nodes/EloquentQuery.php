@@ -4,8 +4,10 @@ namespace DataStory\Nodes;
 
 use DataStory\Categories\Eloquent;
 use DataStory\NodeModel;
+use DataStory\Parameters\Number;
+use DataStory\Parameters\String_;
 
-class EloquentReader extends NodeModel
+class EloquentQuery extends NodeModel
 {
     const IN_PORTS = [];
 
@@ -51,23 +53,28 @@ class EloquentReader extends NodeModel
             'key' => $shortCategory . static::class . (string) $data['shortModelPlural'],
             'name' => (string) $data['shortModelPlural'],
             'category' => $shortCategory,
-            'summary' => $data['shortModel'] . '::where(...)',
+            'summary' => $data['shortModel'] . '::query(...)',
             'inPorts' => static::IN_PORTS,
             'outPorts' => static::OUT_PORTS,
             'parameters' => [],
             'targetEloquentModel' => $data['model'],
             'scopes' => [],
             'whereStatements' => [],
-            'parameters' => parent::describeParameters($data),            
+            'parameters' => static::describeParameters($data),            
         ];
     }
 
-    // public static function describeParameters($data = [])
-    // {
-    //     return [
-    //         'node_name' => String_::make()->default('Clone'),
-    //     ];
-    // }
+    public static function describeParameters($data = [])
+    {
+        return [
+            String_::make('node_name')->default($data['shortModelPlural']),
+            String_::make('target_model')->default($data['model']),
+            String_::make('scopes')->default('no scopes available'),
+            String_::make('where_statements')->default(''),
+            String_::make('limit')->default('')->placeholder('no limit'),
+            String_::make('run get()')->default('yes'),
+        ];
+    }
     
     public static function describeVariations($data = [])
     {
