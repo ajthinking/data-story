@@ -5,6 +5,7 @@ namespace DataStory;
 use DataStory\Parameters\String_;
 use Illuminate\Support\Collection;
 use stdClass;
+use DeepCopy\DeepCopy;
 
 abstract class NodeModel
 {
@@ -49,11 +50,14 @@ abstract class NodeModel
     {
         $port = $this->portNamed($name);
 
-        return collect($port->links)->map(function($linkId) {
+        $collection = collect($port->links)->map(function($linkId) {
             $link = $this->diagram()->find($linkId);
             $source = $this->diagram()->find($link->sourcePort);
             return $source->data;
         })->flatten();
+
+        $copier = new DeepCopy();
+        return $copier->copy($collection);
     }
 
     public function diagram()

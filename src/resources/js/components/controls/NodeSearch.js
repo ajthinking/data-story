@@ -37,14 +37,12 @@ export default class NodeSearch extends React.Component {
             'data-node-model-variation-key': node.key,
         }
 
+        // FAILED TO STOP EVENT PROPAGATION ON <li> DOUBLE CLICK
+        // REPEAT THE EVENT + DATA FOR ALL CHILDREN FOR NOW
         return (
-            
-
             <li 
                 key={node.category + node.name}
                 onDoubleClick={this.handleSelect.bind(this)}
-                //data-node-model={'InspectorNodeModel'}
-                //data-node-model-argument={{target: 'Users'}}
 
                 {...elementDataProperties}
 
@@ -52,14 +50,25 @@ export default class NodeSearch extends React.Component {
                 tabIndex={2}
             >
                 <div className="ml-3">
-                    <p className="text-sm mb-2 font-medium text-gray-900 text-bold">
+                    <p 
+                        className="text-sm mb-2 font-medium text-gray-900 text-bold"
+                        onDoubleClick={this.handleSelect.bind(this)}
+                        {...elementDataProperties}
+                    >
                         <span className="text-indigo-500">{node.category}</span>
                         <span className="">::{node.name}</span>
                         
                     </p>
-                    <p className="text-xs text-gray-500">
-                        
-                        <span className="ml-2">{node.summary}</span>
+                    <p  
+                        className="text-xs text-gray-500"
+                        onDoubleClick={this.handleSelect.bind(this)}
+                        {...elementDataProperties}
+                    >
+                        <span 
+                            className="ml-2"
+                            onDoubleClick={this.handleSelect.bind(this)}
+                            {...elementDataProperties}
+                        >{node.summary}</span>
                     </p>
                 </div>
             </li>             
@@ -90,14 +99,20 @@ export default class NodeSearch extends React.Component {
             this.handleSelect.bind(this)
         );        
     }
+
+    componentWillUnmount(){
+        Mousetrap.unbind('enter')
+    }
+
     
     handleSelect(event) {
+        event.preventDefault()
+        event.stopPropagation() // NOT WORKING!
+
         let key = event.target.getAttribute('data-node-model-variation-key')
         let nodeData = this.props.store.diagram.availableNodes.find(node => node.key == key)
-        
         this.props.store.addNode(nodeData)
 
-        event.preventDefault()   
         this.props.onFinish()
     }
 }

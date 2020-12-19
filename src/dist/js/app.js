@@ -90779,28 +90779,31 @@ var NodeSearch = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
     value: function renderNode(node) {
       var elementDataProperties = {
         'data-node-model-variation-key': node.key
-      };
+      }; // FAILED TO STOP EVENT PROPAGATION ON <li> DOUBLE CLICK
+      // REPEAT THE EVENT + DATA FOR ALL CHILDREN FOR NOW
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", _extends({
         key: node.category + node.name,
-        onDoubleClick: this.handleSelect.bind(this) //data-node-model={'InspectorNodeModel'}
-        //data-node-model-argument={{target: 'Users'}}
-
+        onDoubleClick: this.handleSelect.bind(this)
       }, elementDataProperties, {
         className: "py-3 flex",
         tabIndex: 2
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "ml-3"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-        className: "text-sm mb-2 font-medium text-gray-900 text-bold"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", _extends({
+        className: "text-sm mb-2 font-medium text-gray-900 text-bold",
+        onDoubleClick: this.handleSelect.bind(this)
+      }, elementDataProperties), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "text-indigo-500"
       }, node.category), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: ""
-      }, "::", node.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
-        className: "text-xs text-gray-500"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
-        className: "ml-2"
-      }, node.summary))));
+      }, "::", node.name)), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", _extends({
+        className: "text-xs text-gray-500",
+        onDoubleClick: this.handleSelect.bind(this)
+      }, elementDataProperties), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", _extends({
+        className: "ml-2",
+        onDoubleClick: this.handleSelect.bind(this)
+      }, elementDataProperties), node.summary))));
     }
   }, {
     key: "searchChange",
@@ -90826,14 +90829,21 @@ var NodeSearch = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
       Mousetrap.bind('enter', this.handleSelect.bind(this));
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      Mousetrap.unbind('enter');
+    }
+  }, {
     key: "handleSelect",
     value: function handleSelect(event) {
+      event.preventDefault();
+      event.stopPropagation(); // NOT WORKING!
+
       var key = event.target.getAttribute('data-node-model-variation-key');
       var nodeData = this.props.store.diagram.availableNodes.find(function (node) {
         return node.key == key;
       });
       this.props.store.addNode(nodeData);
-      event.preventDefault();
       this.props.onFinish();
     }
   }]);
@@ -91994,8 +92004,8 @@ var nonCircularJsonStringify = function nonCircularJsonStringify(data) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/anders/Code/data-story/DataStory/src/resources/js/app.js */"./src/resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/anders/Code/data-story/DataStory/src/resources/sass/app.scss */"./src/resources/sass/app.scss");
+__webpack_require__(/*! /Users/anders/Code/data-story/src/resources/js/app.js */"./src/resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/anders/Code/data-story/src/resources/sass/app.scss */"./src/resources/sass/app.scss");
 
 
 /***/ })

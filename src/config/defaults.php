@@ -11,10 +11,14 @@ return [
     |
     */    
     'nodes' => [
+        DataStory\Nodes\AddAttribute::class,
+        DataStory\Nodes\Cloner::class,
+        DataStory\Nodes\Create::class,
         DataStory\Nodes\EloquentReader::class,
+        DataStory\Nodes\Evaluate::class,
         DataStory\Nodes\Inspector::class,
         DataStory\Nodes\Pass::class,
-        DataStory\Nodes\Cloner::class,
+        
     ],
 
     /*
