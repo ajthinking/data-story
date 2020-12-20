@@ -4,7 +4,6 @@ namespace DataStory\Nodes;
 
 use DataStory\Categories\Eloquent;
 use DataStory\NodeModel;
-use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 
 class EloquentQuery extends NodeModel
@@ -36,6 +35,9 @@ class EloquentQuery extends NodeModel
         $query = collect($this->data->options->whereStatements)->reduce(function($query, $whereStatement) {
             return $query->where(...$whereStatement->args);
         }, $query);
+
+        // Apply take/limit
+        // TODO
         
         // Return results
         return $query->get();
