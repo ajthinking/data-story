@@ -1,7 +1,7 @@
 # DataStory
-Alpha in development
+⚡ Process builder ⚡ Visual coding ⚡ ETL ⚡ Laravel + React ⚡ Alpha in development ⚡
 
-![image](https://user-images.githubusercontent.com/3457668/100412714-af94bf00-3075-11eb-9f6b-143fe77e4592.png)
+<img src="https://user-images.githubusercontent.com/3457668/102698183-c32de280-423b-11eb-9bb2-cdda6187094c.png">
 
 ## Installation
 ```
@@ -10,6 +10,12 @@ php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
 ```
 
 That's it! Go to the workbench at `/datastory`.
+
+## Screencast
+Coming soon
+
+## Configuration
+Coming soon
 
 ## Create custom node
 Run the command
