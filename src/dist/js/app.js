@@ -91001,7 +91001,15 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
     value: function onClick() {
       var _this2 = this;
 
-      this.props.store.setRunning();
+      this.props.store.setRunning(); // console.log(
+      //     nonCircularJsonStringify(
+      //         this.props.store.diagram.engine.model.serialize(),
+      //         null,
+      //         4
+      //     )
+      // )
+      // return
+
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/datastory/api/run', {
         model: Object(_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_4__["nonCircularJsonStringify"])(this.props.store.diagram.engine.model.serialize())
       }).then(function (response) {

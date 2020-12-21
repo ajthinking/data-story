@@ -71,7 +71,7 @@ abstract class NodeModel
 
     }
 
-    public static function describe($data = [])
+    public static function describe(array $variation = [])
     {
         $description = new stdClass;
 
@@ -83,7 +83,7 @@ abstract class NodeModel
         $description->nodeReact     = static::NODE_MODEL_REACT;
         $description->inPorts       = static::IN_PORTS;
         $description->outPorts      = static::OUT_PORTS;
-        $description->parameters    = static::parameters($data);
+        $description->parameters    = static::parameters($variation);
 
         return $description;
 
@@ -100,7 +100,7 @@ abstract class NodeModel
         ];
     }
     
-    public static function variations($data = [])
+    public static function variations()
     {
         return [
             static::describe()

@@ -22,17 +22,17 @@ class EloquentQuery extends NodeModel
     protected function getQueryResults()
     {
         // Get QueryBuilder
-        $query = app($this->data->options->targetEloquentModel)->query();
+        $query = app($this->data->options->parameters->target_model->value)->query();
 
         // Apply scopes
-        $query = collect($this->data->options->scopes)->reduce(function($query, $scope) {
+        $query = collect([])->reduce(function($query, $scope) {
             $name = $scope->name;
             $args = $scope->args;
             return $query->$name(...$args);
         }, $query);
 
         // Apply where statements
-        $query = collect($this->data->options->whereStatements)->reduce(function($query, $whereStatement) {
+        $query = collect([])->reduce(function($query, $whereStatement) {
             return $query->where(...$whereStatement->args);
         }, $query);
 
@@ -43,19 +43,19 @@ class EloquentQuery extends NodeModel
         return $query->get();
     }
 
-    public static function describe($data = [])
+    public static function describe(array $variation = [])
     {
-        $data['shortModel'] = class_basename($data['model']);
-        $data['shortModelPlural'] = (string) \Illuminate\Support\Str::of($data['shortModel'])->plural();
+        $variation['shortModel'] = class_basename($variation['model']);
+        $variation['shortModelPlural'] = (string) \Illuminate\Support\Str::of($variation['shortModel'])->plural();
 
-        return parent::describe($data);
+        return parent::describe($variation);
     }
 
-    public static function parameters($data = [])
+    public static function parameters($variation = [])
     {
         return [
-            String_::make('node_name')->default($data['shortModelPlural']),
-            String_::make('target_model')->default($data['model']),
+            String_::make('node_name')->default($variation['shortModelPlural']),
+            String_::make('target_model')->default($variation['model']),
             String_::make('scopes')->default('no scopes available'),
             String_::make('where_statements')->default(''),
             String_::make('limit')->default('')->placeholder('no limit'),
@@ -63,11 +63,8 @@ class EloquentQuery extends NodeModel
         ];
     }
     
-    public static function variations($data = [])
+    public static function variations()
     {
-        /**
-         * This node spawns
-         */
         $models = [
             \App\Models\User::class,
         ];

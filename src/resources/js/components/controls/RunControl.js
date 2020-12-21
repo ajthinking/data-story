@@ -18,6 +18,16 @@ export default class RunControl extends BaseControl {
     {
         this.props.store.setRunning()
 
+        // console.log(
+        //     nonCircularJsonStringify(
+        //         this.props.store.diagram.engine.model.serialize(),
+        //         null,
+        //         4
+        //     )
+        // )
+
+        // return
+
         axios.post('/datastory/api/run', {
                 model: nonCircularJsonStringify(
                     this.props.store.diagram.engine.model.serialize()
