@@ -1,6 +1,6 @@
 <?php
 
-namespace DataStory\Tests\Unit;
+namespace DataStory\Tests\Feature;
 
 use DataStory\Tests\TestCase;
 
