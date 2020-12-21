@@ -3,6 +3,7 @@
 namespace DataStory;
 
 use DataStory\Parameters\String_;
+use DataStory\Support\ParameterBag;
 use Illuminate\Support\Collection;
 use stdClass;
 use DeepCopy\DeepCopy;
@@ -34,11 +35,11 @@ abstract class NodeModel
         return $node;
     }
 
-    public static function describeParameters($data = [])
+    public static function parameters($data = [])
     {
-        return [
-            String_::make('node_name')->default(class_basename(static::class)),
-        ];
+        return collect([
+            String_::make('node_name')->default(class_basename(static::class))
+        ]);
     }
 
     public function portNamed($name)
@@ -72,6 +73,20 @@ abstract class NodeModel
 
     public static function describe($data = [])
     {
+        $description = new stdClass;
+
+        $description->name          = class_basename(static::class);
+        $description->category      = class_basename(static::CATEGORY);
+        $description->summary       = 'This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.';
+        $description->key           = class_basename(static::CATEGORY) . class_basename(static::class);
+        $description->nodePhp       = static::class;
+        $description->nodeReact     = static::NODE_MODEL_REACT;
+        $description->inPorts       = static::IN_PORTS;
+        $description->outPorts      = static::OUT_PORTS;
+        $description->parameters    = static::parameters($data);
+
+        return $description;
+
         return [
             'name' => class_basename(static::class),
             'category' => class_basename(static::CATEGORY),
@@ -81,11 +96,11 @@ abstract class NodeModel
             'nodeReact' => static::NODE_MODEL_REACT,
             'inPorts' => static::IN_PORTS,
             'outPorts' => static::OUT_PORTS,
-            'parameters' => static::describeParameters(),
+            'parameters' => static::parameters(),
         ];
     }
     
-    public static function describeVariations($data = [])
+    public static function variations($data = [])
     {
         return [
             static::describe()

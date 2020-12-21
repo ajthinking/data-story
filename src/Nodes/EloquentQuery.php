@@ -45,28 +45,13 @@ class EloquentQuery extends NodeModel
 
     public static function describe($data = [])
     {
-        $shortCategory = class_basename(static::CATEGORY);
         $data['shortModel'] = class_basename($data['model']);
         $data['shortModelPlural'] = (string) \Illuminate\Support\Str::of($data['shortModel'])->plural();
 
-        return [
-            'nodePhp' => static::class,
-            'nodeReact' => static::NODE_MODEL_REACT,
-            'key' => $shortCategory . static::class . (string) $data['shortModelPlural'],
-            'name' => (string) $data['shortModelPlural'],
-            'category' => $shortCategory,
-            'summary' => $data['shortModel'] . '::query(...)',
-            'inPorts' => static::IN_PORTS,
-            'outPorts' => static::OUT_PORTS,
-            'parameters' => [],
-            'targetEloquentModel' => $data['model'],
-            'scopes' => [],
-            'whereStatements' => [],
-            'parameters' => static::describeParameters($data),            
-        ];
+        return parent::describe($data);
     }
 
-    public static function describeParameters($data = [])
+    public static function parameters($data = [])
     {
         return [
             String_::make('node_name')->default($data['shortModelPlural']),
@@ -78,8 +63,11 @@ class EloquentQuery extends NodeModel
         ];
     }
     
-    public static function describeVariations($data = [])
+    public static function variations($data = [])
     {
+        /**
+         * This node spawns
+         */
         $models = [
             \App\Models\User::class,
         ];
@@ -93,3 +81,11 @@ class EloquentQuery extends NodeModel
         ];
     }
 }
+
+// class NodeAbstract ??????
+// {
+//     function describe() {}
+//     function parameters() {}
+//     function variations() {} // Move to NodeCatalouge
+//     function run() {}
+// }

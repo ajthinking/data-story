@@ -13,7 +13,7 @@ class Create extends NodeModel
 
     const IN_PORTS = [];    
 
-    public static function describeParameters($data = [])
+    public static function parameters($data = [])
     {
         return [
             String_::make('node_name')->default('Create'),

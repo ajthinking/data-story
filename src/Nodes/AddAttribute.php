@@ -11,7 +11,7 @@ class AddAttribute extends NodeModel
 {
     const CATEGORY = Workflow::class;
 
-    public static function describeParameters($data = [])
+    public static function parameters($data = [])
     {
         return [
             String_::make('node_name')->default('AddAttribute'),

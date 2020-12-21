@@ -11,7 +11,7 @@ class Evaluate extends NodeModel
 {
     const CATEGORY = Workflow::class;
 
-    public static function describeParameters($data = [])
+    public static function parameters($data = [])
     {
         return [
             Textarea::make('node_name')->default('Evaluate'),

@@ -39,6 +39,11 @@ class Data
             //throw new Exception("Can not set property on type $type");
         }
 
+        return $this;
+    }
+
+    public function get()
+    {
         return $this->raw;
     }
 }
