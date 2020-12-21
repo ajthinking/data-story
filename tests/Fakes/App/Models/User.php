@@ -1,6 +1,6 @@
 <?php
 
-namespace DataStory\Tests\Fake\App\Models;
+namespace DataStory\Tests\Fakes\App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;

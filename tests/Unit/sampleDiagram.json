@@ -125,9 +125,9 @@
                     "options": {
                         "id": "e8f57a22-b0ab-4824-951c-7b5e20c6c4cc",
                         "serial": 1,
-                        "nodePhp": "DataStory\\Nodes\\EloquentReader",
+                        "nodePhp": "DataStory\\Nodes\\EloquentQuery",
                         "nodeReact": "NodeModel",
-                        "key": "EloquentDataStory\\Nodes\\EloquentReaderUsers",
+                        "key": "EloquentDataStory\\Nodes\\EloquentQueryUsers",
                         "name": "Users",
                         "category": "Eloquent",
                         "summary": "User::where(...)",
