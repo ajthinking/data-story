@@ -100,6 +100,7 @@ export default class NodeWidgetModal extends React.Component {
 
     renderPorts()
     {
+        console.log('ports count: ' + Object.values(this.props.node.getOutPorts()).length)
         return this.props.node.options.editableOutPorts && (
             <div className="w-full px-6 py-1 text-gray-500 text-xs font-mono border border-t">
                 <div className="my-2">Ports</div>
@@ -157,11 +158,16 @@ export default class NodeWidgetModal extends React.Component {
     saveNewPort(event) {
         console.log("Check if enter was pressed!", event.key);
 
+        if(event.key != 'Enter') return;
+
         this.props.node.addPort(
             new DefaultPortModel({
                 in: false,
-                name: event.key,
+                name: event.target.value,
             })
-        );         
+        );
+
+        // Why is this needed?
+        this.forceUpdate();
     }
 }

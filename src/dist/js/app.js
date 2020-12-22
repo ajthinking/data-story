@@ -91411,6 +91411,7 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
     value: function renderPorts() {
       var _this3 = this;
 
+      console.log('ports count: ' + Object.values(this.props.node.getOutPorts()).length);
       return this.props.node.options.editableOutPorts && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
         className: "w-full px-6 py-1 text-gray-500 text-xs font-mono border border-t"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
@@ -91466,10 +91467,13 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
     key: "saveNewPort",
     value: function saveNewPort(event) {
       console.log("Check if enter was pressed!", event.key);
+      if (event.key != 'Enter') return;
       this.props.node.addPort(new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["DefaultPortModel"]({
         "in": false,
-        name: event.key
-      }));
+        name: event.target.value
+      })); // Why is this needed?
+
+      this.forceUpdate();
     }
   }]);
 

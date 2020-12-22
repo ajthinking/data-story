@@ -3,6 +3,7 @@
 namespace DataStory\Nodes;
 
 use DataStory\NodeModel;
+use DataStory\Parameters\String_;
 
 class Filter extends NodeModel
 {
@@ -12,10 +13,33 @@ class Filter extends NodeModel
 
     const EDITABLE_OUT_PORTS = true;
 
+    public static function parameters($variation = [])
+    {
+        return [
+            String_::make('node_name')->default('Filter'),
+            String_::make('filter_attribute')->default(''),
+        ];
+    }
+
     public function run()
     {
-        $features = $this->input();
+        $groups = $this->input()->groupBy(
+            $this->getParameter('filter_attribute')
+        );
+        
+        $unmatched = $groups->filter(function($features, $port) {
+            // Is unmatched? Keep.
+            // dd(
+            //     $this->portNamed($port)                
+            // );
 
-        $this->output($features);
+            if(!$this->portNamed($port)) return true;
+            // Else output to explicit port
+            
+            $this->output($features, $port);    
+        });
+
+        $this->output($unmatched, 'Default');
+
     }
 }
