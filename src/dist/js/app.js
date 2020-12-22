@@ -91008,7 +91008,7 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
       //         4
       //     )
       // )
-      // return
+      // return 
 
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/datastory/api/run', {
         model: Object(_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_4__["nonCircularJsonStringify"])(this.props.store.diagram.engine.model.serialize())
@@ -91361,7 +91361,7 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, this.renderHeading(), this.renderBody(), this.renderActions());
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, this.renderHeading(), this.renderBody(), this.renderPorts(), this.renderActions());
     }
   }, {
     key: "renderHeading",
@@ -91404,6 +91404,32 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
           value: _this2.state.parameters[parameter].value
         }));
       })));
+    }
+  }, {
+    key: "renderPorts",
+    value: function renderPorts() {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "w-full px-6 py-1 text-gray-500 text-xs font-mono"
+      }, Object.values(this.props.node.getOutPorts()).map(function (port) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          key: port.options.name,
+          className: "w-full flex items-center"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "w-full rounded"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
+          className: "w-full px-2 py-1",
+          type: "text",
+          value: port.options.label
+        })));
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "w-full flex items-center"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "w-full rounded"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
+        className: "w-full px-2 py-1",
+        type: "text",
+        placeholder: 'add port...'
+      }))));
     }
   }, {
     key: "renderActions",

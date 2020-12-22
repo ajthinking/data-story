@@ -43,7 +43,8 @@ export default class NodeWidgetModal extends React.Component {
             <div>
                 {this.renderHeading()}
                 {this.renderBody()}
-                {this.renderActions()}
+                {this.renderPorts()}
+                {this.renderActions()}                
             </div>
 		);
     }
@@ -93,6 +94,28 @@ export default class NodeWidgetModal extends React.Component {
 
                 </div>
             </div>            
+        );
+    }
+
+    renderPorts()
+    {
+        return (
+            <div className="w-full px-6 py-1 text-gray-500 text-xs font-mono">
+                {Object.values(this.props.node.getOutPorts()).map((port) => {
+                    return (
+                        <div key={port.options.name} className="w-full flex items-center">
+                            <div className="w-full rounded">
+                                <input className="w-full px-2 py-1" type="text" value={port.options.label} />
+                            </div>
+                        </div>                
+                    )
+                })}
+                <div className="w-full flex items-center">
+                    <div className="w-full rounded">
+                        <input className="w-full px-2 py-1" type="text" placeholder={'add port...'} />
+                    </div>
+                </div>                  
+            </div>
         );
     }
 
