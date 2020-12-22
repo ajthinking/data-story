@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PortWidget } from '@projectstorm/react-diagrams';
 import Modal from 'react-modal';
 import _ from 'lodash'
+import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/react-diagrams';
 
 import { inject, observer } from "mobx-react"
 
@@ -99,20 +100,31 @@ export default class NodeWidgetModal extends React.Component {
 
     renderPorts()
     {
-        return (
-            <div className="w-full px-6 py-1 text-gray-500 text-xs font-mono">
+        return this.props.node.options.editableOutPorts && (
+            <div className="w-full px-6 py-1 text-gray-500 text-xs font-mono border border-t">
+                <div className="my-2">Ports</div>
                 {Object.values(this.props.node.getOutPorts()).map((port) => {
                     return (
-                        <div key={port.options.name} className="w-full flex items-center">
+                        <div key={port.options.id} className="w-full flex items-center">
                             <div className="w-full rounded">
-                                <input className="w-full px-2 py-1" type="text" value={port.options.label} />
+                                <input 
+                                    className="w-full px-2 py-1"
+                                    type="text"
+                                    value={port.options.label}
+                                    onChange={this.editExistingPort.bind(this)}
+                                />
                             </div>
                         </div>                
                     )
                 })}
                 <div className="w-full flex items-center">
                     <div className="w-full rounded">
-                        <input className="w-full px-2 py-1" type="text" placeholder={'add port...'} />
+                        <input 
+                            className="w-full px-2 py-1"
+                            type="text"
+                            placeholder={'add port...'}
+                            onKeyUp={this.saveNewPort.bind(this)}
+                        />
                     </div>
                 </div>                  
             </div>
@@ -137,5 +149,19 @@ export default class NodeWidgetModal extends React.Component {
             </div>            
         );
     }
-}
 
+    editExistingPort(event) {
+
+    }
+
+    saveNewPort(event) {
+        console.log("Check if enter was pressed!", event.key);
+
+        this.props.node.addPort(
+            new DefaultPortModel({
+                in: false,
+                name: event.key,
+            })
+        );         
+    }
+}

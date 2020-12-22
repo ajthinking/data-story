@@ -14,6 +14,10 @@ abstract class NodeModel
 
     const OUT_PORTS = ['Output'];
 
+    const EDITABLE_IN_PORTS = false;
+
+    const EDITABLE_OUT_PORTS = false;
+
     const CATEGORY = 'Custom';
 
     const NODE_MODEL_REACT = 'NodeModel';
@@ -73,17 +77,18 @@ abstract class NodeModel
 
     public static function describe(array $variation = [])
     {
-        $description = new stdClass;
-
-        $description->name          = class_basename(static::class);
-        $description->category      = class_basename(static::CATEGORY);
-        $description->summary       = 'This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.';
-        $description->key           = class_basename(static::CATEGORY) . class_basename(static::class);
-        $description->nodePhp       = static::class;
-        $description->nodeReact     = static::NODE_MODEL_REACT;
-        $description->inPorts       = static::IN_PORTS;
-        $description->outPorts      = static::OUT_PORTS;
-        $description->parameters    = static::parameters($variation);
+        $description                    = new stdClass;
+        $description->name              = class_basename(static::class);
+        $description->category          = class_basename(static::CATEGORY);
+        $description->summary           = 'This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.';
+        $description->key               = class_basename(static::CATEGORY) . class_basename(static::class);
+        $description->nodePhp           = static::class;
+        $description->nodeReact         = static::NODE_MODEL_REACT;
+        $description->inPorts           = static::IN_PORTS;
+        $description->outPorts          = static::OUT_PORTS;
+        $description->editableInPorts   = static::EDITABLE_IN_PORTS;
+        $description->editableOutPorts  = static::EDITABLE_OUT_PORTS;
+        $description->parameters        = static::parameters($variation);
 
         return $description;
 

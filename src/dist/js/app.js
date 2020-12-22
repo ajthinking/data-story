@@ -91320,6 +91320,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["inject"])('store'), _dec(_class = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["observer"])(_class = /*#__PURE__*/function (_React$Component) {
   _inherits(NodeWidgetModal, _React$Component);
 
@@ -91408,18 +91409,23 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
   }, {
     key: "renderPorts",
     value: function renderPorts() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-        className: "w-full px-6 py-1 text-gray-500 text-xs font-mono"
-      }, Object.values(this.props.node.getOutPorts()).map(function (port) {
+      var _this3 = this;
+
+      return this.props.node.options.editableOutPorts && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "w-full px-6 py-1 text-gray-500 text-xs font-mono border border-t"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "my-2"
+      }, "Ports"), Object.values(this.props.node.getOutPorts()).map(function (port) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-          key: port.options.name,
+          key: port.options.id,
           className: "w-full flex items-center"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
           className: "w-full rounded"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
           className: "w-full px-2 py-1",
           type: "text",
-          value: port.options.label
+          value: port.options.label,
+          onChange: _this3.editExistingPort.bind(_this3)
         })));
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
         className: "w-full flex items-center"
@@ -91428,7 +91434,8 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
         className: "w-full px-2 py-1",
         type: "text",
-        placeholder: 'add port...'
+        placeholder: 'add port...',
+        onKeyUp: this.saveNewPort.bind(this)
       }))));
     }
   }, {
@@ -91451,6 +91458,18 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
         onClick: this.handleSave.bind(this),
         className: "m-4 px-4 py-2 hover:text-malibu-700 border border-gray-500 hover:bg-gray-200 rounded"
       }, "Save")))));
+    }
+  }, {
+    key: "editExistingPort",
+    value: function editExistingPort(event) {}
+  }, {
+    key: "saveNewPort",
+    value: function saveNewPort(event) {
+      console.log("Check if enter was pressed!", event.key);
+      this.props.node.addPort(new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["DefaultPortModel"]({
+        "in": false,
+        name: event.key
+      }));
     }
   }]);
 
