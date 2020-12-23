@@ -146,11 +146,11 @@
                     "options": {
                         "id": "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e",
                         "serial": 2,
-                        "name": "Inspector",
+                        "name": "Inspect",
                         "category": "Workflow",
                         "summary": "This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.",
-                        "key": "WorkflowInspector",
-                        "nodePhp": "DataStory\\Nodes\\Inspector",
+                        "key": "WorkflowInspect",
+                        "nodePhp": "DataStory\\Nodes\\Inspect",
                         "nodeReact": "NodeModel",
                         "inPorts": [
                             "Input"
@@ -158,9 +158,9 @@
                         "outPorts": [],
                         "parameters": {
                             "node_name": {
-                                "default": "Inspector",
+                                "default": "Inspect",
                                 "name": "node_name",
-                                "value": "Inspector",
+                                "value": "Inspect",
                                 "placeholder": ""
                             }
                         },
