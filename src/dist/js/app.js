@@ -89591,7 +89591,7 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
   }, {
     key: "isInspectable",
     value: function isInspectable() {
-      return Boolean(this.options.features);
+      return Boolean(this.features);
     }
   }]);
 
@@ -89996,7 +89996,7 @@ var InspectorTable = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
     key: "features",
     value: function features() {
       var id = this.props.store.metadata.activeInspector;
-      return this.props.store.diagram.engine.model.getNode(id).options.features;
+      return this.props.store.diagram.engine.model.getNode(id).features;
     }
   }, {
     key: "render",
@@ -91013,13 +91013,15 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
       axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/datastory/api/run', {
         model: Object(_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_4__["nonCircularJsonStringify"])(this.props.store.diagram.engine.model.serialize())
       }).then(function (response) {
+        // TRANSFER FEATURE AT NODES (INSPECTABLES)
         response.data.diagram.nodes.filter(function (phpNode) {
           return phpNode.features;
         }).forEach(function (phpNode) {
           var reactNode = _this2.props.store.diagram.engine.model.getNode(phpNode.id);
 
-          reactNode.options.features = phpNode.features;
-        }); // ATTACH FEATURE COUNT TO LINK MODEL
+          reactNode.features = phpNode.features;
+        });
+        console.log(response.data.diagram); // ATTACH FEATURE COUNT TO LINK MODEL
 
         _this2.showSuccessToast();
 

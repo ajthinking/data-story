@@ -7,7 +7,7 @@ export default class InspectorTable extends React.Component {
 
     features() {
         let id = this.props.store.metadata.activeInspector
-        return this.props.store.diagram.engine.model.getNode(id).options.features
+        return this.props.store.diagram.engine.model.getNode(id).features
     }
 
     render() {

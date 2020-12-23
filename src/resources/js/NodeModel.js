@@ -99,6 +99,6 @@ export default class NodeModel extends DefaultNodeModel {
     }
 
     isInspectable() {
-        return Boolean(this.options.features)
+        return Boolean(this.features)
     }
 }

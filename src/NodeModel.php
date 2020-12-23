@@ -60,7 +60,7 @@ abstract class NodeModel
         $collection = collect($port->links)->map(function($linkId) {
             $link = $this->diagram()->find($linkId);
             $source = $this->diagram()->find($link->sourcePort);
-            return $source->data;
+            return $source->features;
         })->flatten();
 
         $copier = new DeepCopy();
@@ -121,7 +121,7 @@ abstract class NodeModel
 
     public function output(Collection $features, string $portName = 'Output')
     {
-        $this->portNamed($portName)->data = $features;
+        $this->portNamed($portName)->features = $features;
     }
 
     public function getParameter($name)

@@ -34,12 +34,17 @@ export default class RunControl extends BaseControl {
                 )
           })
           .then((response) => {
+                // TRANSFER FEATURE AT NODES (INSPECTABLES)
                 response.data.diagram.nodes.filter(phpNode => {
                     return phpNode.features
                 }).forEach(phpNode => {
                     let reactNode = this.props.store.diagram.engine.model.getNode(phpNode.id)
-                    reactNode.options.features = phpNode.features;
+                    reactNode.features = phpNode.features;
                 })
+
+                console.log(
+                    response.data.diagram,                    
+                )
 
                 // ATTACH FEATURE COUNT TO LINK MODEL
                 
