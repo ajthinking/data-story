@@ -2,15 +2,16 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\Categories\Eloquent;
+use DataStory\Categories\Model;
 use DataStory\NodeModel;
 use DataStory\Parameters\String_;
+use Illuminate\Support\Str;
 
 class EloquentQuery extends NodeModel
 {
     const IN_PORTS = [];
 
-    const CATEGORY = Eloquent::class;
+    const CATEGORY = Model::class;
 
     public function run()
     {
@@ -46,9 +47,13 @@ class EloquentQuery extends NodeModel
     public static function describe(array $variation = [])
     {
         $variation['shortModel'] = class_basename($variation['model']);
-        $variation['shortModelPlural'] = (string) \Illuminate\Support\Str::of($variation['shortModel'])->plural();
+        $variation['shortModelPlural'] = (string) Str::of($variation['shortModel'])->plural();
 
-        return parent::describe($variation);
+        $description = parent::describe($variation);
+        $description->name = $variation['shortModel'];
+        $description->summary = $variation['shortModel'] . '::query()->where(...)';
+        
+        return $description;
     }
 
     public static function parameters($variation = [])

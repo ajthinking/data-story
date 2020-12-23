@@ -51,6 +51,7 @@ export default class RunControl extends BaseControl {
 
             this.props.store.setNotRunning()
             console.log(error);
+            this.showFailureToast();
           });
     }
 
@@ -72,6 +73,19 @@ export default class RunControl extends BaseControl {
         );        
     }
 
+    showFailureToast()
+    {
+        toast.info('Crap! Could not run story! Check console.', {
+            position: "bottom-right",
+            transition: Slide,
+            autoClose: 3500,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+        });
+    }
+
     showSuccessToast()
     {
         toast.info('Successfully ran story!', {
@@ -83,5 +97,5 @@ export default class RunControl extends BaseControl {
             pauseOnHover: true,
             draggable: true,
         });
-    }
+    }    
 }

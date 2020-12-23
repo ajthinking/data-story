@@ -4,7 +4,7 @@ namespace DataStory\Nodes;
 
 use DataStory\NodeModel;
 
-class Inspector extends NodeModel
+class Inspect extends NodeModel
 {
     const OUT_PORTS = [];
 

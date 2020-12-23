@@ -22,6 +22,8 @@ abstract class NodeModel
 
     const NODE_MODEL_REACT = 'NodeModel';
 
+    const SHORT_DESCRIPTION = 'This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.';
+
     public string $id;
 
     public stdClass $data;
@@ -80,7 +82,7 @@ abstract class NodeModel
         $description                    = new stdClass;
         $description->name              = class_basename(static::class);
         $description->category          = class_basename(static::CATEGORY);
-        $description->summary           = 'This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.';
+        $description->summary           = static::SHORT_DESCRIPTION;
         $description->key               = class_basename(static::CATEGORY) . class_basename(static::class);
         $description->nodePhp           = static::class;
         $description->nodeReact         = static::NODE_MODEL_REACT;

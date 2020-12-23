@@ -17,7 +17,7 @@ return [
         DataStory\Nodes\EloquentQuery::class,
         DataStory\Nodes\Evaluate::class,
         DataStory\Nodes\Filter::class,
-        DataStory\Nodes\Inspector::class,
+        DataStory\Nodes\Inspect::class,
         DataStory\Nodes\Pass::class,
     ],
 
