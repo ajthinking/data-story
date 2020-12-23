@@ -91019,7 +91019,7 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
           var reactNode = _this2.props.store.diagram.engine.model.getNode(phpNode.id);
 
           reactNode.options.features = phpNode.features;
-        });
+        }); // ATTACH FEATURE COUNT TO LINK MODEL
 
         _this2.showSuccessToast();
 
@@ -91856,6 +91856,7 @@ var Store = /*#__PURE__*/function () {
       metadata: mobx__WEBPACK_IMPORTED_MODULE_0__["observable"],
       // Setters
       addNode: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
+      clearLinkLabels: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
       increaseNodeSerial: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
       goToInspector: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
       refreshDiagram: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
@@ -91892,6 +91893,13 @@ var Store = /*#__PURE__*/function () {
       this.refreshDiagram();
     }
   }, {
+    key: "clearLinkLabels",
+    value: function clearLinkLabels() {
+      Object.values(this.diagram.engine.model.layers[0].models).forEach(function (link) {
+        link.labels = [];
+      });
+    }
+  }, {
     key: "getAutomatedLink",
     value: function getAutomatedLink(from, to) {
       var _Object$values$, _Object$values$2;
@@ -91906,8 +91914,8 @@ var Store = /*#__PURE__*/function () {
       var link = new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["DefaultLinkModel"]();
       link.setSourcePort(fromPort);
       link.setTargetPort(toPort); // track: https://github.com/projectstorm/react-diagrams/issues/617
-      //link.addLabel(Math.floor(Math.random()*1000));
-      // Report
+
+      link.addLabel(Math.floor(Math.random() * 1000)); // Report
 
       fromPort.reportPosition();
       toPort.reportPosition();
@@ -91963,6 +91971,7 @@ var Store = /*#__PURE__*/function () {
   }, {
     key: "setPage",
     value: function setPage(name) {
+      this.clearLinkLabels();
       this.metadata.page = name;
     }
   }, {

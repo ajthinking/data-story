@@ -40,6 +40,8 @@ export default class RunControl extends BaseControl {
                     let reactNode = this.props.store.diagram.engine.model.getNode(phpNode.id)
                     reactNode.options.features = phpNode.features;
                 })
+
+                // ATTACH FEATURE COUNT TO LINK MODEL
                 
                 this.showSuccessToast();                
 

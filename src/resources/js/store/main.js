@@ -28,6 +28,7 @@ export class Store {
             
             // Setters
             addNode: action.bound,
+            clearLinkLabels: action.bound,
             increaseNodeSerial: action.bound,
             goToInspector: action.bound,
             refreshDiagram: action.bound,
@@ -66,6 +67,12 @@ export class Store {
         this.refreshDiagram()
     }
 
+    clearLinkLabels() {
+        Object.values(this.diagram.engine.model.layers[0].models).forEach((link) => {
+            link.labels = []
+        })
+    }
+
     getAutomatedLink(from, to) {
         if(!from) return
         // Ports
@@ -81,7 +88,7 @@ export class Store {
         link.setTargetPort(toPort);            
         
         // track: https://github.com/projectstorm/react-diagrams/issues/617
-        //link.addLabel(Math.floor(Math.random()*1000));
+        link.addLabel(Math.floor(Math.random()*1000));
 
         // Report
         fromPort.reportPosition()
@@ -129,6 +136,7 @@ export class Store {
     }
     
     setPage(name) {
+        this.clearLinkLabels()
         this.metadata.page = name
     }
     
