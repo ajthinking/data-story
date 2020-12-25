@@ -52,4 +52,7 @@ return [
     */
     'custom-nodes-scan-dir' => true,
 
+
+    'dev-mode' => env('DATASTORY_DEV_MODE', false),
+
 ];

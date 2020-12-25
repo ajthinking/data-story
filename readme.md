@@ -15,7 +15,7 @@ That's it! Go to the workbench at `/datastory`.
 Coming soon
 
 ## Configuration
-Coming soon
+You may edit settings in `data-story.php` as needed
 
 ## Create custom node
 Run the command
@@ -67,6 +67,14 @@ After refreshing the page the `NewEpicNode` node is available in the story workb
 * Pass
 * Cloner
 * Inspector
+
+## Contributing
+
+* Clone this repo
+* Install a fresh Laravel app to act as a host
+* Add this repo as a composer file/path repository in the host app
+* Install it with `composer require ajthinking/data-story @dev`
+* Finally set `DATASTORY_DEV_MODE=true` in host .env to get some dev helpers
 
 ## License
 MIT

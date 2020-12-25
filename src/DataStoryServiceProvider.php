@@ -39,4 +39,9 @@ class DataStoryServiceProvider extends ServiceProvider
         require __DIR__ . '/routes/web.php';
         require __DIR__ . '/routes/api.php';
     }
+
+    public static function isInDevelopment()
+    {
+        return config('data-story.dev-mode');
+    }
 }
