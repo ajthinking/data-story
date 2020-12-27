@@ -5,7 +5,7 @@ import {nonCircularJsonStringify} from '../../utils/nonCircularJsonStringify'
 import {toast, Slide } from 'react-toastify';
 
 @inject('store') @observer
-export default class SaveModal extends React.Component {
+export default class OpenModal extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -24,22 +24,7 @@ export default class SaveModal extends React.Component {
     }
     
     handleSave(event) {
-
-        axios.post('/datastory/api/save', {
-            model: nonCircularJsonStringify(
-                this.props.store.diagram.engine.model.serialize(),
-                null,
-                4
-            ),
-            filename: this.state.storyName
-        })
-        .then((response) => {
-            this.showSuccessToast();
-            this.props.closeModal();
-        })
-        .catch(function (error) {
-            alert('SOMETHING WENT WRONG!')
-        });
+        //
     }    
 
 	render() {
@@ -59,7 +44,7 @@ export default class SaveModal extends React.Component {
                 <div className="flex justify-between">
                     <p className="text-sm font-medium text-gray-900 text-bold">
                         <span className="text-indigo-500">Story</span>
-                        <span className="">::save()</span>
+                        <span className="">::open()</span>
                     </p>                  
                 </div>                    
             </div>            
@@ -72,13 +57,17 @@ export default class SaveModal extends React.Component {
             <div>
                 <div className="w-full bg-gray-100 px-6 py-2">
                     <div className="flex flex-col my-4 justify-center align-middle text-gray-500 text-xs font-mono">
-                            <span className="my-2">Name</span>
-                            <input
-                                onChange={e => {this.handleChange(e)}}
-                                className="px-2 py-1 rounded"
-                                placeholder="descriptive-name.story"
-                            />
-                        </div>
+                        <ul>
+                            {this.props.store.metadata.stories.map(story => {
+                                return (
+                                    <li 
+                                        className="my-1 hover:text-malibu-500 hover:underline cursor-pointer"
+                                        key={story.path}
+                                    >{story.name}</li>
+                                )
+                            })}
+                        </ul>
+                    </div>
 
                 </div>
             </div>            
@@ -93,7 +82,6 @@ export default class SaveModal extends React.Component {
                     <div className="flex justify-end my-4 justify-end align-bottom text-gray-500 text-xs font-mono">
                         <div className="flex">
                             <button onClick={this.handleCancel.bind(this)} className="m-4 px-4 py-2 hover:text-malibu-700 hover:underline">Cancel</button>
-                            <button onClick={this.handleSave.bind(this)} className="m-4 px-4 py-2 hover:text-malibu-700 border border-gray-500 hover:bg-gray-200 rounded">Save</button>                            
                         </div>                        
                     </div>                                                            
                 </div>

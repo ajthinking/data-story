@@ -69,7 +69,7 @@ abstract class NodeModel
 
     public function diagram()
     {
-        return app('DiagramModel');
+        return app('Diagram');
     }
 
     public function run()

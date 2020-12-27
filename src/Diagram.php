@@ -4,7 +4,7 @@ namespace DataStory;
 
 use stdClass;
 
-class DiagramModel
+class Diagram
 {
     public array $nodes;
 
@@ -47,7 +47,7 @@ class DiagramModel
 
     public static function deserialize($serialized)
     {
-        $diagram = new DiagramModel();
+        $diagram = new Diagram();
 
         $diagram->links(
             collect(
@@ -71,7 +71,7 @@ class DiagramModel
 
     public function registerGlobal()
     {
-        return app()->instance('DiagramModel', $this);
+        return app()->instance('Diagram', $this);
     }
 
     public function run()

@@ -46,6 +46,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
+        "calebporzio/sushi": "^2.1",
         "myclabs/deep-copy": "^1.10"
     }
 }

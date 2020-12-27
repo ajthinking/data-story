@@ -2,7 +2,7 @@
 
 namespace DataStory\Tests;
 
-use DataStory\DiagramModel;
+use DataStory\Diagram;
 
 class DiagramFactory
 {
@@ -12,7 +12,7 @@ class DiagramFactory
 
     public function __construct()
     {
-        $this->diagram = new DiagramModel;
+        $this->diagram = new Diagram;
     }
 
     public static function make()

@@ -2,11 +2,11 @@
 
 namespace DataStory\Tests\Unit;
 
-use DataStory\DiagramModel;
+use DataStory\Diagram;
 use DataStory\Tests\TestCase;
 use App\Models\User;
 
-class DiagramModelTest extends TestCase
+class DiagramTest extends TestCase
 {
     public function test_basic_execution()
     {
@@ -14,14 +14,14 @@ class DiagramModelTest extends TestCase
 
         $diagram->registerGlobal()->run();
 
-        $this->assertInstanceOf(DiagramModel::class, $diagram);
+        $this->assertInstanceOf(Diagram::class, $diagram);
 
         $this->assertTrue(true);
     }
 
     protected function sampleDiagram()
     {
-        return DiagramModel::deserialize(
+        return Diagram::deserialize(
             json_decode(
                 file_get_contents(__DIR__ . '/sampleDiagram.json')
             )

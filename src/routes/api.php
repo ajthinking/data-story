@@ -1,13 +1,15 @@
 <?php
 
-use DataStory\DiagramModel;
+use DataStory\Diagram;
+use DataStory\Models\Story;
 use DataStory\Support\SimpleFile;
 use Illuminate\Support\Facades\Route;
 
 Route::post('datastory/api/boot', function() {
     return [
-        'status' => 200,
-        'dataStoryCapabilities' => DiagramModel::capabilities(),
+        'status'    => 200,
+        'stories'   => Story::all(),
+        'dataStoryCapabilities' => Diagram::capabilities(),
         'serializedModel' => request()->input('context') ? file_get_contents(
             app_path("DataStory/stories/demo.story")
         ) : null,
@@ -15,7 +17,7 @@ Route::post('datastory/api/boot', function() {
 });
 
 Route::post('datastory/api/run', function() {
-    $diagram = DiagramModel::deserialize(
+    $diagram = Diagram::deserialize(
         json_decode(request()->input('model'))
     );
 

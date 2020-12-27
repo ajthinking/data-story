@@ -18,6 +18,7 @@ export class Store {
         running: false,
         page: 'Workbench',
         activeInspector: null,
+        stories: [],
     }
 
     constructor() {
@@ -40,7 +41,7 @@ export class Store {
             setResults: action.bound,
             setNotRunning: action.bound,
             setRunning: action.bound,
-            setStory: action.bound,
+            setStories: action.bound,
 
             // Getters 👇
         })
@@ -154,8 +155,8 @@ export class Store {
         this.metadata.running = true
     }
 
-    setStory(name) {
-        this.metadata.story = name
+    setStories(stories) {
+        this.metadata.stories = stories
     }    
 }
 export default window.store = new Store

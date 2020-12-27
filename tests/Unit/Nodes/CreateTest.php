@@ -8,7 +8,7 @@ class CreateTest extends TestCase
 {
     public function test_that_it_can_create_features()
     {
-        $this->markTestIncomplete('How to new up a DiagramModel? We need executionOrder, data etc from frontend?');
+        $this->markTestIncomplete('How to new up a Diagram? We need executionOrder, data etc from frontend?');
 
         $diagram = DiagramFactory::make()
             ->withNode(Create::class)

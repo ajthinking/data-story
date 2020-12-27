@@ -61,6 +61,10 @@ export default class App extends React.Component {
                 response.data.dataStoryCapabilities.availableNodes
             );
 
+            this.props.store.setStories(
+                response.data.stories
+            );
+
 
             this.setState({
                 booted: true
