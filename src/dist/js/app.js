@@ -89734,7 +89734,7 @@ var App = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_6__["inject"])('sto
       var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_9___default.a.post('/datastory/api/boot', {
-        context: window.location.href.includes('demo')
+        story: window.location.href.split("/datastory").pop().replace('/', '')
       }).then(function (response) {
         var _response$data$serial;
 
@@ -91638,6 +91638,8 @@ var OpenModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
   }, {
     key: "renderBody",
     value: function renderBody() {
+      var _this2 = this;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
         className: "w-full bg-gray-100 px-6 py-2"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
@@ -91645,7 +91647,8 @@ var OpenModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("ul", null, this.props.store.metadata.stories.map(function (story) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", {
           className: "my-1 hover:text-malibu-500 hover:underline cursor-pointer",
-          key: story.path
+          key: story.path,
+          onClick: _this2.clickStory.bind(_this2)
         }, story.name);
       })))));
     }
@@ -91662,6 +91665,11 @@ var OpenModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
         onClick: this.handleCancel.bind(this),
         className: "m-4 px-4 py-2 hover:text-malibu-700 hover:underline"
       }, "Cancel")))));
+    }
+  }, {
+    key: "clickStory",
+    value: function clickStory() {
+      alert("HI");
     }
   }, {
     key: "showSuccessToast",

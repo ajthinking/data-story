@@ -47,7 +47,7 @@ export default class App extends React.Component {
 
     boot() {
         axios.post('/datastory/api/boot', {
-            context: window.location.href.includes('demo')
+            story: window.location.href.split("/datastory").pop().replace('/', '')
         })
         .then((response) => {
             

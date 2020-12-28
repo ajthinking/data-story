@@ -63,6 +63,7 @@ export default class OpenModal extends React.Component {
                                     <li 
                                         className="my-1 hover:text-malibu-500 hover:underline cursor-pointer"
                                         key={story.path}
+                                        onClick={this.clickStory.bind(this)}
                                     >{story.name}</li>
                                 )
                             })}
@@ -89,8 +90,11 @@ export default class OpenModal extends React.Component {
         );
     }
 
-    showSuccessToast()
-    {
+    clickStory() {
+        alert("HI")
+    }
+
+    showSuccessToast() {
         toast.info('Successfully saved story!', {
             position: "bottom-right",
             transition: Slide,

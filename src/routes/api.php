@@ -10,9 +10,9 @@ Route::post('datastory/api/boot', function() {
         'status'    => 200,
         'stories'   => Story::all(),
         'dataStoryCapabilities' => Diagram::capabilities(),
-        'serializedModel' => request()->input('context') ? file_get_contents(
-            app_path("DataStory/stories/demo.story")
-        ) : null,
+        'serializedModel' => request()->input('story') ? Story::where(
+            'path', 'like', '%' . request()->input('story') . '.story.json'
+        )->first()->content : null,
     ];
 });
 
@@ -36,7 +36,7 @@ Route::post('datastory/api/save', function() {
     $content = request()->input('model');
 
     SimpleFile::put(
-        config('data-story.stories-dir') . '/' . $filename . '.json',
+        config('data-story.stories-dir') . '/' . $filename . '.story.json',
         $content
     );
 });
