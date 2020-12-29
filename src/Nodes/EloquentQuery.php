@@ -26,19 +26,19 @@ class EloquentQuery extends NodeModel
         $query = app($this->data->options->parameters->target_model->value)->query();
 
         // Apply scopes
-        $query = collect([])->reduce(function($query, $scope) {
+        collect([])->reduce(function($query, $scope) {
             $name = $scope->name;
             $args = $scope->args;
             return $query->$name(...$args);
         }, $query);
 
         // Apply where statements
-        $query = collect([])->reduce(function($query, $whereStatement) {
+        collect([])->reduce(function($query, $whereStatement) {
             return $query->where(...$whereStatement->args);
         }, $query);
 
         // Apply take/limit
-        // TODO
+        $query->take($this->getLimit());
         
         // Return results
         return $query->get();
@@ -77,6 +77,17 @@ class EloquentQuery extends NodeModel
                 ]);
             })->toArray()
         ];
+    }
+
+    protected function getLimit()
+    {
+        $limit = $this->data->options->parameters->limit->value;
+
+        if(is_numeric($limit)) {
+            return $limit;
+        }
+
+        return PHP_INT_SIZE;
     }
 
     protected static function getAppModels()

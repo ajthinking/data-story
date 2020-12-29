@@ -35,7 +35,7 @@ export default class NodeSearch extends React.Component {
 
     renderNode(node) {
         const elementDataProperties = {
-            'data-node-model-variation-key': node.key,
+            'data-node-model-variation-name': node.name,
         }
 
         // FAILED TO STOP EVENT PROPAGATION ON <li> DOUBLE CLICK
@@ -110,8 +110,8 @@ export default class NodeSearch extends React.Component {
         event.preventDefault()
         event.stopPropagation() // NOT WORKING!
 
-        let key = event.target.getAttribute('data-node-model-variation-key')
-        let nodeData = this.props.store.diagram.availableNodes.find(node => node.key == key)
+        let name = event.target.getAttribute('data-node-model-variation-name')
+        let nodeData = this.props.store.diagram.availableNodes.find(node => node.name == name)
         this.props.store.addNode(
             // Ensure the parameters will not be shared between two nodes of same type
             _.cloneDeep(nodeData)

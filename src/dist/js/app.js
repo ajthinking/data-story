@@ -90784,7 +90784,7 @@ var NodeSearch = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
     key: "renderNode",
     value: function renderNode(node) {
       var elementDataProperties = {
-        'data-node-model-variation-key': node.key
+        'data-node-model-variation-name': node.name
       }; // FAILED TO STOP EVENT PROPAGATION ON <li> DOUBLE CLICK
       // REPEAT THE EVENT + DATA FOR ALL CHILDREN FOR NOW
 
@@ -90845,9 +90845,9 @@ var NodeSearch = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
       event.preventDefault();
       event.stopPropagation(); // NOT WORKING!
 
-      var key = event.target.getAttribute('data-node-model-variation-key');
+      var name = event.target.getAttribute('data-node-model-variation-name');
       var nodeData = this.props.store.diagram.availableNodes.find(function (node) {
-        return node.key == key;
+        return node.name == name;
       });
       this.props.store.addNode( // Ensure the parameters will not be shared between two nodes of same type
       lodash__WEBPACK_IMPORTED_MODULE_3___default.a.cloneDeep(nodeData));
