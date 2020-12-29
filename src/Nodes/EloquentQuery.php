@@ -70,24 +70,41 @@ class EloquentQuery extends NodeModel
     
     public static function variations()
     {
-        $models = [
-            \App\Models\User::class,
-        ];
-
         return [
-            ...collect($models)->map(function($model) {
+            ...static::getAppModels()->map(function($model) {
                 return static::describe([
                     'model' => $model
                 ]);
             })->toArray()
         ];
     }
-}
 
-// class NodeAbstract ??????
-// {
-//     function describe() {}
-//     function parameters() {}
-//     function variations() {} // Move to NodeCatalouge
-//     function run() {}
-// }
+    protected static function getAppModels()
+    {
+		$models = collect();
+
+        $finder = new \Symfony\Component\Finder\Finder();
+        $finder->files()->name('*.php')->in(base_path().'/app/Models');
+
+        foreach ($finder as $file) {
+            $namespace = 'App\\Models\\';
+
+            if ($relativePath = $file->getRelativePath()) {
+                $namespace .= strtr($relativePath, '/', '\\') . '\\';
+            }
+
+            $class = $namespace . $file->getBasename('.php');
+
+            try {
+                $r = new \ReflectionClass($class);
+
+                if ($r->isSubclassOf('Illuminate\\Database\\Eloquent\\Model')) {
+                  $models->push($class);
+                }
+            } catch (\Throwable $e) {
+                //
+            }
+        }
+		return collect($models);        
+    }
+}
