@@ -1,4 +1,6 @@
 # DataStory
+![tests](https://github.com/ajthinking/data-story/workflows/tests/badge.svg)
+![version](https://img.shields.io/packagist/v/ajthinking/data-story?color=blue)
 ⚡ Process builder ⚡ Visual coding ⚡ ETL ⚡ Laravel + React ⚡ Alpha in development ⚡
 
 <img src="https://user-images.githubusercontent.com/3457668/102698183-c32de280-423b-11eb-9bb2-cdda6187094c.png">
