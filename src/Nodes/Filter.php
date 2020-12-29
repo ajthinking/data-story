@@ -12,6 +12,7 @@ class Filter extends NodeModel
     const OUT_PORTS = ['Default'];
 
     const EDITABLE_OUT_PORTS = true;
+
     const SHORT_DESCRIPTION  = 'Filter features by attribute values';
 
     public static function parameters($variation = [])
@@ -30,14 +31,11 @@ class Filter extends NodeModel
         
         $unmatched = $groups->filter(function($features, $port) {
             // Is unmatched? Keep.
-            // dd(
-            //     $this->portNamed($port)                
-            // );
-
             if(!$this->portNamed($port)) return true;
-            // Else output to explicit port
             
-            $this->output($features, $port);    
+            // Else output to explicit port and remove
+            $this->output($features, $port);
+            return false;    
         });
 
         $this->output($unmatched, 'Default');

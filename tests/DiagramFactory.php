@@ -13,6 +13,16 @@ class DiagramFactory
     public function __construct()
     {
         $this->diagram = new Diagram;
+
+        $this->diagram->links([]);
+
+        $this->diagram->nodes([]);
+
+        $this->diagram->data = (object) [
+            'executionOrder' => [
+
+            ]
+        ];        
     }
 
     public static function make()
@@ -20,9 +30,13 @@ class DiagramFactory
         return new static;
     }
 
-    public function withNode($node)
+    public function withNode($nodeClass)
     {
-        $this->node = $node;
+        $this->node = new $nodeClass;
+
+        $this->diagram->nodes[] = $this->node;
+
+        $this->diagram->data->executionOrder[] = $this->node->data->id;
 
         return $this;
     }

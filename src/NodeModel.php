@@ -28,9 +28,24 @@ abstract class NodeModel
 
     public stdClass $data;
 
+    public function __construct()
+    {
+        $this->ports = [];
+
+        $this->id = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);
+
+        $this->data = (object) [
+            'id'        => $this->id,
+            'ports'     => [],
+            'options'   => (object) [
+                'parameters' => static 
+            ]
+        ];
+    }
+
     public static function deserialize(stdClass $serialized)
     {
-        $node = new static($serialized->options);
+        $node = new static;
 
         $node->id = $serialized->id;
 

@@ -34,7 +34,8 @@
     },
     "autoload": {
         "psr-4": {
-            "DataStory\\": "src/"
+            "DataStory\\": "src/",
+            "DataStory\\Tests\\": "tests/"
         }
     },
     "autoload-dev": {
