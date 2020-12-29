@@ -38,7 +38,7 @@ abstract class NodeModel
             'id'        => $this->id,
             'ports'     => [],
             'options'   => (object) [
-                'parameters' => static 
+                // 'parameters' => static ...
             ]
         ];
     }
