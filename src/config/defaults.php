@@ -14,6 +14,7 @@ return [
         DataStory\Nodes\AddAttribute::class,
         DataStory\Nodes\Cloner::class,
         DataStory\Nodes\Create::class,
+        DataStory\Nodes\CreateJSON::class,
         DataStory\Nodes\EloquentQuery::class,
         DataStory\Nodes\Evaluate::class,
         DataStory\Nodes\Filter::class,
