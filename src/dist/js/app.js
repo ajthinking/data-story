@@ -91656,7 +91656,9 @@ var OpenModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("li", {
           className: "my-1 hover:text-malibu-500 hover:underline cursor-pointer",
           key: story.path,
-          onClick: _this2.clickStory.bind(_this2)
+          onClick: function onClick() {
+            _this2.clickStory(story.name);
+          }
         }, story.name);
       })))));
     }
@@ -91676,8 +91678,8 @@ var OpenModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
     }
   }, {
     key: "clickStory",
-    value: function clickStory() {
-      alert("HI");
+    value: function clickStory(name) {
+      window.location = '/datastory/' + name;
     }
   }, {
     key: "showSuccessToast",

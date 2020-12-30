@@ -63,7 +63,7 @@ export default class OpenModal extends React.Component {
                                     <li 
                                         className="my-1 hover:text-malibu-500 hover:underline cursor-pointer"
                                         key={story.path}
-                                        onClick={this.clickStory.bind(this)}
+                                        onClick={() => { this.clickStory(story.name) }}
                                     >{story.name}</li>
                                 )
                             })}
@@ -90,8 +90,8 @@ export default class OpenModal extends React.Component {
         );
     }
 
-    clickStory() {
-        alert("HI")
+    clickStory(name) {
+        window.location = '/datastory/' + name
     }
 
     showSuccessToast() {
