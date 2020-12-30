@@ -43,6 +43,7 @@ export default class App extends React.Component {
     componentDidMount() {
         this.boot()
         this.registerKeybindings()
+        this.registerExitConfirmation()
     }
 
     boot() {
@@ -90,7 +91,13 @@ export default class App extends React.Component {
                 this.props.store.setPage('Inspector')
             }
         ); 
-    }    
+    }
+    
+    registerExitConfirmation() {
+        window.onbeforeunload = function(e) {
+            return "Do you want to exit this page?";
+          };        
+    }
 
     showBootFailureToast()
     {

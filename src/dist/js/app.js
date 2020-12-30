@@ -89727,6 +89727,7 @@ var App = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_6__["inject"])('sto
     value: function componentDidMount() {
       this.boot();
       this.registerKeybindings();
+      this.registerExitConfirmation();
     }
   }, {
     key: "boot",
@@ -89764,6 +89765,13 @@ var App = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_6__["inject"])('sto
       Mousetrap.bind('shift+t', function (e) {
         _this3.props.store.setPage('Inspector');
       });
+    }
+  }, {
+    key: "registerExitConfirmation",
+    value: function registerExitConfirmation() {
+      window.onbeforeunload = function (e) {
+        return "Do you want to exit this page?";
+      };
     }
   }, {
     key: "showBootFailureToast",
