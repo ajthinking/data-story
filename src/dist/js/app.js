@@ -92120,8 +92120,8 @@ var Store = /*#__PURE__*/function () {
       var link = new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["DefaultLinkModel"]();
       link.setSourcePort(fromPort);
       link.setTargetPort(toPort); // track: https://github.com/projectstorm/react-diagrams/issues/617
-
-      link.addLabel(Math.floor(Math.random() * 1000)); // Report
+      //link.addLabel(Math.floor(Math.random()*1000));
+      // Report
 
       fromPort.reportPosition();
       toPort.reportPosition();
