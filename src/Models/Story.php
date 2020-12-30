@@ -3,12 +3,17 @@
 namespace DataStory\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Story extends Model
 {
     use \Sushi\Sushi;
+    use SoftDeletes;
 
+    /**
+     * Hack to avoid migrations
+     */
     public function getRows()
     {
         $tests = glob(__DIR__ . '/../../tests/stories/*');
@@ -21,10 +26,18 @@ class Story extends Model
                     ->replace('.story', '')
                     ->replace('.json', '')
                     ->__toString(),
-                    
-                'path'      => realpath($path),
-                'content'   => file_get_contents($path)
+
+                'path'          => realpath($path),
+                'content'       => file_get_contents($path),
+                'deleted_at'    => null,
             ];
-        })->toArray();
+        })->push([
+            // DUMMY TO FOOL SUSHI IN CASE OF EMPTY TABLE
+            'name'       => 'dummy',
+            'path'       => 'dummy',
+            'content'    => 'dummy',
+            'deleted_at' => 'dummy',
+            
+        ])->toArray();
     }
 }
