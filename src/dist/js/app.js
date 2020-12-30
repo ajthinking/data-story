@@ -91772,6 +91772,7 @@ var SaveModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
     value: function handleSave(event) {
       var _this2 = this;
 
+      this.props.store.clearLinkLabels();
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/datastory/api/save', {
         model: Object(_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_3__["nonCircularJsonStringify"])(this.props.store.diagram.engine.model.serialize(), null, 4),
         filename: this.state.storyName

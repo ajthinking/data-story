@@ -24,6 +24,7 @@ export default class SaveModal extends React.Component {
     }
     
     handleSave(event) {
+        this.props.store.clearLinkLabels()
 
         axios.post('/datastory/api/save', {
             model: nonCircularJsonStringify(
