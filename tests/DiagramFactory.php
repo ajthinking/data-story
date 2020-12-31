@@ -20,7 +20,6 @@ class DiagramFactory
 
         $this->diagram->data = (object) [
             'executionOrder' => [
-
             ]
         ];        
     }

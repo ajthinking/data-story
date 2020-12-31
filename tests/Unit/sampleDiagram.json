@@ -48,7 +48,7 @@
             "models": {
                 "dde7d414-0496-48dc-b45c-4aea3561a2b7": {
                     "id": "dde7d414-0496-48dc-b45c-4aea3561a2b7",
-                    "type": "manipulator",
+                    "type": "NodeModel",
                     "x": 100,
                     "y": 187.01284395341014,
                     "ports": [
@@ -118,13 +118,13 @@
                                 "placeholder": ""
                             }
                         },
-                        "type": "manipulator"
+                        "type": "NodeModel"
                     },
                     "incomingPortOrigins": {}
                 },
                 "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e": {
                     "id": "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e",
-                    "type": "manipulator",
+                    "type": "NodeModel",
                     "x": 300,
                     "y": 187.01284395341014,
                     "ports": [
@@ -164,7 +164,7 @@
                                 "placeholder": ""
                             }
                         },
-                        "type": "manipulator"
+                        "type": "NodeModel"
                     },
                     "incomingPortOrigins": {
                         "02891b9f-c86a-448f-96b5-eaa362bec484": [

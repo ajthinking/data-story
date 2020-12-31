@@ -88,7 +88,6 @@ export default class NodeWidget extends React.Component {
                 isOpen={this.state.isOpen}
                 onRequestClose={this.closeModal.bind(this)}
                 style={modalStyle}
-                contentLabel="HEY EDIT MANIPULATOR"
             >
                     <NodeWidgetModal 
                         node={this.props.node} 

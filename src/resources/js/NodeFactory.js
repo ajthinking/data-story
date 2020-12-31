@@ -5,7 +5,7 @@ import NodeWidget from './components/NodeWidget'
 
 export default class NodeFactory extends AbstractReactFactory {
 	constructor() {
-		super('manipulator');
+		super('NodeModel');
 	}
 
 	generateModel(event) {
@@ -13,8 +13,6 @@ export default class NodeFactory extends AbstractReactFactory {
 	}
 
 	generateReactWidget(event) {
-        let Widget = event.model
-
 		return <NodeWidget engine={this.engine} node={event.model} />;
     }
 }

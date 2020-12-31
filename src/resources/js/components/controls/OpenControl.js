@@ -31,7 +31,6 @@ export default class OpenControl extends BaseControl {
                 isOpen={this.state.isOpen}
                 onRequestClose={this.closeModal.bind(this)}
                 style={modalStyle}
-                contentLabel="HEY EDIT MANIPULATOR"
             >
                     <OpenModal
                         closeModal={this.closeModal.bind(this)}

@@ -89396,7 +89396,7 @@ var NodeFactory = /*#__PURE__*/function (_AbstractReactFactory) {
   function NodeFactory() {
     _classCallCheck(this, NodeFactory);
 
-    return _super.call(this, 'manipulator');
+    return _super.call(this, 'NodeModel');
   }
 
   _createClass(NodeFactory, [{
@@ -89407,7 +89407,6 @@ var NodeFactory = /*#__PURE__*/function (_AbstractReactFactory) {
   }, {
     key: "generateReactWidget",
     value: function generateReactWidget(event) {
-      var Widget = event.model;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components_NodeWidget__WEBPACK_IMPORTED_MODULE_3__["default"], {
         engine: this.engine,
         node: event.model
@@ -89470,9 +89469,6 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-/**
- * Example of a custom model using pure javascript
- */
 
 var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
   _inherits(NodeModel, _DefaultNodeModel);
@@ -89487,18 +89483,18 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
     _classCallCheck(this, NodeModel);
 
     _this = _super.call(this, _objectSpread(_objectSpread({}, options), {}, {
-      type: 'manipulator'
+      type: 'NodeModel'
     }));
     _this.serial = options.serial;
 
-    _this.options.inPorts.map(function (name) {
+    _this.options.inPorts.forEach(function (name) {
       _this.addPort(new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__["DefaultPortModel"]({
         "in": true,
         name: name
       }));
     });
 
-    _this.options.outPorts.map(function (name) {
+    _this.options.outPorts.forEach(function (name) {
       _this.addPort(new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__["DefaultPortModel"]({
         "in": false,
         name: name
@@ -90324,8 +90320,7 @@ var NodeWidget = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["inject"
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_modal__WEBPACK_IMPORTED_MODULE_2___default.a, {
         isOpen: this.state.isOpen,
         onRequestClose: this.closeModal.bind(this),
-        style: _utils_modalStyle__WEBPACK_IMPORTED_MODULE_6__["default"],
-        contentLabel: "HEY EDIT MANIPULATOR"
+        style: _utils_modalStyle__WEBPACK_IMPORTED_MODULE_6__["default"]
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_modals_NodeWidgetModal__WEBPACK_IMPORTED_MODULE_4__["default"], {
         node: this.props.node,
         closeModal: this.closeModal.bind(this)
@@ -90570,7 +90565,7 @@ var AddNodeControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
     _classCallCheck(this, AddNodeControl);
 
     _this = _super.call(this, props);
-    _this.title = 'Add manipulator';
+    _this.title = 'Add Node';
     _this.icon = 'fas fa-plus';
     _this.state = {
       isOpen: false
@@ -90976,8 +90971,7 @@ var OpenControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, _get(_getPrototypeOf(OpenControl.prototype), "render", this).call(this), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_modal__WEBPACK_IMPORTED_MODULE_4___default.a, {
         isOpen: this.state.isOpen,
         onRequestClose: this.closeModal.bind(this),
-        style: _utils_modalStyle__WEBPACK_IMPORTED_MODULE_5__["default"],
-        contentLabel: "HEY EDIT MANIPULATOR"
+        style: _utils_modalStyle__WEBPACK_IMPORTED_MODULE_5__["default"]
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modals_OpenModal__WEBPACK_IMPORTED_MODULE_6__["default"], {
         closeModal: this.closeModal.bind(this)
       })));
@@ -91238,8 +91232,7 @@ var SaveControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, _get(_getPrototypeOf(SaveControl.prototype), "render", this).call(this), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_modal__WEBPACK_IMPORTED_MODULE_4___default.a, {
         isOpen: this.state.isOpen,
         onRequestClose: this.closeModal.bind(this),
-        style: _utils_modalStyle__WEBPACK_IMPORTED_MODULE_5__["default"],
-        contentLabel: "HEY EDIT MANIPULATOR"
+        style: _utils_modalStyle__WEBPACK_IMPORTED_MODULE_5__["default"]
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modals_SaveModal__WEBPACK_IMPORTED_MODULE_6__["default"], {
         closeModal: this.closeModal.bind(this)
       })));
