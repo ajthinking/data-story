@@ -73,13 +73,19 @@ export default class InspectorTable extends React.Component {
     }
 
     getHeaders() {
-        let keys = this.features().map(i => Object.keys(i)).flat()
+        let keys = this.features().map(i => {
+            return typeof i === 'object' ? Object.keys(i) : '__default'
+        }).flat()
         return [...new Set(keys)];
     }
 
     getRows() {
 
         return this.features().map(feature => {
+            if(typeof feature != 'object') {
+                return feature
+            }
+
             return this.getHeaders().map(header => {
                 if(!feature.hasOwnProperty(header)) {
                     return 'N/A'
