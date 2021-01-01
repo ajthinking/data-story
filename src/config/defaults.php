@@ -19,6 +19,7 @@ return [
         DataStory\Nodes\Evaluate::class,
         DataStory\Nodes\Filter::class,
         DataStory\Nodes\Inspect::class,
+        DataStory\Nodes\Map::class,
         DataStory\Nodes\Pass::class,
     ],
 
