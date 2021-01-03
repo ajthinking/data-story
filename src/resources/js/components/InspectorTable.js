@@ -33,7 +33,18 @@ export default class InspectorTable extends React.Component {
     }
 
     renderTableHead() {
-        let headers = this.getHeaders()
+        if(this.hasPrimitiveFeatures()) {
+            console.log("HI")
+            return (
+                <thead>
+                    <tr>                        
+                        <th scope="col" className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            value
+                        </th>
+                    </tr>
+                </thead>
+            )
+        }
 
         return (
             <thead>
@@ -48,6 +59,12 @@ export default class InspectorTable extends React.Component {
             </tr>
           </thead>            
         )
+    }
+
+    hasPrimitiveFeatures() {
+        return this.features().filter((feature) => {
+            return typeof feature != 'object'
+        }).length != 0;
     }
 
     renderTableBody() {
@@ -66,8 +83,6 @@ export default class InspectorTable extends React.Component {
                         </tr>
                     )
                 })}
-
-                
             </tbody>
         )
     }

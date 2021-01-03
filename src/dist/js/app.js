@@ -90024,7 +90024,14 @@ var InspectorTable = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
   }, {
     key: "renderTableHead",
     value: function renderTableHead() {
-      var headers = this.getHeaders();
+      if (this.hasPrimitiveFeatures()) {
+        console.log("HI");
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
+          scope: "col",
+          className: "px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+        }, "value")));
+      }
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, this.getHeaders().map(function (heading) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
           key: heading,
@@ -90032,6 +90039,13 @@ var InspectorTable = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
           className: "px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
         }, heading);
       })));
+    }
+  }, {
+    key: "hasPrimitiveFeatures",
+    value: function hasPrimitiveFeatures() {
+      return this.features().filter(function (feature) {
+        return _typeof(feature) != 'object';
+      }).length != 0;
     }
   }, {
     key: "renderTableBody",
