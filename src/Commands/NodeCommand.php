@@ -17,7 +17,7 @@ class NodeCommand extends Command
         $path = config('data-story.custom-nodes-dir') . '/' . $this->argument('name') . '.php';
 
         $contents = Str::of(
-            file_get_contents(__DIR__ . '/../stubs/node.php')
+            file_get_contents(__DIR__ . '/../stubs/node.php.stub')
         )->replaceFirst(
             'NodeName',
             $this->argument('name')
