@@ -42,11 +42,18 @@ export default class RunControl extends BaseControl {
                     reactNode.features = phpNode.features;
                 })
 
-                console.log(
-                    response.data.diagram,                    
-                )
-
-                // ATTACH FEATURE COUNT TO LINK MODEL
+                // SET FEATURE COUNT ON LINKS
+                this.props.store.clearLinkLabels() // Clear old labels
+                let ports = response.data.diagram.nodes.map(node => {
+                    return node.ports
+                }).flat().filter(port => {
+                    return port.features
+                }).forEach(port => {
+                    port.links.forEach(linkId => {    
+                        let link = this.props.store.diagram.engine.model.getLink(linkId)
+                        link.addLabel(port.features.length)
+                    })
+                })
                 
                 this.showSuccessToast();                
 

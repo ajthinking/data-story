@@ -91098,8 +91098,22 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
           var reactNode = _this2.props.store.diagram.engine.model.getNode(phpNode.id);
 
           reactNode.features = phpNode.features;
+        }); // SET FEATURE COUNT ON LINKS
+
+        _this2.props.store.clearLinkLabels(); // Clear old labels
+
+
+        var ports = response.data.diagram.nodes.map(function (node) {
+          return node.ports;
+        }).flat().filter(function (port) {
+          return port.features;
+        }).forEach(function (port) {
+          port.links.forEach(function (linkId) {
+            var link = _this2.props.store.diagram.engine.model.getLink(linkId);
+
+            link.addLabel(port.features.length);
+          });
         });
-        console.log(response.data.diagram); // ATTACH FEATURE COUNT TO LINK MODEL
 
         _this2.showSuccessToast();
 
