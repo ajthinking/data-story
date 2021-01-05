@@ -1,6 +1,6 @@
 <?php
 
-namespace DataStory\Nodes;
+namespace NodeNamespace;
 
 use DataStory\NodeModel;
 

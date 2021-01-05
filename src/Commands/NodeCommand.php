@@ -19,6 +19,9 @@ class NodeCommand extends Command
         $contents = Str::of(
             file_get_contents(__DIR__ . '/../stubs/node.php.stub')
         )->replaceFirst(
+            'NodeNamespace',
+            config('data-story.custom-nodes-namespace')
+        )->replaceFirst(
             'NodeName',
             $this->argument('name')
         );

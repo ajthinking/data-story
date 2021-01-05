@@ -41,7 +41,8 @@ return [
     | Nodes created with php artisan story:node NAME will be put here
     |
     */    
-    'custom-nodes-dir' => 'app/DataStory/Nodes',
+    'custom-nodes-dir'       => 'app/DataStory/Nodes',
+    'custom-nodes-namespace' => 'App\DataStory\Nodes',
 
 
     /*
