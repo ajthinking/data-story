@@ -95,7 +95,9 @@ class EloquentQuery extends NodeModel
 		$models = collect();
 
         $finder = new \Symfony\Component\Finder\Finder();
-        $finder->files()->name('*.php')->in(base_path().'/app/Models');
+        $finder->files()->name('*.php')->in(
+            config('data-story.models-dir')
+        );
 
         foreach ($finder as $file) {
             $namespace = 'App\\Models\\';
