@@ -34,7 +34,11 @@ class DataStoryServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/dist' => public_path('vendor/data-story'),
-        ], 'public');        
+        ], 'public');
+        
+        $this->publishes([
+            __DIR__.'/config/defaults.php' => config_path('data-story.php'),
+        ], 'config');        
 
         require __DIR__ . '/routes/web.php';
         require __DIR__ . '/routes/api.php';

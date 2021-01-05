@@ -1,10 +1,50 @@
 <?php
 
 return [
+    /*
+    |--------------------------------------------------------------------------
+    | Custom nodes
+    |--------------------------------------------------------------------------
+    |
+    | Nodes created with php artisan story:node NAME will be put here
+    |
+    */    
+    'custom-nodes-dir'       => 'app/DataStory/Nodes',
+    'custom-nodes-namespace' => 'App\DataStory\Nodes',
 
     /*
     |--------------------------------------------------------------------------
-    | Available Nodes
+    | Scan custom nodes dir?
+    |--------------------------------------------------------------------------
+    |
+    | Automatically scan for custom nodes
+    |
+    */
+    'custom-nodes-scan-dir' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stories dir
+    |--------------------------------------------------------------------------
+    |
+    | Saved stories will be placed here
+    |
+    */    
+    'stories-dir' => base_path('app/DataStory/stories'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dev mode
+    |--------------------------------------------------------------------------
+    |
+    | Indicate if you are currently developing on the package
+    |
+    */
+    'dev-mode' => env('DATASTORY_DEV_MODE', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Nodes
     |--------------------------------------------------------------------------
     |
     | These nodes will be available in the story workbench
@@ -22,40 +62,4 @@ return [
         DataStory\Nodes\Map::class,
         DataStory\Nodes\Pass::class,
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Stories dir
-    |--------------------------------------------------------------------------
-    |
-    | Saved stories will be placed here
-    |
-    */    
-    'stories-dir' => base_path('app/DataStory/stories'),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Custom nodes
-    |--------------------------------------------------------------------------
-    |
-    | Nodes created with php artisan story:node NAME will be put here
-    |
-    */    
-    'custom-nodes-dir'       => 'app/DataStory/Nodes',
-    'custom-nodes-namespace' => 'App\DataStory\Nodes',
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Scan custom nodes dir
-    |--------------------------------------------------------------------------
-    |
-    | Automatically scan for custom nodes
-    |
-    */
-    'custom-nodes-scan-dir' => true,
-
-
-    'dev-mode' => env('DATASTORY_DEV_MODE', false),
-
 ];

@@ -19,7 +19,76 @@ That's it! Go to the workbench at `/datastory`.
 https://www.youtube.com/watch?v=IAV39TRr1gk
 
 ## Configuration
-You may edit settings in `data-story.php` as needed
+You may edit settings in `config/data-story.php` as needed. This is the contents of the published config file:
+
+```php
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | Custom nodes
+    |--------------------------------------------------------------------------
+    |
+    | Nodes created with php artisan story:node NAME will be put here
+    |
+    */    
+    'custom-nodes-dir'       => 'app/DataStory/Nodes',
+    'custom-nodes-namespace' => 'App\DataStory\Nodes',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Scan custom nodes dir?
+    |--------------------------------------------------------------------------
+    |
+    | Automatically scan for custom nodes
+    |
+    */
+    'custom-nodes-scan-dir' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stories dir
+    |--------------------------------------------------------------------------
+    |
+    | Saved stories will be placed here
+    |
+    */    
+    'stories-dir' => base_path('app/DataStory/stories'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dev mode
+    |--------------------------------------------------------------------------
+    |
+    | Indicate if you are currently developing on the package
+    |
+    */
+    'dev-mode' => env('DATASTORY_DEV_MODE', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Nodes
+    |--------------------------------------------------------------------------
+    |
+    | These nodes will be available in the story workbench
+    |
+    */    
+    'nodes' => [
+        DataStory\Nodes\AddAttribute::class,
+        DataStory\Nodes\Cloner::class,
+        DataStory\Nodes\Create::class,
+        DataStory\Nodes\CreateJSON::class,
+        DataStory\Nodes\EloquentQuery::class,
+        DataStory\Nodes\Evaluate::class,
+        DataStory\Nodes\Filter::class,
+        DataStory\Nodes\Inspect::class,
+        DataStory\Nodes\Map::class,
+        DataStory\Nodes\Pass::class,
+    ],
+];
+```
+
 
 ## Create custom node
 Run the command
@@ -32,7 +101,7 @@ To generate a node boilerplate:
 ```php
 <?php
 
-namespace DataStory\Nodes;
+namespace App\DataStory\Nodes;
 
 use DataStory\NodeModel;
 
@@ -64,13 +133,6 @@ After refreshing the page the `NewEpicNode` node is available in the story workb
 * Writer
 * Collection
 * Import
-
-## Available nodes
-* Creator
-* Eloquent<Model>
-* Pass
-* Cloner
-* Inspector
 
 ## Contributing
 
