@@ -1,7 +1,11 @@
+.env
+.idea/
+.idea
+.vscode/
 notes
 notes.md
 sketches/
-.vscode/
 vendor/
 node_modules/
-.env
+package-lock.json
+composer.lock
