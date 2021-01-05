@@ -15,7 +15,7 @@ class DataStoryServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/defaults.php', 'data-story'
+            __DIR__ . '/config/defaults.php', 'data-story'
         );
 
         $this->commands([
@@ -35,15 +35,18 @@ class DataStoryServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/dist' => public_path('vendor/data-story'),
         ], 'public');
-        
+
         $this->publishes([
-            __DIR__.'/config/defaults.php' => config_path('data-story.php'),
-        ], 'config');        
+            __DIR__ . '/config/defaults.php' => config_path('data-story.php'),
+        ], 'config');
 
         require __DIR__ . '/routes/web.php';
         require __DIR__ . '/routes/api.php';
     }
 
+    /**
+     * @return mixed
+     */
     public static function isInDevelopment()
     {
         return config('data-story.dev-mode');

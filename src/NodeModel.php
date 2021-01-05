@@ -32,12 +32,12 @@ abstract class NodeModel
     {
         $this->ports = [];
 
-        $this->id = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);
+        $this->id = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10 / strlen($x)))), 1, 10);
 
-        $this->data = (object) [
-            'id'        => $this->id,
-            'ports'     => [],
-            'options'   => (object) [
+        $this->data = (object)[
+            'id'      => $this->id,
+            'ports'   => [],
+            'options' => (object)[
                 // 'parameters' => static ...
             ]
         ];
@@ -52,7 +52,7 @@ abstract class NodeModel
         $node->ports = $serialized->ports;
 
         $node->data = $serialized;
-        
+
         return $node;
     }
 
@@ -72,7 +72,7 @@ abstract class NodeModel
     {
         $port = $this->portNamed($name);
 
-        $collection = collect($port->links)->map(function($linkId) {
+        $collection = collect($port->links)->map(function ($linkId) {
             $link = $this->diagram()->find($linkId);
             $source = $this->diagram()->find($link->sourcePort);
             return $source->features;
@@ -94,34 +94,34 @@ abstract class NodeModel
 
     public static function describe(array $variation = [])
     {
-        $description                    = new stdClass;
-        $description->name              = class_basename(static::class);
-        $description->category          = class_basename(static::CATEGORY);
-        $description->summary           = static::SHORT_DESCRIPTION;
-        $description->key               = class_basename(static::CATEGORY) . class_basename(static::class);
-        $description->nodePhp           = static::class;
-        $description->nodeReact         = static::NODE_MODEL_REACT;
-        $description->inPorts           = static::IN_PORTS;
-        $description->outPorts          = static::OUT_PORTS;
-        $description->editableInPorts   = static::EDITABLE_IN_PORTS;
-        $description->editableOutPorts  = static::EDITABLE_OUT_PORTS;
-        $description->parameters        = static::parameters($variation);
+        $description = new stdClass;
+        $description->name = class_basename(static::class);
+        $description->category = class_basename(static::CATEGORY);
+        $description->summary = static::SHORT_DESCRIPTION;
+        $description->key = class_basename(static::CATEGORY) . class_basename(static::class);
+        $description->nodePhp = static::class;
+        $description->nodeReact = static::NODE_MODEL_REACT;
+        $description->inPorts = static::IN_PORTS;
+        $description->outPorts = static::OUT_PORTS;
+        $description->editableInPorts = static::EDITABLE_IN_PORTS;
+        $description->editableOutPorts = static::EDITABLE_OUT_PORTS;
+        $description->parameters = static::parameters($variation);
 
         return $description;
 
         return [
-            'name' => class_basename(static::class),
-            'category' => class_basename(static::CATEGORY),
-            'summary' => 'This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.',
-            'key' => class_basename(static::CATEGORY) . class_basename(static::class),
-            'nodePhp' => static::class,
-            'nodeReact' => static::NODE_MODEL_REACT,
-            'inPorts' => static::IN_PORTS,
-            'outPorts' => static::OUT_PORTS,
+            'name'       => class_basename(static::class),
+            'category'   => class_basename(static::CATEGORY),
+            'summary'    => 'This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.',
+            'key'        => class_basename(static::CATEGORY) . class_basename(static::class),
+            'nodePhp'    => static::class,
+            'nodeReact'  => static::NODE_MODEL_REACT,
+            'inPorts'    => static::IN_PORTS,
+            'outPorts'   => static::OUT_PORTS,
             'parameters' => static::parameters(),
         ];
     }
-    
+
     public static function variations()
     {
         return [

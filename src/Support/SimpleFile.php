@@ -10,7 +10,7 @@ class SimpleFile
     {
         $fs = new FileSystem;
 
-        if (! $fs->isDirectory(dirname($path))) {
+        if (!$fs->isDirectory(dirname($path))) {
             $fs->makeDirectory(dirname($path), 0777, true, true);
         }
 

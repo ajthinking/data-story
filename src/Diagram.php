@@ -17,25 +17,25 @@ class Diagram
         )->where('id', $id)->first();
     }
 
-    public function links($links = null) 
+    public function links($links = null)
     {
-        if($links === null) return $this->links;
+        if ($links === null) return $this->links;
 
         $this->links = $links;
 
         return $this;
     }
 
-    public function nodes($nodes = null) 
+    public function nodes($nodes = null)
     {
-        if($nodes === null) return $this->nodes;
+        if ($nodes === null) return $this->nodes;
 
         $this->nodes = $nodes;
 
         return $this;
     }
 
-    public function ports() 
+    public function ports()
     {
         return collect($this->nodes)->pluck('ports')->flatten()->toArray();
     }
@@ -51,14 +51,14 @@ class Diagram
 
         $diagram->links(
             collect(
-                array_values((array) $serialized->layers[0]->models)
+                array_values((array)$serialized->layers[0]->models)
             )->toArray()
         );
 
         $diagram->nodes(
             collect(
-                array_values((array) $serialized->layers[1]->models)
-            )->map(function($serializedNode) {
+                array_values((array)$serialized->layers[1]->models)
+            )->map(function ($serializedNode) {
                 $nodeType = $serializedNode->options->nodePhp;
                 return $nodeType::deserialize($serializedNode);
             })->toArray()
@@ -66,7 +66,7 @@ class Diagram
 
         $diagram->data = $serialized;
 
-        return $diagram;        
+        return $diagram;
     }
 
     public function registerGlobal()
@@ -76,8 +76,8 @@ class Diagram
 
     public function run()
     {
-        foreach($this->data->executionOrder as $nodeId) {
-       
+        foreach ($this->data->executionOrder as $nodeId) {
+
             $node = $this->find($nodeId);
 
             $node->run();
