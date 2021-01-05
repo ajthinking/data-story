@@ -7,6 +7,14 @@
 ![tests](https://github.com/ajthinking/data-story/workflows/tests/badge.svg)
 ![version](https://img.shields.io/packagist/v/ajthinking/data-story?color=blue)
 
+## What the heck is this :smile:
+DataStory provides a workbench for designing data processes. A flow of nodes defines operations such as Read - Create - Transform - Inspect - Write. Some use cases include:
+
+* Allow non coders to visually design data flows in context of your Laravel application. The flow can be executed and saved for future use.
+* Quickly query, filter and transform models and view them in separated tables.
+
+> More features/use cases to be announced shortly.
+
 ## Installation
 ```
 composer require ajthinking/data-story
