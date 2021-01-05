@@ -100,7 +100,7 @@ class EloquentQuery extends NodeModel
         );
 
         foreach ($finder as $file) {
-            $namespace = 'App\\Models\\';
+            $namespace = config('data-story.models-namespace');
 
             if ($relativePath = $file->getRelativePath()) {
                 $namespace .= strtr($relativePath, '/', '\\') . '\\';

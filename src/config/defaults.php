@@ -50,7 +50,8 @@ return [
     | where to search for app models
     |
     */
-    'models-dir' => base_path('app/Models'),
+    'models-dir'       => base_path('app/Models'),
+    'models-namespace' => 'App\\Models\\',
     
     /*
     |--------------------------------------------------------------------------
