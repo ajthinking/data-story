@@ -16,7 +16,7 @@ php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
 That's it! Go to the workbench at `/datastory`.
 
 ## Screencast
-Coming soon
+https://www.youtube.com/watch?v=IAV39TRr1gk
 
 ## Configuration
 You may edit settings in `data-story.php` as needed
