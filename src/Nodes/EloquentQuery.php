@@ -61,10 +61,10 @@ class EloquentQuery extends NodeModel
         return [
             String_::make('node_name')->default($variation['shortModelPlural']),
             String_::make('target_model')->default($variation['model']),
-            String_::make('scopes')->default('no scopes available'),
-            String_::make('where_statements')->default(''),
+            // String_::make('scopes')->default('no scopes available'),
+            // String_::make('where_statements')->default(''),
             String_::make('limit')->default('')->placeholder('no limit'),
-            String_::make('run get()')->default('yes'),
+            // String_::make('run get()')->default('yes'),
         ];
     }
     
