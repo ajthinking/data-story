@@ -8,6 +8,6 @@ class ParameterBag
 {
     public function __construct(array $parameters)
     {
-        $this->items
+        $this->items;
     }
 }

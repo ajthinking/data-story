@@ -27,15 +27,15 @@ class Data
     {
         $type = $this->type();
 
-        if($type === 'object') {
+        if ($type === 'object') {
             $this->raw->$key = $value;
         }
 
-        if($type === 'array') {
+        if ($type === 'array') {
             $this->raw[$key] = $value;
         }
 
-        if($type != 'object' && $type != 'array') {
+        if ($type != 'object' && $type != 'array') {
             //throw new Exception("Can not set property on type $type");
         }
 
