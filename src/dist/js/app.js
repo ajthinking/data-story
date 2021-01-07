@@ -91715,7 +91715,7 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, this.renderHeading(), this.renderBody(), this.renderPorts(), this.renderActions());
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, this.renderHeading(), this.renderBody(), this.renderEditableInPorts(), this.renderEditableOutPorts(), this.renderActions());
     }
   }, {
     key: "renderHeading",
@@ -91754,15 +91754,15 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
       })));
     }
   }, {
-    key: "renderPorts",
-    value: function renderPorts() {
+    key: "renderEditableInPorts",
+    value: function renderEditableInPorts() {
       var _this3 = this;
 
-      return this.props.node.options.editableOutPorts && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+      return this.props.node.options.editableInPorts && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
         className: "w-full px-6 py-1 text-gray-500 text-xs font-mono border border-t"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
         className: "my-2"
-      }, "Ports"), Object.values(this.props.node.getOutPorts()).map(function (port) {
+      }, "Ports"), Object.values(this.props.node.getInPorts()).map(function (port) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
           key: port.options.id,
           className: "w-full flex items-center"
@@ -91782,7 +91782,39 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
         className: "w-full px-2 py-1",
         type: "text",
         placeholder: 'add port...',
-        onKeyUp: this.saveNewPort.bind(this)
+        onKeyUp: this.saveNewInPort.bind(this)
+      }))));
+    }
+  }, {
+    key: "renderEditableOutPorts",
+    value: function renderEditableOutPorts() {
+      var _this4 = this;
+
+      return this.props.node.options.editableOutPorts && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "w-full px-6 py-1 text-gray-500 text-xs font-mono border border-t"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "my-2"
+      }, "Ports"), Object.values(this.props.node.getOutPorts()).map(function (port) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          key: port.options.id,
+          className: "w-full flex items-center"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "w-full rounded"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
+          className: "w-full px-2 py-1",
+          type: "text",
+          value: port.options.label,
+          onChange: _this4.editExistingPort.bind(_this4)
+        })));
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "w-full flex items-center"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "w-full rounded"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("input", {
+        className: "w-full px-2 py-1",
+        type: "text",
+        placeholder: 'add port...',
+        onKeyUp: this.saveNewOutPort.bind(this)
       }))));
     }
   }, {
@@ -91808,11 +91840,21 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
     key: "editExistingPort",
     value: function editExistingPort(event) {}
   }, {
+    key: "saveNewInPort",
+    value: function saveNewInPort(event) {
+      return this.saveNewPort(event, true);
+    }
+  }, {
+    key: "saveNewOutPort",
+    value: function saveNewOutPort(event) {
+      return this.saveNewPort(event, false);
+    }
+  }, {
     key: "saveNewPort",
-    value: function saveNewPort(event) {
+    value: function saveNewPort(event, isInPort) {
       if (event.key != 'Enter') return;
       this.props.node.addPort(new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["DefaultPortModel"]({
-        "in": false,
+        "in": isInPort,
         name: event.target.value
       }));
       event.target.value = ''; // Why is this needed?

@@ -46,7 +46,8 @@ export default class NodeWidgetModal extends React.Component {
             <div>
                 {this.renderHeading()}
                 {this.renderBody()}
-                {this.renderPorts()}
+                {this.renderEditableInPorts()}
+                {this.renderEditableOutPorts()}
                 {this.renderActions()}
                 {/* <AceEditor
                 mode="json"
@@ -100,7 +101,40 @@ export default class NodeWidgetModal extends React.Component {
         );
     }
 
-    renderPorts()
+    renderEditableInPorts()
+    {
+        return this.props.node.options.editableInPorts && (
+            <div className="w-full px-6 py-1 text-gray-500 text-xs font-mono border border-t">
+                <div className="my-2">Ports</div>
+                {Object.values(this.props.node.getInPorts()).map((port) => {
+                    return (
+                        <div key={port.options.id} className="w-full flex items-center">
+                            <div className="w-full rounded">
+                                <input 
+                                    className="w-full px-2 py-1"
+                                    type="text"
+                                    value={port.options.label}
+                                    onChange={this.editExistingPort.bind(this)}
+                                />
+                            </div>
+                        </div>                
+                    )
+                })}
+                <div className="w-full flex items-center">
+                    <div className="w-full rounded">
+                        <input 
+                            className="w-full px-2 py-1"
+                            type="text"
+                            placeholder={'add port...'}
+                            onKeyUp={this.saveNewInPort.bind(this)}
+                        />
+                    </div>
+                </div>                  
+            </div>
+        );
+    }
+
+    renderEditableOutPorts()
     {
         return this.props.node.options.editableOutPorts && (
             <div className="w-full px-6 py-1 text-gray-500 text-xs font-mono border border-t">
@@ -125,7 +159,7 @@ export default class NodeWidgetModal extends React.Component {
                             className="w-full px-2 py-1"
                             type="text"
                             placeholder={'add port...'}
-                            onKeyUp={this.saveNewPort.bind(this)}
+                            onKeyUp={this.saveNewOutPort.bind(this)}
                         />
                     </div>
                 </div>                  
@@ -156,12 +190,20 @@ export default class NodeWidgetModal extends React.Component {
 
     }
 
-    saveNewPort(event) {
+    saveNewInPort(event) {
+        return this.saveNewPort(event, true)
+    }
+
+    saveNewOutPort(event) {
+        return this.saveNewPort(event, false)
+    }    
+
+    saveNewPort(event, isInPort) {
         if(event.key != 'Enter') return;
 
         this.props.node.addPort(
             new DefaultPortModel({
-                in: false,
+                in: isInPort,
                 name: event.target.value,
             })
         );

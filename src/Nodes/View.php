@@ -10,7 +10,9 @@ class View extends NodeModel
 {
     const CATEGORY = Laravel::class;
 
-    const OUT_PORTS = [];    
+    const OUT_PORTS = [];
+    
+    const EDITABLE_IN_PORTS = true;    
 
     public static function parameters($data = [])
     {
@@ -22,8 +24,23 @@ class View extends NodeModel
 
     public function run()
     {
-        $view = view($this->getParameter('view'));
-        
-        $this->diagram()->setResult($view);
+        $view = view($this->getParameter('view'))
+            ->with(
+                $this->getViewData()                
+            );
+
+        $this->diagram()->setResult(
+            $view
+        );
+    }
+
+    protected function getViewData()
+    {
+        return collect($this->ports)->where('name', '!=', 'Input')
+            ->flatMap(function($port) {
+                return [
+                    $port->name => $this->getDataAtPortNamed($port->name)
+                ];
+            })->all();
     }
 }
