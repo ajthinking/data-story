@@ -1,10 +1,9 @@
 import React from 'react';
 import { inject, observer } from "mobx-react"
 import BaseControl from './BaseControl'
-import axios from 'axios';
-import {nonCircularJsonStringify} from '../../utils/nonCircularJsonStringify'
 import { toast, Slide } from 'react-toastify';
-
+import RemoteServerClient from '../../servers/RemoteServerClient';
+import LocalServerClient from '../../servers/LocalServerClient';
 
 @inject('store') @observer
 export default class RunControl extends BaseControl {
@@ -18,55 +17,51 @@ export default class RunControl extends BaseControl {
     {
         this.props.store.setRunning()
 
-        // console.log(
-        //     nonCircularJsonStringify(
-        //         this.props.store.diagram.engine.model.serialize(),
-        //         null,
-        //         4
-        //     )
-        // )
+        // NORMAL PHP CLIENT
+        let client = new RemoteServerClient('/datastory/api')
 
-        // return 
+        // TODO JS CLIENT 
+        // let jsClient = new LocalServerClient ...
 
-        axios.post('/datastory/api/run', {
-                model: nonCircularJsonStringify(
-                    this.props.store.diagram.engine.model.serialize()
-                )
-          })
-          .then((response) => {
-                // TRANSFER FEATURE AT NODES (INSPECTABLES)
-                response.data.diagram.nodes.filter(phpNode => {
-                    return phpNode.features
-                }).forEach(phpNode => {
-                    let reactNode = this.props.store.diagram.engine.model.getNode(phpNode.id)
-                    reactNode.features = phpNode.features;
+        client.run(
+            this.props.store.diagram.engine.model
+        )
+        .then((response) => {
+            // TRANSFER FEATURE AT NODES (INSPECTABLES)
+            response.data.diagram.nodes.filter(phpNode => {
+                return phpNode.features
+            }).forEach(phpNode => {
+                let reactNode = this.props.store.diagram.engine.model.getNode(phpNode.id)
+                reactNode.features = phpNode.features;
+            })
+
+            // SET FEATURE COUNT ON LINKS
+            this.props.store.clearLinkLabels() // Clear old labels
+            let ports = response.data.diagram.nodes.map(node => {
+                return node.ports
+            }).flat().filter(port => {
+                return port.features
+            }).forEach(port => {
+                port.links.forEach(linkId => {    
+                    let link = this.props.store.diagram.engine.model.getLink(linkId)
+                    link.addLabel(port.features.length)
                 })
+            })
+            
+            this.showSuccessToast();                
 
-                // SET FEATURE COUNT ON LINKS
-                this.props.store.clearLinkLabels() // Clear old labels
-                let ports = response.data.diagram.nodes.map(node => {
-                    return node.ports
-                }).flat().filter(port => {
-                    return port.features
-                }).forEach(port => {
-                    port.links.forEach(linkId => {    
-                        let link = this.props.store.diagram.engine.model.getLink(linkId)
-                        link.addLabel(port.features.length)
-                    })
-                })
-                
-                this.showSuccessToast();                
-
-                this.props.store.setNotRunning()
-                this.props.store.refreshDiagram()
-                
-          })
-          .catch((error) => {
-
+            this.props.store.setNotRunning()
+            this.props.store.refreshDiagram()
+            
+        })
+        .catch((error) => {
             this.props.store.setNotRunning()
             console.log(error);
             this.showFailureToast();
-          });
+        });
+
+
+
     }
 
     componentDidMount() {
