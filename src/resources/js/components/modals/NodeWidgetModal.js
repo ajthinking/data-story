@@ -10,6 +10,8 @@ import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/r
 // import "ace-builds/src-noconflict/theme-github";
 
 import { inject, observer } from "mobx-react"
+import String_ from '../fields/String_';
+import field from '../fields/factory'
 
 @inject('store') @observer
 export default class NodeWidgetModal extends React.Component {
@@ -20,11 +22,10 @@ export default class NodeWidgetModal extends React.Component {
             parameters: _.cloneDeep(this.props.node.options.parameters)
         }
     }
-    
 
     handleChange(event, parameter) {
         let parameters = this.state.parameters
-        parameters[parameter].value = event.target.value
+        parameters[parameter.name].value = event.target.value
 
         this.setState({
             parameters: {... parameters}
@@ -65,11 +66,6 @@ export default class NodeWidgetModal extends React.Component {
                     <p className="text-sm font-medium text-gray-900 text-bold">
                         <span className="text-indigo-500">{this.props.node.options.category}</span>
                         <span className=""> / {this.props.node.getDisplayName()}</span>
-                        {/* <input
-                            onChange={e => {this.handleChange(e, 'node_name')}}
-                            className="px-2 py-1 rounded"
-                            value={this.state.parameters['node_name'].value}
-                        />                         */}
                     </p>
                     <p 
                         className="text-sm font-medium text-bold text-gray-400 hover:text-gray-500"
@@ -87,16 +83,15 @@ export default class NodeWidgetModal extends React.Component {
         return (
             <div>
                 <div className="w-full bg-gray-100 px-6 py-2">
-                    {Object.keys(this.state.parameters).map(parameter => {
+                    {Object.values(this.state.parameters).map(parameter => {
+                        let Field = field(parameter.fieldType);
+
                         return (
-                            <div key={parameter} className="flex flex-col my-4 justify-center align-middle text-gray-500 text-xs font-mono">
-                                <span className="my-2">{parameter}</span>
-                                <input
-                                    onChange={e => {this.handleChange(e, parameter)}}
-                                    className="px-2 py-1 rounded"
-                                    value={this.state.parameters[parameter].value}
-                                />
-                            </div>
+                            <Field
+                                key={parameter.name}
+                                handleChange={this.handleChange.bind(this)}
+                                options={parameter}
+                            />
                         )
                     })}
 

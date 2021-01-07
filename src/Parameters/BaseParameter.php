@@ -6,6 +6,8 @@ abstract class BaseParameter
 {
     public $default;
 
+    public $fieldType = 'String_';    
+
     public $name;
 
     public $value;
