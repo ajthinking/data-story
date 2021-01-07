@@ -154,8 +154,8 @@ abstract class NodeModel
 
     }
 
-    public function return()
+    public function return($something)
     {
-        
+        //
     }
 }

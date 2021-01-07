@@ -2,14 +2,13 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\Categories\Workflow;
+use DataStory\Categories\Laravel;
 use DataStory\NodeModel;
-use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 
 class Route extends NodeModel
 {
-    const CATEGORY = Workflow::class;
+    const CATEGORY = Laravel::class;
 
     const IN_PORTS = [];    
 
@@ -17,6 +16,7 @@ class Route extends NodeModel
     {
         return [
             String_::make('node_name')->default('Route'),
+            String_::make('route')->default('/datastory/routes/test'),            
         ];
     }
 

@@ -2,13 +2,13 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\Categories\Workflow;
+use DataStory\Categories\Laravel;
 use DataStory\NodeModel;
 use DataStory\Parameters\String_;
 
 class View extends NodeModel
 {
-    const CATEGORY = Workflow::class;
+    const CATEGORY = Laravel::class;
 
     const OUT_PORTS = [];    
 
@@ -16,16 +16,16 @@ class View extends NodeModel
     {
         return [
             String_::make('node_name')->default('View'),
+            String_::make('view')->default('welcome'),
         ];
     }
 
     public function run()
     {
-        //
-    }
-
-    public function returns()
-    {
-        //
+        $this->return(
+            view(
+                $this->getParameter('view')
+            )
+        );
     }
 }
