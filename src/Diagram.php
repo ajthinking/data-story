@@ -2,13 +2,13 @@
 
 namespace DataStory;
 
-use stdClass;
-
 class Diagram
 {
     public array $nodes;
 
     public array $links;
+
+    public $result = null;
 
     public function find($id)
     {
@@ -40,31 +40,25 @@ class Diagram
         return collect($this->nodes)->pluck('ports')->flatten()->toArray();
     }
 
-    public function bindDataToPort($portId, $data)
-    {
-        //
-    }
-
     public static function deserialize($serialized)
     {
         $diagram = new Diagram();
+        $diagram->data = json_decode($serialized);
 
         $diagram->links(
             collect(
-                array_values((array)$serialized->layers[0]->models)
+                array_values((array)$diagram->data->layers[0]->models)
             )->toArray()
         );
 
         $diagram->nodes(
             collect(
-                array_values((array)$serialized->layers[1]->models)
+                array_values((array) $diagram->data->layers[1]->models)
             )->map(function ($serializedNode) {
                 $nodeType = $serializedNode->options->nodePhp;
                 return $nodeType::deserialize($serializedNode);
             })->toArray()
         );
-
-        $diagram->data = $serialized;
 
         return $diagram;
     }
@@ -84,6 +78,23 @@ class Diagram
         }
 
         return $this;
+    }
+
+    public function setResult($result)
+    {
+        $this->result = $result;
+        
+        return $this;
+    }
+
+    public function getResult()
+    {
+        return $this->result;
+    }
+
+    public function output()
+    {
+        return view('welcome');
     }
 
     public static function capabilities()

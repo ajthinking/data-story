@@ -22,10 +22,8 @@ class View extends NodeModel
 
     public function run()
     {
-        $this->return(
-            view(
-                $this->getParameter('view')
-            )
-        );
+        $view = view($this->getParameter('view'));
+        
+        $this->diagram()->setResult($view);
     }
 }

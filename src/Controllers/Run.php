@@ -8,8 +8,9 @@ class Run
 {
     public function __invoke()
     {
+        
         $diagram = Diagram::deserialize(
-            json_decode(request()->input('model'))
+            request()->input('model')
         );
     
         $diagram->registerGlobal()->run();
