@@ -4,6 +4,11 @@ import Modal from 'react-modal';
 import _ from 'lodash'
 import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/react-diagrams';
 
+// import AceEditor from "react-ace";
+// import "ace-builds/src-noconflict/mode-json";
+// import "ace-builds/src-noconflict/mode-java";
+// import "ace-builds/src-noconflict/theme-github";
+
 import { inject, observer } from "mobx-react"
 
 @inject('store') @observer
@@ -41,7 +46,13 @@ export default class NodeWidgetModal extends React.Component {
                 {this.renderHeading()}
                 {this.renderBody()}
                 {this.renderPorts()}
-                {this.renderActions()}                
+                {this.renderActions()}
+                {/* <AceEditor
+                mode="json"
+                theme="github"
+                name="UNIQUE_ID_OF_DIV"
+                editorProps={{ $blockScrolling: true }}
+                />                                 */}
             </div>
 		);
     }
