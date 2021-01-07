@@ -2,7 +2,7 @@
 
 namespace DataStory\Parameters;
 
-class String_ extends BaseParameter
+class String_ extends Input
 {
     public $fieldType = 'String_';
 }

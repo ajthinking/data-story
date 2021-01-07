@@ -4,6 +4,7 @@ namespace DataStory\Nodes;
 
 use DataStory\Categories\Model;
 use DataStory\NodeModel;
+use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 use Illuminate\Support\Str;
 
@@ -63,7 +64,7 @@ class EloquentQuery extends NodeModel
             String_::make('target_model')->default($variation['model']),
             // String_::make('scopes')->default('no scopes available'),
             // String_::make('where_statements')->default(''),
-            String_::make('limit')->default('')->placeholder('no limit'),
+            Number::make('limit')->default('')->placeholder('no limit'),
             // String_::make('run get()')->default('yes'),
         ];
     }

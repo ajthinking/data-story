@@ -1,6 +1,8 @@
+import Number from './Number'
 import String_ from './String_'
 
 const fields = {
+    Number,
     String_
 }
 

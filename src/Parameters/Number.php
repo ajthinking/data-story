@@ -2,7 +2,7 @@
 
 namespace DataStory\Parameters;
 
-class Number extends BaseParameter
+class Number extends Input
 {
-    //
+    public $fieldType = 'Number';
 }
