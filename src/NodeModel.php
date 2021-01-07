@@ -148,4 +148,14 @@ abstract class NodeModel
     {
         return $this->data->options->parameters;
     }
+
+    public function publish()
+    {
+
+    }
+
+    public function return()
+    {
+        
+    }
 }

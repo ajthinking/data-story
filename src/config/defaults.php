@@ -72,5 +72,7 @@ return [
         DataStory\Nodes\Inspect::class,
         DataStory\Nodes\Map::class,
         DataStory\Nodes\Pass::class,
+        DataStory\Nodes\Route::class,
+        DataStory\Nodes\View::class,        
     ],
 ];
