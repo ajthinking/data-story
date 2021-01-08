@@ -194,11 +194,11 @@ export default class NodeWidgetModal extends React.Component {
     }
 
     saveNewInPort(event) {
-        return this.saveNewPort(event, isInPort)
+        return this.saveNewPort(event, true)
     }
 
     saveNewOutPort(event) {
-        return this.saveNewPort(event, isInPort)
+        return this.saveNewPort(event, false)
     }    
 
     saveNewPort(event, isInPort) {
@@ -206,7 +206,7 @@ export default class NodeWidgetModal extends React.Component {
 
         this.props.node.addPort(
             new DefaultPortModel({
-                in: false,
+                in: isInPort,
                 name: event.target.value,
             })
         );

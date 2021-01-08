@@ -2,7 +2,7 @@
 
 ⚡ Visual coding ⚡ Process builder ⚡ Data driven design ⚡ ETL ⚡ Laravel + React ⚡ Alpha in development ⚡
 
-<img src="https://user-images.githubusercontent.com/3457668/102698183-c32de280-423b-11eb-9bb2-cdda6187094c.png">
+<img src="https://user-images.githubusercontent.com/3457668/104057839-179d0000-51f3-11eb-9c03-a3aff8a2a9cf.png">
 
 ![tests](https://github.com/ajthinking/data-story/workflows/tests/badge.svg)
 ![version](https://img.shields.io/packagist/v/ajthinking/data-story?color=blue)
@@ -83,16 +83,7 @@ return [
     |
     */    
     'nodes' => [
-        DataStory\Nodes\AddAttribute::class,
-        DataStory\Nodes\Cloner::class,
-        DataStory\Nodes\Create::class,
-        DataStory\Nodes\CreateJSON::class,
-        DataStory\Nodes\EloquentQuery::class,
-        DataStory\Nodes\Evaluate::class,
-        DataStory\Nodes\Filter::class,
-        DataStory\Nodes\Inspect::class,
-        DataStory\Nodes\Map::class,
-        DataStory\Nodes\Pass::class,
+        // the default nodes ...
     ],
 ];
 ```

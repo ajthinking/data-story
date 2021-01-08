@@ -91964,19 +91964,19 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
   }, {
     key: "saveNewInPort",
     value: function saveNewInPort(event) {
-      return this.saveNewPort(event, isInPort);
+      return this.saveNewPort(event, true);
     }
   }, {
     key: "saveNewOutPort",
     value: function saveNewOutPort(event) {
-      return this.saveNewPort(event, isInPort);
+      return this.saveNewPort(event, false);
     }
   }, {
     key: "saveNewPort",
     value: function saveNewPort(event, isInPort) {
       if (event.key != 'Enter') return;
       this.props.node.addPort(new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["DefaultPortModel"]({
-        "in": false,
+        "in": isInPort,
         name: event.target.value
       }));
       event.target.value = ''; // Why is this needed?
