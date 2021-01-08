@@ -91579,6 +91579,104 @@ var String_ = /*#__PURE__*/function (_React$Component) {
 
 /***/ }),
 
+/***/ "./src/resources/js/components/fields/Where.js":
+/*!*****************************************************!*\
+  !*** ./src/resources/js/components/fields/Where.js ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Where; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+var Where = /*#__PURE__*/function (_React$Component) {
+  _inherits(Where, _React$Component);
+
+  var _super = _createSuper(Where);
+
+  function Where() {
+    _classCallCheck(this, Where);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(Where, [{
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex flex-col my-4 justify-center align-middle text-gray-500 text-xs font-mono"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        className: "my-2"
+      }, this.props.options.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "flex space-x-2"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        name: "attribute",
+        onChange: function onChange(e) {
+          _this.props.handleChange(e, _this.props.options);
+        },
+        className: "flex-1 px-2 py-1 rounded",
+        placeholder: "attribute",
+        value: this.props.options.attribute
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+        className: "flex-1 px-2 py-1",
+        name: "operator",
+        onChange: function onChange(e) {
+          _this.props.handleChange(e, _this.props.options);
+        },
+        value: this.props.options.operator
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: ">"
+      }, "GREATER THAN"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: "="
+      }, "EQUALS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: "<"
+      }, "LESS THAN")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        onChange: function onChange(e) {
+          _this.props.handleChange(e, _this.props.options);
+        },
+        className: "flex-1 px-2 py-1 rounded",
+        placeholder: "value",
+        name: "value",
+        value: this.props.options.value
+      })));
+    }
+  }]);
+
+  return Where;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+
+
+/***/ }),
+
 /***/ "./src/resources/js/components/fields/factory.js":
 /*!*******************************************************!*\
   !*** ./src/resources/js/components/fields/factory.js ***!
@@ -91591,13 +91689,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Number__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Number */ "./src/resources/js/components/fields/Number.js");
 /* harmony import */ var _JSON___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./JSON_ */ "./src/resources/js/components/fields/JSON_.js");
 /* harmony import */ var _String___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./String_ */ "./src/resources/js/components/fields/String_.js");
+/* harmony import */ var _Where__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Where */ "./src/resources/js/components/fields/Where.js");
+
 
 
 
 var fields = {
   JSON_: _JSON___WEBPACK_IMPORTED_MODULE_1__["default"],
   Number: _Number__WEBPACK_IMPORTED_MODULE_0__["default"],
-  String_: _String___WEBPACK_IMPORTED_MODULE_2__["default"]
+  String_: _String___WEBPACK_IMPORTED_MODULE_2__["default"],
+  Where: _Where__WEBPACK_IMPORTED_MODULE_3__["default"]
 };
 /* harmony default export */ __webpack_exports__["default"] = (function (fieldType) {
   return fields[fieldType];
@@ -91688,8 +91789,10 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
   _createClass(NodeWidgetModal, [{
     key: "handleChange",
     value: function handleChange(event, parameter) {
+      var _event$target$getAttr;
+
       var parameters = this.state.parameters;
-      parameters[parameter.name].value = event.target.value;
+      parameters[parameter.name][(_event$target$getAttr = event.target.getAttribute('name')) !== null && _event$target$getAttr !== void 0 ? _event$target$getAttr : 'value'] = event.target.value;
       this.setState({
         parameters: _objectSpread({}, parameters)
       });
@@ -91835,19 +91938,19 @@ var NodeWidgetModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["in
   }, {
     key: "saveNewInPort",
     value: function saveNewInPort(event) {
-      return this.saveNewPort(event, true);
+      return this.saveNewPort(event, isInPort);
     }
   }, {
     key: "saveNewOutPort",
     value: function saveNewOutPort(event) {
-      return this.saveNewPort(event, false);
+      return this.saveNewPort(event, isInPort);
     }
   }, {
     key: "saveNewPort",
     value: function saveNewPort(event, isInPort) {
       if (event.key != 'Enter') return;
       this.props.node.addPort(new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["DefaultPortModel"]({
-        "in": isInPort,
+        "in": false,
         name: event.target.value
       }));
       event.target.value = ''; // Why is this needed?

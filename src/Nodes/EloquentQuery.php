@@ -6,6 +6,7 @@ use DataStory\Categories\Model;
 use DataStory\NodeModel;
 use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
+use DataStory\Parameters\Where;
 use Illuminate\Support\Str;
 
 class EloquentQuery extends NodeModel
@@ -23,19 +24,24 @@ class EloquentQuery extends NodeModel
 
     protected function getQueryResults()
     {
-        // Get QueryBuilder
+        /**
+         * Get QueryBuilder
+         */
         $query = app($this->data->options->parameters->target_model->value)->query();
 
-        // Apply scopes
+        /**
+         * Apply scopes
+         */
         collect([])->reduce(function($query, $scope) {
             $name = $scope->name;
             $args = $scope->args;
             return $query->$name(...$args);
         }, $query);
 
-        // Apply where statements
-        collect([])->reduce(function($query, $whereStatement) {
-            return $query->where(...$whereStatement->args);
+        // Apply where statement // TODO ALLOW MULTIPLE
+        $this->whereStatements()->reduce(function($query, $whereStatement) {
+            ray($whereStatement);
+            return $query->where(...$whereStatement);
         }, $query);
 
         // Apply take/limit
@@ -63,6 +69,7 @@ class EloquentQuery extends NodeModel
             String_::make('node_name')->default($variation['shortModelPlural']),
             String_::make('target_model')->default($variation['model']),
             // String_::make('scopes')->default('no scopes available'),
+            Where::make('where_statement'),
             // String_::make('where_statements')->default(''),
             Number::make('limit')->default('')->placeholder('no limit'),
             // String_::make('run get()')->default('yes'),
@@ -120,5 +127,21 @@ class EloquentQuery extends NodeModel
             }
         }
 		return collect($models);        
+    }
+
+    public function whereStatements()
+    {
+        $data = $this->data->options->parameters->where_statement;
+
+        if(!$data->attribute) return collect();
+
+        return collect([
+            [
+                $data->attribute,
+                $data->operator,
+                // TODO
+                is_numeric($data->value) ? (int) $data->value : $data->value,
+            ]
+        ]);
     }
 }

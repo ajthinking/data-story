@@ -25,7 +25,10 @@ export default class NodeWidgetModal extends React.Component {
 
     handleChange(event, parameter) {
         let parameters = this.state.parameters
-        parameters[parameter.name].value = event.target.value
+            
+        parameters[parameter.name][
+            event.target.getAttribute('name') ?? 'value'
+        ] = event.target.value
 
         this.setState({
             parameters: {... parameters}
@@ -191,11 +194,11 @@ export default class NodeWidgetModal extends React.Component {
     }
 
     saveNewInPort(event) {
-        return this.saveNewPort(event, true)
+        return this.saveNewPort(event, isInPort)
     }
 
     saveNewOutPort(event) {
-        return this.saveNewPort(event, false)
+        return this.saveNewPort(event, isInPort)
     }    
 
     saveNewPort(event, isInPort) {
@@ -203,7 +206,7 @@ export default class NodeWidgetModal extends React.Component {
 
         this.props.node.addPort(
             new DefaultPortModel({
-                in: isInPort,
+                in: false,
                 name: event.target.value,
             })
         );
