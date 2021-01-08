@@ -128,20 +128,6 @@ class NewEpicNode extends NodeModel
 
 After refreshing the page the `NewEpicNode` node is available in the story workbench.
 
-## DataStory concepts A-Z
-
-* Story
-* Workbench
-* Node
-* Control
-* Inspector
-* Feature
-* Invoker
-* Creator
-* Writer
-* Collection
-* Import
-
 ## Contributing
 
 Clone this repo
