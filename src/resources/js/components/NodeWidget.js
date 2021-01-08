@@ -24,12 +24,15 @@ export default class NodeWidget extends React.Component {
 
 	render() {
 		return (
-            <div className={"font-mono text-xxs text-gray-200 " + (this.props.node.isSelected() ? '-ml-3 -mt-3 p-2 border-dashed border-2 border-gray-400' : '')}>
-                <div className="flex-grow-0 w-32">
+            <div className={"flex font-mono text-xxs text-gray-200 " + (this.props.node.isSelected() ? '-ml-3 -mt-3 p-2 border-dashed border-2 border-gray-400' : '')}>
+                <div className="flex-grow-0 max-w-md">
                     {this.renderHeading()}
                     {this.renderInPorts()}                  
                     {this.renderOutPorts()}
+                    <div className="w-32">{/* Enforce min width with this div*/}</div>
                 </div>
+
+                {this.renderModal()}
             </div>
 		);
     }
@@ -37,12 +40,11 @@ export default class NodeWidget extends React.Component {
     renderHeading() {
         return (
             <div
-                className="flex justify-between items-center pl-4 pr-2 py-1 border border-gray-900 font-bold rounded-lg bg-gray-700"
+                className="flex justify-between items-center pr-2 py-1 border border-gray-900 font-bold rounded-lg bg-gray-700"
                 onDoubleClick={this.open.bind(this)}
             >
-                <span>{this.props.node.getDisplayName()}</span>
+                <span className="mx-4">{this.props.node.getDisplayName()}</span>
                 <i className="fas fa-cog"></i>
-                {this.renderModal()}
             </div>            
         )
     }
@@ -50,12 +52,15 @@ export default class NodeWidget extends React.Component {
     renderInPorts() {
         return Object.values(this.props.node.getInPorts()).map((port) => {
             return (
-                <div key={port.options.name} className="flex items-center text-gray-200 mx-2 py-1 border border-gray-900 rounded-lg bg-gray-500">
-                    <div className="flex items-center justify-between w-full">
-                        <PortWidget className="flex w-4 h-4 hover:bg-gray-400 rounded rounded-full" engine={this.props.engine} port={port} />
-                        <span className="flex-1">{port.options.label}</span>
-                        <NodeInspectorLink nodeId={this.props.node.options.id} />
+                <div className="flex w-full" key={port.options.name}>
+                    <PortWidget className="-my-6 -mr-1 z-10 flex items-center text-lg justify-center text-malibu-700 hover:text-malibu-500" engine={this.props.engine} port={port}>&#9654;</PortWidget>
+                    <div className="flex w-full items-center text-gray-200 py-1 border border-gray-900 rounded-lg bg-gray-500">
+                        <div className="flex items-center justify-between w-full">
+                            <span className="flex px-4 flex-1">{port.options.label}</span>
+                            <NodeInspectorLink nodeId={this.props.node.options.id} />
+                        </div>
                     </div>
+                    <div className="ml-2">{/* Counterweight */}</div>
                 </div>                
             )
         })
@@ -69,6 +74,20 @@ export default class NodeWidget extends React.Component {
     }
 
     renderOutPorts() {
+        return Object.values(this.props.node.getOutPorts()).map((port) => {
+            return (
+                <div className="flex w-full" key={port.options.name}>
+                    <div className="mr-2">{/* Counterweight */}</div>
+                    <div className="flex w-full items-center text-gray-200 py-1 border border-gray-900 rounded-lg bg-gray-500">
+                        <div className="flex items-center justify-between w-full">
+                            <span className="flex px-4 flex-1">{port.options.label}</span>
+                        </div>
+                    </div>
+                    <PortWidget className="-my-6 -ml-1 z-10 flex items-center text-lg justify-center text-malibu-700 hover:text-malibu-500" engine={this.props.engine} port={port}>&#9654;</PortWidget>
+                </div>                
+            )
+        })
+
         return Object.values(this.props.node.getOutPorts()).map((port) => {
             return (
                 <div key={port.options.name} className="flex items-center text-gray-200 mx-2 py-1 border border-gray-900 rounded-lg bg-gray-500">

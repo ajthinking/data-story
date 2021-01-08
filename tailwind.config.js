@@ -14,8 +14,12 @@ module.exports = {
         },
         fontSize: {
             'xxs': '.65rem',
+        },
+        minWidth: {
+            'bajs': '50%'
         }        
-    },         
+    },
+             
   },
   variants: {
     extend: {},

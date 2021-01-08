@@ -90260,20 +90260,24 @@ var NodeWidget = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["inject"
     key: "render",
     value: function render() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-        className: "font-mono text-xxs text-gray-200 " + (this.props.node.isSelected() ? '-ml-3 -mt-3 p-2 border-dashed border-2 border-gray-400' : '')
+        className: "flex font-mono text-xxs text-gray-200 " + (this.props.node.isSelected() ? '-ml-3 -mt-3 p-2 border-dashed border-2 border-gray-400' : '')
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-        className: "flex-grow-0 w-32"
-      }, this.renderHeading(), this.renderInPorts(), this.renderOutPorts()));
+        className: "flex-grow-0 max-w-md"
+      }, this.renderHeading(), this.renderInPorts(), this.renderOutPorts(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+        className: "w-32"
+      })), this.renderModal());
     }
   }, {
     key: "renderHeading",
     value: function renderHeading() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-        className: "flex justify-between items-center pl-4 pr-2 py-1 border border-gray-900 font-bold rounded-lg bg-gray-700",
+        className: "flex justify-between items-center pr-2 py-1 border border-gray-900 font-bold rounded-lg bg-gray-700",
         onDoubleClick: this.open.bind(this)
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", null, this.props.node.getDisplayName()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("i", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", {
+        className: "mx-4"
+      }, this.props.node.getDisplayName()), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("i", {
         className: "fas fa-cog"
-      }), this.renderModal());
+      }));
     }
   }, {
     key: "renderInPorts",
@@ -90282,19 +90286,23 @@ var NodeWidget = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["inject"
 
       return Object.values(this.props.node.getInPorts()).map(function (port) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-          key: port.options.name,
-          className: "flex items-center text-gray-200 mx-2 py-1 border border-gray-900 rounded-lg bg-gray-500"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-          className: "flex items-center justify-between w-full"
+          className: "flex w-full",
+          key: port.options.name
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["PortWidget"], {
-          className: "flex w-4 h-4 hover:bg-gray-400 rounded rounded-full",
+          className: "-my-6 -mr-1 z-10 flex items-center text-lg justify-center text-malibu-700 hover:text-malibu-500",
           engine: _this2.props.engine,
           port: port
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", {
-          className: "flex-1"
+        }, "\u25B6"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "flex w-full items-center text-gray-200 py-1 border border-gray-900 rounded-lg bg-gray-500"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "flex items-center justify-between w-full"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", {
+          className: "flex px-4 flex-1"
         }, port.options.label), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_NodeInspectorLink__WEBPACK_IMPORTED_MODULE_5__["default"], {
           nodeId: _this2.props.node.options.id
-        })));
+        }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "ml-2"
+        }));
       });
     }
   }, {
@@ -90315,6 +90323,24 @@ var NodeWidget = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["inject"
     value: function renderOutPorts() {
       var _this4 = this;
 
+      return Object.values(this.props.node.getOutPorts()).map(function (port) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "flex w-full",
+          key: port.options.name
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "mr-2"
+        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "flex w-full items-center text-gray-200 py-1 border border-gray-900 rounded-lg bg-gray-500"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
+          className: "flex items-center justify-between w-full"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", {
+          className: "flex px-4 flex-1"
+        }, port.options.label))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_1__["PortWidget"], {
+          className: "-my-6 -ml-1 z-10 flex items-center text-lg justify-center text-malibu-700 hover:text-malibu-500",
+          engine: _this4.props.engine,
+          port: port
+        }, "\u25B6"));
+      });
       return Object.values(this.props.node.getOutPorts()).map(function (port) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
           key: port.options.name,

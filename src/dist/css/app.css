@@ -14483,6 +14483,10 @@ video {
   min-width: max-content;
 }
 
+.min-w-bajs {
+  min-width: 50%;
+}
+
 .object-contain {
   -o-object-fit: contain;
      object-fit: contain;
@@ -46012,6 +46016,10 @@ foreignObject > div > div {
     min-width: max-content;
   }
 
+  .sm\:min-w-bajs {
+    min-width: 50%;
+  }
+
   .sm\:object-contain {
     -o-object-fit: contain;
        object-fit: contain;
@@ -77439,6 +77447,10 @@ foreignObject > div > div {
     min-width: -webkit-max-content;
     min-width: -moz-max-content;
     min-width: max-content;
+  }
+
+  .md\:min-w-bajs {
+    min-width: 50%;
   }
 
   .md\:object-contain {
@@ -108870,6 +108882,10 @@ foreignObject > div > div {
     min-width: max-content;
   }
 
+  .lg\:min-w-bajs {
+    min-width: 50%;
+  }
+
   .lg\:object-contain {
     -o-object-fit: contain;
        object-fit: contain;
@@ -140299,6 +140315,10 @@ foreignObject > div > div {
     min-width: max-content;
   }
 
+  .xl\:min-w-bajs {
+    min-width: 50%;
+  }
+
   .xl\:object-contain {
     -o-object-fit: contain;
        object-fit: contain;
@@ -171726,6 +171746,10 @@ foreignObject > div > div {
     min-width: -webkit-max-content;
     min-width: -moz-max-content;
     min-width: max-content;
+  }
+
+  .\32xl\:min-w-bajs {
+    min-width: 50%;
   }
 
   .\32xl\:object-contain {
