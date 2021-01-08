@@ -134,7 +134,7 @@ Clone this repo
 ```bash
 git clone git@github.com:ajthinking/data-story.git data-story
 ```
-Create a host/container app
+In the same level as `data-story` dir, create a host/container app
 ```bash
 laravel new dsh1
 ```
