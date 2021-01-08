@@ -138,6 +138,12 @@ In the same level as `data-story` dir, create a host/container app
 ```bash
 laravel new dsh1
 ```
+Now we have something like:
+```
+~/Code
++---data-story
++---dsh1
+```
 
 Add this to the host apps `composer.json`
 ```json
