@@ -99,9 +99,11 @@
                                 "value": "no scopes available",
                                 "placeholder": ""
                             },
-                            "where_statements": {
+                            "where_statement": {
+                                "attribute": "",
                                 "default": "",
-                                "name": "where_statements",
+                                "name": "where_statement",
+                                "operator": "=",
                                 "value": "",
                                 "placeholder": ""
                             },
