@@ -160,9 +160,12 @@ Install `data-story` in host app with dev flag:
 composer require ajthinking/data-story @dev
 ```
 
-Optionally, in `data-story` root create a `.env` and set `DATASTORY_DEV_MODE=true`. This will tell webpack/mix to to copy assets into the host app so you dont have to republish when touching JS. Currently, this only works if you named the host app `dsh1`.
+Optionally, in `data-story` root create a `.env` and set `DATASTORY_DEV_MODE=true`. This will tell webpack/mix to to copy assets into the host app so you dont have to republish when touching JS. Currently, this only works if you named the host app `dsh1`. If you skip this step manually publish assets with command:
+```
+php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
+```
 
-In `data-story`, run
+Then, in `data-story`, run
 ```
 yarn && yarn watch
 ```
