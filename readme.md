@@ -144,11 +144,44 @@ After refreshing the page the `NewEpicNode` node is available in the story workb
 
 ## Contributing
 
-* Clone this repo
-* Install a fresh Laravel app to act as a host
-* Add this repo as a composer file/path repository in the host app
-* Install it with `composer require ajthinking/data-story @dev`
-* Finally set `DATASTORY_DEV_MODE=true` in host .env to get some dev helpers
+Clone this repo
+```bash
+git clone git@github.com:ajthinking/data-story.git data-story
+```
+Create a host/container app
+```bash
+laravel new dsh1
+```
+
+Add this to the host apps `composer.json`
+```json
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/PATH/TO/YOUR/CODE/data-story"
+        }
+    ], 
+```
+
+Install `data-story` in host app with dev flag:
+```
+composer require ajthinking/data-story @dev
+```
+
+Optionally, in `data-story` root create a `.env` and set `DATASTORY_DEV_MODE=true`. This will tell webpack/mix to to copy assets into the host app so you dont have to republish when touching JS. Currently, this only works if you named the host app `dsh1`.
+
+In `data-story`, run
+```
+yarn && yarn watch
+```
+
+Run testsuite in `data-story`
+```
+composer install
+./vendor/bin/phpunit tests
+```
+
+Go to `dsh1.test/datastory` to test out your changes :rocket:
 
 ## License
 MIT
