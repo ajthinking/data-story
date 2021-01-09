@@ -90260,7 +90260,7 @@ var NodeWidget = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["inject"
     key: "render",
     value: function render() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-        className: "flex font-mono text-xxs text-gray-200 " + (this.props.node.isSelected() ? '-ml-3 -mt-3 p-2 border-dashed border-2 border-gray-400' : '')
+        className: "flex font-mono text-xxs text-gray-200"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
         className: "flex-grow-0 max-w-md"
       }, this.renderHeading(), this.renderInPorts(), this.renderOutPorts(), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
@@ -90271,7 +90271,7 @@ var NodeWidget = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["inject"
     key: "renderHeading",
     value: function renderHeading() {
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", {
-        className: "flex justify-between items-center pr-2 py-1 border border-gray-900 font-bold rounded-lg bg-gray-700",
+        className: "flex justify-between items-center pr-2 py-1 border border-gray-900 font-bold rounded-lg bg-gray-700 " + (this.props.node.isSelected() ? 'bg-malibu-900' : ''),
         onDoubleClick: this.open.bind(this)
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("span", {
         className: "mx-4"
