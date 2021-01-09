@@ -26,10 +26,8 @@ class AddAttribute extends NodeModel
             return Data::of($feature)->set(
                 $this->getParameter('attribute_name'),
                 $this->getParameter('attribute_value'),
-            );
+            )->get();
         });
-
-
 
         $this->output($features);
     }
