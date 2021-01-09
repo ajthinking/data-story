@@ -10,6 +10,8 @@ use DataStory\Parameters\String_;
 
 class Cloner extends NodeModel
 {
+    const SHORT_DESCRIPTION  = 'Make X enumerated copies of each feature';
+
     const CATEGORY = Workflow::class;
 
     public static function parameters($data = [])

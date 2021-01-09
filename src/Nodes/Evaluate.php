@@ -9,6 +9,8 @@ use DataStory\Parameters\Textarea;
 
 class Evaluate extends NodeModel
 {
+    const SHORT_DESCRIPTION  = 'Run arbitary PHP code. You may use the variable: $feature';
+
     const CATEGORY = Workflow::class;
 
     public static function parameters($data = [])

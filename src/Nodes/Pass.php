@@ -7,6 +7,8 @@ use DataStory\NodeModel;
 
 class Pass extends NodeModel
 {
+    const SHORT_DESCRIPTION  = 'Does nothing :)';
+
     const CATEGORY = Workflow::class;
 
     public function run()

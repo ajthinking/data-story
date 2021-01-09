@@ -7,13 +7,13 @@ use DataStory\Parameters\String_;
 
 class Filter extends NodeModel
 {
+    const SHORT_DESCRIPTION  = 'Map features to output ports depending on feature attribute value';
+
     const IN_PORTS = ['Input'];
 
     const OUT_PORTS = ['Default'];
 
     const EDITABLE_OUT_PORTS = true;
-
-    const SHORT_DESCRIPTION  = 'Filter features by attribute values';
 
     public static function parameters($variation = [])
     {

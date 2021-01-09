@@ -9,6 +9,8 @@ use DataStory\Support\Data;
 
 class AddAttribute extends NodeModel
 {
+    const SHORT_DESCRIPTION  = 'Add an attribute to each feature';
+
     const CATEGORY = Workflow::class;
 
     public static function parameters($data = [])

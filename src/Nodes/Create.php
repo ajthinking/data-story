@@ -9,6 +9,8 @@ use DataStory\Parameters\String_;
 
 class Create extends NodeModel
 {
+    const SHORT_DESCRIPTION  = 'Create a sequence of enumerated objects';
+
     const CATEGORY = Workflow::class;
 
     const IN_PORTS = [];    

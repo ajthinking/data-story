@@ -11,6 +11,8 @@ use Illuminate\Support\Str;
 
 class EloquentQuery extends NodeModel
 {
+    const SHORT_DESCRIPTION  = 'Run query on a Eloquent Model';
+
     const IN_PORTS = [];
 
     const CATEGORY = Model::class;
@@ -40,7 +42,6 @@ class EloquentQuery extends NodeModel
 
         // Apply where statement // TODO ALLOW MULTIPLE
         $this->whereStatements()->reduce(function($query, $whereStatement) {
-            ray($whereStatement);
             return $query->where(...$whereStatement);
         }, $query);
 

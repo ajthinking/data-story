@@ -63,6 +63,7 @@ return [
         DataStory\Nodes\Map::class,
         DataStory\Nodes\Pass::class,
         DataStory\Nodes\Route::class,
+        DataStory\Nodes\Terminate::class,
         DataStory\Nodes\View::class,        
     ],
 ];
