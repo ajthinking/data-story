@@ -1,9 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Toolbar from './Toolbar';
-import Workbench from './pages/Workbench'
-import Inspector from './pages/Inspector'
-import Diagram from './Diagram';
+import pages from './pages/factory'
 import { inject, observer } from "mobx-react"
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -33,11 +31,8 @@ export default class App extends React.Component {
 
     renderActivePage()
     {
-        // Since dynamic <ActivePage /> does not work :| ???
-        let page = this.props.store.metadata.page
-
-        if(page === 'Workbench') return (<Workbench />);
-        if(page === 'Inspector') return (<Inspector />);
+        let Page =  pages(this.props.store.metadata.page)
+        return (<Page />)
     }
     
     componentDidMount() {

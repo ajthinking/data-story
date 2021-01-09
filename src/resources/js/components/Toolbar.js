@@ -5,6 +5,7 @@ import WorkbenchControl from './controls/WorkbenchControl';
 import OpenControl from './controls/OpenControl';
 import SaveControl from './controls/SaveControl';
 import RunControl from './controls/RunControl';
+import LogControl from './controls/LogControl';
 import AddNodeControl from './controls/AddNodeControl'
 
 @inject('store') @observer
@@ -24,6 +25,7 @@ export default class Toolbar extends React.Component {
                     <OpenControl />
                     <SaveControl />
                     <RunControl />
+                    <LogControl />                    
                     <AddNodeControl />
                     {this.renderInspectables()}       
                 </div>
@@ -44,11 +46,6 @@ export default class Toolbar extends React.Component {
                         </span>
                     )
                 })}
-                {/* {this.props.store.nodesWithInspectables().length > 0 ? <span
-                    onClick={((e) => this.props.store.setPage('Workbench'))}
-                    className={this.inspectableLinkStyle()}>
-                    <i className="fa fa-close"></i>
-                </span> : null} */}
             </span>
         );
     }
