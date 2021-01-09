@@ -3,7 +3,6 @@
 namespace DataStory;
 
 use DataStory\Parameters\String_;
-use DataStory\Support\ParameterBag;
 use Illuminate\Support\Collection;
 use stdClass;
 use DeepCopy\DeepCopy;

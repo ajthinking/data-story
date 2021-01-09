@@ -8,6 +8,8 @@ class Diagram
 
     public array $links;
 
+    public array $executionOrder = [];
+
     public $result = null;
 
     public function find($id)
@@ -42,23 +44,26 @@ class Diagram
 
     public static function deserialize($serialized)
     {
+        $data = json_decode($serialized);
+
         $diagram = new Diagram();
-        $diagram->data = json_decode($serialized);
 
         $diagram->links(
             collect(
-                array_values((array)$diagram->data->layers[0]->models)
+                array_values((array)$data->layers[0]->models)
             )->toArray()
         );
 
         $diagram->nodes(
             collect(
-                array_values((array) $diagram->data->layers[1]->models)
+                array_values((array) $data->layers[1]->models)
             )->map(function ($serializedNode) {
                 $nodeType = $serializedNode->options->nodePhp;
                 return $nodeType::deserialize($serializedNode);
             })->toArray()
         );
+
+        $diagram->executionOrder = $data->executionOrder;
 
         return $diagram;
     }
@@ -70,7 +75,7 @@ class Diagram
 
     public function run()
     {
-        foreach ($this->data->executionOrder as $nodeId) {
+        foreach ($this->executionOrder as $nodeId) {
 
             $node = $this->find($nodeId);
 
@@ -90,11 +95,6 @@ class Diagram
     public function getResult()
     {
         return $this->result;
-    }
-
-    public function output()
-    {
-        return view('welcome');
     }
 
     public static function capabilities()
