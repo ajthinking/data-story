@@ -62,6 +62,7 @@ return [
         DataStory\Nodes\Inspect::class,
         DataStory\Nodes\Map::class,
         DataStory\Nodes\Pass::class,
+        DataStory\Nodes\PortMap::class,
         DataStory\Nodes\Route::class,
         DataStory\Nodes\Terminate::class,
         DataStory\Nodes\View::class,        

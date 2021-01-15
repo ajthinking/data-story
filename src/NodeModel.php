@@ -81,6 +81,20 @@ abstract class NodeModel
         return $copier->copy($collection);
     }
 
+    public function getInPorts()
+    {
+        return collect($this->ports)->filter(function($port) {
+            return $port->in;
+        })->toArray();
+    }
+
+    public function getOutPorts()
+    {
+        return collect($this->ports)->filter(function($port) {
+            return !$port->in;
+        })->toArray();
+    }
+
     public function diagram()
     {
         return app('Diagram');
