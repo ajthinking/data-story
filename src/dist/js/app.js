@@ -89324,6 +89324,8 @@ var EngineFactory = /*#__PURE__*/function () {
     key: "default",
     value: function _default() {
       var engine = this.getEngine();
+      var state = engine.getStateMachine().getCurrentState();
+      state.dragNewLink.config.allowLooseLinks = false;
       engine.getNodeFactories().registerFactory(new _NodeFactory__WEBPACK_IMPORTED_MODULE_1__["default"]());
       var model = new _DiagramModel__WEBPACK_IMPORTED_MODULE_2__["default"]();
       engine.setModel(model);
@@ -89843,6 +89845,7 @@ var Diagram = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inject"])(
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_1__["CanvasWidget"], {
         engine: this.props.store.diagram.engine,
         refresh: this.props.store.diagram.refresh,
+        allowLooseLinks: false,
         className: this.style()
       }));
     }
@@ -90019,7 +90022,6 @@ var InspectorTable = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
     key: "renderTableHead",
     value: function renderTableHead() {
       if (this.hasPrimitiveFeatures()) {
-        console.log("HI");
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", {
           scope: "col",
           className: "px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -90044,6 +90046,10 @@ var InspectorTable = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
   }, {
     key: "renderTableBody",
     value: function renderTableBody() {
+      if (this.hasPrimitiveFeatures()) {
+        return this.renderPrimitiveTableBody();
+      }
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, this.getRows().map(function (row, rowIndex) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
           key: rowIndex,
@@ -90054,6 +90060,19 @@ var InspectorTable = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
             className: "px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
           }, column);
         }));
+      }));
+    }
+  }, {
+    key: "renderPrimitiveTableBody",
+    value: function renderPrimitiveTableBody() {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", null, this.getRows().map(function (row, rowIndex) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
+          key: rowIndex,
+          className: "bg-white"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", {
+          key: rowIndex,
+          className: "px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500"
+        }, row));
       }));
     }
   }, {
@@ -90089,10 +90108,6 @@ var InspectorTable = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
 
           return feature[header];
         });
-      });
-      return [];
-      return this.features().map(function (feature) {
-        return Object.values(feature);
       });
     }
   }]);
@@ -90389,7 +90404,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _controls_OpenControl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./controls/OpenControl */ "./src/resources/js/components/controls/OpenControl.js");
 /* harmony import */ var _controls_SaveControl__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./controls/SaveControl */ "./src/resources/js/components/controls/SaveControl.js");
 /* harmony import */ var _controls_RunControl__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./controls/RunControl */ "./src/resources/js/components/controls/RunControl.js");
-/* harmony import */ var _controls_LogControl__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./controls/LogControl */ "./src/resources/js/components/controls/LogControl.js");
+/* harmony import */ var _controls_LogControl__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./controls/LogControl */ "./src/resources/js/components/controls/LogControl.js");
 /* harmony import */ var _controls_AddNodeControl__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./controls/AddNodeControl */ "./src/resources/js/components/controls/AddNodeControl.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -90447,7 +90462,7 @@ var Toolbar = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"])(
         className: "flex w-full bg-gray-600 border-t-2 border-gray-500 shadow shadow-xl"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex no-wrap items-center flex-1 w-full px-2 py-2"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_WorkbenchControl__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_OpenControl__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_SaveControl__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_RunControl__WEBPACK_IMPORTED_MODULE_5__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_LogControl__WEBPACK_IMPORTED_MODULE_8__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_AddNodeControl__WEBPACK_IMPORTED_MODULE_7__["default"], null), this.renderInspectables()));
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_WorkbenchControl__WEBPACK_IMPORTED_MODULE_2__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_OpenControl__WEBPACK_IMPORTED_MODULE_3__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_SaveControl__WEBPACK_IMPORTED_MODULE_4__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_RunControl__WEBPACK_IMPORTED_MODULE_5__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_LogControl__WEBPACK_IMPORTED_MODULE_6__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_controls_AddNodeControl__WEBPACK_IMPORTED_MODULE_7__["default"], null), this.renderInspectables()));
     }
   }, {
     key: "renderInspectables",
@@ -91202,6 +91217,7 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
             link.addLabel(port.features.length);
           });
         });
+        console.log(response);
 
         _this2.showSuccessToast();
 

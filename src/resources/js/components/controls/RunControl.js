@@ -47,7 +47,7 @@ export default class RunControl extends BaseControl {
                     link.addLabel(port.features.length)
                 })
             })
-            
+            console.log(response);
             this.showSuccessToast();                
 
             this.props.store.setNotRunning()

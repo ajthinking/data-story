@@ -10,6 +10,7 @@ export default class Diagram extends React.Component {
                 <CanvasWidget
                     engine={this.props.store.diagram.engine}
                     refresh={this.props.store.diagram.refresh}
+                    allowLooseLinks={false}
                     className={this.style()}
                 />
             </div>

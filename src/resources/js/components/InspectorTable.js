@@ -34,7 +34,6 @@ export default class InspectorTable extends React.Component {
 
     renderTableHead() {
         if(this.hasPrimitiveFeatures()) {
-            console.log("HI")
             return (
                 <thead>
                     <tr>                        
@@ -68,6 +67,10 @@ export default class InspectorTable extends React.Component {
     }
 
     renderTableBody() {
+        if(this.hasPrimitiveFeatures()) {
+            return this.renderPrimitiveTableBody()
+        }
+
         return (
             <tbody>
                 {this.getRows().map((row, rowIndex) => {
@@ -86,6 +89,22 @@ export default class InspectorTable extends React.Component {
             </tbody>
         )
     }
+
+    renderPrimitiveTableBody() {
+        return (
+            <tbody>
+                {this.getRows().map((row, rowIndex) => {
+                    return (
+                        <tr key={rowIndex} className="bg-white">
+                            <td key={rowIndex} className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">
+                                {row}
+                            </td>                            
+                        </tr>
+                    )
+                })}
+            </tbody>
+        )
+    }    
 
     getHeaders() {
         let keys = this.features().map(i => {
@@ -116,14 +135,6 @@ export default class InspectorTable extends React.Component {
     
                 return feature[header]
             });
-        })        
-
-
-
-        return [];
-
-        return this.features().map(feature => {
-            return Object.values(feature)
         })
     }
 }
