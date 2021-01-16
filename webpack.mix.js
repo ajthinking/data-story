@@ -17,4 +17,5 @@ let pipe = mix.react('src/resources/js/app.js', 'src/dist/js')
  */
 if(process.env.MIX_DATASTORY_DEV_MODE_AUTO_PUBLISH) {
     pipe.copy('src/dist', '../dsh1/public/vendor/data-story')
+    pipe.copy('src/dist', 'docs') // github pages
 }
