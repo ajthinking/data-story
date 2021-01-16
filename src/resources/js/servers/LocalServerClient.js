@@ -19,6 +19,16 @@ export default class LocalServerClient extends AbstractServerClient {
     }
 
     run() {
-        
+        return new Promise((callback) => {
+
+            return callback({
+                // data: {
+                //     stories: [],
+                //     dataStoryCapabilities: {
+                //         availableNodes: []
+                //     }                    
+                // }
+            })
+        })        
     }
 }
