@@ -19,6 +19,7 @@ export class Store {
         page: 'Workbench',
         activeInspector: null,
         stories: [],
+        server: window.server ?? 'api',
     }
 
     constructor() {

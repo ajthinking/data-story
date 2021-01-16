@@ -92818,6 +92818,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 var Store = /*#__PURE__*/function () {
   function Store() {
+    var _window$server;
+
     _classCallCheck(this, Store);
 
     _defineProperty(this, "diagram", {
@@ -92832,7 +92834,8 @@ var Store = /*#__PURE__*/function () {
       running: false,
       page: 'Workbench',
       activeInspector: null,
-      stories: []
+      stories: [],
+      server: (_window$server = window.server) !== null && _window$server !== void 0 ? _window$server : 'api'
     });
 
     Object(mobx__WEBPACK_IMPORTED_MODULE_0__["makeObservable"])(this, {
