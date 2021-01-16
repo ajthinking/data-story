@@ -5,9 +5,9 @@ import pages from './pages/factory'
 import { inject, observer } from "mobx-react"
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
 import EngineFactory from '../EngineFactory'
-
+import RemoteServerClient from '../servers/RemoteServerClient';
+import LocalServerClient from '../servers/LocalServerClient';
 
 @inject('store') @observer
 export default class App extends React.Component {
@@ -42,17 +42,19 @@ export default class App extends React.Component {
     }
 
     boot() {
-        axios.post('/datastory/api/boot', {
+        // NORMAL PHP CLIENT
+        //let server = new RemoteServerClient('/datastory/api')
+
+        this.props.store.metadata.server.boot({
             story: window.location.href.split("/datastory").pop().replace('/', '')
-        })
-        .then((response) => {
+        }).then((response) => {
             
             this.props.store.setEngine(
                 EngineFactory.loadOrCreate(
                     response.data.serializedModel ?? null
                 )
             )
-
+            
             this.props.store.setAvailableNodes(
                 response.data.dataStoryCapabilities.availableNodes
             );

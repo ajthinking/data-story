@@ -89646,9 +89646,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_7__);
-/* harmony import */ var _EngineFactory__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../EngineFactory */ "./src/resources/js/EngineFactory.js");
+/* harmony import */ var _EngineFactory__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../EngineFactory */ "./src/resources/js/EngineFactory.js");
+/* harmony import */ var _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/resources/js/servers/RemoteServerClient.js");
+/* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../servers/LocalServerClient */ "./src/resources/js/servers/LocalServerClient.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var _dec, _class;
@@ -89672,6 +89672,7 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 
 
 
@@ -89726,12 +89727,14 @@ var App = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["inject"])('sto
     value: function boot() {
       var _this2 = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_7___default.a.post('/datastory/api/boot', {
+      // NORMAL PHP CLIENT
+      //let server = new RemoteServerClient('/datastory/api')
+      this.props.store.metadata.server.boot({
         story: window.location.href.split("/datastory").pop().replace('/', '')
       }).then(function (response) {
         var _response$data$serial;
 
-        _this2.props.store.setEngine(_EngineFactory__WEBPACK_IMPORTED_MODULE_8__["default"].loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null));
+        _this2.props.store.setEngine(_EngineFactory__WEBPACK_IMPORTED_MODULE_7__["default"].loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null));
 
         _this2.props.store.setAvailableNodes(response.data.dataStoryCapabilities.availableNodes);
 
@@ -91188,12 +91191,8 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
     value: function onClick() {
       var _this2 = this;
 
-      this.props.store.setRunning(); // NORMAL PHP CLIENT
-
-      var client = new _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_4__["default"]('/datastory/api'); // TODO JS CLIENT 
-      // let jsClient = new LocalServerClient ...
-
-      client.run(this.props.store.diagram.engine.model).then(function (response) {
+      this.props.store.setRunning();
+      this.props.store.metadata.server.run(this.props.store.diagram.engine.model).then(function (response) {
         // TRANSFER FEATURE AT NODES (INSPECTABLES)
         response.data.diagram.nodes.filter(function (phpNode) {
           return phpNode.features;
@@ -91217,7 +91216,6 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
             link.addLabel(port.features.length);
           });
         });
-        console.log(response);
 
         _this2.showSuccessToast();
 
@@ -92704,6 +92702,23 @@ var LocalServerClient = /*#__PURE__*/function (_AbstractServerClient) {
     value: function sayHi() {
       alert("HI!");
     }
+  }, {
+    key: "boot",
+    value: function boot() {
+      return new Promise(function (callback) {
+        return callback({
+          data: {
+            stories: [],
+            dataStoryCapabilities: {
+              availableNodes: []
+            }
+          }
+        });
+      });
+    }
+  }, {
+    key: "run",
+    value: function run() {}
   }]);
 
   return LocalServerClient;
@@ -92758,8 +92773,10 @@ var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
 
   var _super = _createSuper(RemoteServerClient);
 
-  function RemoteServerClient(root) {
+  function RemoteServerClient() {
     var _this;
+
+    var root = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/datastory/api';
 
     _classCallCheck(this, RemoteServerClient);
 
@@ -92769,6 +92786,11 @@ var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
   }
 
   _createClass(RemoteServerClient, [{
+    key: "boot",
+    value: function boot(options) {
+      return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(this.root + '/boot', options);
+    }
+  }, {
     key: "run",
     value: function run(model) {
       return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(this.root + '/run', {
@@ -92781,6 +92803,30 @@ var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
 }(_AbstractServerClient__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
+
+/***/ }),
+
+/***/ "./src/resources/js/servers/ServerFactory.js":
+/*!***************************************************!*\
+  !*** ./src/resources/js/servers/ServerFactory.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/resources/js/servers/RemoteServerClient.js");
+/* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../servers/LocalServerClient */ "./src/resources/js/servers/LocalServerClient.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function (name) {
+  var servers = {
+    RemoteServerClient: _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_0__["default"],
+    LocalServerClient: _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1__["default"]
+  };
+  var selected = servers[name];
+  return new selected();
+});
 
 /***/ }),
 
@@ -92800,6 +92846,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _NodeModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../NodeModel */ "./src/resources/js/NodeModel.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _servers_ServerFactory__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../servers/ServerFactory */ "./src/resources/js/servers/ServerFactory.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -92811,6 +92858,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 
@@ -92835,7 +92883,7 @@ var Store = /*#__PURE__*/function () {
       page: 'Workbench',
       activeInspector: null,
       stories: [],
-      server: (_window$server = window.server) !== null && _window$server !== void 0 ? _window$server : 'api'
+      server: Object(_servers_ServerFactory__WEBPACK_IMPORTED_MODULE_4__["default"])((_window$server = window.server) !== null && _window$server !== void 0 ? _window$server : 'RemoteServerClient')
     });
 
     Object(mobx__WEBPACK_IMPORTED_MODULE_0__["makeObservable"])(this, {

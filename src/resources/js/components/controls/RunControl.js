@@ -17,13 +17,7 @@ export default class RunControl extends BaseControl {
     {
         this.props.store.setRunning()
 
-        // NORMAL PHP CLIENT
-        let client = new RemoteServerClient('/datastory/api')
-
-        // TODO JS CLIENT 
-        // let jsClient = new LocalServerClient ...
-
-        client.run(
+        this.props.store.metadata.server.run(
             this.props.store.diagram.engine.model
         )
         .then((response) => {
@@ -47,7 +41,6 @@ export default class RunControl extends BaseControl {
                     link.addLabel(port.features.length)
                 })
             })
-            console.log(response);
             this.showSuccessToast();                
 
             this.props.store.setNotRunning()
