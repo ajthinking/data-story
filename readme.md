@@ -15,7 +15,7 @@ DataStory provides a workbench for designing data processes. A flow of nodes def
 
 > More features/use cases to be announced shortly.
 
-## Installation
+## Laravel Installation
 In your Laravel app, run
 ```
 composer require ajthinking/data-story
@@ -23,6 +23,9 @@ php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
 ```
 
 That's it! Go to the workbench at `/datastory`.
+
+## Live Demo (WIP)
+A JS server implementation is deployed at https://ajthinking.github.io/data-story/
 
 ## Screencast
 https://www.youtube.com/watch?v=IAV39TRr1gk
