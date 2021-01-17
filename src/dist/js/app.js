@@ -91193,7 +91193,9 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
 
       this.props.store.setRunning();
       this.props.store.metadata.server.run(this.props.store.diagram.engine.model).then(function (response) {
-        // TRANSFER FEATURE AT NODES (INSPECTABLES)
+        // LOG TO CONSOLE
+        console.log(response.data); // TRANSFER FEATURE AT NODES (INSPECTABLES)
+
         response.data.diagram.nodes.filter(function (phpNode) {
           return phpNode.features;
         }).forEach(function (phpNode) {
@@ -91526,11 +91528,19 @@ var JSON_ = /*#__PURE__*/function (_React$Component) {
   _createClass(JSON_, [{
     key: "render",
     value: function render() {
+      var _this = this;
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex flex-col my-4 justify-center align-middle text-gray-500 text-xs font-mono"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         className: "my-2"
-      }, this.props.options.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "TODO"));
+      }, this.props.options.name), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+        onChange: function onChange(e) {
+          _this.props.handleChange(e, _this.props.options);
+        },
+        className: "px-2 py-1 rounded h-64",
+        value: this.props.options.value
+      }));
     }
   }]);
 
@@ -91762,12 +91772,14 @@ var Where = /*#__PURE__*/function (_React$Component) {
         },
         value: this.props.options.operator
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
-        value: ">"
-      }, "GREATER THAN"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
         value: "="
       }, "EQUALS"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: ">"
+      }, "GREATER THAN"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
         value: "<"
-      }, "LESS THAN")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+      }, "LESS THAN"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: "like"
+      }, "LIKE")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         onChange: function onChange(e) {
           _this.props.handleChange(e, _this.props.options);
         },

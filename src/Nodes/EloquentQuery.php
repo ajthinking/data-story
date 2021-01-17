@@ -96,7 +96,7 @@ class EloquentQuery extends NodeModel
             return $limit;
         }
 
-        return PHP_INT_SIZE;
+        return PHP_INT_MAX;
     }
 
     protected static function getAppModels()

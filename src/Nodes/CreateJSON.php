@@ -4,6 +4,7 @@ namespace DataStory\Nodes;
 
 use DataStory\Categories\Workflow;
 use DataStory\NodeModel;
+use DataStory\Parameters\JSON_;
 use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 
@@ -19,7 +20,7 @@ class CreateJSON extends NodeModel
     {
         return [
             String_::make('node_name')->default('CreateJSON'),
-            Number::make('json')->default('[{"foo": "bar"}]'),
+            JSON_::make('json')->default(static::defaultJson()),
         ];
     }
 
@@ -30,5 +31,20 @@ class CreateJSON extends NodeModel
                 json_decode($this->getParameter('json'))
             )
         );
+    }
+
+    protected static function defaultJson()
+    {
+        return json_encode([
+            [
+                'feature_id' => '1'
+            ],
+            [
+                'feature_id' => '2'
+            ],
+            [
+                'feature_id' => '3'
+            ],                        
+        ], JSON_PRETTY_PRINT);
     }
 }

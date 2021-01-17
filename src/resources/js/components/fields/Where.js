@@ -23,18 +23,22 @@ export default class Where extends React.Component {
                         {/* <option value="Contains">
                             CONTAINS
                         </option> */}
+                        <option value="=">
+                            EQUALS
+                        </option>                        
                         <option value=">">
                             GREATER THAN
                         </option>                                                
-                        <option value="=">
-                            EQUALS
-                        </option>
+
                         {/* <option value="==="> TODO DOES NOT WORK OPERATORS ARE IN CONTEXT OF DB
                             EQUALS STRICT
                         </option> */}
                         <option value="<">
                             LESS THAN
-                        </option>                        
+                        </option>
+                        <option value="like">
+                            LIKE
+                        </option>                                                
                     </select>
                     <input
                         onChange={e => {this.props.handleChange(e, this.props.options)}}
