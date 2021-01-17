@@ -20,7 +20,7 @@ export default class LocalServerClient extends AbstractServerClient {
 
     run() {
         return new Promise((callback) => {
-
+            return alert("Not implemented")
             return callback({
                 // data: {
                 //     stories: [],
