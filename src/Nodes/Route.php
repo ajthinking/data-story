@@ -29,8 +29,9 @@ class Route extends NodeModel
 
     public function publish()
     {
-        \Illuminate\Support\Facades\Route::get('cool', function() {
-            //
-        });
+        return (object) [
+            'type'      => 'get',
+            'uri'       => $this->getParameter('route'),
+        ];
     }
 }
