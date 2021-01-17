@@ -22,7 +22,7 @@ export default class RunControl extends BaseControl {
         )
         .then((response) => {
             // LOG TO CONSOLE
-            console.log(response.data)
+            console.log('response.data', response.data)
 
             // TRANSFER FEATURE AT NODES (INSPECTABLES)
             response.data.diagram.nodes.filter(phpNode => {
@@ -52,7 +52,7 @@ export default class RunControl extends BaseControl {
         })
         .catch((error) => {
             this.props.store.setNotRunning()
-            console.log(error);
+            console.log({error});
             this.showFailureToast();
         });
 

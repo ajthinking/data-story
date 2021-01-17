@@ -91194,7 +91194,7 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
       this.props.store.setRunning();
       this.props.store.metadata.server.run(this.props.store.diagram.engine.model).then(function (response) {
         // LOG TO CONSOLE
-        console.log(response.data); // TRANSFER FEATURE AT NODES (INSPECTABLES)
+        console.log('response.data', response.data); // TRANSFER FEATURE AT NODES (INSPECTABLES)
 
         response.data.diagram.nodes.filter(function (phpNode) {
           return phpNode.features;
@@ -91227,7 +91227,9 @@ var RunControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"
       })["catch"](function (error) {
         _this2.props.store.setNotRunning();
 
-        console.log(error);
+        console.log({
+          error: error
+        });
 
         _this2.showFailureToast();
       });

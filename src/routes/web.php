@@ -5,15 +5,16 @@ use DataStory\Models\Story;
 use Illuminate\Support\Facades\Route;
 
 Route::view('datastory/{story?}', 'data-story::workbench');
+Route::get('/datastory/routes/{story}', \DataStory\Controllers\Reduce::class);
 
-Route::get('cool', function() {
-    $diagram = Diagram::deserialize(
-        Story::where(
-            'path', 'like', '%r2v.story.json'
-        )->first()->content        
-    );
+// Route::get('cool', function() {
+//     $diagram = Diagram::deserialize(
+//         Story::where(
+//             'path', 'like', '%r2v.story.json'
+//         )->first()->content        
+//     );
 
-    return $diagram->registerGlobal()
-        ->run()
-        ->getResult();
-});
+//     return $diagram->registerGlobal()
+//         ->run()
+//         ->getResult();
+// });

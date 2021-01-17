@@ -3,6 +3,7 @@
 namespace DataStory;
 
 use DataStory\Commands\NodeCommand;
+use DataStory\Controllers\Reduce;
 use DataStory\Models\Story;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -45,8 +46,6 @@ class DataStoryServiceProvider extends ServiceProvider
 
         require __DIR__ . '/routes/web.php';
         require __DIR__ . '/routes/api.php';
-
-        $this->publishStoryRoutes();
     }
 
     /**
@@ -55,30 +54,5 @@ class DataStoryServiceProvider extends ServiceProvider
     public static function isInDevelopment()
     {
         return config('data-story.dev-mode');
-    }
-
-    protected function publishStoryRoutes()
-    {
-        if(!config('data-story.enable-story-routes')) return;
-
-        $routes = Story::all()->flatMap(function($story) {
-            try {
-                $diagram = Diagram::deserialize($story->content);
-                $routes = $diagram->publishes();
-                $routes->each(function($route) use($diagram) {
-                    try {
-                        Route::get($route->uri, $diagram);
-                    } catch(Throwable $e) {
-                        //dd($e);
-                    }
-                });
-
-                return $routes;
-            } catch(Throwable $e) {
-
-            }
-        })->filter();
-
-        //dd($routes);
     }
 }
