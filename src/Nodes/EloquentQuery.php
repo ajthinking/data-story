@@ -130,7 +130,7 @@ class EloquentQuery extends NodeModel
 		return collect($models);        
     }
 
-    public function whereStatements()
+    protected function whereStatements()
     {
         $data = $this->data->options->parameters->where_statement;
 
