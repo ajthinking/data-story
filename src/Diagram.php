@@ -12,6 +12,11 @@ class Diagram
 
     public $result = null;
 
+    public function __invoke()
+    {
+        dd("YOOO???");
+    }
+
     public function find($id)
     {
         return collect(
@@ -102,5 +107,14 @@ class Diagram
         return [
             'availableNodes' => NodeCatalogue::make()->toArray()
         ];
+    }
+
+    public function publishes()
+    {
+        return collect($this->nodes)->map(function($node) {
+            if(!method_exists($node, 'publishes')) return;
+
+            return $node->publishes();
+        })->filter();
     }
 }

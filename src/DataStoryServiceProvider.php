@@ -4,6 +4,7 @@ namespace DataStory;
 
 use DataStory\Commands\NodeCommand;
 use DataStory\Models\Story;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Throwable;
 
@@ -60,13 +61,24 @@ class DataStoryServiceProvider extends ServiceProvider
     {
         if(!config('data-story.enable-story-routes')) return;
 
-        $stories = Story::all()->map(function($story) {
+        $routes = Story::all()->flatMap(function($story) {
             try {
                 $diagram = Diagram::deserialize($story->content);
-                // Extract all that publishes a route here
+                $routes = $diagram->publishes();
+                $routes->each(function($route) use($diagram) {
+                    try {
+                        Route::get($route->uri, $diagram);
+                    } catch(Throwable $e) {
+                        //dd($e);
+                    }
+                });
+
+                return $routes;
             } catch(Throwable $e) {
-                
+
             }
-        });
+        })->filter();
+
+        //dd($routes);
     }
 }

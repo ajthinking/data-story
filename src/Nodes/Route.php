@@ -27,7 +27,7 @@ class Route extends NodeModel
         );
     }
 
-    public function publish()
+    public function publishes()
     {
         return (object) [
             'type'      => 'get',
