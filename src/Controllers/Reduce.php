@@ -10,7 +10,7 @@ use DataStory\Models\Story;
  */
 class Reduce
 {
-    public function __invoke($story)
+    public function __invoke(string $story)
     {
         $diagram = Diagram::deserialize(
             Story::where('name', $story)->first()->content

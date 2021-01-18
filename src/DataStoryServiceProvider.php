@@ -4,10 +4,10 @@ namespace DataStory;
 
 use DataStory\Commands\NodeCommand;
 use DataStory\Controllers\Reduce;
-use DataStory\Models\Story;
+use DataStory\Repositories\RouteRepository;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Throwable;
+use stdClass;
 
 class DataStoryServiceProvider extends ServiceProvider
 {
@@ -46,6 +46,8 @@ class DataStoryServiceProvider extends ServiceProvider
 
         require __DIR__ . '/routes/web.php';
         require __DIR__ . '/routes/api.php';
+
+        $this->publishStoryRoutes();
     }
 
     /**
@@ -54,5 +56,15 @@ class DataStoryServiceProvider extends ServiceProvider
     public static function isInDevelopment()
     {
         return config('data-story.dev-mode');
+    }
+
+    protected function publishStoryRoutes()
+    {
+        RouteRepository::all()->each(function(stdClass $route) {
+            // Tell DataStory which story to bind to which route
+            RouteRepository::register($route->uri, $route->story);
+            // The Laravel Route. The Reduce class will resolve the associated story
+            Route::get($route->uri, Reduce::class);
+        });
     }
 }
