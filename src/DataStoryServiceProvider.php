@@ -60,9 +60,11 @@ class DataStoryServiceProvider extends ServiceProvider
 
     protected function publishStoryRoutes()
     {
-        RouteRepository::all()->each(function(stdClass $route) {
+        app()->instance(RouteRepository::class, new RouteRepository);
+
+        app(RouteRepository::class)->all()->each(function(stdClass $route) {
             // Tell DataStory which story to bind to which route
-            RouteRepository::register($route->uri, $route->story);
+            app(RouteRepository::class)->register($route->uri, $route->story);
             // The Laravel Route. The Reduce class will resolve the associated story
             Route::get($route->uri, Reduce::class);
         });

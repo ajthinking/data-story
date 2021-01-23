@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 
 class RouteRepository
 {
+    public $storyMap = [];
+
     public static function all()
     {
         return Story::valid()->map(function(Story $story) {
@@ -24,14 +26,9 @@ class RouteRepository
         })->flatten();
     }
 
-    public static function register(string $uri, string $storyName)
+    public function register(string $uri, string $storyName)
     {
-        app()->singleton(
-            'DATASTORY_ROUTE_' . Str::slug($uri),
-            function() use($storyName) {
-                return $storyName;
-            } 
-        );   
+        $this->storyMap[$uri] = $storyName;   
     }
 
     public static function resolveStory(string $uri)
@@ -41,5 +38,10 @@ class RouteRepository
         } catch(BindingResolutionException $e) {
 
         }     
+    }
+
+    public function storyAtUri($uri)
+    {
+        return $this->storyMap[$uri];
     }
 }
