@@ -31,15 +31,6 @@ class RouteRepository
         $this->storyMap[$uri] = $storyName;   
     }
 
-    public static function resolveStory(string $uri)
-    {
-        try {
-            return app('DATASTORY_ROUTE_' . Str::slug($uri));
-        } catch(BindingResolutionException $e) {
-
-        }     
-    }
-
     public function storyAtUri($uri)
     {
         return $this->storyMap[$uri];
