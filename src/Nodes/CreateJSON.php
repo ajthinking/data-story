@@ -37,14 +37,17 @@ class CreateJSON extends NodeModel
     {
         return json_encode([
             [
-                'feature_id' => '1'
+                'name' => 'Robin Hood'
             ],
             [
-                'feature_id' => '2'
+                'name' => 'Lady Marian'
             ],
             [
-                'feature_id' => '3'
-            ],                        
+                'name' => 'Little John'
+            ],  
+            [
+                'name' => 'Friar Tuck'
+            ],                                    
         ], JSON_PRETTY_PRINT);
     }
 }

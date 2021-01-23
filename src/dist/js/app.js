@@ -89647,8 +89647,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _EngineFactory__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../EngineFactory */ "./src/resources/js/EngineFactory.js");
-/* harmony import */ var _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/resources/js/servers/RemoteServerClient.js");
-/* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../servers/LocalServerClient */ "./src/resources/js/servers/LocalServerClient.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var _dec, _class;
@@ -89672,8 +89670,6 @@ function _assertThisInitialized(self) { if (self === void 0) { throw new Referen
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
 
 
 
@@ -89801,9 +89797,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Diagram; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @projectstorm/react-canvas-core */ "./node_modules/@projectstorm/react-canvas-core/dist/es/index.js");
-/* harmony import */ var _projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @projectstorm/react-canvas-core */ "./node_modules/@projectstorm/react-canvas-core/dist/es/index.js");
+/* harmony import */ var _projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var _dec, _class;
@@ -89831,21 +89829,27 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var Diagram = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inject"])('store'), _dec(_class = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["observer"])(_class = /*#__PURE__*/function (_React$Component) {
+
+var Diagram = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["inject"])('store'), _dec(_class = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["observer"])(_class = /*#__PURE__*/function (_React$Component) {
   _inherits(Diagram, _React$Component);
 
   var _super = _createSuper(Diagram);
 
-  function Diagram() {
+  function Diagram(props) {
+    var _this;
+
     _classCallCheck(this, Diagram);
 
-    return _super.apply(this, arguments);
+    _this = _super.call(this, props);
+    _this.diagramRef = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createRef"]();
+    return _this;
   }
 
   _createClass(Diagram, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_1__["CanvasWidget"], {
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_projectstorm_react_canvas_core__WEBPACK_IMPORTED_MODULE_2__["CanvasWidget"], {
+        ref: this.diagramRef,
         engine: this.props.store.diagram.engine,
         refresh: this.props.store.diagram.refresh,
         allowLooseLinks: false,
@@ -89856,6 +89860,19 @@ var Diagram = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inject"])(
     key: "style",
     value: function style() {
       return 'fullsize bg-gray-600';
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      // FOCUS THE WORKBENCH!!! HOW?
+      window.focus();
+      console.log(window); //window.onfocus = function() { blurred && (location.reload()); };
+
+      setTimeout(function () {
+        react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.findDOMNode(_this2.diagramRef.current).focus();
+      }, 500);
     }
   }]);
 
@@ -92608,7 +92625,9 @@ var Workbench = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inject"]
   _createClass(Workbench, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Diagram__WEBPACK_IMPORTED_MODULE_1__["default"], null);
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Diagram__WEBPACK_IMPORTED_MODULE_1__["default"], {
+        ref: "pppage"
+      });
     }
   }]);
 

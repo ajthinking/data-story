@@ -6,7 +6,7 @@ import { inject } from "mobx-react"
 export default class Workbench extends React.Component {
     render() {
         return (
-            <Diagram />
+            <Diagram ref="pppage" />
         );
     }
 }

@@ -1,13 +1,20 @@
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { inject, observer } from "mobx-react"
 
 @inject('store') @observer
 export default class Diagram extends React.Component {
+    constructor(props) {
+        super(props);
+        this.diagramRef = React.createRef();
+    }
+
     render() {
         return (
             <div>
                 <CanvasWidget
+                    ref={this.diagramRef}
                     engine={this.props.store.diagram.engine}
                     refresh={this.props.store.diagram.refresh}
                     allowLooseLinks={false}
@@ -19,5 +26,19 @@ export default class Diagram extends React.Component {
 
     style() {
         return 'fullsize bg-gray-600'
+    }
+
+    componentDidMount() {
+        // FOCUS THE WORKBENCH!!! HOW?
+
+        window.focus()
+        console.log(window);
+        //window.onfocus = function() { blurred && (location.reload()); };
+
+        setTimeout(() => {
+            ReactDOM.findDOMNode(this.diagramRef.current).focus();            
+        }, 500)
+
+
     }
 }

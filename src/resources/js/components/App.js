@@ -6,8 +6,6 @@ import { inject, observer } from "mobx-react"
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EngineFactory from '../EngineFactory'
-import RemoteServerClient from '../servers/RemoteServerClient';
-import LocalServerClient from '../servers/LocalServerClient';
 
 @inject('store') @observer
 export default class App extends React.Component {
@@ -54,7 +52,7 @@ export default class App extends React.Component {
                     response.data.serializedModel ?? null
                 )
             )
-            
+
             this.props.store.setAvailableNodes(
                 response.data.dataStoryCapabilities.availableNodes
             );
@@ -93,7 +91,7 @@ export default class App extends React.Component {
     registerExitConfirmation() {
         window.onbeforeunload = function(e) {
             return "Do you want to exit this page?";
-          };        
+        };        
     }
 
     showBootFailureToast()
@@ -107,5 +105,5 @@ export default class App extends React.Component {
             pauseOnHover: true,
             draggable: true,
         });
-    }    
+    }
 }

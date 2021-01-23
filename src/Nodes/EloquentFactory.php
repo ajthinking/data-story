@@ -13,7 +13,7 @@ class EloquentFactory extends NodeModel
     {
         return [
             String_::make('node_name')->default('EloquentFactory'),
-            String_::make('model'),
+            String_::make('model')->default('App\Models\User'),
         ];
     }
 
