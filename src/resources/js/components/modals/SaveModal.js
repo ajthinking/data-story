@@ -8,9 +8,10 @@ import {toast, Slide } from 'react-toastify';
 export default class SaveModal extends React.Component {
     constructor(props) {
         super(props)
+
         this.state = {
-            storyName: ''
-        }
+            storyName: this.props.defaultStory
+        }        
     }
 
     handleChange(event) {
@@ -37,6 +38,7 @@ export default class SaveModal extends React.Component {
         .then((response) => {
             this.showSuccessToast();
             this.props.closeModal();
+            this.props.store.setActiveStory(this.state.storyName)
         })
         .catch(function (error) {
             alert('SOMETHING WENT WRONG!')
@@ -44,6 +46,8 @@ export default class SaveModal extends React.Component {
     }    
 
 	render() {
+        this.state.storyName = this.state.storyName ? this.state.storyName : this.props.defaultStory
+
 		return (
             <div>
                 {this.renderHeading()}

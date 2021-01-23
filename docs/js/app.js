@@ -91369,7 +91369,8 @@ var SaveControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject
     _this.title = 'Save story';
     _this.icon = 'fas fa-save';
     _this.state = {
-      isOpen: false
+      isOpen: false,
+      defaultStory: _this.props.store.metadata.activeStory
     };
     return _this;
   }
@@ -91389,6 +91390,7 @@ var SaveControl = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject
         onRequestClose: this.closeModal.bind(this),
         style: _utils_modalStyle__WEBPACK_IMPORTED_MODULE_5__["default"]
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modals_SaveModal__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        defaultStory: this.state.defaultStory,
         closeModal: this.closeModal.bind(this)
       })));
     }
@@ -92321,7 +92323,7 @@ var SaveModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
 
     _this = _super.call(this, props);
     _this.state = {
-      storyName: ''
+      storyName: _this.props.defaultStory
     };
     return _this;
   }
@@ -92351,6 +92353,8 @@ var SaveModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
         _this2.showSuccessToast();
 
         _this2.props.closeModal();
+
+        _this2.props.store.setActiveStory(_this2.state.storyName);
       })["catch"](function (error) {
         alert('SOMETHING WENT WRONG!');
       });
@@ -92358,6 +92362,7 @@ var SaveModal = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_1__["inject"]
   }, {
     key: "render",
     value: function render() {
+      this.state.storyName = this.state.storyName ? this.state.storyName : this.props.defaultStory;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, this.renderHeading(), this.renderBody(), this.renderActions());
     }
   }, {
@@ -92927,6 +92932,7 @@ var Store = /*#__PURE__*/function () {
       page: 'Workbench',
       activeInspector: null,
       stories: [],
+      activeStory: '',
       server: Object(_servers_ServerFactory__WEBPACK_IMPORTED_MODULE_4__["default"])((_window$server = window.server) !== null && _window$server !== void 0 ? _window$server : 'RemoteServerClient')
     });
 
@@ -92941,6 +92947,7 @@ var Store = /*#__PURE__*/function () {
       goToInspector: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
       refreshDiagram: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
       setActiveInspector: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
+      setActiveStory: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
       setAvailableNodes: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
       setEngine: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
       setLatestNode: mobx__WEBPACK_IMPORTED_MODULE_0__["action"].bound,
@@ -93027,6 +93034,11 @@ var Store = /*#__PURE__*/function () {
     key: "increaseNodeSerial",
     value: function increaseNodeSerial() {
       this.diagram.nodeSerial++;
+    }
+  }, {
+    key: "setActiveStory",
+    value: function setActiveStory(story) {
+      this.metadata.activeStory = story;
     }
   }, {
     key: "setActiveInspector",

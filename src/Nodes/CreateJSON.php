@@ -12,9 +12,7 @@ class CreateJSON extends NodeModel
 {
     const SHORT_DESCRIPTION  = 'Create a sequence of objects from a JSON array';
 
-    const CATEGORY = Workflow::class;
-
-    const IN_PORTS = [];    
+    const CATEGORY = Workflow::class;    
 
     public static function parameters($data = [])
     {

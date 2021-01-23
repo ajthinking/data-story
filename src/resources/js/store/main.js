@@ -20,6 +20,7 @@ export class Store {
         page: 'Workbench',
         activeInspector: null,
         stories: [],
+        activeStory: '',
         server: serverFactory(window.server ?? 'RemoteServerClient'),
     }
 
@@ -36,6 +37,7 @@ export class Store {
             goToInspector: action.bound,
             refreshDiagram: action.bound,
             setActiveInspector: action.bound,
+            setActiveStory: action.bound,
             setAvailableNodes: action.bound,
             setEngine: action.bound,
             setLatestNode: action.bound,
@@ -120,6 +122,10 @@ export class Store {
 
     increaseNodeSerial() {
         this.diagram.nodeSerial++        
+    }
+
+    setActiveStory(story) {
+        this.metadata.activeStory = story
     }
 
     setActiveInspector(nodeId) {

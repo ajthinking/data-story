@@ -13,7 +13,8 @@ export default class SaveControl extends BaseControl {
         this.title = 'Save story'
         this.icon = 'fas fa-save'
         this.state = {
-            isOpen: false
+            isOpen: false,
+            defaultStory: this.props.store.metadata.activeStory
         }
     }
 
@@ -33,6 +34,7 @@ export default class SaveControl extends BaseControl {
                 style={modalStyle}
             >
                     <SaveModal
+                        defaultStory={this.state.defaultStory}
                         closeModal={this.closeModal.bind(this)}
                     />
             </Modal>
@@ -43,7 +45,7 @@ export default class SaveControl extends BaseControl {
         //this.props.store.diagram.engine.model.setLocked(false);
 
         this.setState({
-            isOpen: false
+            isOpen: false,
         });
-    }    
+    }   
 }
