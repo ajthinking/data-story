@@ -6,7 +6,7 @@ use DataStory\Categories\Laravel;
 use DataStory\NodeModel;
 use DataStory\Parameters\String_;
 
-class ReturnJson extends NodeModel
+class ReturnJSON extends NodeModel
 {
     const CATEGORY = Laravel::class;
 
