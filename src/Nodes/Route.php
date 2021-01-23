@@ -23,7 +23,7 @@ class Route extends NodeModel
     public function run()
     {
         $this->output(
-            collect([request()])
+            collect([(object) request()->all()])
         );
     }
 
