@@ -18,7 +18,7 @@ DataStory provides a workbench for designing data processes. A flow of nodes def
 ## Laravel Installation
 In your Laravel app, run
 ```
-composer require ajthinking/data-story
+composer require ajthinking/data-story --dev
 php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
 ```
 
