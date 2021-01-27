@@ -1,34 +1,94 @@
-# DataStory
-
-⚡ Visual coding ⚡ Process builder ⚡ Data driven design ⚡ ETL ⚡ Laravel + React ⚡ Alpha in development ⚡
-
-<img src="https://user-images.githubusercontent.com/3457668/104057839-179d0000-51f3-11eb-9c03-a3aff8a2a9cf.png">
+# DataStory ⚡ visual programming for Laravel
 
 ![tests](https://github.com/ajthinking/data-story/workflows/tests/badge.svg)
 ![version](https://img.shields.io/packagist/v/ajthinking/data-story?color=blue)
+![proofofconcept](https://img.shields.io/badge/proof%20of%20concept-gold)
 
-## What the heck is this :smile:
-DataStory provides a workbench for designing data processes. A flow of nodes defines operations such as Read - Create - Transform - Inspect - Write. Some use cases include:
+DataStory provides a workbench for designing data flow diagrams.
 
-* Allow non coders to visually design data flows in context of your Laravel application. The flow can be executed and saved for future use.
-* Quickly query, filter and transform models and view them in separated tables.
 
-> More features/use cases to be announced shortly.
+![image](https://user-images.githubusercontent.com/3457668/105969887-07a56d00-6089-11eb-978f-d829d1ce1d1c.png)
 
-## Laravel Installation
-In your Laravel app, run
+
+
+## Installation
 ```
-composer require ajthinking/data-story
+composer require ajthinking/data-story --dev
 php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
 ```
 
-That's it! Go to the workbench at `/datastory`.
+## Examples
+A DataStory script can be executed via GUI or HTTP.
 
-## Live Demo (WIP)
-A JS server implementation is deployed at https://ajthinking.github.io/data-story/
+### :bulb: Tinker with data in GUI
+![image](https://user-images.githubusercontent.com/3457668/105964532-9d89c980-6082-11eb-95f9-4ffb3c94fb9f.png)
+:point_right: Open the workbench at `/datastory`. Click the :heavy_plus_sign: icon and select one of your models. Next, add an Inspector. Press the :arrow_forward: icon to execute the diagram. An Inspect tab will appear in the toolbar where you can review the resulting data.
+<hr>
 
-## Screencast
-https://www.youtube.com/watch?v=IAV39TRr1gk
+### :bulb: Make a view route
+![image](https://user-images.githubusercontent.com/3457668/105965234-75e73100-6083-11eb-8ab2-3858d7e5c990.png)
+:point_right: Add a Route node. Double click it and configure the route uri. Next, add a View node and configure the view parameter. Optionally, add ports and connect data the view needs. To publish the route, click the save icon in the toolbar.
+<hr>
+
+### :bulb: JSON API routes
+![image](https://user-images.githubusercontent.com/3457668/105966254-b4c9b680-6084-11eb-8553-b201f31abea1.png)
+:point_right: Use a ReturnJSON node to return the current collection as a HTTP response. As in the view example, you must first save the story to publish the route.
+<hr>
+
+### :bulb: Use as artisan command
+TODO
+<hr>
+
+## Available default nodes
+```
+AddAttribute,
+Cloner,
+Create,
+CreateJSON,
+EloquentFactory,
+EloquentQuery,
+Evaluate,
+Filter,
+Inspect,
+Map,
+Pass,
+PortMap,
+ReturnJSON,
+Route,
+Terminate,
+View,
+```
+
+## Create custom node
+Run the command
+```bash
+php artisan story:node NewEpicNode
+```
+
+To generate a node boilerplate:
+
+```php
+<?php
+
+namespace App\DataStory\Nodes;
+
+use DataStory\NodeModel;
+
+class NewEpicNode extends NodeModel
+{
+    public function run()
+    {
+        $items = $this->input();
+        
+        // your code goes here
+
+        $this->output($items);
+    }
+}
+```
+
+After refreshing the page the `NewEpicNode` node is available in the story workbench.
+
 
 ## Configuration
 You may edit settings in `config/data-story.php` as needed. This is the contents of the published config file:
@@ -70,13 +130,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Dev mode
+    | Publish story routes
     |--------------------------------------------------------------------------
     |
-    | Indicate if you are currently developing on the package
+    | Allow saved stories to publish routes
     |
     */
-    'dev-mode' => env('DATASTORY_DEV_MODE', false),
+    'enable-story-routes' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | App models
+    |--------------------------------------------------------------------------
+    |
+    | where to search for app models
+    |
+    */
+    'models-dir'       => base_path('app/Models'),
+    'models-namespace' => 'App\\Models\\',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,37 +162,6 @@ return [
     ],
 ];
 ```
-
-
-## Create custom node
-Run the command
-```bash
-php artisan story:node NewEpicNode
-```
-
-To generate a node boilerplate:
-
-```php
-<?php
-
-namespace App\DataStory\Nodes;
-
-use DataStory\NodeModel;
-
-class NewEpicNode extends NodeModel
-{
-    public function run()
-    {
-        $items = $this->input();
-        
-        // your code goes here
-
-        $this->output($items);
-    }
-}
-```
-
-After refreshing the page the `NewEpicNode` node is available in the story workbench.
 
 ## Contributing
 
@@ -172,6 +212,13 @@ composer install
 ```
 
 Go to `dsh1.test/datastory` to test out your changes :rocket:
+
+## This is a Proof of Concept
+:hammer_and_wrench: Some things might be broken. Feel free to ask question or make an Issue.
+
+## Live JS Demo (WIP)
+A JS server implementation is deployed at https://ajthinking.github.io/data-story/
+Currently no nodes available so its no fun.
 
 ## License
 MIT
