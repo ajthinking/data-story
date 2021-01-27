@@ -18,7 +18,7 @@ php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
 ```
 
 ## Examples
-A DataStory script can be executed via GUI or HTTP.
+A DataStory script can be executed via GUI or as a part of your Laravel apps HTTP lifecycle.
 
 ### :bulb: Tinker with data in GUI
 ![image](https://user-images.githubusercontent.com/3457668/105964532-9d89c980-6082-11eb-95f9-4ffb3c94fb9f.png)
