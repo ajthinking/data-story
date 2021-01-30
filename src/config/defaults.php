@@ -74,6 +74,7 @@ return [
         DataStory\Nodes\Map::class,
         DataStory\Nodes\Pass::class,
         DataStory\Nodes\PortMap::class,
+        DataStory\Nodes\Ray::class,
         DataStory\Nodes\ReturnJSON::class,
         DataStory\Nodes\Route::class,
         DataStory\Nodes\Terminate::class,
