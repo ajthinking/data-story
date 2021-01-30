@@ -220,5 +220,8 @@ Go to `dsh1.test/datastory` to test out your changes :rocket:
 A JS server implementation is deployed at https://ajthinking.github.io/data-story/
 Currently no nodes available so its no fun.
 
+## Acknowledgements
+Thanks to Dylan & [https://github.com/projectstorm/react-diagrams](projectstorm/react-diagrams)
+
 ## License
 MIT
