@@ -221,7 +221,7 @@ A JS server implementation is deployed at https://ajthinking.github.io/data-stor
 Currently no nodes available so its no fun.
 
 ## Acknowledgements
-Thanks to Dylan & [https://github.com/projectstorm/react-diagrams](projectstorm/react-diagrams)
+Thanks to Dylan & [projectstorm/react-diagrams](https://github.com/projectstorm/react-diagrams)
 
 ## License
 MIT
