@@ -17,8 +17,6 @@ class EloquentFactory extends Node
 
     public static function describe(array $variation = [])
     {        
-        $variation['shortModel'] = class_basename($variation['model']);
-
         $description = parent::describe($variation);
         $description->name = $variation['shortModel'] . 'Factory';
         $description->summary = $variation['shortModel'] . '::factory()';

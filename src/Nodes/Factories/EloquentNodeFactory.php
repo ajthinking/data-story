@@ -2,13 +2,17 @@
 
 namespace DataStory\Nodes\Factories;
 
+use Illuminate\Support\Str;
+
 class EloquentNodeFactory extends NodeFactory
 {
     public function variations()
     {
         return $this->getAppModels()->map(function($model) {
                 return $this->nodeClass::describe([
-                    'model' => $model
+                    'model'             => $model, // App\Models\User
+                    'shortModel'        => class_basename($model), // User
+                    'shortModelPlural'  => Str::of(class_basename($model))->plural()->__toString(), // Users
                 ]);
             })->toArray();
     }

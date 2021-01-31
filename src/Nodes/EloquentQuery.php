@@ -53,9 +53,6 @@ class EloquentQuery extends Node
 
     public static function describe(array $variation = [])
     {        
-        $variation['shortModel'] = class_basename($variation['model']);
-        $variation['shortModelPlural'] = (string) Str::of($variation['shortModel'])->plural();
-
         $description = parent::describe($variation);
         $description->name = $variation['shortModel'];
         $description->summary = $variation['shortModel'] . '::query()->where(...)';
