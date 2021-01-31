@@ -2,11 +2,11 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\String_;
 use Exception;
 
-class Terminate extends NodeModel
+class Terminate extends Node
 {
     const SHORT_DESCRIPTION  = 'Terminate execution by throwing an error';
 

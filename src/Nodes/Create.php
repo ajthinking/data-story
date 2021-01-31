@@ -3,11 +3,11 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Workflow;
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 
-class Create extends NodeModel
+class Create extends Node
 {
     const SHORT_DESCRIPTION  = 'Create a sequence of enumerated objects';
 

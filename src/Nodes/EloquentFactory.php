@@ -2,10 +2,10 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\String_;
 
-class EloquentFactory extends NodeModel
+class EloquentFactory extends Node
 {
     const SHORT_DESCRIPTION  = 'For each input feature create a Eloquent Model';
 

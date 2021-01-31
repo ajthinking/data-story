@@ -3,11 +3,11 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Workflow;
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\String_;
 use DataStory\Support\Data;
 
-class AddAttribute extends NodeModel
+class AddAttribute extends Node
 {
     const SHORT_DESCRIPTION  = 'Add an attribute to each feature';
 

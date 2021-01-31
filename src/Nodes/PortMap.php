@@ -2,10 +2,10 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\String_;
 
-class PortMap extends NodeModel
+class PortMap extends Node
 {
     const OUT_PORTS = [];
 

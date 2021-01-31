@@ -2,9 +2,9 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\NodeModel;
+use DataStory\Node;
 
-class Inspect extends NodeModel
+class Inspect extends Node
 {
     const SHORT_DESCRIPTION  = 'Pipe data to a inspector table';
 

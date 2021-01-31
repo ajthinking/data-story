@@ -3,13 +3,13 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Model;
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 use DataStory\Parameters\Where;
 use Illuminate\Support\Str;
 
-class EloquentQuery extends NodeModel
+class EloquentQuery extends Node
 {
     const SHORT_DESCRIPTION  = 'Run query on a Eloquent Model';
 

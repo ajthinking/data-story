@@ -3,10 +3,10 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Laravel;
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\String_;
 
-class Route extends NodeModel
+class Route extends Node
 {
     const CATEGORY = Laravel::class;
 

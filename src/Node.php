@@ -7,7 +7,7 @@ use Illuminate\Support\Collection;
 use stdClass;
 use DeepCopy\DeepCopy;
 
-abstract class NodeModel
+abstract class Node
 {
     const IN_PORTS = ['Input'];
 
@@ -19,7 +19,7 @@ abstract class NodeModel
 
     const CATEGORY = 'Custom';
 
-    const NODE_MODEL_REACT = 'NodeModel';
+    const NODE_MODEL_REACT = 'Node';
 
     const SHORT_DESCRIPTION = 'This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.';
 

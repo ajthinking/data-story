@@ -3,13 +3,15 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Workflow;
-use DataStory\NodeModel;
+use DataStory\Node;
 
-class Ray extends NodeModel
+class Ray extends Node
 {
     const SHORT_DESCRIPTION  = 'Pass data to Spaties Ray tool';
 
     const CATEGORY = Workflow::class;
+
+    const OUT_PORTS = [];
 
     public function run()
     {

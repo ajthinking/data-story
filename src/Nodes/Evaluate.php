@@ -3,11 +3,11 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Workflow;
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\String_;
 use DataStory\Parameters\Textarea;
 
-class Evaluate extends NodeModel
+class Evaluate extends Node
 {
     const SHORT_DESCRIPTION  = 'Run arbitary PHP code. You may use the variable: $feature';
 

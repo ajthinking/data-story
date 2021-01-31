@@ -2,10 +2,10 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\String_;
 
-class Map extends NodeModel
+class Map extends Node
 {
     const SHORT_DESCRIPTION  = 'Map into property';
 

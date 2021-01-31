@@ -3,9 +3,9 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Workflow;
-use DataStory\NodeModel;
+use DataStory\Node;
 
-class Pass extends NodeModel
+class Pass extends Node
 {
     const SHORT_DESCRIPTION  = 'Does nothing :)';
 

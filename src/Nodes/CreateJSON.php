@@ -3,12 +3,12 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Workflow;
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\JSON_;
 use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 
-class CreateJSON extends NodeModel
+class CreateJSON extends Node
 {
     const SHORT_DESCRIPTION  = 'Create a sequence of objects from a JSON array';
 

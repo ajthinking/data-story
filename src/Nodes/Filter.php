@@ -2,10 +2,10 @@
 
 namespace DataStory\Nodes;
 
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\String_;
 
-class Filter extends NodeModel
+class Filter extends Node
 {
     const SHORT_DESCRIPTION  = 'Map features to output ports depending on feature attribute value';
 

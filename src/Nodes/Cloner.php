@@ -3,12 +3,12 @@
 namespace DataStory\Nodes;
 
 use DataStory\Categories\Workflow;
-use DataStory\NodeModel;
+use DataStory\Node;
 use DataStory\Parameters\AttributeName;
 use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 
-class Cloner extends NodeModel
+class Cloner extends Node
 {
     const SHORT_DESCRIPTION  = 'Make X enumerated copies of each feature';
 
