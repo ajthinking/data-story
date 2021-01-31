@@ -2,6 +2,8 @@
 
 namespace DataStory;
 
+use DataStory\Tests\TestableDiagram;
+
 class Diagram
 {
     public array $nodes;
@@ -11,11 +13,6 @@ class Diagram
     public array $executionOrder = [];
 
     public $result = null;
-
-    public function __invoke()
-    {
-        dd("YOOO???");
-    }
 
     public function find($id)
     {
@@ -33,6 +30,13 @@ class Diagram
         return $this;
     }
 
+    public function addLink($link)
+    {
+        array_push($this->links, $link);
+
+        return $this;
+    }     
+
     public function nodes($nodes = null)
     {
         if ($nodes === null) return $this->nodes;
@@ -41,6 +45,13 @@ class Diagram
 
         return $this;
     }
+
+    public function addNode($node)
+    {
+        array_push($this->nodes, $node);
+
+        return $this;
+    }    
 
     public function ports()
     {
@@ -81,7 +92,6 @@ class Diagram
     public function run()
     {
         foreach ($this->executionOrder as $nodeId) {
-
             $node = $this->find($nodeId);
 
             $node->run();
@@ -116,5 +126,10 @@ class Diagram
 
             return $node->publishes();
         })->filter();
+    }
+
+    public static function test()
+    {
+        return new TestableDiagram;
     }
 }

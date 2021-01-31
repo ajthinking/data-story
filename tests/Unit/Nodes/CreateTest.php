@@ -1,6 +1,8 @@
 <?php
 
+use DataStory\Diagram;
 use DataStory\Nodes\Create;
+use DataStory\Nodes\Pass;
 use DataStory\Tests\DiagramFactory;
 use DataStory\Tests\TestCase;
 
@@ -8,14 +10,11 @@ class CreateTest extends TestCase
 {
     public function test_that_it_can_create_features()
     {
-        $this->markTestIncomplete('How to new up a Diagram? We need executionOrder, data etc from frontend?');
+        $this->markTestIncomplete('WIP')    ;
 
-        $diagram = DiagramFactory::make()
-            ->withNode(Create::class)
-            ->recievingInputs([
-                //
-            ])->get();
-
-        $diagram->run();
+        Diagram::test()
+            ->node(Pass::class)
+            ->input(collect([1,2,3]))
+            ->assertOutput(collect([1,2,3]));
     }
 }
