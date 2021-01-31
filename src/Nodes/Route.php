@@ -8,6 +8,8 @@ use DataStory\Parameters\String_;
 
 class Route extends Node
 {
+    const SHORT_DESCRIPTION  = 'Create a GET Route';
+
     const CATEGORY = Laravel::class;
 
     const IN_PORTS = [];    

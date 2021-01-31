@@ -6,19 +6,12 @@ use Illuminate\Support\Str;
 
 class NodeCatalogue
 {
-    /**
-     * @return static
-     */
     public static function make()
     {
         return new static;
-
     }
 
-    /**
-     * @return mixed
-     */
-    public function toArray()
+    public function toArray() : array
     {
         $registered = config('data-story.nodes');
 
@@ -43,10 +36,7 @@ class NodeCatalogue
         })->flatten(1)->toArray();
     }
 
-    /**
-     * @return array
-     */
-    public function discover()
+    public function discover() : array
     {
         if (!config('data-story.custom-nodes-scan-dir')) return [];
 

@@ -8,6 +8,8 @@ use DataStory\Parameters\String_;
 
 class ReturnJSON extends Node
 {
+    const SHORT_DESCRIPTION  = 'Return the current collection as JSON';
+
     const CATEGORY = Laravel::class;
 
     const OUT_PORTS = [];    

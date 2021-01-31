@@ -8,6 +8,8 @@ use DataStory\Parameters\String_;
 
 class View extends Node
 {
+    const SHORT_DESCRIPTION  = 'Return a view';
+
     const CATEGORY = Laravel::class;
 
     const OUT_PORTS = [];
