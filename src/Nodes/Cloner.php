@@ -14,7 +14,7 @@ class Cloner extends Node
 
     const CATEGORY = Workflow::class;
 
-    public static function parameters($data = [])
+    public static function parameters($variation = [])
     {
         return [
             String_::make('node_name')->default('Clone'),

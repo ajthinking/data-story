@@ -48,6 +48,7 @@
     "prefer-stable": true,
     "require": {
         "calebporzio/sushi": "^2.1",
-        "myclabs/deep-copy": "^1.10"
+        "myclabs/deep-copy": "^1.10",
+        "spatie/data-transfer-object": "^2.8"
     }
 }

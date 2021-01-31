@@ -10,7 +10,7 @@ class CreateTest extends TestCase
 {
     public function test_that_it_can_create_features()
     {
-        $this->markTestIncomplete('WIP')    ;
+        $this->markTestIncomplete('WIP');
 
         Diagram::test()
             ->node(Pass::class)

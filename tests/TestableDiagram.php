@@ -5,7 +5,7 @@ namespace DataStory\Tests;
 use DataStory\Diagram;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-class TestableDiagram
+class TestableDiagram extends Diagram
 {
     public $diagram;
 
@@ -70,11 +70,6 @@ class TestableDiagram
         $this->runOnce();
 
         PHPUnit::assertTrue(true);
-
-        dd(
-            //$this->diagram->find($this->node->id)
-            $this->diagram
-        );
 
         return $this;
     }    
