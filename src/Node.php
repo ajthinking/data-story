@@ -2,6 +2,7 @@
 
 namespace DataStory;
 
+use DataStory\Nodes\Factories\NodeFactory;
 use DataStory\Parameters\String_;
 use Illuminate\Support\Collection;
 use stdClass;
@@ -9,6 +10,8 @@ use DeepCopy\DeepCopy;
 
 abstract class Node
 {
+    const FACTORY = NodeFactory::class;
+
     const IN_PORTS = ['Input'];
 
     const OUT_PORTS = ['Output'];
@@ -40,6 +43,13 @@ abstract class Node
                 // 'parameters' => static ...
             ]
         ];
+    }
+
+    public static function factory()
+    {
+        $factory = static::FACTORY;
+
+        return $factory::make(static::class);
     }
 
     public static function deserialize(stdClass $serialized)
@@ -160,15 +170,5 @@ abstract class Node
     public function getParameters()
     {
         return $this->data->options->parameters;
-    }
-
-    public function publish()
-    {
-
-    }
-
-    public function return($something)
-    {
-        //
     }
 }

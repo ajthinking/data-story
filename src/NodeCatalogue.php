@@ -27,7 +27,7 @@ class NodeCatalogue
         $all = collect($registered)->concat($discovered)->unique();
 
         return $all->map(function ($class) {
-            $variations = $class::variations();
+            $variations = $class::factory($class)->variations();
 
             // Make parameters into associative array for easy access later
             $variations = collect($variations)->map(function ($variation) {
