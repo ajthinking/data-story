@@ -2,9 +2,7 @@
 
 namespace DataStory\Nodes\Factories;
 
-use DataStory\Nodes\EloquentQuery;
-
-class EloquentQueryFactory extends NodeFactory
+class EloquentNodeFactory extends NodeFactory
 {
     public function variations()
     {

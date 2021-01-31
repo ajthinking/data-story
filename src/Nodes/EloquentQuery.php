@@ -4,7 +4,7 @@ namespace DataStory\Nodes;
 
 use DataStory\Categories\Model;
 use DataStory\Node;
-use DataStory\Nodes\Factories\EloquentQueryFactory;
+use DataStory\Nodes\Factories\EloquentNodeFactory;
 use DataStory\Parameters\Number;
 use DataStory\Parameters\String_;
 use DataStory\Parameters\Where;
@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class EloquentQuery extends Node
 {
-    const FACTORY = EloquentQueryFactory::class;
+    const FACTORY = EloquentNodeFactory::class;
 
     const SHORT_DESCRIPTION  = 'Run query on a Eloquent Model';
 
