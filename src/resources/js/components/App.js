@@ -36,7 +36,7 @@ export default class App extends React.Component {
     componentDidMount() {
         this.boot()
         this.registerKeybindings()
-        this.registerExitConfirmation()
+        this.registerExitConfirmation()     
     }
 
     boot() {

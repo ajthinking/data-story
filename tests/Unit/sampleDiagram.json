@@ -1,184 +1,169 @@
 {
-    "id": "abd63e67-417a-4656-b02b-b5cfb06d540b",
-    "offsetX": 0,
+    "id": "4f80835b-d2ad-4c3b-8064-d4c7fd3cbba8",
+    "offsetX": -1,
     "offsetY": 0,
     "zoom": 100,
     "gridSize": 0,
-    "layers": [
-        {
-            "id": "f7817a3d-927d-4159-afc2-d82f2618def7",
-            "type": "diagram-links",
-            "isSvg": true,
-            "transformed": true,
-            "models": {
-                "1aabaa3f-5148-4f58-a947-59ebdc30e952": {
-                    "id": "1aabaa3f-5148-4f58-a947-59ebdc30e952",
-                    "type": "default",
-                    "source": "dde7d414-0496-48dc-b45c-4aea3561a2b7",
-                    "sourcePort": "0d475f8d-f67d-4883-becb-a781eade7cd6",
-                    "target": "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e",
-                    "targetPort": "02891b9f-c86a-448f-96b5-eaa362bec484",
-                    "points": [
-                        {
-                            "id": "79265eb0-0f79-4e05-bf8c-8587fef97a81",
-                            "type": "point",
-                            "x": 211,
-                            "y": 225
-                        },
-                        {
-                            "id": "31c95137-788d-47d2-a1a5-7678970e6546",
-                            "type": "point",
-                            "x": 317,
-                            "y": 225
-                        }
-                    ],
-                    "labels": [],
-                    "width": 3,
-                    "color": "gray",
-                    "curvyness": 50,
-                    "selectedColor": "rgb(0,192,255)"
-                }
-            }
-        },
-        {
-            "id": "7674973c-6e77-4f04-805c-897ac81cce21",
-            "type": "diagram-nodes",
-            "isSvg": false,
-            "transformed": true,
-            "models": {
-                "dde7d414-0496-48dc-b45c-4aea3561a2b7": {
-                    "id": "dde7d414-0496-48dc-b45c-4aea3561a2b7",
-                    "type": "NodeModel",
-                    "x": 100,
-                    "y": 187.01284395341014,
-                    "ports": [
-                        {
-                            "id": "0d475f8d-f67d-4883-becb-a781eade7cd6",
-                            "type": "default",
-                            "x": 203,
-                            "y": 217,
-                            "name": "Output",
-                            "alignment": "right",
-                            "parentNode": "dde7d414-0496-48dc-b45c-4aea3561a2b7",
-                            "links": [
-                                "1aabaa3f-5148-4f58-a947-59ebdc30e952"
-                            ],
-                            "in": false,
-                            "label": "Output"
-                        }
-                    ],
-                    "options": {
-                        "id": "dde7d414-0496-48dc-b45c-4aea3561a2b7",
-                        "serial": 1,
-                        "name": "EloquentQuery",
-                        "category": "Eloquent",
-                        "summary": "This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.",
-                        "key": "EloquentEloquentQuery",
-                        "nodePhp": "DataStory\\Nodes\\EloquentQuery",
-                        "nodeReact": "NodeModel",
-                        "inPorts": [],
-                        "outPorts": [
-                            "Output"
-                        ],
-                        "parameters": {
-                            "node_name": {
-                                "default": "Users",
-                                "name": "node_name",
-                                "value": "Users",
-                                "placeholder": ""
-                            },
-                            "target_model": {
-                                "default": "App\\Models\\User",
-                                "name": "target_model",
-                                "value": "App\\Models\\User",
-                                "placeholder": ""
-                            },
-                            "scopes": {
-                                "default": "no scopes available",
-                                "name": "scopes",
-                                "value": "no scopes available",
-                                "placeholder": ""
-                            },
-                            "where_statement": {
-                                "attribute": "",
-                                "default": "",
-                                "name": "where_statement",
-                                "operator": "=",
-                                "value": "",
-                                "placeholder": ""
-                            },
-                            "limit": {
-                                "default": "",
-                                "name": "limit",
-                                "value": "",
-                                "placeholder": "no limit"
-                            },
-                            "run get()": {
-                                "default": "yes",
-                                "name": "run get()",
-                                "value": "yes",
-                                "placeholder": ""
-                            }
-                        },
-                        "type": "NodeModel"
-                    },
-                    "incomingPortOrigins": {}
+    "links": {
+        "ade14226-c2fc-4f75-83f9-9db54fdeabae": {
+            "id": "ade14226-c2fc-4f75-83f9-9db54fdeabae",
+            "type": "default",
+            "source": "60beac60-d792-41b5-b132-418e630df9bc",
+            "sourcePort": "874b0d53-c26b-47d4-a0dc-67f1ba0c1f72",
+            "target": "438dfad8-bf51-4ad2-ba34-6ce29c880d1f",
+            "targetPort": "73013bb6-d4fa-4c86-93b7-48a1082571b7",
+            "points": [
+                {
+                    "id": "818f66fb-5e2b-40cb-aebd-af8069386135",
+                    "type": "point",
+                    "x": 222.578125,
+                    "y": 187.90625
                 },
-                "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e": {
-                    "id": "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e",
-                    "type": "NodeModel",
-                    "x": 300,
-                    "y": 187.01284395341014,
-                    "ports": [
-                        {
-                            "id": "02891b9f-c86a-448f-96b5-eaa362bec484",
-                            "type": "default",
-                            "x": 309,
-                            "y": 217,
-                            "name": "Input",
-                            "alignment": "left",
-                            "parentNode": "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e",
-                            "links": [
-                                "1aabaa3f-5148-4f58-a947-59ebdc30e952"
-                            ],
-                            "in": true,
-                            "label": "Input"
-                        }
-                    ],
-                    "options": {
-                        "id": "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e",
-                        "serial": 2,
-                        "name": "Inspect",
-                        "category": "Workflow",
-                        "summary": "This node is not documented yet. Add a class const SHORT_DESCRIPTION or implement a static method shortDescription() to fix that.",
-                        "key": "WorkflowInspect",
-                        "nodePhp": "DataStory\\Nodes\\Inspect",
-                        "nodeReact": "NodeModel",
-                        "inPorts": [
-                            "Input"
-                        ],
-                        "outPorts": [],
-                        "parameters": {
-                            "node_name": {
-                                "default": "Inspect",
-                                "name": "node_name",
-                                "value": "Inspect",
-                                "placeholder": ""
-                            }
-                        },
-                        "type": "NodeModel"
-                    },
-                    "incomingPortOrigins": {
-                        "02891b9f-c86a-448f-96b5-eaa362bec484": [
-                            "0d475f8d-f67d-4883-becb-a781eade7cd6"
-                        ]
-                    }
+                {
+                    "id": "3e4ab3c8-67bb-4e63-bf0e-080e18b63ff3",
+                    "type": "point",
+                    "x": 555.421875,
+                    "y": 429.90625
                 }
+            ],
+            "labels": [],
+            "width": 3,
+            "color": "gray",
+            "curvyness": 50,
+            "selectedColor": "rgb(0,192,255)"
+        }
+    },
+    "nodes": {
+        "60beac60-d792-41b5-b132-418e630df9bc": {
+            "id": "60beac60-d792-41b5-b132-418e630df9bc",
+            "type": "NodeModel",
+            "x": 100,
+            "y": 150.41936437568066,
+            "ports": [
+                {
+                    "id": "874b0d53-c26b-47d4-a0dc-67f1ba0c1f72",
+                    "type": "default",
+                    "x": 217.15625,
+                    "y": 151.40625,
+                    "name": "Output",
+                    "alignment": "right",
+                    "parentNode": "60beac60-d792-41b5-b132-418e630df9bc",
+                    "links": [
+                        "ade14226-c2fc-4f75-83f9-9db54fdeabae"
+                    ],
+                    "in": false,
+                    "label": "Output"
+                }
+            ],
+            "options": {
+                "id": "60beac60-d792-41b5-b132-418e630df9bc",
+                "serial": 1,
+                "name": "User",
+                "category": "Model",
+                "summary": "User::query()->where(...)",
+                "key": "ModelEloquentQuery",
+                "nodePhp": "DataStory\\Nodes\\EloquentQuery",
+                "nodeReact": "Node",
+                "inPorts": [],
+                "outPorts": [
+                    "Output"
+                ],
+                "editableInPorts": false,
+                "editableOutPorts": false,
+                "parameters": {
+                    "node_name": {
+                        "fieldType": "String_",
+                        "default": "Users",
+                        "name": "node_name",
+                        "value": "Users",
+                        "placeholder": ""
+                    },
+                    "target_model": {
+                        "fieldType": "String_",
+                        "default": "App\\Models\\User",
+                        "name": "target_model",
+                        "value": "App\\Models\\User",
+                        "placeholder": ""
+                    },
+                    "where_statement": {
+                        "fieldType": "Where",
+                        "attribute": "",
+                        "operator": "=",
+                        "value": "",
+                        "default": null,
+                        "name": "where_statement",
+                        "placeholder": ""
+                    },
+                    "limit": {
+                        "fieldType": "Number",
+                        "default": "",
+                        "name": "limit",
+                        "value": "",
+                        "placeholder": "no limit"
+                    }
+                },
+                "type": "NodeModel"
+            },
+            "incomingPortOrigins": {}
+        },
+        "438dfad8-bf51-4ad2-ba34-6ce29c880d1f": {
+            "id": "438dfad8-bf51-4ad2-ba34-6ce29c880d1f",
+            "type": "NodeModel",
+            "selected": false,
+            "x": 550,
+            "y": 392.41936437568063,
+            "ports": [
+                {
+                    "id": "73013bb6-d4fa-4c86-93b7-48a1082571b7",
+                    "type": "default",
+                    "x": 550,
+                    "y": 393.40625,
+                    "name": "Input",
+                    "alignment": "left",
+                    "parentNode": "438dfad8-bf51-4ad2-ba34-6ce29c880d1f",
+                    "links": [
+                        "ade14226-c2fc-4f75-83f9-9db54fdeabae"
+                    ],
+                    "in": true,
+                    "label": "Input"
+                }
+            ],
+            "options": {
+                "id": "438dfad8-bf51-4ad2-ba34-6ce29c880d1f",
+                "serial": 2,
+                "name": "Inspect",
+                "category": "Workflow",
+                "summary": "Pipe data to a inspector table",
+                "key": "WorkflowInspect",
+                "nodePhp": "DataStory\\Nodes\\Inspect",
+                "nodeReact": "Node",
+                "inPorts": [
+                    "Input"
+                ],
+                "outPorts": [],
+                "editableInPorts": false,
+                "editableOutPorts": false,
+                "parameters": {
+                    "node_name": {
+                        "fieldType": "String_",
+                        "default": "Inspect",
+                        "name": "node_name",
+                        "value": "Inspect",
+                        "placeholder": ""
+                    }
+                },
+                "type": "NodeModel",
+                "selected": false
+            },
+            "incomingPortOrigins": {
+                "73013bb6-d4fa-4c86-93b7-48a1082571b7": [
+                    "874b0d53-c26b-47d4-a0dc-67f1ba0c1f72"
+                ]
             }
         }
-    ],
+    },
     "executionOrder": [
-        "dde7d414-0496-48dc-b45c-4aea3561a2b7",
-        "7bd0098c-6a0d-4b1c-a42f-f5c1c47e860e"
+        "60beac60-d792-41b5-b132-418e630df9bc",
+        "438dfad8-bf51-4ad2-ba34-6ce29c880d1f"
     ]
 }

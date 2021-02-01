@@ -89238,11 +89238,44 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
   }, {
     key: "serialize",
     value: function serialize() {
-      return _objectSpread(_objectSpread({}, _get(_getPrototypeOf(DiagramModel.prototype), "serialize", this).call(this)), {}, {
+      // The default react-diagrams format
+      var layered = _get(_getPrototypeOf(DiagramModel.prototype), "serialize", this).call(this); // Simplify as we dont use extra layers
+
+
+      var simplified = _objectSpread(_objectSpread({}, layered), {}, {
+        links: _objectSpread({}, layered.layers[0].models),
+        nodes: _objectSpread({}, layered.layers[1].models),
         executionOrder: this.executionOrder().map(function (node) {
           return node.options.id;
         })
-      });
+      }); // Cleanup unused keys
+
+
+      delete simplified.layers;
+      return simplified;
+    }
+  }, {
+    key: "deserializeModel",
+    value: function deserializeModel(data, engine) {
+      // Restore the default react-diagrams layer format
+      data.layers = [{
+        "id": "diagram-links-layer",
+        "type": "diagram-links",
+        "isSvg": true,
+        "transformed": true,
+        "models": data.links
+      }, {
+        "id": "diagram-nodes-layer",
+        "type": "diagram-nodes",
+        "isSvg": false,
+        "transformed": true,
+        "models": data.nodes
+      }]; // Cleanup unused keys
+
+      delete data.links;
+      delete data.nodes;
+
+      _get(_getPrototypeOf(DiagramModel.prototype), "deserializeModel", this).call(this, data, engine);
     }
   }, {
     key: "hasNode",
@@ -89867,8 +89900,7 @@ var Diagram = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_3__["inject"])(
       var _this2 = this;
 
       // FOCUS THE WORKBENCH!!! HOW?
-      window.focus();
-      console.log(window); //window.onfocus = function() { blurred && (location.reload()); };
+      window.focus(); //window.onfocus = function() { blurred && (location.reload()); };
 
       setTimeout(function () {
         react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.findDOMNode(_this2.diagramRef.current).focus();
@@ -92842,6 +92874,7 @@ var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
   }, {
     key: "run",
     value: function run(model) {
+      console.log(Object(_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_2__["nonCircularJsonStringify"])(model.serialize()));
       return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post(this.root + '/run', {
         model: Object(_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_2__["nonCircularJsonStringify"])(model.serialize())
       });

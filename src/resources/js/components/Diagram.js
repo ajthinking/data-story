@@ -32,7 +32,7 @@ export default class Diagram extends React.Component {
         // FOCUS THE WORKBENCH!!! HOW?
 
         window.focus()
-        console.log(window);
+
         //window.onfocus = function() { blurred && (location.reload()); };
 
         setTimeout(() => {

@@ -66,13 +66,13 @@ class Diagram
 
         $diagram->links(
             collect(
-                array_values((array)$data->layers[0]->models)
+                array_values((array)$data->links)
             )->toArray()
         );
 
         $diagram->nodes(
             collect(
-                array_values((array) $data->layers[1]->models)
+                array_values((array) $data->nodes)
             )->map(function ($serializedNode) {
                 $nodeType = $serializedNode->options->nodePhp;
                 return $nodeType::hydrate($serializedNode);
