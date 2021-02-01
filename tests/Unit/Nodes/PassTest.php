@@ -1,9 +1,7 @@
 <?php
 
 use DataStory\Diagram;
-use DataStory\Nodes\Create;
 use DataStory\Nodes\Pass;
-use DataStory\Tests\DiagramFactory;
 use DataStory\Tests\TestCase;
 
 class CreateTest extends TestCase

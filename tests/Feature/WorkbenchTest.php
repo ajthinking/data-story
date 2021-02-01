@@ -14,5 +14,5 @@ class WorkbenchTest extends TestCase
     public function test_that_the_laravel_server_can_boot()
     {
         $this->post('/datastory/api/boot')->assertStatus(200);
-    }    
+    }
 }
