@@ -30,20 +30,12 @@ abstract class Node
 
     public stdClass $data;
 
-    public function __construct()
-    {
-        $this->ports = [];
+    // public function __construct()
+    // {
+    //     $this->ports = [];
 
-        $this->id = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10 / strlen($x)))), 1, 10);
-
-        $this->data = (object)[
-            'id'      => $this->id,
-            'ports'   => [],
-            'options' => (object)[
-                // 'parameters' => static ...
-            ]
-        ];
-    }
+    //     $this->id = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10 / strlen($x)))), 1, 10);
+    // }
 
     public static function factory()
     {
@@ -62,7 +54,7 @@ abstract class Node
             return Port::hydrate($port);
         })->toArray();
 
-        $node->data = $serialized;
+        $node->options = $serialized->options;
 
         return $node;
     }
@@ -153,11 +145,11 @@ abstract class Node
 
     public function getParameter($name)
     {
-        return $this->data->options->parameters->$name->value;
+        return $this->options->parameters->$name->value;
     }
 
     public function getParameters()
     {
-        return $this->data->options->parameters;
+        return $this->options->parameters;
     }
 }

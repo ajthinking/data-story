@@ -30,7 +30,7 @@ class EloquentQuery extends Node
     protected function getQueryResults()
     {
         // Get QueryBuilder 
-        $query = app($this->data->options->parameters->target_model->value)->query();
+        $query = app($this->options->parameters->target_model->value)->query();
 
         // Apply scopes // TODO
         $this->getScopes()->reduce(function($query, $scope) {
@@ -77,7 +77,7 @@ class EloquentQuery extends Node
 
     protected function getLimit()
     {
-        $limit = $this->data->options->parameters->limit->value;
+        $limit = $this->options->parameters->limit->value;
 
         if(is_numeric($limit)) {
             return $limit;
@@ -88,7 +88,7 @@ class EloquentQuery extends Node
 
     protected function getWhereStatements()
     {
-        $data = $this->data->options->parameters->where_statement;
+        $data = $this->options->parameters->where_statement;
 
         if(!$data->attribute) return collect();
 

@@ -12,10 +12,6 @@ class OutputProviderNode extends Node
 
         $this->id = $requestingPort . 'ProviderNode';
 
-        $this->data = (object)[
-            //
-        ];
-
         $this->name = $requestingPort . 'ProviderPort';
 
         $this->ports = [

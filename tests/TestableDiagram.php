@@ -39,8 +39,6 @@ class TestableDiagram extends Diagram
             ]
         ];
 
-        $this->node->data->ports = $this->node->ports;
-
         $provider = new OutputProviderNode($features);
         
         $this->diagram->addNode($this->node);
