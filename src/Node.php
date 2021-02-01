@@ -58,7 +58,9 @@ abstract class Node
 
         $node->id = $serialized->id;
 
-        $node->ports = $serialized->ports;
+        $node->ports = collect($serialized->ports)->map(function($port) {
+            return Port::hydrate($port);
+        })->toArray();
 
         $node->data = $serialized;
 
