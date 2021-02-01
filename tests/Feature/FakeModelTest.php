@@ -8,9 +8,11 @@ class FakeModelTest extends TestCase
 {
     public function test_fake_models()
     {
+        $fakeUser = \App\Models\User::class;
+
         $this->assertInstanceOf(
             \Illuminate\Database\Eloquent\Builder::class,
-            \App\Models\User::query()
+            $fakeUser::query()
         );
     }
 }
