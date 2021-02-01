@@ -89732,7 +89732,7 @@ var App = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["inject"])('sto
 
         _this2.props.store.setEngine(_EngineFactory__WEBPACK_IMPORTED_MODULE_7__["default"].loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null));
 
-        _this2.props.store.setAvailableNodes(response.data.dataStoryCapabilities.availableNodes);
+        _this2.props.store.setAvailableNodes(response.data.capabilities.availableNodes);
 
         _this2.props.store.setStories(response.data.stories);
 
@@ -92747,7 +92747,7 @@ var LocalServerClient = /*#__PURE__*/function (_AbstractServerClient) {
         return callback({
           data: {
             stories: [],
-            dataStoryCapabilities: {
+            capabilities: {
               availableNodes: []
             }
           }
@@ -92761,7 +92761,7 @@ var LocalServerClient = /*#__PURE__*/function (_AbstractServerClient) {
         return alert("Not implemented");
         return callback({// data: {
           //     stories: [],
-          //     dataStoryCapabilities: {
+          //     capabilities: {
           //         availableNodes: []
           //     }                    
           // }

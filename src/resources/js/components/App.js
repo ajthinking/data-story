@@ -46,7 +46,6 @@ export default class App extends React.Component {
         this.props.store.metadata.server.boot({
             story: window.location.href.split("/datastory").pop().replace('/', '')
         }).then((response) => {
-            
             this.props.store.setEngine(
                 EngineFactory.loadOrCreate(
                     response.data.serializedModel ?? null
@@ -54,7 +53,7 @@ export default class App extends React.Component {
             )
 
             this.props.store.setAvailableNodes(
-                response.data.dataStoryCapabilities.availableNodes
+                response.data.capabilities.availableNodes
             );
 
             this.props.store.setStories(

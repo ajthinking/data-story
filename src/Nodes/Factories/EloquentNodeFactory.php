@@ -9,12 +9,12 @@ class EloquentNodeFactory extends NodeFactory
     public function variations()
     {
         return $this->getAppModels()->map(function($model) {
-                return $this->nodeClass::describe([
-                    'model'             => $model, // App\Models\User
-                    'shortModel'        => class_basename($model), // User
-                    'shortModelPlural'  => Str::of(class_basename($model))->plural()->__toString(), // Users
-                ]);
-            })->toArray();
+            return $this->nodeClass::describe([
+                'model'             => $model, // App\Models\User
+                'shortModel'        => class_basename($model), // User
+                'shortModelPlural'  => Str::of(class_basename($model))->plural()->__toString(), // Users
+            ]);
+        })->toArray();
     }
     
     protected function getAppModels()

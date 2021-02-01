@@ -12,7 +12,7 @@ class Boot
         return [
             'status'                => 200,
             'stories'               => Story::all(),
-            'dataStoryCapabilities' => Diagram::capabilities(),
+            'capabilities' => Diagram::capabilities(),
             'serializedModel'       => request()->input('story') ? Story::where(
                 'path', 'like', '%' . request()->input('story') . '.story.json'
             )->first()->content : null,

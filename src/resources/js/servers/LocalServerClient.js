@@ -10,7 +10,7 @@ export default class LocalServerClient extends AbstractServerClient {
             return callback({
                 data: {
                     stories: [],
-                    dataStoryCapabilities: {
+                    capabilities: {
                         availableNodes: []
                     }                    
                 }
@@ -24,7 +24,7 @@ export default class LocalServerClient extends AbstractServerClient {
             return callback({
                 // data: {
                 //     stories: [],
-                //     dataStoryCapabilities: {
+                //     capabilities: {
                 //         availableNodes: []
                 //     }                    
                 // }
