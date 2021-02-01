@@ -8,7 +8,7 @@ class Run
 {
     public function __invoke()
     {
-        $diagram = Diagram::deserialize(
+        $diagram = Diagram::hydrate(
             request()->input('model')
         );
         

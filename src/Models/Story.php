@@ -52,7 +52,7 @@ class Story extends Model
     {
         return static::all()->filter(function($story) {
             try{
-                return Diagram::deserialize($story->content);
+                return Diagram::hydrate($story->content);
             } catch(Throwable $e) {
                 return false;
             }
@@ -61,6 +61,6 @@ class Story extends Model
 
     public function diagram()
     {
-        return Diagram::deserialize($this->content);
+        return Diagram::hydrate($this->content);
     }
 }

@@ -17,7 +17,7 @@ class Reduce
             request()->path()
         );
         
-        $diagram = Diagram::deserialize(
+        $diagram = Diagram::hydrate(
             Story::where('name', $story)->first()->content
         );
 

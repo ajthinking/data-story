@@ -58,7 +58,7 @@ class Diagram
         return collect($this->nodes)->pluck('ports')->flatten()->toArray();
     }
 
-    public static function deserialize($serialized)
+    public static function hydrate($serialized)
     {
         $data = json_decode($serialized);
 
@@ -75,7 +75,7 @@ class Diagram
                 array_values((array) $data->layers[1]->models)
             )->map(function ($serializedNode) {
                 $nodeType = $serializedNode->options->nodePhp;
-                return $nodeType::deserialize($serializedNode);
+                return $nodeType::hydrate($serializedNode);
             })->toArray()
         );
 

@@ -13,6 +13,7 @@ class Pass extends Node
 
     public function run()
     {
+        
         $this->output(
             $this->input()
         );

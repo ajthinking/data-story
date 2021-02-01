@@ -21,7 +21,7 @@ class DiagramTest extends TestCase
 
     protected function sampleDiagram()
     {
-        return Diagram::deserialize(
+        return Diagram::hydrate(
                 file_get_contents(__DIR__ . '/sampleDiagram.json')
         );
     }

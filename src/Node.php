@@ -52,7 +52,7 @@ abstract class Node
         return $factory::make(static::class);
     }
 
-    public static function deserialize(stdClass $serialized)
+    public static function hydrate(stdClass $serialized)
     {
         $node = new static;
 
