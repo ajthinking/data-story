@@ -32,15 +32,26 @@ class Diagram
 
     public function addLink($link)
     {
+        
         array_push($this->links, $link);
-
+        
+        array_push(
+            $this->find($link->sourcePort)->links,
+            $link->id
+        );
+        
+        array_push(
+            $this->find($link->targetPort)->links,
+            $link->id
+        );
+        
         return $this;
     }     
 
     public function nodes($nodes = null)
     {
         if ($nodes === null) return $this->nodes;
-
+        
         $this->nodes = $nodes;
 
         return $this;
@@ -55,6 +66,7 @@ class Diagram
 
     public function ports()
     {
+        
         return collect($this->nodes)->pluck('ports')->flatten()->toArray();
     }
 
@@ -91,11 +103,13 @@ class Diagram
 
     public function run()
     {
+        
         foreach ($this->executionOrder as $nodeId) {
             $node = $this->find($nodeId);
 
             $node->run();
         }
+        
 
         return $this;
     }

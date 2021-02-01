@@ -4,15 +4,21 @@ use DataStory\Diagram;
 use DataStory\Nodes\Pass;
 use DataStory\Tests\TestCase;
 
-class CreateTest extends TestCase
+class PassTest extends TestCase
 {
-    public function test_that_it_can_create_features()
+    public function test_that_in_and_out_features_matches()
     {
-        $this->markTestIncomplete('WIP'); 
-
         Diagram::test()
             ->node(Pass::class)
             ->input(collect([1,2,3]))
             ->assertOutput(collect([1,2,3]));
     }
+    
+    public function test_that_in_and_out_features_matches_explicit_test()
+    {
+        Diagram::test()
+            ->node(Pass::class)
+            ->input(collect([1,2,3]))
+            ->assertOutput(collect([1,2,3]));
+    }    
 }

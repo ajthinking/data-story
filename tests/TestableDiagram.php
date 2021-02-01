@@ -3,57 +3,47 @@
 namespace DataStory\Tests;
 
 use DataStory\Diagram;
+use DataStory\Link;
+use DataStory\Nodes\Factories\NodeFactory;
+use DataStory\Port;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class TestableDiagram extends Diagram
 {
-    public $diagram;
-
     public $node;
 
     public $hasRun = false;
 
     public function __construct()
     {
-        $this->diagram = new Diagram;
+        $this->links([]);
 
-        $this->diagram->links([]);
-
-        $this->diagram->nodes([]);        
+        $this->nodes([]);        
     }
 
-    public function node($node)
+    public function node($nodeClass)
     {
-        $this->node = new $node;
+        $this->node = NodeFactory::make($nodeClass)->instance();
 
         return $this;
     }
 
     public function input($features)
     {
-        $this->node->ports = [
-            (object) [
-                'id'        => 'Input',
-                'name'      => 'Input',
-                'links'     => [],
-            ]
-        ];
-
-        $provider = new OutputProviderNode($features);
+        $provider = new ProviderNode($features);
         
-        $this->diagram->addNode($this->node);
-        $this->diagram->addNode($provider);
-        $this->diagram->executionOrder = [
-                $this->node->id
+        $this->addNode($this->node);
+        $this->addNode($provider);
+        $this->executionOrder = [
+            $this->node->id
         ];
-
-        $link = (object) [
-            "id"         => "1aabaa3f-5148-4f58-a947-59ebdc30e952",
-            "sourcePort" => $provider->portNamed('InputProviderPort')->id,
-            "targetPort" => $this->node->portNamed('Input')->id,           
-        ];
-        // $this->node->ports[0]->links[0] = $link; .. // REARM REGROUP
-        $this->diagram->addLink($link);
+        
+        $link = new Link(
+            $provider->portNamed('InputProviderPort')->id,
+            $this->node->portNamed('Input')->id,           
+        );        
+        
+        $this->addLink($link);
 
         return $this;
     }
@@ -67,7 +57,10 @@ class TestableDiagram extends Diagram
     {
         $this->runOnce();
 
-        PHPUnit::assertTrue(true);
+        PHPUnit::assertEquals(
+            $data,
+            $this->node->portNamed($port)->features
+        );
 
         return $this;
     }    
@@ -76,19 +69,12 @@ class TestableDiagram extends Diagram
     {
         // TODO
 
-        PHPUnit::assertTrue(true);
-
         return $this;
     }
 
     public function runOnce()
     {
-        if(!$this->hasRun) $this->run();
+        if(!$this->hasRun) $this->registerGlobal()->run();
         $this->hasRun = true;
-    }    
-
-    public function run()
-    {
-        $this->diagram->run();
     }
 }

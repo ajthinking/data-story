@@ -4,6 +4,7 @@ namespace DataStory;
 
 use DataStory\Nodes\Factories\NodeFactory;
 use DataStory\Parameters\String_;
+use DataStory\Support\Id;
 use Illuminate\Support\Collection;
 use stdClass;
 use DeepCopy\DeepCopy;
@@ -28,14 +29,12 @@ abstract class Node
 
     public string $id;
 
-    public stdClass $data;
+    public function __construct(array $ports = [])
+    {
+        $this->id = Id::make();
 
-    // public function __construct()
-    // {
-    //     $this->ports = [];
-
-    //     $this->id = substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10 / strlen($x)))), 1, 10);
-    // }
+        $this->ports = $ports;
+    }
 
     public static function factory()
     {
@@ -73,6 +72,7 @@ abstract class Node
 
     public function getDataAtPortNamed($name)
     {
+        
         $port = $this->portNamed($name);
 
         $collection = collect($port->links)->map(function ($linkId) {
