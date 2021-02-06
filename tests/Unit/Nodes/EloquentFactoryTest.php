@@ -1,12 +1,8 @@
 <?php
 
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use DataStory\Diagram;
 use DataStory\Nodes\EloquentFactory;
-use DataStory\Nodes\EloquentQuery;
-use DataStory\Nodes\Pass;
 use DataStory\Tests\TestCase;
-
 
 class EloquentFactoryTest extends TestCase
 {
