@@ -26,8 +26,8 @@ class AddAttribute extends Node
     {
         $features = $this->input()->map(function($feature) {
             return Data::of($feature)->set(
-                $this->getParameter('attribute_name'),
-                $this->getParameter('attribute_value'),
+                $this->getParameter('attribute_name')->value,
+                $this->getParameter('attribute_value')->value,
             )->get();
         });
 

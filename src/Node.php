@@ -90,12 +90,13 @@ abstract class Node
     {
         
         $port = $this->portNamed($name);
-
+        
         $collection = collect($port->links)->map(function ($linkId) {
             $link = $this->diagram()->find($linkId);
             $source = $this->diagram()->find($link->sourcePort);
+
             return $source->features;
-        })->flatten();
+        })->flatten(1);
 
         $copier = new DeepCopy();
         return $copier->copy($collection);

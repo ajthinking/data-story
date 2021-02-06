@@ -34,7 +34,7 @@ class EloquentFactory extends Node
 
     public function run()
     {
-        $model = $this->getParameter('model');
+        $model = $this->getParameter('model')->value;
         
         $this->output(
             $this->input()->map(function($feature) use($model) {

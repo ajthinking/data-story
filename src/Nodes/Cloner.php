@@ -28,13 +28,14 @@ class Cloner extends Node
 
     public function run()
     {
+        
         $features = $this->input()->map(function($original) {
             $clones = collect()->times(
-                $this->getParameter('number_of_clones'),
+                $this->getParameter('number_of_clones')->value,
                 function($index) use($original) {
                     $clone = clone $original;
-                    $cloneIdAttribute = $this->getParameter('clone_id_attribute');
-                    $clone->$cloneIdAttribute = $index - 1 + $this->getParameter('clone_id_attribute_start_value'); 
+                    $cloneIdAttribute = $this->getParameter('clone_id_attribute')->value;
+                    $clone->$cloneIdAttribute = $index - 1 + $this->getParameter('clone_id_attribute_start_value')->value; 
                     return $clone;
                 }
             );

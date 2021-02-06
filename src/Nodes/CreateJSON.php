@@ -26,7 +26,7 @@ class CreateJSON extends Node
     {
         $this->output(
             collect(
-                json_decode($this->getParameter('json'))
+                json_decode($this->getParameter('json')->value)
             )
         );
     }

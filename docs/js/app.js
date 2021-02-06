@@ -89796,6 +89796,9 @@ var App = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_4__["inject"])('sto
       Mousetrap.bind('shift+t', function (e) {
         _this3.props.store.setPage('Inspector');
       });
+      Mousetrap.bind('shift+l', function (e) {
+        _this3.props.store.setPage('Log');
+      });
     }
   }, {
     key: "registerExitConfirmation",

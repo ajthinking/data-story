@@ -85,6 +85,13 @@ export default class App extends React.Component {
                 this.props.store.setPage('Inspector')
             }
         ); 
+
+        Mousetrap.bind(
+            'shift+l',
+            (e) => {
+                this.props.store.setPage('Log   ')
+            }
+        );         
     }
     
     registerExitConfirmation() {

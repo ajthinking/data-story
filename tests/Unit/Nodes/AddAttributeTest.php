@@ -6,15 +6,26 @@ use DataStory\Tests\TestCase;
 
 class AddAttributeTest extends TestCase
 {
-    public function test_that_it_wont_work_with_numbers()
+    /** @test */
+    public function works_on_arrays()
     {
-        $this->markTestIncomplete('The options/parameters object needs refactoring');
-
         Diagram::test()
-            ->node(AddAttribute::class, [
-                // options here
-            ])
-            ->input(collect([1,2,3]))
-            ->assertOutput(collect([1,2,3]));
+            ->node(AddAttribute::class)
+            ->input(collect([[]]))
+            ->assertOutput(collect([[
+                '_new_attribute' => '' // Default parameters
+            ]]));
     }
+
+    /** @test */    
+    public function works_on_objects()
+    {
+        $this->markTestIncomplete();
+        Diagram::test()
+            ->node(AddAttribute::class)
+            ->input(collect([new stdClass]))
+            ->assertOutput(collect([(object) [
+                '_new_attribute' => '' // Default parameters
+            ]]));
+    }    
 }

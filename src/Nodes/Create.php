@@ -26,7 +26,7 @@ class Create extends Node
     public function run()
     {
         $this->output(
-            collect()->times($this->getParameter('number_of_features_to_create'), function($i) {
+            collect()->times($this->getParameter('number_of_features_to_create')->value, function($i) {
                 return (object) [
                     'creation_id' => $i
                 ];
