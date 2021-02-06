@@ -8,7 +8,7 @@ class EloquentFactoryTest extends TestCase
 {
     public function test_it_will_return_an_eloquent_collection()
     {
-        $this->markTestIncomplete('Namespacing issue on github actions');
+        //$this->markTestIncomplete('Namespacing issue on github actions');
 
         Diagram::test()
             ->node(EloquentFactory::class, [

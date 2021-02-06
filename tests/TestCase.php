@@ -20,8 +20,8 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageAliases($app)
     {
         return [
-            'App\Models\User'                 => 'DataStory\Tests\Fakes\App\Models\User',
-            'Database\Factories\UserFactory'  => 'DataStory\Tests\Fakes\Database\Factories\UserFactory'
+            'App\Models\User'                        => 'DataStory\Tests\Fakes\App\Models\User',
+            'Database\Factories\Models\UserFactory'  => 'DataStory\Tests\Fakes\Database\Factories\UserFactory'
         ];
     }    
     
