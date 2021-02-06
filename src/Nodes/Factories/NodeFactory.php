@@ -6,14 +6,17 @@ use DataStory\Port;
 
 class NodeFactory
 {
-    public function __construct($nodeClass)
+    public $variation = [];
+
+    public function __construct($nodeClass, $variation = [])
     {
         $this->nodeClass = $nodeClass;
+        $this->variation = $variation;
     }
 
-    public static function make($nodeClass)
+    public static function make($nodeClass, $variation = [])
     {
-        return new static($nodeClass);
+        return new static($nodeClass, $variation);
     }
 
     public function variations()
@@ -27,7 +30,7 @@ class NodeFactory
 
     public function instance()
     {
-        $desc = $this->nodeClass::describe();
+        $desc = $this->nodeClass::describe($this->variation);
 
         $inPorts = collect($desc->inPorts)->map(function($name) {
             return new Port($name, $in = true);

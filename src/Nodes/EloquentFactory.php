@@ -6,6 +6,7 @@ use DataStory\Node;
 use DataStory\Categories\Factory;
 use DataStory\Nodes\Factories\EloquentNodeFactory;
 use DataStory\Parameters\String_;
+use Illuminate\Support\Str;
 
 class EloquentFactory extends Node
 {
@@ -18,8 +19,8 @@ class EloquentFactory extends Node
     public static function describe(array $variation = [])
     {        
         $description = parent::describe($variation);
-        $description->name = $variation['shortModel'] . 'Factory';
-        $description->summary = $variation['shortModel'] . '::factory()';
+        $description->name = Str::of($variation['model'])->classBasename() . 'Factory';
+        $description->summary = Str::of($variation['model'])->classBasename() . '::factory()';
         
         return $description;
     }

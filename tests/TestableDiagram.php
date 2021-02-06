@@ -21,9 +21,9 @@ class TestableDiagram extends Diagram
         $this->nodes([]);        
     }
 
-    public function node($nodeClass)
+    public function node($nodeClass, $options = [])
     {
-        $this->node = NodeFactory::make($nodeClass)->instance();
+        $this->node = NodeFactory::make($nodeClass, $options)->instance();
 
         $this->addNode($this->node);
 
@@ -73,12 +73,12 @@ class TestableDiagram extends Diagram
 
     public function assertOutput($expected, $port = 'Output')
     {
-        $expected = collect($expected);
-
         $this->runOnce();
+        
+        $expected = $this->collect($expected);
 
         PHPUnit::assertEquals(
-            $expected = collect($expected),
+            $expected,
             $this->node->portNamed($port)->features
         );
 
@@ -87,7 +87,7 @@ class TestableDiagram extends Diagram
 
     public function assertInputEqualsOutput($expected, $inPort = 'Input', $outPort = 'Output')
     {
-        $expected = collect($expected);
+        $expected = $this->collect($expected);
 
         $this->input($expected)->runOnce();
 
@@ -164,5 +164,12 @@ class TestableDiagram extends Diagram
     {
         if(!$this->hasRun) $this->registerGlobal()->run();
         $this->hasRun = true;
+    }
+
+    protected function collect($data)
+    {
+        return $data instanceof \Illuminate\Support\Collection
+            ? $data
+            : collect($data);
     }
 }

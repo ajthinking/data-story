@@ -9,6 +9,7 @@ use DataStory\Repositories\RouteRepository;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use stdClass;
+use Illuminate\Support\Str;
 
 class DataStoryServiceProvider extends ServiceProvider
 {
@@ -50,6 +51,10 @@ class DataStoryServiceProvider extends ServiceProvider
         require __DIR__ . '/routes/api.php';
 
         $this->publishStoryRoutes();
+
+        Str::macro('isLength', function ($str, $length) {
+            return static::length($str) == $length;
+        });        
     }
 
     /**

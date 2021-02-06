@@ -23,14 +23,12 @@ class EloquentQuery extends Node
     public function run()
     {
         $this->output(
-            $this->getQueryResults()            
+            $this->getQueryResults()
         );
     }
 
     protected function getQueryResults()
     {
-        
-
         // Get QueryBuilder 
         $query = app($this->getParameter('target_model')->value)->query();
         
@@ -56,8 +54,15 @@ class EloquentQuery extends Node
     public static function describe(array $variation = [])
     {        
         $description = parent::describe($variation);
-        $description->name = $variation['shortModel'];
-        $description->summary = $variation['shortModel'] . '::query()->where(...)';
+
+        $description->name = Str::of($variation['model'])
+            ->classBaseName()
+            ->__toString();
+
+        $description->summary = Str::of($variation['model'])
+            ->classBasename()
+            ->append('::query()->where(...)')
+            ->__toString();
         
         return $description;
     }
@@ -65,9 +70,18 @@ class EloquentQuery extends Node
     public static function parameters($variation = [])
     {
         return [
-            String_::make('node_name')->default($variation['shortModelPlural']),
-            String_::make('target_model')->default($variation['model']),
+            String_::make('node_name')->default(
+                Str::of($variation['model'])
+                    ->classBaseName()
+                    ->plural()
+                    ->__toString()
+            ),
+
+            String_::make('target_model')
+                ->default($variation['model']),
+
             Where::make('where_statement'),
+
             Number::make('limit')->default('')->placeholder('no limit'),
         ];
     }
