@@ -27630,7 +27630,6 @@ video {
 .select-all {
   -webkit-user-select: all;
      -moz-user-select: all;
-      -ms-user-select: all;
           user-select: all;
 }
 
@@ -59150,7 +59149,6 @@ foreignObject > div > div {
   .sm\:select-all {
     -webkit-user-select: all;
        -moz-user-select: all;
-        -ms-user-select: all;
             user-select: all;
   }
 
@@ -90583,7 +90581,6 @@ foreignObject > div > div {
   .md\:select-all {
     -webkit-user-select: all;
        -moz-user-select: all;
-        -ms-user-select: all;
             user-select: all;
   }
 
@@ -122016,7 +122013,6 @@ foreignObject > div > div {
   .lg\:select-all {
     -webkit-user-select: all;
        -moz-user-select: all;
-        -ms-user-select: all;
             user-select: all;
   }
 
@@ -153449,7 +153445,6 @@ foreignObject > div > div {
   .xl\:select-all {
     -webkit-user-select: all;
        -moz-user-select: all;
-        -ms-user-select: all;
             user-select: all;
   }
 
@@ -184882,7 +184877,6 @@ foreignObject > div > div {
   .\32xl\:select-all {
     -webkit-user-select: all;
        -moz-user-select: all;
-        -ms-user-select: all;
             user-select: all;
   }
 
