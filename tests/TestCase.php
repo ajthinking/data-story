@@ -23,7 +23,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'App\Models\User'                        => 'DataStory\Tests\Fakes\App\Models\User',
             // Hard to fake dynamic factory resolving - use multiple aliases
             'Database\Factories\UserFactory'         => 'DataStory\Tests\Fakes\Database\\Factories\UserFactory',
-            'UserFactory'         => 'DataStory\Tests\Fakes\Database\Factories\UserFactory',
+            'UserFactory'         => 'DataStory\Tests\Fakes\UserFactory',
         ];
     }    
     

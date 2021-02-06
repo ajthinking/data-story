@@ -1,6 +1,6 @@
 <?php
 
-namespace DataStory\Tests\Fakes\Database\Factories;
+namespace DataStory\Tests\Fakes;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
