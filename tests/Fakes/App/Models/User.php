@@ -2,7 +2,7 @@
 
 namespace DataStory\Tests\Fakes\App\Models;
 
-use Database\Factories\UserFactory;
+use DataStory\Tests\Fakes\Database\Factories\UserFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
