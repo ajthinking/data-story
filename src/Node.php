@@ -43,6 +43,22 @@ abstract class Node
         return $factory::make(static::class);
     }
 
+    public function options($options = null)
+    {
+        if(!$options) return $this->options;
+
+        $this->options = $options;
+
+        return $this;
+    }
+
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+
+        return $this;
+    }    
+
     public static function hydrate(stdClass $serialized)
     {
         $node = new static;

@@ -42,8 +42,12 @@ class Data
         return $this;
     }
 
-    public function get()
+    public function get($key = null)
     {
-        return $this->raw;
+        if(!$key) return $this->raw;
+
+        if(is_array($this->raw)) return $this->raw[$key];
+
+        if(is_object($this->raw)) return $this->raw->$key;
     }
 }

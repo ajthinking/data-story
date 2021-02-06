@@ -28,7 +28,7 @@ class NodeFactory
     public function instance()
     {
         $desc = $this->nodeClass::describe();
-        
+
         $inPorts = collect($desc->inPorts)->map(function($name) {
             return new Port($name, $in = true);
         });
@@ -36,8 +36,14 @@ class NodeFactory
             return new Port($name, $in = false);
         });        
 
-        return new $this->nodeClass(
+        $instance = new $this->nodeClass(
             $inPorts->concat($outPorts)->toArray()
         );
+
+        $instance->options((object) [
+            'parameters' => $desc->parameters
+        ]);
+
+        return $instance;
     }
 }

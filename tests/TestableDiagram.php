@@ -21,7 +21,7 @@ class TestableDiagram extends Diagram
         $this->nodes([]);        
     }
 
-    public function node($nodeClass)
+    public function node($nodeClass, array $options = [])
     {
         $this->node = NodeFactory::make($nodeClass)->instance();
 
