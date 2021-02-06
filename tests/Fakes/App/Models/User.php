@@ -40,8 +40,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function factory()
+    public static function factory($p)
     {
+        dd(
+            app(UserFactory::class)
+        );
         return new UserFactory;
     }    
 }
