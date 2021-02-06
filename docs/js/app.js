@@ -90051,11 +90051,12 @@ var InspectorTable = (_dec = Object(mobx_react__WEBPACK_IMPORTED_MODULE_2__["inj
     key: "features",
     value: function features() {
       var id = this.props.store.metadata.activeInspector;
-      return this.props.store.diagram.engine.model.getNode(id).features;
+      return id ? this.props.store.diagram.engine.model.getNode(id).features : [];
     }
   }, {
     key: "render",
     value: function render() {
+      console.log('hi');
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "flex flex-col"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {

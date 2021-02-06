@@ -7,10 +7,11 @@ export default class InspectorTable extends React.Component {
 
     features() {
         let id = this.props.store.metadata.activeInspector
-        return this.props.store.diagram.engine.model.getNode(id).features
+        return id ? this.props.store.diagram.engine.model.getNode(id).features : [];
     }
 
     render() {
+        console.log('hi')
         return (
             <div className="flex flex-col">
               <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
