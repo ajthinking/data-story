@@ -4,7 +4,6 @@ import NodeModel from '../NodeModel'
 import _ from 'lodash'
 import serverFactory from '../servers/ServerFactory';
 
-
 export class Store {
 
     diagram = {
@@ -52,6 +51,7 @@ export class Store {
     }
 
     addNode(data) {
+        console.log(data)
         var node = new NodeModel({
            serial: this.diagram.nodeSerial++,
            ...data

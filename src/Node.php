@@ -161,7 +161,7 @@ abstract class Node
 
     public function getParameter($name)
     {
-        return $this->options->parameters->$name->value;
+        return collect($this->options->parameters)->where('name', $name)->first();
     }
 
     public function getParameters()

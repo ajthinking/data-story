@@ -25,13 +25,15 @@ export default class NodeWidgetModal extends React.Component {
 
     handleChange(event, parameter) {
         let parameters = this.state.parameters
+
+        
             
-        parameters[parameter.name][
+        parameters.find((p) => p.name == parameter.name)[
             event.target.getAttribute('name') ?? 'value'
         ] = event.target.value
 
         this.setState({
-            parameters: {... parameters}
+            parameters: [... parameters]
         })        
     }
     

@@ -43,8 +43,14 @@ export default class NodeModel extends DefaultNodeModel {
         
     }
 
+    parameter(name) {
+        return this.options.parameters.find((parameter) => {
+            return parameter.name == name
+        })
+    }
+
     getDisplayName() {
-        return this.options.parameters.node_name.value
+        return this.parameter('node_name').value
     }
 
     getDiagramModel() {

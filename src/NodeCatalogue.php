@@ -20,19 +20,7 @@ class NodeCatalogue
         $all = collect($registered)->concat($discovered)->unique();
 
         return $all->map(function ($class) {
-            $variations = $class::factory($class)->variations();
-
-            // Make parameters into associative array for easy access later
-            $variations = collect($variations)->map(function ($variation) {
-                $variation->parameters = collect($variation->parameters)->flatMap(function ($parameter) {
-                    return [$parameter->name => $parameter];
-                })->toArray();
-
-                return $variation;
-            })->toArray();
-
-            return $variations;
-
+            return $class::factory($class)->variations();;
         })->flatten(1)->toArray();
     }
 
