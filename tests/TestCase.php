@@ -21,9 +21,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         return [
             'App\Models\User'                 => 'DataStory\Tests\Fakes\App\Models\User',
-            // The latter should not be needed???
-            'Database\Factories\UserFactory'  => 'DataStory\Tests\Fakes\Database\Factories\UserFactory',
-            'Database\Factories\Models\UserFactory'  => 'DataStory\Tests\Fakes\Database\Factories\UserFactory'
+            'Database\Factories\UserFactory'  => 'DataStory\Tests\Fakes\Database\Factories\UserFactory'
         ];
     }    
     
