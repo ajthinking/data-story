@@ -146,6 +146,18 @@ class TestableDiagram extends Diagram
         PHPUnit::assertTrue(true);
 
         return $this;
+    }
+    
+    public function assertFails()
+    {
+        try {
+            $this->runOnce();
+        } catch(\Throwable $e) {
+            PHPUnit::assertTrue(true);
+            return $this;
+        }
+        
+        PHPUnit::assertTrue(false);
     }    
 
     public function runOnce()
