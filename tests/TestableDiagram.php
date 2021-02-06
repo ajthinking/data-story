@@ -53,6 +53,11 @@ class TestableDiagram extends Diagram
         return $this;
     }
 
+    public function whenNoInput()
+    {
+        return $this->input(collect());
+    }
+
     public function assertOutput($data, $port = 'Output')
     {
         $this->runOnce();
@@ -60,6 +65,30 @@ class TestableDiagram extends Diagram
         PHPUnit::assertEquals(
             $data,
             $this->node->portNamed($port)->features
+        );
+
+        return $this;
+    }
+
+    public function assertInputEqualsOutput($data, $inPort = 'Input', $outPort = 'Output')
+    {
+        $this->input($data)->runOnce();
+
+        PHPUnit::assertEquals(
+            $data,
+            $this->node->portNamed($outPort)->features
+        );
+
+        return $this;
+    }    
+    
+    public function assertNoOutput($port = 'Output')
+    {
+        $this->runOnce();
+
+        PHPUnit::assertEquals(
+            collect(),
+            $this->node->portNamed('Output')->features
         );
 
         return $this;
