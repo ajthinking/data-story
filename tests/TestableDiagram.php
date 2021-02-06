@@ -139,7 +139,7 @@ class TestableDiagram extends Diagram
         return $this;
     }
 
-    public function assertItCouldRun()
+    public function assertCanRun()
     {
         $this->runOnce();
 

@@ -11,7 +11,7 @@ class InspectTest extends TestCase
         Diagram::test()
             ->node(Inspect::class)
             ->input([1,2,3])
-            ->assertItCouldRun();
+            ->assertCanRun();
             // TODO WHAT ASSERT HERE? IT DOES NOT OUTPUT
     }  
 }

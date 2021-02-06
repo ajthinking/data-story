@@ -15,6 +15,6 @@ class Ray extends Node
 
     public function run()
     {
-        ray($this->input());
+        function_exists('ray') && ray($this->input());
     }
 }

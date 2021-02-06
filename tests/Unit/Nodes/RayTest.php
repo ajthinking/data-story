@@ -6,11 +6,11 @@ use DataStory\Tests\TestCase;
 
 class RayTest extends TestCase
 {
-    public function test_that_in_and_out_features_matches()
+    public function the_ray_node_requires_spaties_tool()
     {
         Diagram::test()
             ->node(Ray::class)
-            ->input(collect([1,2,3]))
-            ->assertFails();
+            ->input(collect(['hi']))
+            ->assertCanRun();
     }   
 }
