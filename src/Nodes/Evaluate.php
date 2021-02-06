@@ -27,7 +27,7 @@ class Evaluate extends Node
 
         $features = $features->map(function($feature) {
             eval(
-                $this->getParameter('code')
+                $this->getParameter('code')->value
             );
             return $feature;
         });

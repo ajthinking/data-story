@@ -21,22 +21,35 @@ class TestableDiagram extends Diagram
         $this->nodes([]);        
     }
 
-    public function node($nodeClass, array $options = [])
+    public function node($nodeClass)
     {
         $this->node = NodeFactory::make($nodeClass)->instance();
+
+        $this->addNode($this->node);
+
+        $this->executionOrder = [
+            $this->node->id
+        ];        
 
         return $this;
     }
 
+    public function parameters(array $parameterValues = [])
+    {
+        foreach($parameterValues as $key => $value) {
+            $this->setParameterValue($key, $value);
+        }
+
+        return $this;
+    }    
+
     public function input($features)
     {
+        $features = collect($features);
+
         $provider = new ProviderNode($features);
-        
-        $this->addNode($this->node);
+                
         $this->addNode($provider);
-        $this->executionOrder = [
-            $this->node->id
-        ];
         
         $link = new Link(
             $provider->portNamed('InputProviderPort')->id,
@@ -58,24 +71,28 @@ class TestableDiagram extends Diagram
         return $this->input(collect());
     }
 
-    public function assertOutput($data, $port = 'Output')
+    public function assertOutput($expected, $port = 'Output')
     {
+        $expected = collect($expected);
+
         $this->runOnce();
 
         PHPUnit::assertEquals(
-            $data,
+            $expected = collect($expected),
             $this->node->portNamed($port)->features
         );
 
         return $this;
     }
 
-    public function assertInputEqualsOutput($data, $inPort = 'Input', $outPort = 'Output')
+    public function assertInputEqualsOutput($expected, $inPort = 'Input', $outPort = 'Output')
     {
-        $this->input($data)->runOnce();
+        $expected = collect($expected);
+
+        $this->input($expected)->runOnce();
 
         PHPUnit::assertEquals(
-            $data,
+            $expected,
             $this->node->portNamed($outPort)->features
         );
 
@@ -92,7 +109,28 @@ class TestableDiagram extends Diagram
         );
 
         return $this;
-    }    
+    }
+
+    public function assertOutputCount($count, $port = 'Output')
+    {
+        $this->runOnce();
+
+        PHPUnit::assertCount(
+            $count,
+            $this->node->portNamed('Output')->features
+        );
+
+        
+
+        return $this;        
+    }
+
+    public function setParameterValue($parameterName, $value)
+    {
+        $this->node->getParameter($parameterName)->value = $value;
+
+        return $this;
+    }
 
     public function assertOutputs($outputs)
     {
@@ -100,6 +138,15 @@ class TestableDiagram extends Diagram
 
         return $this;
     }
+
+    public function assertItCouldRun()
+    {
+        $this->runOnce();
+
+        PHPUnit::assertTrue(true);
+
+        return $this;
+    }    
 
     public function runOnce()
     {

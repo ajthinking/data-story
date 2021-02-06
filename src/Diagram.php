@@ -103,13 +103,11 @@ class Diagram
 
     public function run()
     {
-        
         foreach ($this->executionOrder as $nodeId) {
             $node = $this->find($nodeId);
 
             $node->run();
-        }
-        
+        }    
 
         return $this;
     }

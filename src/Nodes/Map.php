@@ -21,7 +21,7 @@ class Map extends Node
     {
         $this->output(
             $this->input()->map->{
-                $this->getParameter('property')
+                $this->getParameter('property')->value
             }
         );
     }
