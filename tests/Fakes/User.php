@@ -1,9 +1,10 @@
 <?php
 
-namespace DataStory\Tests\Fakes\App\Models;
+namespace DataStory\Tests\Fakes;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Database\Factories\UserFactory;
 
 class User extends Authenticatable
 {
@@ -39,9 +40,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function factory()
+    public static function factory(...$args)
     {
         // references DataStory\Tests\Fakes\Database\Factories\UserFactory;
-        return app(\UserFactory::class);
+        return new UserFactory(...$args);
     }    
 }
