@@ -26,7 +26,7 @@ class Filter extends Node
     public function run()
     {
         $groups = $this->input()->groupBy(
-            $this->getParameter('filter_attribute')
+            $this->getParameter('filter_attribute')->value
         );
         
         $unmatched = $groups->filter(function($features, $port) {
