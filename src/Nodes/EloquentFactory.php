@@ -39,8 +39,7 @@ class EloquentFactory extends Node
         
         $this->output(
             $this->input()->map(function($feature) use($model) {
-                $p = "hi";
-                return $model::factory($p)->count(1)->create(
+                return $model::factory()->count(1)->create(
                     (array) $feature
                 );
             })

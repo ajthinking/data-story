@@ -2,7 +2,6 @@
 
 namespace DataStory\Tests\Fakes\App\Models;
 
-use DataStory\Tests\Fakes\Database\Factories\UserFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -40,11 +39,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public static function factory($p)
+    public static function factory()
     {
-        dd(
-            app(UserFactory::class)
-        );
-        return new UserFactory;
+        // references DataStory\Tests\Fakes\Database\Factories\UserFactory;
+        return app(\UserFactory::class);
     }    
 }
