@@ -2,6 +2,7 @@
 
 namespace DataStory;
 
+//use DataStory\Commands\ContributeCommand;
 use DataStory\Commands\NodeCommand;
 use DataStory\Controllers\Reduce;
 use DataStory\Repositories\RouteRepository;
@@ -23,6 +24,7 @@ class DataStoryServiceProvider extends ServiceProvider
         );
 
         $this->commands([
+            //ContributeCommand::class, // A mess
             NodeCommand::class
         ]);
     }
