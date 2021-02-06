@@ -47,6 +47,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
+        "ext-sqlite3": "*",
         "calebporzio/sushi": "^2.1",
         "myclabs/deep-copy": "^1.10",
         "spatie/data-transfer-object": "^2.8"
