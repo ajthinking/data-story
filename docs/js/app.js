@@ -13928,6 +13928,7 @@ var Store = /*#__PURE__*/function () {
       availableNodes: [],
       refresh: 0,
       latestNode: null,
+      latestNodes: [],
       nodeSerial: 1
     });
 
@@ -13967,12 +13968,56 @@ var Store = /*#__PURE__*/function () {
   _createClass(Store, [{
     key: "addNode",
     value: function addNode(data) {
-      console.log(data);
+      var node = new _NodeModel__WEBPACK_IMPORTED_MODULE_1__.default(_objectSpread({
+        serial: this.diagram.nodeSerial++
+      }, data));
+      this.attemptLinkToLatest(node);
+      this.diagram.engine.model.addNode(node);
+      this.diagram.latestNodes.unshift(node);
+      this.refreshDiagram();
+    }
+  }, {
+    key: "attemptLinkToLatest",
+    value: function attemptLinkToLatest(node) {
+      var _this = this,
+          _this$diagram$latestN,
+          _latest$position,
+          _latest$position2,
+          _latest$position3,
+          _latest$position4;
+
+      var linked = false; // Try to link to latest nodes
+
+      this.diagram.latestNodes.find(function (latest) {
+        if (_this.diagram.engine.model.hasNode(latest)) {
+          if (_this.canLink(latest, node)) {
+            // Spread the nodes nicely
+            _this.setLinkedNodePosition(latest, node); // Link to latest node
+
+
+            _this.diagram.engine.model.addAll(_this.getAutomatedLink(latest, node)); // Dont continue traversing latestNodes array
+
+
+            return linked = true;
+          }
+        }
+      });
+      if (linked) return; // Fallback 1: place below latest node
+      // Fallback 2: place at 100, 100
+
+      var latest = (_this$diagram$latestN = this.diagram.latestNodes[0]) !== null && _this$diagram$latestN !== void 0 ? _this$diagram$latestN : null;
+      console.log(latest !== null && latest !== void 0 && (_latest$position = latest.position) !== null && _latest$position !== void 0 && _latest$position.x ? latest.position.x : 100, latest !== null && latest !== void 0 && (_latest$position2 = latest.position) !== null && _latest$position2 !== void 0 && _latest$position2.y ? latest.position.y : 100);
+      node.setPosition(latest !== null && latest !== void 0 && (_latest$position3 = latest.position) !== null && _latest$position3 !== void 0 && _latest$position3.x ? latest.position.x : 100, latest !== null && latest !== void 0 && (_latest$position4 = latest.position) !== null && _latest$position4 !== void 0 && _latest$position4.y ? latest.position.y : 100);
+    }
+  }, {
+    key: "addNodeOld",
+    value: function addNodeOld(data) {
       var node = new _NodeModel__WEBPACK_IMPORTED_MODULE_1__.default(_objectSpread({
         serial: this.diagram.nodeSerial++
       }, data));
       node.setPosition(100, 100 + Math.random() * 100);
       var latestNode = this.diagram.latestNode;
+      console.log('herer', latestNode);
 
       if (this.diagram.engine.model.hasNode(latestNode)) {
         node.setPosition(latestNode.position.x + 200, latestNode.position.y);
@@ -14012,6 +14057,19 @@ var Store = /*#__PURE__*/function () {
       fromPort.reportPosition();
       toPort.reportPosition();
       return link;
+    }
+  }, {
+    key: "canLink",
+    value: function canLink(from, to) {
+      return Boolean(this.getAutomatedLink(from, to));
+    }
+  }, {
+    key: "setLinkedNodePosition",
+    value: function setLinkedNodePosition(latest, node) {
+      var _Object$values$3;
+
+      var fromPort = (_Object$values$3 = Object.values(latest.getOutPorts())[0]) !== null && _Object$values$3 !== void 0 ? _Object$values$3 : false;
+      node.setPosition(latest.position.x + 200, latest.position.y + (Object.keys(fromPort.links).length - 1) * 50);
     }
   }, {
     key: "goToInspector",
@@ -14079,10 +14137,10 @@ var Store = /*#__PURE__*/function () {
   }, {
     key: "setNotRunning",
     value: function setNotRunning() {
-      var _this = this;
+      var _this2 = this;
 
       setTimeout(function () {
-        _this.metadata.running = false;
+        _this2.metadata.running = false;
       }, 500);
     }
   }, {

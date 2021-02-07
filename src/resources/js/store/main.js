@@ -11,6 +11,7 @@ export class Store {
         availableNodes: [],
         refresh: 0,
         latestNode: null,
+        latestNodes: [],
         nodeSerial: 1,
     }
 
@@ -51,7 +52,57 @@ export class Store {
     }
 
     addNode(data) {
-        console.log(data)
+        var node = new NodeModel({
+           serial: this.diagram.nodeSerial++,
+           ...data
+        });
+        
+        this.attemptLinkToLatest(node)
+        
+        this.diagram.engine.model.addNode(node);
+        this.diagram.latestNodes.unshift(node);
+        this.refreshDiagram()
+    }
+
+    attemptLinkToLatest(node)
+    {
+        let linked = false;
+
+        // Try to link to latest nodes
+        this.diagram.latestNodes.find(latest => {
+            if(this.diagram.engine.model.hasNode(latest)) {
+                if(this.canLink(latest, node)) {
+                    // Spread the nodes nicely
+                    this.setLinkedNodePosition(latest, node)
+                    // Link to latest node
+                    this.diagram.engine.model.addAll(
+                        this.getAutomatedLink(latest, node)
+                    );
+                    // Dont continue traversing latestNodes array
+                    return linked = true;
+                }
+
+            }
+        })
+
+        if(linked) return;
+
+        // Fallback 1: place below latest node
+        // Fallback 2: place at 100, 100
+        let latest = this.diagram.latestNodes[0] ?? null;
+
+        console.log(
+            latest?.position?.x ? latest.position.x : 100,
+            latest?.position?.y ? latest.position.y : 100            
+        )
+        node.setPosition(
+            latest?.position?.x ? latest.position.x : 100,
+            latest?.position?.y ? latest.position.y : 100            
+        );
+
+    }
+
+    addNodeOld(data) {
         var node = new NodeModel({
            serial: this.diagram.nodeSerial++,
            ...data
@@ -60,6 +111,7 @@ export class Store {
         node.setPosition(100, 100 + Math.random() * 100);
 
         let latestNode = this.diagram.latestNode
+        console.log('herer', latestNode);
 
         if(this.diagram.engine.model.hasNode(latestNode)) {
             node.setPosition(latestNode.position.x+200, latestNode.position.y);
@@ -70,7 +122,7 @@ export class Store {
         this.diagram.engine.model.addNode(node);
         this.setLatestNode(node)
         this.refreshDiagram()
-    }
+    }    
 
     clearLinkLabels() {
         Object.values(this.diagram.engine.model.layers[0].models).forEach((link) => {
@@ -101,6 +153,21 @@ export class Store {
 
         return link
     }
+
+    canLink(from, to)
+    {
+        return Boolean(this.getAutomatedLink(from, to))
+    }
+
+    setLinkedNodePosition(latest, node)
+    {
+        let fromPort = Object.values(latest.getOutPorts())[0] ?? false;
+
+        node.setPosition(
+            latest.position.x + 200,
+            latest.position.y + (Object.keys(fromPort.links).length - 1) * 50
+        );
+    }    
 
     goToInspector(id) {
         this.metadata.activeInspector = id
