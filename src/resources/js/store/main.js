@@ -91,13 +91,9 @@ export class Store {
         // Fallback 2: place at 100, 100
         let latest = this.diagram.latestNodes[0] ?? null;
 
-        console.log(
-            latest?.position?.x ? latest.position.x : 100,
-            latest?.position?.y ? latest.position.y : 100            
-        )
         node.setPosition(
             latest?.position?.x ? latest.position.x : 100,
-            latest?.position?.y ? latest.position.y : 100            
+            latest?.position?.y ? latest.position.y + 50 : 100            
         );
 
     }

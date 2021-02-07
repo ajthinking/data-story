@@ -13982,9 +13982,7 @@ var Store = /*#__PURE__*/function () {
       var _this = this,
           _this$diagram$latestN,
           _latest$position,
-          _latest$position2,
-          _latest$position3,
-          _latest$position4;
+          _latest$position2;
 
       var linked = false; // Try to link to latest nodes
 
@@ -14006,8 +14004,7 @@ var Store = /*#__PURE__*/function () {
       // Fallback 2: place at 100, 100
 
       var latest = (_this$diagram$latestN = this.diagram.latestNodes[0]) !== null && _this$diagram$latestN !== void 0 ? _this$diagram$latestN : null;
-      console.log(latest !== null && latest !== void 0 && (_latest$position = latest.position) !== null && _latest$position !== void 0 && _latest$position.x ? latest.position.x : 100, latest !== null && latest !== void 0 && (_latest$position2 = latest.position) !== null && _latest$position2 !== void 0 && _latest$position2.y ? latest.position.y : 100);
-      node.setPosition(latest !== null && latest !== void 0 && (_latest$position3 = latest.position) !== null && _latest$position3 !== void 0 && _latest$position3.x ? latest.position.x : 100, latest !== null && latest !== void 0 && (_latest$position4 = latest.position) !== null && _latest$position4 !== void 0 && _latest$position4.y ? latest.position.y : 100);
+      node.setPosition(latest !== null && latest !== void 0 && (_latest$position = latest.position) !== null && _latest$position !== void 0 && _latest$position.x ? latest.position.x : 100, latest !== null && latest !== void 0 && (_latest$position2 = latest.position) !== null && _latest$position2 !== void 0 && _latest$position2.y ? latest.position.y + 50 : 100);
     }
   }, {
     key: "addNodeOld",
