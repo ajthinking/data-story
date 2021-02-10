@@ -10411,7 +10411,7 @@ var PortModel = /*#__PURE__*/function (_DefaultPortModel) {
 
     return _super.call(this, _objectSpread(_objectSpread({}, options), {}, {
       // Make id easier on humans
-      id: "Port_".concat(options.name, "_on_").concat(options.parent.options.id, "_").concat((0,_utils_UID__WEBPACK_IMPORTED_MODULE_1__.default)())
+      id: "Port_".concat(options.name, "_on_").concat(options.parent.options.id, "}")
     }));
   }
 
@@ -12139,9 +12139,7 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('sto
 
       this.props.store.setRunning();
       this.props.store.metadata.server.run(this.props.store.diagram.engine.model).then(function (response) {
-        // LOG TO CONSOLE
-        console.log('response.data', response.data); // TRANSFER FEATURE AT NODES (INSPECTABLES)
-
+        // TRANSFER FEATURE AT NODES (INSPECTABLES)
         response.data.diagram.nodes.filter(function (phpNode) {
           return phpNode.features;
         }).forEach(function (phpNode) {
@@ -14111,14 +14109,9 @@ var Store = /*#__PURE__*/function () {
   }, {
     key: "getAutomatedLink",
     value: function getAutomatedLink(from, to) {
-      var _Object$values$, _Object$values$2;
-
-      if (!from) return; // Ports
-
-      var fromPort = (_Object$values$ = Object.values(from.getOutPorts())[0]) !== null && _Object$values$ !== void 0 ? _Object$values$ : false;
-      var toPort = (_Object$values$2 = Object.values(to.getInPorts())[0]) !== null && _Object$values$2 !== void 0 ? _Object$values$2 : false; // Ensure there are ports to connect to
-
-      if (!fromPort || !toPort) return; // Links
+      if (!this.canLink(from, to)) return;
+      var fromPort = Object.values(from.getOutPorts())[0];
+      var toPort = Object.values(to.getInPorts())[0]; // Links
 
       var link = new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__.DefaultLinkModel();
       link.setSourcePort(fromPort);
@@ -14133,7 +14126,15 @@ var Store = /*#__PURE__*/function () {
   }, {
     key: "canLink",
     value: function canLink(from, to) {
-      return Boolean(this.getAutomatedLink(from, to));
+      var _Object$values$, _Object$values$2;
+
+      // Has from node?
+      if (!from) return; // Resolve ports
+
+      var fromPort = (_Object$values$ = Object.values(from.getOutPorts())[0]) !== null && _Object$values$ !== void 0 ? _Object$values$ : false;
+      var toPort = (_Object$values$2 = Object.values(to.getInPorts())[0]) !== null && _Object$values$2 !== void 0 ? _Object$values$2 : false; // Ensure there are ports to connect to
+
+      return fromPort && toPort;
     }
   }, {
     key: "setLinkedNodePosition",
@@ -14141,7 +14142,7 @@ var Store = /*#__PURE__*/function () {
       var _Object$values$3;
 
       var fromPort = (_Object$values$3 = Object.values(latest.getOutPorts())[0]) !== null && _Object$values$3 !== void 0 ? _Object$values$3 : false;
-      node.setPosition(latest.position.x + 200, latest.position.y + (Object.keys(fromPort.links).length - 1) * 50);
+      node.setPosition(latest.position.x + 200, latest.position.y + Object.keys(fromPort.links).length * 75);
     }
   }, {
     key: "goToInspector",

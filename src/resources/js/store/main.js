@@ -127,13 +127,10 @@ export class Store {
     }
 
     getAutomatedLink(from, to) {
-        if(!from) return
-        // Ports
-        let fromPort = Object.values(from.getOutPorts())[0] ?? false;
-        let toPort = Object.values(to.getInPorts())[0] ?? false;
+        if(!this.canLink(from, to)) return;
 
-        // Ensure there are ports to connect to
-        if(!fromPort || !toPort) return;
+        let fromPort = Object.values(from.getOutPorts())[0];
+        let toPort = Object.values(to.getInPorts())[0];
         
         // Links
         let link = new DefaultLinkModel()
@@ -152,7 +149,15 @@ export class Store {
 
     canLink(from, to)
     {
-        return Boolean(this.getAutomatedLink(from, to))
+        // Has from node?
+        if(!from) return
+        
+        // Resolve ports
+        let fromPort = Object.values(from.getOutPorts())[0] ?? false;
+        let toPort = Object.values(to.getInPorts())[0] ?? false;
+
+        // Ensure there are ports to connect to
+        return fromPort && toPort
     }
 
     setLinkedNodePosition(latest, node)
@@ -161,7 +166,7 @@ export class Store {
 
         node.setPosition(
             latest.position.x + 200,
-            latest.position.y + (Object.keys(fromPort.links).length - 1) * 50
+            latest.position.y + (Object.keys(fromPort.links).length) * 75
         );
     }    
 
