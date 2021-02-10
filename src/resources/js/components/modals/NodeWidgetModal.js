@@ -10,7 +10,6 @@ import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/r
 // import "ace-builds/src-noconflict/theme-github";
 
 import { inject, observer } from "mobx-react"
-import String_ from '../fields/String_';
 import field from '../fields/factory'
 
 @inject('store') @observer
@@ -42,6 +41,7 @@ export default class NodeWidgetModal extends React.Component {
     }
     
     handleSave(event) {
+        console.log(this.props.node)
         this.props.node.options.parameters = this.state.parameters
         this.props.closeModal();
     }    
@@ -165,6 +165,7 @@ export default class NodeWidgetModal extends React.Component {
                             type="text"
                             placeholder={'add port...'}
                             onKeyUp={this.saveNewOutPort.bind(this)}
+                            // onBlur={this.blurNewOutPort.bind(this)}
                         />
                     </div>
                 </div>                  
@@ -200,12 +201,15 @@ export default class NodeWidgetModal extends React.Component {
     }
 
     saveNewOutPort(event) {
-        return this.saveNewPort(event, false)
-    }    
+        this.saveNewPort(event, false)
+    }
+
+    // blurNewOutPort(event) {
+    //     this.saveNewPort(event, false)
+    // }
 
     saveNewPort(event, isInPort) {
-        if(event.key != 'Enter') return;
-
+        if(event.key != 'Enter') return;        
         this.props.node.addPort(
             new DefaultPortModel({
                 in: isInPort,

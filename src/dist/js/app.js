@@ -12764,9 +12764,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_modal__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_modal__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
-/* harmony import */ var _fields_String___WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../fields/String_ */ "./src/resources/js/components/fields/String_.js");
-/* harmony import */ var _fields_factory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../fields/factory */ "./src/resources/js/components/fields/factory.js");
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
+/* harmony import */ var _fields_factory__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../fields/factory */ "./src/resources/js/components/fields/factory.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -12817,8 +12816,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-var NodeWidgetModal = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.inject)('store'), _dec(_class = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var NodeWidgetModal = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_6__.inject)('store'), _dec(_class = (0,mobx_react__WEBPACK_IMPORTED_MODULE_6__.observer)(_class = /*#__PURE__*/function (_React$Component) {
   _inherits(NodeWidgetModal, _React$Component);
 
   var _super = _createSuper(NodeWidgetModal);
@@ -12856,6 +12854,7 @@ var NodeWidgetModal = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.inject)
   }, {
     key: "handleSave",
     value: function handleSave(event) {
+      console.log(this.props.node);
       this.props.node.options.parameters = this.state.parameters;
       this.props.closeModal();
     }
@@ -12901,7 +12900,7 @@ var NodeWidgetModal = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.inject)
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {
           className: "w-full bg-gray-100 px-6 py-2",
           children: Object.values(this.state.parameters).map(function (parameter) {
-            var Field = (0,_fields_factory__WEBPACK_IMPORTED_MODULE_6__.default)(parameter.fieldType);
+            var Field = (0,_fields_factory__WEBPACK_IMPORTED_MODULE_5__.default)(parameter.fieldType);
             return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(Field, {
               handleChange: _this2.handleChange.bind(_this2),
               options: parameter
@@ -12978,7 +12977,8 @@ var NodeWidgetModal = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.inject)
               className: "w-full px-2 py-1",
               type: "text",
               placeholder: 'add port...',
-              onKeyUp: this.saveNewOutPort.bind(this)
+              onKeyUp: this.saveNewOutPort.bind(this) // onBlur={this.blurNewOutPort.bind(this)}
+
             })
           })
         })]
@@ -13021,8 +13021,11 @@ var NodeWidgetModal = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.inject)
   }, {
     key: "saveNewOutPort",
     value: function saveNewOutPort(event) {
-      return this.saveNewPort(event, false);
-    }
+      this.saveNewPort(event, false);
+    } // blurNewOutPort(event) {
+    //     this.saveNewPort(event, false)
+    // }
+
   }, {
     key: "saveNewPort",
     value: function saveNewPort(event, isInPort) {
