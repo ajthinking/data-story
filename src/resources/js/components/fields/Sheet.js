@@ -23,6 +23,7 @@ export default class Sheet extends React.Component {
     }
 
     render() {
+        console.log(this.options)
         return (
             <div>
                 <div></div><br/><br/>
