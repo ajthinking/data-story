@@ -11,6 +11,8 @@ class CreateSheet extends Node
 {
     const SHORT_DESCRIPTION  = 'Create objects from a sheet';
 
+    const IN_PORTS = [];
+
     const CATEGORY = Workflow::class;    
 
     public static function parameters($data = [])
