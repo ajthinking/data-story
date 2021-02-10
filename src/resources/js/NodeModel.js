@@ -1,4 +1,5 @@
 import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/react-diagrams';
+import PortModel from './PortModel'
 import _ from 'lodash'
 import UID from './utils/UID'
 
@@ -13,18 +14,20 @@ export default class NodeModel extends DefaultNodeModel {
 
         this.options.inPorts.forEach(name => {
             this.addPort(
-                new DefaultPortModel({
+                new PortModel({
                     in: true,
                     name: name,
+                    parent: this,
                 })
             );  
         })
 
         this.options.outPorts.forEach(name => {
             this.addPort(
-                new DefaultPortModel({
+                new PortModel({
                     in: false,
                     name: name,
+                    parent: this,                    
                 })
             );  
         })        
