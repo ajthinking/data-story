@@ -11385,6 +11385,7 @@ var Toolbar = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_8__.inject)('store'
         className: "border-l ml-8 pl-8",
         children: this.props.store.nodesWithInspectables().map(function (node) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", {
+            dusk: "inspect",
             onClick: function (e) {
               return _this2.onClickInspectable(node);
             }.bind(node),
@@ -11520,6 +11521,7 @@ var AddNodeControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.inject)(
     _classCallCheck(this, AddNodeControl);
 
     _this = _super.call(this, props);
+    _this.id = 'add-node';
     _this.title = 'Add Node';
     _this.icon = 'fas fa-plus';
     _this.state = {
@@ -11649,7 +11651,10 @@ var BaseControl = /*#__PURE__*/function (_React$Component) {
   _createClass(BaseControl, [{
     key: "render",
     value: function render() {
+      var _this$id;
+
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", {
+        id: (_this$id = this.id) !== null && _this$id !== void 0 ? _this$id : this.title,
         title: this.title,
         className: this.style(),
         onClick: this.onClick.bind(this),
@@ -11848,6 +11853,7 @@ var NodeSearch = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('sto
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
         className: "flex flex-col bg-gray-100 -m-5 rounded shadow max-w-xl font-mono text-xs",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", {
+          id: "node-search",
           value: this.state.search,
           onChange: this.searchChange.bind(this),
           ref: function ref(input) {
@@ -11868,6 +11874,7 @@ var NodeSearch = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('sto
     key: "renderNode",
     value: function renderNode(node) {
       var elementDataProperties = {
+        'id': node.name,
         'data-node-model-variation-name': node.name
       }; // FAILED TO STOP EVENT PROPAGATION ON <li> DOUBLE CLICK
       // REPEAT THE EVENT + DATA FOR ALL CHILDREN FOR NOW
@@ -12127,6 +12134,7 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('sto
     _classCallCheck(this, RunControl);
 
     _this = _super.call(this, props);
+    _this.id = 'run';
     _this.title = 'Run story';
     _this.icon = 'fas fa-play';
     return _this;

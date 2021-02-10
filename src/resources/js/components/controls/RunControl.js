@@ -9,6 +9,7 @@ import LocalServerClient from '../../servers/LocalServerClient';
 export default class RunControl extends BaseControl {
     constructor(props) {
         super(props);
+        this.id = 'run'
         this.title = 'Run story'
         this.icon = 'fas fa-play'
     }

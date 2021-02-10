@@ -17,7 +17,8 @@
         }
     ],
     "require-dev": {
-        "orchestra/testbench": "^6.7"        
+        "orchestra/testbench": "^6.7",
+        "orchestra/testbench-dusk": "^6.12"
     },
     "config": {
         "optimize-autoloader": true,

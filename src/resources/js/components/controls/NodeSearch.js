@@ -17,6 +17,7 @@ export default class NodeSearch extends React.Component {
         return (
         <div className="flex flex-col bg-gray-100 -m-5 rounded shadow max-w-xl font-mono text-xs">
             <input
+                id="node-search"
                 value={this.state.search}
                 onChange={this.searchChange.bind(this)}
                 ref={(input) => { this.nameInput = input; }}
@@ -35,6 +36,7 @@ export default class NodeSearch extends React.Component {
 
     renderNode(node) {
         const elementDataProperties = {
+            'id': node.name,
             'data-node-model-variation-name': node.name,
         }
 

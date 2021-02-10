@@ -5,6 +5,7 @@ export default class BaseControl extends React.Component {
     render() {
         return (
             <span
+                id={this.id ?? this.title}
                 title={this.title}
                 className={this.style()}
                 onClick={this.onClick.bind(this)}

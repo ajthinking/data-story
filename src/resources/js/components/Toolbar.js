@@ -39,6 +39,7 @@ export default class Toolbar extends React.Component {
                     return (
                         
                         <span
+                            dusk="inspect"
                             key={node.getDisplayName() + node.options.id} 
                             onClick={((e) => this.onClickInspectable(node)).bind(node)}
                             className={this.inspectableLinkStyle(node)}>

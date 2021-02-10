@@ -37,6 +37,7 @@ Modal.setAppElement('#app')
 export default class AddNodeControl extends BaseControl {
     constructor(props) {
         super(props);
+        this.id = 'add-node'
         this.title = 'Add Node'
         this.icon = 'fas fa-plus'
         this.state = {
