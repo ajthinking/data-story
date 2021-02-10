@@ -6,7 +6,7 @@ export default class PortModel extends DefaultPortModel {
 		super({
 			...options,
             // Make id easier on humans
-            id: `Port_${options.name}_on_${options.parent.options.id}_${UID()}`
+            id: `Port_${options.name}_on_${options.parent.options.id}}`
         });
     }
 }
