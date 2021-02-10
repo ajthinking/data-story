@@ -39,7 +39,6 @@ class AddAttributeTest extends TestCase
     /** @test */    
     public function works_on_objects()
     {
-        $this->markTestIncomplete();
         Diagram::test()
             ->node(AddAttribute::class)
             ->input(collect([new stdClass]))
