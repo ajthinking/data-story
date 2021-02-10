@@ -21,9 +21,6 @@ export default class RunControl extends BaseControl {
             this.props.store.diagram.engine.model
         )
         .then((response) => {
-            // LOG TO CONSOLE
-            console.log('response.data', response.data)
-
             // TRANSFER FEATURE AT NODES (INSPECTABLES)
             response.data.diagram.nodes.filter(phpNode => {
                 return phpNode.features
