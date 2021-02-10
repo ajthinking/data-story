@@ -34,5 +34,20 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+    }
+    
+    /**
+    * Make sure all integration tests use the same Laravel "skeleton" files.
+    * This avoids duplicate classes during migrations.
+    *
+    * Overrides \Orchestra\Testbench\Dusk\TestCase::getBasePath
+    *       and \Orchestra\Testbench\Concerns\CreatesApplication::getBasePath
+    *
+    * @return string
+    */
+    protected function getBasePath()
+    {
+        // Adjust this path depending on where your override is located.
+        return __DIR__.'/../vendor/orchestra/testbench-dusk/laravel'; 
     }    
 }
