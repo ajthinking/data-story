@@ -1,14 +1,15 @@
 import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/react-diagrams';
 import _ from 'lodash'
+import UID from './utils/UID'
 
 export default class NodeModel extends DefaultNodeModel {
 	constructor(options = {}) {
 		super({
 			...options,
-			type: 'NodeModel'
+            type: 'NodeModel',
+            // Make id easier on humans
+            id: `Node_${options.name}_${options.serial}_${UID()}`
         });
-        
-        this.serial = options.serial
 
         this.options.inPorts.forEach(name => {
             this.addPort(

@@ -10181,6 +10181,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils_UID__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils/UID */ "./src/resources/js/utils/UID.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -10216,6 +10217,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
 var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
   _inherits(NodeModel, _DefaultNodeModel);
 
@@ -10229,9 +10231,10 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
     _classCallCheck(this, NodeModel);
 
     _this = _super.call(this, _objectSpread(_objectSpread({}, options), {}, {
-      type: 'NodeModel'
+      type: 'NodeModel',
+      // Make id easier on humans
+      id: "Node_".concat(options.name, "_").concat(options.serial, "_").concat((0,_utils_UID__WEBPACK_IMPORTED_MODULE_2__.default)())
     }));
-    _this.serial = options.serial;
 
     _this.options.inPorts.forEach(function (name) {
       _this.addPort(new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__.DefaultPortModel({
@@ -13845,6 +13848,7 @@ var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
   }, {
     key: "run",
     value: function run(model) {
+      console.log(model);
       return axios__WEBPACK_IMPORTED_MODULE_1___default().post(this.root + '/run', {
         model: (0,_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_2__.nonCircularJsonStringify)(model.serialize())
       });
@@ -14158,6 +14162,28 @@ var Store = /*#__PURE__*/function () {
   return Store;
 }();
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (window.store = new Store());
+
+/***/ }),
+
+/***/ "./src/resources/js/utils/UID.js":
+/*!***************************************!*\
+  !*** ./src/resources/js/utils/UID.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function () {
+  // Copied from @projectstorm/react-canvas-core/src/Toolkit.ts how to import instead?
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0;
+    var v = c === 'x' ? r : r & 0x3 | 0x8;
+    return v.toString(16);
+  });
+});
 
 /***/ }),
 

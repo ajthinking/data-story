@@ -13,6 +13,7 @@ export default class RemoteServerClient extends AbstractServerClient {
     }
 
     run(model) {
+        console.log(model)
         return axios.post(this.root + '/run', {
             model: nonCircularJsonStringify(
                 model.serialize()
