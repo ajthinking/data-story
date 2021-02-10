@@ -34,6 +34,7 @@
         "autoprefixer": "^10.0.2",
         "closest": "0.0.1",
         "dagre": "^0.8.5",
+        "jexcel": "^4.5.2",
         "ml-matrix": "^6.5.3",
         "mobx": "^6.0.4",
         "mobx-react": "^7.0.5",

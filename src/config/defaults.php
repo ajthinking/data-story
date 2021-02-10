@@ -66,6 +66,7 @@ return [
         DataStory\Nodes\Cloner::class,
         DataStory\Nodes\Create::class,
         DataStory\Nodes\CreateJSON::class,
+        DataStory\Nodes\CreateSheet::class,
         DataStory\Nodes\EloquentFactory::class,
         DataStory\Nodes\EloquentQuery::class,
         DataStory\Nodes\Evaluate::class,

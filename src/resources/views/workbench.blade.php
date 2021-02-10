@@ -13,5 +13,7 @@
         <div id="app"></div>
         <script type="text/javascript" src="/vendor/data-story/js/app.js"></script>
         <script src="https://kit.fontawesome.com/f9f7777401.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://jsuites.net/v3/jsuites.css" type="text/css" />
+        <link rel="stylesheet" href="https://bossanova.uk/jexcel/v4/jexcel.css" type="text/css" />
     </body>
 </html>

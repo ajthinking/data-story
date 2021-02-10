@@ -4583,6 +4583,13 @@ jest-worker@^26.6.2:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
+jexcel@^4.5.2:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/jexcel/-/jexcel-4.5.2.tgz#d1bb2f4abae96ac4af11ad05c1485b1abde5a101"
+  integrity sha512-q3gbiPGXtkzZRjXbiHAdJaN5qq2BNC76383bFPEs/b8oj+JLge0LgFj0KVv/dRTJ/EdMDxYb5/0T1dC3bB0v0Q==
+  dependencies:
+    jsuites "^3.4.0"
+
 jquery@^3.2:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
@@ -4653,6 +4660,11 @@ jsonfile@^6.0.1:
     universalify "^2.0.0"
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+jsuites@^3.4.0:
+  version "3.9.9"
+  resolved "https://registry.yarnpkg.com/jsuites/-/jsuites-3.9.9.tgz#ceda5e2f77540fba143677b8d84f3c6e79885729"
+  integrity sha512-uciw/BeIu6cU3+n+hBfoQQ1hgP4R/DAif2fwJwkJmu8lZ5AWeYW5xGQhVVmrCN/MPFSVkIF6ioHX6kC9Uj9AJw==
 
 junk@^3.1.0:
   version "3.1.0"
