@@ -1,4 +1,5 @@
 import AbstractServerClient from "./AbstractServerClient";
+import { NodeDescription } from "../NodeDescription";
 
 export default class LocalServerClient extends AbstractServerClient {
     sayHi() : void {
@@ -11,7 +12,19 @@ export default class LocalServerClient extends AbstractServerClient {
                 data: {
                     stories: [],
                     capabilities: {
-                        availableNodes: []
+                        availableNodes: [
+                            NodeDescription.deserialize({
+                                category: 'Fake',
+                                editableInPorts: false,
+                                editableOutPorts: false,
+                                outPorts: ['Output'],
+                                key: 'test-key',
+                                name: 'TypeScriptTest',
+                                nodeReact: 'Node',
+                                parameters: [],
+                                summary: 'ajthinking is learning typescript',
+                            })
+                        ]
                     }                    
                 }
             })

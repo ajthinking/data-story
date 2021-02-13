@@ -9851,6 +9851,41 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./src/resources/js/NodeDescription.ts":
+/*!*********************************************!*\
+  !*** ./src/resources/js/NodeDescription.ts ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+exports.NodeDescription = void 0;
+
+var NodeDescription = function () {
+  function NodeDescription() {}
+
+  NodeDescription.deserialize = function (data) {
+    var instance = new this();
+
+    for (var _i = 0, _a = Object.entries(data); _i < _a.length; _i++) {
+      var _b = _a[_i],
+          key = _b[0],
+          value = _b[1];
+      this[key] = value;
+    }
+
+    return instance;
+  };
+
+  return NodeDescription;
+}();
+
+exports.NodeDescription = NodeDescription;
+
+/***/ }),
+
 /***/ "./src/resources/js/servers/LocalServerClient.ts":
 /*!*******************************************************!*\
   !*** ./src/resources/js/servers/LocalServerClient.ts ***!
@@ -9890,6 +9925,8 @@ exports.__esModule = true;
 
 var AbstractServerClient_1 = __webpack_require__(/*! ./AbstractServerClient */ "./src/resources/js/servers/AbstractServerClient.js");
 
+var NodeDescription_1 = __webpack_require__(/*! ../NodeDescription */ "./src/resources/js/NodeDescription.ts");
+
 var LocalServerClient = function (_super) {
   __extends(LocalServerClient, _super);
 
@@ -9907,7 +9944,17 @@ var LocalServerClient = function (_super) {
         data: {
           stories: [],
           capabilities: {
-            availableNodes: []
+            availableNodes: [NodeDescription_1.NodeDescription.deserialize({
+              category: 'Fake',
+              editableInPorts: false,
+              editableOutPorts: false,
+              outPorts: ['Output'],
+              key: 'test-key',
+              name: 'TypeScriptTest',
+              nodeReact: 'Node',
+              parameters: [],
+              summary: 'ajthinking is learning typescript'
+            })]
           }
         }
       });
