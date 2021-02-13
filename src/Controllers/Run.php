@@ -15,8 +15,7 @@ class Run
         $diagram->registerGlobal()->run();
 
         return [
-            'status'        => 200,
-            'diagram'       => $diagram
+            'diagram' => $diagram
         ];      
     }
 }
