@@ -17,11 +17,20 @@ export default class LocalServerClient extends AbstractServerClient {
                                 category: 'Fake',
                                 editableInPorts: false,
                                 editableOutPorts: false,
+                                inPorts: [],
                                 outPorts: ['Output'],
                                 key: 'test-key',
                                 name: 'TypeScriptTest',
                                 nodeReact: 'Node',
-                                parameters: [],
+                                parameters: [
+                                    {
+                                        default: "TypeScriptTest",
+                                        fieldType: "String_",
+                                        name: "node_name",
+                                        placeholder: "",
+                                        value: "TypeScriptTest",
+                                    }
+                                ],
                                 summary: 'ajthinking is learning typescript',
                             })
                         ]
