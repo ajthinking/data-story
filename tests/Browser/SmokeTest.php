@@ -31,7 +31,7 @@ class SmokeTest extends BrowserTestCase
                 // Run it
                 ->click('#run')
                 ->waitFor('.Toastify__toast-body')
-                ->pause(500) // Prevent fail on github actions
+                ->pause(100) // Prevent fail on github actions
                 ->assertSee('Successfully ran story!')
 
                 // Go to the inspector tab
