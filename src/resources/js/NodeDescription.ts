@@ -14,7 +14,7 @@ export class NodeDescription {
         let instance = new this;
 
         for (const [key, value] of Object.entries(data)) {
-            this[key] = value
+            instance[key] = value
         }
 
         return instance

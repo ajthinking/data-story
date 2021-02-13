@@ -9873,7 +9873,7 @@ var NodeDescription = function () {
       var _b = _a[_i],
           key = _b[0],
           value = _b[1];
-      this[key] = value;
+      instance[key] = value;
     }
 
     return instance;
