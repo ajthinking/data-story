@@ -10,12 +10,22 @@ class Boot
     public function __invoke()
     {
         return [
-            'status'                => 200,
-            'stories'               => Story::all(),
-            'capabilities' => Diagram::capabilities(),
-            'serializedModel'       => request()->input('story') ? Story::where(
-                'path', 'like', '%' . request()->input('story') . '.story.json'
-            )->first()->content : null,
+            'stories'         => Story::all(),
+            'capabilities'    => Diagram::capabilities(),
+            'serializedModel' => $this->getSerializedModel(),
         ];        
+    }
+
+    protected function getSerializedModel()
+    {
+        $requestedStory = request()->input('story');
+        
+        if(!$requestedStory) return;
+
+        return Story::where(
+            'path',
+            'like',
+            "%$requestedStory.story.json"
+        )->first()->content;
     }
 }
