@@ -1,15 +1,14 @@
 export class NodeDescription {
-    category: string
-    editableInPorts: boolean
-    editableOutPorts: boolean
-    inPorts: Array<String>
-    outPorts: Array<String>
-    key: string
-    name: string
-    nodeReact: string
-
-    parameters: Array<any>
-    summary: string
+    public category: string
+    public editableInPorts: boolean
+    public editableOutPorts: boolean
+    public inPorts: Array<String>
+    public outPorts: Array<String>
+    public key: string
+    public name: string
+    public nodeReact: string
+    public parameters: Array<any>
+    public summary: string
 
     static deserialize(data: object) {
         let instance = new this;
