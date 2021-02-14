@@ -16,4 +16,4 @@ jobs:
       run: ./vendor/bin/dusk-updater update
 
     - name: Run tests
-      run: ./vendor/bin/phpunit servers/laravel/tests --testdox
+      run: ./vendor/bin/phpunit src/servers/laravel/tests --testdox
