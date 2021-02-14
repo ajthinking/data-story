@@ -2,8 +2,13 @@
 
 namespace DataStory\Tests;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+use DataStory\Support\SimpleFile;
+
+class BrowserTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
+    protected static $baseServeHost = '127.0.0.1';
+    protected static $baseServePort = 9000;
+
     protected function getPackageProviders($app)
     {
         return [
@@ -14,7 +19,22 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // refactor to ./vendor/bin/testbench-dusk vendor:publish
+
+        $assetsPath = $this->getBasePath() . '/public/vendor/data-story';
+        SimpleFile::put(
+            $assetsPath . '/js/app.js',
+            file_get_contents(__DIR__ . '/../../../dist/js/app.js')
+        );
+
+        SimpleFile::put(
+            $assetsPath . '/css/app.css',
+            file_get_contents(__DIR__ . '/../../../dist/css/app.css')
+        );        
+
         $this->loadLaravelMigrations();
+        
     }
 
     protected function getPackageAliases($app)
@@ -48,6 +68,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getBasePath()
     {
         // Adjust this path depending on where your override is located.
-        return __DIR__.'/../vendor/orchestra/testbench-dusk/laravel'; 
+        return __DIR__.'/../../../vendor/orchestra/testbench-dusk/laravel'; 
     }    
 }

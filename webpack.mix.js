@@ -5,9 +5,9 @@ const tailwindcss = require('tailwindcss')
 /**
  * The normal build
  */
-let pipe = mix.ts('src/resources/js/app.js', 'src/dist/js')
+let pipe = mix.ts('client/js/app.js', 'dist/js')
     .react()
-    .sass('src/resources/sass/app.scss', 'src/dist/css')
+    .sass('client/sass/app.scss', 'dist/css')
     .options({
         processCssUrls: false,
         postCss: [ tailwindcss('tailwind.config.js') ],
@@ -17,6 +17,6 @@ let pipe = mix.ts('src/resources/js/app.js', 'src/dist/js')
  * Extra dev build into a host app dsh1 to avoid having to publish all the time
  */
 if(process.env.MIX_DATASTORY_DEV_MODE_AUTO_PUBLISH) {
-    pipe.copy('src/dist', '../dsh1/public/vendor/data-story')
-    pipe.copy('src/dist', 'docs') // github pages
+    pipe.copy('dist', '../dsh1/public/vendor/data-story')
+    pipe.copy('dist', 'docs') // github pages
 }
