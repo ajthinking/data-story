@@ -1,0 +1,8 @@
+[
+    {
+        "level": "WARNING",
+        "message": "http:\/\/127.0.0.1:9000\/vendor\/data-story\/js\/app.js 74644:12 \"[mobx] Out of bounds read: 0\"",
+        "source": "console-api",
+        "timestamp": 1613320222204
+    }
+]

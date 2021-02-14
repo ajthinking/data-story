@@ -5,7 +5,7 @@ const tailwindcss = require('tailwindcss')
 /**
  * The normal build
  */
-let pipe = mix.ts('client/js/app.js', 'dist/js')
+let pipe = mix.ts('client/app.js', 'dist/js')
     .react()
     .sass('client/sass/app.scss', 'dist/css')
     .options({
