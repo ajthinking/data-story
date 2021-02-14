@@ -9934,10 +9934,6 @@ var LocalServerClient = function (_super) {
     return _super !== null && _super.apply(this, arguments) || this;
   }
 
-  LocalServerClient.prototype.sayHi = function () {
-    alert("HI!");
-  };
-
   LocalServerClient.prototype.boot = function () {
     return new Promise(function (callback) {
       return callback({
@@ -9970,8 +9966,9 @@ var LocalServerClient = function (_super) {
 
   LocalServerClient.prototype.run = function () {
     return new Promise(function (callback) {
-      return alert("Not implemented");
-      return callback({});
+      return callback({
+        diagram: {}
+      });
     });
   };
 

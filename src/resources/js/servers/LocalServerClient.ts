@@ -2,10 +2,6 @@ import AbstractServerClient from "./AbstractServerClient";
 import { NodeDescription } from "../NodeDescription";
 
 export default class LocalServerClient extends AbstractServerClient {
-    sayHi() : void {
-        alert("HI!")
-    }
-
     boot() {
         return new Promise((callback) => {
             return callback({
@@ -42,14 +38,10 @@ export default class LocalServerClient extends AbstractServerClient {
 
     run() {
         return new Promise((callback) => {
-            return alert("Not implemented")
             return callback({
-                // data: {
-                //     stories: [],
-                //     capabilities: {
-                //         availableNodes: []
-                //     }                    
-                // }
+                diagram: {
+                    //                    
+                }
             })
         })        
     }
