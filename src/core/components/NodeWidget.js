@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 import { inject, observer } from "mobx-react"
 import NodeWidgetModal from './modals/NodeWidgetModal';
 import NodeInspectorLink from './NodeInspectorLink'
-import modalStyle from '../utils/modalStyle'
+import modalStyle from '../../core/utils/modalStyle'
 
 
 /**

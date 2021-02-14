@@ -3,7 +3,7 @@ import { inject, observer } from "mobx-react"
 import BaseControl from './BaseControl'
 import axios from 'axios';
 import Modal from 'react-modal';
-import modalStyle from '../../utils/modalStyle'
+import modalStyle from '../../../core/utils/modalStyle'
 import SaveModal from '../modals/SaveModal'
 
 @inject('store') @observer

@@ -32,7 +32,7 @@ export default class DiagramModel extends DefaultDiagramModel {
             links: {...layered.layers[0].models},
             nodes: {...layered.layers[1].models},
             executionOrder: this.executionOrder()
-                .map(node => node.options.id)             
+                .map(node => node.getOptions().id)             
         }
 
         // Cleanup unused keys

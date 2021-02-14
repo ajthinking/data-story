@@ -48,6 +48,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
     protected function getBasePath()
     {
         // Adjust this path depending on where your override is located.
-        return __DIR__.'/../../../vendor/orchestra/testbench-dusk/laravel'; 
+        return __DIR__.'/../../../../vendor/orchestra/testbench-dusk/laravel'; 
     }    
 }

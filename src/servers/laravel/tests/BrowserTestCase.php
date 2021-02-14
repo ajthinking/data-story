@@ -25,12 +25,12 @@ class BrowserTestCase extends \Orchestra\Testbench\Dusk\TestCase
         $assetsPath = $this->getBasePath() . '/public/vendor/data-story';
         SimpleFile::put(
             $assetsPath . '/js/app.js',
-            file_get_contents(__DIR__ . '/../../../dist/js/app.js')
+            file_get_contents(__DIR__ . '/../../../../dist/js/app.js')
         );
 
         SimpleFile::put(
             $assetsPath . '/css/app.css',
-            file_get_contents(__DIR__ . '/../../../dist/css/app.css')
+            file_get_contents(__DIR__ . '/../../../../dist/css/app.css')
         );        
 
         $this->loadLaravelMigrations();
@@ -68,6 +68,6 @@ class BrowserTestCase extends \Orchestra\Testbench\Dusk\TestCase
     protected function getBasePath()
     {
         // Adjust this path depending on where your override is located.
-        return __DIR__.'/../../../vendor/orchestra/testbench-dusk/laravel'; 
+        return __DIR__.'/../../../../vendor/orchestra/testbench-dusk/laravel'; 
     }    
 }

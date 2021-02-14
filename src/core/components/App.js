@@ -5,7 +5,7 @@ import pages from './pages/factory'
 import { inject, observer } from "mobx-react"
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import EngineFactory from '../EngineFactory'
+import EngineFactory from '../../core/EngineFactory'
 
 @inject('store') @observer
 export default class App extends React.Component {

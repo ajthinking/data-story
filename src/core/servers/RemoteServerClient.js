@@ -1,6 +1,6 @@
 import AbstractServerClient from "./AbstractServerClient";
 import axios from 'axios';
-import {nonCircularJsonStringify} from '../utils/nonCircularJsonStringify'
+import {nonCircularJsonStringify} from '../../core/utils/nonCircularJsonStringify'
 
 export default class RemoteServerClient extends AbstractServerClient {
     constructor(root = '/datastory/api') {
