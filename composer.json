@@ -35,14 +35,14 @@
     },
     "autoload": {
         "psr-4": {
-            "DataStory\\": "src/",
-            "DataStory\\Tests\\": "tests/"
+            "DataStory\\": "servers/laravel/",
+            "DataStory\\Tests\\": "servers/laravel/tests"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DataStory\\": "src/",            
-            "DataStory\\Tests\\": "tests/"
+            "DataStory\\": "servers/laravel/",
+            "DataStory\\Tests\\": "servers/laravel/tests"            
         }
     },
     "minimum-stability": "dev",

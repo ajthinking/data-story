@@ -40,7 +40,7 @@ class DataStoryServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/resources/views', 'data-story');
 
         $this->publishes([
-            __DIR__ . '/dist' => public_path('vendor/data-story'),
+            __DIR__ . '/../../dist' => public_path('vendor/data-story'),
         ], 'public');
 
         $this->publishes([
@@ -50,11 +50,7 @@ class DataStoryServiceProvider extends ServiceProvider
         require __DIR__ . '/routes/web.php';
         require __DIR__ . '/routes/api.php';
 
-        $this->publishStoryRoutes();
-
-        Str::macro('isLength', function ($str, $length) {
-            return static::length($str) == $length;
-        });        
+        $this->publishStoryRoutes();     
     }
 
     /**
