@@ -41,7 +41,7 @@ export default class App extends React.Component {
 
     boot() {
         // NORMAL PHP CLIENT
-        //let server = new RemoteServerClient('/datastory/api')
+        //let server = new APIClient('/datastory/api')
 
         this.props.store.metadata.server.boot({
             story: window.location.href.split("/datastory").pop().replace('/', '')

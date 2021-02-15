@@ -1,3 +1,0 @@
-interface ServerInterface {
-    label: string;
-}

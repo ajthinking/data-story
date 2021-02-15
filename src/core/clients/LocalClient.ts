@@ -1,7 +1,6 @@
-import AbstractServerClient from "./AbstractServerClient";
-import { NodeDescription } from "../../core/NodeDescription";
+import { NodeDescription } from "../NodeDescription";
 
-export default class LocalServerClient extends AbstractServerClient {
+export default class LocalClient {
     boot() {
         return new Promise((callback) => {
             return callback({

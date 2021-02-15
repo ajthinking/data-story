@@ -9886,55 +9886,91 @@ exports.NodeDescription = NodeDescription;
 
 /***/ }),
 
-/***/ "./src/core/servers/LocalServerClient.ts":
-/*!***********************************************!*\
-  !*** ./src/core/servers/LocalServerClient.ts ***!
-  \***********************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ "./src/core/clients/APIClient.ts":
+/*!***************************************!*\
+  !*** ./src/core/clients/APIClient.ts ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
-var __extends = this && this.__extends || function () {
-  var _extendStatics = function extendStatics(d, b) {
-    _extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) {
-        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-      }
-    };
+exports.__esModule = true;
 
-    return _extendStatics(d, b);
-  };
+var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
-  return function (d, b) {
-    _extendStatics(d, b);
+var nonCircularJsonStringify_1 = __webpack_require__(/*! ../utils/nonCircularJsonStringify */ "./src/core/utils/nonCircularJsonStringify.js");
 
-    function __() {
-      this.constructor = d;
+var APIClient = function () {
+  function APIClient(root) {
+    if (root === void 0) {
+      root = '/datastory/api';
     }
 
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    this.root = root;
+  }
+
+  APIClient.prototype.boot = function (options) {
+    return axios_1["default"].post(this.root + '/boot', options);
   };
+
+  APIClient.prototype.run = function (model) {
+    console.log(model);
+    return axios_1["default"].post(this.root + '/run', {
+      model: nonCircularJsonStringify_1.nonCircularJsonStringify(model.serialize())
+    });
+  };
+
+  return APIClient;
 }();
+
+exports.default = APIClient;
+
+/***/ }),
+
+/***/ "./src/core/clients/ClientFactory.ts":
+/*!*******************************************!*\
+  !*** ./src/core/clients/ClientFactory.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
 
 exports.__esModule = true;
 
-var AbstractServerClient_1 = __webpack_require__(/*! ./AbstractServerClient */ "./src/core/servers/AbstractServerClient.js");
+var APIClient_1 = __webpack_require__(/*! ./APIClient */ "./src/core/clients/APIClient.ts");
 
-var NodeDescription_1 = __webpack_require__(/*! ../../core/NodeDescription */ "./src/core/NodeDescription.ts");
+var LocalClient_1 = __webpack_require__(/*! ./LocalClient */ "./src/core/clients/LocalClient.ts");
 
-var LocalServerClient = function (_super) {
-  __extends(LocalServerClient, _super);
+var clients = {
+  APIClient: APIClient_1["default"],
+  LocalClient: LocalClient_1["default"]
+};
 
-  function LocalServerClient() {
-    return _super !== null && _super.apply(this, arguments) || this;
-  }
+exports.default = function (name) {
+  return new clients[name]();
+};
 
-  LocalServerClient.prototype.boot = function () {
+/***/ }),
+
+/***/ "./src/core/clients/LocalClient.ts":
+/*!*****************************************!*\
+  !*** ./src/core/clients/LocalClient.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var NodeDescription_1 = __webpack_require__(/*! ../NodeDescription */ "./src/core/NodeDescription.ts");
+
+var LocalClient = function () {
+  function LocalClient() {}
+
+  LocalClient.prototype.boot = function () {
     return new Promise(function (callback) {
       return callback({
         data: {
@@ -9964,7 +10000,7 @@ var LocalServerClient = function (_super) {
     });
   };
 
-  LocalServerClient.prototype.run = function () {
+  LocalClient.prototype.run = function () {
     return new Promise(function (callback) {
       return callback({
         diagram: {}
@@ -9972,111 +10008,10 @@ var LocalServerClient = function (_super) {
     });
   };
 
-  return LocalServerClient;
-}(AbstractServerClient_1["default"]);
-
-exports.default = LocalServerClient;
-
-/***/ }),
-
-/***/ "./src/core/servers/RemoteServerClient.ts":
-/*!************************************************!*\
-  !*** ./src/core/servers/RemoteServerClient.ts ***!
-  \************************************************/
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var __extends = this && this.__extends || function () {
-  var _extendStatics = function extendStatics(d, b) {
-    _extendStatics = Object.setPrototypeOf || {
-      __proto__: []
-    } instanceof Array && function (d, b) {
-      d.__proto__ = b;
-    } || function (d, b) {
-      for (var p in b) {
-        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
-      }
-    };
-
-    return _extendStatics(d, b);
-  };
-
-  return function (d, b) {
-    _extendStatics(d, b);
-
-    function __() {
-      this.constructor = d;
-    }
-
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-  };
+  return LocalClient;
 }();
 
-exports.__esModule = true;
-
-var AbstractServerClient_1 = __webpack_require__(/*! ./AbstractServerClient */ "./src/core/servers/AbstractServerClient.js");
-
-var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-
-var nonCircularJsonStringify_1 = __webpack_require__(/*! ../../core/utils/nonCircularJsonStringify */ "./src/core/utils/nonCircularJsonStringify.js");
-
-var RemoteServerClient = function (_super) {
-  __extends(RemoteServerClient, _super);
-
-  function RemoteServerClient(root) {
-    if (root === void 0) {
-      root = '/datastory/api';
-    }
-
-    var _this = _super.call(this) || this;
-
-    _this.root = root;
-    return _this;
-  }
-
-  RemoteServerClient.prototype.boot = function (options) {
-    return axios_1["default"].post(this.root + '/boot', options);
-  };
-
-  RemoteServerClient.prototype.run = function (model) {
-    console.log(model);
-    return axios_1["default"].post(this.root + '/run', {
-      model: nonCircularJsonStringify_1.nonCircularJsonStringify(model.serialize())
-    });
-  };
-
-  return RemoteServerClient;
-}(AbstractServerClient_1["default"]);
-
-exports.default = RemoteServerClient;
-
-/***/ }),
-
-/***/ "./src/core/servers/ServerFactory.ts":
-/*!*******************************************!*\
-  !*** ./src/core/servers/ServerFactory.ts ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var RemoteServerClient_1 = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/core/servers/RemoteServerClient.ts");
-
-var LocalServerClient_1 = __webpack_require__(/*! ../servers/LocalServerClient */ "./src/core/servers/LocalServerClient.ts");
-
-var servers = {
-  RemoteServerClient: RemoteServerClient_1["default"],
-  LocalServerClient: LocalServerClient_1["default"]
-};
-
-exports.default = function (name) {
-  return new servers[name]();
-};
+exports.default = LocalClient;
 
 /***/ }),
 
@@ -10780,7 +10715,7 @@ var App = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.inject)('store'), _
       var _this2 = this;
 
       // NORMAL PHP CLIENT
-      //let server = new RemoteServerClient('/datastory/api')
+      //let server = new APIClient('/datastory/api')
       this.props.store.metadata.server.boot({
         story: window.location.href.split("/datastory").pop().replace('/', '')
       }).then(function (response) {
@@ -14078,27 +14013,6 @@ var pages = {
 
 /***/ }),
 
-/***/ "./src/core/servers/AbstractServerClient.js":
-/*!**************************************************!*\
-  !*** ./src/core/servers/AbstractServerClient.js ***!
-  \**************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ AbstractServerClient)
-/* harmony export */ });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var AbstractServerClient = function AbstractServerClient() {
-  _classCallCheck(this, AbstractServerClient);
-};
-
-
-
-/***/ }),
-
 /***/ "./src/core/store/main.js":
 /*!********************************!*\
   !*** ./src/core/store/main.js ***!
@@ -14117,7 +14031,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_NodeModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core/NodeModel */ "./src/core/NodeModel.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _servers_ServerFactory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../servers/ServerFactory */ "./src/core/servers/ServerFactory.ts");
+/* harmony import */ var _clients_ClientFactory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../clients/ClientFactory */ "./src/core/clients/ClientFactory.ts");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -14156,7 +14070,7 @@ var Store = /*#__PURE__*/function () {
       activeInspector: null,
       stories: [],
       activeStory: '',
-      server: (0,_servers_ServerFactory__WEBPACK_IMPORTED_MODULE_3__.default)((_window$server = window.server) !== null && _window$server !== void 0 ? _window$server : 'RemoteServerClient')
+      server: (0,_clients_ClientFactory__WEBPACK_IMPORTED_MODULE_3__.default)((_window$server = window.server) !== null && _window$server !== void 0 ? _window$server : 'APIClient')
     });
 
     (0,mobx__WEBPACK_IMPORTED_MODULE_4__.makeObservable)(this, {

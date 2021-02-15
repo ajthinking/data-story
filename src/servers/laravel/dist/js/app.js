@@ -10679,7 +10679,7 @@ var App = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_7__.inject)('store'), _
       var _this2 = this;
 
       // NORMAL PHP CLIENT
-      //let server = new RemoteServerClient('/datastory/api')
+      //let server = new APIClient('/datastory/api')
       this.props.store.metadata.server.boot({
         story: window.location.href.split("/datastory").pop().replace('/', '')
       }).then(function (response) {
@@ -12219,7 +12219,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 /* harmony import */ var _BaseControl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BaseControl */ "./src/resources/js/components/controls/BaseControl.js");
 /* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
-/* harmony import */ var _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../servers/RemoteServerClient */ "./src/resources/js/servers/RemoteServerClient.js");
+/* harmony import */ var _servers_APIClient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../servers/APIClient */ "./src/resources/js/servers/APIClient.js");
 /* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../servers/LocalServerClient */ "./src/resources/js/servers/LocalServerClient.ts");
 /* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -14003,16 +14003,16 @@ var AbstractServerClient = function AbstractServerClient() {
 
 /***/ }),
 
-/***/ "./src/resources/js/servers/RemoteServerClient.js":
+/***/ "./src/resources/js/servers/APIClient.js":
 /*!********************************************************!*\
-  !*** ./src/resources/js/servers/RemoteServerClient.js ***!
+  !*** ./src/resources/js/servers/APIClient.js ***!
   \********************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ RemoteServerClient)
+/* harmony export */   "default": () => (/* binding */ APIClient)
 /* harmony export */ });
 /* harmony import */ var _AbstractServerClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AbstractServerClient */ "./src/resources/js/servers/AbstractServerClient.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
@@ -14044,24 +14044,24 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
-  _inherits(RemoteServerClient, _AbstractServerClient);
+var APIClient = /*#__PURE__*/function (_AbstractServerClient) {
+  _inherits(APIClient, _AbstractServerClient);
 
-  var _super = _createSuper(RemoteServerClient);
+  var _super = _createSuper(APIClient);
 
-  function RemoteServerClient() {
+  function APIClient() {
     var _this;
 
     var root = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/datastory/api';
 
-    _classCallCheck(this, RemoteServerClient);
+    _classCallCheck(this, APIClient);
 
     _this = _super.call(this);
     _this.root = root;
     return _this;
   }
 
-  _createClass(RemoteServerClient, [{
+  _createClass(APIClient, [{
     key: "boot",
     value: function boot(options) {
       return axios__WEBPACK_IMPORTED_MODULE_1___default().post(this.root + '/boot', options);
@@ -14076,7 +14076,7 @@ var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
     }
   }]);
 
-  return RemoteServerClient;
+  return APIClient;
 }(_AbstractServerClient__WEBPACK_IMPORTED_MODULE_0__.default);
 
 
@@ -14094,14 +14094,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/resources/js/servers/RemoteServerClient.js");
+/* harmony import */ var _servers_APIClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../servers/APIClient */ "./src/resources/js/servers/APIClient.js");
 /* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../servers/LocalServerClient */ "./src/resources/js/servers/LocalServerClient.ts");
 /* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (name) {
   var servers = {
-    RemoteServerClient: _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_0__.default,
+    APIClient: _servers_APIClient__WEBPACK_IMPORTED_MODULE_0__.default,
     LocalServerClient: (_servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1___default())
   };
   var selected = servers[name];
@@ -14167,7 +14167,7 @@ var Store = /*#__PURE__*/function () {
       activeInspector: null,
       stories: [],
       activeStory: '',
-      server: (0,_servers_ServerFactory__WEBPACK_IMPORTED_MODULE_3__.default)((_window$server = window.server) !== null && _window$server !== void 0 ? _window$server : 'RemoteServerClient')
+      server: (0,_servers_ServerFactory__WEBPACK_IMPORTED_MODULE_3__.default)((_window$server = window.server) !== null && _window$server !== void 0 ? _window$server : 'APIClient')
     });
 
     (0,mobx__WEBPACK_IMPORTED_MODULE_4__.makeObservable)(this, {

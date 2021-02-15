@@ -1,24 +1,23 @@
-import AbstractServerClient from "./AbstractServerClient";
 import axios from 'axios';
-import {nonCircularJsonStringify} from '../../core/utils/nonCircularJsonStringify'
+import {nonCircularJsonStringify} from '../utils/nonCircularJsonStringify'
+import ClientInterface from './ClientInterface'
 
-export default class RemoteServerClient extends AbstractServerClient {
+export default class APIClient implements ClientInterface {
     root: string
 
     constructor(root: string = '/datastory/api') {
-        super()
         this.root = root
     }
 
-    boot(options: object) {
+    boot(options: object) : Promise<any>{
         return axios.post(this.root + '/boot', options)
     }
 
-    run(model) {
+    run(model): Promise<any> {
         console.log(model)
         return axios.post(this.root + '/run', {
             model: nonCircularJsonStringify(
-                model.serialize()
+                model.serialize() 
             )
         })        
     }
