@@ -3,6 +3,7 @@
 namespace DataStory\Tests;
 
 use DataStory\Support\SimpleFile;
+use Laravel\Dusk\Browser;
 
 class BrowserTestCase extends \Orchestra\Testbench\Dusk\TestCase
 {
@@ -19,6 +20,9 @@ class BrowserTestCase extends \Orchestra\Testbench\Dusk\TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        Browser::$storeScreenshotsAt = __DIR__ . '/Browser/screenshots';
+        Browser::$storeConsoleLogAt = __DIR__ . '/Browser/console';
 
         // refactor to ./vendor/bin/testbench-dusk vendor:publish
 
