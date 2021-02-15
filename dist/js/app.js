@@ -10034,7 +10034,7 @@ var Server = function () {
   function Server() {}
 
   Server.prototype.run = function (diagram) {
-    console.log('Working on it', diagram);
+    alert('Working on it...');
   };
 
   return Server;
