@@ -3,12 +3,14 @@ import axios from 'axios';
 import {nonCircularJsonStringify} from '../../core/utils/nonCircularJsonStringify'
 
 export default class RemoteServerClient extends AbstractServerClient {
-    constructor(root = '/datastory/api') {
+    root: string
+
+    constructor(root: string = '/datastory/api') {
         super()
         this.root = root
     }
 
-    boot(options) {
+    boot(options: object) {
         return axios.post(this.root + '/boot', options)
     }
 

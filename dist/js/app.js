@@ -9979,6 +9979,81 @@ exports.default = LocalServerClient;
 
 /***/ }),
 
+/***/ "./src/core/servers/RemoteServerClient.ts":
+/*!************************************************!*\
+  !*** ./src/core/servers/RemoteServerClient.ts ***!
+  \************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+exports.__esModule = true;
+
+var AbstractServerClient_1 = __webpack_require__(/*! ./AbstractServerClient */ "./src/core/servers/AbstractServerClient.js");
+
+var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+
+var nonCircularJsonStringify_1 = __webpack_require__(/*! ../../core/utils/nonCircularJsonStringify */ "./src/core/utils/nonCircularJsonStringify.js");
+
+var RemoteServerClient = function (_super) {
+  __extends(RemoteServerClient, _super);
+
+  function RemoteServerClient(root) {
+    if (root === void 0) {
+      root = '/datastory/api';
+    }
+
+    var _this = _super.call(this) || this;
+
+    _this.root = root;
+    return _this;
+  }
+
+  RemoteServerClient.prototype.boot = function (options) {
+    return axios_1["default"].post(this.root + '/boot', options);
+  };
+
+  RemoteServerClient.prototype.run = function (model) {
+    console.log(model);
+    return axios_1["default"].post(this.root + '/run', {
+      model: nonCircularJsonStringify_1.nonCircularJsonStringify(model.serialize())
+    });
+  };
+
+  return RemoteServerClient;
+}(AbstractServerClient_1["default"]);
+
+exports.default = RemoteServerClient;
+
+/***/ }),
+
 /***/ "./src/core/servers/ServerFactory.ts":
 /*!*******************************************!*\
   !*** ./src/core/servers/ServerFactory.ts ***!
@@ -9990,7 +10065,7 @@ exports.default = LocalServerClient;
 
 exports.__esModule = true;
 
-var RemoteServerClient_1 = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/core/servers/RemoteServerClient.js");
+var RemoteServerClient_1 = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/core/servers/RemoteServerClient.ts");
 
 var LocalServerClient_1 = __webpack_require__(/*! ../servers/LocalServerClient */ "./src/core/servers/LocalServerClient.ts");
 
@@ -14019,86 +14094,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var AbstractServerClient = function AbstractServerClient() {
   _classCallCheck(this, AbstractServerClient);
 };
-
-
-
-/***/ }),
-
-/***/ "./src/core/servers/RemoteServerClient.js":
-/*!************************************************!*\
-  !*** ./src/core/servers/RemoteServerClient.js ***!
-  \************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ RemoteServerClient)
-/* harmony export */ });
-/* harmony import */ var _AbstractServerClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AbstractServerClient */ "./src/core/servers/AbstractServerClient.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _core_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../core/utils/nonCircularJsonStringify */ "./src/core/utils/nonCircularJsonStringify.js");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-
-
-var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
-  _inherits(RemoteServerClient, _AbstractServerClient);
-
-  var _super = _createSuper(RemoteServerClient);
-
-  function RemoteServerClient() {
-    var _this;
-
-    var root = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '/datastory/api';
-
-    _classCallCheck(this, RemoteServerClient);
-
-    _this = _super.call(this);
-    _this.root = root;
-    return _this;
-  }
-
-  _createClass(RemoteServerClient, [{
-    key: "boot",
-    value: function boot(options) {
-      return axios__WEBPACK_IMPORTED_MODULE_1___default().post(this.root + '/boot', options);
-    }
-  }, {
-    key: "run",
-    value: function run(model) {
-      console.log(model);
-      return axios__WEBPACK_IMPORTED_MODULE_1___default().post(this.root + '/run', {
-        model: (0,_core_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_2__.nonCircularJsonStringify)(model.serialize())
-      });
-    }
-  }]);
-
-  return RemoteServerClient;
-}(_AbstractServerClient__WEBPACK_IMPORTED_MODULE_0__.default);
 
 
 
