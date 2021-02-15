@@ -9979,6 +9979,32 @@ exports.default = LocalServerClient;
 
 /***/ }),
 
+/***/ "./src/core/servers/ServerFactory.ts":
+/*!*******************************************!*\
+  !*** ./src/core/servers/ServerFactory.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var RemoteServerClient_1 = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/core/servers/RemoteServerClient.js");
+
+var LocalServerClient_1 = __webpack_require__(/*! ../servers/LocalServerClient */ "./src/core/servers/LocalServerClient.ts");
+
+var servers = {
+  RemoteServerClient: RemoteServerClient_1["default"],
+  LocalServerClient: LocalServerClient_1["default"]
+};
+
+exports.default = function (name) {
+  return new servers[name]();
+};
+
+/***/ }),
+
 /***/ "./src/core/DiagramModel.js":
 /*!**********************************!*\
   !*** ./src/core/DiagramModel.js ***!
@@ -12216,12 +12242,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* binding */ RunControl)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 /* harmony import */ var _BaseControl__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BaseControl */ "./src/core/components/controls/BaseControl.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
-/* harmony import */ var _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../servers/RemoteServerClient */ "./src/core/servers/RemoteServerClient.js");
-/* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../servers/LocalServerClient */ "./src/core/servers/LocalServerClient.ts");
-/* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var _dec, _class;
@@ -12250,9 +12273,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
-var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('store'), _dec(_class = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.observer)(_class = /*#__PURE__*/function (_BaseControl) {
+var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_2__.inject)('store'), _dec(_class = (0,mobx_react__WEBPACK_IMPORTED_MODULE_2__.observer)(_class = /*#__PURE__*/function (_BaseControl) {
   _inherits(RunControl, _BaseControl);
 
   var _super = _createSuper(RunControl);
@@ -12288,7 +12309,7 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('sto
         _this2.props.store.clearLinkLabels(); // Clear old labels
 
 
-        var ports = response.data.diagram.nodes.map(function (node) {
+        response.data.diagram.nodes.map(function (node) {
           return node.ports;
         }).flat().filter(function (port) {
           return port.features;
@@ -12333,9 +12354,9 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('sto
   }, {
     key: "showFailureToast",
     value: function showFailureToast() {
-      react_toastify__WEBPACK_IMPORTED_MODULE_5__.toast.info('Crap! Could not run story! Check console.', {
+      react_toastify__WEBPACK_IMPORTED_MODULE_3__.toast.info('Crap! Could not run story! Check console.', {
         position: "bottom-right",
-        transition: react_toastify__WEBPACK_IMPORTED_MODULE_5__.Slide,
+        transition: react_toastify__WEBPACK_IMPORTED_MODULE_3__.Slide,
         autoClose: 3500,
         hideProgressBar: true,
         closeOnClick: true,
@@ -12346,9 +12367,9 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('sto
   }, {
     key: "showSuccessToast",
     value: function showSuccessToast() {
-      react_toastify__WEBPACK_IMPORTED_MODULE_5__.toast.info('Successfully ran story!', {
+      react_toastify__WEBPACK_IMPORTED_MODULE_3__.toast.info('Successfully ran story!', {
         position: "bottom-right",
-        transition: react_toastify__WEBPACK_IMPORTED_MODULE_5__.Slide,
+        transition: react_toastify__WEBPACK_IMPORTED_MODULE_3__.Slide,
         autoClose: 3500,
         hideProgressBar: true,
         closeOnClick: true,
@@ -14083,33 +14104,6 @@ var RemoteServerClient = /*#__PURE__*/function (_AbstractServerClient) {
 
 /***/ }),
 
-/***/ "./src/core/servers/ServerFactory.js":
-/*!*******************************************!*\
-  !*** ./src/core/servers/ServerFactory.js ***!
-  \*******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../servers/RemoteServerClient */ "./src/core/servers/RemoteServerClient.js");
-/* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../servers/LocalServerClient */ "./src/core/servers/LocalServerClient.ts");
-/* harmony import */ var _servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1__);
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (function (name) {
-  var servers = {
-    RemoteServerClient: _servers_RemoteServerClient__WEBPACK_IMPORTED_MODULE_0__.default,
-    LocalServerClient: (_servers_LocalServerClient__WEBPACK_IMPORTED_MODULE_1___default())
-  };
-  var selected = servers[name];
-  return new selected();
-});
-
-/***/ }),
-
 /***/ "./src/core/store/main.js":
 /*!********************************!*\
   !*** ./src/core/store/main.js ***!
@@ -14128,7 +14122,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_NodeModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core/NodeModel */ "./src/core/NodeModel.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _servers_ServerFactory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../servers/ServerFactory */ "./src/core/servers/ServerFactory.js");
+/* harmony import */ var _servers_ServerFactory__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../servers/ServerFactory */ "./src/core/servers/ServerFactory.ts");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }

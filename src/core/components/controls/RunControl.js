@@ -2,8 +2,6 @@ import React from 'react';
 import { inject, observer } from "mobx-react"
 import BaseControl from './BaseControl'
 import { toast, Slide } from 'react-toastify';
-import RemoteServerClient from '../../servers/RemoteServerClient';
-import LocalServerClient from '../../servers/LocalServerClient';
 
 @inject('store') @observer
 export default class RunControl extends BaseControl {
@@ -32,7 +30,7 @@ export default class RunControl extends BaseControl {
 
             // SET FEATURE COUNT ON LINKS
             this.props.store.clearLinkLabels() // Clear old labels
-            let ports = response.data.diagram.nodes.map(node => {
+            response.data.diagram.nodes.map(node => {
                 return node.ports
             }).flat().filter(port => {
                 return port.features
@@ -53,9 +51,6 @@ export default class RunControl extends BaseControl {
             console.log({error});
             this.showFailureToast();
         });
-
-
-
     }
 
     componentDidMount() {
