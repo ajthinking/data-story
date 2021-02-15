@@ -8,7 +8,7 @@
     </head>
     <body class="bg-gray-700">
         <script>
-            window.server = 'LocalClient';
+            window.server = 'APIClient';
         </script>
         <div id="app"></div>
         <script type="text/javascript" src="/vendor/data-story/js/app.js"></script>
