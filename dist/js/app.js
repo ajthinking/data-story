@@ -9967,6 +9967,8 @@ exports.__esModule = true;
 
 var NodeDescription_1 = __webpack_require__(/*! ../NodeDescription */ "./src/core/NodeDescription.ts");
 
+var Server_1 = __webpack_require__(/*! ../../servers/js/Server */ "./src/servers/js/Server.ts");
+
 var LocalClient = function () {
   function LocalClient() {}
 
@@ -10000,8 +10002,10 @@ var LocalClient = function () {
     });
   };
 
-  LocalClient.prototype.run = function () {
+  LocalClient.prototype.run = function (model) {
     return new Promise(function (callback) {
+      var server = new Server_1["default"]();
+      server.run(model);
       return callback({
         diagram: {}
       });
@@ -10012,6 +10016,31 @@ var LocalClient = function () {
 }();
 
 exports.default = LocalClient;
+
+/***/ }),
+
+/***/ "./src/servers/js/Server.ts":
+/*!**********************************!*\
+  !*** ./src/servers/js/Server.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var Server = function () {
+  function Server() {}
+
+  Server.prototype.run = function (diagram) {
+    console.log('Working on it', diagram);
+  };
+
+  return Server;
+}();
+
+exports.default = Server;
 
 /***/ }),
 
@@ -12306,6 +12335,7 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_2__.inject)('sto
       var _this2 = this;
 
       this.props.store.setRunning();
+      console.log('yo', this.props.store.metadata.server);
       this.props.store.metadata.server.run(this.props.store.diagram.engine.model).then(function (response) {
         // TRANSFER FEATURE AT NODES (INSPECTABLES)
         response.data.diagram.nodes.filter(function (phpNode) {

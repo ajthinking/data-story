@@ -1,4 +1,5 @@
 import { NodeDescription } from "../NodeDescription";
+import Server from '../../servers/js/Server'
 
 export default class LocalClient {
     boot() {
@@ -35,8 +36,21 @@ export default class LocalClient {
         })
     }
 
-    run() {
+    run(model) {
         return new Promise((callback) => {
+            // Use the local javascript server here
+            // What is a diagram?
+            // Representations?
+            // Drawable
+            // Executable
+            // Storable
+            // Encodable
+            // Decodable
+
+            let server = new Server
+
+            server.run(model)
+
             return callback({
                 diagram: {
                     //                    
