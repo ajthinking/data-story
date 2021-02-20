@@ -14,13 +14,6 @@ class TestableDiagram extends Diagram
 
     public $hasRun = false;
 
-    public function __construct()
-    {
-        $this->links([]);
-
-        $this->nodes([]);        
-    }
-
     public function node($nodeClass, $options = [])
     {
         $this->node = NodeFactory::make($nodeClass, $options)->instance();

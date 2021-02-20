@@ -9965,14 +9965,45 @@ exports.default = function (name) {
 
 exports.__esModule = true;
 
-var NodeDescription_1 = __webpack_require__(/*! ../NodeDescription */ "./src/core/NodeDescription.ts");
-
 var Server_1 = __webpack_require__(/*! ../../servers/js/Server */ "./src/servers/js/Server.ts");
+
+var server = new Server_1["default"]();
 
 var LocalClient = function () {
   function LocalClient() {}
 
   LocalClient.prototype.boot = function () {
+    return server.boot();
+  };
+
+  LocalClient.prototype.run = function (model) {
+    return server.run(model.serialize());
+  };
+
+  return LocalClient;
+}();
+
+exports.default = LocalClient;
+
+/***/ }),
+
+/***/ "./src/servers/js/Server.ts":
+/*!**********************************!*\
+  !*** ./src/servers/js/Server.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var NodeDescription_1 = __webpack_require__(/*! ../../core/NodeDescription */ "./src/core/NodeDescription.ts");
+
+var Server = function () {
+  function Server() {}
+
+  Server.prototype.boot = function () {
     return new Promise(function (callback) {
       return callback({
         data: {
@@ -10002,39 +10033,15 @@ var LocalClient = function () {
     });
   };
 
-  LocalClient.prototype.run = function (model) {
+  Server.prototype.run = function (diagram) {
+    console.log(diagram);
     return new Promise(function (callback) {
-      var server = new Server_1["default"]();
-      server.run(model);
       return callback({
-        diagram: {}
+        data: {
+          diagram: diagram
+        }
       });
     });
-  };
-
-  return LocalClient;
-}();
-
-exports.default = LocalClient;
-
-/***/ }),
-
-/***/ "./src/servers/js/Server.ts":
-/*!**********************************!*\
-  !*** ./src/servers/js/Server.ts ***!
-  \**********************************/
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-var Server = function () {
-  function Server() {}
-
-  Server.prototype.run = function (diagram) {
-    alert('Working on it...');
   };
 
   return Server;
@@ -10151,6 +10158,7 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
 
 
       delete simplified.layers;
+      console.log('simplified', simplified);
       return simplified;
     }
   }, {
@@ -12335,9 +12343,9 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_2__.inject)('sto
       var _this2 = this;
 
       this.props.store.setRunning();
-      console.log('yo', this.props.store.metadata.server);
       this.props.store.metadata.server.run(this.props.store.diagram.engine.model).then(function (response) {
         // TRANSFER FEATURE AT NODES (INSPECTABLES)
+        console.log('returns', response.data.diagram);
         response.data.diagram.nodes.filter(function (phpNode) {
           return phpNode.features;
         }).forEach(function (phpNode) {

@@ -19,7 +19,7 @@ class Boot
     protected function getSerializedModel()
     {
         $requestedStory = request()->input('story');
-        
+
         if(!$requestedStory) return;
 
         return Story::where(

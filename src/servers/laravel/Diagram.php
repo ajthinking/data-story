@@ -6,9 +6,9 @@ use DataStory\Tests\TestableDiagram;
 
 class Diagram
 {
-    public array $nodes;
+    public array $nodes = [];
 
-    public array $links;
+    public array $links = [];
 
     public array $executionOrder = [];
 
@@ -17,17 +17,8 @@ class Diagram
     public function find($id)
     {
         return collect(
-            array_merge($this->links(), $this->nodes(), $this->ports())
+            array_merge($this->links, $this->nodes, $this->ports())
         )->where('id', $id)->first();
-    }
-
-    public function links($links = null)
-    {
-        if ($links === null) return $this->links;
-
-        $this->links = $links;
-
-        return $this;
     }
 
     public function addLink($link)
@@ -46,15 +37,6 @@ class Diagram
         );
         
         return $this;
-    }     
-
-    public function nodes($nodes = null)
-    {
-        if ($nodes === null) return $this->nodes;
-        
-        $this->nodes = $nodes;
-
-        return $this;
     }
 
     public function addNode($node)
@@ -66,7 +48,6 @@ class Diagram
 
     public function ports()
     {
-        
         return collect($this->nodes)->pluck('ports')->flatten()->toArray();
     }
 
@@ -76,20 +57,16 @@ class Diagram
 
         $diagram = new Diagram();
 
-        $diagram->links(
-            collect(
-                array_values((array)$data->links)
-            )->toArray()
-        );
+        $diagram->links = collect(
+            array_values((array)$data->links)
+        )->toArray();
 
-        $diagram->nodes(
-            collect(
-                array_values((array) $data->nodes)
-            )->map(function ($serializedNode) {
-                $nodeType = $serializedNode->options->nodePhp;
-                return $nodeType::hydrate($serializedNode);
-            })->toArray()
-        );
+        $diagram->nodes = collect(
+            array_values((array) $data->nodes)
+        )->map(function ($serializedNode) {
+            $nodeType = $serializedNode->options->nodePhp;
+            return $nodeType::hydrate($serializedNode);
+        })->toArray();
 
         $diagram->executionOrder = $data->executionOrder;
 
