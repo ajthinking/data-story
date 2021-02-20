@@ -39,8 +39,6 @@ export default class DiagramModel extends DefaultDiagramModel {
         // Cleanup unused keys
         delete simplified.layers
 
-        console.log('simplified', simplified)
-
         return simplified
     }
 

@@ -1,5 +1,6 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import { inject, observer } from "mobx-react"
+import ServerDiagram from "./ServerDiagram";
 
 export default class Server
 {
@@ -38,10 +39,12 @@ export default class Server
     }
 
     run(diagram) {
+        console.log(diagram)
+
         return new Promise((callback) => {
             return callback({
                 data: {
-                    diagram
+                    diagram: ServerDiagram.deserialize(diagram).run()
                 } 
             })
         }) 

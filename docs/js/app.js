@@ -10000,6 +10000,8 @@ exports.__esModule = true;
 
 var NodeDescription_1 = __webpack_require__(/*! ../../core/NodeDescription */ "./src/core/NodeDescription.ts");
 
+var ServerDiagram_1 = __webpack_require__(/*! ./ServerDiagram */ "./src/servers/js/ServerDiagram.ts");
+
 var Server = function () {
   function Server() {}
 
@@ -10034,10 +10036,11 @@ var Server = function () {
   };
 
   Server.prototype.run = function (diagram) {
+    console.log(diagram);
     return new Promise(function (callback) {
       return callback({
         data: {
-          diagram: diagram
+          diagram: ServerDiagram_1["default"].deserialize(diagram).run()
         }
       });
     });
@@ -10047,6 +10050,37 @@ var Server = function () {
 }();
 
 exports.default = Server;
+
+/***/ }),
+
+/***/ "./src/servers/js/ServerDiagram.ts":
+/*!*****************************************!*\
+  !*** ./src/servers/js/ServerDiagram.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var ServerDiagram = function () {
+  function ServerDiagram() {}
+
+  ServerDiagram.deserialize = function (data) {
+    var instance = new this();
+    instance.originalData = data;
+    return instance;
+  };
+
+  ServerDiagram.prototype.run = function () {
+    return this.originalData;
+  };
+
+  return ServerDiagram;
+}();
+
+exports.default = ServerDiagram;
 
 /***/ }),
 
@@ -10157,7 +10191,6 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
 
 
       delete simplified.layers;
-      console.log('simplified', simplified);
       return simplified;
     } // is this working???
 
@@ -12345,7 +12378,6 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_2__.inject)('sto
       this.props.store.setRunning();
       this.props.store.metadata.server.run(this.props.store.diagram.engine.model).then(function (response) {
         // TRANSFER FEATURE AT NODES (INSPECTABLES)
-        console.log('returns', response.data.diagram);
         response.data.diagram.nodes.filter(function (phpNode) {
           return phpNode.features;
         }).forEach(function (phpNode) {
