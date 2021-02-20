@@ -10069,12 +10069,30 @@ var ServerDiagram = function () {
 
   ServerDiagram.deserialize = function (data) {
     var instance = new this();
-    instance.originalData = data;
+
+    for (var _i = 0, _a = Object.entries(data); _i < _a.length; _i++) {
+      var _b = _a[_i],
+          key = _b[0],
+          value = _b[1];
+      instance[key] = value;
+    }
+
     return instance;
   };
 
   ServerDiagram.prototype.run = function () {
-    return this.originalData;
+    for (var _i = 0, _a = this.executionOrder; _i < _a.length; _i++) {
+      var id = _a[_i];
+      this.find(id);
+    }
+
+    return this;
+  };
+
+  ServerDiagram.prototype.find = function (id) {
+    return this.nodes.concat(this.links).find(function (entity) {
+      return entity.id == id;
+    });
   };
 
   return ServerDiagram;

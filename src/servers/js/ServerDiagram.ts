@@ -1,14 +1,29 @@
-export default class ServerDiagram {
-    originalData: any;
+import ServerNode from './ServerNode'
 
+export default class ServerDiagram {
+    executionOrder: Array<any>
+    links: Array<any>
+    nodes: Array<any>
+ 
     static deserialize(data) {
         let instance = new this()
-        instance.originalData = data
+
+        for (const [key, value] of Object.entries(data)) {
+            instance[key] = value
+        }
 
         return instance
     }
 
     run() {
-        return this.originalData   
+        for(const id of this.executionOrder) {
+            this.find(id) //.run()
+        }
+
+        return this
+    }
+
+    find(id: string) {
+        return this.nodes.concat(this.links).find(entity => entity.id == id)
     }
 }
