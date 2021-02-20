@@ -1,4 +1,8 @@
-export default class Create
-{
+import ServerNode from "../ServerNode";
 
+export default class Create extends ServerNode
+{
+    run() {
+        //
+    }
 }

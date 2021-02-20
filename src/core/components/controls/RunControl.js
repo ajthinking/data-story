@@ -21,6 +21,7 @@ export default class RunControl extends BaseControl {
         )
         .then((response) => {
             // TRANSFER FEATURE AT NODES (INSPECTABLES)
+            console.log('Diagram ran', response.data.diagram)
 
             response.data.diagram.nodes.filter(phpNode => {
                 return phpNode.features

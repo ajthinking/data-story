@@ -6,6 +6,7 @@ export class NodeDescription {
     public outPorts: Array<String>
     public key: string
     public name: string
+    public serverNode: string
     public nodeReact: string
     public parameters: Array<any>
     public summary: string

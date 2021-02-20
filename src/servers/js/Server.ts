@@ -18,15 +18,16 @@ export default class Server
                                 inPorts: [],
                                 outPorts: ['Output'],
                                 key: 'test-key',
-                                name: 'TypeScriptTest',
+                                name: 'Create',
                                 nodeReact: 'Node',
+                                serverNodeType: 'Create',
                                 parameters: [
                                     {
-                                        default: "TypeScriptTest",
+                                        default: "Create",
                                         fieldType: "String_",
                                         name: "node_name",
                                         placeholder: "",
-                                        value: "TypeScriptTest",
+                                        value: "Create",
                                     }
                                 ],
                                 summary: 'ajthinking is learning typescript',
@@ -39,12 +40,10 @@ export default class Server
     }
 
     run(diagram) {
-        console.log(diagram)
-
         return new Promise((callback) => {
             return callback({
                 data: {
-                    diagram: ServerDiagram.deserialize(diagram).run()
+                    diagram: ServerDiagram.hydrate(diagram).run()
                 } 
             })
         }) 
