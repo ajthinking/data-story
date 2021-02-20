@@ -57,13 +57,9 @@ class Diagram
 
         $diagram = new Diagram();
 
-        $diagram->links = collect(
-            array_values((array)$data->links)
-        )->toArray();
+        $diagram->links = $data->links;
 
-        $diagram->nodes = collect(
-            array_values((array) $data->nodes)
-        )->map(function ($serializedNode) {
+        $diagram->nodes = collect($data->nodes)->map(function ($serializedNode) {
             $nodeType = $serializedNode->options->nodePhp;
             return $nodeType::hydrate($serializedNode);
         })->toArray();

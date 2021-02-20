@@ -10034,7 +10034,6 @@ var Server = function () {
   };
 
   Server.prototype.run = function (diagram) {
-    console.log(diagram);
     return new Promise(function (callback) {
       return callback({
         data: {
@@ -10145,12 +10144,12 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
     key: "serialize",
     value: function serialize() {
       // The default react-diagrams format
-      var layered = _get(_getPrototypeOf(DiagramModel.prototype), "serialize", this).call(this); // Simplify as we dont use extra layers
-
+      var layered = _get(_getPrototypeOf(DiagramModel.prototype), "serialize", this).call(this);
 
       var simplified = _objectSpread(_objectSpread({}, layered), {}, {
-        links: _objectSpread({}, layered.layers[0].models),
-        nodes: _objectSpread({}, layered.layers[1].models),
+        // Provide links and nodes as simple arrays
+        links: Object.values(layered.layers[0].models),
+        nodes: Object.values(layered.layers[1].models),
         executionOrder: this.executionOrder().map(function (node) {
           return node.getOptions().id;
         })
@@ -10160,7 +10159,8 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
       delete simplified.layers;
       console.log('simplified', simplified);
       return simplified;
-    }
+    } // is this working???
+
   }, {
     key: "deserializeModel",
     value: function deserializeModel(data, engine) {

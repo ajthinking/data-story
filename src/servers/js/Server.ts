@@ -38,8 +38,6 @@ export default class Server
     }
 
     run(diagram) {
-        console.log(diagram)
-
         return new Promise((callback) => {
             return callback({
                 data: {

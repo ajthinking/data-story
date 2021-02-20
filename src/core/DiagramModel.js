@@ -26,11 +26,12 @@ export default class DiagramModel extends DefaultDiagramModel {
         // The default react-diagrams format
         let layered = super.serialize();
 
-        // Simplify as we dont use extra layers
         let simplified = {
+            // Default serialization
             ...layered,
-            links: {...layered.layers[0].models},
-            nodes: {...layered.layers[1].models},
+            // Provide links and nodes as simple arrays
+            links: Object.values(layered.layers[0].models),
+            nodes: Object.values(layered.layers[1].models),
             executionOrder: this.executionOrder()
                 .map(node => node.getOptions().id)             
         }
@@ -43,7 +44,9 @@ export default class DiagramModel extends DefaultDiagramModel {
         return simplified
     }
 
+    // is this working???
     deserializeModel(data, engine) {
+
         // Restore the default react-diagrams layer format
         data.layers = [
             {
