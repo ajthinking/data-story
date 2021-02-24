@@ -2,7 +2,7 @@ import { NodeDescription } from "../../core/NodeDescription";
 
 export default class ServerNode {
     public id: string
-    public static category: string
+    public static category: string = 'Custom'
     public editableInPorts: boolean
     public editableOutPorts: boolean
     public inPorts: Array<String> = []

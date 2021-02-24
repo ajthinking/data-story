@@ -10159,6 +10159,7 @@ var ServerNode = function () {
     });
   };
 
+  ServerNode.category = 'Custom';
   return ServerNode;
 }();
 
