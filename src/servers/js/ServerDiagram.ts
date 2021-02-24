@@ -14,7 +14,7 @@ export default class ServerDiagram {
             // hydratables
             if(key === 'nodes') {
                 instance.nodes = data.nodes.map(node => {
-                    return ServerNodeFactory.hydrate(node)
+                    return ServerNodeFactory.hydrate(node, instance)
                 })
                 
                 continue
@@ -36,6 +36,10 @@ export default class ServerDiagram {
     }
 
     find(id: string) {
-        return this.nodes.concat(this.links).find(entity => entity.id == id)
+        let searchables = this.nodes
+            .concat(this.nodes.map(node => node.ports).flat())
+            .concat(this.links)
+
+        return searchables.find(entity => entity.id == id)
     }
 }

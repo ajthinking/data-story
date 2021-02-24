@@ -1,8 +1,10 @@
 import { NodeDescription } from "../../core/NodeDescription";
+import ServerDiagram from "./ServerDiagram";
 
 export default class ServerNode {
     public id: string
     public ports: Array<any>
+    public diagram: ServerDiagram
 
     public static category: string = 'Custom'
     public static editableInPorts: boolean = false
@@ -16,8 +18,12 @@ export default class ServerNode {
     public static parameters: Array<any>
     public static summary: string = 'No summary provided.'   
 
-    static hydrate(data) {
-        let instance = new this()
+    constructor(diagram) {
+        this.diagram = diagram
+    }
+
+    static hydrate(data, diagram) {
+        let instance = new this(diagram)
 
         for (const [key, value] of Object.entries(data)) {
             instance[key] = value
@@ -50,12 +56,26 @@ export default class ServerNode {
         })
     }
 
-    protected input() {
-
+    protected input(portName: string = 'Input')
+    {
+        return this.getDataAtPortNamed(portName);
     }
 
+    protected getDataAtPortNamed(name: string = 'Input')
+    {
+       let port = this.portNamed(name);
+
+        let features = port.links.map(linkId => {
+            let link = this.diagram.find(linkId)
+            console.log("Scanning data at " + link.sourcePort)
+            let source = this.diagram.find(link.sourcePort)
+            return source.features
+        }).flat()
+
+        return features
+    }    
+
     protected output(features: Array<any>, port: string = 'Output') {
-        console.log("OUTPUT")
         this.portNamed(port).features = features
     }
 

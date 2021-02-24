@@ -4,5 +4,8 @@
       "removeComments": true,
       "preserveConstEnums": true,
       "sourceMap": true,
+      "lib": [
+        "es2019"
+      ]      
     }
 }

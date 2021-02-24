@@ -50,8 +50,9 @@ export default class RunControl extends BaseControl {
         })
         .catch((error) => {
             this.props.store.setNotRunning()
-            console.log({error});
             this.showFailureToast();
+
+            throw error
         });
     }
 

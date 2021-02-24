@@ -10069,7 +10069,7 @@ var ServerDiagram = function () {
 
       if (key === 'nodes') {
         instance.nodes = data.nodes.map(function (node) {
-          return ServerNodeFactory_1["default"].hydrate(node);
+          return ServerNodeFactory_1["default"].hydrate(node, instance);
         });
         continue;
       }
@@ -10090,7 +10090,10 @@ var ServerDiagram = function () {
   };
 
   ServerDiagram.prototype.find = function (id) {
-    return this.nodes.concat(this.links).find(function (entity) {
+    var searchables = this.nodes.concat(this.nodes.map(function (node) {
+      return node.ports;
+    }).flat()).concat(this.links);
+    return searchables.find(function (entity) {
       return entity.id == id;
     });
   };
@@ -10116,10 +10119,12 @@ exports.__esModule = true;
 var NodeDescription_1 = __webpack_require__(/*! ../../core/NodeDescription */ "./src/core/NodeDescription.ts");
 
 var ServerNode = function () {
-  function ServerNode() {}
+  function ServerNode(diagram) {
+    this.diagram = diagram;
+  }
 
-  ServerNode.hydrate = function (data) {
-    var instance = new this();
+  ServerNode.hydrate = function (data, diagram) {
+    var instance = new this(diagram);
 
     for (var _i = 0, _a = Object.entries(data); _i < _a.length; _i++) {
       var _b = _a[_i],
@@ -10153,14 +10158,39 @@ var ServerNode = function () {
     });
   };
 
-  ServerNode.prototype.input = function () {};
+  ServerNode.prototype.input = function (portName) {
+    if (portName === void 0) {
+      portName = 'Input';
+    }
+
+    return this.getDataAtPortNamed(portName);
+  };
+
+  ServerNode.prototype.getDataAtPortNamed = function (name) {
+    var _this = this;
+
+    if (name === void 0) {
+      name = 'Input';
+    }
+
+    var port = this.portNamed(name);
+    var features = port.links.map(function (linkId) {
+      var link = _this.diagram.find(linkId);
+
+      console.log("Scanning data at " + link.sourcePort);
+
+      var source = _this.diagram.find(link.sourcePort);
+
+      return source.features;
+    }).flat();
+    return features;
+  };
 
   ServerNode.prototype.output = function (features, port) {
     if (port === void 0) {
       port = 'Output';
     }
 
-    console.log("OUTPUT");
     this.portNamed(port).features = features;
   };
 
@@ -10214,8 +10244,8 @@ var ServerNodeFactory = function () {
     return Object.values(this.nodes);
   };
 
-  ServerNodeFactory.hydrate = function (node) {
-    return this.find(node.options.serverNodeType).hydrate(node);
+  ServerNodeFactory.hydrate = function (node, diagram) {
+    return this.find(node.options.serverNodeType).hydrate(node, diagram);
   };
 
   ServerNodeFactory.nodes = {
@@ -10282,6 +10312,10 @@ var Create = function (_super) {
       'creation_id': 1
     }, {
       'creation_id': 2
+    }, {
+      'creation_id': 3
+    }, {
+      'creation_id': 4
     }]);
   };
 
@@ -10340,7 +10374,7 @@ var Inspect = function (_super) {
   }
 
   Inspect.prototype.run = function () {
-    this.features = [1, 2, 3];
+    this.features = this.input();
   };
 
   Inspect.outPorts = [];
@@ -12677,11 +12711,9 @@ var RunControl = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_2__.inject)('sto
       })["catch"](function (error) {
         _this2.props.store.setNotRunning();
 
-        console.log({
-          error: error
-        });
-
         _this2.showFailureToast();
+
+        throw error;
       });
     }
   }, {

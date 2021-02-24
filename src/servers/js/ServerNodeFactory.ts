@@ -15,7 +15,7 @@ export default class ServerNodeFactory {
         return Object.values(this.nodes)
     }
 
-    static hydrate(node) {
-        return this.find(node.options.serverNodeType).hydrate(node)
+    static hydrate(node, diagram) {
+        return this.find(node.options.serverNodeType).hydrate(node, diagram)
     }
 }

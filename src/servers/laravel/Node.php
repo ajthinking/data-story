@@ -87,8 +87,7 @@ abstract class Node
     }
 
     public function getDataAtPortNamed($name)
-    {
-        
+    {        
         $port = $this->portNamed($name);
         
         $collection = collect($port->links)->map(function ($linkId) {
