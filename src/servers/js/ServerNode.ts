@@ -1,5 +1,6 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerDiagram from "./ServerDiagram";
+import * as _ from "lodash";
 
 export default class ServerNode {
     public id: string
@@ -71,8 +72,8 @@ export default class ServerNode {
             let source = this.diagram.find(link.sourcePort)
             return source.features
         }).flat()
-
-        return features
+        
+        return _.cloneDeep(features)
     }    
 
     protected output(features: Array<any>, port: string = 'Output') {
@@ -80,11 +81,6 @@ export default class ServerNode {
     }
 
     protected portNamed(name: string) {
-        console.log(
-            name,
-            this.ports,
-            this.ports.find(port => port.name == name)
-        )
         return this.ports.find(port => port.name == name)
     }
 }

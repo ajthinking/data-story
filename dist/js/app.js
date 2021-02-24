@@ -10118,6 +10118,8 @@ exports.__esModule = true;
 
 var NodeDescription_1 = __webpack_require__(/*! ../../core/NodeDescription */ "./src/core/NodeDescription.ts");
 
+var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+
 var ServerNode = function () {
   function ServerNode(diagram) {
     this.diagram = diagram;
@@ -10183,7 +10185,7 @@ var ServerNode = function () {
 
       return source.features;
     }).flat();
-    return features;
+    return _.cloneDeep(features);
   };
 
   ServerNode.prototype.output = function (features, port) {
@@ -10195,9 +10197,6 @@ var ServerNode = function () {
   };
 
   ServerNode.prototype.portNamed = function (name) {
-    console.log(name, this.ports, this.ports.find(function (port) {
-      return port.name == name;
-    }));
     return this.ports.find(function (port) {
       return port.name == name;
     });
