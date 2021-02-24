@@ -57,6 +57,10 @@ export default class ServerNode {
         })
     }
 
+    protected getParameter(name: string) {
+        return this['options'].parameters.find(p => p.name == name)
+    }
+
     protected input(portName: string = 'Input')
     {
         return this.getDataAtPortNamed(portName);
@@ -68,7 +72,6 @@ export default class ServerNode {
 
         let features = port.links.map(linkId => {
             let link = this.diagram.find(linkId)
-            console.log("Scanning data at " + link.sourcePort)
             let source = this.diagram.find(link.sourcePort)
             return source.features
         }).flat()

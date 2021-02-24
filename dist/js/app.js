@@ -10160,6 +10160,12 @@ var ServerNode = function () {
     });
   };
 
+  ServerNode.prototype.getParameter = function (name) {
+    return this['options'].parameters.find(function (p) {
+      return p.name == name;
+    });
+  };
+
   ServerNode.prototype.input = function (portName) {
     if (portName === void 0) {
       portName = 'Input';
@@ -10178,8 +10184,6 @@ var ServerNode = function () {
     var port = this.portNamed(name);
     var features = port.links.map(function (linkId) {
       var link = _this.diagram.find(linkId);
-
-      console.log("Scanning data at " + link.sourcePort);
 
       var source = _this.diagram.find(link.sourcePort);
 
@@ -10305,17 +10309,27 @@ var Create = function (_super) {
   }
 
   Create.prototype.run = function () {
-    this.output([{
-      'creation_id': 0
-    }, {
-      'creation_id': 1
-    }, {
-      'creation_id': 2
-    }, {
-      'creation_id': 3
-    }, {
-      'creation_id': 4
-    }]);
+    var count = parseInt(this.getParameter('number_of_features_to_create').value);
+    console.log('count', count);
+    var features = Array.from(Array(count).keys());
+    console.log('features', features);
+    this.output(features.map(function (i) {
+      return {
+        creation_id: i
+      };
+    }));
+  };
+
+  Create.describe = function () {
+    var description = _super.describe.call(this);
+
+    description.parameters.push({
+      "default": 10,
+      fieldType: "Number",
+      name: "number_of_features_to_create",
+      value: 10
+    });
+    return description;
   };
 
   Create.inPorts = [];
