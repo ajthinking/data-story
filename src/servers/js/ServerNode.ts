@@ -2,6 +2,8 @@ import { NodeDescription } from "../../core/NodeDescription";
 
 export default class ServerNode {
     public id: string
+    public ports: Array<any>
+
     public static category: string = 'Custom'
     public static editableInPorts: boolean = false
     public static editableOutPorts: boolean = false
@@ -9,7 +11,7 @@ export default class ServerNode {
     public static outPorts: Array<String> = ['Output']
     public static key: string = 'test-key'
     public static name_: string
-    public static serverNodeType: string = 'Create'
+    public static serverNodeType: string
     public static nodeReact: string = 'Node'
     public static parameters: Array<any>
     public static summary: string = 'No summary provided.'   
@@ -19,7 +21,7 @@ export default class ServerNode {
 
         for (const [key, value] of Object.entries(data)) {
             instance[key] = value
-        }        
+        }
 
         return instance
     }
@@ -34,7 +36,7 @@ export default class ServerNode {
             key: this.key,
             name: this.name,
             nodeReact: this.nodeReact,
-            serverNodeType: this.serverNodeType,
+            serverNodeType: this.name,
             parameters: [
                 {
                     default: this.name,
@@ -53,10 +55,16 @@ export default class ServerNode {
     }
 
     protected output(features: Array<any>, port: string = 'Output') {
-        //this.portNamed(port).features = features
+        console.log("OUTPUT")
+        this.portNamed(port).features = features
     }
 
     protected portNamed(name: string) {
-        //return this.ports.find(port => port.name == name)
+        console.log(
+            name,
+            this.ports,
+            this.ports.find(port => port.name == name)
+        )
+        return this.ports.find(port => port.name == name)
     }
 }

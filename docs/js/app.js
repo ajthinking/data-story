@@ -10141,7 +10141,7 @@ var ServerNode = function () {
       key: this.key,
       name: this.name,
       nodeReact: this.nodeReact,
-      serverNodeType: this.serverNodeType,
+      serverNodeType: this.name,
       parameters: [{
         "default": this.name,
         fieldType: "String_",
@@ -10159,9 +10159,19 @@ var ServerNode = function () {
     if (port === void 0) {
       port = 'Output';
     }
+
+    console.log("OUTPUT");
+    this.portNamed(port).features = features;
   };
 
-  ServerNode.prototype.portNamed = function (name) {};
+  ServerNode.prototype.portNamed = function (name) {
+    console.log(name, this.ports, this.ports.find(function (port) {
+      return port.name == name;
+    }));
+    return this.ports.find(function (port) {
+      return port.name == name;
+    });
+  };
 
   ServerNode.category = 'Custom';
   ServerNode.editableInPorts = false;
@@ -10169,7 +10179,6 @@ var ServerNode = function () {
   ServerNode.inPorts = ['Input'];
   ServerNode.outPorts = ['Output'];
   ServerNode.key = 'test-key';
-  ServerNode.serverNodeType = 'Create';
   ServerNode.nodeReact = 'Node';
   ServerNode.summary = 'No summary provided.';
   return ServerNode;
@@ -10330,7 +10339,9 @@ var Inspect = function (_super) {
     return _super !== null && _super.apply(this, arguments) || this;
   }
 
-  Inspect.prototype.run = function () {};
+  Inspect.prototype.run = function () {
+    this.features = [1, 2, 3];
+  };
 
   Inspect.outPorts = [];
   return Inspect;
