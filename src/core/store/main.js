@@ -2,9 +2,7 @@ import { action, observable, makeObservable } from "mobx"
 import { DefaultLinkModel } from '@projectstorm/react-diagrams'
 import NodeModel from '../../core/NodeModel'
 import _ from 'lodash'
-import serverFactory from '../clients/ClientFactory';
-
-console.log('serverthing', window.server)
+import clientFactory from '../clients/ClientFactory';
 
 export class Store {
 
@@ -23,7 +21,7 @@ export class Store {
         activeInspector: null,
         stories: [],
         activeStory: '',
-        server: serverFactory(window.server ?? 'APIClient'),
+        server: clientFactory(window.server ?? 'APIClient'),
     }
 
     constructor() {

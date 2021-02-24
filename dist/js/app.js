@@ -14260,7 +14260,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-console.log('serverthing', window.server);
 var Store = /*#__PURE__*/function () {
   function Store() {
     var _window$server;
