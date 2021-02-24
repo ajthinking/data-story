@@ -4,6 +4,8 @@ import NodeModel from '../../core/NodeModel'
 import _ from 'lodash'
 import serverFactory from '../clients/ClientFactory';
 
+console.log('serverthing', window.server)
+
 export class Store {
 
     diagram = {
