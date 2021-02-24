@@ -1,7 +1,9 @@
 import Create from './nodes/Create'
+import Inspect from './nodes/Inspect'
 
 const nodes = {
-    Create
+    Create,
+    Inspect,
 }
 
 export default (type) => {

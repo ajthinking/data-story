@@ -1,45 +1,24 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import { inject, observer } from "mobx-react"
 import ServerDiagram from "./ServerDiagram";
+import Create from "./nodes/Create";
 
 export default class Server
 {
-    boot() {
+    public boot() {
         return new Promise((callback) => {
             return callback({
                 data: {
                     stories: [],
                     capabilities: {
-                        availableNodes: [
-                            NodeDescription.deserialize({
-                                category: 'Fake',
-                                editableInPorts: false,
-                                editableOutPorts: false,
-                                inPorts: [],
-                                outPorts: ['Output'],
-                                key: 'test-key',
-                                name: 'Create',
-                                nodeReact: 'Node',
-                                serverNodeType: 'Create',
-                                parameters: [
-                                    {
-                                        default: "Create",
-                                        fieldType: "String_",
-                                        name: "node_name",
-                                        placeholder: "",
-                                        value: "Create",
-                                    }
-                                ],
-                                summary: 'ajthinking is learning typescript',
-                            })
-                        ]
+                        availableNodes: this.nodeDescriptions()
                     }                    
                 }
             })
         })
     }
 
-    run(diagram) {
+    public run(diagram) {
         return new Promise((callback) => {
             return callback({
                 data: {
@@ -47,5 +26,12 @@ export default class Server
                 } 
             })
         }) 
+    }
+
+    protected nodeDescriptions() {
+        console.log("hi")
+        return [
+            Create.describe()
+        ]
     }
 }

@@ -9998,38 +9998,22 @@ exports.default = LocalClient;
 
 exports.__esModule = true;
 
-var NodeDescription_1 = __webpack_require__(/*! ../../core/NodeDescription */ "./src/core/NodeDescription.ts");
-
 var ServerDiagram_1 = __webpack_require__(/*! ./ServerDiagram */ "./src/servers/js/ServerDiagram.ts");
+
+var Create_1 = __webpack_require__(/*! ./nodes/Create */ "./src/servers/js/nodes/Create.ts");
 
 var Server = function () {
   function Server() {}
 
   Server.prototype.boot = function () {
+    var _this = this;
+
     return new Promise(function (callback) {
       return callback({
         data: {
           stories: [],
           capabilities: {
-            availableNodes: [NodeDescription_1.NodeDescription.deserialize({
-              category: 'Fake',
-              editableInPorts: false,
-              editableOutPorts: false,
-              inPorts: [],
-              outPorts: ['Output'],
-              key: 'test-key',
-              name: 'Create',
-              nodeReact: 'Node',
-              serverNodeType: 'Create',
-              parameters: [{
-                "default": "Create",
-                fieldType: "String_",
-                name: "node_name",
-                placeholder: "",
-                value: "Create"
-              }],
-              summary: 'ajthinking is learning typescript'
-            })]
+            availableNodes: _this.nodeDescriptions()
           }
         }
       });
@@ -10044,6 +10028,11 @@ var Server = function () {
         }
       });
     });
+  };
+
+  Server.prototype.nodeDescriptions = function () {
+    console.log("hi");
+    return [Create_1["default"].describe()];
   };
 
   return Server;
@@ -10116,15 +10105,24 @@ exports.default = ServerDiagram;
 /*!**************************************!*\
   !*** ./src/servers/js/ServerNode.ts ***!
   \**************************************/
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 
 exports.__esModule = true;
 
+var NodeDescription_1 = __webpack_require__(/*! ../../core/NodeDescription */ "./src/core/NodeDescription.ts");
+
 var ServerNode = function () {
-  function ServerNode() {}
+  function ServerNode() {
+    this.inPorts = [];
+    this.outPorts = [];
+    this.key = 'test-key';
+    this.name = 'Create';
+    this.serverNodeType = 'Create';
+    this.nodeReact = 'Node';
+  }
 
   ServerNode.hydrate = function (data) {
     var instance = new this();
@@ -10137,6 +10135,28 @@ var ServerNode = function () {
     }
 
     return instance;
+  };
+
+  ServerNode.describe = function () {
+    return NodeDescription_1.NodeDescription.deserialize({
+      category: this.category,
+      editableInPorts: false,
+      editableOutPorts: false,
+      inPorts: [],
+      outPorts: ['Output'],
+      key: 'test-key',
+      name: 'Create',
+      nodeReact: 'Node',
+      serverNodeType: 'Create',
+      parameters: [{
+        "default": "Create",
+        fieldType: "String_",
+        name: "node_name",
+        placeholder: "",
+        value: "Create"
+      }],
+      summary: 'ajthinking is learning typescript'
+    });
   };
 
   return ServerNode;
@@ -10159,8 +10179,11 @@ exports.__esModule = true;
 
 var Create_1 = __webpack_require__(/*! ./nodes/Create */ "./src/servers/js/nodes/Create.ts");
 
+var Inspect_1 = __webpack_require__(/*! ./nodes/Inspect */ "./src/servers/js/nodes/Inspect.ts");
+
 var nodes = {
-  Create: Create_1["default"]
+  Create: Create_1["default"],
+  Inspect: Inspect_1["default"]
 };
 
 exports.default = function (type) {
@@ -10221,6 +10244,67 @@ var Create = function (_super) {
 }(ServerNode_1["default"]);
 
 exports.default = Create;
+
+/***/ }),
+
+/***/ "./src/servers/js/nodes/Inspect.ts":
+/*!*****************************************!*\
+  !*** ./src/servers/js/nodes/Inspect.ts ***!
+  \*****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+exports.__esModule = true;
+
+var NodeDescription_1 = __webpack_require__(/*! ../../../core/NodeDescription */ "./src/core/NodeDescription.ts");
+
+var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/servers/js/ServerNode.ts");
+
+var Inspect = function (_super) {
+  __extends(Inspect, _super);
+
+  function Inspect() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  Inspect.prototype.run = function () {};
+
+  Inspect.describe = function () {
+    return new NodeDescription_1.NodeDescription();
+  };
+
+  return Inspect;
+}(ServerNode_1["default"]);
+
+exports.default = Inspect;
 
 /***/ }),
 
