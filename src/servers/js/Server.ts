@@ -1,7 +1,5 @@
-import { NodeDescription } from "../../core/NodeDescription";
-import { inject, observer } from "mobx-react"
 import ServerDiagram from "./ServerDiagram";
-import Create from "./nodes/Create";
+import ServerNodeFactory from "./ServerNodeFactory";
 
 export default class Server
 {
@@ -29,9 +27,6 @@ export default class Server
     }
 
     protected nodeDescriptions() {
-        console.log("hi")
-        return [
-            Create.describe()
-        ]
+        return ServerNodeFactory.all().map(node => node.describe())
     }
 }

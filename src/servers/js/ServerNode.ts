@@ -3,16 +3,16 @@ import { NodeDescription } from "../../core/NodeDescription";
 export default class ServerNode {
     public id: string
     public static category: string = 'Custom'
-    public editableInPorts: boolean
-    public editableOutPorts: boolean
-    public inPorts: Array<String> = []
-    public outPorts: Array<String> = []
-    public key: string = 'test-key'
-    public name: string = 'Create'
-    public serverNodeType: string = 'Create'
-    public nodeReact: string = 'Node'
-    public parameters: Array<any>
-    public summary: string    
+    public static editableInPorts: boolean = false
+    public static editableOutPorts: boolean = false
+    public static inPorts: Array<String> = ['Input']
+    public static outPorts: Array<String> = ['Output']
+    public static key: string = 'test-key'
+    public static name_: string
+    public static serverNodeType: string = 'Create'
+    public static nodeReact: string = 'Node'
+    public static parameters: Array<any>
+    public static summary: string = 'No summary provided.'   
 
     static hydrate(data) {
         let instance = new this()
@@ -27,24 +27,36 @@ export default class ServerNode {
     static describe() : NodeDescription {
         return NodeDescription.deserialize({
             category: this.category,
-            editableInPorts: false,
-            editableOutPorts: false,
-            inPorts: [],
-            outPorts: ['Output'],
-            key: 'test-key',
-            name: 'Create',
-            nodeReact: 'Node',
-            serverNodeType: 'Create',
+            editableInPorts: this.editableInPorts,
+            editableOutPorts: this.editableOutPorts,
+            inPorts: this.inPorts,
+            outPorts: this.outPorts,
+            key: this.key,
+            name: this.name,
+            nodeReact: this.nodeReact,
+            serverNodeType: this.serverNodeType,
             parameters: [
                 {
-                    default: "Create",
+                    default: this.name,
                     fieldType: "String_",
                     name: "node_name",
                     placeholder: "",
-                    value: "Create",
+                    value: this.name,
                 }
             ],
-            summary: 'ajthinking is learning typescript',
+            summary: this.summary,
         })
+    }
+
+    protected input() {
+
+    }
+
+    protected output(features: Array<any>, port: string = 'Output') {
+        //this.portNamed(port).features = features
+    }
+
+    protected portNamed(name: string) {
+        //return this.ports.find(port => port.name == name)
     }
 }

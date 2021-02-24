@@ -1,13 +1,9 @@
-import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
-export default class Inspect extends ServerNode
-{
+export default class Inspect extends ServerNode {
+    public static outPorts: Array<String> = []
+
     run() {
         //
-    }
-
-    static describe() : NodeDescription {
-        return new NodeDescription
-    }        
+    }     
 }

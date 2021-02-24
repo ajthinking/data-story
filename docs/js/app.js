@@ -10000,7 +10000,7 @@ exports.__esModule = true;
 
 var ServerDiagram_1 = __webpack_require__(/*! ./ServerDiagram */ "./src/servers/js/ServerDiagram.ts");
 
-var Create_1 = __webpack_require__(/*! ./nodes/Create */ "./src/servers/js/nodes/Create.ts");
+var ServerNodeFactory_1 = __webpack_require__(/*! ./ServerNodeFactory */ "./src/servers/js/ServerNodeFactory.ts");
 
 var Server = function () {
   function Server() {}
@@ -10031,8 +10031,9 @@ var Server = function () {
   };
 
   Server.prototype.nodeDescriptions = function () {
-    console.log("hi");
-    return [Create_1["default"].describe()];
+    return ServerNodeFactory_1["default"].all().map(function (node) {
+      return node.describe();
+    });
   };
 
   return Server;
@@ -10068,7 +10069,7 @@ var ServerDiagram = function () {
 
       if (key === 'nodes') {
         instance.nodes = data.nodes.map(function (node) {
-          return ServerNodeFactory_1["default"](node.options.serverNodeType).hydrate(node);
+          return ServerNodeFactory_1["default"].hydrate(node);
         });
         continue;
       }
@@ -10115,14 +10116,7 @@ exports.__esModule = true;
 var NodeDescription_1 = __webpack_require__(/*! ../../core/NodeDescription */ "./src/core/NodeDescription.ts");
 
 var ServerNode = function () {
-  function ServerNode() {
-    this.inPorts = [];
-    this.outPorts = [];
-    this.key = 'test-key';
-    this.name = 'Create';
-    this.serverNodeType = 'Create';
-    this.nodeReact = 'Node';
-  }
+  function ServerNode() {}
 
   ServerNode.hydrate = function (data) {
     var instance = new this();
@@ -10140,26 +10134,44 @@ var ServerNode = function () {
   ServerNode.describe = function () {
     return NodeDescription_1.NodeDescription.deserialize({
       category: this.category,
-      editableInPorts: false,
-      editableOutPorts: false,
-      inPorts: [],
-      outPorts: ['Output'],
-      key: 'test-key',
-      name: 'Create',
-      nodeReact: 'Node',
-      serverNodeType: 'Create',
+      editableInPorts: this.editableInPorts,
+      editableOutPorts: this.editableOutPorts,
+      inPorts: this.inPorts,
+      outPorts: this.outPorts,
+      key: this.key,
+      name: this.name,
+      nodeReact: this.nodeReact,
+      serverNodeType: this.serverNodeType,
       parameters: [{
-        "default": "Create",
+        "default": this.name,
         fieldType: "String_",
         name: "node_name",
         placeholder: "",
-        value: "Create"
+        value: this.name
       }],
-      summary: 'ajthinking is learning typescript'
+      summary: this.summary
     });
   };
 
+  ServerNode.prototype.input = function () {};
+
+  ServerNode.prototype.output = function (features, port) {
+    if (port === void 0) {
+      port = 'Output';
+    }
+  };
+
+  ServerNode.prototype.portNamed = function (name) {};
+
   ServerNode.category = 'Custom';
+  ServerNode.editableInPorts = false;
+  ServerNode.editableOutPorts = false;
+  ServerNode.inPorts = ['Input'];
+  ServerNode.outPorts = ['Output'];
+  ServerNode.key = 'test-key';
+  ServerNode.serverNodeType = 'Create';
+  ServerNode.nodeReact = 'Node';
+  ServerNode.summary = 'No summary provided.';
   return ServerNode;
 }();
 
@@ -10182,14 +10194,29 @@ var Create_1 = __webpack_require__(/*! ./nodes/Create */ "./src/servers/js/nodes
 
 var Inspect_1 = __webpack_require__(/*! ./nodes/Inspect */ "./src/servers/js/nodes/Inspect.ts");
 
-var nodes = {
-  Create: Create_1["default"],
-  Inspect: Inspect_1["default"]
-};
+var ServerNodeFactory = function () {
+  function ServerNodeFactory() {}
 
-exports.default = function (type) {
-  return nodes[type];
-};
+  ServerNodeFactory.find = function (type) {
+    return this.nodes[type];
+  };
+
+  ServerNodeFactory.all = function () {
+    return Object.values(this.nodes);
+  };
+
+  ServerNodeFactory.hydrate = function (node) {
+    return this.find(node.options.serverNodeType).hydrate(node);
+  };
+
+  ServerNodeFactory.nodes = {
+    Create: Create_1["default"],
+    Inspect: Inspect_1["default"]
+  };
+  return ServerNodeFactory;
+}();
+
+exports.default = ServerNodeFactory;
 
 /***/ }),
 
@@ -10239,8 +10266,17 @@ var Create = function (_super) {
     return _super !== null && _super.apply(this, arguments) || this;
   }
 
-  Create.prototype.run = function () {};
+  Create.prototype.run = function () {
+    this.output([{
+      'creation_id': 0
+    }, {
+      'creation_id': 1
+    }, {
+      'creation_id': 2
+    }]);
+  };
 
+  Create.inPorts = [];
   return Create;
 }(ServerNode_1["default"]);
 
@@ -10285,8 +10321,6 @@ var __extends = this && this.__extends || function () {
 
 exports.__esModule = true;
 
-var NodeDescription_1 = __webpack_require__(/*! ../../../core/NodeDescription */ "./src/core/NodeDescription.ts");
-
 var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/servers/js/ServerNode.ts");
 
 var Inspect = function (_super) {
@@ -10298,10 +10332,7 @@ var Inspect = function (_super) {
 
   Inspect.prototype.run = function () {};
 
-  Inspect.describe = function () {
-    return new NodeDescription_1.NodeDescription();
-  };
-
+  Inspect.outPorts = [];
   return Inspect;
 }(ServerNode_1["default"]);
 

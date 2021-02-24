@@ -14,8 +14,9 @@ export default class ServerDiagram {
             // hydratables
             if(key === 'nodes') {
                 instance.nodes = data.nodes.map(node => {
-                    return ServerNodeFactory(node.options.serverNodeType).hydrate(node)
+                    return ServerNodeFactory.hydrate(node)
                 })
+                
                 continue
             }
             

@@ -1,9 +1,15 @@
-import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
-export default class Create extends ServerNode
-{
+export default class Create extends ServerNode {
+    public static inPorts: Array<String> = []
+
     run() {
-        //
+        this.output(
+            [
+                {'creation_id': 0},
+                {'creation_id': 1},
+                {'creation_id': 2},
+            ]
+        );
     }
 }
