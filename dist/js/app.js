@@ -10310,10 +10310,7 @@ var Create = function (_super) {
 
   Create.prototype.run = function () {
     var count = parseInt(this.getParameter('number_of_features_to_create').value);
-    console.log('count', count);
-    var features = Array.from(Array(count).keys());
-    console.log('features', features);
-    this.output(features.map(function (i) {
+    this.output(Array.from(Array(count).keys()).map(function (i) {
       return {
         creation_id: i
       };

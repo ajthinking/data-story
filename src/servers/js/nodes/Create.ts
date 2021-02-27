@@ -6,13 +6,9 @@ export default class Create extends ServerNode {
 
     run() {
         let count = parseInt(this.getParameter('number_of_features_to_create').value)
-
-        console.log('count', count);
-
-        let features = Array.from(Array(count).keys())
-        console.log('features', features)
+        
         this.output(
-            features.map(i => {
+            Array.from(Array(count).keys()).map(i => {
                 return { creation_id: i}
             })
         );
