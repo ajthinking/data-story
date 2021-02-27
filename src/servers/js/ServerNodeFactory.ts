@@ -1,8 +1,10 @@
+import API from './nodes/API'
 import Create from './nodes/Create'
 import Inspect from './nodes/Inspect'
 
 export default class ServerNodeFactory {
     protected static nodes = {
+        API,
         Create,
         Inspect,
     }

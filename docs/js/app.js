@@ -10232,6 +10232,8 @@ exports.default = ServerNode;
 
 exports.__esModule = true;
 
+var API_1 = __webpack_require__(/*! ./nodes/API */ "./src/servers/js/nodes/API.ts");
+
 var Create_1 = __webpack_require__(/*! ./nodes/Create */ "./src/servers/js/nodes/Create.ts");
 
 var Inspect_1 = __webpack_require__(/*! ./nodes/Inspect */ "./src/servers/js/nodes/Inspect.ts");
@@ -10252,6 +10254,7 @@ var ServerNodeFactory = function () {
   };
 
   ServerNodeFactory.nodes = {
+    API: API_1["default"],
     Create: Create_1["default"],
     Inspect: Inspect_1["default"]
   };
@@ -10259,6 +10262,76 @@ var ServerNodeFactory = function () {
 }();
 
 exports.default = ServerNodeFactory;
+
+/***/ }),
+
+/***/ "./src/servers/js/nodes/API.ts":
+/*!*************************************!*\
+  !*** ./src/servers/js/nodes/API.ts ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+exports.__esModule = true;
+
+var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/servers/js/ServerNode.ts");
+
+var API = function (_super) {
+  __extends(API, _super);
+
+  function API() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  API.prototype.run = function () {
+    this.output([]);
+  };
+
+  API.describe = function () {
+    var description = _super.describe.call(this);
+
+    description.parameters.push({
+      "default": '',
+      fieldType: 'Number',
+      name: 'endpoint',
+      value: ''
+    });
+    return description;
+  };
+
+  API.inPorts = [];
+  return API;
+}(ServerNode_1["default"]);
+
+exports.default = API;
 
 /***/ }),
 
@@ -10991,6 +11064,12 @@ react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime
   store: _store_main__WEBPACK_IMPORTED_MODULE_3__.default,
   children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_components_App__WEBPACK_IMPORTED_MODULE_4__.default, {})
 }), document.getElementById('app'));
+
+if (navigator && navigator.serviceWorker) {
+  console.log("Serviceworker available");
+} else {
+  console.log("Serviceworker NOT available");
+}
 
 /***/ }),
 
