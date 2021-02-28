@@ -9,9 +9,3 @@ ReactDOM.render((
         <App />
     </Provider>
 ), document.getElementById('app'));
-
-if (navigator && navigator.serviceWorker) {
-    console.log("Serviceworker available");
-} else {
-    console.log("Serviceworker NOT available")
-}

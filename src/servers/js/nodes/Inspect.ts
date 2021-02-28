@@ -5,7 +5,7 @@ export default class Inspect extends ServerNode {
 
     public static outPorts: Array<String> = []
 
-    run() {
+    async run() {
         this.features = this.input();
     }     
 }

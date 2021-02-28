@@ -1,11 +1,21 @@
+import Axios from "axios";
 import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
+import axios from 'axios';
 
 export default class API extends ServerNode {
     public static inPorts: Array<String> = []
 
-    run() {
-        this.output([]);
+    async run() {
+        await axios.get(
+            this.getParameter('endpoint').value
+        ).then(response => {
+            this.output(
+                Array.isArray(response.data) ? response.data : [response.data]
+            )
+        })
+
+        return new Promise(resolve => resolve('Node finished'))        
     }
 
     static describe() : NodeDescription {
@@ -13,10 +23,10 @@ export default class API extends ServerNode {
 
         description.parameters.push(
             {
-                default: '',
-                fieldType: 'Number',
+                default: 'https://jsonplaceholder.typicode.com/todos',
+                fieldType: 'String_',
                 name: 'endpoint',
-                value: '',
+                value: 'https://jsonplaceholder.typicode.com/todos',
             }
         )
 

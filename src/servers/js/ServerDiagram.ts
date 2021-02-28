@@ -27,12 +27,18 @@ export default class ServerDiagram {
         return instance
     }
 
-    run() {
-        for(const id of this.executionOrder) {
-            this.find(id).run()
+    async run() {
+        for await (let nodeId of this.executionOrder) {
+            await this.find(nodeId).run()
         }
 
-        return this
+        return new Promise((callback) => {
+            return callback({
+                data: {
+                    diagram: this
+                } 
+            })
+        })
     }
 
     find(id: string) {

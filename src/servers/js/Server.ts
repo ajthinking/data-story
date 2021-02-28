@@ -16,7 +16,9 @@ export default class Server
         })
     }
 
-    public run(diagram) {
+    public async run(diagram) {
+        return ServerDiagram.hydrate(diagram).run()
+
         return new Promise((callback) => {
             return callback({
                 data: {

@@ -1,20 +1,20 @@
 import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
-export default class Create extends ServerNode {
-    public static inPorts: Array<String> = []
+export default class Sleep extends ServerNode {
 
     async run() {
-        let count = parseInt(this.getParameter('number_of_features_to_create').value)
-        
         this.output(
-            Array.from(Array(count).keys()).map(i => {
-                return { creation_id: i}
-            })
+            this.input()
         );
 
         return new Promise((resolve, reject) => {
-            resolve('Node finished')
+            let wait = setTimeout(() => {
+                if(typeof wait !== "undefined"){
+                    clearTimeout(wait);
+                }
+                resolve('Node complete');
+            }, parseInt(this.getParameter('seconds_to_sleep').value) * 1000)
         })        
     }
 
@@ -23,10 +23,10 @@ export default class Create extends ServerNode {
 
         description.parameters.push(
             {
-                default: 10,
+                default: 5,
                 fieldType: "Number",
-                name: "number_of_features_to_create",
-                value: 10,
+                name: "seconds_to_sleep",
+                value: 5,
             }            
         )
 

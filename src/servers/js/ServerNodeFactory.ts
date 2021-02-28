@@ -1,12 +1,14 @@
 import API from './nodes/API'
 import Create from './nodes/Create'
 import Inspect from './nodes/Inspect'
+import Sleep from './nodes/Sleep'
 
 export default class ServerNodeFactory {
     protected static nodes = {
         API,
         Create,
         Inspect,
+        Sleep,
     }
 
     static find(type: string) {
