@@ -34,15 +34,15 @@ export default class API extends ServerNode {
             },
             {
                 name: 'data',
-                fieldType: 'String_',
+                fieldType: 'JSON_',
                 default: '{}',
                 value: '{}',
             },
             {
                 name: 'config',
-                fieldType: 'String_',
-                default: JSON.stringify({headers: {Authorization: 'token xxxxxx'}}),
-                value: JSON.stringify({headers: {Authorization: 'token xxxxxx'}}),
+                fieldType: 'JSON_',
+                default: JSON.stringify({}),
+                value: JSON.stringify({}),
             },                                   
         )
 
