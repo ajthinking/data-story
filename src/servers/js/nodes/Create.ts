@@ -3,6 +3,7 @@ import ServerNode from "../ServerNode";
 
 export default class Create extends ServerNode {
     public static inPorts: Array<String> = []
+    public static summary = 'Create a sequence of objects'    
 
     async run() {
         let count = parseInt(this.getParameter('number_of_features_to_create').value)

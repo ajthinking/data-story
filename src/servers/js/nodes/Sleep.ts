@@ -2,6 +2,7 @@ import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
 export default class Sleep extends ServerNode {
+    public static summary = 'Sleep x seconds per feature'    
 
     async run() {
         this.output(

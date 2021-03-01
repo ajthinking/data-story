@@ -5,6 +5,7 @@ import axios from 'axios';
 
 export default class API extends ServerNode {
     public static inPorts: Array<String> = []
+    public static summary = 'Make a HTTP request'
 
     async run() {
         await this.request().then(response => {

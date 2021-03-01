@@ -2,6 +2,7 @@ import ServerNode from "../ServerNode";
 
 export default class Inspect extends ServerNode {
     public features: Array<any>
+    public static summary = 'Display features in a table'    
 
     public static outPorts: Array<String> = []
 
