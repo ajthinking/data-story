@@ -2,6 +2,7 @@ import API from './nodes/API'
 import Create from './nodes/Create'
 import Inspect from './nodes/Inspect'
 import RegExpFilter from './nodes/RegExpFilter'
+import Repositories from './nodes/github/Repositories'
 import Sleep from './nodes/Sleep'
 
 export default class ServerNodeFactory {
@@ -10,6 +11,7 @@ export default class ServerNodeFactory {
         Create,
         Inspect,
         RegExpFilter,
+        Repositories,
         Sleep,
     }
 

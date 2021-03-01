@@ -3,6 +3,7 @@ import ServerNode from "../ServerNode";
 import * as _ from 'lodash'
 
 export default class RegExpFilter extends ServerNode {
+    public static category: string = 'Workflow'    
     public static summary = 'Filter features matching an attribute regular expression'
     public static outPorts = ['Passed', 'Failed']
 

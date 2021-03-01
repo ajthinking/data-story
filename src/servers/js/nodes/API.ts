@@ -4,7 +4,8 @@ import ServerNode from "../ServerNode";
 import axios from 'axios';
 
 export default class API extends ServerNode {
-    public static inPorts: Array<String> = []
+    public static category: string = 'Reader'
+    public static inPorts: Array<string> = []
     public static summary = 'Make a HTTP request'
 
     async run() {
@@ -24,8 +25,8 @@ export default class API extends ServerNode {
             {
                 name: 'url',
                 fieldType: 'String_',
-                default: 'https://api.github.com/users/ajthinking/repos',
-                value: 'https://api.github.com/users/ajthinking/repos',
+                default: 'https://jsonplaceholder.typicode.com/todos',
+                value: 'https://jsonplaceholder.typicode.com/todos',
             },
             {
                 default: 'GET',

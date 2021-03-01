@@ -2,6 +2,7 @@ import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
 export default class Create extends ServerNode {
+    public static category: string = 'Reader'    
     public static inPorts: Array<String> = []
     public static summary = 'Create a sequence of objects'    
 

@@ -1,6 +1,7 @@
 import ServerNode from "../ServerNode";
 
 export default class Inspect extends ServerNode {
+    public static category: string = 'Workflow'
     public features: Array<any>
     public static summary = 'Display features in a table'    
 
