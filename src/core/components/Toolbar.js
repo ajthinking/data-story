@@ -7,6 +7,7 @@ import SaveControl from './controls/SaveControl';
 import RunControl from './controls/RunControl';
 import LogControl from './controls/LogControl';
 import AddNodeControl from './controls/AddNodeControl'
+import TokensControl from './controls/TokensControl';
 
 @inject('store') @observer
 export default class Toolbar extends React.Component {
@@ -25,6 +26,7 @@ export default class Toolbar extends React.Component {
                     <OpenControl />
                     <SaveControl />
                     <RunControl />
+                    <TokensControl />
                     <LogControl />                    
                     <AddNodeControl />
                     {this.renderInspectables()}       
