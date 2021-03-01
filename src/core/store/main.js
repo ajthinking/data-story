@@ -129,7 +129,12 @@ export class Store {
     getAutomatedLink(from, to) {
         if(!this.canLink(from, to)) return;
 
-        let fromPort = Object.values(from.getOutPorts())[0];
+        // fromPort: prefer first unused outPort. Otherwise defaults to first
+        let fromPort = Object.values(from.getOutPorts()).find(candidate => {
+            return Object.values(candidate.links).length === 0
+        }) ?? Object.values(from.getOutPorts())[0]
+
+        // toPort: the first inPort
         let toPort = Object.values(to.getInPorts())[0];
         
         // Links
