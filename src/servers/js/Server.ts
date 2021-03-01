@@ -18,14 +18,6 @@ export default class Server
 
     public async run(diagram) {
         return ServerDiagram.hydrate(diagram).run()
-
-        return new Promise((callback) => {
-            return callback({
-                data: {
-                    diagram: ServerDiagram.hydrate(diagram).run()
-                } 
-            })
-        }) 
     }
 
     protected nodeDescriptions() {

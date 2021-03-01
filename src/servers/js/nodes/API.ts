@@ -14,8 +14,6 @@ export default class API extends ServerNode {
                 Array.isArray(response.data) ? response.data : [response.data]
             )
         })
-
-        return new Promise(resolve => resolve('Node finished'))        
     }
 
     static describe() : NodeDescription {

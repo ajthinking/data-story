@@ -13,11 +13,7 @@ export default class Create extends ServerNode {
             Array.from(Array(count).keys()).map(i => {
                 return { creation_id: i}
             })
-        );
-
-        return new Promise((resolve, reject) => {
-            resolve('Node finished')
-        })        
+        );       
     }
 
     static describe() : NodeDescription {

@@ -3,14 +3,14 @@ import ServerNode from "../ServerNode";
 
 export default class Sleep extends ServerNode {
     public static category: string = 'Workflow'    
-    public static summary = 'Sleep x seconds per feature'    
+    public static summary = 'Sleep x seconds'    
 
     async run() {
         this.output(
             this.input()
         );
 
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             let wait = setTimeout(() => {
                 if(typeof wait !== "undefined"){
                     clearTimeout(wait);

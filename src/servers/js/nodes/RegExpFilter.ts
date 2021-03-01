@@ -31,10 +31,7 @@ export default class RegExpFilter extends ServerNode {
 
     async run() {
         this.output(this.matching(), 'Passed');
-
         this.output(this.notMatching(), 'Failed');
-
-        return new Promise(resolve => resolve('Node complete'))
     }
 
     protected matching() {

@@ -28,6 +28,7 @@ export default class ServerDiagram {
     }
 
     async run() {
+
         for await (let nodeId of this.executionOrder) {
             await this.find(nodeId).run()
         }
