@@ -3,7 +3,7 @@ import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import axios from 'axios';
 
-export default class API extends ServerNode {
+export default class HTTPRequest extends ServerNode {
     public static category: string = 'Reader'
     public static inPorts: Array<string> = ['Input']
     public static summary = 'Make a HTTP request'

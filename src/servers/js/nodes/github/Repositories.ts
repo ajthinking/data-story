@@ -1,8 +1,7 @@
-import { deepStrictEqual } from "assert";
 import { NodeDescription } from "../../../../core/NodeDescription";
-import API from "../API";
+import HTTPRequest from "../HTTPRequest";
 
-export default class Repositories extends API {
+export default class Repositories extends HTTPRequest {
     public static category: string = 'Github'
     public static summary = 'Fetch github repositores' 
 
