@@ -1,0 +1,31 @@
+import { NodeDescription } from "../../../core/NodeDescription";
+import ServerNode from "../ServerNode";
+
+export default class CreateJSON extends ServerNode {
+    public static category: string = 'Reader'    
+    public static inPorts: Array<String> = []
+    public static summary = 'Create features from JSON'    
+
+    async run() {
+        
+        
+        this.output(
+            JSON.parse(this.getParameter('features').value)
+        );       
+    }
+
+    static describe() : NodeDescription {
+        let description = super.describe()
+
+        description.parameters.push(
+            {
+                default: '[{ "name": "ajthinking"}]',
+                fieldType: "JSON_",
+                name: "features",
+                value: '[{ "name": "Eddie"}]',
+            }            
+        )
+
+        return description
+    }    
+}

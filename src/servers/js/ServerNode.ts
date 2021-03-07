@@ -61,6 +61,20 @@ export default class ServerNode {
         return this['options'].parameters.find(p => p.name == name)
     }
 
+    protected getParameterValue(name: string) {
+        let parameter = this.getParameter(name)
+
+        return this.interpret(parameter.value)
+    }
+    
+    protected interpret(string) {
+        console.log(
+            string,
+            string.match(new RegExp('\{\{(.*)\}\}'))
+        )
+        return string
+    }
+
     protected input(portName: string = 'Input')
     {
         return this.getDataAtPortNamed(portName);

@@ -16,6 +16,10 @@ export default class HTTPRequest extends ServerNode {
         })
     }
 
+    async runOne(feature) {
+        //        
+    }
+
     static describe() : NodeDescription {
         let description = super.describe()
 
@@ -76,7 +80,7 @@ export default class HTTPRequest extends ServerNode {
     }
 
     protected getUrl() {
-        return this.getParameter('url').value
+        return this.getParameterValue('url')
     }
 
     protected getData() {

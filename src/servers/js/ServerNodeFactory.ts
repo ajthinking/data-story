@@ -1,5 +1,6 @@
 import HTTPRequest from './nodes/HTTPRequest'
-import Create from './nodes/Create'
+import CreateJSON from './nodes/CreateJSON'
+import CreateSequence from './nodes/CreateSequence'
 import Inspect from './nodes/Inspect'
 import RegExpFilter from './nodes/RegExpFilter'
 import Repositories from './nodes/github/Repositories'
@@ -7,7 +8,8 @@ import Sleep from './nodes/Sleep'
 
 export default class ServerNodeFactory {
     protected static nodes = {
-        Create,
+        CreateSequence,
+        CreateJSON,
         HTTPRequest,
         Inspect,
         RegExpFilter,
