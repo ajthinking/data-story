@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export default class API extends ServerNode {
     public static category: string = 'Reader'
-    public static inPorts: Array<string> = []
+    public static inPorts: Array<string> = ['Input']
     public static summary = 'Make a HTTP request'
 
     async run() {
