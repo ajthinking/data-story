@@ -86,7 +86,7 @@ export default class ServerNode {
     }    
 
     protected output(features: Array<any>, port: string = 'Output') {
-        this.portNamed(port).features = features
+        this.portNamed(port).features = this.portNamed(port).features ? features.concat(features) : features
     }
 
     protected portNamed(name: string) {

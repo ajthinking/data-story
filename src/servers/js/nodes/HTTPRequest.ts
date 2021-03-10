@@ -3,6 +3,7 @@ import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import axios from 'axios';
 import { features } from "process";
+import Feature from "../../../core/Feature";
 
 export default class HTTPRequest extends ServerNode {
     public static category: string = 'Reader'
@@ -10,14 +11,11 @@ export default class HTTPRequest extends ServerNode {
     public static summary = 'Make a HTTP request'
 
     async run() {
-        let output = [];
-
         for await (let feature of this.input()) {
-            let result = await this.request(feature)
-            output.push(result);
-        }        
-
-        this.output(output)
+            await this.request(feature).then((result) => {
+                this.output(result.data.map(i => new Feature(i)))
+            })
+        }                
     }
 
     static describe() : NodeDescription {
@@ -54,26 +52,26 @@ export default class HTTPRequest extends ServerNode {
     }
 
     protected request(feature) {
-        if(feature.verb == 'GET') {
+        if(this.getParameterValue('verb') == 'GET') {
             return axios.get(
-                feature.url,
-                feature.config
+                this.getParameterValue('url'),
+                this.getParameterValue('config')
             )
         }
 
-        if(feature.verb == 'POST') {
-            return axios.post(
-                feature.url,
-                feature.data,
-                feature.config
-            )   
-        }
+        // if(this.getParameterValue('verb') == 'POST') {
+        //     return axios.post(
+        //         this.getParameterValue('config'),
+        //         this.getParameterValue('config'),
+        //         this.getParameterValue('config')
+        //     )   
+        // }
 
-        if(feature.verb == 'DELETE') {
-            return axios.delete(
-                feature.url,
-                feature.config
-            )   
-        }        
+        // if(this.getParameterValue('verb') == 'DELETE') {
+        //     return axios.delete(
+        //         feature.url,
+        //         feature.config
+        //     )   
+        // }        
     } 
 }

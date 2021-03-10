@@ -4,10 +4,8 @@ import { inject, observer } from "mobx-react"
 
 @inject('store') @observer
 export default class InspectorTable extends React.Component {
-
-    features() {
-        let id = this.props.store.metadata.activeInspector
-        return id ? this.props.store.diagram.engine.model.getNode(id).features : [];
+    constructor(props) {
+        super(props)
     }
 
     render() {
@@ -20,7 +18,7 @@ export default class InspectorTable extends React.Component {
                         {this.renderTableHead()}
                         {this.renderTableBody()}
                     </table>
-                    {this.features().length == 0 && 
+                    {this.props.features.length == 0 && 
                         <div className="flex w-full justify-center p-24 text-gray-300 font-mono text-xl">
                             No data to show here 😐
                         </div>
@@ -61,7 +59,7 @@ export default class InspectorTable extends React.Component {
     }
 
     hasPrimitiveFeatures() {
-        return this.features().map(f => f.unbox()).filter((content) => {
+        return this.props.features.map(f => f.unbox()).filter((content) => {
             return typeof content != 'object'
         }).length != 0;
     }
@@ -107,7 +105,7 @@ export default class InspectorTable extends React.Component {
     }    
 
     getHeaders() {
-        let keys = this.features().map(i => {
+        let keys = this.props.features.map(i => {
             return typeof i.unbox() === 'object' ? Object.keys(i.unbox()) : '__default'
         }).flat()
         return [...new Set(keys)];
@@ -115,7 +113,7 @@ export default class InspectorTable extends React.Component {
 
     getRows() {
 
-        return this.features().map(feature => {
+        return this.props.features.map(feature => {
             let content = feature.unbox()
             if(typeof content != 'object') {
                 return content

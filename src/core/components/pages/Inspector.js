@@ -7,10 +7,13 @@ import InspectorTable from '../InspectorTable';
 export default class Inspector extends React.Component {
 
     render() {
+        let id = this.props.store.metadata.activeInspector
+        let features = id ? this.props.store.diagram.engine.model.getNode(id).features : [];
+
         return (
             <div className="">
                 <div className="p-4">
-                    <InspectorTable />    
+                    <InspectorTable features={features} />
                 </div>
             </div>
         );
