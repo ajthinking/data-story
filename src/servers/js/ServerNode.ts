@@ -64,15 +64,7 @@ export default class ServerNode {
     protected getParameterValue(name: string) {
         let parameter = this.getParameter(name)
 
-        return this.interpret(parameter.value)
-    }
-    
-    protected interpret(string) {
-        console.log(
-            string,
-            string.match(new RegExp('\{\{(.*)\}\}'))
-        )
-        return string
+        return parameter.value
     }
 
     protected input(portName: string = 'Input')

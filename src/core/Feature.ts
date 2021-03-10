@@ -6,12 +6,24 @@ export default class Feature {
     }
 
     public get(property: string) {
-        return this.interpret(
+        return this.interpretProperty(
             this.original[property]            
         )
     }
 
-    protected interpret(parametric) {
+    public type() {
+        return typeof this.original
+    }
+
+    public unbox() {
+        if(this.type() == 'object') {
+            return this.original
+        }
+
+        return this.original
+    }
+
+    protected interpretProperty(parametric) {
         let matches = parametric.match(/\{\{[\.a-zA-Z\s_]*\}\}/g)
         if(matches.length > 0) {
 

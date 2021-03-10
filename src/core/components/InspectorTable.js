@@ -61,8 +61,8 @@ export default class InspectorTable extends React.Component {
     }
 
     hasPrimitiveFeatures() {
-        return this.features().filter((feature) => {
-            return typeof feature != 'object'
+        return this.features().map(f => f.unbox()).filter((content) => {
+            return typeof content != 'object'
         }).length != 0;
     }
 
@@ -108,7 +108,7 @@ export default class InspectorTable extends React.Component {
 
     getHeaders() {
         let keys = this.features().map(i => {
-            return typeof i === 'object' ? Object.keys(i) : '__default'
+            return typeof i.unbox() === 'object' ? Object.keys(i.unbox()) : '__default'
         }).flat()
         return [...new Set(keys)];
     }
@@ -116,12 +116,13 @@ export default class InspectorTable extends React.Component {
     getRows() {
 
         return this.features().map(feature => {
-            if(typeof feature != 'object') {
-                return feature
+            let content = feature.unbox()
+            if(typeof content != 'object') {
+                return content
             }
 
             return this.getHeaders().map(header => {
-                if(!feature.hasOwnProperty(header)) {
+                if(!content.hasOwnProperty(header)) {
                     return 'N/A'
                 } 
 
@@ -133,7 +134,7 @@ export default class InspectorTable extends React.Component {
                     return 'ARRAY'
                 }                
     
-                return feature[header]
+                return content[header]
             });
         })
     }

@@ -1,3 +1,4 @@
+import Feature from "../../../core/Feature";
 import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
@@ -7,11 +8,10 @@ export default class CreateJSON extends ServerNode {
     public static summary = 'Create features from JSON'    
 
     async run() {
-        
-        
         this.output(
-            JSON.parse(this.getParameter('features').value)
-        );       
+            JSON.parse(this.getParameterValue('features'))
+                .map(item => new Feature(item))
+        );
     }
 
     static describe() : NodeDescription {
@@ -22,7 +22,7 @@ export default class CreateJSON extends ServerNode {
                 default: '[{ "name": "ajthinking"}]',
                 fieldType: "JSON_",
                 name: "features",
-                value: '[{ "name": "Eddie"}]',
+                value: '[{ "name": "ajthinking"}]',
             }            
         )
 

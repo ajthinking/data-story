@@ -2,6 +2,7 @@ import Axios from "axios";
 import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import axios from 'axios';
+import { features } from "process";
 
 export default class HTTPRequest extends ServerNode {
     public static category: string = 'Reader'

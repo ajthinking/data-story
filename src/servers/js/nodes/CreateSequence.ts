@@ -1,3 +1,4 @@
+import Feature from "../../../core/Feature";
 import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
@@ -7,11 +8,11 @@ export default class CreateSequence extends ServerNode {
     public static summary = 'Create a sequence of objects'    
 
     async run() {
-        let count = parseInt(this.getParameter('number_of_features_to_create').value)
-        
+        let count = parseInt(this.getParameterValue('number_of_features_to_create'))
+
         this.output(
             Array.from(Array(count).keys()).map(i => {
-                return { creation_id: i}
+                return new Feature({ creation_id: i})
             })
         );       
     }

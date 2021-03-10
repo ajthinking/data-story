@@ -9,5 +9,5 @@ export default class Inspect extends ServerNode {
 
     async run() {
         this.features = this.input();
-    }     
+    }
 }
