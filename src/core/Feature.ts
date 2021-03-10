@@ -25,7 +25,7 @@ export default class Feature {
 
     protected interpretProperty(parametric) {
         let matches = parametric.match(/\{\{[\.a-zA-Z\s_]*\}\}/g)
-        if(matches.length > 0) {
+        if(matches) {
 
             for(let match of matches) {
 
