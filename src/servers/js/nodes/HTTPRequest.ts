@@ -9,15 +9,14 @@ export default class HTTPRequest extends ServerNode {
     public static summary = 'Make a HTTP request'
 
     async run() {
-        await this.request().then(response => {
-            this.output(
-                Array.isArray(response.data) ? response.data : [response.data]
-            )
-        })
-    }
+        let output = [];
 
-    async runOne(feature) {
-        //        
+        for await (let feature of this.input()) {
+            let result = await this.request(feature)
+            output.push(result);
+        }        
+
+        this.output(output)
     }
 
     static describe() : NodeDescription {
@@ -53,41 +52,27 @@ export default class HTTPRequest extends ServerNode {
         return description
     }
 
-    protected request() {
-        let type = this.getParameter('verb').value
-
-        if(type == 'GET') {
+    protected request(feature) {
+        if(feature.verb == 'GET') {
             return axios.get(
-                this.getUrl(),
-                this.getConfig()
-            )   
+                feature.url,
+                feature.config
+            )
         }
 
-        if(type == 'POST') {
+        if(feature.verb == 'POST') {
             return axios.post(
-                this.getUrl(),
-                this.getData(),
-                this.getConfig()
+                feature.url,
+                feature.data,
+                feature.config
             )   
         }
 
-        if(type == 'DELETE') {
+        if(feature.verb == 'DELETE') {
             return axios.delete(
-                this.getUrl(),
-                this.getConfig()
+                feature.url,
+                feature.config
             )   
         }        
-    }
-
-    protected getUrl() {
-        return this.getParameterValue('url')
-    }
-
-    protected getData() {
-        return JSON.parse(this.getParameter('data').value)
-    }
-    
-    protected getConfig() {
-        return JSON.parse(this.getParameter('config').value)
-    }    
+    } 
 }

@@ -6,6 +6,7 @@ import { inject, observer } from "mobx-react"
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EngineFactory from '../../core/EngineFactory'
+import Feature from '../../core/Feature'
 
 @inject('store') @observer
 export default class App extends React.Component {
@@ -36,7 +37,18 @@ export default class App extends React.Component {
     componentDidMount() {
         this.boot()
         this.registerKeybindings()
-        this.registerExitConfirmation()     
+        //this.registerExitConfirmation()
+        
+        let feature = new Feature({
+            url: '{{ feature.api }}/{{ feature.method }}?{{ feature.queryString }}',
+            api: 'https://api.github.com',
+            method: 'about',
+            queryString: 'user=ajthinking',
+        })
+
+        console.log(
+            feature.get('url')
+        )
     }
 
     boot() {
