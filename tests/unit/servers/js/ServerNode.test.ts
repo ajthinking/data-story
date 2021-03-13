@@ -1,7 +1,7 @@
 import ServerNode from '../../../../src/servers/js/ServerNode'
 
-// test('it can parametrize parameters', () => {
-//     let server = new Server
+test('it can instantiate DUMMY', () => {
+    let node = new ServerNode(null)
 
-//     expect(server.boot()).toBeInstanceOf(Object)
-// });
+    expect(node).toBeInstanceOf(ServerNode)
+});
