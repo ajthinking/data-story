@@ -93,7 +93,7 @@ export class Store {
 
         node.setPosition(
             latest?.position?.x ? latest.position.x : 100,
-            latest?.position?.y ? latest.position.y + 50 : 100            
+            latest?.position?.y ? latest.position.y + 75 : 100            
         );
 
     }
