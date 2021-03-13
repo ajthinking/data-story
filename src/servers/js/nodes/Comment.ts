@@ -6,4 +6,6 @@ export default class Comment extends ServerNode {
     public static outPorts: Array<String> = [];
     public static summary = 'Display a comment'
     public static nodeReact: string = 'Comment'
+
+    public run() {}
 }
