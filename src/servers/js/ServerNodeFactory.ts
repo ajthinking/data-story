@@ -3,6 +3,7 @@ import CreateJSON from './nodes/CreateJSON'
 import CreateSequence from './nodes/CreateSequence'
 import Inspect from './nodes/Inspect'
 import RegExpFilter from './nodes/RegExpFilter'
+import DeleteRepositories from './nodes/github/DeleteRepositories'
 import Repositories from './nodes/github/Repositories'
 import Sleep from './nodes/Sleep'
 
@@ -10,6 +11,7 @@ export default class ServerNodeFactory {
     protected static nodes = {
         CreateSequence,
         CreateJSON,
+        DeleteRepositories,
         HTTPRequest,
         Inspect,
         RegExpFilter,

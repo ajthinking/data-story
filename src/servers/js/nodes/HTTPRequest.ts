@@ -10,11 +10,11 @@ export default class HTTPRequest extends ServerNode {
     public static summary = 'Make a HTTP request'
 
     async run() {
-        console.log(this.input())
-
         for await (let feature of this.input()) {
             await this.request(feature).then((result) => {
-                this.output(result.data.map(i => new Feature(i)))
+                if(result && result.data) {
+                    this.output(result.data.map(i => new Feature(i)))
+                }
             })
         }                
     }
@@ -56,19 +56,19 @@ export default class HTTPRequest extends ServerNode {
             )
         }
 
-        // if(this.getParameterValue('verb') == 'POST') {
-        //     return axios.post(
-        //         this.getParameterValue('config'),
-        //         this.getParameterValue('config'),
-        //         this.getParameterValue('config')
-        //     )   
-        // }
+        if(this.getParameterValue('verb') == 'POST') {
+            return axios.post(
+                this.getParameterValue('url', feature),
+                this.getParameterValue('data'),
+                this.getParameterValue('config')
+            )   
+        }
 
-        // if(this.getParameterValue('verb') == 'DELETE') {
-        //     return axios.delete(
-        //         feature.url,
-        //         feature.config
-        //     )   
-        // }        
+        if(this.getParameterValue('verb') == 'DELETE') {
+            return axios.delete(
+                this.getParameterValue('url', feature),
+                JSON.parse(this.getParameterValue('config'))
+            )   
+        }        
     } 
 }

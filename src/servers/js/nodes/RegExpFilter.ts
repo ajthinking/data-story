@@ -46,8 +46,8 @@ export default class RegExpFilter extends ServerNode {
             let column = this.getParameter('attribute').value
 
             return returnFailed
-                ? !expression.test(feature[column])
-                : expression.test(feature[column])
+                ? !expression.test(feature.original[column])
+                : expression.test(feature.original[column])
         })
     }
 
