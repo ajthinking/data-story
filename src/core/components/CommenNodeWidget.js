@@ -18,8 +18,8 @@ export default class CommentNodeWidget extends React.Component {
 
 	render() {
 		return (
-            <div className={"flex font-mono text-xxs text-gray-200"}>
-                Hi this is a comment!
+            <div className={"flex font-mono text-xxs text-gray-200 px-12 py-4 border"}>
+                Hi! This is a comment!
             </div>
 		);
     }   
