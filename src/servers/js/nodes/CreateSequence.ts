@@ -22,7 +22,6 @@ export default class CreateSequence extends ServerNode {
 
         description.parameters.push(
             {
-                default: 10,
                 fieldType: "Number",
                 name: "number_of_features_to_create",
                 value: 10,

@@ -26,11 +26,9 @@ export default class HTTPRequest extends ServerNode {
             {
                 name: 'url',
                 fieldType: 'String_',
-                default: 'https://jsonplaceholder.typicode.com/{{ feature.resource }}',
                 value: 'https://jsonplaceholder.typicode.com/{{ feature.resource }}',
             },
             {
-                default: 'GET',
                 fieldType: 'String_',
                 name: 'verb',
                 value: 'GET',
@@ -38,13 +36,11 @@ export default class HTTPRequest extends ServerNode {
             {
                 name: 'data',
                 fieldType: 'JSON_',
-                default: '{}',
                 value: '{}',
             },
             {
                 name: 'config',
                 fieldType: 'JSON_',
-                default: JSON.stringify({}),
                 value: JSON.stringify({}),
             },                                   
         )

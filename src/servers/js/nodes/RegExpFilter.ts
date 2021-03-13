@@ -12,13 +12,11 @@ export default class RegExpFilter extends ServerNode {
 
         description.parameters.push(
             {
-                default: 'name',
                 fieldType: "String_",
                 name: 'attribute',
                 value: 'name',
             },
             {
-                default: '/test|draft|dummy/',
                 fieldType: "String_",
                 name: 'expression',
                 value: '/test|draft|dummy/',

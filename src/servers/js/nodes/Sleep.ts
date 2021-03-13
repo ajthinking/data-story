@@ -25,7 +25,6 @@ export default class Sleep extends ServerNode {
 
         description.parameters.push(
             {
-                default: 5,
                 fieldType: "Number",
                 name: "seconds_to_sleep",
                 value: 5,

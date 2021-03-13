@@ -19,7 +19,6 @@ export default class CreateJSON extends ServerNode {
 
         description.parameters.push(
             {
-                default: '[{ "resource": "todos"}]',
                 fieldType: "JSON_",
                 name: "features",
                 value: '[{ "resource": "todos"}]',
