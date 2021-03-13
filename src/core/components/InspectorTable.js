@@ -1,11 +1,12 @@
 import React from 'react';
-import Diagram from './Diagram';
+
 import { inject, observer } from "mobx-react"
 
 @inject('store') @observer
 export default class InspectorTable extends React.Component {
 
     render() {
+        console.log(this.props.features)
         return (
             <div className="flex flex-col">
               <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -112,22 +113,16 @@ export default class InspectorTable extends React.Component {
 
         return this.props.features.map(feature => {
             let content = feature.unbox()
-            if(typeof content != 'object') {
-                return content
-            }
+
+            if(typeof content != 'object') return content
 
             return this.getHeaders().map(header => {
-                if(!content.hasOwnProperty(header)) {
-                    return 'N/A'
-                } 
 
-                if(typeof feature[header] === 'object') {
-                    return 'OBJECT'
-                }
+                if(!content.hasOwnProperty(header)) return 'N/A';
 
-                if(typeof feature[header] === 'array') {
-                    return 'ARRAY'
-                }                
+                if(typeof content[header] === 'object') return 'OBJECT';
+
+                if(typeof content[header] === 'array') return 'ARRAY';
     
                 return content[header]
             });

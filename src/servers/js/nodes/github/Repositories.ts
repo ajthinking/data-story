@@ -9,7 +9,6 @@ export default class Repositories extends HTTPRequest {
         let description = super.describe()
 
         let urlParam = description.parameters.find(p => p.name == 'url')
-        urlParam.default = 'https://api.github.com/users/ajthinking/repos'
         urlParam.value = 'https://api.github.com/users/ajthinking/repos'
 
         return description
