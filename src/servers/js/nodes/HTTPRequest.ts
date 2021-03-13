@@ -2,7 +2,6 @@ import Axios from "axios";
 import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import axios from 'axios';
-import { features } from "process";
 import Feature from "../../../core/Feature";
 
 export default class HTTPRequest extends ServerNode {
@@ -11,6 +10,8 @@ export default class HTTPRequest extends ServerNode {
     public static summary = 'Make a HTTP request'
 
     async run() {
+        console.log(this.input())
+
         for await (let feature of this.input()) {
             await this.request(feature).then((result) => {
                 this.output(result.data.map(i => new Feature(i)))
@@ -25,8 +26,8 @@ export default class HTTPRequest extends ServerNode {
             {
                 name: 'url',
                 fieldType: 'String_',
-                default: 'https://jsonplaceholder.typicode.com/todos',
-                value: 'https://jsonplaceholder.typicode.com/todos',
+                default: 'https://jsonplaceholder.typicode.com/{{ feature.resource }}',
+                value: 'https://jsonplaceholder.typicode.com/{{ feature.resource }}',
             },
             {
                 default: 'GET',
@@ -51,10 +52,10 @@ export default class HTTPRequest extends ServerNode {
         return description
     }
 
-    protected request(feature) {
-        if(this.getParameterValue('verb') == 'GET') {
+    protected request(feature: Feature) {
+        if(this.getParameterValue('verb', feature) == 'GET') {
             return axios.get(
-                this.getParameterValue('url'),
+                this.getParameterValue('url', feature),
                 this.getParameterValue('config')
             )
         }

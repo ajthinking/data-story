@@ -1,6 +1,7 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerDiagram from "./ServerDiagram";
 import * as _ from "lodash";
+import Feature from "../../core/Feature";
 
 export default class ServerNode {
     public id: string
@@ -61,11 +62,38 @@ export default class ServerNode {
         return this['options'].parameters.find(p => p.name == name)
     }
 
-    protected getParameterValue(name: string) {
-        let parameter = this.getParameter(name)
+    protected getParameterValue(name: string, feature: Feature = null) {
+        let value = this.getParameter(name).value
 
-        return parameter.value
+        if(!feature) return value
+
+        return this.interpretParameterValue(value, feature)
     }
+
+    protected interpretParameterValue(parametric, feature) {
+        let matches = parametric.match(/\{\{[\.a-zA-Z\s_]*\}\}/g)
+        if(matches) {
+
+            for(let match of matches) {
+                let originalMatch = match
+
+                let parts = match.replace('{{', '')
+                    .replace('}}', '')
+                    .trim()
+                    .split('.')
+                
+                parts.shift() // Remove 'feature'
+
+                let interpreted = parts.reduce((carry, property) => {
+                    return carry[property]
+                }, feature.original)
+
+                parametric = parametric.replace(originalMatch, interpreted)
+            }
+        }
+
+        return parametric
+    }    
 
     protected input(portName: string = 'Input')
     {

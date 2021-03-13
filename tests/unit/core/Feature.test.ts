@@ -1,14 +1,9 @@
 import Feature from '../../../src/core/Feature'
 
-const variations = [
-    'str',
-    123,
-    [],
-    {},
-    {foo: 'bar'},
-]
 test('a Feature can be instantiate from various types', () => {
-    variations.forEach(value => {
+    [
+        'str', 123, [], {}, {foo: 'bar'},
+    ].forEach(value => {
         expect(new Feature(value)).toBeInstanceOf(Feature)
     })
 });

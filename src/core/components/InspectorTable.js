@@ -4,9 +4,6 @@ import { inject, observer } from "mobx-react"
 
 @inject('store') @observer
 export default class InspectorTable extends React.Component {
-    constructor(props) {
-        super(props)
-    }
 
     render() {
         return (
