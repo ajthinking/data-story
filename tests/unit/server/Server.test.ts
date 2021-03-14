@@ -1,4 +1,4 @@
-import Server from '../../../../src/servers/js/Server'
+import Server from '../../../src/server/Server'
 
 test('the JS server can boot', () => {
     let server = new Server

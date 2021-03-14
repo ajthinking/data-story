@@ -1,5 +1,5 @@
-import Feature from "../../../core/Feature";
-import { NodeDescription } from "../../../core/NodeDescription";
+import Feature from "../../core/Feature";
+import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
 export default class CreateSequence extends ServerNode {

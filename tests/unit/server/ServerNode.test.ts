@@ -1,4 +1,4 @@
-import ServerNode from '../../../../src/servers/js/ServerNode'
+import ServerNode from '../../../src/server/ServerNode'
 
 test('it can instantiate DUMMY', () => {
     let node = new ServerNode(null)

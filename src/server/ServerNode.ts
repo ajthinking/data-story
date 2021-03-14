@@ -1,7 +1,7 @@
-import { NodeDescription } from "../../core/NodeDescription";
+import { NodeDescription } from "../core/NodeDescription";
 import ServerDiagram from "./ServerDiagram";
 import * as _ from "lodash";
-import Feature from "../../core/Feature";
+import Feature from "../core/Feature";
 
 export default class ServerNode {
     public id: string

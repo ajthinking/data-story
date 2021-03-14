@@ -1,4 +1,4 @@
-import { NodeDescription } from "../../../core/NodeDescription";
+import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 
 export default class Sleep extends ServerNode {

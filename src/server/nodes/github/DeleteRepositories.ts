@@ -1,4 +1,4 @@
-import { NodeDescription } from "../../../../core/NodeDescription";
+import { NodeDescription } from "../../../core/NodeDescription";
 import HTTPRequest from "../HTTPRequest";
 
 export default class DeleteRepositories extends HTTPRequest {
