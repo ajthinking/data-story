@@ -14,7 +14,6 @@ export default class APIClient implements ClientInterface {
     }
 
     run(model): Promise<any> {
-        console.log(model)
         return axios.post(this.root + '/run', {
             model: nonCircularJsonStringify(
                 model.serialize() 

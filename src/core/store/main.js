@@ -107,7 +107,6 @@ export class Store {
         node.setPosition(100, 100 + Math.random() * 100);
 
         let latestNode = this.diagram.latestNode
-        console.log('herer', latestNode);
 
         if(this.diagram.engine.model.hasNode(latestNode)) {
             node.setPosition(latestNode.position.x+200, latestNode.position.y);

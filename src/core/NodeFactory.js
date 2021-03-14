@@ -14,7 +14,6 @@ export default class NodeFactory extends AbstractReactFactory {
 	}
 
 	generateReactWidget(event) {
-        console.log(event.model.options.nodeReact)
         if(event.model.options.nodeReact == 'Comment') return (
             <CommentNodeWidget engine={this.engine} node={event.model} />
         )

@@ -41,7 +41,6 @@ export default class NodeWidgetModal extends React.Component {
     }
     
     handleSave(event) {
-        console.log(this.props.node)
         this.props.node.options.parameters = this.state.parameters
         this.props.closeModal();
     }    
