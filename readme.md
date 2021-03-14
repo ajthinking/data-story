@@ -9,13 +9,15 @@ DataStory provides a workbench for designing data flow diagrams.
 
 ![image](https://user-images.githubusercontent.com/3457668/105969887-07a56d00-6089-11eb-978f-d829d1ce1d1c.png)
 
-<!---
-
 ## Installation
 ```
-composer require ajthinking/data-story --dev
-php artisan vendor:publish --provider="DataStory\DataStoryServiceProvider"
+* Clone it
+* Serve `public/index.html`
 ```
+
+<!---
+
+
 
 ## Examples
 A DataStory script can be executed via GUI or as a part of your Laravel apps HTTP lifecycle.
