@@ -232,7 +232,6 @@ Go to `dsh1.test/datastory` to test out your changes :rocket:
 
 ## Live JS Demo (WIP)
 A JS server implementation is deployed at https://ajthinking.github.io/data-story/
-Currently no nodes available so its no fun.
 
 ## Acknowledgements
 Thanks to Dylan & [projectstorm/react-diagrams](https://github.com/projectstorm/react-diagrams)
