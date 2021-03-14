@@ -21,7 +21,7 @@ export class Store {
         activeInspector: null,
         stories: [],
         activeStory: '',
-        server: clientFactory(window.server ?? 'APIClient'),
+        server: clientFactory(window.dataStoryConfig.client ?? 'LocalClient'),
     }
 
     constructor() {
