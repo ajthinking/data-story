@@ -15,6 +15,14 @@ DataStory provides a workbench for designing data flow diagrams.
 * Serve `public/index.html`
 ```
 
+## Development Installation
+```
+* Clone it
+* Add a file `.env` with content `MIX_DATASTORY_DEV_MODE_AUTO_PUBLISH=true`
+* `yarn && `yarn watch`
+* Serve `public/index.html`
+```
+
 <!---
 
 
