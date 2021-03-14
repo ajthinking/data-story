@@ -1,4 +1,4 @@
-# DataStory ⚡ visual programming for Laravel
+# DataStory ⚡ visual programming
 
 ![tests](https://github.com/ajthinking/data-story/workflows/tests/badge.svg)
 ![version](https://img.shields.io/packagist/v/ajthinking/data-story?color=blue)
@@ -9,7 +9,7 @@ DataStory provides a workbench for designing data flow diagrams.
 
 ![image](https://user-images.githubusercontent.com/3457668/105969887-07a56d00-6089-11eb-978f-d829d1ce1d1c.png)
 
-
+<!---
 
 ## Installation
 ```
@@ -226,6 +226,9 @@ Go to `dsh1.test/datastory` to test out your changes :rocket:
 
 ## This is a Proof of Concept
 :hammer_and_wrench: Some things might be broken. Feel free to ask question or make an Issue.
+
+
+-->
 
 ## Live JS Demo (WIP)
 A JS server implementation is deployed at https://ajthinking.github.io/data-story/

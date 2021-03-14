@@ -12,11 +12,5 @@ jobs:
     - name: Install
       run: composer install
 
-    - name: Install chrome drivers
-      run: ./vendor/bin/dusk-updater update
-
-    #- name: Run laravel tests
-    #  run: ./vendor/bin/phpunit src/servers/laravel/tests --testdox
-
     - name: Run js tests
       run: yarn && yarn test
