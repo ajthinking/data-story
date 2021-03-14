@@ -9,8 +9,5 @@ jobs:
     - name: Checkout the package
       uses: actions/checkout@v2
 
-    - name: Install
-      run: composer install
-
     - name: Run js tests
       run: yarn && yarn test
