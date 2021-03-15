@@ -47,7 +47,6 @@ export default class ServerNode {
             serverNodeType: this.name,
             parameters: [
                 {
-                    default: this.name,
                     fieldType: "String_",
                     name: "node_name",
                     placeholder: "",

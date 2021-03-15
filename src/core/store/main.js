@@ -58,6 +58,7 @@ export class Store {
         });
         
         this.attemptLinkToLatest(node)
+        this.smartInspectorNames(node)
         
         this.diagram.engine.model.addNode(node);
         this.diagram.latestNodes.unshift(node);
@@ -95,7 +96,23 @@ export class Store {
             latest?.position?.x ? latest.position.x : 100,
             latest?.position?.y ? latest.position.y + 75 : 100            
         );
+    }
 
+    smartInspectorNames(node)
+    {
+        if(node.options.name != 'Inspect') return;
+
+        let nameParam = node.options.parameters.find(n => n.name == 'node_name')
+
+        let sourceLink = Object.values(node.ports?.Input?.links)[0] ?? null
+        if(!sourceLink) return;
+        let sourcePortName = sourceLink.sourcePort.options.name ?? false
+        console.log(sourcePortName)
+        // It must be a specific name to make sense
+        if(!sourcePortName || sourcePortName == 'Output') return;
+
+        nameParam.value = sourcePortName
+        
     }
 
     addNodeOld(data) {
