@@ -1,5 +1,29 @@
 {
-    "private": true,
+    "name": "data-story",
+    "description": "![tests](https://github.com/ajthinking/data-story/workflows/tests/badge.svg) ![version](https://img.shields.io/packagist/v/ajthinking/data-story?color=blue) ![proofofconcept](https://img.shields.io/badge/proof%20of%20concept-gold)",
+    "version": "0.0.15",
+    "main": "scr/main.js",
+    "directories": {
+      "doc": "docs",
+      "test": "tests"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/ajthinking/data-story.git"
+    },
+    "keywords": [
+      "etl",
+      "workbench",
+      "data",
+      "transformation"
+    ],
+    "author": "Anders Jürisoo",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/ajthinking/data-story/issues"
+    },
+    "homepage": "https://github.com/ajthinking/data-story#readme",
+
     "scripts": {
         "dev": "npm run development",
         "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
