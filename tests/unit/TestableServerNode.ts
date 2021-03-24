@@ -8,7 +8,6 @@ export default class TestableServerNode {
 
     constructor(name: string) {
         // UNCOMMENT THIS TO GET ERROR TypeError: Class extends value undefined is not a constructor or null
-        //this.serverDiagram = new ServerDiagram
     }
 
     parameters(parameters = {}) {
@@ -16,12 +15,13 @@ export default class TestableServerNode {
     }    
 
     assertNameIsSet() {
-        this.runOnce()
+        //this.runOnce()
 
         expect(this.name).toBeInstanceOf(String)
     }
 
     runOnce() {
+        this.serverDiagram = new ServerDiagram
         this.hasRun = true
     }
 }

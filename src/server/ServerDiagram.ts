@@ -1,12 +1,9 @@
-
-import ServerNodeFactory from './ServerNodeFactory'
-
 export default class ServerDiagram {
     executionOrder: Array<any>
     links: Array<any>
     nodes: Array<any>
  
-    static hydrate(data) {
+    static hydrate(data, factory) {
         let instance = new this()
 
         for (const [key, value] of Object.entries(data)) {
@@ -14,7 +11,7 @@ export default class ServerDiagram {
             // hydratables
             if(key === 'nodes') {
                 instance.nodes = data.nodes.map(node => {
-                    return ServerNodeFactory.hydrate(node, instance)
+                    return factory.hydrate(node, instance)
                 })
                 
                 continue

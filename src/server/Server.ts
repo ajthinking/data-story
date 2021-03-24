@@ -17,7 +17,7 @@ export default class Server
     }
 
     public async run(diagram) {
-        return ServerDiagram.hydrate(diagram).run()
+        return ServerDiagram.hydrate(diagram, ServerNodeFactory).run()
     }
 
     protected nodeDescriptions() {
