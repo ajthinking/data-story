@@ -1,7 +1,7 @@
 export default class ServerDiagram {
     executionOrder: Array<any>
-    links: Array<any>
-    nodes: Array<any>
+    links: Array<any> = []
+    nodes: Array<any> = []
  
     static hydrate(data, factory) {
         let instance = new this()
@@ -25,11 +25,10 @@ export default class ServerDiagram {
     }
 
     async run() {
-
         for await (let nodeId of this.executionOrder) {
             await this.find(nodeId).run()
         }
-
+        
         return new Promise((callback) => {
             return callback({
                 data: {

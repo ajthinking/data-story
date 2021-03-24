@@ -78,5 +78,5 @@
         "react-toastify": "^6.2.0",
         "resize-observer-polyfill": "^1.5.1",
         "tailwindcss": "^2.0.1"
-    }
+    }   
 }
