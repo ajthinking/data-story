@@ -2,11 +2,13 @@ import { NodeDescription } from "../core/NodeDescription";
 import ServerDiagram from "./ServerDiagram";
 import * as _ from "lodash";
 import Feature from "../core/Feature";
+import UID from "../core/utils/UID";
 
 export default class ServerNode {
     public id: string
     public ports: Array<any>
     public diagram: ServerDiagram
+    public options: any
 
     public static category: string = 'Custom'
     public static editableInPorts: boolean = false
@@ -20,8 +22,20 @@ export default class ServerNode {
     public static parameters: Array<any>
     public static summary: string = 'No summary provided.'   
 
-    constructor(diagram) {
+    constructor(diagram, description: any = {}) {
         this.diagram = diagram
+        this.id = UID()
+
+        this.options = {
+            parameters: description.parameters
+        }
+
+        this.ports = description.outPorts.map(portName => {
+            return {
+                name: portName,
+                in: false
+            }
+        })
     }
 
     static hydrate(data, diagram) {
@@ -62,6 +76,7 @@ export default class ServerNode {
     }
 
     protected getParameterValue(name: string, feature: Feature = null) {
+
         let value = this.getParameter(name).value
 
         if(!feature) return value

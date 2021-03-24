@@ -1,3 +1,4 @@
+import Feature from "../../src/core/Feature"
 import ServerDiagram from "../../src/server/ServerDiagram"
 
 export default class TestableServerDiagram {
@@ -5,6 +6,7 @@ export default class TestableServerDiagram {
     nodeClass: any
     parameters_: Object = {}
     hasRun: boolean = false
+    node_: any
 
     constructor() {
         this.serverDiagram = new ServerDiagram
@@ -25,17 +27,37 @@ export default class TestableServerDiagram {
     }    
 
     async assertCanRun() {
+        
         await this.runOnce()
+        
         expect(true).toBe(true)
+        
+        return this
+        
+
+        
         //expect(this.serverDiagram.nodes).toBeInstanceOf(Array)
     }
 
+    async assertOutput(expected, portName = 'Output') {
+        await this.runOnce()        
+        
+        let port = this.node_.ports.find(p => p.name == portName)
+        
+        expect(port.features).toStrictEqual(
+            expected.map(e => new Feature(e))
+        )
+
+        return this
+    }
+
     async runOnce() {
-        let node = new this.nodeClass(this.parameters_)
+        if(this.hasRun) return
+        this.node_ = new this.nodeClass(this.parameters_, this.nodeClass.describe())
 
-        this.serverDiagram.addNode(node)
+        this.serverDiagram.addNode(this.node_)
 
-        this.serverDiagram.executionOrder = [node]
+        this.serverDiagram.executionOrder = [this.node_.id]
 
         await this.serverDiagram.run().then((ok) => {}, (bad) => { console.log('nooo', bad)})
 
