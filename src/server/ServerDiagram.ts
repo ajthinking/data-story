@@ -49,4 +49,10 @@ export default class ServerDiagram {
 
         return searchables.find(entity => entity.id == id)
     }
+
+    addNode(node) {
+        this.nodes.push(node)
+
+        return this
+    }     
 }

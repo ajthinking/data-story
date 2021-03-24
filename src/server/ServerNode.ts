@@ -2,6 +2,7 @@ import { NodeDescription } from "../core/NodeDescription";
 import ServerDiagram from "./ServerDiagram";
 import * as _ from "lodash";
 import Feature from "../core/Feature";
+import TestableServerNode from "../../tests/unit/TestableServerNode";
 
 export default class ServerNode {
     public id: string
@@ -55,6 +56,10 @@ export default class ServerNode {
             ],
             summary: this.summary,
         })
+    }
+
+    static test() : TestableServerNode {
+        return new TestableServerNode(this.name)
     }
 
     protected getParameter(name: string) {

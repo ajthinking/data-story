@@ -29,6 +29,10 @@ export default class ServerNodeFactory {
         return Object.values(this.nodes)
     }
 
+    static make(type: string) {
+        return new (this.find(type))
+    }
+
     static hydrate(node, diagram) {
         return this.find(node.options.serverNodeType).hydrate(node, diagram)
     }
