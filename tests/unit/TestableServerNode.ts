@@ -8,7 +8,7 @@ export default class TestableServerNode {
 
     constructor(name: string) {
         // UNCOMMENT THIS TO GET ERROR TypeError: Class extends value undefined is not a constructor or null
-        this.serverDiagram = new ServerDiagram
+        //this.serverDiagram = new ServerDiagram
     }
 
     parameters(parameters = {}) {
