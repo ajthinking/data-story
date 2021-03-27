@@ -29,7 +29,7 @@ export default class ServerNode {
         this.options = {
             parameters: description.parameters
         }
-
+        if(!description.outPorts) return
         this.ports = description.outPorts.map(portName => {
             return {
                 name: portName,

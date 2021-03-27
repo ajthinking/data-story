@@ -7,3 +7,13 @@ test('it can test nodes', async () => {
     await node.assertCanRun()
     await node.assertOutput([{resource: 'todos'}])
 });
+
+
+// // ALTERNATIVE
+// test('it can test nodes', async () => {
+//     await Diagram.test().node(CreateJSON)
+//         .parameters({x: 123})
+//         .assertCanRun()
+//         .assertOutput([{resource: 'todos'}])
+//         .run()
+// });

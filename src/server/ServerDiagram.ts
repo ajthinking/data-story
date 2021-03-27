@@ -5,7 +5,7 @@ export default class ServerDiagram {
  
     static hydrate(data, factory) {
         let instance = new this()
-
+        console.log('hey')
         for (const [key, value] of Object.entries(data)) {
             
             // hydratables
