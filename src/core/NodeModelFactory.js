@@ -4,7 +4,7 @@ import NodeModel from '../core/NodeModel'
 import NodeWidget from './components/NodeWidget'
 import CommentNodeWidget from './components/CommenNodeWidget';
 
-export default class NodeFactory extends AbstractReactFactory {
+export default class NodeModelFactory extends AbstractReactFactory {
 	constructor() {
 		super('NodeModel');
 	}

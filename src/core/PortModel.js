@@ -1,5 +1,4 @@
 import { DefaultPortModel} from '@projectstorm/react-diagrams';
-import UID from './utils/UID'
 
 export default class PortModel extends DefaultPortModel {
 	constructor(options = {}) {

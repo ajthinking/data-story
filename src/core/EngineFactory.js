@@ -1,5 +1,5 @@
 import createEngine from '@projectstorm/react-diagrams';
-import NodeFactory from './NodeFactory'
+import NodeModelFactory from './NodeModelFactory'
 import DiagramModel from './DiagramModel'
 
 export default class EngineFactory {
@@ -24,7 +24,7 @@ export default class EngineFactory {
         const state = engine.getStateMachine().getCurrentState();
         state.dragNewLink.config.allowLooseLinks = false;
 
-        engine.getNodeFactories().registerFactory(new NodeFactory());
+        engine.getNodeFactories().registerFactory(new NodeModelFactory());
         
         let model = new DiagramModel();
         
@@ -36,7 +36,7 @@ export default class EngineFactory {
     static getEngine() {
         let engine = createEngine();
         
-        engine.getNodeFactories().registerFactory(new NodeFactory());
+        engine.getNodeFactories().registerFactory(new NodeModelFactory());
 
         return engine
     }

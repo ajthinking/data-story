@@ -1,13 +1,8 @@
 
 import axios from 'axios';
 import {nonCircularJsonStringify} from '../../utils/nonCircularJsonStringify'
-import { toast, Slide } from 'react-toastify';
 
 export default class DataStoryClient {
-    constructor(options) {
-
-    }
-
     run() {
         axios.post('/datastory/api/run', {
             model: nonCircularJsonStringify(
@@ -29,7 +24,6 @@ export default class DataStoryClient {
                 
         })
         .catch((error) => {
-
             this.props.store.setNotRunning()
             console.log(error);
         });        
