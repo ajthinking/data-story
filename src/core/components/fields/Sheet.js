@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 // TODO <link rel="stylesheet" href="https://bossanova.uk/jexcel/v4/jexcel.css" type="text/css" />
 // INSTALL THAT CSS INSTEAD OF USING CDN
 
+// Readd         "jexcel": "^4.5.2", for this demo to work
+
 export default class Sheet extends React.Component {
     constructor(props) {
         super(props);
