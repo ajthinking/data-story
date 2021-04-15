@@ -46,7 +46,12 @@ export default class HTTPRequest extends ServerNode {
                 name: 'config',
                 fieldType: 'JSON_',
                 value: JSON.stringify({}),
-            },                                   
+            },
+            {
+                name: 'starter',
+                fieldType: 'Boolean_',
+                value: true,
+            },            
         )
 
         return description
