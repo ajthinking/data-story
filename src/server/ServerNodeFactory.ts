@@ -1,3 +1,4 @@
+import CreateGrid from './nodes/CreateGrid'
 import Comment from './nodes/Comment'
 import HTTPRequest from './nodes/HTTPRequest'
 import CreateJSON from './nodes/CreateJSON'
@@ -11,6 +12,7 @@ import Sleep from './nodes/Sleep'
 export default class ServerNodeFactory {
     protected static nodes = {
         Comment,
+        CreateGrid,
         CreateSequence,
         CreateJSON,
         DeleteRepositories,
