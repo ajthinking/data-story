@@ -55,7 +55,6 @@
     },
     "dependencies": {
         "@babel/plugin-proposal-decorators": "^7.12.1",
-        "@emotion/core": "^11.0.0",
         "@emotion/react": "^11.1.5",
         "@emotion/styled": "^11.3.0",
         "@projectstorm/react-diagrams": "^6.0.2",
