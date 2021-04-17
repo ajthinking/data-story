@@ -2,13 +2,13 @@ export class NodeDescription {
     public category: string
     public editableInPorts: boolean
     public editableOutPorts: boolean
-    public inPorts: Array<String>
-    public outPorts: Array<String>
+    public inPorts: string[]
+    public outPorts: string[]
     public key: string
     public name: string
     public serverNode: string
     public nodeReact: string
-    public parameters: Array<any>
+    public parameters: any[]
     public summary: string
 
     static deserialize(data: object) {

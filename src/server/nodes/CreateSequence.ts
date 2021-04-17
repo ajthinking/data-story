@@ -4,7 +4,7 @@ import ServerNode from "../ServerNode";
 
 export default class CreateSequence extends ServerNode {
     public static category: string = 'Reader'    
-    public static inPorts: Array<String> = []
+    public static inPorts: string[] = []
     public static summary = 'Create a sequence of objects'    
 
     async run() {

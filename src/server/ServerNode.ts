@@ -6,20 +6,20 @@ import UID from "../core/utils/UID";
 
 export default class ServerNode {
     public id: string
-    public ports: Array<any>
+    public ports: any[]
     public diagram: ServerDiagram
     public options: any
 
     public static category: string = 'Custom'
     public static editableInPorts: boolean = false
     public static editableOutPorts: boolean = false
-    public static inPorts: Array<String> = ['Input']
-    public static outPorts: Array<String> = ['Output']
+    public static inPorts: string[] = ['Input']
+    public static outPorts: string[] = ['Output']
     public static key: string = 'test-key'
     public static name_: string
     public static serverNodeType: string
     public static nodeReact: string = 'Node'
-    public static parameters: Array<any>
+    public static parameters: any[]
     public static summary: string = 'No summary provided.'   
 
     constructor(diagram, description: any = {}) {
@@ -127,7 +127,7 @@ export default class ServerNode {
         return _.cloneDeep(features)
     }    
 
-    protected output(features: Array<any>, port: string = 'Output') {
+    protected output(features: any[], port: string = 'Output') {
         this.portNamed(port).features = this.portNamed(port).features ? features.concat(features) : features
     }
 

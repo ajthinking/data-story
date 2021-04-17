@@ -3,11 +3,9 @@ import {nonCircularJsonStringify} from '../utils/nonCircularJsonStringify'
 import ClientInterface from './ClientInterface'
 
 export default class APIClient implements ClientInterface {
-    root: string
-
-    constructor(root: string = '/datastory/api') {
-        this.root = root
-    }
+    constructor(
+        public root: string = '/datastory/api'
+    ) {}
 
     boot(options: object) : Promise<any>{
         return axios.post(this.root + '/boot', options)

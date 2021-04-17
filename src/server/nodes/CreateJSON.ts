@@ -4,7 +4,7 @@ import ServerNode from "../ServerNode";
 
 export default class CreateJSON extends ServerNode {
     public static category: string = 'Reader'    
-    public static inPorts: Array<String> = []
+    public static inPorts: string[] = []
     public static summary = 'Create features from JSON'    
 
     async run() {

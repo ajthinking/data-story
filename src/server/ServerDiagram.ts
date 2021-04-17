@@ -1,7 +1,7 @@
 export default class ServerDiagram {
-    executionOrder: Array<any>
-    links: Array<any> = []
-    nodes: Array<any> = []
+    executionOrder: any[] = []
+    links: any[] = []
+    nodes: any[] = []
  
     static hydrate(data, factory) {
         let instance = new this()

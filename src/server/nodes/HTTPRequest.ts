@@ -5,8 +5,8 @@ import Feature from "../../core/Feature";
 
 export default class HTTPRequest extends ServerNode {
     public static category: string = 'Reader'
-    public static inPorts: Array<string> = ['Input']
-    public static outPorts: Array<string> = ['Data', 'Response'];
+    public static inPorts: string[] = ['Input']
+    public static outPorts: string[] = ['Data', 'Response'];
     public static summary = 'Make a HTTP request'
 
     async run() {

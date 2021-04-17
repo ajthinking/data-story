@@ -10255,6 +10255,7 @@ exports.__esModule = true;
 
 var ServerDiagram = function () {
   function ServerDiagram() {
+    this.executionOrder = [];
     this.links = [];
     this.nodes = [];
   }

@@ -1,9 +1,5 @@
 export default class Feature {
-    public original: any;
-
-	constructor(original: any) {
-        this.original = original
-    }
+	constructor(public original: any) {}
 
     public get(property: string) {
         return this.original[property]
