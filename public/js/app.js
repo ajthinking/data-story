@@ -9549,6 +9549,65 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./src/core/EngineFactory.ts":
+/*!***********************************!*\
+  !*** ./src/core/EngineFactory.ts ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var react_diagrams_1 = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
+
+var NodeModelFactory_1 = __webpack_require__(/*! ./NodeModelFactory */ "./src/core/NodeModelFactory.js");
+
+var DiagramModel_1 = __webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.js");
+
+var EngineFactory = function () {
+  function EngineFactory() {}
+
+  EngineFactory.loadOrCreate = function (serializedModel) {
+    if (serializedModel === void 0) {
+      serializedModel = null;
+    }
+
+    return serializedModel ? this.load(serializedModel) : this["default"]();
+  };
+
+  EngineFactory.load = function (serializedModel) {
+    var engine = this.getEngine();
+    var model = new DiagramModel_1["default"]();
+    model.deserializeModel(JSON.parse(serializedModel), engine);
+    engine.setModel(model);
+    return engine;
+  };
+
+  EngineFactory["default"] = function () {
+    var engine = this.getEngine();
+    var state = engine.getStateMachine().getCurrentState();
+    state.dragNewLink.config.allowLooseLinks = false;
+    engine.getNodeFactories().registerFactory(new NodeModelFactory_1["default"]());
+    var model = new DiagramModel_1["default"]();
+    engine.setModel(model);
+    return engine;
+  };
+
+  EngineFactory.getEngine = function () {
+    var engine = react_diagrams_1["default"]();
+    engine.getNodeFactories().registerFactory(new NodeModelFactory_1["default"]());
+    return engine;
+  };
+
+  return EngineFactory;
+}();
+
+exports.default = EngineFactory;
+
+/***/ }),
+
 /***/ "./src/core/Feature.ts":
 /*!*****************************!*\
   !*** ./src/core/Feature.ts ***!
@@ -12684,78 +12743,6 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
 
 /***/ }),
 
-/***/ "./src/core/EngineFactory.js":
-/*!***********************************!*\
-  !*** ./src/core/EngineFactory.js ***!
-  \***********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ EngineFactory)
-/* harmony export */ });
-/* harmony import */ var _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
-/* harmony import */ var _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _NodeModelFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NodeModelFactory */ "./src/core/NodeModelFactory.js");
-/* harmony import */ var _DiagramModel__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.js");
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-
-
-var EngineFactory = /*#__PURE__*/function () {
-  function EngineFactory() {
-    _classCallCheck(this, EngineFactory);
-  }
-
-  _createClass(EngineFactory, null, [{
-    key: "loadOrCreate",
-    value: function loadOrCreate() {
-      var serializedModel = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-      return serializedModel ? this.load(serializedModel) : this["default"]();
-    }
-  }, {
-    key: "load",
-    value: function load(serializedModel) {
-      var engine = this.getEngine();
-      var model = new _DiagramModel__WEBPACK_IMPORTED_MODULE_2__.default();
-      model.deserializeModel(JSON.parse(serializedModel), engine);
-      engine.setModel(model);
-      return engine;
-    }
-  }, {
-    key: "default",
-    value: function _default() {
-      var engine = this.getEngine();
-      var state = engine.getStateMachine().getCurrentState();
-      state.dragNewLink.config.allowLooseLinks = false;
-      engine.getNodeFactories().registerFactory(new _NodeModelFactory__WEBPACK_IMPORTED_MODULE_1__.default());
-      var model = new _DiagramModel__WEBPACK_IMPORTED_MODULE_2__.default();
-      engine.setModel(model);
-      return engine;
-    }
-  }, {
-    key: "getEngine",
-    value: function getEngine() {
-      var engine = _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0___default()();
-      engine.getNodeFactories().registerFactory(new _NodeModelFactory__WEBPACK_IMPORTED_MODULE_1__.default());
-      return engine;
-    }
-  }]);
-
-  return EngineFactory;
-}();
-
-
-
-/***/ }),
-
 /***/ "./src/core/NodeModel.js":
 /*!*******************************!*\
   !*** ./src/core/NodeModel.js ***!
@@ -13141,7 +13128,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 /* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
-/* harmony import */ var _core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/EngineFactory */ "./src/core/EngineFactory.js");
+/* harmony import */ var _core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/EngineFactory */ "./src/core/EngineFactory.ts");
 /* harmony import */ var _core_Feature__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -14600,6 +14587,7 @@ var NodeSearch = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('sto
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
         className: "flex flex-col bg-gray-100 -m-5 rounded shadow max-w-xl font-mono text-xs",
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("input", {
+          autoComplete: "off",
           id: "node-search",
           value: this.state.search,
           onChange: this.searchChange.bind(this),

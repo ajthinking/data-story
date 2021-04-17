@@ -17,6 +17,7 @@ export default class NodeSearch extends React.Component {
         return (
         <div className="flex flex-col bg-gray-100 -m-5 rounded shadow max-w-xl font-mono text-xs">
             <input
+                autoComplete="off"
                 id="node-search"
                 value={this.state.search}
                 onChange={this.searchChange.bind(this)}
