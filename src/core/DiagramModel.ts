@@ -82,11 +82,11 @@ export default class DiagramModel extends DefaultDiagramModel {
 
         return this.getNodes().sort(function(n1, n2) {
 
-            if (n2.dependsOn(n1)) {
+            if ((n2 as any).dependsOn(n1)) {
                 return -1;
             }
 
-            if (n1.dependsOn(n2)) {
+            if ((n1 as any).dependsOn(n2)) {
               return 1;
             }
 
