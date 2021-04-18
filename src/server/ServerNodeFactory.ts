@@ -3,7 +3,9 @@ import Comment from './nodes/Comment'
 import HTTPRequest from './nodes/HTTPRequest'
 import CreateJSON from './nodes/CreateJSON'
 import CreateSequence from './nodes/CreateSequence'
+import Flatten from './nodes/Flatten'
 import Inspect from './nodes/Inspect'
+import Map from './nodes/Map'
 import RegExpFilter from './nodes/RegExpFilter'
 import DeleteRepositories from './nodes/github/DeleteRepositories'
 import Repositories from './nodes/github/Repositories'
@@ -16,8 +18,10 @@ export default class ServerNodeFactory {
         CreateSequence,
         CreateJSON,
         DeleteRepositories,
+        Flatten,
         HTTPRequest,
         Inspect,
+        Map,
         RegExpFilter,
         Repositories,
         Sleep,

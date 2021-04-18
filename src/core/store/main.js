@@ -26,7 +26,7 @@ export class Store {
 
     constructor() {
         makeObservable(this, {
-            // Oservables
+            // Observables
             diagram: observable,
             metadata: observable,
             
