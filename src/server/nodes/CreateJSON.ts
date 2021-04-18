@@ -1,6 +1,7 @@
 import Feature from "../../core/Feature";
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
+import ServerNodeParameter from "../ServerNodeParameter";
 
 export default class CreateJSON extends ServerNode {
     public static category: string = 'Reader'    
@@ -18,11 +19,9 @@ export default class CreateJSON extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            {
-                fieldType: "JSON_",
-                name: "features",
-                value: '[{ "resource": "todos"}]',
-            }            
+            ServerNodeParameter.make('features')
+                .withFieldType("JSON_")
+                .withValue('[{ "resource": "todos"}]'),            
         )
 
         return description

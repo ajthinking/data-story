@@ -10396,6 +10396,8 @@ var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 var UID_1 = __webpack_require__(/*! ../core/utils/UID */ "./src/core/utils/UID.ts");
 
+var ServerNodeParameter_1 = __webpack_require__(/*! ./ServerNodeParameter */ "./src/server/ServerNodeParameter.ts");
+
 var ServerNode = function () {
   function ServerNode(diagram, description) {
     if (description === void 0) {
@@ -10440,12 +10442,7 @@ var ServerNode = function () {
       name: this.name,
       nodeReact: this.nodeReact,
       serverNodeType: this.name,
-      parameters: [{
-        fieldType: "String_",
-        name: "node_name",
-        placeholder: "",
-        value: this.name
-      }],
+      parameters: [ServerNodeParameter_1["default"].make('node_name').withValue(this.name)],
       summary: this.summary
     });
   };
@@ -10612,6 +10609,49 @@ var ServerNodeFactory = function () {
 }();
 
 exports.default = ServerNodeFactory;
+
+/***/ }),
+
+/***/ "./src/server/ServerNodeParameter.ts":
+/*!*******************************************!*\
+  !*** ./src/server/ServerNodeParameter.ts ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var ServerNodeParameter = function () {
+  function ServerNodeParameter(name) {
+    this.fieldType = "String_";
+    this.name = name;
+  }
+
+  ServerNodeParameter.make = function (name) {
+    return new this(name);
+  };
+
+  ServerNodeParameter.prototype.withFieldType = function (type) {
+    this.fieldType = type;
+    return this;
+  };
+
+  ServerNodeParameter.prototype.withPlaceholder = function (placeholder) {
+    this.placeholder = placeholder;
+    return this;
+  };
+
+  ServerNodeParameter.prototype.withValue = function (value) {
+    this.value = value;
+    return this;
+  };
+
+  return ServerNodeParameter;
+}();
+
+exports.default = ServerNodeParameter;
 
 /***/ }),
 
@@ -10863,6 +10903,8 @@ var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Featur
 
 var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
 
+var ServerNodeParameter_1 = __webpack_require__(/*! ../ServerNodeParameter */ "./src/server/ServerNodeParameter.ts");
+
 var CreateGrid = function (_super) {
   __extends(CreateGrid, _super);
 
@@ -10900,31 +10942,7 @@ var CreateGrid = function (_super) {
   CreateGrid.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push({
-      fieldType: "Number",
-      name: "grid_size_x",
-      value: 10
-    }, {
-      fieldType: "Number",
-      name: "grid_size_y",
-      value: 10
-    }, {
-      fieldType: "Number",
-      name: "grid_start_x",
-      value: 0
-    }, {
-      fieldType: "Number",
-      name: "grid_start_y",
-      value: 0
-    }, {
-      fieldType: "Number",
-      name: "grid_spacing_x",
-      value: 10
-    }, {
-      fieldType: "Number",
-      name: "grid_spacing_y",
-      value: 10
-    });
+    description.parameters.push(ServerNodeParameter_1["default"].make('grid_size_x').withFieldType("Number").withValue(10), ServerNodeParameter_1["default"].make('grid_size_y').withFieldType("Number").withValue(10), ServerNodeParameter_1["default"].make('grid_start_x').withFieldType("Number").withValue(0), ServerNodeParameter_1["default"].make('grid_start_y').withFieldType("Number").withValue(0), ServerNodeParameter_1["default"].make('grid_spacing_x').withFieldType("Number").withValue(1), ServerNodeParameter_1["default"].make('grid_spacing_y').withFieldType("Number").withValue(1));
     return description;
   };
 
@@ -11124,6 +11142,8 @@ var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Featur
 
 var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
 
+var ServerNodeParameter_1 = __webpack_require__(/*! ../ServerNodeParameter */ "./src/server/ServerNodeParameter.ts");
+
 var CreateJSON = function (_super) {
   __extends(CreateJSON, _super);
 
@@ -11145,11 +11165,7 @@ var CreateJSON = function (_super) {
   CreateJSON.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push({
-      fieldType: "JSON_",
-      name: "features",
-      value: '[{ "resource": "todos"}]'
-    });
+    description.parameters.push(ServerNodeParameter_1["default"].make('features').withFieldType("JSON_").withValue('[{ "resource": "todos"}]'));
     return description;
   };
 
@@ -11349,6 +11365,8 @@ var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Featur
 
 var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
 
+var ServerNodeParameter_1 = __webpack_require__(/*! ../ServerNodeParameter */ "./src/server/ServerNodeParameter.ts");
+
 var CreateSequence = function (_super) {
   __extends(CreateSequence, _super);
 
@@ -11374,11 +11392,7 @@ var CreateSequence = function (_super) {
   CreateSequence.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push({
-      fieldType: "Number",
-      name: "number_of_features_to_create",
-      value: 10
-    });
+    description.parameters.push(ServerNodeParameter_1["default"].make('number_of_features_to_create').withFieldType("Number").withValue(10));
     return description;
   };
 
@@ -11821,6 +11835,8 @@ var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 
 var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
 
+var ServerNodeParameter_1 = __webpack_require__(/*! ../ServerNodeParameter */ "./src/server/ServerNodeParameter.ts");
+
 var HTTPRequest = function (_super) {
   __extends(HTTPRequest, _super);
 
@@ -11911,27 +11927,7 @@ var HTTPRequest = function (_super) {
   HTTPRequest.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push({
-      name: 'url',
-      fieldType: 'String_',
-      value: 'https://jsonplaceholder.typicode.com/{{ feature.resource }}'
-    }, {
-      fieldType: 'String_',
-      name: 'verb',
-      value: 'GET'
-    }, {
-      name: 'data',
-      fieldType: 'JSON_',
-      value: '{}'
-    }, {
-      name: 'config',
-      fieldType: 'JSON_',
-      value: JSON.stringify({})
-    }, {
-      name: 'starter',
-      fieldType: 'Boolean_',
-      value: true
-    });
+    description.parameters.push(ServerNodeParameter_1["default"].make('url').withValue('https://jsonplaceholder.typicode.com/{{ feature.resource }}'), ServerNodeParameter_1["default"].make('verb').withValue('GET'), ServerNodeParameter_1["default"].make('data').withFieldType("JSON_").withValue('{}'), ServerNodeParameter_1["default"].make('config').withFieldType("JSON_").withValue('{}'));
     return description;
   };
 
@@ -12356,6 +12352,8 @@ var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Featur
 
 var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
 
+var ServerNodeParameter_1 = __webpack_require__(/*! ../ServerNodeParameter */ "./src/server/ServerNodeParameter.ts");
+
 var Map = function (_super) {
   __extends(Map, _super);
 
@@ -12379,11 +12377,7 @@ var Map = function (_super) {
   Map.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push({
-      fieldType: "String_",
-      name: "property",
-      value: ''
-    });
+    description.parameters.push(ServerNodeParameter_1["default"].make('property').withValue(''));
     return description;
   };
 
@@ -12582,6 +12576,8 @@ var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/Server
 
 var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
+var ServerNodeParameter_1 = __webpack_require__(/*! ../ServerNodeParameter */ "./src/server/ServerNodeParameter.ts");
+
 var RegExpFilter = function (_super) {
   __extends(RegExpFilter, _super);
 
@@ -12592,15 +12588,7 @@ var RegExpFilter = function (_super) {
   RegExpFilter.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push({
-      fieldType: "String_",
-      name: 'attribute',
-      value: 'name'
-    }, {
-      fieldType: "String_",
-      name: 'expression',
-      value: '/test|draft|dummy/'
-    });
+    description.parameters.push(ServerNodeParameter_1["default"].make('attribute').withValue('name'), ServerNodeParameter_1["default"].make('expression').withValue('/test|draft|dummy/'));
     return description;
   };
 
@@ -12838,6 +12826,8 @@ exports.__esModule = true;
 
 var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
 
+var ServerNodeParameter_1 = __webpack_require__(/*! ../ServerNodeParameter */ "./src/server/ServerNodeParameter.ts");
+
 var Sleep = function (_super) {
   __extends(Sleep, _super);
 
@@ -12867,11 +12857,7 @@ var Sleep = function (_super) {
   Sleep.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push({
-      fieldType: "Number",
-      name: "seconds_to_sleep",
-      value: 5
-    });
+    description.parameters.push(ServerNodeParameter_1["default"].make('seconds_to_sleep').withFieldType("Number").withValue(5));
     return description;
   };
 

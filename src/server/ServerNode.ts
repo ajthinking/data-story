@@ -3,6 +3,7 @@ import ServerDiagram from "./ServerDiagram";
 import * as _ from "lodash";
 import Feature from "../core/Feature";
 import UID from "../core/utils/UID";
+import ServerNodeParameter from "./ServerNodeParameter";
 
 export default class ServerNode {
     public id: string
@@ -60,12 +61,7 @@ export default class ServerNode {
             nodeReact: this.nodeReact,
             serverNodeType: this.name,
             parameters: [
-                {
-                    fieldType: "String_",
-                    name: "node_name",
-                    placeholder: "",
-                    value: this.name,
-                }
+                ServerNodeParameter.make('node_name').withValue(this.name)
             ],
             summary: this.summary,
         })

@@ -1,6 +1,7 @@
 import Feature from "../../core/Feature";
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
+import ServerNodeParameter from "../ServerNodeParameter";
 
 export default class CreateGrid extends ServerNode {
     public static category: string = 'Reader'    
@@ -35,36 +36,12 @@ export default class CreateGrid extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            {
-                fieldType: "Number",
-                name: "grid_size_x",
-                value: 10,
-            },
-            {
-                fieldType: "Number",
-                name: "grid_size_y",
-                value: 10,
-            },
-            {
-                fieldType: "Number",
-                name: "grid_start_x",
-                value: 0,
-            },
-            {
-                fieldType: "Number",
-                name: "grid_start_y",
-                value: 0,
-            },                        
-            {
-                fieldType: "Number",
-                name: "grid_spacing_x",
-                value: 10,
-            },
-            {
-                fieldType: "Number",
-                name: "grid_spacing_y",
-                value: 10,
-            },                                    
+            ServerNodeParameter.make('grid_size_x').withFieldType("Number").withValue(10),
+            ServerNodeParameter.make('grid_size_y').withFieldType("Number").withValue(10),
+            ServerNodeParameter.make('grid_start_x').withFieldType("Number").withValue(0),
+            ServerNodeParameter.make('grid_start_y').withFieldType("Number").withValue(0),
+            ServerNodeParameter.make('grid_spacing_x').withFieldType("Number").withValue(1),
+            ServerNodeParameter.make('grid_spacing_y').withFieldType("Number").withValue(1),                                    
         )
 
         return description

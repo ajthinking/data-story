@@ -1,6 +1,7 @@
 import Feature from "../../core/Feature";
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
+import ServerNodeParameter from "../ServerNodeParameter";
 
 export default class Map extends ServerNode {
     public static category: string = 'Workflow'    
@@ -18,11 +19,7 @@ export default class Map extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            {
-                fieldType: "String_",
-                name: "property",
-                value: '',
-            }            
+            ServerNodeParameter.make('property').withValue(''),            
         )
 
         return description
