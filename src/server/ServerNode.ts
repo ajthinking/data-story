@@ -3,8 +3,8 @@ import ServerDiagram from "./ServerDiagram";
 import * as _ from "lodash";
 import Feature from "../core/Feature";
 import UID from "../core/utils/UID";
-import ServerNodeParameter from "./ServerNodeParameter";
-
+import NodeParameter from "../core/NodeParameter";
+ 
 export default class ServerNode {
     public id: string
     public ports: any[]
@@ -61,7 +61,7 @@ export default class ServerNode {
             nodeReact: this.nodeReact,
             serverNodeType: this.name,
             parameters: [
-                ServerNodeParameter.make('node_name').withValue(this.name)
+                NodeParameter.make('node_name').withValue(this.name)
             ],
             summary: this.summary,
         })

@@ -1,7 +1,7 @@
 import Feature from "../../core/Feature";
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
-import ServerNodeParameter from "../ServerNodeParameter";
+import NodeParameter from "../../core/NodeParameter";
 
 export default class CreateSequence extends ServerNode {
     public static category: string = 'Reader'    
@@ -22,7 +22,7 @@ export default class CreateSequence extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            ServerNodeParameter.make('number_of_features_to_create').withFieldType("Number").withValue(10),
+            NodeParameter.make('number_of_features_to_create').withFieldType("Number").withValue(10),
         )
 
         return description

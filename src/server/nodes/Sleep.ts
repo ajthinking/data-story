@@ -1,6 +1,6 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
-import ServerNodeParameter from "../ServerNodeParameter";
+import NodeParameter from "../../core/NodeParameter";
 
 export default class Sleep extends ServerNode {
     public static category: string = 'Workflow'    
@@ -25,7 +25,7 @@ export default class Sleep extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            ServerNodeParameter.make('seconds_to_sleep').withFieldType("Number").withValue(5),            
+            NodeParameter.make('seconds_to_sleep').withFieldType("Number").withValue(5),            
         )
 
         return description

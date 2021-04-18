@@ -1,4 +1,4 @@
-export default class ServerNodeParameter {
+export default class NodeParameter {
     name: string                    
     fieldType: string = "String_"
     placeholder?: string

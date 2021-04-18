@@ -2,7 +2,7 @@ import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import axios from 'axios';
 import Feature from "../../core/Feature";
-import ServerNodeParameter from "../ServerNodeParameter";
+import NodeParameter from "../../core/NodeParameter";
 
 export default class HTTPRequest extends ServerNode {
     public static category: string = 'Reader'
@@ -28,10 +28,10 @@ export default class HTTPRequest extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            ServerNodeParameter.make('url').withValue('https://jsonplaceholder.typicode.com/{{ feature.resource }}'),
-            ServerNodeParameter.make('verb').withValue('GET'),
-            ServerNodeParameter.make('data').withFieldType("JSON_").withValue('{}'),
-            ServerNodeParameter.make('config').withFieldType("JSON_").withValue('{}'),       
+            NodeParameter.make('url').withValue('https://jsonplaceholder.typicode.com/{{ feature.resource }}'),
+            NodeParameter.make('verb').withValue('GET'),
+            NodeParameter.make('data').withFieldType("JSON_").withValue('{}'),
+            NodeParameter.make('config').withFieldType("JSON_").withValue('{}'),       
         )
 
         return description

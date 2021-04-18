@@ -1,7 +1,7 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import * as _ from 'lodash'
-import ServerNodeParameter from "../ServerNodeParameter";
+import NodeParameter from "../../core/NodeParameter";
 
 export default class RegExpFilter extends ServerNode {
     public static category: string = 'Workflow'    
@@ -12,8 +12,8 @@ export default class RegExpFilter extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            ServerNodeParameter.make('attribute').withValue('name'),
-            ServerNodeParameter.make('expression').withValue('/test|draft|dummy/'),            
+            NodeParameter.make('attribute').withValue('name'),
+            NodeParameter.make('expression').withValue('/test|draft|dummy/'),            
         )
 
         return description
