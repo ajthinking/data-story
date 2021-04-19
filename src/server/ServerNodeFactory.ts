@@ -7,6 +7,7 @@ import CreateSequence from './nodes/CreateSequence'
 import Evaluate from './nodes/Evaluate'
 import Flatten from './nodes/Flatten'
 import Inspect from './nodes/Inspect'
+import Log from './nodes/Log'
 import Map from './nodes/Map'
 import RegExpFilter from './nodes/RegExpFilter'
 import DeleteRepositories from './nodes/github/DeleteRepositories'
@@ -25,6 +26,7 @@ export default class ServerNodeFactory {
         Flatten,
         HTTPRequest,
         Inspect,
+        Log,
         Map,
         RegExpFilter,
         Repositories,
