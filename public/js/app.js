@@ -9767,6 +9767,10 @@ var APIClient = function () {
     });
   };
 
+  APIClient.prototype.save = function (name, model) {
+    return new Promise(function () {});
+  };
+
   return APIClient;
 }();
 
@@ -9824,6 +9828,10 @@ var LocalClient = function () {
 
   LocalClient.prototype.run = function (model) {
     return server.run(model.serialize());
+  };
+
+  LocalClient.prototype.save = function (name, model) {
+    return server.save(name, model);
   };
 
   return LocalClient;
@@ -10105,6 +10113,14 @@ var Server = function () {
     return __awaiter(this, void 0, void 0, function () {
       return __generator(this, function (_a) {
         return [2, ServerDiagram_1["default"].hydrate(diagram, ServerNodeFactory_1["default"]).run()];
+      });
+    });
+  };
+
+  Server.prototype.save = function (name, model) {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        return [2, new Promise(function () {})];
       });
     });
   };
@@ -12816,7 +12832,12 @@ var Log = function (_super) {
     return __awaiter(this, void 0, void 0, function () {
       return __generator(this, function (_a) {
         console.group('DataStory Log Node: ' + this.id);
-        console.log(this.input());
+        console.log(this.input().map(function (f) {
+          return f.original;
+        }));
+        console.log(JSON.stringify(this.input().map(function (f) {
+          return f.original;
+        })));
         console.groupEnd();
         return [2];
       });
@@ -12825,6 +12846,7 @@ var Log = function (_super) {
 
   Log.category = 'Workflow';
   Log.summary = 'console.log(inputs)';
+  Log.outPorts = [];
   return Log;
 }(ServerNode_1["default"]);
 

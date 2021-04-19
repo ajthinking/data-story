@@ -18,4 +18,8 @@ export default class APIClient implements ClientInterface {
             )
         })        
     }
+
+    save(name, model) {
+        return new Promise(() => {})
+    }
 }

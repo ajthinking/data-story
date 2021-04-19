@@ -1,8 +1,9 @@
 import Server from '../../server/Server'
+import ClientInterface from './ClientInterface';
 
 const server = new Server;
 
-export default class LocalClient {
+export default class LocalClient implements ClientInterface {
     boot() {
         return server.boot()
     }
@@ -12,5 +13,9 @@ export default class LocalClient {
         return server.run(
             model.serialize()
         )
+    }
+
+    save(name, model) {
+        return server.save(name, model)
     }
 }

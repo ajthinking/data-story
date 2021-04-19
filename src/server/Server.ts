@@ -20,6 +20,12 @@ export default class Server
         return ServerDiagram.hydrate(diagram, ServerNodeFactory).run()
     }
 
+    public async save(name, model) {
+        return new Promise(() => {
+            //implement by cookie here
+        })
+    }
+
     protected nodeDescriptions() {
         return ServerNodeFactory.all().map(node => node.describe())
     }
