@@ -11,10 +11,10 @@ export default class CreateGrid extends ServerNode {
     async run() {
         let gridSizeX = parseInt(this.getParameterValue('grid_size_x'))
         let gridSizeY = parseInt(this.getParameterValue('grid_size_y'))
-        let gridStartX = parseInt(this.getParameterValue('grid_start_x'))
-        let gridStartY = parseInt(this.getParameterValue('grid_start_y'))
-        let gridSpacingX = parseInt(this.getParameterValue('grid_spacing_x'))
-        let gridSpacingY = parseInt(this.getParameterValue('grid_spacing_y'))
+        let gridStartX = parseFloat(this.getParameterValue('grid_start_x'))
+        let gridStartY = parseFloat(this.getParameterValue('grid_start_y'))
+        let gridSpacingX = parseFloat(this.getParameterValue('grid_spacing_x'))
+        let gridSpacingY = parseFloat(this.getParameterValue('grid_spacing_y'))
 
         let features = [];
 

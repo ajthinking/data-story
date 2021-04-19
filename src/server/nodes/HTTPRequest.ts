@@ -7,19 +7,22 @@ import NodeParameter from "../../core/NodeParameter";
 export default class HTTPRequest extends ServerNode {
     public static category: string = 'Reader'
     public static inPorts: string[] = ['Input']
-    public static outPorts: string[] = ['Data', 'Response'];
+    public static outPorts: string[] = [/*'Data',*/ 'Response'];
     public static summary = 'Make a HTTP request'
 
     async run() {
         for await (let feature of this.input()) {
             await this.request(feature).then((result) => {
                 if(result) {
+                    console.log("result thruthy")
                     this.output([new Feature(result)], 'Response')
+                } else {
+                    console.log("result not truthy", result)
                 }
 
-                if(result && result.data) {
-                    this.output(result.data.map(i => new Feature(i)), 'Data')
-                }
+                // if(result && result.data) {
+                //     this.output(result.data.map(i => new Feature(i)), 'Data')
+                // }
             })
         }                
     }

@@ -11153,10 +11153,10 @@ var CreateGrid = function (_super) {
       return __generator(this, function (_a) {
         gridSizeX = parseInt(this.getParameterValue('grid_size_x'));
         gridSizeY = parseInt(this.getParameterValue('grid_size_y'));
-        gridStartX = parseInt(this.getParameterValue('grid_start_x'));
-        gridStartY = parseInt(this.getParameterValue('grid_start_y'));
-        gridSpacingX = parseInt(this.getParameterValue('grid_spacing_x'));
-        gridSpacingY = parseInt(this.getParameterValue('grid_spacing_y'));
+        gridStartX = parseFloat(this.getParameterValue('grid_start_x'));
+        gridStartY = parseFloat(this.getParameterValue('grid_start_y'));
+        gridSpacingX = parseFloat(this.getParameterValue('grid_spacing_x'));
+        gridSpacingY = parseFloat(this.getParameterValue('grid_spacing_y'));
         features = [];
 
         for (x = 0; x < gridSizeX; x++) {
@@ -12326,13 +12326,11 @@ var HTTPRequest = function (_super) {
             feature = _c.value;
             return [4, this.request(feature).then(function (result) {
               if (result) {
-                _this.output([new Feature_1["default"](result)], 'Response');
-              }
+                console.log("result thruthy");
 
-              if (result && result.data) {
-                _this.output(result.data.map(function (i) {
-                  return new Feature_1["default"](i);
-                }), 'Data');
+                _this.output([new Feature_1["default"](result)], 'Response');
+              } else {
+                console.log("result not truthy", result);
               }
             })];
 
@@ -12405,7 +12403,7 @@ var HTTPRequest = function (_super) {
 
   HTTPRequest.category = 'Reader';
   HTTPRequest.inPorts = ['Input'];
-  HTTPRequest.outPorts = ['Data', 'Response'];
+  HTTPRequest.outPorts = ['Response'];
   HTTPRequest.summary = 'Make a HTTP request';
   return HTTPRequest;
 }(ServerNode_1["default"]);
