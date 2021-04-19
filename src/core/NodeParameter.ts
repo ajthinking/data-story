@@ -2,7 +2,7 @@ export default class NodeParameter {
     name: string                    
     fieldType: string = "String_"
     placeholder?: string
-    value: any
+    value: any = ''
 
     constructor(name: string) {
         this.name = name;

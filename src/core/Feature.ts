@@ -5,6 +5,11 @@ export default class Feature {
         return this.original[property]
     }
 
+    public set(property: string, value: any) {
+        this.original[property] = value
+        return this
+    }    
+
     public type() {
         return typeof this.original
     }

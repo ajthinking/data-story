@@ -3,15 +3,18 @@ import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
 
-export default class Map extends ServerNode {
+export default class Evaluate extends ServerNode {
     public static category: string = 'Workflow'    
-    public static summary = 'Map into a property'    
+    public static summary = "Evaluate javascript"
 
     async run() {
-        const property = this.getParameterValue('property');
+        const expression = this.getParameterValue('expression');
 
         this.output(
-            this.input().map(item => new Feature(item.original[property]))
+            this.input().map(feature => {
+                eval(expression)
+                return feature
+            })
         );
     }
 
@@ -19,7 +22,7 @@ export default class Map extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            NodeParameter.make('property'),            
+            NodeParameter.make('expression').withFieldType('JS'),            
         )
 
         return description

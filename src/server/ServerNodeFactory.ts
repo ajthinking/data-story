@@ -4,6 +4,7 @@ import HTTPRequest from './nodes/HTTPRequest'
 import CreateAttribute from './nodes/CreateAttribute'
 import CreateJSON from './nodes/CreateJSON'
 import CreateSequence from './nodes/CreateSequence'
+import Evaluate from './nodes/Evaluate'
 import Flatten from './nodes/Flatten'
 import Inspect from './nodes/Inspect'
 import Map from './nodes/Map'
@@ -20,6 +21,7 @@ export default class ServerNodeFactory {
         CreateSequence,
         CreateJSON,
         DeleteRepositories,
+        Evaluate,
         Flatten,
         HTTPRequest,
         Inspect,
