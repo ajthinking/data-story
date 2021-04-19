@@ -10562,7 +10562,7 @@ var ServerNode = function () {
       port = 'Output';
     }
 
-    this.portNamed(port).features = this.portNamed(port).features ? features.concat(features) : features;
+    this.portNamed(port).features = this.portNamed(port).features ? this.portNamed(port).features.concat(features) : features;
   };
 
   ServerNode.prototype.portNamed = function (name) {
@@ -12326,11 +12326,7 @@ var HTTPRequest = function (_super) {
             feature = _c.value;
             return [4, this.request(feature).then(function (result) {
               if (result) {
-                console.log("result thruthy");
-
                 _this.output([new Feature_1["default"](result)], 'Response');
-              } else {
-                console.log("result not truthy", result);
               }
             })];
 

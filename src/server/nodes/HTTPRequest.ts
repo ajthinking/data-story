@@ -14,10 +14,7 @@ export default class HTTPRequest extends ServerNode {
         for await (let feature of this.input()) {
             await this.request(feature).then((result) => {
                 if(result) {
-                    console.log("result thruthy")
                     this.output([new Feature(result)], 'Response')
-                } else {
-                    console.log("result not truthy", result)
                 }
 
                 // if(result && result.data) {

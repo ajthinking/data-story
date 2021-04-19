@@ -125,7 +125,7 @@ export default class ServerNode {
 
     protected output(features: any[], port: string = 'Output') {
         // CONTINUE HERE - SOMETIMES IT MIGHT OVERWRITE EXISTING PORT DATA??? 2 VS 12 on HTTPREQUEST!
-        this.portNamed(port).features = this.portNamed(port).features ? features.concat(features) : features
+        this.portNamed(port).features = this.portNamed(port).features ? this.portNamed(port).features.concat(features) : features
     }
 
     protected portNamed(name: string) {
