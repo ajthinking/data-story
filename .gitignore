@@ -2,7 +2,8 @@
 .idea/
 .idea
 .vscode/
-notes.md
+notes/notes.md
+notes/reflections.md
 sketches/
 vendor/
 node_modules/
