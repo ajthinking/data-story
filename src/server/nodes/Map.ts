@@ -9,9 +9,16 @@ export default class Map extends ServerNode {
 
     async run() {
         const property = this.getParameterValue('property');
+        const paths = property.split('.')
 
         this.output(
-            this.input().map(item => new Feature(item.original[property]))
+            this.input().map(item => {
+                let mapped = paths.reduce((carry, path) => {
+                    return carry[path]
+                }, item.original)
+
+                return new Feature(mapped)
+            })
         );
     }
 

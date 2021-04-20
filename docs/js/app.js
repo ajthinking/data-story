@@ -13284,11 +13284,15 @@ var Map = function (_super) {
 
   Map.prototype.run = function () {
     return __awaiter(this, void 0, void 0, function () {
-      var property;
+      var property, paths;
       return __generator(this, function (_a) {
         property = this.getParameterValue('property');
+        paths = property.split('.');
         this.output(this.input().map(function (item) {
-          return new Feature_1["default"](item.original[property]);
+          var mapped = paths.reduce(function (carry, path) {
+            return carry[path];
+          }, item.original);
+          return new Feature_1["default"](mapped);
         }));
         return [2];
       });
