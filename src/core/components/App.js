@@ -38,17 +38,6 @@ export default class App extends React.Component {
         this.boot()
         this.registerKeybindings()
         //this.registerExitConfirmation()
-        
-        let feature = new Feature({
-            url: '{{ feature.api }}/{{ feature.method }}?{{ feature.queryString }}',
-            api: 'https://api.github.com',
-            method: 'about',
-            queryString: 'user=ajthinking',
-        })
-
-        console.log(
-            feature.get('url')
-        )
     }
 
     boot() {

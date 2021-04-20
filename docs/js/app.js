@@ -9623,6 +9623,10 @@ exports.__esModule = true;
 
 var Feature = function () {
   function Feature(original) {
+    if (original === void 0) {
+      original = null;
+    }
+
     this.original = original;
   }
 
@@ -10362,7 +10366,6 @@ var ServerDiagram = function () {
 
   ServerDiagram.hydrate = function (data, factory) {
     var instance = new this();
-    console.log('hey');
 
     for (var _i = 0, _a = Object.entries(data); _i < _a.length; _i++) {
       var _b = _a[_i],
@@ -10648,6 +10651,8 @@ exports.default = ServerNode;
 
 exports.__esModule = true;
 
+var Create_1 = __webpack_require__(/*! ./nodes/Create */ "./src/server/nodes/Create.ts");
+
 var CreateGrid_1 = __webpack_require__(/*! ./nodes/CreateGrid */ "./src/server/nodes/CreateGrid.ts");
 
 var Comment_1 = __webpack_require__(/*! ./nodes/Comment */ "./src/server/nodes/Comment.ts");
@@ -10701,6 +10706,7 @@ var ServerNodeFactory = function () {
 
   ServerNodeFactory.nodes = {
     Comment: Comment_1["default"],
+    Create: Create_1["default"],
     CreateAttribute: CreateAttribute_1["default"],
     CreateGrid: CreateGrid_1["default"],
     CreateSequence: CreateSequence_1["default"],
@@ -10783,6 +10789,218 @@ var Comment = function (_super) {
 }(ServerNode_1["default"]);
 
 exports.default = Comment;
+
+/***/ }),
+
+/***/ "./src/server/nodes/Create.ts":
+/*!************************************!*\
+  !*** ./src/server/nodes/Create.ts ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    if (typeof b !== "function" && b !== null) throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+var __generator = this && this.__generator || function (thisArg, body) {
+  var _ = {
+    label: 0,
+    sent: function sent() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    },
+    trys: [],
+    ops: []
+  },
+      f,
+      y,
+      t,
+      g;
+  return g = {
+    next: verb(0),
+    "throw": verb(1),
+    "return": verb(2)
+  }, typeof Symbol === "function" && (g[Symbol.iterator] = function () {
+    return this;
+  }), g;
+
+  function verb(n) {
+    return function (v) {
+      return step([n, v]);
+    };
+  }
+
+  function step(op) {
+    if (f) throw new TypeError("Generator is already executing.");
+
+    while (_) {
+      try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+
+          case 4:
+            _.label++;
+            return {
+              value: op[1],
+              done: false
+            };
+
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+
+          case 7:
+            op = _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+
+              _.ops.push(op);
+
+              break;
+            }
+
+            if (t[2]) _.ops.pop();
+
+            _.trys.pop();
+
+            continue;
+        }
+
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+    }
+
+    if (op[0] & 5) throw op[1];
+    return {
+      value: op[0] ? op[1] : void 0,
+      done: true
+    };
+  }
+};
+
+exports.__esModule = true;
+
+var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
+
+var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
+
+var Create = function (_super) {
+  __extends(Create, _super);
+
+  function Create() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  Create.prototype.run = function () {
+    return __awaiter(this, void 0, void 0, function () {
+      return __generator(this, function (_a) {
+        this.output([new Feature_1["default"]()]);
+        return [2];
+      });
+    });
+  };
+
+  Create.category = 'Workflow';
+  Create.summary = 'Create a null feature';
+  Create.inPorts = [];
+  return Create;
+}(ServerNode_1["default"]);
+
+exports.default = Create;
 
 /***/ }),
 
@@ -14599,14 +14817,6 @@ var App = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_8__.inject)('store'), _
     value: function componentDidMount() {
       this.boot();
       this.registerKeybindings(); //this.registerExitConfirmation()
-
-      var feature = new _core_Feature__WEBPACK_IMPORTED_MODULE_7__.default({
-        url: '{{ feature.api }}/{{ feature.method }}?{{ feature.queryString }}',
-        api: 'https://api.github.com',
-        method: 'about',
-        queryString: 'user=ajthinking'
-      });
-      console.log(feature.get('url'));
     }
   }, {
     key: "boot",
@@ -15100,7 +15310,7 @@ var InspectorTable = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_2__.inject)(
     key: "getHeaders",
     value: function getHeaders() {
       var keys = this.props.features.map(function (i) {
-        return _typeof(i.unbox()) === 'object' ? Object.keys(i.unbox()) : '__default';
+        return _typeof(i.unbox()) === 'object' && i.unbox() != null ? Object.keys(i.unbox()) : '__default';
       }).flat();
       return _toConsumableArray(new Set(keys));
     }
@@ -15113,7 +15323,7 @@ var InspectorTable = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_2__.inject)(
         var content = feature.unbox();
         if (_typeof(content) != 'object') return content;
         return _this.getHeaders().map(function (header) {
-          if (!content.hasOwnProperty(header)) return 'N/A';
+          if (content == null || !content.hasOwnProperty(header)) return 'N/A';
           if (_typeof(content[header]) === 'object') return 'OBJECT';
           if (typeof content[header] === 'array') return 'ARRAY';
           return content[header];
@@ -18346,8 +18556,7 @@ var Store = /*#__PURE__*/function () {
       });
       var sourceLink = (_Object$values$ = Object.values((_node$ports = node.ports) === null || _node$ports === void 0 ? void 0 : (_node$ports$Input = _node$ports.Input) === null || _node$ports$Input === void 0 ? void 0 : _node$ports$Input.links)[0]) !== null && _Object$values$ !== void 0 ? _Object$values$ : null;
       if (!sourceLink) return;
-      var sourcePortName = (_sourceLink$sourcePor = sourceLink.sourcePort.options.name) !== null && _sourceLink$sourcePor !== void 0 ? _sourceLink$sourcePor : false;
-      console.log(sourcePortName); // It must be a specific name to make sense
+      var sourcePortName = (_sourceLink$sourcePor = sourceLink.sourcePort.options.name) !== null && _sourceLink$sourcePor !== void 0 ? _sourceLink$sourcePor : false; // It must be a specific name to make sense
 
       if (!sourcePortName || sourcePortName == 'Output') return;
       nameParam.value = sourcePortName;

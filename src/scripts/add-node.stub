@@ -1,0 +1,26 @@
+import ServerNode from "../ServerNode";
+import NodeParameter from "../../core/NodeParameter";
+import { NodeDescription } from "../../core/NodeDescription";
+
+export default class NODE_NAME extends ServerNode {
+    public static category: string = 'Workflow'    
+    public static summary = 'ADD SUMMARY HERE'
+
+    async run() {
+        const p1 = this.getParameterValue('p1')
+        
+        this.output(
+            this.input()
+        )
+    }
+
+    static describe() : NodeDescription {
+        let description = super.describe()
+
+        description.parameters.push(
+            NodeParameter.make('p1'),
+        )
+
+        return description
+    }      
+}

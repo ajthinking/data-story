@@ -1,0 +1,9 @@
+import NODE_NAME from '../../../../src/server/nodes/NODE_NAME'
+import Diagram from '../../TestableServerDiagram';
+
+test.skip('something something', async () => {
+    let node = Diagram.test().node(NODE_NAME)
+        .parameters({})
+
+    await node.assertCanRun()
+});

@@ -107,7 +107,7 @@ export class Store {
         let sourceLink = Object.values(node.ports?.Input?.links)[0] ?? null
         if(!sourceLink) return;
         let sourcePortName = sourceLink.sourcePort.options.name ?? false
-        console.log(sourcePortName)
+        
         // It must be a specific name to make sense
         if(!sourcePortName || sourcePortName == 'Output') return;
 

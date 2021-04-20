@@ -1,3 +1,4 @@
+import Create from './nodes/Create'
 import CreateGrid from './nodes/CreateGrid'
 import Comment from './nodes/Comment'
 import HTTPRequest from './nodes/HTTPRequest'
@@ -18,6 +19,7 @@ import Sleep from './nodes/Sleep'
 export default class ServerNodeFactory {
     protected static nodes = {
         Comment,
+        Create,
         CreateAttribute,
         CreateGrid,
         CreateSequence,

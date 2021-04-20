@@ -56,7 +56,7 @@ export default class TestableServerDiagram {
     async runOnce() {
         if(this.hasRun) return
         this.node_ = new this.nodeClass(this.serverDiagram, this.nodeClass.describe())
-        console.log(this.node_)
+
         this.serverDiagram.addNode(this.node_)
 
         this.serverDiagram.executionOrder = [this.node_.id]
