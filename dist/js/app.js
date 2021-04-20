@@ -9842,6 +9842,35 @@ exports.default = LocalClient;
 
 /***/ }),
 
+/***/ "./src/core/utils/Cookie.ts":
+/*!**********************************!*\
+  !*** ./src/core/utils/Cookie.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+var Cookie = function () {
+  function Cookie() {}
+
+  Cookie.get = function (name) {
+    return JSON.parse(localStorage.getItem(name));
+  };
+
+  Cookie.set = function (name, value) {
+    localStorage.setItem(name, value);
+  };
+
+  return Cookie;
+}();
+
+exports.default = Cookie;
+
+/***/ }),
+
 /***/ "./src/core/utils/UID.ts":
 /*!*******************************!*\
   !*** ./src/core/utils/UID.ts ***!
@@ -10092,7 +10121,7 @@ var ServerDiagram_1 = __webpack_require__(/*! ./ServerDiagram */ "./src/server/S
 
 var ServerNodeFactory_1 = __webpack_require__(/*! ./ServerNodeFactory */ "./src/server/ServerNodeFactory.ts");
 
-var Cookie_1 = __webpack_require__(/*! ../core/utils/Cookie */ "./src/core/utils/Cookie.js");
+var Cookie_1 = __webpack_require__(/*! ../core/utils/Cookie */ "./src/core/utils/Cookie.ts");
 
 var Server = function () {
   function Server() {}
@@ -18480,47 +18509,6 @@ var Store = /*#__PURE__*/function () {
   return Store;
 }();
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (window.store = new Store());
-
-/***/ }),
-
-/***/ "./src/core/utils/Cookie.js":
-/*!**********************************!*\
-  !*** ./src/core/utils/Cookie.js ***!
-  \**********************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Cookie)
-/* harmony export */ });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Cookie = /*#__PURE__*/function () {
-  function Cookie() {
-    _classCallCheck(this, Cookie);
-  }
-
-  _createClass(Cookie, null, [{
-    key: "get",
-    value: function get(name) {
-      return JSON.parse(localStorage.getItem(name));
-    }
-  }, {
-    key: "set",
-    value: function set(name, value) {
-      localStorage.setItem(name, value);
-    }
-  }]);
-
-  return Cookie;
-}();
-
-
 
 /***/ }),
 
