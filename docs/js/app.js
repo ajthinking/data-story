@@ -9831,6 +9831,7 @@ var LocalClient = function () {
   };
 
   LocalClient.prototype.save = function (name, model) {
+    alert('hey im saving');
     return server.save(name, model);
   };
 
@@ -10091,6 +10092,8 @@ var ServerDiagram_1 = __webpack_require__(/*! ./ServerDiagram */ "./src/server/S
 
 var ServerNodeFactory_1 = __webpack_require__(/*! ./ServerNodeFactory */ "./src/server/ServerNodeFactory.ts");
 
+var Cookie_1 = __webpack_require__(/*! ../core/utils/Cookie */ "./src/core/utils/Cookie.js");
+
 var Server = function () {
   function Server() {}
 
@@ -10117,10 +10120,13 @@ var Server = function () {
     });
   };
 
-  Server.prototype.save = function (name, model) {
+  Server.prototype.save = function (name, stringifiedModel) {
     return __awaiter(this, void 0, void 0, function () {
       return __generator(this, function (_a) {
-        return [2, new Promise(function () {})];
+        return [2, new Promise(function (success) {
+          Cookie_1["default"].set(name, stringifiedModel);
+          return success(true);
+        })];
       });
     });
   };
@@ -17732,17 +17738,12 @@ var SaveModal = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_4__.inject)('stor
       var _this2 = this;
 
       this.props.store.clearLinkLabels();
-      axios__WEBPACK_IMPORTED_MODULE_2___default().post('/datastory/api/save', {
-        model: (0,_core_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_3__.nonCircularJsonStringify)(this.props.store.diagram.engine.model.serialize(), null, 4),
-        filename: this.state.storyName
-      }).then(function (response) {
-        _this2.showSuccessToast();
+      this.props.store.metadata.server.save(this.state.storyName, (0,_core_utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_3__.nonCircularJsonStringify)(this.props.store.diagram.engine.model.serialize(), null, 4)).then(function () {
+        alert('Save success!');
 
         _this2.props.closeModal();
-
-        _this2.props.store.setActiveStory(_this2.state.storyName);
       })["catch"](function (error) {
-        alert('SOMETHING WENT WRONG!');
+        alert('Save error');
       });
     }
   }, {
@@ -18479,6 +18480,47 @@ var Store = /*#__PURE__*/function () {
   return Store;
 }();
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (window.store = new Store());
+
+/***/ }),
+
+/***/ "./src/core/utils/Cookie.js":
+/*!**********************************!*\
+  !*** ./src/core/utils/Cookie.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Cookie)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Cookie = /*#__PURE__*/function () {
+  function Cookie() {
+    _classCallCheck(this, Cookie);
+  }
+
+  _createClass(Cookie, null, [{
+    key: "get",
+    value: function get(name) {
+      return JSON.parse(localStorage.getItem(name));
+    }
+  }, {
+    key: "set",
+    value: function set(name, value) {
+      localStorage.setItem(name, value);
+    }
+  }]);
+
+  return Cookie;
+}();
+
+
 
 /***/ }),
 

@@ -1,5 +1,6 @@
 import ServerDiagram from "./ServerDiagram";
 import ServerNodeFactory from "./ServerNodeFactory";
+import Cookie from '../core/utils/Cookie'
 
 export default class Server
 {
@@ -20,9 +21,13 @@ export default class Server
         return ServerDiagram.hydrate(diagram, ServerNodeFactory).run()
     }
 
-    public async save(name, model) {
-        return new Promise(() => {
+    public async save(name, stringifiedModel) {
+        return new Promise((success) => {
             //implement by cookie here
+            
+            Cookie.set(name, stringifiedModel)
+
+            return success(true)
         })
     }
 

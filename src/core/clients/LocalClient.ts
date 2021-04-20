@@ -16,6 +16,7 @@ export default class LocalClient implements ClientInterface {
     }
 
     save(name, model) {
+        alert('hey im saving')
         return server.save(name, model)
     }
 }

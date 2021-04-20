@@ -27,21 +27,19 @@ export default class SaveModal extends React.Component {
     handleSave(event) {
         this.props.store.clearLinkLabels()
 
-        axios.post('/datastory/api/save', {
-            model: nonCircularJsonStringify(
+        this.props.store.metadata.server.save(
+            this.state.storyName,
+            nonCircularJsonStringify(
                 this.props.store.diagram.engine.model.serialize(),
                 null,
                 4
             ),
-            filename: this.state.storyName
-        })
-        .then((response) => {
-            this.showSuccessToast();
+        ).then(() => {
+            alert('Save success!')
             this.props.closeModal();
-            this.props.store.setActiveStory(this.state.storyName)
         })
-        .catch(function (error) {
-            alert('SOMETHING WENT WRONG!')
+        .catch(error => {
+            alert('Save error')
         });
     }    
 
