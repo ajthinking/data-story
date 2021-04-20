@@ -9,7 +9,6 @@ export default class Booleanx extends React.Component {
                     type="checkbox"
                     onChange={e => {this.props.handleChange(e, this.props.options)}}
                     className="px-2 py-1 rounded"
-                    value={this.props.options.value}
                 />
             </div>
         );
