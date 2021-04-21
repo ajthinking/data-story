@@ -14823,8 +14823,6 @@ var App = (_dec = (0,mobx_react__WEBPACK_IMPORTED_MODULE_8__.inject)('store'), _
     value: function boot() {
       var _this2 = this;
 
-      // NORMAL PHP CLIENT
-      //let server = new APIClient('/datastory/api')
       this.props.store.metadata.server.boot({
         story: window.location.href.split("/datastory").pop().replace('/', '')
       }).then(function (response) {
