@@ -8,6 +8,7 @@ export default class TestableServerDiagram {
     parameters_: Object = {}
     hasRun: boolean = false
     node_: ServerNode
+    inputs_: Object[] = []
 
     constructor() {
         this.serverDiagram = new ServerDiagram
@@ -23,6 +24,18 @@ export default class TestableServerDiagram {
         return this
     }
 
+    input(obj: Object, port = 'Input') {
+        this.inputs_ = [obj]
+
+        return this
+    }
+
+    inputs(inputs: Object[], port = 'Input') {
+        this.inputs_ = inputs
+
+        return this
+    }    
+
     parameters(parameters = {}) {
         this.parameters_ = parameters
 
@@ -36,10 +49,6 @@ export default class TestableServerDiagram {
         expect(true).toBe(true)
         
         return this
-        
-
-        
-        //expect(this.serverDiagram.nodes).toBeInstanceOf(Array)
     }
 
     async assertOutput(expected, portName = 'Output') {
