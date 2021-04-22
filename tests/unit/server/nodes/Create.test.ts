@@ -1,9 +1,9 @@
 import Create from '../../../../src/server/nodes/Create'
 import Diagram from '../../TestableServerDiagram';
 
-test.skip('something something', async () => {
+test('that create spawns a null feature', async () => {
     let node = Diagram.test().node(Create)
-        .parameters({})
 
     await node.assertCanRun()
+    await node.assertOutput([null])    
 });
