@@ -30,7 +30,9 @@ export default class NodeModel extends DefaultNodeModel {
                     parent: this,                    
                 })
             );  
-        })        
+        })
+
+        console.log(this)
     }
 
 	serialize() {
@@ -43,8 +45,6 @@ export default class NodeModel extends DefaultNodeModel {
 
 	deserialize(ob, engine) {
         super.deserialize(ob, engine);
-        
-        
     }
 
     parameter(name) {
