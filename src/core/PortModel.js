@@ -1,7 +1,7 @@
 import { DefaultPortModel } from '@projectstorm/react-diagrams';
 
 export default class PortModel extends DefaultPortModel {
-	constructor(options = {}) {
+	constructor(options) {
 		super({
 			...options,
             // Make id easier on humans
