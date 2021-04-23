@@ -11,6 +11,8 @@ export default class CreateAttribute extends ServerNode {
         let attribute = this.getParameterValue('attribute')
         let value = this.getParameterValue('value')
 
+        console.log(this)
+
         this.output(
             this.input().map(feature => feature.set(attribute, value))
         );       

@@ -10486,10 +10486,18 @@ exports.default = ServerDiagram;
 /*!**********************************!*\
   !*** ./src/server/ServerNode.ts ***!
   \**********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
+
+var __spreadArray = this && this.__spreadArray || function (to, from) {
+  for (var i = 0, il = from.length, j = to.length; i < il; i++, j++) {
+    to[j] = from[i];
+  }
+
+  return to;
+};
 
 exports.__esModule = true;
 
@@ -10512,13 +10520,17 @@ var ServerNode = function () {
     this.options = {
       parameters: description.parameters
     };
-    if (!description.outPorts) return;
-    this.ports = description.outPorts.map(function (portName) {
+    this.ports = __spreadArray(__spreadArray([], description.inPorts.map(function (portName) {
+      return {
+        name: portName,
+        "in": true
+      };
+    })), description.outPorts.map(function (portName) {
       return {
         name: portName,
         "in": false
       };
-    });
+    }));
   }
 
   ServerNode.hydrate = function (data, diagram) {
@@ -10616,7 +10628,7 @@ var ServerNode = function () {
       port = 'Output';
     }
 
-    this.portNamed(port).features = this.portNamed(port).features ? this.portNamed(port).features.concat(features) : features;
+    this.portNamed(port).features = this.portNamed(port).features ? features.concat(features) : features;
   };
 
   ServerNode.prototype.portNamed = function (name) {
@@ -11203,6 +11215,7 @@ var CreateAttribute = function (_super) {
       return __generator(this, function (_a) {
         attribute = this.getParameterValue('attribute');
         value = this.getParameterValue('value');
+        console.log(this);
         this.output(this.input().map(function (feature) {
           return feature.set(attribute, value);
         }));
@@ -12884,7 +12897,7 @@ var HTTPRequest = function (_super) {
   HTTPRequest.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push(NodeParameter_1["default"].make('url').withValue('https://jsonplaceholder.typicode.com/{{ feature.resource }}'), NodeParameter_1["default"].make('verb').withValue('GET'), NodeParameter_1["default"].make('data').withFieldType("JSON_").withValue('{}'), NodeParameter_1["default"].make('config').withFieldType("JSON_").withValue('{}'));
+    description.parameters.push(NodeParameter_1["default"].make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), NodeParameter_1["default"].make('verb').withValue('GET'), NodeParameter_1["default"].make('data').withFieldType("JSON_").withValue('{}'), NodeParameter_1["default"].make('config').withFieldType("JSON_").withValue('{}'));
     return description;
   };
 

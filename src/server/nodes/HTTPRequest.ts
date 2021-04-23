@@ -16,10 +16,6 @@ export default class HTTPRequest extends ServerNode {
                 if(result) {
                     this.output([new Feature(result)], 'Response')
                 }
-
-                // if(result && result.data) {
-                //     this.output(result.data.map(i => new Feature(i)), 'Data')
-                // }
             })
         }                
     }
@@ -28,10 +24,10 @@ export default class HTTPRequest extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            NodeParameter.make('url').withValue('https://jsonplaceholder.typicode.com/{{ feature.resource }}'),
+            NodeParameter.make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'),
             NodeParameter.make('verb').withValue('GET'),
             NodeParameter.make('data').withFieldType("JSON_").withValue('{}'),
-            NodeParameter.make('config').withFieldType("JSON_").withValue('{}'),       
+            NodeParameter.make('config').withFieldType("JSON_").withValue('{}'),
         )
 
         return description

@@ -30,13 +30,21 @@ export default class ServerNode {
         this.options = {
             parameters: description.parameters
         }
-        if(!description.outPorts) return
-        this.ports = description.outPorts.map(portName => {
-            return {
-                name: portName,
-                in: false
-            }
-        })
+
+        this.ports = [
+            ...description.inPorts.map(portName => {
+                return {
+                    name: portName,
+                    in: true
+                }
+            }),
+            ...description.outPorts.map(portName => {
+                return {
+                    name: portName,
+                    in: false
+                }
+            }),            
+        ]
     }
 
     static hydrate(data, diagram) {
@@ -124,8 +132,7 @@ export default class ServerNode {
     }    
 
     protected output(features: any[], port: string = 'Output') {
-        // CONTINUE HERE - SOMETIMES IT MIGHT OVERWRITE EXISTING PORT DATA??? 2 VS 12 on HTTPREQUEST!
-        this.portNamed(port).features = this.portNamed(port).features ? this.portNamed(port).features.concat(features) : features
+        this.portNamed(port).features = this.portNamed(port).features ? features.concat(features) : features
     }
 
     protected portNamed(name: string) {
