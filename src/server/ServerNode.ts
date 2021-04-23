@@ -24,6 +24,7 @@ export default class ServerNode {
     public static summary: string = 'No summary provided.'   
 
     constructor(diagram, description: any = {}) {
+
         this.diagram = diagram
         this.id = UID()
 
@@ -32,13 +33,13 @@ export default class ServerNode {
         }
 
         this.ports = [
-            ...description.inPorts.map(portName => {
+            ...(description.inPorts ?? []).map(portName => {
                 return {
                     name: portName,
                     in: true
                 }
             }),
-            ...description.outPorts.map(portName => {
+            ...(description.outPorts ?? []).map(portName => {
                 return {
                     name: portName,
                     in: false

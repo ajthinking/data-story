@@ -26,7 +26,7 @@ export default class Map extends ServerNode {
         let description = super.describe()
 
         description.parameters.push(
-            NodeParameter.make('property'),            
+            NodeParameter.make('property').withValue('data'),            
         )
 
         return description

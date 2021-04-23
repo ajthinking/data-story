@@ -10515,17 +10515,19 @@ var ServerNode = function () {
       description = {};
     }
 
+    var _a, _b;
+
     this.diagram = diagram;
     this.id = UID_1["default"]();
     this.options = {
       parameters: description.parameters
     };
-    this.ports = __spreadArray(__spreadArray([], description.inPorts.map(function (portName) {
+    this.ports = __spreadArray(__spreadArray([], ((_a = description.inPorts) !== null && _a !== void 0 ? _a : []).map(function (portName) {
       return {
         name: portName,
         "in": true
       };
-    })), description.outPorts.map(function (portName) {
+    })), ((_b = description.outPorts) !== null && _b !== void 0 ? _b : []).map(function (portName) {
       return {
         name: portName,
         "in": false
@@ -13568,7 +13570,7 @@ var Map = function (_super) {
   Map.describe = function () {
     var description = _super.describe.call(this);
 
-    description.parameters.push(NodeParameter_1["default"].make('property'));
+    description.parameters.push(NodeParameter_1["default"].make('property').withValue('data'));
     return description;
   };
 
