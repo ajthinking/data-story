@@ -1,10 +1,13 @@
 import { action, observable, makeObservable } from "mobx"
-import { DefaultLinkModel } from '@projectstorm/react-diagrams'
+import { DefaultLinkModel, LinkModel } from '@projectstorm/react-diagrams'
 import NodeModel from '../../core/NodeModel'
 import _ from 'lodash'
 import clientFactory from '../clients/ClientFactory';
+import PortModel from "../PortModel";
 
 export class Store {
+
+    results
 
     diagram = {
         engine: null,
@@ -21,7 +24,7 @@ export class Store {
         activeInspector: null,
         stories: [],
         activeStory: '',
-        server: clientFactory(window.dataStoryConfig.client ?? 'LocalClient'),
+        server: clientFactory((window as any).dataStoryConfig.client ?? 'LocalClient'),
     }
 
     constructor() {
@@ -104,7 +107,7 @@ export class Store {
 
         let nameParam = node.options.parameters.find(n => n.name == 'node_name')
 
-        let sourceLink = Object.values(node.ports?.Input?.links)[0] ?? null
+        let sourceLink: any = Object.values(node.ports?.Input?.links)[0] ?? null
         if(!sourceLink) return;
         let sourcePortName = sourceLink.sourcePort.options.name ?? false
         
@@ -137,7 +140,7 @@ export class Store {
     }    
 
     clearLinkLabels() {
-        Object.values(this.diagram.engine.model.layers[0].models).forEach((link) => {
+        Object.values(this.diagram.engine.model.layers[0].models).forEach((link: any) => {
             link.labels = []
         })
     }
@@ -146,12 +149,12 @@ export class Store {
         if(!this.canLink(from, to)) return;
 
         // fromPort: prefer first unused outPort. Otherwise defaults to first
-        let fromPort = Object.values(from.getOutPorts()).find(candidate => {
+        let fromPort: any = Object.values(from.getOutPorts()).find((candidate: any) => {
             return Object.values(candidate.links).length === 0
         }) ?? Object.values(from.getOutPorts())[0]
 
         // toPort: the first inPort
-        let toPort = Object.values(to.getInPorts())[0];
+        let toPort: any = Object.values(to.getInPorts())[0];
         
         // Links
         let link = new DefaultLinkModel()
@@ -183,7 +186,7 @@ export class Store {
 
     setLinkedNodePosition(latest, node)
     {
-        let fromPort = Object.values(latest.getOutPorts())[0] ?? false;
+        let fromPort: any = Object.values(latest.getOutPorts())[0] ?? false;
 
         node.setPosition(
             latest.position.x + 200,
@@ -256,4 +259,4 @@ export class Store {
         this.metadata.stories = stories
     }    
 }
-export default window.store = new Store
+export default (window as any).store = new Store

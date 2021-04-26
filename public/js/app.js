@@ -10301,7 +10301,7 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _reactDom = _interopRequireDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
 
-var _main = _interopRequireDefault(__webpack_require__(/*! ./store/main */ "./src/core/store/main.js"));
+var _main = _interopRequireDefault(__webpack_require__(/*! ./store/main */ "./src/core/store/main.ts"));
 
 var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 
@@ -10464,6 +10464,327 @@ var LocalClient = /*#__PURE__*/function () {
 }();
 
 exports.default = LocalClient;
+
+/***/ }),
+
+/***/ "./src/core/components/fields/factory.ts":
+/*!***********************************************!*\
+  !*** ./src/core/components/fields/factory.ts ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _Boolean_ = _interopRequireDefault(__webpack_require__(/*! ./Boolean_ */ "./src/core/components/fields/Boolean_.js"));
+
+var _Number = _interopRequireDefault(__webpack_require__(/*! ./Number */ "./src/core/components/fields/Number.js"));
+
+var _JS = _interopRequireDefault(__webpack_require__(/*! ./JS */ "./src/core/components/fields/JS.js"));
+
+var _JSON_ = _interopRequireDefault(__webpack_require__(/*! ./JSON_ */ "./src/core/components/fields/JSON_.js"));
+
+var _String_ = _interopRequireDefault(__webpack_require__(/*! ./String_ */ "./src/core/components/fields/String_.js"));
+
+var _Where = _interopRequireDefault(__webpack_require__(/*! ./Where */ "./src/core/components/fields/Where.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var fields = {
+  Boolean_: _Boolean_["default"],
+  JS: _JS["default"],
+  JSON_: _JSON_["default"],
+  Number: _Number["default"],
+  String_: _String_["default"],
+  Where: _Where["default"]
+};
+
+var _default = function _default(fieldType) {
+  return fields[fieldType];
+};
+
+exports.default = _default;
+
+/***/ }),
+
+/***/ "./src/core/store/main.ts":
+/*!********************************!*\
+  !*** ./src/core/store/main.ts ***!
+  \********************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = exports.Store = void 0;
+
+var _mobx = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+
+var _reactDiagrams = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
+
+var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeModel */ "./src/core/NodeModel.ts"));
+
+var _ClientFactory = _interopRequireDefault(__webpack_require__(/*! ../clients/ClientFactory */ "./src/core/clients/ClientFactory.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Store = /*#__PURE__*/function () {
+  function Store() {
+    _classCallCheck(this, Store);
+
+    var _a;
+
+    this.diagram = {
+      engine: null,
+      availableNodes: [],
+      refresh: 0,
+      latestNode: null,
+      latestNodes: [],
+      nodeSerial: 1
+    };
+    this.metadata = {
+      running: false,
+      page: 'Workbench',
+      activeInspector: null,
+      stories: [],
+      activeStory: '',
+      server: (0, _ClientFactory["default"])((_a = window.dataStoryConfig.client) !== null && _a !== void 0 ? _a : 'LocalClient')
+    };
+    (0, _mobx.makeObservable)(this, {
+      diagram: _mobx.observable,
+      metadata: _mobx.observable,
+      addNode: _mobx.action.bound,
+      clearLinkLabels: _mobx.action.bound,
+      increaseNodeSerial: _mobx.action.bound,
+      goToInspector: _mobx.action.bound,
+      refreshDiagram: _mobx.action.bound,
+      setActiveInspector: _mobx.action.bound,
+      setActiveStory: _mobx.action.bound,
+      setAvailableNodes: _mobx.action.bound,
+      setEngine: _mobx.action.bound,
+      setLatestNode: _mobx.action.bound,
+      setPage: _mobx.action.bound,
+      setResults: _mobx.action.bound,
+      setNotRunning: _mobx.action.bound,
+      setRunning: _mobx.action.bound,
+      setStories: _mobx.action.bound
+    });
+  }
+
+  _createClass(Store, [{
+    key: "addNode",
+    value: function addNode(data) {
+      var node = new _NodeModel["default"](Object.assign({
+        serial: this.diagram.nodeSerial++
+      }, data));
+      this.attemptLinkToLatest(node);
+      this.smartInspectorNames(node);
+      this.diagram.engine.model.addNode(node);
+      this.diagram.latestNodes.unshift(node);
+      this.refreshDiagram();
+    }
+  }, {
+    key: "attemptLinkToLatest",
+    value: function attemptLinkToLatest(node) {
+      var _this = this;
+
+      var _a, _b, _c;
+
+      var linked = false;
+      this.diagram.latestNodes.find(function (latest) {
+        if (_this.diagram.engine.model.hasNode(latest)) {
+          if (_this.canLink(latest, node)) {
+            _this.setLinkedNodePosition(latest, node);
+
+            _this.diagram.engine.model.addAll(_this.getAutomatedLink(latest, node));
+
+            return linked = true;
+          }
+        }
+      });
+      if (linked) return;
+      var latest = (_a = this.diagram.latestNodes[0]) !== null && _a !== void 0 ? _a : null;
+      node.setPosition(((_b = latest === null || latest === void 0 ? void 0 : latest.position) === null || _b === void 0 ? void 0 : _b.x) ? latest.position.x : 100, ((_c = latest === null || latest === void 0 ? void 0 : latest.position) === null || _c === void 0 ? void 0 : _c.y) ? latest.position.y + 75 : 100);
+    }
+  }, {
+    key: "smartInspectorNames",
+    value: function smartInspectorNames(node) {
+      var _a, _b, _c, _d;
+
+      if (node.options.name != 'Inspect') return;
+      var nameParam = node.options.parameters.find(function (n) {
+        return n.name == 'node_name';
+      });
+      var sourceLink = (_c = Object.values((_b = (_a = node.ports) === null || _a === void 0 ? void 0 : _a.Input) === null || _b === void 0 ? void 0 : _b.links)[0]) !== null && _c !== void 0 ? _c : null;
+      if (!sourceLink) return;
+      var sourcePortName = (_d = sourceLink.sourcePort.options.name) !== null && _d !== void 0 ? _d : false;
+      if (!sourcePortName || sourcePortName == 'Output') return;
+      nameParam.value = sourcePortName;
+    }
+  }, {
+    key: "addNodeOld",
+    value: function addNodeOld(data) {
+      var node = new _NodeModel["default"](Object.assign({
+        serial: this.diagram.nodeSerial++
+      }, data));
+      node.setPosition(100, 100 + Math.random() * 100);
+      var latestNode = this.diagram.latestNode;
+
+      if (this.diagram.engine.model.hasNode(latestNode)) {
+        node.setPosition(latestNode.position.x + 200, latestNode.position.y);
+        var link = this.getAutomatedLink(latestNode, node);
+        if (link) this.diagram.engine.model.addAll(link);
+      }
+
+      this.diagram.engine.model.addNode(node);
+      this.setLatestNode(node);
+      this.refreshDiagram();
+    }
+  }, {
+    key: "clearLinkLabels",
+    value: function clearLinkLabels() {
+      Object.values(this.diagram.engine.model.layers[0].models).forEach(function (link) {
+        link.labels = [];
+      });
+    }
+  }, {
+    key: "getAutomatedLink",
+    value: function getAutomatedLink(from, to) {
+      var _a;
+
+      if (!this.canLink(from, to)) return;
+      var fromPort = (_a = Object.values(from.getOutPorts()).find(function (candidate) {
+        return Object.values(candidate.links).length === 0;
+      })) !== null && _a !== void 0 ? _a : Object.values(from.getOutPorts())[0];
+      var toPort = Object.values(to.getInPorts())[0];
+      var link = new _reactDiagrams.DefaultLinkModel();
+      link.setSourcePort(fromPort);
+      link.setTargetPort(toPort);
+      fromPort.reportPosition();
+      toPort.reportPosition();
+      return link;
+    }
+  }, {
+    key: "canLink",
+    value: function canLink(from, to) {
+      var _a, _b;
+
+      if (!from) return;
+      var fromPort = (_a = Object.values(from.getOutPorts())[0]) !== null && _a !== void 0 ? _a : false;
+      var toPort = (_b = Object.values(to.getInPorts())[0]) !== null && _b !== void 0 ? _b : false;
+      return fromPort && toPort;
+    }
+  }, {
+    key: "setLinkedNodePosition",
+    value: function setLinkedNodePosition(latest, node) {
+      var _a;
+
+      var fromPort = (_a = Object.values(latest.getOutPorts())[0]) !== null && _a !== void 0 ? _a : false;
+      node.setPosition(latest.position.x + 200, latest.position.y + Object.keys(fromPort.links).length * 75);
+    }
+  }, {
+    key: "goToInspector",
+    value: function goToInspector(id) {
+      this.metadata.activeInspector = id;
+      this.metadata.page = 'Inspector';
+    }
+  }, {
+    key: "nodesWithInspectables",
+    value: function nodesWithInspectables() {
+      this.diagram.refresh;
+      return this.diagram.engine.model.getNodes().filter(function (node) {
+        return node.isInspectable();
+      });
+    }
+  }, {
+    key: "refreshDiagram",
+    value: function refreshDiagram() {
+      this.diagram.refresh++;
+    }
+  }, {
+    key: "increaseNodeSerial",
+    value: function increaseNodeSerial() {
+      this.diagram.nodeSerial++;
+    }
+  }, {
+    key: "setActiveStory",
+    value: function setActiveStory(story) {
+      this.metadata.activeStory = story;
+    }
+  }, {
+    key: "setActiveInspector",
+    value: function setActiveInspector(nodeId) {
+      this.metadata.activeInspector = nodeId;
+    }
+  }, {
+    key: "setAvailableNodes",
+    value: function setAvailableNodes(nodes) {
+      this.diagram.availableNodes = nodes;
+    }
+  }, {
+    key: "setEngine",
+    value: function setEngine(engine) {
+      this.diagram.engine = engine;
+    }
+  }, {
+    key: "setLatestNode",
+    value: function setLatestNode(node) {
+      this.diagram.latestNode = node;
+    }
+  }, {
+    key: "setPage",
+    value: function setPage(name) {
+      this.clearLinkLabels();
+      this.metadata.page = name;
+    }
+  }, {
+    key: "setResults",
+    value: function setResults(results) {
+      this.results = results;
+    }
+  }, {
+    key: "setNotRunning",
+    value: function setNotRunning() {
+      var _this2 = this;
+
+      setTimeout(function () {
+        _this2.metadata.running = false;
+      }, 500);
+    }
+  }, {
+    key: "setRunning",
+    value: function setRunning() {
+      this.metadata.running = true;
+    }
+  }, {
+    key: "setStories",
+    value: function setStories(stories) {
+      this.metadata.stories = stories;
+    }
+  }]);
+
+  return Store;
+}();
+
+exports.Store = Store;
+
+var _default = window.store = new Store();
+
+exports.default = _default;
 
 /***/ }),
 
@@ -16247,53 +16568,6 @@ exports.default = Where;
 
 /***/ }),
 
-/***/ "./src/core/components/fields/factory.js":
-/*!***********************************************!*\
-  !*** ./src/core/components/fields/factory.js ***!
-  \***********************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.default = void 0;
-
-var _Boolean_ = _interopRequireDefault(__webpack_require__(/*! ./Boolean_ */ "./src/core/components/fields/Boolean_.js"));
-
-var _Number = _interopRequireDefault(__webpack_require__(/*! ./Number */ "./src/core/components/fields/Number.js"));
-
-var _JS = _interopRequireDefault(__webpack_require__(/*! ./JS */ "./src/core/components/fields/JS.js"));
-
-var _JSON_ = _interopRequireDefault(__webpack_require__(/*! ./JSON_ */ "./src/core/components/fields/JSON_.js"));
-
-var _String_ = _interopRequireDefault(__webpack_require__(/*! ./String_ */ "./src/core/components/fields/String_.js"));
-
-var _Where = _interopRequireDefault(__webpack_require__(/*! ./Where */ "./src/core/components/fields/Where.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-//import Sheet from './Sheet'
-var fields = {
-  Boolean_: _Boolean_["default"],
-  JS: _JS["default"],
-  JSON_: _JSON_["default"],
-  Number: _Number["default"],
-  //Sheet,
-  String_: _String_["default"],
-  Where: _Where["default"]
-};
-
-var _default = function _default(fieldType) {
-  return fields[fieldType];
-};
-
-exports.default = _default;
-
-/***/ }),
-
 /***/ "./src/core/components/modals/NodeWidgetModal.js":
 /*!*******************************************************!*\
   !*** ./src/core/components/modals/NodeWidgetModal.js ***!
@@ -16322,7 +16596,7 @@ var _lodash = _interopRequireDefault(__webpack_require__(/*! lodash */ "./node_m
 
 var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 
-var _factory = _interopRequireDefault(__webpack_require__(/*! ../fields/factory */ "./src/core/components/fields/factory.js"));
+var _factory = _interopRequireDefault(__webpack_require__(/*! ../fields/factory */ "./src/core/components/fields/factory.ts"));
 
 var _dec, _class;
 
@@ -17332,315 +17606,6 @@ exports.pages = pages;
 var _default = function _default(pageName) {
   return pages[pageName];
 };
-
-exports.default = _default;
-
-/***/ }),
-
-/***/ "./src/core/store/main.js":
-/*!********************************!*\
-  !*** ./src/core/store/main.js ***!
-  \********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.default = exports.Store = void 0;
-
-var _mobx = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
-
-var _reactDiagrams = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
-
-var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeModel */ "./src/core/NodeModel.ts"));
-
-var _lodash = _interopRequireDefault(__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"));
-
-var _ClientFactory = _interopRequireDefault(__webpack_require__(/*! ../clients/ClientFactory */ "./src/core/clients/ClientFactory.ts"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var Store = /*#__PURE__*/function () {
-  function Store() {
-    var _window$dataStoryConf;
-
-    _classCallCheck(this, Store);
-
-    _defineProperty(this, "diagram", {
-      engine: null,
-      availableNodes: [],
-      refresh: 0,
-      latestNode: null,
-      latestNodes: [],
-      nodeSerial: 1
-    });
-
-    _defineProperty(this, "metadata", {
-      running: false,
-      page: 'Workbench',
-      activeInspector: null,
-      stories: [],
-      activeStory: '',
-      server: (0, _ClientFactory["default"])((_window$dataStoryConf = window.dataStoryConfig.client) !== null && _window$dataStoryConf !== void 0 ? _window$dataStoryConf : 'LocalClient')
-    });
-
-    (0, _mobx.makeObservable)(this, {
-      // Observables
-      diagram: _mobx.observable,
-      metadata: _mobx.observable,
-      // Setters
-      addNode: _mobx.action.bound,
-      clearLinkLabels: _mobx.action.bound,
-      increaseNodeSerial: _mobx.action.bound,
-      goToInspector: _mobx.action.bound,
-      refreshDiagram: _mobx.action.bound,
-      setActiveInspector: _mobx.action.bound,
-      setActiveStory: _mobx.action.bound,
-      setAvailableNodes: _mobx.action.bound,
-      setEngine: _mobx.action.bound,
-      setLatestNode: _mobx.action.bound,
-      setPage: _mobx.action.bound,
-      setResults: _mobx.action.bound,
-      setNotRunning: _mobx.action.bound,
-      setRunning: _mobx.action.bound,
-      setStories: _mobx.action.bound // Getters 👇
-
-    });
-  }
-
-  _createClass(Store, [{
-    key: "addNode",
-    value: function addNode(data) {
-      var node = new _NodeModel["default"](_objectSpread({
-        serial: this.diagram.nodeSerial++
-      }, data));
-      this.attemptLinkToLatest(node);
-      this.smartInspectorNames(node);
-      this.diagram.engine.model.addNode(node);
-      this.diagram.latestNodes.unshift(node);
-      this.refreshDiagram();
-    }
-  }, {
-    key: "attemptLinkToLatest",
-    value: function attemptLinkToLatest(node) {
-      var _this = this,
-          _this$diagram$latestN,
-          _latest$position,
-          _latest$position2;
-
-      var linked = false; // Try to link to latest nodes
-
-      this.diagram.latestNodes.find(function (latest) {
-        if (_this.diagram.engine.model.hasNode(latest)) {
-          if (_this.canLink(latest, node)) {
-            // Spread the nodes nicely
-            _this.setLinkedNodePosition(latest, node); // Link to latest node
-
-
-            _this.diagram.engine.model.addAll(_this.getAutomatedLink(latest, node)); // Dont continue traversing latestNodes array
-
-
-            return linked = true;
-          }
-        }
-      });
-      if (linked) return; // Fallback 1: place below latest node
-      // Fallback 2: place at 100, 100
-
-      var latest = (_this$diagram$latestN = this.diagram.latestNodes[0]) !== null && _this$diagram$latestN !== void 0 ? _this$diagram$latestN : null;
-      node.setPosition(latest !== null && latest !== void 0 && (_latest$position = latest.position) !== null && _latest$position !== void 0 && _latest$position.x ? latest.position.x : 100, latest !== null && latest !== void 0 && (_latest$position2 = latest.position) !== null && _latest$position2 !== void 0 && _latest$position2.y ? latest.position.y + 75 : 100);
-    }
-  }, {
-    key: "smartInspectorNames",
-    value: function smartInspectorNames(node) {
-      var _Object$values$, _node$ports, _node$ports$Input, _sourceLink$sourcePor;
-
-      if (node.options.name != 'Inspect') return;
-      var nameParam = node.options.parameters.find(function (n) {
-        return n.name == 'node_name';
-      });
-      var sourceLink = (_Object$values$ = Object.values((_node$ports = node.ports) === null || _node$ports === void 0 ? void 0 : (_node$ports$Input = _node$ports.Input) === null || _node$ports$Input === void 0 ? void 0 : _node$ports$Input.links)[0]) !== null && _Object$values$ !== void 0 ? _Object$values$ : null;
-      if (!sourceLink) return;
-      var sourcePortName = (_sourceLink$sourcePor = sourceLink.sourcePort.options.name) !== null && _sourceLink$sourcePor !== void 0 ? _sourceLink$sourcePor : false; // It must be a specific name to make sense
-
-      if (!sourcePortName || sourcePortName == 'Output') return;
-      nameParam.value = sourcePortName;
-    }
-  }, {
-    key: "addNodeOld",
-    value: function addNodeOld(data) {
-      var node = new _NodeModel["default"](_objectSpread({
-        serial: this.diagram.nodeSerial++
-      }, data));
-      node.setPosition(100, 100 + Math.random() * 100);
-      var latestNode = this.diagram.latestNode;
-
-      if (this.diagram.engine.model.hasNode(latestNode)) {
-        node.setPosition(latestNode.position.x + 200, latestNode.position.y);
-        var link = this.getAutomatedLink(latestNode, node);
-        if (link) this.diagram.engine.model.addAll(link);
-      }
-
-      this.diagram.engine.model.addNode(node);
-      this.setLatestNode(node);
-      this.refreshDiagram();
-    }
-  }, {
-    key: "clearLinkLabels",
-    value: function clearLinkLabels() {
-      Object.values(this.diagram.engine.model.layers[0].models).forEach(function (link) {
-        link.labels = [];
-      });
-    }
-  }, {
-    key: "getAutomatedLink",
-    value: function getAutomatedLink(from, to) {
-      var _Object$values$find;
-
-      if (!this.canLink(from, to)) return; // fromPort: prefer first unused outPort. Otherwise defaults to first
-
-      var fromPort = (_Object$values$find = Object.values(from.getOutPorts()).find(function (candidate) {
-        return Object.values(candidate.links).length === 0;
-      })) !== null && _Object$values$find !== void 0 ? _Object$values$find : Object.values(from.getOutPorts())[0]; // toPort: the first inPort
-
-      var toPort = Object.values(to.getInPorts())[0]; // Links
-
-      var link = new _reactDiagrams.DefaultLinkModel();
-      link.setSourcePort(fromPort);
-      link.setTargetPort(toPort); // track: https://github.com/projectstorm/react-diagrams/issues/617
-      //link.addLabel(Math.floor(Math.random()*1000));
-      // Report
-
-      fromPort.reportPosition();
-      toPort.reportPosition();
-      return link;
-    }
-  }, {
-    key: "canLink",
-    value: function canLink(from, to) {
-      var _Object$values$2, _Object$values$3;
-
-      // Has from node?
-      if (!from) return; // Resolve ports
-
-      var fromPort = (_Object$values$2 = Object.values(from.getOutPorts())[0]) !== null && _Object$values$2 !== void 0 ? _Object$values$2 : false;
-      var toPort = (_Object$values$3 = Object.values(to.getInPorts())[0]) !== null && _Object$values$3 !== void 0 ? _Object$values$3 : false; // Ensure there are ports to connect to
-
-      return fromPort && toPort;
-    }
-  }, {
-    key: "setLinkedNodePosition",
-    value: function setLinkedNodePosition(latest, node) {
-      var _Object$values$4;
-
-      var fromPort = (_Object$values$4 = Object.values(latest.getOutPorts())[0]) !== null && _Object$values$4 !== void 0 ? _Object$values$4 : false;
-      node.setPosition(latest.position.x + 200, latest.position.y + Object.keys(fromPort.links).length * 75);
-    }
-  }, {
-    key: "goToInspector",
-    value: function goToInspector(id) {
-      this.metadata.activeInspector = id;
-      this.metadata.page = 'Inspector';
-    }
-  }, {
-    key: "nodesWithInspectables",
-    value: function nodesWithInspectables() {
-      // React diagram is not observable outside of its own context
-      // Reference the refresh counter to ensure we have the latest data
-      this.diagram.refresh; // Get all nodes with features
-
-      return this.diagram.engine.model.getNodes().filter(function (node) {
-        return node.isInspectable();
-      });
-    }
-  }, {
-    key: "refreshDiagram",
-    value: function refreshDiagram() {
-      this.diagram.refresh++;
-    }
-  }, {
-    key: "increaseNodeSerial",
-    value: function increaseNodeSerial() {
-      this.diagram.nodeSerial++;
-    }
-  }, {
-    key: "setActiveStory",
-    value: function setActiveStory(story) {
-      this.metadata.activeStory = story;
-    }
-  }, {
-    key: "setActiveInspector",
-    value: function setActiveInspector(nodeId) {
-      this.metadata.activeInspector = nodeId;
-    }
-  }, {
-    key: "setAvailableNodes",
-    value: function setAvailableNodes(nodes) {
-      this.diagram.availableNodes = nodes;
-    }
-  }, {
-    key: "setEngine",
-    value: function setEngine(engine) {
-      this.diagram.engine = engine;
-    }
-  }, {
-    key: "setLatestNode",
-    value: function setLatestNode(node) {
-      this.diagram.latestNode = node;
-    }
-  }, {
-    key: "setPage",
-    value: function setPage(name) {
-      this.clearLinkLabels();
-      this.metadata.page = name;
-    }
-  }, {
-    key: "setResults",
-    value: function setResults(results) {
-      this.results = results;
-    }
-  }, {
-    key: "setNotRunning",
-    value: function setNotRunning() {
-      var _this2 = this;
-
-      setTimeout(function () {
-        _this2.metadata.running = false;
-      }, 500);
-    }
-  }, {
-    key: "setRunning",
-    value: function setRunning() {
-      this.metadata.running = true;
-    }
-  }, {
-    key: "setStories",
-    value: function setStories(stories) {
-      this.metadata.stories = stories;
-    }
-  }]);
-
-  return Store;
-}();
-
-exports.Store = Store;
-
-var _default = window.store = new Store();
 
 exports.default = _default;
 
