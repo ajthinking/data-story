@@ -1,6 +1,6 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
-import * as _ from 'lodash'
+import _ from 'lodash'
 import NodeParameter from "../../core/NodeParameter";
 
 export default class RegExpFilter extends ServerNode {

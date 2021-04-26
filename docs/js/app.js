@@ -9569,21 +9569,24 @@ module.exports = {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _reactDiagrams = _interopRequireDefault(__webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js"));
+
+var _NodeModelFactory = _interopRequireDefault(__webpack_require__(/*! ./NodeModelFactory */ "./src/core/NodeModelFactory.js"));
+
+var _DiagramModel = _interopRequireDefault(__webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var react_diagrams_1 = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
-
-var NodeModelFactory_1 = __webpack_require__(/*! ./NodeModelFactory */ "./src/core/NodeModelFactory.js");
-
-var DiagramModel_1 = __webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.js");
 
 var EngineFactory = /*#__PURE__*/function () {
   function EngineFactory() {
@@ -9600,7 +9603,7 @@ var EngineFactory = /*#__PURE__*/function () {
     key: "load",
     value: function load(serializedModel) {
       var engine = this.getEngine();
-      var model = new DiagramModel_1["default"]();
+      var model = new _DiagramModel["default"]();
       model.deserializeModel(JSON.parse(serializedModel), engine);
       engine.setModel(model);
       return engine;
@@ -9611,16 +9614,16 @@ var EngineFactory = /*#__PURE__*/function () {
       var engine = this.getEngine();
       var state = engine.getStateMachine().getCurrentState();
       state.dragNewLink.config.allowLooseLinks = false;
-      engine.getNodeFactories().registerFactory(new NodeModelFactory_1["default"]());
-      var model = new DiagramModel_1["default"]();
+      engine.getNodeFactories().registerFactory(new _NodeModelFactory["default"]());
+      var model = new _DiagramModel["default"]();
       engine.setModel(model);
       return engine;
     }
   }, {
     key: "getEngine",
     value: function getEngine() {
-      var engine = react_diagrams_1["default"]();
-      engine.getNodeFactories().registerFactory(new NodeModelFactory_1["default"]());
+      var engine = (0, _reactDiagrams["default"])();
+      engine.getNodeFactories().registerFactory(new _NodeModelFactory["default"]());
       return engine;
     }
   }]);
@@ -9641,6 +9644,11 @@ exports.default = EngineFactory;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9648,10 +9656,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
 
 var Feature = /*#__PURE__*/function () {
   function Feature() {
@@ -9705,6 +9709,11 @@ exports.default = Feature;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.NodeDescription = void 0;
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -9722,11 +9731,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.NodeDescription = void 0;
 
 var NodeDescription = /*#__PURE__*/function () {
   function NodeDescription() {
@@ -9766,15 +9770,16 @@ exports.NodeDescription = NodeDescription;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
 
 var NodeParameter = /*#__PURE__*/function () {
   function NodeParameter(name) {
@@ -9828,6 +9833,13 @@ exports.default = NodeParameter;
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _reactDiagrams = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
@@ -9844,14 +9856,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var react_diagrams_1 = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
-
-var PortModel = /*#__PURE__*/function (_react_diagrams_1$Def) {
-  _inherits(PortModel, _react_diagrams_1$Def);
+var PortModel = /*#__PURE__*/function (_DefaultPortModel) {
+  _inherits(PortModel, _DefaultPortModel);
 
   var _super = _createSuper(PortModel);
 
@@ -9864,7 +9870,7 @@ var PortModel = /*#__PURE__*/function (_react_diagrams_1$Def) {
   }
 
   return PortModel;
-}(react_diagrams_1.DefaultPortModel);
+}(_reactDiagrams.DefaultPortModel);
 
 exports.default = PortModel;
 
@@ -9879,19 +9885,22 @@ exports.default = PortModel;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+
+var _nonCircularJsonStringify = __webpack_require__(/*! ../utils/nonCircularJsonStringify */ "./src/core/utils/nonCircularJsonStringify.ts");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-
-var nonCircularJsonStringify_1 = __webpack_require__(/*! ../utils/nonCircularJsonStringify */ "./src/core/utils/nonCircularJsonStringify.ts");
 
 var APIClient = /*#__PURE__*/function () {
   function APIClient() {
@@ -9905,13 +9914,13 @@ var APIClient = /*#__PURE__*/function () {
   _createClass(APIClient, [{
     key: "boot",
     value: function boot(options) {
-      return axios_1["default"].post(this.root + '/boot', options);
+      return _axios["default"].post(this.root + '/boot', options);
     }
   }, {
     key: "run",
     value: function run(model) {
-      return axios_1["default"].post(this.root + '/run', {
-        model: nonCircularJsonStringify_1.nonCircularJsonStringify(model.serialize())
+      return _axios["default"].post(this.root + '/run', {
+        model: (0, _nonCircularJsonStringify.nonCircularJsonStringify)(model.serialize())
       });
     }
   }, {
@@ -9940,19 +9949,24 @@ exports.default = APIClient;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
+exports.default = void 0;
 
-var APIClient_1 = __webpack_require__(/*! ./APIClient */ "./src/core/clients/APIClient.ts");
+var _APIClient = _interopRequireDefault(__webpack_require__(/*! ./APIClient */ "./src/core/clients/APIClient.ts"));
 
-var LocalClient_1 = __webpack_require__(/*! ./LocalClient */ "./src/core/clients/LocalClient.ts");
+var _LocalClient = _interopRequireDefault(__webpack_require__(/*! ./LocalClient */ "./src/core/clients/LocalClient.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var clients = {
-  APIClient: APIClient_1["default"],
-  LocalClient: LocalClient_1["default"]
+  APIClient: _APIClient["default"],
+  LocalClient: _LocalClient["default"]
 };
 
-exports.default = function (name) {
+var _default = function _default(name) {
   return new clients[name]();
 };
+
+exports.default = _default;
 
 /***/ }),
 
@@ -9965,19 +9979,22 @@ exports.default = function (name) {
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _Server = _interopRequireDefault(__webpack_require__(/*! ../../server/Server */ "./src/server/Server.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var Server_1 = __webpack_require__(/*! ../../server/Server */ "./src/server/Server.ts");
-
-var server = new Server_1["default"]();
+var server = new _Server["default"]();
 
 var LocalClient = /*#__PURE__*/function () {
   function LocalClient() {
@@ -10018,15 +10035,16 @@ exports.default = LocalClient;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
 
 var Cookie = /*#__PURE__*/function () {
   function Cookie() {
@@ -10064,14 +10082,17 @@ exports.default = Cookie;
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
+exports.default = void 0;
 
-exports.default = function () {
+var _default = function _default() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     var r = Math.random() * 16 | 0;
     var v = c === 'x' ? r : r & 0x3 | 0x8;
     return v.toString(16);
   });
 };
+
+exports.default = _default;
 
 /***/ }),
 
@@ -10087,7 +10108,8 @@ exports.default = function () {
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.default = {
+exports.default = void 0;
+var _default = {
   content: {
     'maxWidth': '800px',
     'top': '110px',
@@ -10104,6 +10126,7 @@ exports.default = {
     backgroundColor: 'rgba(255, 255, 255, 0.15)'
   }
 };
+exports.default = _default;
 
 /***/ }),
 
@@ -10116,12 +10139,12 @@ exports.default = {
 "use strict";
 
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
 exports.nonCircularJsonStringify = void 0;
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var nonCircularJsonStringify = function nonCircularJsonStringify(data) {
   var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
@@ -10153,7 +10176,18 @@ exports.nonCircularJsonStringify = nonCircularJsonStringify;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerDiagram = _interopRequireDefault(__webpack_require__(/*! ./ServerDiagram */ "./src/server/ServerDiagram.ts"));
+
+var _ServerNodeFactory = _interopRequireDefault(__webpack_require__(/*! ./ServerNodeFactory */ "./src/server/ServerNodeFactory.ts"));
+
+var _Cookie = _interopRequireDefault(__webpack_require__(/*! ../core/utils/Cookie */ "./src/core/utils/Cookie.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -10195,16 +10229,6 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerDiagram_1 = __webpack_require__(/*! ./ServerDiagram */ "./src/server/ServerDiagram.ts");
-
-var ServerNodeFactory_1 = __webpack_require__(/*! ./ServerNodeFactory */ "./src/server/ServerNodeFactory.ts");
-
-var Cookie_1 = __webpack_require__(/*! ../core/utils/Cookie */ "./src/core/utils/Cookie.ts");
-
 var Server = /*#__PURE__*/function () {
   function Server() {
     _classCallCheck(this, Server);
@@ -10234,7 +10258,7 @@ var Server = /*#__PURE__*/function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                return _context.abrupt("return", ServerDiagram_1["default"].hydrate(diagram, ServerNodeFactory_1["default"]).run());
+                return _context.abrupt("return", _ServerDiagram["default"].hydrate(diagram, _ServerNodeFactory["default"]).run());
 
               case 1:
               case "end":
@@ -10253,7 +10277,8 @@ var Server = /*#__PURE__*/function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 return _context2.abrupt("return", new Promise(function (success) {
-                  Cookie_1["default"].set(name, stringifiedModel);
+                  _Cookie["default"].set(name, stringifiedModel);
+
                   return success(true);
                 }));
 
@@ -10268,7 +10293,7 @@ var Server = /*#__PURE__*/function () {
   }, {
     key: "nodeDescriptions",
     value: function nodeDescriptions() {
-      return ServerNodeFactory_1["default"].all().map(function (node) {
+      return _ServerNodeFactory["default"].all().map(function (node) {
         return node.describe();
       });
     }
@@ -10289,6 +10314,11 @@ exports.default = Server;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
 
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
 
@@ -10369,10 +10399,6 @@ var __asyncValues = void 0 && (void 0).__asyncValues || function (o) {
     }, reject);
   }
 };
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
 
 var ServerDiagram = /*#__PURE__*/function () {
   function ServerDiagram() {
@@ -10532,6 +10558,27 @@ exports.default = ServerDiagram;
 "use strict";
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _NodeDescription = __webpack_require__(/*! ../core/NodeDescription */ "./src/core/NodeDescription.ts");
+
+var _ = _interopRequireWildcard(__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"));
+
+var _UID = _interopRequireDefault(__webpack_require__(/*! ../core/utils/UID */ "./src/core/utils/UID.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../core/NodeParameter */ "./src/core/NodeParameter.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10560,18 +10607,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var NodeDescription_1 = __webpack_require__(/*! ../core/NodeDescription */ "./src/core/NodeDescription.ts");
-
-var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-
-var UID_1 = __webpack_require__(/*! ../core/utils/UID */ "./src/core/utils/UID.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
 var ServerNode = /*#__PURE__*/function () {
   function ServerNode(diagram) {
     var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -10581,7 +10616,7 @@ var ServerNode = /*#__PURE__*/function () {
     var _a, _b;
 
     this.diagram = diagram;
-    this.id = UID_1["default"]();
+    this.id = (0, _UID["default"])();
     this.options = {
       parameters: description.parameters
     };
@@ -10695,7 +10730,7 @@ var ServerNode = /*#__PURE__*/function () {
   }, {
     key: "describe",
     value: function describe() {
-      return NodeDescription_1.NodeDescription.deserialize({
+      return _NodeDescription.NodeDescription.deserialize({
         category: this.category,
         editableInPorts: this.editableInPorts,
         editableOutPorts: this.editableOutPorts,
@@ -10705,7 +10740,7 @@ var ServerNode = /*#__PURE__*/function () {
         name: this.name,
         nodeReact: this.nodeReact,
         serverNodeType: this.name,
-        parameters: [NodeParameter_1["default"].make('node_name').withValue(this.name)],
+        parameters: [_NodeParameter["default"].make('node_name').withValue(this.name)],
         summary: this.summary
       });
     }
@@ -10735,49 +10770,52 @@ ServerNode.summary = 'No summary provided.';
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _Create = _interopRequireDefault(__webpack_require__(/*! ./nodes/Create */ "./src/server/nodes/Create.ts"));
+
+var _CreateGrid = _interopRequireDefault(__webpack_require__(/*! ./nodes/CreateGrid */ "./src/server/nodes/CreateGrid.ts"));
+
+var _Comment = _interopRequireDefault(__webpack_require__(/*! ./nodes/Comment */ "./src/server/nodes/Comment.ts"));
+
+var _HTTPRequest = _interopRequireDefault(__webpack_require__(/*! ./nodes/HTTPRequest */ "./src/server/nodes/HTTPRequest.ts"));
+
+var _CreateAttribute = _interopRequireDefault(__webpack_require__(/*! ./nodes/CreateAttribute */ "./src/server/nodes/CreateAttribute.ts"));
+
+var _CreateJSON = _interopRequireDefault(__webpack_require__(/*! ./nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts"));
+
+var _CreateSequence = _interopRequireDefault(__webpack_require__(/*! ./nodes/CreateSequence */ "./src/server/nodes/CreateSequence.ts"));
+
+var _DownloadJSON = _interopRequireDefault(__webpack_require__(/*! ./nodes/DownloadJSON */ "./src/server/nodes/DownloadJSON.ts"));
+
+var _Evaluate = _interopRequireDefault(__webpack_require__(/*! ./nodes/Evaluate */ "./src/server/nodes/Evaluate.ts"));
+
+var _Flatten = _interopRequireDefault(__webpack_require__(/*! ./nodes/Flatten */ "./src/server/nodes/Flatten.ts"));
+
+var _Inspect = _interopRequireDefault(__webpack_require__(/*! ./nodes/Inspect */ "./src/server/nodes/Inspect.ts"));
+
+var _Log = _interopRequireDefault(__webpack_require__(/*! ./nodes/Log */ "./src/server/nodes/Log.ts"));
+
+var _Map = _interopRequireDefault(__webpack_require__(/*! ./nodes/Map */ "./src/server/nodes/Map.ts"));
+
+var _RegExpFilter = _interopRequireDefault(__webpack_require__(/*! ./nodes/RegExpFilter */ "./src/server/nodes/RegExpFilter.ts"));
+
+var _DeleteRepositories = _interopRequireDefault(__webpack_require__(/*! ./nodes/github/DeleteRepositories */ "./src/server/nodes/github/DeleteRepositories.ts"));
+
+var _Repositories = _interopRequireDefault(__webpack_require__(/*! ./nodes/github/Repositories */ "./src/server/nodes/github/Repositories.ts"));
+
+var _Sleep = _interopRequireDefault(__webpack_require__(/*! ./nodes/Sleep */ "./src/server/nodes/Sleep.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var Create_1 = __webpack_require__(/*! ./nodes/Create */ "./src/server/nodes/Create.ts");
-
-var CreateGrid_1 = __webpack_require__(/*! ./nodes/CreateGrid */ "./src/server/nodes/CreateGrid.ts");
-
-var Comment_1 = __webpack_require__(/*! ./nodes/Comment */ "./src/server/nodes/Comment.ts");
-
-var HTTPRequest_1 = __webpack_require__(/*! ./nodes/HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
-
-var CreateAttribute_1 = __webpack_require__(/*! ./nodes/CreateAttribute */ "./src/server/nodes/CreateAttribute.ts");
-
-var CreateJSON_1 = __webpack_require__(/*! ./nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts");
-
-var CreateSequence_1 = __webpack_require__(/*! ./nodes/CreateSequence */ "./src/server/nodes/CreateSequence.ts");
-
-var DownloadJSON_1 = __webpack_require__(/*! ./nodes/DownloadJSON */ "./src/server/nodes/DownloadJSON.ts");
-
-var Evaluate_1 = __webpack_require__(/*! ./nodes/Evaluate */ "./src/server/nodes/Evaluate.ts");
-
-var Flatten_1 = __webpack_require__(/*! ./nodes/Flatten */ "./src/server/nodes/Flatten.ts");
-
-var Inspect_1 = __webpack_require__(/*! ./nodes/Inspect */ "./src/server/nodes/Inspect.ts");
-
-var Log_1 = __webpack_require__(/*! ./nodes/Log */ "./src/server/nodes/Log.ts");
-
-var Map_1 = __webpack_require__(/*! ./nodes/Map */ "./src/server/nodes/Map.ts");
-
-var RegExpFilter_1 = __webpack_require__(/*! ./nodes/RegExpFilter */ "./src/server/nodes/RegExpFilter.ts");
-
-var DeleteRepositories_1 = __webpack_require__(/*! ./nodes/github/DeleteRepositories */ "./src/server/nodes/github/DeleteRepositories.ts");
-
-var Repositories_1 = __webpack_require__(/*! ./nodes/github/Repositories */ "./src/server/nodes/github/Repositories.ts");
-
-var Sleep_1 = __webpack_require__(/*! ./nodes/Sleep */ "./src/server/nodes/Sleep.ts");
 
 var ServerNodeFactory = /*#__PURE__*/function () {
   function ServerNodeFactory() {
@@ -10811,23 +10849,23 @@ var ServerNodeFactory = /*#__PURE__*/function () {
 
 exports.default = ServerNodeFactory;
 ServerNodeFactory.nodes = {
-  Comment: Comment_1["default"],
-  Create: Create_1["default"],
-  CreateAttribute: CreateAttribute_1["default"],
-  CreateGrid: CreateGrid_1["default"],
-  CreateSequence: CreateSequence_1["default"],
-  CreateJSON: CreateJSON_1["default"],
-  DeleteRepositories: DeleteRepositories_1["default"],
-  DownloadJSON: DownloadJSON_1["default"],
-  Evaluate: Evaluate_1["default"],
-  Flatten: Flatten_1["default"],
-  HTTPRequest: HTTPRequest_1["default"],
-  Inspect: Inspect_1["default"],
-  Log: Log_1["default"],
-  Map: Map_1["default"],
-  RegExpFilter: RegExpFilter_1["default"],
-  Repositories: Repositories_1["default"],
-  Sleep: Sleep_1["default"]
+  Comment: _Comment["default"],
+  Create: _Create["default"],
+  CreateAttribute: _CreateAttribute["default"],
+  CreateGrid: _CreateGrid["default"],
+  CreateSequence: _CreateSequence["default"],
+  CreateJSON: _CreateJSON["default"],
+  DeleteRepositories: _DeleteRepositories["default"],
+  DownloadJSON: _DownloadJSON["default"],
+  Evaluate: _Evaluate["default"],
+  Flatten: _Flatten["default"],
+  HTTPRequest: _HTTPRequest["default"],
+  Inspect: _Inspect["default"],
+  Log: _Log["default"],
+  Map: _Map["default"],
+  RegExpFilter: _RegExpFilter["default"],
+  Repositories: _Repositories["default"],
+  Sleep: _Sleep["default"]
 };
 
 /***/ }),
@@ -10842,6 +10880,15 @@ ServerNodeFactory.nodes = {
 
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10863,14 +10910,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var Comment = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(Comment, _ServerNode_1$default);
+var Comment = /*#__PURE__*/function (_ServerNode) {
+  _inherits(Comment, _ServerNode);
 
   var _super = _createSuper(Comment);
 
@@ -10886,7 +10927,7 @@ var Comment = /*#__PURE__*/function (_ServerNode_1$default) {
   }]);
 
   return Comment;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = Comment;
 Comment.category = 'Workflow';
@@ -10908,7 +10949,16 @@ Comment.nodeReact = 'Comment';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _Feature = _interopRequireDefault(__webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -10964,16 +11014,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
-
-var Create = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(Create, _ServerNode_1$default);
+var Create = /*#__PURE__*/function (_ServerNode) {
+  _inherits(Create, _ServerNode);
 
   var _super = _createSuper(Create);
 
@@ -10991,7 +11033,7 @@ var Create = /*#__PURE__*/function (_ServerNode_1$default) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.output([new Feature_1["default"]()]);
+                this.output([new _Feature["default"]()]);
 
               case 1:
               case "end":
@@ -11004,7 +11046,7 @@ var Create = /*#__PURE__*/function (_ServerNode_1$default) {
   }]);
 
   return Create;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = Create;
 Create.category = 'Workflow';
@@ -11024,7 +11066,16 @@ Create.inPorts = [];
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -11084,16 +11135,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var CreateAttribute = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(CreateAttribute, _ServerNode_1$default);
+var CreateAttribute = /*#__PURE__*/function (_ServerNode) {
+  _inherits(CreateAttribute, _ServerNode);
 
   var _super = _createSuper(CreateAttribute);
 
@@ -11132,13 +11175,13 @@ var CreateAttribute = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(CreateAttribute), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('attribute'), NodeParameter_1["default"].make('value'));
+      description.parameters.push(_NodeParameter["default"].make('attribute'), _NodeParameter["default"].make('value'));
       return description;
     }
   }]);
 
   return CreateAttribute;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = CreateAttribute;
 CreateAttribute.category = 'Workflow';
@@ -11157,7 +11200,18 @@ CreateAttribute.summary = 'Create a new attribute from an expression';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _Feature = _interopRequireDefault(__webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -11217,18 +11271,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var CreateGrid = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(CreateGrid, _ServerNode_1$default);
+var CreateGrid = /*#__PURE__*/function (_ServerNode) {
+  _inherits(CreateGrid, _ServerNode);
 
   var _super = _createSuper(CreateGrid);
 
@@ -11257,7 +11301,7 @@ var CreateGrid = /*#__PURE__*/function (_ServerNode_1$default) {
 
                 for (x = 0; x < gridSizeX; x++) {
                   for (y = 0; y < gridSizeY; y++) {
-                    features.push(new Feature_1["default"]({
+                    features.push(new _Feature["default"]({
                       x: gridStartX + x * gridSpacingX,
                       y: gridStartY + y * gridSpacingY
                     }));
@@ -11279,13 +11323,13 @@ var CreateGrid = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(CreateGrid), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('grid_size_x').withFieldType("Number").withValue(10), NodeParameter_1["default"].make('grid_size_y').withFieldType("Number").withValue(10), NodeParameter_1["default"].make('grid_start_x').withFieldType("Number").withValue(0), NodeParameter_1["default"].make('grid_start_y').withFieldType("Number").withValue(0), NodeParameter_1["default"].make('grid_spacing_x').withFieldType("Number").withValue(1), NodeParameter_1["default"].make('grid_spacing_y').withFieldType("Number").withValue(1));
+      description.parameters.push(_NodeParameter["default"].make('grid_size_x').withFieldType("Number").withValue(10), _NodeParameter["default"].make('grid_size_y').withFieldType("Number").withValue(10), _NodeParameter["default"].make('grid_start_x').withFieldType("Number").withValue(0), _NodeParameter["default"].make('grid_start_y').withFieldType("Number").withValue(0), _NodeParameter["default"].make('grid_spacing_x').withFieldType("Number").withValue(1), _NodeParameter["default"].make('grid_spacing_y').withFieldType("Number").withValue(1));
       return description;
     }
   }]);
 
   return CreateGrid;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = CreateGrid;
 CreateGrid.category = 'Reader';
@@ -11305,7 +11349,18 @@ CreateGrid.summary = 'Create a set of objects with coordinates x and y';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _Feature = _interopRequireDefault(__webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -11365,18 +11420,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var CreateJSON = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(CreateJSON, _ServerNode_1$default);
+var CreateJSON = /*#__PURE__*/function (_ServerNode) {
+  _inherits(CreateJSON, _ServerNode);
 
   var _super = _createSuper(CreateJSON);
 
@@ -11395,7 +11440,7 @@ var CreateJSON = /*#__PURE__*/function (_ServerNode_1$default) {
             switch (_context.prev = _context.next) {
               case 0:
                 this.output(JSON.parse(this.getParameterValue('features')).map(function (item) {
-                  return new Feature_1["default"](item);
+                  return new _Feature["default"](item);
                 }));
 
               case 1:
@@ -11411,13 +11456,13 @@ var CreateJSON = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(CreateJSON), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('features').withFieldType("JSON_").withValue('[{ "resource": "todos"}]'));
+      description.parameters.push(_NodeParameter["default"].make('features').withFieldType("JSON_").withValue('[{ "resource": "todos"}]'));
       return description;
     }
   }]);
 
   return CreateJSON;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = CreateJSON;
 CreateJSON.category = 'Reader';
@@ -11437,7 +11482,18 @@ CreateJSON.summary = 'Create features from JSON';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _Feature = _interopRequireDefault(__webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -11497,18 +11553,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var CreateSequence = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(CreateSequence, _ServerNode_1$default);
+var CreateSequence = /*#__PURE__*/function (_ServerNode) {
+  _inherits(CreateSequence, _ServerNode);
 
   var _super = _createSuper(CreateSequence);
 
@@ -11529,7 +11575,7 @@ var CreateSequence = /*#__PURE__*/function (_ServerNode_1$default) {
               case 0:
                 count = parseInt(this.getParameterValue('number_of_features_to_create'));
                 this.output(Array.from(Array(count).keys()).map(function (i) {
-                  return new Feature_1["default"]({
+                  return new _Feature["default"]({
                     creation_id: i
                   });
                 }));
@@ -11547,13 +11593,13 @@ var CreateSequence = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(CreateSequence), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('number_of_features_to_create').withFieldType("Number").withValue(10));
+      description.parameters.push(_NodeParameter["default"].make('number_of_features_to_create').withFieldType("Number").withValue(10));
       return description;
     }
   }]);
 
   return CreateSequence;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = CreateSequence;
 CreateSequence.category = 'Reader';
@@ -11573,7 +11619,18 @@ CreateSequence.summary = 'Create a sequence of objects';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _fileSaver = __webpack_require__(/*! file-saver */ "./node_modules/file-saver/dist/FileSaver.min.js");
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -11633,18 +11690,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var file_saver_1 = __webpack_require__(/*! file-saver */ "./node_modules/file-saver/dist/FileSaver.min.js");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var DownloadJSON = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(DownloadJSON, _ServerNode_1$default);
+var DownloadJSON = /*#__PURE__*/function (_ServerNode) {
+  _inherits(DownloadJSON, _ServerNode);
 
   var _super = _createSuper(DownloadJSON);
 
@@ -11671,7 +11718,7 @@ var DownloadJSON = /*#__PURE__*/function (_ServerNode_1$default) {
                 blob = new Blob([json], {
                   type: "text/plain;charset=utf-8"
                 });
-                file_saver_1.saveAs(blob, filename);
+                (0, _fileSaver.saveAs)(blob, filename);
 
               case 5:
               case "end":
@@ -11686,13 +11733,13 @@ var DownloadJSON = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(DownloadJSON), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('filename').withValue('data.json'));
+      description.parameters.push(_NodeParameter["default"].make('filename').withValue('data.json'));
       return description;
     }
   }]);
 
   return DownloadJSON;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = DownloadJSON;
 DownloadJSON.category = 'Workflow';
@@ -11712,7 +11759,16 @@ DownloadJSON.outPorts = [];
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -11772,16 +11828,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var Evaluate = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(Evaluate, _ServerNode_1$default);
+var Evaluate = /*#__PURE__*/function (_ServerNode) {
+  _inherits(Evaluate, _ServerNode);
 
   var _super = _createSuper(Evaluate);
 
@@ -11819,13 +11867,13 @@ var Evaluate = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(Evaluate), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('expression').withFieldType('JS'));
+      description.parameters.push(_NodeParameter["default"].make('expression').withFieldType('JS'));
       return description;
     }
   }]);
 
   return Evaluate;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = Evaluate;
 Evaluate.category = 'Workflow';
@@ -11844,7 +11892,16 @@ Evaluate.summary = "Evaluate javascript";
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _Feature = _interopRequireDefault(__webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -11900,16 +11957,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var Flatten = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(Flatten, _ServerNode_1$default);
+var Flatten = /*#__PURE__*/function (_ServerNode) {
+  _inherits(Flatten, _ServerNode);
 
   var _super = _createSuper(Flatten);
 
@@ -11930,7 +11979,7 @@ var Flatten = /*#__PURE__*/function (_ServerNode_1$default) {
                 this.output(this.input().map(function (item) {
                   return item.original;
                 }).flat().map(function (item) {
-                  return new Feature_1["default"](item);
+                  return new _Feature["default"](item);
                 }));
 
               case 1:
@@ -11944,7 +11993,7 @@ var Flatten = /*#__PURE__*/function (_ServerNode_1$default) {
   }]);
 
   return Flatten;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = Flatten;
 Flatten.category = 'Workflow';
@@ -11963,7 +12012,20 @@ Flatten.summary = 'Flatten arrays';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
+
+var _Feature = _interopRequireDefault(__webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -12049,20 +12111,8 @@ var __asyncValues = void 0 && (void 0).__asyncValues || function (o) {
   }
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-
-var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var HTTPRequest = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(HTTPRequest, _ServerNode_1$default);
+var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
+  _inherits(HTTPRequest, _ServerNode);
 
   var _super = _createSuper(HTTPRequest);
 
@@ -12105,7 +12155,7 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode_1$default) {
                 _context.next = 9;
                 return this.request(feature).then(function (result) {
                   if (result) {
-                    _this.output([new Feature_1["default"](result)], 'Response');
+                    _this.output([new _Feature["default"](result)], 'Response');
                   }
                 });
 
@@ -12164,15 +12214,15 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode_1$default) {
     key: "request",
     value: function request(feature) {
       if (this.getParameterValue('verb', feature) == 'GET') {
-        return axios_1["default"].get(this.getParameterValue('url', feature), this.getParameterValue('config'));
+        return _axios["default"].get(this.getParameterValue('url', feature), this.getParameterValue('config'));
       }
 
       if (this.getParameterValue('verb') == 'POST') {
-        return axios_1["default"].post(this.getParameterValue('url', feature), this.getParameterValue('data'), this.getParameterValue('config'));
+        return _axios["default"].post(this.getParameterValue('url', feature), this.getParameterValue('data'), this.getParameterValue('config'));
       }
 
       if (this.getParameterValue('verb') == 'DELETE') {
-        return axios_1["default"]["delete"](this.getParameterValue('url', feature), JSON.parse(this.getParameterValue('config')));
+        return _axios["default"]["delete"](this.getParameterValue('url', feature), JSON.parse(this.getParameterValue('config')));
       }
     }
   }], [{
@@ -12180,13 +12230,13 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(HTTPRequest), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), NodeParameter_1["default"].make('verb').withValue('GET'), NodeParameter_1["default"].make('data').withFieldType("JSON_").withValue('{}'), NodeParameter_1["default"].make('config').withFieldType("JSON_").withValue('{}'));
+      description.parameters.push(_NodeParameter["default"].make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), _NodeParameter["default"].make('verb').withValue('GET'), _NodeParameter["default"].make('data').withFieldType("JSON_").withValue('{}'), _NodeParameter["default"].make('config').withFieldType("JSON_").withValue('{}'));
       return description;
     }
   }]);
 
   return HTTPRequest;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = HTTPRequest;
 HTTPRequest.category = 'Reader';
@@ -12207,7 +12257,14 @@ HTTPRequest.summary = 'Make a HTTP request';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -12263,14 +12320,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var Inspect = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(Inspect, _ServerNode_1$default);
+var Inspect = /*#__PURE__*/function (_ServerNode) {
+  _inherits(Inspect, _ServerNode);
 
   var _super = _createSuper(Inspect);
 
@@ -12301,7 +12352,7 @@ var Inspect = /*#__PURE__*/function (_ServerNode_1$default) {
   }]);
 
   return Inspect;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = Inspect;
 Inspect.category = 'Workflow';
@@ -12321,7 +12372,14 @@ Inspect.outPorts = [];
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -12377,14 +12435,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var Log = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(Log, _ServerNode_1$default);
+var Log = /*#__PURE__*/function (_ServerNode) {
+  _inherits(Log, _ServerNode);
 
   var _super = _createSuper(Log);
 
@@ -12422,7 +12474,7 @@ var Log = /*#__PURE__*/function (_ServerNode_1$default) {
   }]);
 
   return Log;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = Log;
 Log.category = 'Workflow';
@@ -12442,7 +12494,18 @@ Log.outPorts = [];
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _Feature = _interopRequireDefault(__webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -12502,18 +12565,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var Feature_1 = __webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts");
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var Map = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(Map, _ServerNode_1$default);
+var Map = /*#__PURE__*/function (_ServerNode) {
+  _inherits(Map, _ServerNode);
 
   var _super = _createSuper(Map);
 
@@ -12538,7 +12591,7 @@ var Map = /*#__PURE__*/function (_ServerNode_1$default) {
                   var mapped = paths.reduce(function (carry, path) {
                     return carry[path];
                   }, item.original);
-                  return new Feature_1["default"](mapped);
+                  return new _Feature["default"](mapped);
                 }));
 
               case 3:
@@ -12554,13 +12607,13 @@ var Map = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(Map), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('property').withValue('data'));
+      description.parameters.push(_NodeParameter["default"].make('property').withValue('data'));
       return description;
     }
   }]);
 
   return Map;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = Map;
 Map.category = 'Workflow';
@@ -12579,7 +12632,18 @@ Map.summary = 'Map into a property';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _lodash = _interopRequireDefault(__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -12639,18 +12703,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var _ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var RegExpFilter = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(RegExpFilter, _ServerNode_1$default);
+var RegExpFilter = /*#__PURE__*/function (_ServerNode) {
+  _inherits(RegExpFilter, _ServerNode);
 
   var _super = _createSuper(RegExpFilter);
 
@@ -12706,7 +12760,7 @@ var RegExpFilter = /*#__PURE__*/function (_ServerNode_1$default) {
   }, {
     key: "getExpression",
     value: function getExpression() {
-      var cleaned = _.trim(this.getParameter('expression').value, '/');
+      var cleaned = _lodash["default"].trim(this.getParameter('expression').value, '/');
 
       return RegExp(cleaned);
     }
@@ -12715,13 +12769,13 @@ var RegExpFilter = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(RegExpFilter), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('attribute').withValue('name'), NodeParameter_1["default"].make('expression').withValue('/test|draft|dummy/'));
+      description.parameters.push(_NodeParameter["default"].make('attribute').withValue('name'), _NodeParameter["default"].make('expression').withValue('/test|draft|dummy/'));
       return description;
     }
   }]);
 
   return RegExpFilter;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = RegExpFilter;
 RegExpFilter.category = 'Workflow';
@@ -12741,7 +12795,16 @@ RegExpFilter.outPorts = ['Passed', 'Failed'];
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
 var _regenerator = _interopRequireDefault(__webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js"));
+
+var _ServerNode2 = _interopRequireDefault(__webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts"));
+
+var _NodeParameter = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -12801,16 +12864,8 @@ var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P
   });
 };
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var ServerNode_1 = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-
-var NodeParameter_1 = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
-
-var Sleep = /*#__PURE__*/function (_ServerNode_1$default) {
-  _inherits(Sleep, _ServerNode_1$default);
+var Sleep = /*#__PURE__*/function (_ServerNode) {
+  _inherits(Sleep, _ServerNode);
 
   var _super = _createSuper(Sleep);
 
@@ -12854,13 +12909,13 @@ var Sleep = /*#__PURE__*/function (_ServerNode_1$default) {
     value: function describe() {
       var description = _get(_getPrototypeOf(Sleep), "describe", this).call(this);
 
-      description.parameters.push(NodeParameter_1["default"].make('seconds_to_sleep').withFieldType("Number").withValue(5));
+      description.parameters.push(_NodeParameter["default"].make('seconds_to_sleep').withFieldType("Number").withValue(5));
       return description;
     }
   }]);
 
   return Sleep;
-}(ServerNode_1["default"]);
+}(_ServerNode2["default"]);
 
 exports.default = Sleep;
 Sleep.category = 'Workflow';
@@ -12878,6 +12933,15 @@ Sleep.summary = 'Sleep x seconds';
 
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _HTTPRequest2 = _interopRequireDefault(__webpack_require__(/*! ../HTTPRequest */ "./src/server/nodes/HTTPRequest.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12903,14 +12967,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var HTTPRequest_1 = __webpack_require__(/*! ../HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
-
-var DeleteRepositories = /*#__PURE__*/function (_HTTPRequest_1$defaul) {
-  _inherits(DeleteRepositories, _HTTPRequest_1$defaul);
+var DeleteRepositories = /*#__PURE__*/function (_HTTPRequest) {
+  _inherits(DeleteRepositories, _HTTPRequest);
 
   var _super = _createSuper(DeleteRepositories);
 
@@ -12942,7 +13000,7 @@ var DeleteRepositories = /*#__PURE__*/function (_HTTPRequest_1$defaul) {
   }]);
 
   return DeleteRepositories;
-}(HTTPRequest_1["default"]);
+}(_HTTPRequest2["default"]);
 
 exports.default = DeleteRepositories;
 DeleteRepositories.category = 'Github';
@@ -12960,6 +13018,15 @@ DeleteRepositories.summary = 'Delete github repositores';
 
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _HTTPRequest2 = _interopRequireDefault(__webpack_require__(/*! ../HTTPRequest */ "./src/server/nodes/HTTPRequest.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12985,14 +13052,8 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-
-var HTTPRequest_1 = __webpack_require__(/*! ../HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
-
-var Repositories = /*#__PURE__*/function (_HTTPRequest_1$defaul) {
-  _inherits(Repositories, _HTTPRequest_1$defaul);
+var Repositories = /*#__PURE__*/function (_HTTPRequest) {
+  _inherits(Repositories, _HTTPRequest);
 
   var _super = _createSuper(Repositories);
 
@@ -13016,7 +13077,7 @@ var Repositories = /*#__PURE__*/function (_HTTPRequest_1$defaul) {
   }]);
 
   return Repositories;
-}(HTTPRequest_1["default"]);
+}(_HTTPRequest2["default"]);
 
 exports.default = Repositories;
 Repositories.category = 'Github';
