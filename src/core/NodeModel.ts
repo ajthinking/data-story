@@ -4,7 +4,11 @@ import _ from 'lodash'
 import UID from './utils/UID'
 
 export default class NodeModel extends DefaultNodeModel {
-	constructor(options = {}) {
+    options: any
+    parent: any
+    features: []
+
+	constructor(options) {
 		super({
 			...options,
             type: 'NodeModel',
@@ -43,10 +47,6 @@ export default class NodeModel extends DefaultNodeModel {
 		};
     }
 
-	deserialize(ob, engine) {
-        super.deserialize(ob, engine);
-    }
-
     parameter(name) {
         return this.options.parameters.find((parameter) => {
             return parameter.name == name
@@ -74,8 +74,8 @@ export default class NodeModel extends DefaultNodeModel {
     }
 
     incomingPortOrigins() {
-        return Object.values(this.getInPorts()).reduce((origins, port) => {
-            origins[port.options.id] = Object.values(port.links).map(link => link.sourcePort.options.id)
+        return Object.values(this.getInPorts()).reduce((origins, port: any) => {
+            origins[port.options.id] = Object.values(port.links).map((link:any) => link.sourcePort.options.id)
             return origins
         }, {})
     }
@@ -87,10 +87,10 @@ export default class NodeModel extends DefaultNodeModel {
         }
 
         let inPorts = Object.values(this.getInPorts())
-        let linkLists = inPorts.map(port => port.links).flat()
+        let linkLists = inPorts.map((port: any) => port.links).flat()
         let links = linkLists.map(linkList => Object.values(linkList)).flat()
 
-        let dependencies = links.map(link => link.sourcePort.parent)
+        let dependencies = links.map((link: any) => link.sourcePort.parent)
 
         let deepDependencies = dependencies.map(d => d.dependencies())
 

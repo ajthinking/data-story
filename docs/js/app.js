@@ -9761,6 +9761,187 @@ exports.NodeDescription = NodeDescription;
 
 /***/ }),
 
+/***/ "./src/core/NodeModel.ts":
+/*!*******************************!*\
+  !*** ./src/core/NodeModel.ts ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _reactDiagrams = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
+
+var _PortModel = _interopRequireDefault(__webpack_require__(/*! ./PortModel */ "./src/core/PortModel.ts"));
+
+var _lodash = _interopRequireDefault(__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"));
+
+var _UID = _interopRequireDefault(__webpack_require__(/*! ./utils/UID */ "./src/core/utils/UID.ts"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
+  _inherits(NodeModel, _DefaultNodeModel);
+
+  var _super = _createSuper(NodeModel);
+
+  function NodeModel(options) {
+    var _this;
+
+    _classCallCheck(this, NodeModel);
+
+    _this = _super.call(this, Object.assign(Object.assign({}, options), {
+      type: 'NodeModel',
+      id: "Node_".concat(options.name, "_").concat(options.serial, "_").concat((0, _UID["default"])())
+    }));
+
+    _this.options.inPorts.forEach(function (name) {
+      _this.addPort(new _PortModel["default"]({
+        "in": true,
+        name: name,
+        parent: _assertThisInitialized(_this)
+      }));
+    });
+
+    _this.options.outPorts.forEach(function (name) {
+      _this.addPort(new _PortModel["default"]({
+        "in": false,
+        name: name,
+        parent: _assertThisInitialized(_this)
+      }));
+    });
+
+    console.log(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(NodeModel, [{
+    key: "serialize",
+    value: function serialize() {
+      return Object.assign(Object.assign({}, _get(_getPrototypeOf(NodeModel.prototype), "serialize", this).call(this)), {
+        options: this.options,
+        incomingPortOrigins: this.incomingPortOrigins()
+      });
+    }
+  }, {
+    key: "parameter",
+    value: function parameter(name) {
+      return this.options.parameters.find(function (parameter) {
+        return parameter.name == name;
+      });
+    }
+  }, {
+    key: "getDisplayName",
+    value: function getDisplayName() {
+      return this.parameter('node_name').value;
+    }
+  }, {
+    key: "getDiagramModel",
+    value: function getDiagramModel() {
+      return this.parent.parent;
+    }
+  }, {
+    key: "getInPorts",
+    value: function getInPorts() {
+      return _lodash["default"].pickBy(this.getPorts(), function (port, key) {
+        return port.options["in"];
+      });
+    }
+  }, {
+    key: "getOutPorts",
+    value: function getOutPorts() {
+      return _lodash["default"].pickBy(this.getPorts(), function (port, key) {
+        return !port.options["in"];
+      });
+    }
+  }, {
+    key: "incomingPortOrigins",
+    value: function incomingPortOrigins() {
+      return Object.values(this.getInPorts()).reduce(function (origins, port) {
+        origins[port.options.id] = Object.values(port.links).map(function (link) {
+          return link.sourcePort.options.id;
+        });
+        return origins;
+      }, {});
+    }
+  }, {
+    key: "dependencies",
+    value: function dependencies() {
+      var cached = this.getDiagramModel().getCachedNodeDependencies(this.options.id);
+
+      if (cached !== null) {
+        return cached;
+      }
+
+      var inPorts = Object.values(this.getInPorts());
+      var linkLists = inPorts.map(function (port) {
+        return port.links;
+      }).flat();
+      var links = linkLists.map(function (linkList) {
+        return Object.values(linkList);
+      }).flat();
+      var dependencies = links.map(function (link) {
+        return link.sourcePort.parent;
+      });
+      var deepDependencies = dependencies.map(function (d) {
+        return d.dependencies();
+      });
+      var result = dependencies.concat(deepDependencies.flat());
+      this.getDiagramModel().setCachedNodeDependencies(this.options.id, result);
+      return result;
+    }
+  }, {
+    key: "dependsOn",
+    value: function dependsOn(n2) {
+      return this.dependencies().map(function (d) {
+        return d.options.id;
+      }).includes(n2.options.id);
+    }
+  }, {
+    key: "isInspectable",
+    value: function isInspectable() {
+      return Boolean(this.features);
+    }
+  }]);
+
+  return NodeModel;
+}(_reactDiagrams.NodeModel);
+
+exports.default = NodeModel;
+
+/***/ }),
+
 /***/ "./src/core/NodeParameter.ts":
 /*!***********************************!*\
   !*** ./src/core/NodeParameter.ts ***!
@@ -13251,201 +13432,6 @@ exports.default = DiagramModel;
 
 /***/ }),
 
-/***/ "./src/core/NodeModel.js":
-/*!*******************************!*\
-  !*** ./src/core/NodeModel.js ***!
-  \*******************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.default = void 0;
-
-var _reactDiagrams = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
-
-var _PortModel = _interopRequireDefault(__webpack_require__(/*! ./PortModel */ "./src/core/PortModel.ts"));
-
-var _lodash = _interopRequireDefault(__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"));
-
-var _UID = _interopRequireDefault(__webpack_require__(/*! ./utils/UID */ "./src/core/utils/UID.ts"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
-
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
-  _inherits(NodeModel, _DefaultNodeModel);
-
-  var _super = _createSuper(NodeModel);
-
-  function NodeModel() {
-    var _this;
-
-    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-    _classCallCheck(this, NodeModel);
-
-    _this = _super.call(this, _objectSpread(_objectSpread({}, options), {}, {
-      type: 'NodeModel',
-      // Make id easier on humans
-      id: "Node_".concat(options.name, "_").concat(options.serial, "_").concat((0, _UID["default"])())
-    }));
-
-    _this.options.inPorts.forEach(function (name) {
-      _this.addPort(new _PortModel["default"]({
-        "in": true,
-        name: name,
-        parent: _assertThisInitialized(_this)
-      }));
-    });
-
-    _this.options.outPorts.forEach(function (name) {
-      _this.addPort(new _PortModel["default"]({
-        "in": false,
-        name: name,
-        parent: _assertThisInitialized(_this)
-      }));
-    });
-
-    console.log(_assertThisInitialized(_this));
-    return _this;
-  }
-
-  _createClass(NodeModel, [{
-    key: "serialize",
-    value: function serialize() {
-      return _objectSpread(_objectSpread({}, _get(_getPrototypeOf(NodeModel.prototype), "serialize", this).call(this)), {}, {
-        options: this.options,
-        incomingPortOrigins: this.incomingPortOrigins()
-      });
-    }
-  }, {
-    key: "deserialize",
-    value: function deserialize(ob, engine) {
-      _get(_getPrototypeOf(NodeModel.prototype), "deserialize", this).call(this, ob, engine);
-    }
-  }, {
-    key: "parameter",
-    value: function parameter(name) {
-      return this.options.parameters.find(function (parameter) {
-        return parameter.name == name;
-      });
-    }
-  }, {
-    key: "getDisplayName",
-    value: function getDisplayName() {
-      return this.parameter('node_name').value;
-    }
-  }, {
-    key: "getDiagramModel",
-    value: function getDiagramModel() {
-      return this.parent.parent;
-    }
-  }, {
-    key: "getInPorts",
-    value: function getInPorts() {
-      return _lodash["default"].pickBy(this.getPorts(), function (port, key) {
-        return port.options["in"];
-      });
-    }
-  }, {
-    key: "getOutPorts",
-    value: function getOutPorts() {
-      return _lodash["default"].pickBy(this.getPorts(), function (port, key) {
-        return !port.options["in"];
-      });
-    }
-  }, {
-    key: "incomingPortOrigins",
-    value: function incomingPortOrigins() {
-      return Object.values(this.getInPorts()).reduce(function (origins, port) {
-        origins[port.options.id] = Object.values(port.links).map(function (link) {
-          return link.sourcePort.options.id;
-        });
-        return origins;
-      }, {});
-    }
-  }, {
-    key: "dependencies",
-    value: function dependencies() {
-      var cached = this.getDiagramModel().getCachedNodeDependencies(this.options.id);
-
-      if (cached !== null) {
-        return cached;
-      }
-
-      var inPorts = Object.values(this.getInPorts());
-      var linkLists = inPorts.map(function (port) {
-        return port.links;
-      }).flat();
-      var links = linkLists.map(function (linkList) {
-        return Object.values(linkList);
-      }).flat();
-      var dependencies = links.map(function (link) {
-        return link.sourcePort.parent;
-      });
-      var deepDependencies = dependencies.map(function (d) {
-        return d.dependencies();
-      });
-      var result = dependencies.concat(deepDependencies.flat());
-      this.getDiagramModel().setCachedNodeDependencies(this.options.id, result);
-      return result;
-    }
-  }, {
-    key: "dependsOn",
-    value: function dependsOn(n2) {
-      return this.dependencies().map(function (d) {
-        return d.options.id;
-      }).includes(n2.options.id);
-    }
-  }, {
-    key: "isInspectable",
-    value: function isInspectable() {
-      return Boolean(this.features);
-    }
-  }]);
-
-  return NodeModel;
-}(_reactDiagrams.NodeModel);
-
-exports.default = NodeModel;
-
-/***/ }),
-
 /***/ "./src/core/NodeModelFactory.js":
 /*!**************************************!*\
   !*** ./src/core/NodeModelFactory.js ***!
@@ -13468,7 +13454,7 @@ var React = _interopRequireWildcard(__webpack_require__(/*! react */ "./node_mod
 
 var _reactCanvasCore = __webpack_require__(/*! @projectstorm/react-canvas-core */ "./node_modules/@projectstorm/react-canvas-core/dist/index.js");
 
-var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../core/NodeModel */ "./src/core/NodeModel.js"));
+var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../core/NodeModel */ "./src/core/NodeModel.ts"));
 
 var _NodeWidget = _interopRequireDefault(__webpack_require__(/*! ./components/NodeWidget */ "./src/core/components/NodeWidget.js"));
 
@@ -17396,7 +17382,7 @@ var _mobx = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.j
 
 var _reactDiagrams = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
 
-var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeModel */ "./src/core/NodeModel.js"));
+var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../../core/NodeModel */ "./src/core/NodeModel.ts"));
 
 var _lodash = _interopRequireDefault(__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"));
 

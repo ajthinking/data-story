@@ -5,6 +5,7 @@
       "removeComments": true,
       "preserveConstEnums": true,
       "sourceMap": true,
+      "jsx": "react",      
       "lib": [
         "es2019",
         "dom"
