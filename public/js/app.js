@@ -9560,6 +9560,148 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./src/core/DiagramModel.ts":
+/*!**********************************!*\
+  !*** ./src/core/DiagramModel.ts ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var _reactDiagrams = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
+  _inherits(DiagramModel, _DefaultDiagramModel);
+
+  var _super = _createSuper(DiagramModel);
+
+  function DiagramModel() {
+    var _this;
+
+    _classCallCheck(this, DiagramModel);
+
+    _this = _super.apply(this, arguments);
+    _this.cachedNodeDependencyMap = {};
+    return _this;
+  }
+
+  _createClass(DiagramModel, [{
+    key: "getCachedNodeDependencies",
+    value: function getCachedNodeDependencies(id) {
+      var _a;
+
+      return (_a = this.cachedNodeDependencyMap[id]) !== null && _a !== void 0 ? _a : null;
+    }
+  }, {
+    key: "setCachedNodeDependencies",
+    value: function setCachedNodeDependencies(id, dependencies) {
+      this.cachedNodeDependencyMap[id] = dependencies;
+    }
+  }, {
+    key: "clearCachedNodeDependencies",
+    value: function clearCachedNodeDependencies() {
+      this.cachedNodeDependencyMap = {};
+    }
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var layered = _get(_getPrototypeOf(DiagramModel.prototype), "serialize", this).call(this);
+
+      var simplified = Object.assign(Object.assign({}, layered), {
+        links: Object.values(layered.layers[0].models),
+        nodes: Object.values(layered.layers[1].models),
+        executionOrder: this.executionOrder().map(function (node) {
+          return node.getOptions().id;
+        })
+      });
+      delete simplified.layers;
+      return simplified;
+    }
+  }, {
+    key: "deserializeModel",
+    value: function deserializeModel(data, engine) {
+      data.layers = [{
+        "id": "diagram-links-layer",
+        "type": "diagram-links",
+        "isSvg": true,
+        "transformed": true,
+        "models": data.links
+      }, {
+        "id": "diagram-nodes-layer",
+        "type": "diagram-nodes",
+        "isSvg": false,
+        "transformed": true,
+        "models": data.nodes
+      }];
+      delete data.links;
+      delete data.nodes;
+
+      _get(_getPrototypeOf(DiagramModel.prototype), "deserializeModel", this).call(this, data, engine);
+    }
+  }, {
+    key: "hasNode",
+    value: function hasNode(node) {
+      var _a;
+
+      return Boolean(((_a = node === null || node === void 0 ? void 0 : node.options) === null || _a === void 0 ? void 0 : _a.id) && this.getNode(node.options.id));
+    }
+  }, {
+    key: "executionOrder",
+    value: function executionOrder() {
+      this.clearCachedNodeDependencies();
+      return this.getNodes().sort(function (n1, n2) {
+        if (n2.dependsOn(n1)) {
+          return -1;
+        }
+
+        if (n1.dependsOn(n2)) {
+          return 1;
+        }
+
+        return 0;
+      });
+    }
+  }]);
+
+  return DiagramModel;
+}(_reactDiagrams.DiagramModel);
+
+exports.default = DiagramModel;
+
+/***/ }),
+
 /***/ "./src/core/EngineFactory.ts":
 /*!***********************************!*\
   !*** ./src/core/EngineFactory.ts ***!
@@ -9576,9 +9718,9 @@ exports.default = void 0;
 
 var _reactDiagrams = _interopRequireDefault(__webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js"));
 
-var _NodeModelFactory = _interopRequireDefault(__webpack_require__(/*! ./NodeModelFactory */ "./src/core/NodeModelFactory.js"));
+var _NodeModelFactory = _interopRequireDefault(__webpack_require__(/*! ./NodeModelFactory */ "./src/core/NodeModelFactory.tsx"));
 
-var _DiagramModel = _interopRequireDefault(__webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.js"));
+var _DiagramModel = _interopRequireDefault(__webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -9939,6 +10081,95 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
 }(_reactDiagrams.NodeModel);
 
 exports.default = NodeModel;
+
+/***/ }),
+
+/***/ "./src/core/NodeModelFactory.tsx":
+/*!***************************************!*\
+  !*** ./src/core/NodeModelFactory.tsx ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+"use strict";
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.default = void 0;
+
+var React = _interopRequireWildcard(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _reactCanvasCore = __webpack_require__(/*! @projectstorm/react-canvas-core */ "./node_modules/@projectstorm/react-canvas-core/dist/index.js");
+
+var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../core/NodeModel */ "./src/core/NodeModel.ts"));
+
+var _NodeWidget = _interopRequireDefault(__webpack_require__(/*! ./components/NodeWidget */ "./src/core/components/NodeWidget.js"));
+
+var _CommenNodeWidget = _interopRequireDefault(__webpack_require__(/*! ./components/CommenNodeWidget */ "./src/core/components/CommenNodeWidget.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var NodeModelFactory = /*#__PURE__*/function (_AbstractReactFactory) {
+  _inherits(NodeModelFactory, _AbstractReactFactory);
+
+  var _super = _createSuper(NodeModelFactory);
+
+  function NodeModelFactory() {
+    _classCallCheck(this, NodeModelFactory);
+
+    return _super.call(this, 'NodeModel');
+  }
+
+  _createClass(NodeModelFactory, [{
+    key: "generateModel",
+    value: function generateModel(event) {
+      return new _NodeModel["default"](event.initialConfig.options);
+    }
+  }, {
+    key: "generateReactWidget",
+    value: function generateReactWidget(event) {
+      if (event.model.options.nodeReact == 'Comment') return /*#__PURE__*/React.createElement(_CommenNodeWidget["default"], {
+        engine: this.engine,
+        node: event.model
+      });
+      return /*#__PURE__*/React.createElement(_NodeWidget["default"], {
+        engine: this.engine,
+        node: event.model
+      });
+    }
+  }]);
+
+  return NodeModelFactory;
+}(_reactCanvasCore.AbstractReactFactory);
+
+exports.default = NodeModelFactory;
 
 /***/ }),
 
@@ -13263,263 +13494,6 @@ var Repositories = /*#__PURE__*/function (_HTTPRequest) {
 exports.default = Repositories;
 Repositories.category = 'Github';
 Repositories.summary = 'Fetch github repositores';
-
-/***/ }),
-
-/***/ "./src/core/DiagramModel.js":
-/*!**********************************!*\
-  !*** ./src/core/DiagramModel.js ***!
-  \**********************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.default = void 0;
-
-var _reactDiagrams = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
-
-function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-/**
- * Sorts model in execution order based on their dependencies
- * Can attach data to links
- */
-var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
-  _inherits(DiagramModel, _DefaultDiagramModel);
-
-  var _super = _createSuper(DiagramModel);
-
-  function DiagramModel() {
-    var _this;
-
-    _classCallCheck(this, DiagramModel);
-
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    _defineProperty(_assertThisInitialized(_this), "cachedNodeDependencyMap", {// id1: [d1, d2, ...]
-    });
-
-    return _this;
-  }
-
-  _createClass(DiagramModel, [{
-    key: "getCachedNodeDependencies",
-    value: function getCachedNodeDependencies(id) {
-      var _this$cachedNodeDepen;
-
-      return (_this$cachedNodeDepen = this.cachedNodeDependencyMap[id]) !== null && _this$cachedNodeDepen !== void 0 ? _this$cachedNodeDepen : null;
-    }
-  }, {
-    key: "setCachedNodeDependencies",
-    value: function setCachedNodeDependencies(id, dependencies) {
-      this.cachedNodeDependencyMap[id] = dependencies;
-    }
-  }, {
-    key: "clearCachedNodeDependencies",
-    value: function clearCachedNodeDependencies() {
-      this.cachedNodeDependencyMap = {};
-    }
-  }, {
-    key: "serialize",
-    value: function serialize() {
-      // The default react-diagrams format
-      var layered = _get(_getPrototypeOf(DiagramModel.prototype), "serialize", this).call(this);
-
-      var simplified = _objectSpread(_objectSpread({}, layered), {}, {
-        // Provide links and nodes as simple arrays
-        links: Object.values(layered.layers[0].models),
-        nodes: Object.values(layered.layers[1].models),
-        executionOrder: this.executionOrder().map(function (node) {
-          return node.getOptions().id;
-        })
-      }); // Cleanup unused keys
-
-
-      delete simplified.layers;
-      return simplified;
-    } // is this working???
-
-  }, {
-    key: "deserializeModel",
-    value: function deserializeModel(data, engine) {
-      // Restore the default react-diagrams layer format
-      data.layers = [{
-        "id": "diagram-links-layer",
-        "type": "diagram-links",
-        "isSvg": true,
-        "transformed": true,
-        "models": data.links
-      }, {
-        "id": "diagram-nodes-layer",
-        "type": "diagram-nodes",
-        "isSvg": false,
-        "transformed": true,
-        "models": data.nodes
-      }]; // Cleanup unused keys
-
-      delete data.links;
-      delete data.nodes;
-
-      _get(_getPrototypeOf(DiagramModel.prototype), "deserializeModel", this).call(this, data, engine);
-    }
-  }, {
-    key: "hasNode",
-    value: function hasNode(node) {
-      var _node$options;
-
-      return Boolean((node === null || node === void 0 ? void 0 : (_node$options = node.options) === null || _node$options === void 0 ? void 0 : _node$options.id) && this.getNode(node.options.id));
-    }
-  }, {
-    key: "executionOrder",
-    value: function executionOrder() {
-      this.clearCachedNodeDependencies();
-      return this.getNodes().sort(function (n1, n2) {
-        if (n2.dependsOn(n1)) {
-          return -1;
-        }
-
-        if (n1.dependsOn(n2)) {
-          return 1;
-        }
-
-        return 0;
-      });
-    }
-  }]);
-
-  return DiagramModel;
-}(_reactDiagrams.DiagramModel);
-
-exports.default = DiagramModel;
-
-/***/ }),
-
-/***/ "./src/core/NodeModelFactory.js":
-/*!**************************************!*\
-  !*** ./src/core/NodeModelFactory.js ***!
-  \**************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.default = void 0;
-
-var _jsxRuntime = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-var React = _interopRequireWildcard(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-
-var _reactCanvasCore = __webpack_require__(/*! @projectstorm/react-canvas-core */ "./node_modules/@projectstorm/react-canvas-core/dist/index.js");
-
-var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../core/NodeModel */ "./src/core/NodeModel.ts"));
-
-var _NodeWidget = _interopRequireDefault(__webpack_require__(/*! ./components/NodeWidget */ "./src/core/components/NodeWidget.js"));
-
-var _CommenNodeWidget = _interopRequireDefault(__webpack_require__(/*! ./components/CommenNodeWidget */ "./src/core/components/CommenNodeWidget.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var NodeModelFactory = /*#__PURE__*/function (_AbstractReactFactory) {
-  _inherits(NodeModelFactory, _AbstractReactFactory);
-
-  var _super = _createSuper(NodeModelFactory);
-
-  function NodeModelFactory() {
-    _classCallCheck(this, NodeModelFactory);
-
-    return _super.call(this, 'NodeModel');
-  }
-
-  _createClass(NodeModelFactory, [{
-    key: "generateModel",
-    value: function generateModel(event) {
-      return new _NodeModel["default"](event.initialConfig.options);
-    }
-  }, {
-    key: "generateReactWidget",
-    value: function generateReactWidget(event) {
-      if (event.model.options.nodeReact == 'Comment') return /*#__PURE__*/(0, _jsxRuntime.jsx)(_CommenNodeWidget["default"], {
-        engine: this.engine,
-        node: event.model
-      });
-      return /*#__PURE__*/(0, _jsxRuntime.jsx)(_NodeWidget["default"], {
-        engine: this.engine,
-        node: event.model
-      });
-    }
-  }]);
-
-  return NodeModelFactory;
-}(_reactCanvasCore.AbstractReactFactory);
-
-exports.default = NodeModelFactory;
 
 /***/ }),
 

@@ -24,7 +24,7 @@ export default class EngineFactory {
         const state : any = engine.getStateMachine().getCurrentState();
         state.dragNewLink.config.allowLooseLinks = false;
 
-        engine.getNodeFactories().registerFactory(new NodeModelFactory());
+        engine.getNodeFactories().registerFactory(new NodeModelFactory() as any);
         
         let model = new DiagramModel();
         
@@ -36,7 +36,7 @@ export default class EngineFactory {
     static getEngine() {
         let engine = createEngine();
         
-        engine.getNodeFactories().registerFactory(new NodeModelFactory());
+        engine.getNodeFactories().registerFactory(new NodeModelFactory() as any);
 
         return engine
     }

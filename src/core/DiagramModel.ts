@@ -1,4 +1,5 @@
 import { DiagramModel as DefaultDiagramModel } from '@projectstorm/react-diagrams'
+import NodeModel from './NodeModel'
 
 /**
  * Sorts model in execution order based on their dependencies
@@ -80,7 +81,7 @@ export default class DiagramModel extends DefaultDiagramModel {
     executionOrder() {
         this.clearCachedNodeDependencies();
 
-        return this.getNodes().sort(function(n1, n2) {
+        return this.getNodes().sort(function(n1: NodeModel, n2: NodeModel) {
 
             if (n2.dependsOn(n1)) {
                 return -1;
