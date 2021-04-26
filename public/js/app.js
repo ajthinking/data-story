@@ -10288,6 +10288,35 @@ exports.default = PortModel;
 
 /***/ }),
 
+/***/ "./src/core/app.tsx":
+/*!**************************!*\
+  !*** ./src/core/app.tsx ***!
+  \**************************/
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
+
+var _reactDom = _interopRequireDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
+
+var _main = _interopRequireDefault(__webpack_require__(/*! ./store/main */ "./src/core/store/main.js"));
+
+var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
+
+var _App = _interopRequireDefault(__webpack_require__(/*! ./components/App */ "./src/core/components/App.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+var Provider = _mobxReact.Provider;
+
+_reactDom["default"].render( /*#__PURE__*/_react["default"].createElement(Provider, {
+  store: _main["default"]
+}, /*#__PURE__*/_react["default"].createElement(_App["default"], null)), document.getElementById('app'));
+
+/***/ }),
+
 /***/ "./src/core/clients/APIClient.ts":
 /*!***************************************!*\
   !*** ./src/core/clients/APIClient.ts ***!
@@ -13494,36 +13523,6 @@ var Repositories = /*#__PURE__*/function (_HTTPRequest) {
 exports.default = Repositories;
 Repositories.category = 'Github';
 Repositories.summary = 'Fetch github repositores';
-
-/***/ }),
-
-/***/ "./src/core/app.js":
-/*!*************************!*\
-  !*** ./src/core/app.js ***!
-  \*************************/
-/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-var _jsxRuntime = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
-
-var _reactDom = _interopRequireDefault(__webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js"));
-
-var _main = _interopRequireDefault(__webpack_require__(/*! ./store/main */ "./src/core/store/main.js"));
-
-var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
-
-var _App = _interopRequireDefault(__webpack_require__(/*! ./components/App */ "./src/core/components/App.js"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-_reactDom["default"].render( /*#__PURE__*/(0, _jsxRuntime.jsx)(_mobxReact.Provider, {
-  store: _main["default"],
-  children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_App["default"], {})
-}), document.getElementById('app'));
 
 /***/ }),
 
@@ -104878,7 +104877,7 @@ module.exports = warning;
 /******/ 		};
 /******/ 		
 /******/ 		var deferredModules = [
-/******/ 			["./src/core/app.js"],
+/******/ 			["./src/core/app.tsx"],
 /******/ 			["./src/core/sass/app.scss"]
 /******/ 		];
 /******/ 		// no chunk on demand loading
