@@ -13867,8 +13867,6 @@ __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules
 
 var _EngineFactory = _interopRequireDefault(__webpack_require__(/*! ../../core/EngineFactory */ "./src/core/EngineFactory.ts"));
 
-var _Feature = _interopRequireDefault(__webpack_require__(/*! ../../core/Feature */ "./src/core/Feature.ts"));
-
 var _dec, _class;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }

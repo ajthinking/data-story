@@ -6,7 +6,6 @@ import { inject, observer } from "mobx-react"
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EngineFactory from '../../core/EngineFactory'
-import Feature from '../../core/Feature'
 
 @inject('store') @observer
 export default class App extends React.Component {
