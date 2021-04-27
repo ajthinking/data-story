@@ -43,8 +43,6 @@ export default class NodeModel extends DefaultNodeModel {
                 })
             );  
         })
-
-        console.log(this)
     }
 
 	serialize() {

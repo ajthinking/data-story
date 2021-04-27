@@ -9984,7 +9984,6 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
       }));
     });
 
-    console.log(_assertThisInitialized(_this));
     return _this;
   }
 
