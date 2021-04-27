@@ -1,6 +1,7 @@
 import ServerNode from "../ServerNode";
+import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class Log extends ServerNode {
+export default class Log extends ServerNode implements ServerNodeInterface {
     public static category: string = 'Workflow'    
     public static summary = 'console.log(inputs)'
     public static outPorts = []

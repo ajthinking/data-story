@@ -2,8 +2,9 @@ import Feature from "../../core/Feature";
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
+import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class CreateGrid extends ServerNode {
+export default class CreateGrid extends ServerNode implements ServerNodeInterface {
     public static category: string = 'Reader'    
     public static inPorts: string[] = []
     public static summary = 'Create a set of objects with coordinates x and y'    

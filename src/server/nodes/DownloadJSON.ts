@@ -2,8 +2,9 @@ import ServerNode from "../ServerNode";
 import {saveAs} from 'file-saver';
 import NodeParameter from "../../core/NodeParameter";
 import { NodeDescription } from "../../core/NodeDescription";
+import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class DownloadJSON extends ServerNode {
+export default class DownloadJSON extends ServerNode implements ServerNodeInterface {
     public static category: string = 'Workflow'    
     public static summary = 'Download features as JSON'
     public static outPorts = []

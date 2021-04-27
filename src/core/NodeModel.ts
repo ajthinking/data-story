@@ -1,4 +1,4 @@
-import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/react-diagrams';
+import { NodeModel as DefaultNodeModel } from '@projectstorm/react-diagrams';
 import { BasePositionModelOptions } from '@projectstorm/react-canvas-core';
 import PortModel from './PortModel'
 import _ from 'lodash'

@@ -1,6 +1,7 @@
 import ServerNode from "../ServerNode";
+import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class Comment extends ServerNode {
+export default class Comment extends ServerNode implements ServerNodeInterface {
     public static category: string = 'Workflow'
     public static inPorts:  string[] = [];
     public static outPorts: string[] = [];

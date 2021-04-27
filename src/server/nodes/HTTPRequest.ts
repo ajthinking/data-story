@@ -3,8 +3,9 @@ import ServerNode from "../ServerNode";
 import axios from 'axios';
 import Feature from "../../core/Feature";
 import NodeParameter from "../../core/NodeParameter";
+import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class HTTPRequest extends ServerNode {
+export default class HTTPRequest extends ServerNode implements ServerNodeInterface {
     public static category: string = 'Reader'
     public static inPorts: string[] = ['Input']
     public static outPorts: string[] = [/*'Data',*/ 'Response'];

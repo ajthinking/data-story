@@ -4,8 +4,8 @@ import * as _ from "lodash";
 import Feature from "../core/Feature";
 import UID from "../core/utils/UID";
 import NodeParameter from "../core/NodeParameter";
- 
-export default class ServerNode {
+
+export default abstract class ServerNode {
     public id: string
     public ports: any[]
     public diagram: ServerDiagram
@@ -22,6 +22,8 @@ export default class ServerNode {
     public static nodeReact: string = 'Node'
     public static parameters: any[]
     public static summary: string = 'No summary provided.'   
+
+    abstract run(): any;
 
     constructor(diagram, description: any = {}) {
 
@@ -49,7 +51,7 @@ export default class ServerNode {
     }
 
     static hydrate(data, diagram) {
-        let instance = new this(diagram)
+        let instance = new (this as any)(diagram)
 
         for (const [key, value] of Object.entries(data)) {
             instance[key] = value

@@ -1,8 +1,9 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
+import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class Sleep extends ServerNode {
+export default class Sleep extends ServerNode implements ServerNodeInterface {
     public static category: string = 'Workflow'    
     public static summary = 'Sleep x seconds'    
 

@@ -1,7 +1,8 @@
 import { NodeDescription } from "../../../core/NodeDescription";
+import ServerNodeInterface from "../../ServerNodeInterface";
 import HTTPRequest from "../HTTPRequest";
 
-export default class DeleteRepositories extends HTTPRequest {
+export default class DeleteRepositories extends HTTPRequest implements ServerNodeInterface {
     public static category: string = 'Github'
     public static summary = 'Delete github repositores' 
 
