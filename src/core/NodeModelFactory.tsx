@@ -2,7 +2,6 @@ import * as React from 'react';
 import { AbstractReactFactory } from '@projectstorm/react-canvas-core';
 import NodeModel from '../core/NodeModel'
 import NodeWidget from './components/NodeWidget'
-import CommentNodeWidget from './components/CommenNodeWidget';
 
 export default class NodeModelFactory extends AbstractReactFactory {
 	constructor() {
@@ -14,10 +13,6 @@ export default class NodeModelFactory extends AbstractReactFactory {
 	}
 
 	generateReactWidget(event) {
-        if(event.model.options.nodeReact == 'Comment') return (
-            <CommentNodeWidget engine={this.engine} node={event.model} />
-        )
-
 		return <NodeWidget engine={this.engine} node={event.model} />;
     }
 }

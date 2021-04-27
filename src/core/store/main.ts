@@ -116,28 +116,7 @@ export class Store {
 
         nameParam.value = sourcePortName
         
-    }
-
-    addNodeOld(data) {
-        var node = new NodeModel({
-           serial: this.diagram.nodeSerial++,
-           ...data
-        });
-
-        node.setPosition(100, 100 + Math.random() * 100);
-
-        let latestNode = this.diagram.latestNode
-
-        if(this.diagram.engine.model.hasNode(latestNode)) {
-            node.setPosition(latestNode.position.x+200, latestNode.position.y);
-            let link = this.getAutomatedLink(latestNode, node)
-            if(link) this.diagram.engine.model.addAll(link);
-        }
-        
-        this.diagram.engine.model.addNode(node);
-        this.setLatestNode(node)
-        this.refreshDiagram()
-    }    
+    }  
 
     clearLinkLabels() {
         Object.values(this.diagram.engine.model.layers[0].models).forEach((link: any) => {

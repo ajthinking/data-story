@@ -1,10 +1,18 @@
 import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/react-diagrams';
+import { BasePositionModelOptions } from '@projectstorm/react-canvas-core';
 import PortModel from './PortModel'
 import _ from 'lodash'
 import UID from './utils/UID'
 
+export interface NodeModelOptions extends BasePositionModelOptions {
+    name: string,
+    inPorts: any[],
+    outPorts: any[],
+    parameters: any[],
+}
+
 export default class NodeModel extends DefaultNodeModel {
-    options: any
+    options: NodeModelOptions
     parent: any
     features: []
 
