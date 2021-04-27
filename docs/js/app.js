@@ -10529,6 +10529,18 @@ var _ClientFactory = _interopRequireDefault(__webpack_require__(/*! ../clients/C
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -10610,7 +10622,7 @@ var Store = /*#__PURE__*/function () {
         }
       });
       if (linked) return;
-      var latest = (_a = this.diagram.latestNodes[0]) !== null && _a !== void 0 ? _a : null;
+      var latest = (_a = _toConsumableArray(this.diagram.latestNodes)[0]) !== null && _a !== void 0 ? _a : null;
       node.setPosition(((_b = latest === null || latest === void 0 ? void 0 : latest.position) === null || _b === void 0 ? void 0 : _b.x) ? latest.position.x : 100, ((_c = latest === null || latest === void 0 ? void 0 : latest.position) === null || _c === void 0 ? void 0 : _c.y) ? latest.position.y + 75 : 100);
     }
   }, {
