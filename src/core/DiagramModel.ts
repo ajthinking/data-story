@@ -34,7 +34,7 @@ export default class DiagramModel extends DefaultDiagramModel {
             links: Object.values(layered.layers[0].models),
             nodes: Object.values(layered.layers[1].models),
             executionOrder: this.executionOrder()
-                .map(node => node.getOptions().id)             
+                .map(node => node.getOptions().id)
         }
 
         // Cleanup unused keys
@@ -43,7 +43,6 @@ export default class DiagramModel extends DefaultDiagramModel {
         return simplified
     }
 
-    // is this working???
     deserializeModel(data, engine) {
 
         // Restore the default react-diagrams layer format

@@ -47,9 +47,14 @@ export default class NodeModel extends DefaultNodeModel {
 
 	serialize() {
 		return {
+			...super.serialize(),
+			something: 'extra'
+		};
+
+		return {
             ...super.serialize(),
             options: this.options,
-            incomingPortOrigins: this.incomingPortOrigins()
+			foo: 'bar'
 		};
     }
 
@@ -77,13 +82,6 @@ export default class NodeModel extends DefaultNodeModel {
         return _.pickBy(this.getPorts(), function(port, key) {
             return !port.options.in
         });        
-    }
-
-    incomingPortOrigins() {
-        return Object.values(this.getInPorts()).reduce((origins, port: any) => {
-            origins[port.options.id] = Object.values(port.links).map((link:any) => link.sourcePort.options.id)
-            return origins
-        }, {})
     }
     
     dependencies() {
@@ -115,3 +113,35 @@ export default class NodeModel extends DefaultNodeModel {
         return Boolean(this.features)
     }
 }
+
+
+// type s = {
+// 	x: number;
+// 	y: number;	
+// }
+
+// type bad = {
+// 	o: number;
+// }
+
+// declare class Parent {
+//     serialize(): {
+//         x: number;
+//         y: number;
+//     };
+// }
+
+// class Child extends Parent {
+//     serialize(): TypeOf & {}
+// 	{
+// 		return {
+// 			x: 1,
+// 			y: 2,
+// 		}
+
+//         return {
+//             ...super.serialize(),
+//             something: 'extra'
+//         };      
+//     }
+// }

@@ -9991,8 +9991,11 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
     key: "serialize",
     value: function serialize() {
       return Object.assign(Object.assign({}, _get(_getPrototypeOf(NodeModel.prototype), "serialize", this).call(this)), {
+        something: 'extra'
+      });
+      return Object.assign(Object.assign({}, _get(_getPrototypeOf(NodeModel.prototype), "serialize", this).call(this)), {
         options: this.options,
-        incomingPortOrigins: this.incomingPortOrigins()
+        foo: 'bar'
       });
     }
   }, {
@@ -10025,16 +10028,6 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
       return _lodash["default"].pickBy(this.getPorts(), function (port, key) {
         return !port.options["in"];
       });
-    }
-  }, {
-    key: "incomingPortOrigins",
-    value: function incomingPortOrigins() {
-      return Object.values(this.getInPorts()).reduce(function (origins, port) {
-        origins[port.options.id] = Object.values(port.links).map(function (link) {
-          return link.sourcePort.options.id;
-        });
-        return origins;
-      }, {});
     }
   }, {
     key: "dependencies",
