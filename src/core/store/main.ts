@@ -24,7 +24,7 @@ export class Store {
         activeInspector: null,
         stories: [],
         activeStory: '',
-        server: clientFactory((window as any).dataStoryConfig.client ?? 'LocalClient'),
+        client: clientFactory((window as any).dataStoryConfig.client ?? 'LocalClient'),
     }
 
     constructor() {

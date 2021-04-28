@@ -16,7 +16,7 @@ export default class RunControl extends BaseControl {
     {
         this.props.store.setRunning()
 
-        this.props.store.metadata.server.run(
+        this.props.store.metadata.client.run(
             this.props.store.diagram.engine.model
         )
         .then((response) => {

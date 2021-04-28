@@ -40,7 +40,7 @@ export default class App extends React.Component {
     }
 
     boot() {
-        this.props.store.metadata.server.boot({
+        this.props.store.metadata.client.boot({
             story: window.location.href.split("/datastory").pop().replace('/', '')
         }).then((response) => {
             this.props.store.setEngine(

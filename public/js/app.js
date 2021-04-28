@@ -10567,7 +10567,7 @@ var Store = /*#__PURE__*/function () {
       activeInspector: null,
       stories: [],
       activeStory: '',
-      server: (0, _ClientFactory["default"])((_a = window.dataStoryConfig.client) !== null && _a !== void 0 ? _a : 'LocalClient')
+      client: (0, _ClientFactory["default"])((_a = window.dataStoryConfig.client) !== null && _a !== void 0 ? _a : 'LocalClient')
     };
     (0, _mobx.makeObservable)(this, {
       diagram: _mobx.observable,
@@ -13936,7 +13936,7 @@ var App = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.
     value: function boot() {
       var _this2 = this;
 
-      this.props.store.metadata.server.boot({
+      this.props.store.metadata.client.boot({
         story: window.location.href.split("/datastory").pop().replace('/', '')
       }).then(function (response) {
         var _response$data$serial;
@@ -15554,7 +15554,7 @@ var RunControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mob
       var _this2 = this;
 
       this.props.store.setRunning();
-      this.props.store.metadata.server.run(this.props.store.diagram.engine.model).then(function (response) {
+      this.props.store.metadata.client.run(this.props.store.diagram.engine.model).then(function (response) {
         // TRANSFER FEATURE AT NODES (INSPECTABLES)
         console.log('Diagram ran', response.data.diagram);
         response.data.diagram.nodes.filter(function (phpNode) {
@@ -17043,7 +17043,7 @@ var SaveModal = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobx
       var _this2 = this;
 
       this.props.store.clearLinkLabels();
-      this.props.store.metadata.server.save(this.state.storyName, (0, _nonCircularJsonStringify.nonCircularJsonStringify)(this.props.store.diagram.engine.model.serialize(), null, 4)).then(function () {
+      this.props.store.metadata.client.save(this.state.storyName, (0, _nonCircularJsonStringify.nonCircularJsonStringify)(this.props.store.diagram.engine.model.serialize(), null, 4)).then(function () {
         alert('Save success!');
 
         _this2.props.closeModal();

@@ -27,7 +27,7 @@ export default class SaveModal extends React.Component {
     handleSave(event) {
         this.props.store.clearLinkLabels()
 
-        this.props.store.metadata.server.save(
+        this.props.store.metadata.client.save(
             this.state.storyName,
             nonCircularJsonStringify(
                 this.props.store.diagram.engine.model.serialize(),
