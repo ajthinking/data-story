@@ -1,11 +1,10 @@
 import React from 'react';
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import BaseControl from './BaseControl'
 var Mousetrap = require('mousetrap');
 import _ from 'lodash';
 
-@inject('store') @observer
-export default class NodeSearch extends React.Component {    
+export default observer(class NodeSearch extends React.Component {    
     constructor(props) {
         super(props)
         this.state = {
@@ -122,4 +121,4 @@ export default class NodeSearch extends React.Component {
 
         this.props.onFinish()
     }
-}
+})

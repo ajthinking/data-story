@@ -2,18 +2,17 @@ import * as React from 'react';
 import { PortWidget } from '@projectstorm/react-diagrams';
 import Modal from 'react-modal';
 
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import NodeWidgetModal from './modals/NodeWidgetModal';
 import NodeInspectorLink from './NodeInspectorLink'
 import modalStyle from '../../core/utils/modalStyle'
-
+import store from '../store/main'
 
 /**
- * Using @observer on this component will break things... :/
+ * Using a observer on this component will break things... :/
  * Instead put store dependent functionality in child components
  */
 
-@inject('store')
 export default class NodeWidget extends React.Component {
     constructor(props) {
         super(props)
@@ -58,7 +57,7 @@ export default class NodeWidget extends React.Component {
                     <div className="flex w-full items-center text-gray-200 py-1 border border-gray-900 rounded-lg bg-gray-500">
                         <div className="flex items-center justify-between w-full">
                             <span className="flex px-4 flex-1">{port.options.label}</span>
-                            <NodeInspectorLink nodeId={this.props.node.options.id} />
+                            <NodeInspectorLink store={store} nodeId={this.props.node.options.id} />
                         </div>
                     </div>
                     <div className="ml-2">{/* Counterweight */}</div>
@@ -97,7 +96,8 @@ export default class NodeWidget extends React.Component {
                 onRequestClose={this.closeModal.bind(this)}
                 style={modalStyle}
             >
-                    <NodeWidgetModal 
+                    <NodeWidgetModal
+						store={store}
                         node={this.props.node} 
                         closeModal={this.closeModal.bind(this)}
                     />

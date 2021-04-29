@@ -1,10 +1,9 @@
 import React from 'react';
 import Diagram from '../Diagram';
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import InspectorTable from '../InspectorTable';
 
-@inject('store') @observer
-export default class Inspector extends React.Component {
+export default observer(class Inspector extends React.Component {
 
     render() {
         let id = this.props.store.metadata.activeInspector
@@ -18,5 +17,5 @@ export default class Inspector extends React.Component {
             </div>
         );
     }
-}
+})
 

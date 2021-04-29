@@ -2,13 +2,13 @@ import React from 'react';
 import Header from './Header';
 import Toolbar from './Toolbar';
 import pages from './pages/factory'
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EngineFactory from '../../core/EngineFactory'
+import store from "../store/main"
 
-@inject('store') @observer
-export default class App extends React.Component {
+export default observer(class App extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -20,7 +20,7 @@ export default class App extends React.Component {
         return (
             <div >
                 <Header />
-                <Toolbar />
+                <Toolbar store={store} />
                 {this.state.booted && this.renderActivePage()}
                 <ToastContainer style={{paddingTop: '0px'}} />
             </div>
@@ -30,7 +30,7 @@ export default class App extends React.Component {
     renderActivePage()
     {
         let Page =  pages(this.props.store.metadata.page)
-        return (<Page />)
+        return (<Page store={store} />)
     }
     
     componentDidMount() {
@@ -109,4 +109,4 @@ export default class App extends React.Component {
             draggable: true,
         });
     }
-}
+})

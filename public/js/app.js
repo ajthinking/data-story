@@ -10096,6 +10096,8 @@ var _NodeModel = _interopRequireDefault(__webpack_require__(/*! ../core/NodeMode
 
 var _NodeWidget = _interopRequireDefault(__webpack_require__(/*! ./components/NodeWidget */ "./src/core/components/NodeWidget.js"));
 
+var _main = _interopRequireDefault(__webpack_require__(/*! ./store/main */ "./src/core/store/main.ts"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -10142,6 +10144,7 @@ var NodeModelFactory = /*#__PURE__*/function (_AbstractReactFactory) {
     key: "generateReactWidget",
     value: function generateReactWidget(event) {
       return /*#__PURE__*/React.createElement(_NodeWidget["default"], {
+        store: _main["default"],
         engine: this.engine,
         node: event.model
       });
@@ -10295,7 +10298,9 @@ var Provider = _mobxReact.Provider;
 
 _reactDom["default"].render( /*#__PURE__*/_react["default"].createElement(Provider, {
   store: _main["default"]
-}, /*#__PURE__*/_react["default"].createElement(_App["default"], null)), document.getElementById('app'));
+}, /*#__PURE__*/_react["default"].createElement(_App["default"], {
+  store: _main["default"]
+})), document.getElementById('app'));
 
 /***/ }),
 
@@ -13856,7 +13861,7 @@ __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules
 
 var _EngineFactory = _interopRequireDefault(__webpack_require__(/*! ../../core/EngineFactory */ "./src/core/EngineFactory.ts"));
 
-var _dec, _class;
+var _main = _interopRequireDefault(__webpack_require__(/*! ../store/main */ "./src/core/store/main.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -13880,7 +13885,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var App = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(App, _React$Component);
 
   var _super = _createSuper(App);
@@ -13901,7 +13906,9 @@ var App = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.
     key: "render",
     value: function render() {
       return /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
-        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Header["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Toolbar["default"], {}), this.state.booted && this.renderActivePage(), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactToastify.ToastContainer, {
+        children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_Header["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_Toolbar["default"], {
+          store: _main["default"]
+        }), this.state.booted && this.renderActivePage(), /*#__PURE__*/(0, _jsxRuntime.jsx)(_reactToastify.ToastContainer, {
           style: {
             paddingTop: '0px'
           }
@@ -13912,7 +13919,9 @@ var App = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.
     key: "renderActivePage",
     value: function renderActivePage() {
       var Page = (0, _factory["default"])(this.props.store.metadata.page);
-      return /*#__PURE__*/(0, _jsxRuntime.jsx)(Page, {});
+      return /*#__PURE__*/(0, _jsxRuntime.jsx)(Page, {
+        store: _main["default"]
+      });
     }
   }, {
     key: "componentDidMount",
@@ -13983,8 +13992,9 @@ var App = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.
   }]);
 
   return App;
-}(_react["default"].Component)) || _class) || _class);
-exports.default = App;
+}(_react["default"].Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -14014,8 +14024,6 @@ var _reactCanvasCore = __webpack_require__(/*! @projectstorm/react-canvas-core *
 
 var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -14042,7 +14050,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Diagram = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(Diagram, _React$Component);
 
   var _super = _createSuper(Diagram);
@@ -14090,8 +14098,9 @@ var Diagram = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxRe
   }]);
 
   return Diagram;
-}(React.Component)) || _class) || _class);
-exports.default = Diagram;
+}(React.Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -14192,10 +14201,6 @@ var _jsxRuntime = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/r
 
 var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_modules/react/index.js"));
 
-var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
-
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -14232,7 +14237,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var InspectorTable = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var InspectorTable = /*#__PURE__*/function (_React$Component) {
   _inherits(InspectorTable, _React$Component);
 
   var _super = _createSuper(InspectorTable);
@@ -14365,7 +14370,8 @@ var InspectorTable = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, 
   }]);
 
   return InspectorTable;
-}(_react["default"].Component)) || _class) || _class);
+}(_react["default"].Component);
+
 exports.default = InspectorTable;
 
 /***/ }),
@@ -14392,8 +14398,6 @@ var React = _interopRequireWildcard(__webpack_require__(/*! react */ "./node_mod
 
 var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 
-var _dec, _class;
-
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -14418,7 +14422,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var NodeInspectorLink = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(NodeInspectorLink, _React$Component);
 
   var _super = _createSuper(NodeInspectorLink);
@@ -14449,8 +14453,9 @@ var NodeInspectorLink = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (
   }]);
 
   return NodeInspectorLink;
-}(React.Component)) || _class) || _class);
-exports.default = NodeInspectorLink;
+}(React.Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -14486,7 +14491,7 @@ var _NodeInspectorLink = _interopRequireDefault(__webpack_require__(/*! ./NodeIn
 
 var _modalStyle = _interopRequireDefault(__webpack_require__(/*! ../../core/utils/modalStyle */ "./src/core/utils/modalStyle.ts"));
 
-var _dec, _class;
+var _main = _interopRequireDefault(__webpack_require__(/*! ../store/main */ "./src/core/store/main.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -14514,12 +14519,11 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var NodeWidget = (
 /**
- * Using @observer on this component will break things... :/
+ * Using a observer on this component will break things... :/
  * Instead put store dependent functionality in child components
  */
-_dec = (0, _mobxReact.inject)('store'), _dec(_class = /*#__PURE__*/function (_React$Component) {
+var NodeWidget = /*#__PURE__*/function (_React$Component) {
   _inherits(NodeWidget, _React$Component);
 
   var _super = _createSuper(NodeWidget);
@@ -14584,6 +14588,7 @@ _dec = (0, _mobxReact.inject)('store'), _dec(_class = /*#__PURE__*/function (_Re
                 className: "flex px-4 flex-1",
                 children: port.options.label
               }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_NodeInspectorLink["default"], {
+                store: _main["default"],
                 nodeId: _this2.props.node.options.id
               })]
             })
@@ -14643,6 +14648,7 @@ _dec = (0, _mobxReact.inject)('store'), _dec(_class = /*#__PURE__*/function (_Re
         onRequestClose: this.closeModal.bind(this),
         style: _modalStyle["default"],
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_NodeWidgetModal["default"], {
+          store: _main["default"],
           node: this.props.node,
           closeModal: this.closeModal.bind(this)
         })
@@ -14667,7 +14673,8 @@ _dec = (0, _mobxReact.inject)('store'), _dec(_class = /*#__PURE__*/function (_Re
   }]);
 
   return NodeWidget;
-}(React.Component)) || _class);
+}(React.Component);
+
 exports.default = NodeWidget;
 
 /***/ }),
@@ -14708,7 +14715,7 @@ var _AddNodeControl = _interopRequireDefault(__webpack_require__(/*! ./controls/
 
 var _TokensControl = _interopRequireDefault(__webpack_require__(/*! ./controls/TokensControl */ "./src/core/components/controls/TokensControl.js"));
 
-var _dec, _class;
+var _main = _interopRequireDefault(__webpack_require__(/*! ../store/main */ "./src/core/store/main.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -14732,7 +14739,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Toolbar = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(Toolbar, _React$Component);
 
   var _super = _createSuper(Toolbar);
@@ -14756,7 +14763,21 @@ var Toolbar = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxRe
         className: "flex w-full bg-gray-600 border-t-2 border-gray-500 shadow shadow-xl",
         children: /*#__PURE__*/(0, _jsxRuntime.jsxs)("div", {
           className: "flex no-wrap items-center flex-1 w-full px-2 py-2",
-          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_WorkbenchControl["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_OpenControl["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_SaveControl["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_RunControl["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TokensControl["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_LogControl["default"], {}), /*#__PURE__*/(0, _jsxRuntime.jsx)(_AddNodeControl["default"], {}), this.renderInspectables()]
+          children: [/*#__PURE__*/(0, _jsxRuntime.jsx)(_WorkbenchControl["default"], {
+            store: _main["default"]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_OpenControl["default"], {
+            store: _main["default"]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_SaveControl["default"], {
+            store: _main["default"]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_RunControl["default"], {
+            store: _main["default"]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_TokensControl["default"], {
+            store: _main["default"]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_LogControl["default"], {
+            store: _main["default"]
+          }), /*#__PURE__*/(0, _jsxRuntime.jsx)(_AddNodeControl["default"], {
+            store: _main["default"]
+          }), this.renderInspectables()]
         })
       });
     }
@@ -14804,8 +14825,9 @@ var Toolbar = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxRe
   }]);
 
   return Toolbar;
-}(_react["default"].Component)) || _class) || _class);
-exports.default = Toolbar;
+}(_react["default"].Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -14841,7 +14863,7 @@ var _reactModal = _interopRequireDefault(__webpack_require__(/*! react-modal */ 
 
 var _NodeSearch = _interopRequireDefault(__webpack_require__(/*! ./NodeSearch */ "./src/core/components/controls/NodeSearch.js"));
 
-var _dec, _class;
+var _main = _interopRequireDefault(__webpack_require__(/*! ../../store/main */ "./src/core/store/main.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -14895,7 +14917,7 @@ var customStyles = {
 
 _reactModal["default"].setAppElement('#app');
 
-var AddNodeControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_BaseControl) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_BaseControl) {
   _inherits(AddNodeControl, _BaseControl);
 
   var _super = _createSuper(AddNodeControl);
@@ -14951,6 +14973,7 @@ var AddNodeControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, 
         style: customStyles,
         contentLabel: "Example Modal",
         children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_NodeSearch["default"], {
+          store: _main["default"],
           onFinish: this.closeModal.bind(this)
         })
       });
@@ -14977,8 +15000,9 @@ var AddNodeControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, 
   }]);
 
   return AddNodeControl;
-}(_BaseControl2["default"])) || _class) || _class);
-exports.default = AddNodeControl;
+}(_BaseControl2["default"]));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -15095,8 +15119,6 @@ var _BaseControl2 = _interopRequireDefault(__webpack_require__(/*! ./BaseControl
 
 var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -15123,7 +15145,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var LogControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_BaseControl) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_BaseControl) {
   _inherits(LogControl, _BaseControl);
 
   var _super = _createSuper(LogControl);
@@ -15159,8 +15181,9 @@ var LogControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mob
   }]);
 
   return LogControl;
-}(_BaseControl2["default"])) || _class) || _class);
-exports.default = LogControl;
+}(_BaseControl2["default"]));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -15189,8 +15212,6 @@ var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-reac
 var _BaseControl = _interopRequireDefault(__webpack_require__(/*! ./BaseControl */ "./src/core/components/controls/BaseControl.js"));
 
 var _lodash = _interopRequireDefault(__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"));
-
-var _dec, _class;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -15222,7 +15243,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 var Mousetrap = __webpack_require__(/*! mousetrap */ "./node_modules/mousetrap/mousetrap.js");
 
-var NodeSearch = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(NodeSearch, _React$Component);
 
   var _super = _createSuper(NodeSearch);
@@ -15351,8 +15372,9 @@ var NodeSearch = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mob
   }]);
 
   return NodeSearch;
-}(_react["default"].Component)) || _class) || _class);
-exports.default = NodeSearch;
+}(_react["default"].Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -15388,7 +15410,7 @@ var _modalStyle = _interopRequireDefault(__webpack_require__(/*! ../../../core/u
 
 var _OpenModal = _interopRequireDefault(__webpack_require__(/*! ../modals/OpenModal */ "./src/core/components/modals/OpenModal.js"));
 
-var _dec, _class;
+var _main = _interopRequireDefault(__webpack_require__(/*! ../../store/main */ "./src/core/store/main.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -15416,7 +15438,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var OpenControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_BaseControl) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_BaseControl) {
   _inherits(OpenControl, _BaseControl);
 
   var _super = _createSuper(OpenControl);
@@ -15451,6 +15473,7 @@ var OpenControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mo
           onRequestClose: this.closeModal.bind(this),
           style: _modalStyle["default"],
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_OpenModal["default"], {
+            store: _main["default"],
             closeModal: this.closeModal.bind(this)
           })
         })]
@@ -15467,8 +15490,9 @@ var OpenControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mo
   }]);
 
   return OpenControl;
-}(_BaseControl2["default"])) || _class) || _class);
-exports.default = OpenControl;
+}(_BaseControl2["default"]));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -15496,8 +15520,6 @@ var _BaseControl2 = _interopRequireDefault(__webpack_require__(/*! ./BaseControl
 
 var _reactToastify = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -15520,7 +15542,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var RunControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_BaseControl) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_BaseControl) {
   _inherits(RunControl, _BaseControl);
 
   var _super = _createSuper(RunControl);
@@ -15626,8 +15648,9 @@ var RunControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mob
   }]);
 
   return RunControl;
-}(_BaseControl2["default"])) || _class) || _class);
-exports.default = RunControl;
+}(_BaseControl2["default"]));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -15663,7 +15686,7 @@ var _modalStyle = _interopRequireDefault(__webpack_require__(/*! ../../../core/u
 
 var _SaveModal = _interopRequireDefault(__webpack_require__(/*! ../modals/SaveModal */ "./src/core/components/modals/SaveModal.js"));
 
-var _dec, _class;
+var _main = _interopRequireDefault(__webpack_require__(/*! ../../store/main */ "./src/core/store/main.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -15691,7 +15714,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var SaveControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_BaseControl) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_BaseControl) {
   _inherits(SaveControl, _BaseControl);
 
   var _super = _createSuper(SaveControl);
@@ -15727,6 +15750,7 @@ var SaveControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mo
           onRequestClose: this.closeModal.bind(this),
           style: _modalStyle["default"],
           children: /*#__PURE__*/(0, _jsxRuntime.jsx)(_SaveModal["default"], {
+            store: _main["default"],
             defaultStory: this.state.defaultStory,
             closeModal: this.closeModal.bind(this)
           })
@@ -15744,8 +15768,9 @@ var SaveControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mo
   }]);
 
   return SaveControl;
-}(_BaseControl2["default"])) || _class) || _class);
-exports.default = SaveControl;
+}(_BaseControl2["default"]));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -15773,8 +15798,6 @@ var _BaseControl2 = _interopRequireDefault(__webpack_require__(/*! ./BaseControl
 
 var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -15801,7 +15824,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var TokensControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_BaseControl) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_BaseControl) {
   _inherits(TokensControl, _BaseControl);
 
   var _super = _createSuper(TokensControl);
@@ -15837,8 +15860,9 @@ var TokensControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _
   }]);
 
   return TokensControl;
-}(_BaseControl2["default"])) || _class) || _class);
-exports.default = TokensControl;
+}(_BaseControl2["default"]));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -15866,8 +15890,6 @@ var _BaseControl2 = _interopRequireDefault(__webpack_require__(/*! ./BaseControl
 
 var _axios = _interopRequireDefault(__webpack_require__(/*! axios */ "./node_modules/axios/index.js"));
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -15894,7 +15916,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var WorkbenchControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_BaseControl) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_BaseControl) {
   _inherits(WorkbenchControl, _BaseControl);
 
   var _super = _createSuper(WorkbenchControl);
@@ -15930,8 +15952,9 @@ var WorkbenchControl = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0
   }]);
 
   return WorkbenchControl;
-}(_BaseControl2["default"])) || _class) || _class);
-exports.default = WorkbenchControl;
+}(_BaseControl2["default"]));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -16485,8 +16508,6 @@ var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-reac
 
 var _factory = _interopRequireDefault(__webpack_require__(/*! ../fields/factory */ "./src/core/components/fields/factory.ts"));
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -16525,7 +16546,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var NodeWidgetModal = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(NodeWidgetModal, _React$Component);
 
   var _super = _createSuper(NodeWidgetModal);
@@ -16749,8 +16770,9 @@ var NodeWidgetModal = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0,
   }]);
 
   return NodeWidgetModal;
-}(React.Component)) || _class) || _class);
-exports.default = NodeWidgetModal;
+}(React.Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -16782,8 +16804,6 @@ var _nonCircularJsonStringify = __webpack_require__(/*! ../../../core/utils/nonC
 
 var _reactToastify = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -16810,7 +16830,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var OpenModal = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(OpenModal, _React$Component);
 
   var _super = _createSuper(OpenModal);
@@ -16936,8 +16956,9 @@ var OpenModal = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobx
   }]);
 
   return OpenModal;
-}(React.Component)) || _class) || _class);
-exports.default = OpenModal;
+}(React.Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -16969,8 +16990,6 @@ var _nonCircularJsonStringify = __webpack_require__(/*! ../../../core/utils/nonC
 
 var _reactToastify = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
@@ -16997,7 +17016,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var SaveModal = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(SaveModal, _React$Component);
 
   var _super = _createSuper(SaveModal);
@@ -17132,8 +17151,9 @@ var SaveModal = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobx
   }]);
 
   return SaveModal;
-}(React.Component)) || _class) || _class);
-exports.default = SaveModal;
+}(React.Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -17163,8 +17183,6 @@ var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-reac
 
 var _InspectorTable = _interopRequireDefault(__webpack_require__(/*! ../InspectorTable */ "./src/core/components/InspectorTable.js"));
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -17187,7 +17205,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Inspector = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(Inspector, _React$Component);
 
   var _super = _createSuper(Inspector);
@@ -17216,8 +17234,9 @@ var Inspector = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobx
   }]);
 
   return Inspector;
-}(_react["default"].Component)) || _class) || _class);
-exports.default = Inspector;
+}(_react["default"].Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -17243,8 +17262,6 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -17267,7 +17284,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Log = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(Log, _React$Component);
 
   var _super = _createSuper(Log);
@@ -17292,8 +17309,9 @@ var Log = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.
   }]);
 
   return Log;
-}(_react["default"].Component)) || _class) || _class);
-exports.default = Log;
+}(_react["default"].Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -17319,8 +17337,6 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
 
-var _dec, _class;
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -17343,7 +17359,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Tokens = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxReact.observer)(_class = /*#__PURE__*/function (_React$Component) {
+var _default = (0, _mobxReact.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(Tokens, _React$Component);
 
   var _super = _createSuper(Tokens);
@@ -17379,8 +17395,9 @@ var Tokens = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = (0, _mobxRea
   }]);
 
   return Tokens;
-}(_react["default"].Component)) || _class) || _class);
-exports.default = Tokens;
+}(_react["default"].Component));
+
+exports.default = _default;
 
 /***/ }),
 
@@ -17406,9 +17423,7 @@ var _react = _interopRequireDefault(__webpack_require__(/*! react */ "./node_mod
 
 var _Diagram = _interopRequireDefault(__webpack_require__(/*! ../Diagram */ "./src/core/components/Diagram.js"));
 
-var _mobxReact = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
-
-var _dec, _class;
+var _main = _interopRequireDefault(__webpack_require__(/*! ../../store/main */ "./src/core/store/main.ts"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -17432,7 +17447,7 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var Workbench = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = /*#__PURE__*/function (_React$Component) {
+var Workbench = /*#__PURE__*/function (_React$Component) {
   _inherits(Workbench, _React$Component);
 
   var _super = _createSuper(Workbench);
@@ -17447,13 +17462,15 @@ var Workbench = (_dec = (0, _mobxReact.inject)('store'), _dec(_class = /*#__PURE
     key: "render",
     value: function render() {
       return /*#__PURE__*/(0, _jsxRuntime.jsx)(_Diagram["default"], {
+        store: _main["default"],
         ref: "pppage"
       });
     }
   }]);
 
   return Workbench;
-}(_react["default"].Component)) || _class);
+}(_react["default"].Component);
+
 exports.default = Workbench;
 
 /***/ }),

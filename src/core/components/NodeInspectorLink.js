@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 
-@inject('store') @observer
-export default class NodeInspectorLink extends React.Component {
+export default observer(class NodeInspectorLink extends React.Component {
 	render() {
 
         // Listen to a property to force refresh
@@ -16,5 +15,5 @@ export default class NodeInspectorLink extends React.Component {
                 <i className='mr-2 text-malibu-600 fas fa-search hover:cursor'></i>
             </div>)
     }   
-}
+})
 

@@ -1,13 +1,13 @@
 import React from 'react';
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import BaseControl from './BaseControl'
 import axios from 'axios';
 import Modal from 'react-modal';
 import modalStyle from '../../../core/utils/modalStyle'
 import SaveModal from '../modals/SaveModal'
+import store from "../../store/main"
 
-@inject('store') @observer
-export default class SaveControl extends BaseControl {
+export default observer(class SaveControl extends BaseControl {
     constructor(props) {
         super(props)
         this.title = 'Save story'
@@ -34,6 +34,7 @@ export default class SaveControl extends BaseControl {
                 style={modalStyle}
             >
                     <SaveModal
+						store={store}
                         defaultStory={this.state.defaultStory}
                         closeModal={this.closeModal.bind(this)}
                     />
@@ -48,4 +49,4 @@ export default class SaveControl extends BaseControl {
             isOpen: false,
         });
     }   
-}
+})

@@ -1,10 +1,9 @@
 import React from 'react';
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import BaseControl from './BaseControl'
 import axios from 'axios';
 
-@inject('store') @observer
-export default class TokensControl extends BaseControl {
+export default observer(class TokensControl extends BaseControl {
     constructor(props) {
         super(props);
         this.title = 'Tokens'
@@ -25,4 +24,4 @@ export default class TokensControl extends BaseControl {
 
         return style
     }    
-}
+})

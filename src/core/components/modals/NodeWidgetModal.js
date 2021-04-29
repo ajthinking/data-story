@@ -9,11 +9,10 @@ import { DefaultPortModel, NodeModel as DefaultNodeModel } from '@projectstorm/r
 // import "ace-builds/src-noconflict/mode-java";
 // import "ace-builds/src-noconflict/theme-github";
 
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import field from '../fields/factory'
 
-@inject('store') @observer
-export default class NodeWidgetModal extends React.Component {
+export default observer(class NodeWidgetModal extends React.Component {
     constructor(props) {
         super(props)
 
@@ -221,4 +220,4 @@ export default class NodeWidgetModal extends React.Component {
         // Why is this needed?
         this.forceUpdate();
     }
-}
+})

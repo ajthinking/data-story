@@ -1,10 +1,9 @@
 import React from 'react';
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import BaseControl from './BaseControl'
 import { toast, Slide } from 'react-toastify';
 
-@inject('store') @observer
-export default class RunControl extends BaseControl {
+export default observer(class RunControl extends BaseControl {
     constructor(props) {
         super(props);
         this.id = 'run'
@@ -99,4 +98,4 @@ export default class RunControl extends BaseControl {
             draggable: true,
         });
     }    
-}
+})

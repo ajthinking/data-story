@@ -1,8 +1,7 @@
 import React from 'react';
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 
-@inject('store') @observer
-export default class Tokens extends React.Component {
+export default observer(class Tokens extends React.Component {
 
     render() {
         return (
@@ -26,4 +25,4 @@ export default class Tokens extends React.Component {
             GITHUB_API_TOKEN: '123456789',
         }, null, 4)
     }
-}
+})

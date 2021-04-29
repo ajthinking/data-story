@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import axios from 'axios';
 import {nonCircularJsonStringify} from '../../../core/utils/nonCircularJsonStringify'
 import {toast, Slide } from 'react-toastify';
 
-@inject('store') @observer
-export default class OpenModal extends React.Component {
+export default observer(class OpenModal extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -105,5 +104,5 @@ export default class OpenModal extends React.Component {
             draggable: true,
         });
     }    
-}
+})
 

@@ -1,11 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 import BaseControl from './BaseControl'
 import axios from 'axios';
 import Modal from 'react-modal';
 import NodeSearch from './NodeSearch'
+import store from '../../store/main'
+
 var Mousetrap = require('mousetrap');
+
 
 const customStyles = {
   content : {
@@ -32,9 +35,7 @@ const customStyles = {
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#app')
 
-
-@inject('store') @observer
-export default class AddNodeControl extends BaseControl {
+export default observer(class AddNodeControl extends BaseControl {
     constructor(props) {
         super(props);
         this.id = 'add-node'
@@ -78,7 +79,7 @@ export default class AddNodeControl extends BaseControl {
             style={customStyles}
             contentLabel="Example Modal"
             >            
-                <NodeSearch onFinish={this.closeModal.bind(this)}/>
+                <NodeSearch store={store} onFinish={this.closeModal.bind(this)}/>
         </Modal>);
     }
     
@@ -99,4 +100,4 @@ export default class AddNodeControl extends BaseControl {
             }
         );       
     }
-}
+})

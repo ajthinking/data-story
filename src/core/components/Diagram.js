@@ -1,10 +1,9 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
-import { inject, observer } from "mobx-react"
+import { observer } from "mobx-react"
 
-@inject('store') @observer
-export default class Diagram extends React.Component {
+export default observer(class Diagram extends React.Component {
     constructor(props) {
         super(props);
         this.diagramRef = React.createRef();
@@ -41,4 +40,4 @@ export default class Diagram extends React.Component {
 
 
     }
-}
+})
