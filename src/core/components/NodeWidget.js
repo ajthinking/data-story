@@ -2,7 +2,6 @@ import * as React from 'react';
 import { PortWidget } from '@projectstorm/react-diagrams';
 import Modal from 'react-modal';
 
-import { observer } from "mobx-react"
 import NodeWidgetModal from './modals/NodeWidgetModal';
 import NodeInspectorLink from './NodeInspectorLink'
 import modalStyle from '../../core/utils/modalStyle'
