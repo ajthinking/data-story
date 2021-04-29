@@ -1,5 +1,6 @@
 import { DiagramModel as DefaultDiagramModel } from '@projectstorm/react-diagrams'
 import NodeModel from './NodeModel'
+import { SerializedDiagramModel } from './types/SerializedDiagramModel'
 
 /**
  * Sorts model in execution order based on their dependencies
@@ -23,51 +24,11 @@ export default class DiagramModel extends DefaultDiagramModel {
         this.cachedNodeDependencyMap = {}
     }
 
-    serialize() {
-        // The default react-diagrams format
-        let layered = super.serialize();
-
-        let simplified = {
-            // Default serialization
-            ...layered,
-            // Provide links and nodes as simple arrays
-            links: Object.values(layered.layers[0].models),
-            nodes: Object.values(layered.layers[1].models),
-            executionOrder: this.executionOrder()
-                .map(node => node.getOptions().id)
-        }
-
-        // Cleanup unused keys
-        delete simplified.layers
-
-        return simplified
-    }
-
-    deserializeModel(data, engine) {
-
-        // Restore the default react-diagrams layer format
-        data.layers = [
-            {
-                "id": "diagram-links-layer",
-                "type": "diagram-links",
-                "isSvg": true,
-                "transformed": true,
-                "models": data.links
-            },
-            {
-                "id": "diagram-nodes-layer",
-                "type": "diagram-nodes",
-                "isSvg": false,
-                "transformed": true,
-                "models": data.nodes
-            }            
-        ]
-
-        // Cleanup unused keys
-        delete data.links
-        delete data.nodes
-
-        super.deserializeModel(data, engine)
+    serialize() : SerializedDiagramModel {
+		return {
+			...super.serialize(),
+			executionOrder: this.executionOrder().map(node => node.getOptions().id)
+		}
     }
 
     hasNode(node) {

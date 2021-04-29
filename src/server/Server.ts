@@ -1,6 +1,7 @@
 import ServerDiagram from "./ServerDiagram";
 import ServerNodeFactory from "./ServerNodeFactory";
 import Cookie from '../core/utils/Cookie'
+import { SerializedDiagramModel } from "../core/types/SerializedDiagramModel";
 
 export default class Server
 {
@@ -17,7 +18,7 @@ export default class Server
         })
     }
 
-    public async run(diagram) {
+    public async run(diagram: SerializedDiagramModel) {		
         return ServerDiagram.hydrate(diagram, ServerNodeFactory).run()
     }
 

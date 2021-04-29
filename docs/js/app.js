@@ -9636,38 +9636,11 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
   }, {
     key: "serialize",
     value: function serialize() {
-      var layered = _get(_getPrototypeOf(DiagramModel.prototype), "serialize", this).call(this);
-
-      var simplified = Object.assign(Object.assign({}, layered), {
-        links: Object.values(layered.layers[0].models),
-        nodes: Object.values(layered.layers[1].models),
+      return Object.assign(Object.assign({}, _get(_getPrototypeOf(DiagramModel.prototype), "serialize", this).call(this)), {
         executionOrder: this.executionOrder().map(function (node) {
           return node.getOptions().id;
         })
       });
-      delete simplified.layers;
-      return simplified;
-    }
-  }, {
-    key: "deserializeModel",
-    value: function deserializeModel(data, engine) {
-      data.layers = [{
-        "id": "diagram-links-layer",
-        "type": "diagram-links",
-        "isSvg": true,
-        "transformed": true,
-        "models": data.links
-      }, {
-        "id": "diagram-nodes-layer",
-        "type": "diagram-nodes",
-        "isSvg": false,
-        "transformed": true,
-        "models": data.nodes
-      }];
-      delete data.links;
-      delete data.nodes;
-
-      _get(_getPrototypeOf(DiagramModel.prototype), "deserializeModel", this).call(this, data, engine);
     }
   }, {
     key: "hasNode",
@@ -11197,8 +11170,9 @@ var ServerDiagram = /*#__PURE__*/function () {
             key = _Object$entries$_i[0],
             value = _Object$entries$_i[1];
 
-        if (key === 'nodes') {
-          instance.nodes = data.nodes.map(function (node) {
+        if (key === 'layers') {
+          instance.links = Object.values(data.layers[0].models);
+          instance.nodes = Object.values(data.layers[1].models).map(function (node) {
             return factory.hydrate(node, instance);
           });
           continue;

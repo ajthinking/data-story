@@ -8,16 +8,16 @@ export default class ServerDiagram {
 
         for (const [key, value] of Object.entries(data)) {
             
-            // hydratables
-            if(key === 'nodes') {
-                instance.nodes = data.nodes.map(node => {
+            if(key === 'layers') {
+				instance.links = Object.values(data.layers[0].models)
+
+                instance.nodes = Object.values(data.layers[1].models).map(node => {
                     return factory.hydrate(node, instance)
-                })
+                })				
                 
                 continue
             }
             
-            // primitive properties
             instance[key] = value
         }
 
