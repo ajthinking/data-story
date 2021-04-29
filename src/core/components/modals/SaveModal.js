@@ -34,7 +34,6 @@ export default observer(class SaveModal extends React.Component {
                 4
             ),
         ).then(() => {
-            alert('Save success!')
             this.props.closeModal();
         })
         .catch(error => {

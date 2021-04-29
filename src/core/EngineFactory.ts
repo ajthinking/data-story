@@ -11,7 +11,8 @@ export default class EngineFactory {
         let engine = this.getEngine()
         let model = new DiagramModel();
            
-        model.deserializeModel(JSON.parse(serializedModel), engine);
+		serializedModel = typeof serializedModel == 'string' ? JSON.parse(serializedModel) : serializedModel
+        model.deserializeModel(serializedModel, engine);
 
         engine.setModel(model)
 

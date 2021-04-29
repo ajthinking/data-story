@@ -7,6 +7,7 @@ import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EngineFactory from '../../core/EngineFactory'
 import store from "../store/main"
+import Cookie from '../utils/Cookie';
 
 export default observer(class App extends React.Component {
     constructor(props) {
@@ -54,7 +55,7 @@ export default observer(class App extends React.Component {
             );
 
             this.props.store.setStories(
-                response.data.stories
+                Cookie.keys()
             );
 
 

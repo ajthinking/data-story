@@ -3,6 +3,9 @@ import { observer } from "mobx-react"
 import axios from 'axios';
 import {nonCircularJsonStringify} from '../../../core/utils/nonCircularJsonStringify'
 import {toast, Slide } from 'react-toastify';
+import Cookie from '../../utils/Cookie';
+import EngineFactory from '../../EngineFactory';
+import DiagramModel from '../../DiagramModel';
 
 export default observer(class OpenModal extends React.Component {
     constructor(props) {
@@ -21,6 +24,13 @@ export default observer(class OpenModal extends React.Component {
     handleCancel(event) {
         this.props.closeModal();
     }
+
+    handleClear(event) {
+        Cookie.clear()
+		this.props.store.setStories(
+			Cookie.keys()
+		);
+    }	
     
     handleSave(event) {
         //
@@ -61,9 +71,9 @@ export default observer(class OpenModal extends React.Component {
                                 return (
                                     <li 
                                         className="my-1 hover:text-malibu-500 hover:underline cursor-pointer"
-                                        key={story.path}
-                                        onClick={() => { this.clickStory(story.name) }}
-                                    >{story.name}</li>
+                                        key={story}
+                                        onClick={() => { this.clickStory(story) }}
+                                    >{story}</li>
                                 )
                             })}
                         </ul>
@@ -81,8 +91,11 @@ export default observer(class OpenModal extends React.Component {
                 <div className="w-full bg-gray-100 mt-6 px-6 py-2 border-t border-gray-300">
                     <div className="flex justify-end my-4 justify-end align-bottom text-gray-500 text-xs font-mono">
                         <div className="flex">
+                            <button onClick={this.handleClear.bind(this)} className="m-4 px-4 py-2 hover:text-malibu-700 hover:underline">Clear</button>
+                        </div>
+                        <div className="flex">
                             <button onClick={this.handleCancel.bind(this)} className="m-4 px-4 py-2 hover:text-malibu-700 hover:underline">Cancel</button>
-                        </div>                        
+                        </div>						                        
                     </div>                                                            
                 </div>
             </div>            
@@ -90,7 +103,16 @@ export default observer(class OpenModal extends React.Component {
     }
 
     clickStory(name) {
-        window.location = '/datastory/' + name
+		try {
+			let engine = this.props.store.diagram.engine
+			let model = new DiagramModel();
+			model.deserializeModel(Cookie.get(name), engine);
+			engine.setModel(model)
+			this.props.closeModal()
+		} catch(e) {
+			alert(`Could not create engine for story ${name}. See console for details.`)
+			console.log(e)
+		}
     }
 
     showSuccessToast() {
