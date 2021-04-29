@@ -47,14 +47,8 @@ export default class NodeModel extends DefaultNodeModel {
 
 	serialize() {
 		return {
-			...super.serialize(),
-			something: 'extra'
-		};
-
-		return {
             ...super.serialize(),
             options: this.options,
-			foo: 'bar'
 		};
     }
 

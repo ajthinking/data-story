@@ -9991,11 +9991,7 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
     key: "serialize",
     value: function serialize() {
       return Object.assign(Object.assign({}, _get(_getPrototypeOf(NodeModel.prototype), "serialize", this).call(this)), {
-        something: 'extra'
-      });
-      return Object.assign(Object.assign({}, _get(_getPrototypeOf(NodeModel.prototype), "serialize", this).call(this)), {
-        options: this.options,
-        foo: 'bar'
+        options: this.options
       });
     }
   }, {
