@@ -1,7 +1,7 @@
 # DataStory ⚡ visual programming
 
 ![tests](https://github.com/ajthinking/data-story/workflows/tests/badge.svg)
-![version](https://img.shields.io/packagist/v/ajthinking/data-story?color=blue)
+<!--![version](https://img.shields.io/packagist/v/ajthinking/data-story?color=blue)-->
 ![proofofconcept](https://img.shields.io/badge/proof%20of%20concept-gold)
 
 DataStory provides a workbench for designing data flow diagrams.
