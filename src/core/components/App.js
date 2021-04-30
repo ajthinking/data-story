@@ -52,11 +52,8 @@ export default observer(class App extends React.Component {
                 )
             )
 
-            // this.props.store.setEngine(
-            //     EngineFactory.loadOrCreate(
-            //         DiagramModelBuilder.begin().addNode(CreateJSON).finish().serialize()
-            //     )
-            // )			
+			this.bootDemos()
+			
 
             this.props.store.setAvailableNodes(
                 response.data.capabilities.availableNodes
@@ -76,6 +73,16 @@ export default observer(class App extends React.Component {
             this.showBootFailureToast()
         });
     }
+
+	bootDemos() {
+		this.props.store.metadata.client.save(
+			'List todos from an API',
+			DiagramModelBuilder.begin()
+				.addNode(CreateJSON)
+				.finish()			
+		)
+
+	}
 
     registerKeybindings() {
         Mousetrap.bind(

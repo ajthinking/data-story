@@ -14060,12 +14060,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }).then(function (response) {
         var _response$data$serial;
 
-        _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null)); // this.props.store.setEngine(
-        //     EngineFactory.loadOrCreate(
-        //         DiagramModelBuilder.begin().addNode(CreateJSON).finish().serialize()
-        //     )
-        // )			
+        _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null));
 
+        _this2.bootDemos();
 
         _this2.props.store.setAvailableNodes(response.data.capabilities.availableNodes);
 
@@ -14079,6 +14076,11 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
         _this2.showBootFailureToast();
       });
+    }
+  }, {
+    key: "bootDemos",
+    value: function bootDemos() {
+      this.props.store.metadata.client.save('List todos from an API', _DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_9__.DiagramModelBuilder.begin().addNode(_server_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_10__.default).finish());
     }
   }, {
     key: "registerKeybindings",
