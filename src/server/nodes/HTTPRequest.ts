@@ -8,7 +8,7 @@ import ServerNodeInterface from "../ServerNodeInterface";
 export default class HTTPRequest extends ServerNode implements ServerNodeInterface {
     public static category: string = 'Reader'
     public static inPorts: string[] = ['Input']
-    public static outPorts: string[] = [/*'Data',*/ 'Response'];
+    public static outPorts: string[] = ['Response', 'Failed'];
     public static summary = 'Make a HTTP request'
 
     async run() {

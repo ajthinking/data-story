@@ -26,6 +26,10 @@ export class DiagramModelBuilder {
 		return this
 	}
 
+	alsoAdd(nodeClass) {
+		return this.addNode(nodeClass)
+	}
+
 	then() {
 		this.commitNode()
 		return this

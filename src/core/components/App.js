@@ -8,16 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import EngineFactory from '../../core/EngineFactory'
 import store from "../store/main"
 import Cookie from '../utils/Cookie';
-import { DiagramModelBuilder } from '../DiagramModelBuilder'
-import CreateJSON from '../../server/nodes/CreateJSON';
-import HTTPRequest from '../../server/nodes/HTTPRequest';
-import Flatten from '../../server/nodes/Flatten';
-import DownloadJSON from '../../server/nodes/DownloadJSON';
-import Map from '../../server/nodes/Map';
-import Inspect from '../../server/nodes/Inspect';
-import OutputProvider from '../../server/nodes/OutputProvider';
-import { nonCircularJsonStringify } from '../utils/nonCircularJsonStringify'
-import Evaluate from '../../server/nodes/Evaluate';
+import * as demos from '../../server/demos.ts'
 
 export default observer(class App extends React.Component {
     constructor(props) {
@@ -83,22 +74,9 @@ export default observer(class App extends React.Component {
     }
 
 	bootDemos() {
-		let b = DiagramModelBuilder.begin()
-			.addNode(CreateJSON)			
-			.addNode(Evaluate)
-			.addNode(HTTPRequest)
-			.addNode(Map)
-			.addNode(Flatten)
-			.addNode(DownloadJSON)
-			.finish()			
-
-		this.props.store.metadata.client.save('bb', b)
-
-		// this.props.store.metadata.client.save(
-		// 	'List todos from an API',
-		// 	b		
-		// )
-
+		this.props.store.metadata.client.save('Working with json', demos.WorkingWithJSON)
+		this.props.store.metadata.client.save('Scraping a map service', demos.ScrapingAMapService)
+		this.props.store.metadata.client.save('Cleanup old github repos', demos.CleanupOldGithubRepos)
 	}
 
     registerKeybindings() {

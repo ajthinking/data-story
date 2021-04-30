@@ -9808,6 +9808,11 @@ var DiagramModelBuilder = /*#__PURE__*/function () {
       return this;
     }
   }, {
+    key: "alsoAdd",
+    value: function alsoAdd(nodeClass) {
+      return this.addNode(nodeClass);
+    }
+  }, {
     key: "then",
     value: function then() {
       this.commitNode();
@@ -11606,6 +11611,43 @@ ServerNodeFactory.nodes = {
 
 /***/ }),
 
+/***/ "./src/server/demos.ts":
+/*!*****************************!*\
+  !*** ./src/server/demos.ts ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WorkingWithJSON": () => (/* binding */ WorkingWithJSON),
+/* harmony export */   "ScrapingAMapService": () => (/* binding */ ScrapingAMapService),
+/* harmony export */   "CleanupOldGithubRepos": () => (/* binding */ CleanupOldGithubRepos)
+/* harmony export */ });
+/* harmony import */ var _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../core/DiagramModelBuilder */ "./src/core/DiagramModelBuilder.ts");
+/* harmony import */ var _nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nodes/CreateGrid */ "./src/server/nodes/CreateGrid.ts");
+/* harmony import */ var _nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts");
+/* harmony import */ var _nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nodes/DownloadJSON */ "./src/server/nodes/DownloadJSON.ts");
+/* harmony import */ var _nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./nodes/Evaluate */ "./src/server/nodes/Evaluate.ts");
+/* harmony import */ var _nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./nodes/Flatten */ "./src/server/nodes/Flatten.ts");
+/* harmony import */ var _nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./nodes/HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
+/* harmony import */ var _nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./nodes/Inspect */ "./src/server/nodes/Inspect.ts");
+/* harmony import */ var _nodes_Map__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./nodes/Map */ "./src/server/nodes/Map.ts");
+
+
+
+
+
+
+
+
+
+var WorkingWithJSON = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
+var ScrapingAMapService = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__.default).addNode(_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
+var CleanupOldGithubRepos = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).finish();
+
+/***/ }),
+
 /***/ "./src/server/nodes/Comment.ts":
 /*!*************************************!*\
   !*** ./src/server/nodes/Comment.ts ***!
@@ -12957,7 +12999,7 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
 
 HTTPRequest.category = 'Reader';
 HTTPRequest.inPorts = ['Input'];
-HTTPRequest.outPorts = ['Response'];
+HTTPRequest.outPorts = ['Response', 'Failed'];
 HTTPRequest.summary = 'Make a HTTP request';
 
 /***/ }),
@@ -13956,22 +13998,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header */ "./src/core/components/Header.js");
 /* harmony import */ var _Toolbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Toolbar */ "./src/core/components/Toolbar.js");
 /* harmony import */ var _pages_factory__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/factory */ "./src/core/components/pages/factory.js");
-/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
 /* harmony import */ var _core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/EngineFactory */ "./src/core/EngineFactory.ts");
 /* harmony import */ var _store_main__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../store/main */ "./src/core/store/main.ts");
 /* harmony import */ var _utils_Cookie__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/Cookie */ "./src/core/utils/Cookie.ts");
-/* harmony import */ var _DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../DiagramModelBuilder */ "./src/core/DiagramModelBuilder.ts");
-/* harmony import */ var _server_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../server/nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts");
-/* harmony import */ var _server_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../server/nodes/HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
-/* harmony import */ var _server_nodes_Flatten__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../server/nodes/Flatten */ "./src/server/nodes/Flatten.ts");
-/* harmony import */ var _server_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../server/nodes/DownloadJSON */ "./src/server/nodes/DownloadJSON.ts");
-/* harmony import */ var _server_nodes_Map__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../server/nodes/Map */ "./src/server/nodes/Map.ts");
-/* harmony import */ var _server_nodes_Inspect__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../server/nodes/Inspect */ "./src/server/nodes/Inspect.ts");
-/* harmony import */ var _server_nodes_OutputProvider__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../server/nodes/OutputProvider */ "./src/server/nodes/OutputProvider.ts");
-/* harmony import */ var _utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../utils/nonCircularJsonStringify */ "./src/core/utils/nonCircularJsonStringify.ts");
-/* harmony import */ var _server_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../server/nodes/Evaluate */ "./src/server/nodes/Evaluate.ts");
+/* harmony import */ var _server_demos_ts__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../server/demos.ts */ "./src/server/demos.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -14008,16 +14041,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-
-
-
-
-
-
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react__WEBPACK_IMPORTED_MODULE_19__.observer)( /*#__PURE__*/function (_React$Component) {
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react__WEBPACK_IMPORTED_MODULE_10__.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(App, _React$Component);
 
   var _super = _createSuper(App);
@@ -14040,7 +14064,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Header__WEBPACK_IMPORTED_MODULE_2__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Toolbar__WEBPACK_IMPORTED_MODULE_3__.default, {
           store: _store_main__WEBPACK_IMPORTED_MODULE_7__.default
-        }), this.state.booted && this.renderActivePage(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_toastify__WEBPACK_IMPORTED_MODULE_20__.ToastContainer, {
+        }), this.state.booted && this.renderActivePage(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_toastify__WEBPACK_IMPORTED_MODULE_11__.ToastContainer, {
           style: {
             paddingTop: '0px'
           }
@@ -14091,11 +14115,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   }, {
     key: "bootDemos",
     value: function bootDemos() {
-      var b = _DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_9__.DiagramModelBuilder.begin().addNode(_server_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_10__.default).addNode(_server_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_18__.default).addNode(_server_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_11__.default).addNode(_server_nodes_Map__WEBPACK_IMPORTED_MODULE_14__.default).addNode(_server_nodes_Flatten__WEBPACK_IMPORTED_MODULE_12__.default).addNode(_server_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_13__.default).finish();
-      this.props.store.metadata.client.save('bb', b); // this.props.store.metadata.client.save(
-      // 	'List todos from an API',
-      // 	b		
-      // )
+      this.props.store.metadata.client.save('Working with json', _server_demos_ts__WEBPACK_IMPORTED_MODULE_9__.WorkingWithJSON);
+      this.props.store.metadata.client.save('Scraping a map service', _server_demos_ts__WEBPACK_IMPORTED_MODULE_9__.ScrapingAMapService);
+      this.props.store.metadata.client.save('Cleanup old github repos', _server_demos_ts__WEBPACK_IMPORTED_MODULE_9__.CleanupOldGithubRepos);
     }
   }, {
     key: "registerKeybindings",
@@ -14122,9 +14144,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   }, {
     key: "showBootFailureToast",
     value: function showBootFailureToast() {
-      react_toastify__WEBPACK_IMPORTED_MODULE_20__.toast.info(' Could not Boot! Check console.', {
+      react_toastify__WEBPACK_IMPORTED_MODULE_11__.toast.info(' Could not Boot! Check console.', {
         position: "bottom-right",
-        transition: react_toastify__WEBPACK_IMPORTED_MODULE_20__.Slide,
+        transition: react_toastify__WEBPACK_IMPORTED_MODULE_11__.Slide,
         autoClose: 3500,
         hideProgressBar: true,
         closeOnClick: true,
