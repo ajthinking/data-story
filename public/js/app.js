@@ -9771,89 +9771,6 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
 
 /***/ }),
 
-/***/ "./src/core/DiagramModelBuilder.ts":
-/*!*****************************************!*\
-  !*** ./src/core/DiagramModelBuilder.ts ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DiagramModelBuilder": () => (/* binding */ DiagramModelBuilder)
-/* harmony export */ });
-/* harmony import */ var _DiagramModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.ts");
-/* harmony import */ var _NodeModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NodeModel */ "./src/core/NodeModel.ts");
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
-var DiagramModelBuilder = /*#__PURE__*/function () {
-  function DiagramModelBuilder() {
-    _classCallCheck(this, DiagramModelBuilder);
-  }
-
-  _createClass(DiagramModelBuilder, [{
-    key: "addNode",
-    value: function addNode(nodeClass) {
-      var diagram = this.getDiagram();
-      var node = new _NodeModel__WEBPACK_IMPORTED_MODULE_1__.default(nodeClass.describe());
-      diagram.addNode(node);
-      this.diagram = diagram;
-      this.currentNode = node;
-      return this;
-    }
-  }, {
-    key: "alsoAdd",
-    value: function alsoAdd(nodeClass) {
-      return this.addNode(nodeClass);
-    }
-  }, {
-    key: "then",
-    value: function then() {
-      this.commitNode();
-      return this;
-    }
-  }, {
-    key: "connectNode",
-    value: function connectNode() {
-      return this;
-    }
-  }, {
-    key: "finish",
-    value: function finish() {
-      return this.getDiagram();
-    }
-  }, {
-    key: "commitNode",
-    value: function commitNode() {
-      if (this.currentNode === null) return;
-      this.diagram.addNode(this.currentNode);
-      this.currentNode = null;
-    }
-  }, {
-    key: "getDiagram",
-    value: function getDiagram() {
-      var _a;
-
-      return (_a = this.diagram) !== null && _a !== void 0 ? _a : new _DiagramModel__WEBPACK_IMPORTED_MODULE_0__.default();
-    }
-  }], [{
-    key: "begin",
-    value: function begin() {
-      return new this();
-    }
-  }]);
-
-  return DiagramModelBuilder;
-}();
-
-/***/ }),
-
 /***/ "./src/core/EngineFactory.ts":
 /*!***********************************!*\
   !*** ./src/core/EngineFactory.ts ***!
@@ -10130,7 +10047,8 @@ var NodeModel = /*#__PURE__*/function (_DefaultNodeModel) {
     key: "serialize",
     value: function serialize() {
       return Object.assign(Object.assign({}, _get(_getPrototypeOf(NodeModel.prototype), "serialize", this).call(this)), {
-        options: this.options
+        options: this.options,
+        parameters: this.options.parameters
       });
     }
   }, {
@@ -11047,7 +10965,7 @@ var Server = /*#__PURE__*/function () {
     key: "nodeDescriptions",
     value: function nodeDescriptions() {
       return _ServerNodeFactory__WEBPACK_IMPORTED_MODULE_2__.default.all().map(function (node) {
-        return node.describe();
+        return new node().serialize();
       });
     }
   }]);
@@ -11316,15 +11234,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _core_utils_UID__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/utils/UID */ "./src/core/utils/UID.ts");
 /* harmony import */ var _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/NodeParameter */ "./src/core/NodeParameter.ts");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -11350,35 +11260,82 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 var ServerNode = /*#__PURE__*/function () {
-  function ServerNode(diagram) {
-    var description = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+  function ServerNode() {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, ServerNode);
 
-    var _a, _b;
+    var _a;
 
-    this.diagram = diagram;
-    this.id = (0,_core_utils_UID__WEBPACK_IMPORTED_MODULE_2__.default)();
-    this.options = {
-      parameters: description.parameters
-    };
-    this.ports = [].concat(_toConsumableArray(((_a = description.inPorts) !== null && _a !== void 0 ? _a : []).map(function (portName) {
-      return {
-        name: portName,
-        "in": true
-      };
-    })), _toConsumableArray(((_b = description.outPorts) !== null && _b !== void 0 ? _b : []).map(function (portName) {
-      return {
-        name: portName,
-        "in": false
-      };
-    })));
+    this.category = 'Custom';
+    this.editableInPorts = false;
+    this.editableOutPorts = false;
+    this.inPorts = ['Input'];
+    this.outPorts = ['Output'];
+    this.key = 'test-key';
+    this.nodeReact = 'Node';
+    this.summary = 'No summary provided.';
+    this.diagram = options.diagram;
+    this.id = (_a = options.id) !== null && _a !== void 0 ? _a : (0,_core_utils_UID__WEBPACK_IMPORTED_MODULE_2__.default)();
+    this.parameters = options.parameters ? options.parameters : [];
+    this.ports = this.createPorts(options);
   }
 
   _createClass(ServerNode, [{
+    key: "createPorts",
+    value: function createPorts(options) {
+      var _a, _b, _c;
+
+      return (_a = options.ports) !== null && _a !== void 0 ? _a : [].concat(_toConsumableArray(((_b = options.inPorts) !== null && _b !== void 0 ? _b : []).map(function (portName) {
+        return {
+          name: portName,
+          "in": true
+        };
+      })), _toConsumableArray(((_c = options.outPorts) !== null && _c !== void 0 ? _c : []).map(function (portName) {
+        return {
+          name: portName,
+          "in": false
+        };
+      })));
+    }
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      return {
+        category: this.category,
+        editableInPorts: this.editableInPorts,
+        editableOutPorts: this.editableOutPorts,
+        inPorts: _toConsumableArray(this.inPorts),
+        outPorts: _toConsumableArray(this.outPorts),
+        key: this.key,
+        name: this.name,
+        nodeReact: this.nodeReact,
+        serverNodeType: this.name,
+        parameters: [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('node_name').withValue(this.name)],
+        summary: this.summary
+      };
+    }
+  }, {
+    key: "describe",
+    value: function describe() {
+      return _core_NodeDescription__WEBPACK_IMPORTED_MODULE_0__.NodeDescription.deserialize({
+        category: this.category,
+        editableInPorts: this.editableInPorts,
+        editableOutPorts: this.editableOutPorts,
+        inPorts: _toConsumableArray(this.inPorts),
+        outPorts: _toConsumableArray(this.outPorts),
+        key: this.key,
+        name: this.name,
+        nodeReact: this.nodeReact,
+        serverNodeType: this.name,
+        parameters: [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('node_name').withValue(this.name)],
+        summary: this.summary
+      });
+    }
+  }, {
     key: "getParameter",
     value: function getParameter(name) {
-      return this['options'].parameters.find(function (p) {
+      return this.parameters.find(function (p) {
         return p.name == name;
       });
     }
@@ -11454,52 +11411,12 @@ var ServerNode = /*#__PURE__*/function () {
         return port.name == name;
       });
     }
-  }], [{
-    key: "hydrate",
-    value: function hydrate(data, diagram) {
-      var instance = new this(diagram);
-
-      for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            key = _Object$entries$_i[0],
-            value = _Object$entries$_i[1];
-
-        instance[key] = value;
-      }
-
-      return instance;
-    }
-  }, {
-    key: "describe",
-    value: function describe() {
-      return _core_NodeDescription__WEBPACK_IMPORTED_MODULE_0__.NodeDescription.deserialize({
-        category: this.category,
-        editableInPorts: this.editableInPorts,
-        editableOutPorts: this.editableOutPorts,
-        inPorts: _toConsumableArray(this.inPorts),
-        outPorts: _toConsumableArray(this.outPorts),
-        key: this.key,
-        name: this.name,
-        nodeReact: this.nodeReact,
-        serverNodeType: this.name,
-        parameters: [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('node_name').withValue(this.name)],
-        summary: this.summary
-      });
-    }
   }]);
 
   return ServerNode;
 }();
 
 
-ServerNode.category = 'Custom';
-ServerNode.editableInPorts = false;
-ServerNode.editableOutPorts = false;
-ServerNode.inPorts = ['Input'];
-ServerNode.outPorts = ['Output'];
-ServerNode.key = 'test-key';
-ServerNode.nodeReact = 'Node';
-ServerNode.summary = 'No summary provided.';
 
 /***/ }),
 
@@ -11516,28 +11433,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _nodes_Create__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./nodes/Create */ "./src/server/nodes/Create.ts");
 /* harmony import */ var _nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nodes/CreateGrid */ "./src/server/nodes/CreateGrid.ts");
-/* harmony import */ var _nodes_Comment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./nodes/Comment */ "./src/server/nodes/Comment.ts");
-/* harmony import */ var _nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nodes/HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
-/* harmony import */ var _nodes_CreateAttribute__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./nodes/CreateAttribute */ "./src/server/nodes/CreateAttribute.ts");
-/* harmony import */ var _nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts");
-/* harmony import */ var _nodes_CreateSequence__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./nodes/CreateSequence */ "./src/server/nodes/CreateSequence.ts");
-/* harmony import */ var _nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./nodes/DownloadJSON */ "./src/server/nodes/DownloadJSON.ts");
-/* harmony import */ var _nodes_Evaluate__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./nodes/Evaluate */ "./src/server/nodes/Evaluate.ts");
-/* harmony import */ var _nodes_Flatten__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./nodes/Flatten */ "./src/server/nodes/Flatten.ts");
-/* harmony import */ var _nodes_Inspect__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./nodes/Inspect */ "./src/server/nodes/Inspect.ts");
-/* harmony import */ var _nodes_Log__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./nodes/Log */ "./src/server/nodes/Log.ts");
-/* harmony import */ var _nodes_Map__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./nodes/Map */ "./src/server/nodes/Map.ts");
-/* harmony import */ var _nodes_OutputProvider__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./nodes/OutputProvider */ "./src/server/nodes/OutputProvider.ts");
-/* harmony import */ var _nodes_RegExpFilter__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./nodes/RegExpFilter */ "./src/server/nodes/RegExpFilter.ts");
-/* harmony import */ var _nodes_github_DeleteRepositories__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./nodes/github/DeleteRepositories */ "./src/server/nodes/github/DeleteRepositories.ts");
-/* harmony import */ var _nodes_github_Repositories__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./nodes/github/Repositories */ "./src/server/nodes/github/Repositories.ts");
-/* harmony import */ var _nodes_Sleep__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./nodes/Sleep */ "./src/server/nodes/Sleep.ts");
+/* harmony import */ var _nodes_CreateAttribute__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./nodes/CreateAttribute */ "./src/server/nodes/CreateAttribute.ts");
+/* harmony import */ var _nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts");
+/* harmony import */ var _nodes_CreateSequence__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./nodes/CreateSequence */ "./src/server/nodes/CreateSequence.ts");
+/* harmony import */ var _nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./nodes/DownloadJSON */ "./src/server/nodes/DownloadJSON.ts");
+/* harmony import */ var _nodes_Evaluate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./nodes/Evaluate */ "./src/server/nodes/Evaluate.ts");
+/* harmony import */ var _nodes_Flatten__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./nodes/Flatten */ "./src/server/nodes/Flatten.ts");
+/* harmony import */ var _nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./nodes/HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
+/* harmony import */ var _nodes_Inspect__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./nodes/Inspect */ "./src/server/nodes/Inspect.ts");
+/* harmony import */ var _nodes_Log__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./nodes/Log */ "./src/server/nodes/Log.ts");
+/* harmony import */ var _nodes_Map__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./nodes/Map */ "./src/server/nodes/Map.ts");
+/* harmony import */ var _nodes_OutputProvider__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./nodes/OutputProvider */ "./src/server/nodes/OutputProvider.ts");
+/* harmony import */ var _nodes_RegExpFilter__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./nodes/RegExpFilter */ "./src/server/nodes/RegExpFilter.ts");
+/* harmony import */ var _nodes_github_DeleteRepositories__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./nodes/github/DeleteRepositories */ "./src/server/nodes/github/DeleteRepositories.ts");
+/* harmony import */ var _nodes_github_Repositories__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./nodes/github/Repositories */ "./src/server/nodes/github/Repositories.ts");
+/* harmony import */ var _nodes_Sleep__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./nodes/Sleep */ "./src/server/nodes/Sleep.ts");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -11579,8 +11494,12 @@ var ServerNodeFactory = /*#__PURE__*/function () {
     }
   }, {
     key: "hydrate",
-    value: function hydrate(node, diagram) {
-      return this.find(node.options.serverNodeType).hydrate(node, diagram);
+    value: function hydrate(node) {
+      var diagram = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var type = this.find(node.options.serverNodeType);
+      return new type(Object.assign(Object.assign({}, node), {
+        diagram: diagram
+      }));
     }
   }]);
 
@@ -11589,24 +11508,23 @@ var ServerNodeFactory = /*#__PURE__*/function () {
 
 
 ServerNodeFactory.nodes = {
-  Comment: _nodes_Comment__WEBPACK_IMPORTED_MODULE_2__.default,
   Create: _nodes_Create__WEBPACK_IMPORTED_MODULE_0__.default,
-  CreateAttribute: _nodes_CreateAttribute__WEBPACK_IMPORTED_MODULE_4__.default,
+  CreateAttribute: _nodes_CreateAttribute__WEBPACK_IMPORTED_MODULE_2__.default,
   CreateGrid: _nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__.default,
-  CreateSequence: _nodes_CreateSequence__WEBPACK_IMPORTED_MODULE_6__.default,
-  CreateJSON: _nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_5__.default,
-  DeleteRepositories: _nodes_github_DeleteRepositories__WEBPACK_IMPORTED_MODULE_15__.default,
-  DownloadJSON: _nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_7__.default,
-  Evaluate: _nodes_Evaluate__WEBPACK_IMPORTED_MODULE_8__.default,
-  Flatten: _nodes_Flatten__WEBPACK_IMPORTED_MODULE_9__.default,
-  HTTPRequest: _nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_3__.default,
-  Inspect: _nodes_Inspect__WEBPACK_IMPORTED_MODULE_10__.default,
-  Log: _nodes_Log__WEBPACK_IMPORTED_MODULE_11__.default,
-  Map: _nodes_Map__WEBPACK_IMPORTED_MODULE_12__.default,
-  OutputProvider: _nodes_OutputProvider__WEBPACK_IMPORTED_MODULE_13__.default,
-  RegExpFilter: _nodes_RegExpFilter__WEBPACK_IMPORTED_MODULE_14__.default,
-  Repositories: _nodes_github_Repositories__WEBPACK_IMPORTED_MODULE_16__.default,
-  Sleep: _nodes_Sleep__WEBPACK_IMPORTED_MODULE_17__.default
+  CreateJSON: _nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_3__.default,
+  CreateSequence: _nodes_CreateSequence__WEBPACK_IMPORTED_MODULE_4__.default,
+  DeleteRepositories: _nodes_github_DeleteRepositories__WEBPACK_IMPORTED_MODULE_14__.default,
+  DownloadJSON: _nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_5__.default,
+  Evaluate: _nodes_Evaluate__WEBPACK_IMPORTED_MODULE_6__.default,
+  Flatten: _nodes_Flatten__WEBPACK_IMPORTED_MODULE_7__.default,
+  HTTPRequest: _nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_8__.default,
+  Inspect: _nodes_Inspect__WEBPACK_IMPORTED_MODULE_9__.default,
+  Log: _nodes_Log__WEBPACK_IMPORTED_MODULE_10__.default,
+  Map: _nodes_Map__WEBPACK_IMPORTED_MODULE_11__.default,
+  OutputProvider: _nodes_OutputProvider__WEBPACK_IMPORTED_MODULE_12__.default,
+  RegExpFilter: _nodes_RegExpFilter__WEBPACK_IMPORTED_MODULE_13__.default,
+  Repositories: _nodes_github_Repositories__WEBPACK_IMPORTED_MODULE_15__.default,
+  Sleep: _nodes_Sleep__WEBPACK_IMPORTED_MODULE_16__.default
 };
 
 /***/ }),
@@ -11615,100 +11533,9 @@ ServerNodeFactory.nodes = {
 /*!*****************************!*\
   !*** ./src/server/demos.ts ***!
   \*****************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "WorkingWithJSON": () => (/* binding */ WorkingWithJSON),
-/* harmony export */   "ScrapingAMapService": () => (/* binding */ ScrapingAMapService),
-/* harmony export */   "CleanupOldGithubRepos": () => (/* binding */ CleanupOldGithubRepos)
-/* harmony export */ });
-/* harmony import */ var _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../core/DiagramModelBuilder */ "./src/core/DiagramModelBuilder.ts");
-/* harmony import */ var _nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nodes/CreateGrid */ "./src/server/nodes/CreateGrid.ts");
-/* harmony import */ var _nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts");
-/* harmony import */ var _nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nodes/DownloadJSON */ "./src/server/nodes/DownloadJSON.ts");
-/* harmony import */ var _nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./nodes/Evaluate */ "./src/server/nodes/Evaluate.ts");
-/* harmony import */ var _nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./nodes/Flatten */ "./src/server/nodes/Flatten.ts");
-/* harmony import */ var _nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./nodes/HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
-/* harmony import */ var _nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./nodes/Inspect */ "./src/server/nodes/Inspect.ts");
-/* harmony import */ var _nodes_Map__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./nodes/Map */ "./src/server/nodes/Map.ts");
+/***/ (() => {
 
 
-
-
-
-
-
-
-
-var WorkingWithJSON = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
-var ScrapingAMapService = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__.default).addNode(_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
-var CleanupOldGithubRepos = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).finish();
-
-/***/ }),
-
-/***/ "./src/server/nodes/Comment.ts":
-/*!*************************************!*\
-  !*** ./src/server/nodes/Comment.ts ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ Comment)
-/* harmony export */ });
-/* harmony import */ var _ServerNode__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-
-
-var Comment = /*#__PURE__*/function (_ServerNode) {
-  _inherits(Comment, _ServerNode);
-
-  var _super = _createSuper(Comment);
-
-  function Comment() {
-    _classCallCheck(this, Comment);
-
-    return _super.apply(this, arguments);
-  }
-
-  _createClass(Comment, [{
-    key: "run",
-    value: function run() {}
-  }]);
-
-  return Comment;
-}(_ServerNode__WEBPACK_IMPORTED_MODULE_0__.default);
-
-
-Comment.category = 'Workflow';
-Comment.inPorts = [];
-Comment.outPorts = [];
-Comment.summary = 'Display a comment';
-Comment.nodeReact = 'Comment';
 
 /***/ }),
 
@@ -11792,9 +11619,16 @@ var Create = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(Create);
 
   function Create() {
+    var _this;
+
     _classCallCheck(this, Create);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Create a null feature';
+    _this.inPorts = [];
+    _this.name = 'Create';
+    return _this;
   }
 
   _createClass(Create, [{
@@ -11821,9 +11655,6 @@ var Create = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-Create.category = 'Workflow';
-Create.summary = 'Create a null feature';
-Create.inPorts = [];
 
 /***/ }),
 
@@ -11911,9 +11742,15 @@ var CreateAttribute = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(CreateAttribute);
 
   function CreateAttribute() {
+    var _this;
+
     _classCallCheck(this, CreateAttribute);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Create a new attribute from an expression';
+    _this.name = 'CreateAttribute';
+    return _this;
   }
 
   _createClass(CreateAttribute, [{
@@ -11940,10 +11777,10 @@ var CreateAttribute = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(CreateAttribute), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(CreateAttribute.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('attribute'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('value'));
       return description;
@@ -11954,8 +11791,6 @@ var CreateAttribute = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-CreateAttribute.category = 'Workflow';
-CreateAttribute.summary = 'Create a new attribute from an expression';
 
 /***/ }),
 
@@ -12045,9 +11880,16 @@ var CreateGrid = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(CreateGrid);
 
   function CreateGrid() {
+    var _this;
+
     _classCallCheck(this, CreateGrid);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Reader';
+    _this.inPorts = [];
+    _this.summary = 'Create a set of objects with coordinates x and y';
+    _this.name = 'CreateGrid';
+    return _this;
   }
 
   _createClass(CreateGrid, [{
@@ -12086,10 +11928,10 @@ var CreateGrid = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(CreateGrid), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(CreateGrid.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_size_x').withFieldType("Number").withValue(10), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_size_y').withFieldType("Number").withValue(10), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_start_x').withFieldType("Number").withValue(0), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_start_y').withFieldType("Number").withValue(0), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_spacing_x').withFieldType("Number").withValue(1), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_spacing_y').withFieldType("Number").withValue(1));
       return description;
@@ -12100,9 +11942,6 @@ var CreateGrid = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_2__.default);
 
 
-CreateGrid.category = 'Reader';
-CreateGrid.inPorts = [];
-CreateGrid.summary = 'Create a set of objects with coordinates x and y';
 
 /***/ }),
 
@@ -12192,9 +12031,16 @@ var CreateJSON = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(CreateJSON);
 
   function CreateJSON() {
+    var _this;
+
     _classCallCheck(this, CreateJSON);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Reader';
+    _this.inPorts = [];
+    _this.summary = 'Create features from JSON';
+    _this.name = 'CreateJSON';
+    return _this;
   }
 
   _createClass(CreateJSON, [{
@@ -12217,10 +12063,10 @@ var CreateJSON = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(CreateJSON), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(CreateJSON.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('features').withFieldType("JSON_").withValue('[{ "resource": "todos"}]'));
       return description;
@@ -12231,9 +12077,6 @@ var CreateJSON = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_2__.default);
 
 
-CreateJSON.category = 'Reader';
-CreateJSON.inPorts = [];
-CreateJSON.summary = 'Create features from JSON';
 
 /***/ }),
 
@@ -12323,9 +12166,16 @@ var CreateSequence = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(CreateSequence);
 
   function CreateSequence() {
+    var _this;
+
     _classCallCheck(this, CreateSequence);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Reader';
+    _this.inPorts = [];
+    _this.summary = 'Create a sequence of objects';
+    _this.name = 'CreateSequence';
+    return _this;
   }
 
   _createClass(CreateSequence, [{
@@ -12352,10 +12202,10 @@ var CreateSequence = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(CreateSequence), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(CreateSequence.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('number_of_features_to_create').withFieldType("Number").withValue(10));
       return description;
@@ -12366,9 +12216,6 @@ var CreateSequence = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_2__.default);
 
 
-CreateSequence.category = 'Reader';
-CreateSequence.inPorts = [];
-CreateSequence.summary = 'Create a sequence of objects';
 
 /***/ }),
 
@@ -12459,9 +12306,16 @@ var DownloadJSON = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(DownloadJSON);
 
   function DownloadJSON() {
+    var _this;
+
     _classCallCheck(this, DownloadJSON);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Download features as JSON';
+    _this.outPorts = [];
+    _this.name = 'DownloadJSON';
+    return _this;
   }
 
   _createClass(DownloadJSON, [{
@@ -12491,10 +12345,10 @@ var DownloadJSON = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(DownloadJSON), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(DownloadJSON.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('filename').withValue('data.json'));
       return description;
@@ -12505,9 +12359,6 @@ var DownloadJSON = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-DownloadJSON.category = 'Workflow';
-DownloadJSON.summary = 'Download features as JSON';
-DownloadJSON.outPorts = [];
 
 /***/ }),
 
@@ -12595,9 +12446,15 @@ var Evaluate = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(Evaluate);
 
   function Evaluate() {
+    var _this;
+
     _classCallCheck(this, Evaluate);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = "Evaluate javascript";
+    _this.name = 'Evaluate';
+    return _this;
   }
 
   _createClass(Evaluate, [{
@@ -12623,10 +12480,10 @@ var Evaluate = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(Evaluate), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(Evaluate.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('expression').withFieldType('JS'));
       return description;
@@ -12637,8 +12494,6 @@ var Evaluate = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-Evaluate.category = 'Workflow';
-Evaluate.summary = "Evaluate javascript";
 
 /***/ }),
 
@@ -12722,9 +12577,15 @@ var Flatten = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(Flatten);
 
   function Flatten() {
+    var _this;
+
     _classCallCheck(this, Flatten);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Flatten arrays';
+    _this.name = 'Flatten';
+    return _this;
   }
 
   _createClass(Flatten, [{
@@ -12755,8 +12616,6 @@ var Flatten = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_2__.default);
 
 
-Flatten.category = 'Workflow';
-Flatten.summary = 'Flatten arrays';
 
 /***/ }),
 
@@ -12875,9 +12734,17 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(HTTPRequest);
 
   function HTTPRequest() {
+    var _this;
+
     _classCallCheck(this, HTTPRequest);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Reader';
+    _this.inPorts = ['Input'];
+    _this.outPorts = ['Response', 'Failed'];
+    _this.summary = 'Make a HTTP request';
+    _this.name = 'HTTPRequest';
+    return _this;
   }
 
   _createClass(HTTPRequest, [{
@@ -12886,7 +12753,7 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
       var e_1, _a;
 
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var _this = this;
+        var _this2 = this;
 
         var _b, _c, feature;
 
@@ -12913,7 +12780,7 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
                 _context.next = 9;
                 return this.request(feature).then(function (result) {
                   if (result) {
-                    _this.output([new _core_Feature__WEBPACK_IMPORTED_MODULE_3__.default(result)], 'Response');
+                    _this2.output([new _core_Feature__WEBPACK_IMPORTED_MODULE_3__.default(result)], 'Response');
                   }
                 });
 
@@ -12969,6 +12836,14 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(HTTPRequest.prototype), "serialize", this).call(this);
+
+      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('verb').withValue('GET'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('data').withFieldType("JSON_").withValue('{}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('config').withFieldType("JSON_").withValue('{}'));
+      return description;
+    }
+  }, {
     key: "request",
     value: function request(feature) {
       if (this.getParameterValue('verb', feature) == 'GET') {
@@ -12983,24 +12858,12 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
         return axios__WEBPACK_IMPORTED_MODULE_2___default().delete(this.getParameterValue('url', feature), JSON.parse(this.getParameterValue('config')));
       }
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(HTTPRequest), "describe", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('verb').withValue('GET'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('data').withFieldType("JSON_").withValue('{}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('config').withFieldType("JSON_").withValue('{}'));
-      return description;
-    }
   }]);
 
   return HTTPRequest;
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-HTTPRequest.category = 'Reader';
-HTTPRequest.inPorts = ['Input'];
-HTTPRequest.outPorts = ['Response', 'Failed'];
-HTTPRequest.summary = 'Make a HTTP request';
 
 /***/ }),
 
@@ -13082,9 +12945,16 @@ var Inspect = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(Inspect);
 
   function Inspect() {
+    var _this;
+
     _classCallCheck(this, Inspect);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Display features in a table';
+    _this.outPorts = [];
+    _this.name = 'Inspect';
+    return _this;
   }
 
   _createClass(Inspect, [{
@@ -13111,9 +12981,6 @@ var Inspect = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-Inspect.category = 'Workflow';
-Inspect.summary = 'Display features in a table';
-Inspect.outPorts = [];
 
 /***/ }),
 
@@ -13195,9 +13062,16 @@ var Log = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(Log);
 
   function Log() {
+    var _this;
+
     _classCallCheck(this, Log);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'console.log(inputs)';
+    _this.outPorts = [];
+    _this.name = 'Log';
+    return _this;
   }
 
   _createClass(Log, [{
@@ -13231,9 +13105,6 @@ var Log = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-Log.category = 'Workflow';
-Log.summary = 'console.log(inputs)';
-Log.outPorts = [];
 
 /***/ }),
 
@@ -13323,9 +13194,15 @@ var Map = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(Map);
 
   function Map() {
+    var _this;
+
     _classCallCheck(this, Map);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Map into a property';
+    _this.name = 'Map';
+    return _this;
   }
 
   _createClass(Map, [{
@@ -13354,10 +13231,10 @@ var Map = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(Map), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(Map.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('property').withValue('data'));
       return description;
@@ -13368,8 +13245,6 @@ var Map = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_2__.default);
 
 
-Map.category = 'Workflow';
-Map.summary = 'Map into a property';
 
 /***/ }),
 
@@ -13465,9 +13340,18 @@ var OutputProvider = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(OutputProvider);
 
   function OutputProvider() {
+    var _this;
+
     _classCallCheck(this, OutputProvider);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Provides output ports from JSON';
+    _this.inPorts = [];
+    _this.outPorts = [];
+    _this.editableOutPorts = true;
+    _this.name = 'OutputProvider';
+    return _this;
   }
 
   _createClass(OutputProvider, [{
@@ -13504,10 +13388,10 @@ var OutputProvider = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(OutputProvider), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(OutputProvider.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('outputs').withFieldType("JSON_").withValue(JSON.stringify({
         o1: [1, 2, 3],
@@ -13521,11 +13405,6 @@ var OutputProvider = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-OutputProvider.category = 'Workflow';
-OutputProvider.summary = 'Provides output ports from JSON';
-OutputProvider.inPorts = [];
-OutputProvider.outPorts = [];
-OutputProvider.editableOutPorts = true;
 
 /***/ }),
 
@@ -13616,12 +13495,27 @@ var RegExpFilter = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(RegExpFilter);
 
   function RegExpFilter() {
+    var _this;
+
     _classCallCheck(this, RegExpFilter);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Filter features matching an attribute regular expression';
+    _this.outPorts = ['Passed', 'Failed'];
+    _this.name = 'RegExpFilter';
+    return _this;
   }
 
   _createClass(RegExpFilter, [{
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(RegExpFilter.prototype), "serialize", this).call(this);
+
+      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('attribute').withValue('name'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('expression').withValue('/test|draft|dummy/'));
+      return description;
+    }
+  }, {
     key: "run",
     value: function run() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -13653,13 +13547,13 @@ var RegExpFilter = /*#__PURE__*/function (_ServerNode) {
   }, {
     key: "filterByRegExp",
     value: function filterByRegExp(features) {
-      var _this = this;
+      var _this2 = this;
 
       var returnFailed = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       return features.filter(function (feature) {
-        var expression = _this.getExpression();
+        var expression = _this2.getExpression();
 
-        var column = _this.getParameter('attribute').value;
+        var column = _this2.getParameter('attribute').value;
 
         return returnFailed ? !expression.test(feature.original[column]) : expression.test(feature.original[column]);
       });
@@ -13671,23 +13565,12 @@ var RegExpFilter = /*#__PURE__*/function (_ServerNode) {
 
       return RegExp(cleaned);
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(RegExpFilter), "describe", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('attribute').withValue('name'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('expression').withValue('/test|draft|dummy/'));
-      return description;
-    }
   }]);
 
   return RegExpFilter;
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-RegExpFilter.category = 'Workflow';
-RegExpFilter.summary = 'Filter features matching an attribute regular expression';
-RegExpFilter.outPorts = ['Passed', 'Failed'];
 
 /***/ }),
 
@@ -13775,16 +13658,22 @@ var Sleep = /*#__PURE__*/function (_ServerNode) {
   var _super = _createSuper(Sleep);
 
   function Sleep() {
+    var _this;
+
     _classCallCheck(this, Sleep);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Sleep x seconds';
+    _this.name = 'Sleep';
+    return _this;
   }
 
   _createClass(Sleep, [{
     key: "run",
     value: function run() {
       return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var _this = this;
+        var _this2 = this;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
@@ -13798,7 +13687,7 @@ var Sleep = /*#__PURE__*/function (_ServerNode) {
                     }
 
                     resolve('Node complete');
-                  }, parseInt(_this.getParameter('seconds_to_sleep').value) * 1000);
+                  }, parseInt(_this2.getParameter('seconds_to_sleep').value) * 1000);
                 }));
 
               case 2:
@@ -13809,10 +13698,10 @@ var Sleep = /*#__PURE__*/function (_ServerNode) {
         }, _callee, this);
       }));
     }
-  }], [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(Sleep), "describe", this).call(this);
+  }, {
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(Sleep.prototype), "serialize", this).call(this);
 
       description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('seconds_to_sleep').withFieldType("Number").withValue(5));
       return description;
@@ -13823,8 +13712,6 @@ var Sleep = /*#__PURE__*/function (_ServerNode) {
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
 
 
-Sleep.category = 'Workflow';
-Sleep.summary = 'Sleep x seconds';
 
 /***/ }),
 
@@ -13874,15 +13761,21 @@ var DeleteRepositories = /*#__PURE__*/function (_HTTPRequest) {
   var _super = _createSuper(DeleteRepositories);
 
   function DeleteRepositories() {
+    var _this;
+
     _classCallCheck(this, DeleteRepositories);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Github';
+    _this.summary = 'Delete github repositores';
+    _this.name = 'DeleteRepositories';
+    return _this;
   }
 
-  _createClass(DeleteRepositories, null, [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(DeleteRepositories), "describe", this).call(this);
+  _createClass(DeleteRepositories, [{
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(DeleteRepositories.prototype), "serialize", this).call(this);
 
       var verbParam = description.parameters.find(function (p) {
         return p.name == 'verb';
@@ -13904,8 +13797,6 @@ var DeleteRepositories = /*#__PURE__*/function (_HTTPRequest) {
 }(_HTTPRequest__WEBPACK_IMPORTED_MODULE_0__.default);
 
 
-DeleteRepositories.category = 'Github';
-DeleteRepositories.summary = 'Delete github repositores';
 
 /***/ }),
 
@@ -13955,15 +13846,21 @@ var Repositories = /*#__PURE__*/function (_HTTPRequest) {
   var _super = _createSuper(Repositories);
 
   function Repositories() {
+    var _this;
+
     _classCallCheck(this, Repositories);
 
-    return _super.apply(this, arguments);
+    _this = _super.apply(this, arguments);
+    _this.category = 'Github';
+    _this.summary = 'Fetch github repositores';
+    _this.name = 'Repositories';
+    return _this;
   }
 
-  _createClass(Repositories, null, [{
-    key: "describe",
-    value: function describe() {
-      var description = _get(_getPrototypeOf(Repositories), "describe", this).call(this);
+  _createClass(Repositories, [{
+    key: "serialize",
+    value: function serialize() {
+      var description = _get(_getPrototypeOf(Repositories.prototype), "serialize", this).call(this);
 
       var urlParam = description.parameters.find(function (p) {
         return p.name == 'url';
@@ -13977,8 +13874,6 @@ var Repositories = /*#__PURE__*/function (_HTTPRequest) {
 }(_HTTPRequest__WEBPACK_IMPORTED_MODULE_0__.default);
 
 
-Repositories.category = 'Github';
-Repositories.summary = 'Fetch github repositores';
 
 /***/ }),
 
@@ -14005,6 +13900,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_main__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../store/main */ "./src/core/store/main.ts");
 /* harmony import */ var _utils_Cookie__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/Cookie */ "./src/core/utils/Cookie.ts");
 /* harmony import */ var _server_demos_ts__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../server/demos.ts */ "./src/server/demos.ts");
+/* harmony import */ var _server_demos_ts__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_server_demos_ts__WEBPACK_IMPORTED_MODULE_9__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -14095,9 +13991,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }).then(function (response) {
         var _response$data$serial;
 
-        _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null));
+        _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null)); //this.bootDemos()
 
-        _this2.bootDemos();
 
         _this2.props.store.setAvailableNodes(response.data.capabilities.availableNodes);
 

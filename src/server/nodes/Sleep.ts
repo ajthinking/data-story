@@ -1,11 +1,10 @@
-import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
-import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class Sleep extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Workflow'    
-    public static summary = 'Sleep x seconds'    
+export default class Sleep extends ServerNode {
+    category: string = 'Workflow'    
+    summary = 'Sleep x seconds'
+	name = 'Sleep'    
 
     async run() {
         this.output(
@@ -22,8 +21,8 @@ export default class Sleep extends ServerNode implements ServerNodeInterface {
         })        
     }
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         description.parameters.push(
             NodeParameter.make('seconds_to_sleep').withFieldType("Number").withValue(5),            

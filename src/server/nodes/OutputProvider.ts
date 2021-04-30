@@ -1,14 +1,14 @@
 import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
-import { NodeDescription } from "../../core/NodeDescription";
 import Feature from "../../core/Feature";
 
 export default class OutputProvider extends ServerNode {
-    public static category: string = 'Workflow'    
-    public static summary = 'Provides output ports from JSON'
-	public static inPorts = []
-	public static outPorts = []	
-	public static editableOutPorts = true;
+    category: string = 'Workflow'    
+    summary = 'Provides output ports from JSON'
+	inPorts = []
+	outPorts = []	
+	editableOutPorts = true;
+	name = 'OutputProvider'
 
     async run() {
         const outputs = this.getParameterValue('outputs')
@@ -18,8 +18,8 @@ export default class OutputProvider extends ServerNode {
 		}
     }
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         description.parameters.push(
             NodeParameter.make('outputs')

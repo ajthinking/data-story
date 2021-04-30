@@ -1,12 +1,13 @@
 import ServerNode from "../ServerNode";
-import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class Inspect extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Workflow'
+export default class Inspect extends ServerNode {
+    public category: string = 'Workflow'
     public features: any[]
-    public static summary = 'Display features in a table'    
+    public summary = 'Display features in a table'    
+    public outPorts: string[] = []	
+	name = 'Inspect'
 
-    public static outPorts: string[] = []
+
 
     async run() {
         this.features = this.input();

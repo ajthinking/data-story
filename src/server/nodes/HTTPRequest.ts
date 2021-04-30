@@ -1,15 +1,14 @@
-import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import axios from 'axios';
 import Feature from "../../core/Feature";
 import NodeParameter from "../../core/NodeParameter";
-import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class HTTPRequest extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Reader'
-    public static inPorts: string[] = ['Input']
-    public static outPorts: string[] = ['Response', 'Failed'];
-    public static summary = 'Make a HTTP request'
+export default class HTTPRequest extends ServerNode {
+    category: string = 'Reader'
+    inPorts: string[] = ['Input']
+    outPorts: string[] = ['Response', 'Failed'];
+    summary = 'Make a HTTP request'
+	name = 'HTTPRequest'
 
     async run() {
         for await (let feature of this.input()) {
@@ -21,8 +20,8 @@ export default class HTTPRequest extends ServerNode implements ServerNodeInterfa
         }                
     }
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         description.parameters.push(
             NodeParameter.make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'),

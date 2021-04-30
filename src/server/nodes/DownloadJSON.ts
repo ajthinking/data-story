@@ -1,13 +1,12 @@
 import ServerNode from "../ServerNode";
 import {saveAs} from 'file-saver';
 import NodeParameter from "../../core/NodeParameter";
-import { NodeDescription } from "../../core/NodeDescription";
-import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class DownloadJSON extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Workflow'    
-    public static summary = 'Download features as JSON'
-    public static outPorts = []
+export default class DownloadJSON extends ServerNode {
+    public category: string = 'Workflow'    
+    public summary = 'Download features as JSON'
+    public outPorts = []
+	name = 'DownloadJSON'
 
     async run() {
         const filename = this.getParameterValue('filename')
@@ -18,8 +17,8 @@ export default class DownloadJSON extends ServerNode implements ServerNodeInterf
         saveAs(blob, filename);
     }
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         description.parameters.push(
             NodeParameter.make('filename').withValue('data.json'),

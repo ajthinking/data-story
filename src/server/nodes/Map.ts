@@ -1,12 +1,11 @@
 import Feature from "../../core/Feature";
-import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
-import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class Map extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Workflow'    
-    public static summary = 'Map into a property'    
+export default class Map extends ServerNode {
+    category: string = 'Workflow'    
+    summary = 'Map into a property'
+	name = 'Map'    
 
     async run() {
         const property = this.getParameterValue('property');
@@ -23,8 +22,8 @@ export default class Map extends ServerNode implements ServerNodeInterface {
         );
     }
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         description.parameters.push(
             NodeParameter.make('property').withValue('data'),            

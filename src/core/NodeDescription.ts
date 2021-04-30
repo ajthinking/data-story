@@ -5,7 +5,7 @@ export class NodeDescription {
     public inPorts: string[]
     public outPorts: string[]
     public key: string
-    public name: string
+    name: string
     public serverNode: string
     public nodeReact: string
     public parameters: any[]

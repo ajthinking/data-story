@@ -1,11 +1,10 @@
 import Feature from "../../core/Feature";
-import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
-import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class Flatten extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Workflow'    
-    public static summary = 'Flatten arrays'    
+export default class Flatten extends ServerNode {
+    category: string = 'Workflow'    
+    summary = 'Flatten arrays'
+	name = 'Flatten'
 
     async run() {
         this.output(

@@ -3,8 +3,9 @@ import NodeParameter from "../../core/NodeParameter";
 import { NodeDescription } from "../../core/NodeDescription";
 
 export default class NODE_NAME extends ServerNode {
-    public static category: string = 'Workflow'    
-    public static summary = 'ADD SUMMARY HERE'
+    category: string = 'Workflow'    
+    summary = 'ADD SUMMARY HERE'
+	name = 'NODE_NAME'
 
     async run() {
         const p1 = this.getParameterValue('p1')
@@ -14,8 +15,8 @@ export default class NODE_NAME extends ServerNode {
         )
     }
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         description.parameters.push(
             NodeParameter.make('p1'),

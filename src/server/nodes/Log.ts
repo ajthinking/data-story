@@ -1,10 +1,10 @@
 import ServerNode from "../ServerNode";
-import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class Log extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Workflow'    
-    public static summary = 'console.log(inputs)'
-    public static outPorts = []
+export default class Log extends ServerNode {
+    category: string = 'Workflow'    
+    summary = 'console.log(inputs)'
+    outPorts = []
+	name = 'Log'
 
     async run() {
         console.group('DataStory Log Node: ' + this.id)

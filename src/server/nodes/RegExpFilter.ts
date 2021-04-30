@@ -1,16 +1,18 @@
 import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
+// @ts-ignore
 import _ from 'lodash'
 import NodeParameter from "../../core/NodeParameter";
 import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class RegExpFilter extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Workflow'    
-    public static summary = 'Filter features matching an attribute regular expression'
-    public static outPorts = ['Passed', 'Failed']
+export default class RegExpFilter extends ServerNode {
+    category: string = 'Workflow'    
+    summary = 'Filter features matching an attribute regular expression'
+    outPorts = ['Passed', 'Failed']
+	name = 'RegExpFilter'
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         description.parameters.push(
             NodeParameter.make('attribute').withValue('name'),

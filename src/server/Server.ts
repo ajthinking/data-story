@@ -1,8 +1,6 @@
 import ServerDiagram from "./ServerDiagram";
 import ServerNodeFactory from "./ServerNodeFactory";
 import Cookie from '../core/utils/Cookie'
-import { SerializedDiagramModel } from "../core/types/SerializedDiagramModel";
-import { nonCircularJsonStringify } from "../core/utils/nonCircularJsonStringify";
 import DiagramModel from "../core/DiagramModel";
 
 export default class Server
@@ -20,7 +18,7 @@ export default class Server
         })
     }
 
-    public async run(diagram: DiagramModel) {		
+    public async run(diagram: DiagramModel) {
         return ServerDiagram.hydrate(diagram.serialize(), ServerNodeFactory).run()
     }
 
@@ -35,6 +33,6 @@ export default class Server
     }
 
     protected nodeDescriptions() {
-        return ServerNodeFactory.all().map(node => node.describe())
+        return ServerNodeFactory.all().map(node => (new node()).serialize())
     }
 }

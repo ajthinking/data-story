@@ -5,62 +5,91 @@ import Feature from "../core/Feature";
 import UID from "../core/utils/UID";
 import NodeParameter from "../core/NodeParameter";
 
+type ServerNodeOptions = {
+	diagram?: ServerDiagram,
+	parameters?: object[],
+	inPorts?: string[],
+	outPorts?: string[],
+	name?: string,
+	id?: string,
+	options?: any,
+}
+
 export default abstract class ServerNode {
     public id: string
     public ports: any[]
     public diagram: ServerDiagram
     public options: any
 
-    public static category: string = 'Custom'
-    public static editableInPorts: boolean = false
-    public static editableOutPorts: boolean = false
-    public static inPorts: string[] = ['Input']
-    public static outPorts: string[] = ['Output']
-    public static key: string = 'test-key'
-    public static name_: string
-    public static serverNodeType: string
-    public static nodeReact: string = 'Node'
-    public static parameters: any[]
-    public static summary: string = 'No summary provided.'   
+    public category: string = 'Custom'
+    public editableInPorts: boolean = false
+    public editableOutPorts: boolean = false
+    public inPorts: string[] = ['Input']
+    public outPorts: string[] = ['Output']
+    public key: string = 'test-key'
+    name: string
+    public serverNodeType: string
+    public nodeReact: string = 'Node'
+    public parameters: any[]
+    public summary: string = 'No summary provided.'
 
     abstract run(): any;
 
-    constructor(diagram, description: any = {}) {
+    constructor(options: ServerNodeOptions = {}) {
+        this.diagram = options.diagram
+		
+        this.id = options.id ?? UID()
+        this.parameters = options.parameters ? options.parameters : []
+        this.ports = this.createPorts(options)
+    }
 
-        this.diagram = diagram
-        this.id = UID()
-
-        this.options = {
-            parameters: description.parameters
-        }
-
-        this.ports = [
-            ...(description.inPorts ?? []).map(portName => {
+	createPorts(options) {
+		return options.ports ?? [
+            ...(options.inPorts ?? []).map(portName => {
                 return {
                     name: portName,
                     in: true
                 }
             }),
-            ...(description.outPorts ?? []).map(portName => {
+            ...(options.outPorts ?? []).map(portName => {
                 return {
                     name: portName,
                     in: false
                 }
             }),            
         ]
-    }
+	}
 
-    static hydrate(data, diagram) {
-        let instance = new (this as any)(diagram)
+    // hydrate(data, diagram) {
+	// 	console.log("REMOVE THIS??")
+    //     let instance = new (this as any)(diagram)
 
-        for (const [key, value] of Object.entries(data)) {
-            instance[key] = value
-        }
+    //     for (const [key, value] of Object.entries(data)) {
+    //         instance[key] = value
+    //     }
 
-        return instance
-    }
+    //     return instance
+    // }
 
-    static describe() : NodeDescription {
+	serialize() {
+		return {
+            category: this.category,
+            editableInPorts: this.editableInPorts,
+            editableOutPorts: this.editableOutPorts,
+            inPorts: [...this.inPorts],
+            outPorts: [...this.outPorts],
+            key: this.key,
+            name: this.name,
+            nodeReact: this.nodeReact,
+            serverNodeType: this.name,
+            parameters: [
+                NodeParameter.make('node_name').withValue(this.name)
+            ],
+            summary: this.summary,			
+		}
+	}
+
+    describe() : NodeDescription {
         return NodeDescription.deserialize({
             category: this.category,
             editableInPorts: this.editableInPorts,
@@ -79,7 +108,7 @@ export default abstract class ServerNode {
     }
 
     protected getParameter(name: string) {
-        return this['options'].parameters.find(p => p.name == name)
+        return this.parameters.find(p => p.name == name)
     }
 
     protected getParameterValue(name: string, feature: Feature = null) {

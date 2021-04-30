@@ -7,7 +7,7 @@ export default class ServerDiagram {
  
     static hydrate(data: SerializedDiagramModel, factory) {
         let instance = new this()
-
+		
         for (const [key, value] of Object.entries(data)) {
             
             if(key === 'layers') {

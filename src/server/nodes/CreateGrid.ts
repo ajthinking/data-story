@@ -1,13 +1,12 @@
 import Feature from "../../core/Feature";
-import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
-import ServerNodeInterface from "../ServerNodeInterface";
 
-export default class CreateGrid extends ServerNode implements ServerNodeInterface {
-    public static category: string = 'Reader'    
-    public static inPorts: string[] = []
-    public static summary = 'Create a set of objects with coordinates x and y'    
+export default class CreateGrid extends ServerNode {
+    public category: string = 'Reader'    
+    public inPorts: string[] = []
+    public summary = 'Create a set of objects with coordinates x and y'    
+	name = 'CreateGrid'
 
     async run() {
         let gridSizeX = parseInt(this.getParameterValue('grid_size_x'))
@@ -33,8 +32,8 @@ export default class CreateGrid extends ServerNode implements ServerNodeInterfac
         this.output(features);       
     }
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         description.parameters.push(
             NodeParameter.make('grid_size_x').withFieldType("Number").withValue(10),

@@ -1,13 +1,13 @@
-import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNodeInterface from "../../ServerNodeInterface";
 import HTTPRequest from "../HTTPRequest";
 
 export default class DeleteRepositories extends HTTPRequest implements ServerNodeInterface {
-    public static category: string = 'Github'
-    public static summary = 'Delete github repositores' 
+    category: string = 'Github'
+    summary = 'Delete github repositores'
+	name = 'DeleteRepositories'
 
-    static describe() : NodeDescription {
-        let description = super.describe()
+    serialize() {
+        let description = super.serialize()
 
         let verbParam = description.parameters.find(p => p.name == 'verb')
         verbParam.value = 'DELETE'
