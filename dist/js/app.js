@@ -9677,6 +9677,84 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
 
 /***/ }),
 
+/***/ "./src/core/DiagramModelBuilder.ts":
+/*!*****************************************!*\
+  !*** ./src/core/DiagramModelBuilder.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "DiagramModelBuilder": () => (/* binding */ DiagramModelBuilder)
+/* harmony export */ });
+/* harmony import */ var _DiagramModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.ts");
+/* harmony import */ var _NodeModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NodeModel */ "./src/core/NodeModel.ts");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var DiagramModelBuilder = /*#__PURE__*/function () {
+  function DiagramModelBuilder() {
+    _classCallCheck(this, DiagramModelBuilder);
+  }
+
+  _createClass(DiagramModelBuilder, [{
+    key: "addNode",
+    value: function addNode(nodeClass) {
+      var diagram = this.getDiagram();
+      var node = new _NodeModel__WEBPACK_IMPORTED_MODULE_1__.default(nodeClass.describe());
+      diagram.addNode(node);
+      this.diagram = diagram;
+      this.currentNode = node;
+      return this;
+    }
+  }, {
+    key: "then",
+    value: function then() {
+      this.commitNode();
+      return this;
+    }
+  }, {
+    key: "connectNode",
+    value: function connectNode() {
+      return this;
+    }
+  }, {
+    key: "finish",
+    value: function finish() {
+      return this.getDiagram();
+    }
+  }, {
+    key: "commitNode",
+    value: function commitNode() {
+      if (this.currentNode === null) return;
+      this.diagram.addNode(this.currentNode);
+      this.currentNode = null;
+    }
+  }, {
+    key: "getDiagram",
+    value: function getDiagram() {
+      var _a;
+
+      return (_a = this.diagram) !== null && _a !== void 0 ? _a : new _DiagramModel__WEBPACK_IMPORTED_MODULE_0__.default();
+    }
+  }], [{
+    key: "begin",
+    value: function begin() {
+      return new this();
+    }
+  }]);
+
+  return DiagramModelBuilder;
+}();
+
+/***/ }),
+
 /***/ "./src/core/EngineFactory.ts":
 /*!***********************************!*\
   !*** ./src/core/EngineFactory.ts ***!
@@ -13883,12 +13961,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header */ "./src/core/components/Header.js");
 /* harmony import */ var _Toolbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Toolbar */ "./src/core/components/Toolbar.js");
 /* harmony import */ var _pages_factory__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/factory */ "./src/core/components/pages/factory.js");
-/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
 /* harmony import */ var _core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/EngineFactory */ "./src/core/EngineFactory.ts");
 /* harmony import */ var _store_main__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../store/main */ "./src/core/store/main.ts");
 /* harmony import */ var _utils_Cookie__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/Cookie */ "./src/core/utils/Cookie.ts");
+/* harmony import */ var _DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../DiagramModelBuilder */ "./src/core/DiagramModelBuilder.ts");
+/* harmony import */ var _server_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../server/nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -13924,7 +14004,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react__WEBPACK_IMPORTED_MODULE_9__.observer)( /*#__PURE__*/function (_React$Component) {
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react__WEBPACK_IMPORTED_MODULE_11__.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(App, _React$Component);
 
   var _super = _createSuper(App);
@@ -13947,7 +14029,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Header__WEBPACK_IMPORTED_MODULE_2__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Toolbar__WEBPACK_IMPORTED_MODULE_3__.default, {
           store: _store_main__WEBPACK_IMPORTED_MODULE_7__.default
-        }), this.state.booted && this.renderActivePage(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_toastify__WEBPACK_IMPORTED_MODULE_10__.ToastContainer, {
+        }), this.state.booted && this.renderActivePage(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_toastify__WEBPACK_IMPORTED_MODULE_12__.ToastContainer, {
           style: {
             paddingTop: '0px'
           }
@@ -13978,7 +14060,12 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }).then(function (response) {
         var _response$data$serial;
 
-        _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null));
+        _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null)); // this.props.store.setEngine(
+        //     EngineFactory.loadOrCreate(
+        //         DiagramModelBuilder.begin().addNode(CreateJSON).finish().serialize()
+        //     )
+        // )			
+
 
         _this2.props.store.setAvailableNodes(response.data.capabilities.availableNodes);
 
@@ -14018,9 +14105,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   }, {
     key: "showBootFailureToast",
     value: function showBootFailureToast() {
-      react_toastify__WEBPACK_IMPORTED_MODULE_10__.toast.info(' Could not Boot! Check console.', {
+      react_toastify__WEBPACK_IMPORTED_MODULE_12__.toast.info(' Could not Boot! Check console.', {
         position: "bottom-right",
-        transition: react_toastify__WEBPACK_IMPORTED_MODULE_10__.Slide,
+        transition: react_toastify__WEBPACK_IMPORTED_MODULE_12__.Slide,
         autoClose: 3500,
         hideProgressBar: true,
         closeOnClick: true,
