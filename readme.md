@@ -10,19 +10,13 @@ DataStory provides a workbench for designing data flow diagrams.
 
 ![image](https://user-images.githubusercontent.com/3457668/105969887-07a56d00-6089-11eb-978f-d829d1ce1d1c.png)
 
-## Installation
-```
-* Clone it
-* Serve `public/index.html`
-```
+## Live Demo
+Deployed at https://ajthinking.github.io/data-story/
 
 ## Development Installation
-```
 * Clone it
-* Add a file `.env` with content `MIX_DATASTORY_DEV_MODE_AUTO_PUBLISH=true`
-* `yarn && `yarn watch`
-* Serve `public/index.html`
-```
+* Run `yarn && yarn watch`
+* Serve app from `public/index.html`
 
 ## Available default nodes
 ```
@@ -46,6 +40,19 @@ Repositories,
 Sleep,
 ```
 
+## Add node
+You may run the following command
+```
+yarn add-node YourNodeName
+```
+
+This will create new Node- and test files. Then you need to manually register the node in `ServerNodeFactory`.
+
+Run tests with
+```
+yarn test --watch
+```
+
 ## Hotkeys (MAC)
 
 | Hotkey        | Action           |
@@ -56,9 +63,7 @@ Sleep,
 | ALT+R                 | Run diagram |
 | SHIFT+click on link   | Select link |
 
-
-## Live Demo
-Deployed at https://ajthinking.github.io/data-story/
+<hr>
 
 ## Acknowledgements
 Thanks to Dylan & [projectstorm/react-diagrams](https://github.com/projectstorm/react-diagrams)
