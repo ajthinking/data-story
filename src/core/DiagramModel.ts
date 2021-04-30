@@ -1,5 +1,5 @@
-import { DiagramModel as DefaultDiagramModel, NodeModelGenerics } from '@projectstorm/react-diagrams'
-import NodeModel from './NodeModel'
+import { DiagramModel as DefaultDiagramModel, DiagramModelGenerics, NodeModelGenerics } from '@projectstorm/react-diagrams'
+import NodeModel, { NodeModelOptions } from './NodeModel'
 import { SerializedDiagramModel } from './types/SerializedDiagramModel'
 import VERSION from './utils/version'
 
@@ -10,8 +10,8 @@ import VERSION from './utils/version'
 export default class DiagramModel extends DefaultDiagramModel {
 	latestNodes: NodeModel[] = []
 
-	addNode(node: NodeModel) : NodeModel {
-		return node
+	addNode(node: any) {
+		return super.addNode(node)
 	}
 
     cachedNodeDependencyMap: {[T:string]: string[];} = {

@@ -10,6 +10,13 @@ import store from "../store/main"
 import Cookie from '../utils/Cookie';
 import { DiagramModelBuilder } from '../DiagramModelBuilder'
 import CreateJSON from '../../server/nodes/CreateJSON';
+import HTTPRequest from '../../server/nodes/HTTPRequest';
+import Flatten from '../../server/nodes/Flatten';
+import DownloadJSON from '../../server/nodes/DownloadJSON';
+import Map from '../../server/nodes/Map';
+import Inspect from '../../server/nodes/Inspect';
+import OutputProvider from '../../server/nodes/OutputProvider';
+import { nonCircularJsonStringify } from '../utils/nonCircularJsonStringify'
 
 export default observer(class App extends React.Component {
     constructor(props) {
@@ -75,12 +82,25 @@ export default observer(class App extends React.Component {
     }
 
 	bootDemos() {
-		this.props.store.metadata.client.save(
-			'List todos from an API',
-			DiagramModelBuilder.begin()
-				.addNode(CreateJSON)
-				.finish()			
-		)
+		return
+		let b = DiagramModelBuilder.begin()
+			.addNode(Map)			
+			.addNode(Inspect)
+
+			// .addNode(HTTPRequest)
+			// .addNode(Map)
+			// .addNode(Flatten)
+			// .addNode(DownloadJSON)
+			.finish()			
+
+		console.log("boot", b.layers[1].models)
+		this.props.store.metadata.client.save('bb', b)
+		console.log('boot back', Cookie.getObject('bb').layers[1].models)
+
+		// this.props.store.metadata.client.save(
+		// 	'List todos from an API',
+		// 	b		
+		// )
 
 	}
 

@@ -12,6 +12,7 @@ export class DiagramModelBuilder {
 
 	addNode(nodeClass) {
 		let diagram = this.getDiagram()
+
 		let node = new NodeModel(
 			nodeClass.describe()
 		)

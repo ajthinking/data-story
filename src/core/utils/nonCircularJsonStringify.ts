@@ -4,6 +4,8 @@ export const nonCircularJsonStringify = function(data, callback = null, indentat
         if (typeof value === 'object' && value !== null) {
             if (cache.indexOf(value) !== -1) {
                 // Circular reference found, discard key
+
+				//console.log("HEY")
                 return;
             }
             // Store value in our collection
