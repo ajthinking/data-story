@@ -1,4 +1,4 @@
-import { DiagramModel as DefaultDiagramModel } from '@projectstorm/react-diagrams'
+import { DiagramModel as DefaultDiagramModel, NodeModelGenerics } from '@projectstorm/react-diagrams'
 import NodeModel from './NodeModel'
 import { SerializedDiagramModel } from './types/SerializedDiagramModel'
 import VERSION from './utils/version'
@@ -8,8 +8,13 @@ import VERSION from './utils/version'
  * Can attach data to links
  */
 export default class DiagramModel extends DefaultDiagramModel {
+	latestNodes: NodeModel[] = []
 
-    cachedNodeDependencyMap = {
+	addNode(node: NodeModel) : NodeModel {
+		return node
+	}
+
+    cachedNodeDependencyMap: {[T:string]: string[];} = {
         // id1: [d1, d2, ...]
     }
 

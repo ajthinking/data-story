@@ -1,9 +1,8 @@
 import { action, observable, makeObservable } from "mobx"
-import { DefaultLinkModel, LinkModel } from '@projectstorm/react-diagrams'
+import { DefaultLinkModel } from '@projectstorm/react-diagrams'
 import NodeModel from '../../core/NodeModel'
 import _ from 'lodash'
 import clientFactory from '../clients/ClientFactory';
-import PortModel from "../PortModel";
 
 export class Store {
 
@@ -13,7 +12,6 @@ export class Store {
         engine: null,
         availableNodes: [],
         refresh: 0,
-        latestNode: null,
         latestNodes: [],
         nodeSerial: 1,
     }
@@ -43,7 +41,6 @@ export class Store {
             setActiveStory: action.bound,
             setAvailableNodes: action.bound,
             setEngine: action.bound,
-            setLatestNode: action.bound,
             setPage: action.bound,
             setResults: action.bound,
             setNotRunning: action.bound,
@@ -55,6 +52,13 @@ export class Store {
     }
 
     addNode(data) {
+        // var node = new NodeModel({
+		// 	serial: this.diagram.nodeSerial++,
+		// 	...data
+		//  });		
+		// this.diagram.engine.model.addNode(node)
+		// this.refreshDiagram()
+		// return
         
         var node = new NodeModel({
            serial: this.diagram.nodeSerial++,
@@ -213,10 +217,6 @@ export class Store {
 
     setEngine(engine) {
         this.diagram.engine = engine
-    }
-
-    setLatestNode(node) {
-        this.diagram.latestNode = node
     }
     
     setPage(name) {

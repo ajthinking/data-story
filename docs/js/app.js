@@ -9614,11 +9614,17 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
     _classCallCheck(this, DiagramModel);
 
     _this = _super.apply(this, arguments);
+    _this.latestNodes = [];
     _this.cachedNodeDependencyMap = {};
     return _this;
   }
 
   _createClass(DiagramModel, [{
+    key: "addNode",
+    value: function addNode(node) {
+      return node;
+    }
+  }, {
     key: "getCachedNodeDependencies",
     value: function getCachedNodeDependencies(id) {
       var _a;
@@ -10548,7 +10554,6 @@ var Store = /*#__PURE__*/function () {
       engine: null,
       availableNodes: [],
       refresh: 0,
-      latestNode: null,
       latestNodes: [],
       nodeSerial: 1
     };
@@ -10572,7 +10577,6 @@ var Store = /*#__PURE__*/function () {
       setActiveStory: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
       setAvailableNodes: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
       setEngine: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setLatestNode: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
       setPage: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
       setResults: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
       setNotRunning: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
@@ -10716,11 +10720,6 @@ var Store = /*#__PURE__*/function () {
     key: "setEngine",
     value: function setEngine(engine) {
       this.diagram.engine = engine;
-    }
-  }, {
-    key: "setLatestNode",
-    value: function setLatestNode(node) {
-      this.diagram.latestNode = node;
     }
   }, {
     key: "setPage",
