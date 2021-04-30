@@ -5,8 +5,10 @@ import Feature from "../../core/Feature";
 
 export default class OutputProvider extends ServerNode {
     public static category: string = 'Workflow'    
-    public static summary = 'Provides distinct output ports with test data'
+    public static summary = 'Provides output ports from JSON'
 	public static inPorts = []
+	public static outPorts = []	
+	public static editableOutPorts = true;
 
     async run() {
         const outputs = this.getParameterValue('outputs')

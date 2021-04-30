@@ -13407,8 +13407,10 @@ var OutputProvider = /*#__PURE__*/function (_ServerNode) {
 
 
 OutputProvider.category = 'Workflow';
-OutputProvider.summary = 'Provides distinct output ports with test data';
+OutputProvider.summary = 'Provides output ports from JSON';
 OutputProvider.inPorts = [];
+OutputProvider.outPorts = [];
+OutputProvider.editableOutPorts = true;
 
 /***/ }),
 
