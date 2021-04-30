@@ -2,7 +2,7 @@ import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
 import { NodeDescription } from "../../core/NodeDescription";
 
-export default class NODE_NAME extends ServerNode implements ServerNodeInterface {
+export default class NODE_NAME extends ServerNode {
     public static category: string = 'Workflow'    
     public static summary = 'ADD SUMMARY HERE'
 

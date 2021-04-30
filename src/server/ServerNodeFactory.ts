@@ -11,6 +11,7 @@ import Flatten from './nodes/Flatten'
 import Inspect from './nodes/Inspect'
 import Log from './nodes/Log'
 import Map from './nodes/Map'
+import OutputProvider from './nodes/OutputProvider'
 import RegExpFilter from './nodes/RegExpFilter'
 import DeleteRepositories from './nodes/github/DeleteRepositories'
 import Repositories from './nodes/github/Repositories'
@@ -32,6 +33,7 @@ export default class ServerNodeFactory {
         Inspect,
         Log,
         Map,
+		OutputProvider,
         RegExpFilter,
         Repositories,
         Sleep,
