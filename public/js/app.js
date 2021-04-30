@@ -11475,8 +11475,8 @@ var ServerNode = /*#__PURE__*/function () {
         category: this.category,
         editableInPorts: this.editableInPorts,
         editableOutPorts: this.editableOutPorts,
-        inPorts: this.inPorts,
-        outPorts: this.outPorts,
+        inPorts: _toConsumableArray(this.inPorts),
+        outPorts: _toConsumableArray(this.outPorts),
         key: this.key,
         name: this.name,
         nodeReact: this.nodeReact,
@@ -13960,8 +13960,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Header__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Header */ "./src/core/components/Header.js");
 /* harmony import */ var _Toolbar__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Toolbar */ "./src/core/components/Toolbar.js");
 /* harmony import */ var _pages_factory__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/factory */ "./src/core/components/pages/factory.js");
-/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
-/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
+/* harmony import */ var mobx_react__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobxreact.esm.js");
+/* harmony import */ var react_toastify__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! react-toastify */ "./node_modules/react-toastify/dist/react-toastify.esm.js");
 /* harmony import */ var react_toastify_dist_ReactToastify_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-toastify/dist/ReactToastify.css */ "./node_modules/react-toastify/dist/ReactToastify.css");
 /* harmony import */ var _core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../core/EngineFactory */ "./src/core/EngineFactory.ts");
 /* harmony import */ var _store_main__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../store/main */ "./src/core/store/main.ts");
@@ -13975,6 +13975,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _server_nodes_Inspect__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../server/nodes/Inspect */ "./src/server/nodes/Inspect.ts");
 /* harmony import */ var _server_nodes_OutputProvider__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../server/nodes/OutputProvider */ "./src/server/nodes/OutputProvider.ts");
 /* harmony import */ var _utils_nonCircularJsonStringify__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ../utils/nonCircularJsonStringify */ "./src/core/utils/nonCircularJsonStringify.ts");
+/* harmony import */ var _server_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ../../server/nodes/Evaluate */ "./src/server/nodes/Evaluate.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -14019,7 +14020,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react__WEBPACK_IMPORTED_MODULE_18__.observer)( /*#__PURE__*/function (_React$Component) {
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,mobx_react__WEBPACK_IMPORTED_MODULE_19__.observer)( /*#__PURE__*/function (_React$Component) {
   _inherits(App, _React$Component);
 
   var _super = _createSuper(App);
@@ -14042,7 +14044,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Header__WEBPACK_IMPORTED_MODULE_2__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Toolbar__WEBPACK_IMPORTED_MODULE_3__.default, {
           store: _store_main__WEBPACK_IMPORTED_MODULE_7__.default
-        }), this.state.booted && this.renderActivePage(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_toastify__WEBPACK_IMPORTED_MODULE_19__.ToastContainer, {
+        }), this.state.booted && this.renderActivePage(), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_toastify__WEBPACK_IMPORTED_MODULE_20__.ToastContainer, {
           style: {
             paddingTop: '0px'
           }
@@ -14093,15 +14095,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   }, {
     key: "bootDemos",
     value: function bootDemos() {
-      return;
-      var b = _DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_9__.DiagramModelBuilder.begin().addNode(_server_nodes_Map__WEBPACK_IMPORTED_MODULE_14__.default).addNode(_server_nodes_Inspect__WEBPACK_IMPORTED_MODULE_15__.default) // .addNode(HTTPRequest)
-      // .addNode(Map)
-      // .addNode(Flatten)
-      // .addNode(DownloadJSON)
-      .finish();
-      console.log("boot", b.layers[1].models);
-      this.props.store.metadata.client.save('bb', b);
-      console.log('boot back', _utils_Cookie__WEBPACK_IMPORTED_MODULE_8__.default.getObject('bb').layers[1].models); // this.props.store.metadata.client.save(
+      var b = _DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_9__.DiagramModelBuilder.begin().addNode(_server_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_10__.default).addNode(_server_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_18__.default).addNode(_server_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_11__.default).addNode(_server_nodes_Map__WEBPACK_IMPORTED_MODULE_14__.default).addNode(_server_nodes_Flatten__WEBPACK_IMPORTED_MODULE_12__.default).addNode(_server_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_13__.default).finish();
+      this.props.store.metadata.client.save('bb', b); // this.props.store.metadata.client.save(
       // 	'List todos from an API',
       // 	b		
       // )
@@ -14131,9 +14126,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
   }, {
     key: "showBootFailureToast",
     value: function showBootFailureToast() {
-      react_toastify__WEBPACK_IMPORTED_MODULE_19__.toast.info(' Could not Boot! Check console.', {
+      react_toastify__WEBPACK_IMPORTED_MODULE_20__.toast.info(' Could not Boot! Check console.', {
         position: "bottom-right",
-        transition: react_toastify__WEBPACK_IMPORTED_MODULE_19__.Slide,
+        transition: react_toastify__WEBPACK_IMPORTED_MODULE_20__.Slide,
         autoClose: 3500,
         hideProgressBar: true,
         closeOnClick: true,

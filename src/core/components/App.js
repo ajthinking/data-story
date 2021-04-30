@@ -17,6 +17,7 @@ import Map from '../../server/nodes/Map';
 import Inspect from '../../server/nodes/Inspect';
 import OutputProvider from '../../server/nodes/OutputProvider';
 import { nonCircularJsonStringify } from '../utils/nonCircularJsonStringify'
+import Evaluate from '../../server/nodes/Evaluate';
 
 export default observer(class App extends React.Component {
     constructor(props) {
@@ -82,20 +83,16 @@ export default observer(class App extends React.Component {
     }
 
 	bootDemos() {
-		return
 		let b = DiagramModelBuilder.begin()
-			.addNode(Map)			
-			.addNode(Inspect)
-
-			// .addNode(HTTPRequest)
-			// .addNode(Map)
-			// .addNode(Flatten)
-			// .addNode(DownloadJSON)
+			.addNode(CreateJSON)			
+			.addNode(Evaluate)
+			.addNode(HTTPRequest)
+			.addNode(Map)
+			.addNode(Flatten)
+			.addNode(DownloadJSON)
 			.finish()			
 
-		console.log("boot", b.layers[1].models)
 		this.props.store.metadata.client.save('bb', b)
-		console.log('boot back', Cookie.getObject('bb').layers[1].models)
 
 		// this.props.store.metadata.client.save(
 		// 	'List todos from an API',
