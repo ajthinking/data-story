@@ -52,134 +52,19 @@ export class Store {
     }
 
     addNode(data) {
-        // var node = new NodeModel({
-		// 	serial: this.diagram.nodeSerial++,
-		// 	...data
-		//  });		
-		// this.diagram.engine.model.addNode(node)
-		// this.refreshDiagram()
-		// return
-        
-        var node = new NodeModel({
-           serial: this.diagram.nodeSerial++,
-           ...data
-        });
+        this.diagram.engine.model.addNode(new NodeModel({
+			serial: this.diagram.nodeSerial++,
+			...data
+		 }));
 
-        this.attemptLinkToLatest(node)
-        
-        this.smartInspectorNames(node)
-        
-        this.diagram.engine.model.addNode(node);
-        this.diagram.latestNodes.unshift(node);
-        this.refreshDiagram()
+		this.refreshDiagram()
     }
-
-    attemptLinkToLatest(node)
-    {
-        
-        let linked = false;
-        
-        // Try to link to latest nodes
-        this.diagram.latestNodes.find(latest => {
-            if(this.diagram.engine.model.hasNode(latest)) {
-                if(this.canLink(latest, node)) {
-                    // Spread the nodes nicely
-                    this.setLinkedNodePosition(latest, node)
-                    // Link to latest node
-                    this.diagram.engine.model.addAll(
-                        this.getAutomatedLink(latest, node)
-                    );
-                    // Dont continue traversing latestNodes array
-                    return linked = true;
-                }
-
-            }
-        })
-        
-
-        if(linked) return;
-
-        // Fallback 1: place below latest node
-        // Fallback 2: place at 100, 100
-        let latest = [...this.diagram.latestNodes][0] ?? null;
-        
-        node.setPosition(
-            latest?.position?.x ? latest.position.x : 100,
-            latest?.position?.y ? latest.position.y + 75 : 100            
-        );
-    }
-
-    smartInspectorNames(node)
-    {
-        if(node.options.name != 'Inspect') return;
-
-        let nameParam = node.options.parameters.find(n => n.name == 'node_name')
-
-        let sourceLink: any = Object.values(node.ports?.Input?.links)[0] ?? null
-        if(!sourceLink) return;
-        let sourcePortName = sourceLink.sourcePort.options.name ?? false
-        
-        // It must be a specific name to make sense
-        if(!sourcePortName || sourcePortName == 'Output') return;
-
-        nameParam.value = sourcePortName
-        
-    }  
 
     clearLinkLabels() {
         Object.values(this.diagram.engine.model.layers[0].models).forEach((link: any) => {
             link.labels = []
         })
-    }
-
-    getAutomatedLink(from, to) {
-        if(!this.canLink(from, to)) return;
-
-        // fromPort: prefer first unused outPort. Otherwise defaults to first
-        let fromPort: any = Object.values(from.getOutPorts()).find((candidate: any) => {
-            return Object.values(candidate.links).length === 0
-        }) ?? Object.values(from.getOutPorts())[0]
-
-        // toPort: the first inPort
-        let toPort: any = Object.values(to.getInPorts())[0];
-        
-        // Links
-        let link = new DefaultLinkModel()
-        link.setSourcePort(fromPort);
-        link.setTargetPort(toPort);            
-        
-        // track: https://github.com/projectstorm/react-diagrams/issues/617
-        //link.addLabel(Math.floor(Math.random()*1000));
-
-        // Report
-        fromPort.reportPosition()
-        toPort.reportPosition()
-
-        return link
-    }
-
-    canLink(from, to)
-    {
-        // Has from node?
-        if(!from) return
-        
-        // Resolve ports
-        let fromPort = Object.values(from.getOutPorts())[0] ?? false;
-        let toPort = Object.values(to.getInPorts())[0] ?? false;
-
-        // Ensure there are ports to connect to
-        return fromPort && toPort
-    }
-
-    setLinkedNodePosition(latest, node)
-    {
-        let fromPort: any = Object.values(latest.getOutPorts())[0] ?? false;
-
-        node.setPosition(
-            latest.position.x + 200,
-            latest.position.y + (Object.keys(fromPort.links).length) * 75
-        );
-    }    
+    }   
 
     goToInspector(id) {
         this.metadata.activeInspector = id

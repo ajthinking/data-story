@@ -9576,6 +9576,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _utils_version__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils/version */ "./src/core/utils/version.ts");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -9622,6 +9634,9 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
   _createClass(DiagramModel, [{
     key: "addNode",
     value: function addNode(node) {
+      this.attemptLinkToLatest(node);
+      this.smartInspectorNames(node);
+      this.latestNodes.unshift(node);
       return _get(_getPrototypeOf(DiagramModel.prototype), "addNode", this).call(this, node);
     }
   }, {
@@ -9673,6 +9688,79 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
 
         return 0;
       });
+    }
+  }, {
+    key: "attemptLinkToLatest",
+    value: function attemptLinkToLatest(node) {
+      var _this2 = this;
+
+      var _a, _b, _c;
+
+      var linked = false;
+      this.latestNodes.find(function (latest) {
+        if (_this2.hasNode(latest)) {
+          if (_this2.canLink(latest, node)) {
+            _this2.setLinkedNodePosition(latest, node);
+
+            _this2.addAll(_this2.getAutomatedLink(latest, node));
+
+            return linked = true;
+          }
+        }
+      });
+      if (linked) return;
+      var latest = (_a = _toConsumableArray(this.latestNodes)[0]) !== null && _a !== void 0 ? _a : null;
+      node.setPosition(((_b = latest === null || latest === void 0 ? void 0 : latest.position) === null || _b === void 0 ? void 0 : _b.x) ? latest.position.x : 100, ((_c = latest === null || latest === void 0 ? void 0 : latest.position) === null || _c === void 0 ? void 0 : _c.y) ? latest.position.y + 75 : 100);
+    }
+  }, {
+    key: "smartInspectorNames",
+    value: function smartInspectorNames(node) {
+      var _a, _b, _c, _d;
+
+      if (node.options.name != 'Inspect') return;
+      var nameParam = node.options.parameters.find(function (n) {
+        return n.name == 'node_name';
+      });
+      var sourceLink = (_c = Object.values((_b = (_a = node.ports) === null || _a === void 0 ? void 0 : _a.Input) === null || _b === void 0 ? void 0 : _b.links)[0]) !== null && _c !== void 0 ? _c : null;
+      if (!sourceLink) return;
+      var sourcePortName = (_d = sourceLink.sourcePort.options.name) !== null && _d !== void 0 ? _d : false;
+      if (!sourcePortName || sourcePortName == 'Output') return;
+      nameParam.value = sourcePortName;
+    }
+  }, {
+    key: "getAutomatedLink",
+    value: function getAutomatedLink(from, to) {
+      var _a;
+
+      if (!this.canLink(from, to)) return;
+      var fromPort = (_a = Object.values(from.getOutPorts()).find(function (candidate) {
+        return Object.values(candidate.links).length === 0;
+      })) !== null && _a !== void 0 ? _a : Object.values(from.getOutPorts())[0];
+      var toPort = Object.values(to.getInPorts())[0];
+      var link = new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__.DefaultLinkModel();
+      link.setSourcePort(fromPort);
+      link.setTargetPort(toPort);
+      fromPort.reportPosition();
+      toPort.reportPosition();
+      return link;
+    }
+  }, {
+    key: "canLink",
+    value: function canLink(from, to) {
+      var _a, _b;
+
+      if (!from) return;
+      var fromPort = (_a = Object.values(from.getOutPorts())[0]) !== null && _a !== void 0 ? _a : false;
+      var toPort = (_b = Object.values(to.getInPorts())[0]) !== null && _b !== void 0 ? _b : false;
+      return fromPort && toPort;
+    }
+  }, {
+    key: "setLinkedNodePosition",
+    value: function setLinkedNodePosition(latest, node) {
+      var _a;
+
+      var fromPort = (_a = Object.values(latest.getOutPorts())[0]) !== null && _a !== void 0 ? _a : false;
+      node.setPosition(latest.position.x + 200, latest.position.y + Object.keys(fromPort.links).length * 75);
     }
   }]);
 
@@ -10517,29 +10605,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Store": () => (/* binding */ Store),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
-/* harmony import */ var _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @projectstorm/react-diagrams */ "./node_modules/@projectstorm/react-diagrams/dist/index.js");
-/* harmony import */ var _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _core_NodeModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core/NodeModel */ "./src/core/NodeModel.ts");
-/* harmony import */ var _clients_ClientFactory__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../clients/ClientFactory */ "./src/core/clients/ClientFactory.ts");
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
+/* harmony import */ var mobx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! mobx */ "./node_modules/mobx/dist/mobx.esm.js");
+/* harmony import */ var _core_NodeModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../core/NodeModel */ "./src/core/NodeModel.ts");
+/* harmony import */ var _clients_ClientFactory__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../clients/ClientFactory */ "./src/core/clients/ClientFactory.ts");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 
 
 
@@ -10563,77 +10636,35 @@ var Store = /*#__PURE__*/function () {
       activeInspector: null,
       stories: [],
       activeStory: '',
-      client: (0,_clients_ClientFactory__WEBPACK_IMPORTED_MODULE_2__.default)((_a = window.dataStoryConfig.client) !== null && _a !== void 0 ? _a : 'LocalClient')
+      client: (0,_clients_ClientFactory__WEBPACK_IMPORTED_MODULE_1__.default)((_a = window.dataStoryConfig.client) !== null && _a !== void 0 ? _a : 'LocalClient')
     };
-    (0,mobx__WEBPACK_IMPORTED_MODULE_3__.makeObservable)(this, {
-      diagram: mobx__WEBPACK_IMPORTED_MODULE_3__.observable,
-      metadata: mobx__WEBPACK_IMPORTED_MODULE_3__.observable,
-      addNode: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      clearLinkLabels: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      increaseNodeSerial: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      goToInspector: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      refreshDiagram: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setActiveInspector: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setActiveStory: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setAvailableNodes: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setEngine: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setPage: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setResults: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setNotRunning: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setRunning: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound,
-      setStories: mobx__WEBPACK_IMPORTED_MODULE_3__.action.bound
+    (0,mobx__WEBPACK_IMPORTED_MODULE_2__.makeObservable)(this, {
+      diagram: mobx__WEBPACK_IMPORTED_MODULE_2__.observable,
+      metadata: mobx__WEBPACK_IMPORTED_MODULE_2__.observable,
+      addNode: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      clearLinkLabels: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      increaseNodeSerial: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      goToInspector: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      refreshDiagram: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setActiveInspector: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setActiveStory: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setAvailableNodes: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setEngine: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setPage: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setResults: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setNotRunning: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setRunning: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound,
+      setStories: mobx__WEBPACK_IMPORTED_MODULE_2__.action.bound
     });
   }
 
   _createClass(Store, [{
     key: "addNode",
     value: function addNode(data) {
-      var node = new _core_NodeModel__WEBPACK_IMPORTED_MODULE_1__.default(Object.assign({
+      this.diagram.engine.model.addNode(new _core_NodeModel__WEBPACK_IMPORTED_MODULE_0__.default(Object.assign({
         serial: this.diagram.nodeSerial++
-      }, data));
-      this.attemptLinkToLatest(node);
-      this.smartInspectorNames(node);
-      this.diagram.engine.model.addNode(node);
-      this.diagram.latestNodes.unshift(node);
+      }, data)));
       this.refreshDiagram();
-    }
-  }, {
-    key: "attemptLinkToLatest",
-    value: function attemptLinkToLatest(node) {
-      var _this = this;
-
-      var _a, _b, _c;
-
-      var linked = false;
-      this.diagram.latestNodes.find(function (latest) {
-        if (_this.diagram.engine.model.hasNode(latest)) {
-          if (_this.canLink(latest, node)) {
-            _this.setLinkedNodePosition(latest, node);
-
-            _this.diagram.engine.model.addAll(_this.getAutomatedLink(latest, node));
-
-            return linked = true;
-          }
-        }
-      });
-      if (linked) return;
-      var latest = (_a = _toConsumableArray(this.diagram.latestNodes)[0]) !== null && _a !== void 0 ? _a : null;
-      node.setPosition(((_b = latest === null || latest === void 0 ? void 0 : latest.position) === null || _b === void 0 ? void 0 : _b.x) ? latest.position.x : 100, ((_c = latest === null || latest === void 0 ? void 0 : latest.position) === null || _c === void 0 ? void 0 : _c.y) ? latest.position.y + 75 : 100);
-    }
-  }, {
-    key: "smartInspectorNames",
-    value: function smartInspectorNames(node) {
-      var _a, _b, _c, _d;
-
-      if (node.options.name != 'Inspect') return;
-      var nameParam = node.options.parameters.find(function (n) {
-        return n.name == 'node_name';
-      });
-      var sourceLink = (_c = Object.values((_b = (_a = node.ports) === null || _a === void 0 ? void 0 : _a.Input) === null || _b === void 0 ? void 0 : _b.links)[0]) !== null && _c !== void 0 ? _c : null;
-      if (!sourceLink) return;
-      var sourcePortName = (_d = sourceLink.sourcePort.options.name) !== null && _d !== void 0 ? _d : false;
-      if (!sourcePortName || sourcePortName == 'Output') return;
-      nameParam.value = sourcePortName;
     }
   }, {
     key: "clearLinkLabels",
@@ -10641,41 +10672,6 @@ var Store = /*#__PURE__*/function () {
       Object.values(this.diagram.engine.model.layers[0].models).forEach(function (link) {
         link.labels = [];
       });
-    }
-  }, {
-    key: "getAutomatedLink",
-    value: function getAutomatedLink(from, to) {
-      var _a;
-
-      if (!this.canLink(from, to)) return;
-      var fromPort = (_a = Object.values(from.getOutPorts()).find(function (candidate) {
-        return Object.values(candidate.links).length === 0;
-      })) !== null && _a !== void 0 ? _a : Object.values(from.getOutPorts())[0];
-      var toPort = Object.values(to.getInPorts())[0];
-      var link = new _projectstorm_react_diagrams__WEBPACK_IMPORTED_MODULE_0__.DefaultLinkModel();
-      link.setSourcePort(fromPort);
-      link.setTargetPort(toPort);
-      fromPort.reportPosition();
-      toPort.reportPosition();
-      return link;
-    }
-  }, {
-    key: "canLink",
-    value: function canLink(from, to) {
-      var _a, _b;
-
-      if (!from) return;
-      var fromPort = (_a = Object.values(from.getOutPorts())[0]) !== null && _a !== void 0 ? _a : false;
-      var toPort = (_b = Object.values(to.getInPorts())[0]) !== null && _b !== void 0 ? _b : false;
-      return fromPort && toPort;
-    }
-  }, {
-    key: "setLinkedNodePosition",
-    value: function setLinkedNodePosition(latest, node) {
-      var _a;
-
-      var fromPort = (_a = Object.values(latest.getOutPorts())[0]) !== null && _a !== void 0 ? _a : false;
-      node.setPosition(latest.position.x + 200, latest.position.y + Object.keys(fromPort.links).length * 75);
     }
   }, {
     key: "goToInspector",
@@ -10735,10 +10731,10 @@ var Store = /*#__PURE__*/function () {
   }, {
     key: "setNotRunning",
     value: function setNotRunning() {
-      var _this2 = this;
+      var _this = this;
 
       setTimeout(function () {
-        _this2.metadata.running = false;
+        _this.metadata.running = false;
       }, 500);
     }
   }, {
