@@ -2,6 +2,8 @@ import ServerDiagram from "./ServerDiagram";
 import ServerNodeFactory from "./ServerNodeFactory";
 import Cookie from '../core/utils/Cookie'
 import { SerializedDiagramModel } from "../core/types/SerializedDiagramModel";
+import { nonCircularJsonStringify } from "../core/utils/nonCircularJsonStringify";
+import DiagramModel from "../core/DiagramModel";
 
 export default class Server
 {
@@ -18,15 +20,15 @@ export default class Server
         })
     }
 
-    public async run(diagram: SerializedDiagramModel) {		
-        return ServerDiagram.hydrate(diagram, ServerNodeFactory).run()
+    public async run(diagram: DiagramModel) {		
+        return ServerDiagram.hydrate(diagram.serialize(), ServerNodeFactory).run()
     }
 
-    public async save(name, stringifiedModel) {
+    public async save(name: string, model: DiagramModel) {
+
         return new Promise((success) => {
-            //implement by cookie here
-            
-            Cookie.set(name, stringifiedModel)
+
+            Cookie.setObject(name, model.serialize())
 
             return success(true)
         })

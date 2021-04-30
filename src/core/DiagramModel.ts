@@ -1,6 +1,7 @@
 import { DiagramModel as DefaultDiagramModel } from '@projectstorm/react-diagrams'
 import NodeModel from './NodeModel'
 import { SerializedDiagramModel } from './types/SerializedDiagramModel'
+import VERSION from './utils/version'
 
 /**
  * Sorts model in execution order based on their dependencies
@@ -27,7 +28,8 @@ export default class DiagramModel extends DefaultDiagramModel {
     serialize() : SerializedDiagramModel {
 		return {
 			...super.serialize(),
-			executionOrder: this.executionOrder().map(node => node.getOptions().id)
+			executionOrder: this.executionOrder().map(node => node.getOptions().id),
+			version: VERSION
 		}
     }
 

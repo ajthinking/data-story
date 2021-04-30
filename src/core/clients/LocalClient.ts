@@ -10,13 +10,10 @@ export default class LocalClient implements ClientInterface {
     }
 
     run(model: DiagramModel) {
-        // Disconnect any ties to frontend model by only providing the serialized diagram
-        return server.run(
-            model.serialize()
-        )
+        return server.run(model)
     }
 
-    save(name, model) {
+    save(name: string, model: DiagramModel) {
         return server.save(name, model)
     }
 }

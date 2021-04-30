@@ -6,7 +6,8 @@ export type SerializedDiagramModel = {
 	gridSize: number,
 	executionOrder: string[],
 	layers: any[],
-	locked: boolean
+	locked: boolean,
+	version: string
 }
 
 

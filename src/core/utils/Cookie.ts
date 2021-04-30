@@ -1,3 +1,5 @@
+import { nonCircularJsonStringify } from "./nonCircularJsonStringify";
+
 export default class Cookie {
 
 	static keys() : string[] {
@@ -8,13 +10,25 @@ export default class Cookie {
 		localStorage.clear()
 	}
 
-    static get(name) {
+    static get(name: string) {
         // @ts-ignore
-        return JSON.parse(localStorage.getItem(name));
+        return localStorage.getItem(name);
     }
 
-    static set(name, value) {
+	static getObject(name: string) {
+		return JSON.parse(this.get(name))
+	}
+
+    static set(name: string, value: string) {
         // @ts-ignore
         localStorage.setItem(name, value);
     }
+
+    static setObject(name: string, value: object) {
+        // @ts-ignore
+        localStorage.setItem(
+			name,
+			nonCircularJsonStringify(value, null, 4)
+		);
+    }	
 }

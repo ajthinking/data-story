@@ -1,13 +1,16 @@
-import createEngine from '@projectstorm/react-diagrams';
+import createEngine, { DiagramEngine } from '@projectstorm/react-diagrams';
 import NodeModelFactory from './NodeModelFactory'
 import DiagramModel from './DiagramModel'
+import { SerializedDiagramModel } from './types/SerializedDiagramModel';
 
 export default class EngineFactory {
-    static loadOrCreate(serializedModel = null) {
-        return serializedModel ? this.load(serializedModel) : this.default();
+    static loadOrCreate(serializedModel?: SerializedDiagramModel) : DiagramEngine {
+        return serializedModel
+			? this.load(serializedModel)
+			: this.default();
     }
 
-    static load(serializedModel) {
+    static load(serializedModel: SerializedDiagramModel) : DiagramEngine {
         let engine = this.getEngine()
         let model = new DiagramModel();
            
@@ -19,7 +22,7 @@ export default class EngineFactory {
         return engine
     }
 
-    static default() {        
+    static default() : DiagramEngine {        
         let engine = this.getEngine()
         
         const state : any = engine.getStateMachine().getCurrentState();
@@ -34,7 +37,7 @@ export default class EngineFactory {
         return engine        
     }
 
-    static getEngine() {
+    static getEngine() : DiagramEngine {
         let engine = createEngine();
         
         engine.getNodeFactories().registerFactory(new NodeModelFactory() as any);

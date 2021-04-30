@@ -28,11 +28,7 @@ export default observer(class SaveModal extends React.Component {
 
         this.props.store.metadata.client.save(
             this.state.storyName,
-            nonCircularJsonStringify(
-                this.props.store.diagram.engine.model.serialize(),
-                null,
-                4
-            ),
+            this.props.store.diagram.engine.model
         ).then(() => {
             this.props.closeModal();
         })

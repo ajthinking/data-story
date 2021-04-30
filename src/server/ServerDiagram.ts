@@ -1,9 +1,11 @@
+import { SerializedDiagramModel } from "../core/types/SerializedDiagramModel"
+
 export default class ServerDiagram {
     executionOrder: any[] = []
     links: any[] = []
     nodes: any[] = []
  
-    static hydrate(data, factory) {
+    static hydrate(data: SerializedDiagramModel, factory) {
         let instance = new this()
 
         for (const [key, value] of Object.entries(data)) {

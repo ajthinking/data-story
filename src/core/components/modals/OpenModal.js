@@ -106,7 +106,7 @@ export default observer(class OpenModal extends React.Component {
 		try {
 			let engine = this.props.store.diagram.engine
 			let model = new DiagramModel();
-			model.deserializeModel(Cookie.get(name), engine);
+			model.deserializeModel(Cookie.getObject(name), engine);
 			engine.setModel(model)
 			this.props.closeModal()
 		} catch(e) {
