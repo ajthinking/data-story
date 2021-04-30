@@ -46,7 +46,7 @@ You may run the following command
 yarn add-node YourNodeName
 ```
 
-This will create new Node- and test files. Then you need to manually register the node in `ServerNodeFactory`.
+This will create a new `ServerNode` class along with a test stub. Then you need to manually register it in `ServerNodeFactory`.
 
 Run tests with
 ```
