@@ -1,6 +1,5 @@
 import ServerNode from "../ServerNode";
 import NodeParameter from "../../core/NodeParameter";
-import { NodeDescription } from "../../core/NodeDescription";
 
 export default class NODE_NAME extends ServerNode {
     category: string = 'Workflow'    

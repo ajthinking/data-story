@@ -1,3 +1,4 @@
+// import Alert from './nodes/Alert'
 // import Comment from './nodes/Comment'
 import Create from './nodes/Create'
 import CreateGrid from './nodes/CreateGrid'
@@ -21,6 +22,7 @@ import { SerializedNodeModel } from '../core/types/SerializedNodeModel'
 
 export default class ServerNodeFactory {
     protected static nodes = {
+		// Alert,
         // Comment,
         Create,
         CreateAttribute,
