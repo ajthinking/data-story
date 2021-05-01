@@ -1,3 +1,3 @@
 export interface BootPayload {
-	availableNodes
+	availableNodes: object[]
 }
