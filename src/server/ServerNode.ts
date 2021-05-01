@@ -3,6 +3,7 @@ import * as _ from "lodash";
 import Feature from "../core/Feature";
 import UID from "../core/utils/UID";
 import NodeParameter from "../core/NodeParameter";
+//import { ServerPort } from "./ServerPort";
 
 type ServerNodeOptions = {
 	diagram?: ServerDiagram,

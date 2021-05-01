@@ -2,11 +2,12 @@ import ServerDiagram from "./ServerDiagram";
 import ServerNodeFactory from "./ServerNodeFactory";
 import Cookie from '../core/utils/Cookie'
 import DiagramModel from "../core/DiagramModel";
+import { BootPayload } from "../core/types/BootPayload";
 
 export default class Server
 {
     public boot() {
-        return new Promise((callback) => {
+        return new Promise<BootPayload>((callback) => {
             return callback({
                 data: {
                     stories: [],

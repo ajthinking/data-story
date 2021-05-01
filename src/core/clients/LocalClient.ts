@@ -5,7 +5,7 @@ import ClientInterface from './ClientInterface';
 const server = new Server;
 
 export default class LocalClient implements ClientInterface {
-    boot() {
+    boot(){
         return server.boot()
     }
 
