@@ -11575,8 +11575,8 @@ ServerNodeFactory.nodes = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "WorkingWithJSON": () => (/* binding */ WorkingWithJSON),
-/* harmony export */   "ScrapingAMapService": () => (/* binding */ ScrapingAMapService),
-/* harmony export */   "CleanupOldGithubRepos": () => (/* binding */ CleanupOldGithubRepos)
+/* harmony export */   "CleanupOldGithubRepos": () => (/* binding */ CleanupOldGithubRepos),
+/* harmony export */   "ScrapingAMapService": () => (/* binding */ ScrapingAMapService)
 /* harmony export */ });
 /* harmony import */ var _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../core/DiagramModelBuilder */ "./src/core/DiagramModelBuilder.ts");
 /* harmony import */ var _nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nodes/CreateGrid */ "./src/server/nodes/CreateGrid.ts");
@@ -11597,8 +11597,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var WorkingWithJSON = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).finish();
-var ScrapingAMapService = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__.default).addNode(_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
 var CleanupOldGithubRepos = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).finish();
+var ScrapingAMapService = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__.default).addNode(_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
 
 /***/ }),
 
