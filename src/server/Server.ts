@@ -31,7 +31,7 @@ export default class Server
         })
     }
 
-    protected nodeDescriptions() {
+    protected nodeDescriptions(): object[] {
         return ServerNodeFactory.all().map(node => (new node()).serialize())
     }
 }
