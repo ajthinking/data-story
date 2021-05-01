@@ -12869,7 +12869,7 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
     _this = _super.apply(this, arguments);
     _this.category = 'Reader';
     _this.inPorts = ['Input'];
-    _this.outPorts = ['Response', 'Failed'];
+    _this.outPorts = ['Features', 'Response', 'Failed'];
     _this.summary = 'Make a HTTP request';
     _this.name = 'HTTPRequest';
     return _this;
@@ -12907,8 +12907,23 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
                 feature = _c.value;
                 _context.next = 9;
                 return this.request(feature).then(function (result) {
-                  if (result) {
-                    _this2.output([new _core_Feature__WEBPACK_IMPORTED_MODULE_3__.default(result)], 'Response');
+                  _this2.output([new _core_Feature__WEBPACK_IMPORTED_MODULE_3__.default(result)], 'Response');
+
+                  if (_this2.getParameterValue('features_path')) {
+                    var features_path = _this2.getParameterValue('features_path');
+
+                    var raw = features_path.split('.').reduce(function (traversed, part) {
+                      return traversed[part];
+                    }, result);
+                    var wrapped = [raw].flat();
+
+                    _this2.output(wrapped.map(function (r) {
+                      return new _core_Feature__WEBPACK_IMPORTED_MODULE_3__.default(r);
+                    }), 'Features');
+                  }
+                })["catch"](function (reason) {
+                  if (reason) {
+                    _this2.output([new _core_Feature__WEBPACK_IMPORTED_MODULE_3__.default(JSON.parse(JSON.stringify(reason)))], 'Failed');
                   }
                 });
 
@@ -12966,7 +12981,7 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
   }, {
     key: "getParameters",
     value: function getParameters() {
-      return [].concat(_toConsumableArray(_get(_getPrototypeOf(HTTPRequest.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.string('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.string('verb').withValue('GET'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.json('data').withValue('{}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.json('config').withValue('{}')]);
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(HTTPRequest.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.string('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.string('verb').withValue('GET'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.json('data').withValue('{}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.json('config').withValue('{}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.string('features_path').withValue('data')]);
     }
   }, {
     key: "request",
