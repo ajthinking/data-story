@@ -10,9 +10,7 @@ export default class Server
             return callback({
                 data: {
                     stories: [],
-                    capabilities: {
-                        availableNodes: this.nodeDescriptions()
-                    }                    
+                    availableNodes: this.nodeDescriptions()                    
                 }
             })
         })

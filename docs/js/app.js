@@ -10915,9 +10915,7 @@ var Server = /*#__PURE__*/function () {
         return callback({
           data: {
             stories: [],
-            capabilities: {
-              availableNodes: _this.nodeDescriptions()
-            }
+            availableNodes: _this.nodeDescriptions()
           }
         });
       });
@@ -13994,7 +13992,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
         _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null)); //this.bootDemos()
 
 
-        _this2.props.store.setAvailableNodes(response.data.capabilities.availableNodes);
+        _this2.props.store.setAvailableNodes(response.data.availableNodes);
 
         _this2.props.store.setStories(_utils_Cookie__WEBPACK_IMPORTED_MODULE_8__.default.keys());
 

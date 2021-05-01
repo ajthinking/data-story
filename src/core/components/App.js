@@ -55,7 +55,7 @@ export default observer(class App extends React.Component {
 			
 
             this.props.store.setAvailableNodes(
-                response.data.capabilities.availableNodes
+                response.data.availableNodes
             );
 
             this.props.store.setStories(
