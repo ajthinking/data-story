@@ -11421,11 +11421,13 @@ var ServerNode = /*#__PURE__*/function () {
       var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'Input';
       var port = this.portNamed(name);
       var features = port.links.map(function (linkId) {
+        var _a;
+
         var link = _this.diagram.find(linkId);
 
         var source = _this.diagram.find(link.sourcePort);
 
-        return source.features;
+        return (_a = source.features) !== null && _a !== void 0 ? _a : [];
       }).flat();
       return lodash__WEBPACK_IMPORTED_MODULE_0__.cloneDeep(features);
     }

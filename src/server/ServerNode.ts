@@ -131,7 +131,7 @@ export default abstract class ServerNode {
         let features = port.links.map(linkId => {
             let link = this.diagram.find(linkId)
             let source = this.diagram.find(link.sourcePort)
-            return source.features
+            return source.features ?? []
         }).flat()
         
         return _.cloneDeep(features)
