@@ -5,7 +5,7 @@ export default class Create extends ServerNode {
     public category: string = 'Workflow'
     public summary = 'Create a null feature'
     public inPorts = []
-	name = 'Create'
+	public name = 'Create'
 
 
     async run() {
