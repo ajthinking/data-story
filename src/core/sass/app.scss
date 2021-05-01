@@ -55,3 +55,26 @@ foreignObject > div > div{
 .Toastify__toast {
     background: #E5E7EB !important;
 }
+.port {
+    font-size: 1.3rem;
+
+}
+
+@media (min-height: 601px) {
+    .port span {
+        transform: translateY(0.03rem);
+        -moz-transform: translateY(0.02rem);
+
+    }
+}
+
+@media (max-height: 600px) {
+    .port span {
+        -moz-transform: translateY(-0.02rem);
+        transform: translateY(0.03rem);
+    }
+}
+.hover\:text-malibu-500-child span:hover {
+    --tw-text-opacity: 1;
+    color: rgba(97,218,251,var(--tw-text-opacity));
+}
