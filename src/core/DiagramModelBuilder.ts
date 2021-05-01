@@ -14,7 +14,7 @@ export class DiagramModelBuilder {
 		let diagram = this.getDiagram()
 
 		let node = new NodeModel(
-			nodeClass.describe()
+			(new nodeClass).serialize()
 		)
 
 		diagram.addNode(node)

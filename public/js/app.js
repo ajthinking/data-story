@@ -9771,6 +9771,89 @@ var DiagramModel = /*#__PURE__*/function (_DefaultDiagramModel) {
 
 /***/ }),
 
+/***/ "./src/core/DiagramModelBuilder.ts":
+/*!*****************************************!*\
+  !*** ./src/core/DiagramModelBuilder.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "DiagramModelBuilder": () => (/* binding */ DiagramModelBuilder)
+/* harmony export */ });
+/* harmony import */ var _DiagramModel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DiagramModel */ "./src/core/DiagramModel.ts");
+/* harmony import */ var _NodeModel__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NodeModel */ "./src/core/NodeModel.ts");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var DiagramModelBuilder = /*#__PURE__*/function () {
+  function DiagramModelBuilder() {
+    _classCallCheck(this, DiagramModelBuilder);
+  }
+
+  _createClass(DiagramModelBuilder, [{
+    key: "addNode",
+    value: function addNode(nodeClass) {
+      var diagram = this.getDiagram();
+      var node = new _NodeModel__WEBPACK_IMPORTED_MODULE_1__.default(new nodeClass().serialize());
+      diagram.addNode(node);
+      this.diagram = diagram;
+      this.currentNode = node;
+      return this;
+    }
+  }, {
+    key: "alsoAdd",
+    value: function alsoAdd(nodeClass) {
+      return this.addNode(nodeClass);
+    }
+  }, {
+    key: "then",
+    value: function then() {
+      this.commitNode();
+      return this;
+    }
+  }, {
+    key: "connectNode",
+    value: function connectNode() {
+      return this;
+    }
+  }, {
+    key: "finish",
+    value: function finish() {
+      return this.getDiagram();
+    }
+  }, {
+    key: "commitNode",
+    value: function commitNode() {
+      if (this.currentNode === null) return;
+      this.diagram.addNode(this.currentNode);
+      this.currentNode = null;
+    }
+  }, {
+    key: "getDiagram",
+    value: function getDiagram() {
+      var _a;
+
+      return (_a = this.diagram) !== null && _a !== void 0 ? _a : new _DiagramModel__WEBPACK_IMPORTED_MODULE_0__.default();
+    }
+  }], [{
+    key: "begin",
+    value: function begin() {
+      return new this();
+    }
+  }]);
+
+  return DiagramModelBuilder;
+}();
+
+/***/ }),
+
 /***/ "./src/core/EngineFactory.ts":
 /*!***********************************!*\
   !*** ./src/core/EngineFactory.ts ***!
@@ -11531,9 +11614,36 @@ ServerNodeFactory.nodes = {
 /*!*****************************!*\
   !*** ./src/server/demos.ts ***!
   \*****************************/
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WorkingWithJSON": () => (/* binding */ WorkingWithJSON),
+/* harmony export */   "ScrapingAMapService": () => (/* binding */ ScrapingAMapService),
+/* harmony export */   "CleanupOldGithubRepos": () => (/* binding */ CleanupOldGithubRepos)
+/* harmony export */ });
+/* harmony import */ var _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../core/DiagramModelBuilder */ "./src/core/DiagramModelBuilder.ts");
+/* harmony import */ var _nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nodes/CreateGrid */ "./src/server/nodes/CreateGrid.ts");
+/* harmony import */ var _nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./nodes/CreateJSON */ "./src/server/nodes/CreateJSON.ts");
+/* harmony import */ var _nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./nodes/DownloadJSON */ "./src/server/nodes/DownloadJSON.ts");
+/* harmony import */ var _nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./nodes/Evaluate */ "./src/server/nodes/Evaluate.ts");
+/* harmony import */ var _nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./nodes/Flatten */ "./src/server/nodes/Flatten.ts");
+/* harmony import */ var _nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./nodes/HTTPRequest */ "./src/server/nodes/HTTPRequest.ts");
+/* harmony import */ var _nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./nodes/Inspect */ "./src/server/nodes/Inspect.ts");
+/* harmony import */ var _nodes_Map__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./nodes/Map */ "./src/server/nodes/Map.ts");
 
 
+
+
+
+
+
+
+
+var WorkingWithJSON = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
+var ScrapingAMapService = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__.default).addNode(_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
+var CleanupOldGithubRepos = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).finish();
 
 /***/ }),
 
@@ -13898,7 +14008,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _store_main__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../store/main */ "./src/core/store/main.ts");
 /* harmony import */ var _utils_Cookie__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../utils/Cookie */ "./src/core/utils/Cookie.ts");
 /* harmony import */ var _server_demos_ts__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../server/demos.ts */ "./src/server/demos.ts");
-/* harmony import */ var _server_demos_ts__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_server_demos_ts__WEBPACK_IMPORTED_MODULE_9__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
@@ -13989,8 +14098,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
       }).then(function (response) {
         var _response$data$serial;
 
-        _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null)); //this.bootDemos()
+        _this2.props.store.setEngine(_core_EngineFactory__WEBPACK_IMPORTED_MODULE_6__.default.loadOrCreate((_response$data$serial = response.data.serializedModel) !== null && _response$data$serial !== void 0 ? _response$data$serial : null));
 
+        _this2.bootDemos();
 
         _this2.props.store.setAvailableNodes(response.data.availableNodes);
 
