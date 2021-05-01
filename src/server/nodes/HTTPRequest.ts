@@ -20,18 +20,15 @@ export default class HTTPRequest extends ServerNode {
         }                
     }
 
-    serialize() {
-        let description = super.serialize()
-
-        description.parameters.push(
-            NodeParameter.make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'),
-            NodeParameter.make('verb').withValue('GET'),
-            NodeParameter.make('data').withFieldType("JSON_").withValue('{}'),
-            NodeParameter.make('config').withFieldType("JSON_").withValue('{}'),
-        )
-
-        return description
-    }
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.string('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'),
+            NodeParameter.string('verb').withValue('GET'),
+            NodeParameter.json('data').withValue('{}'),
+            NodeParameter.json('config').withValue('{}'),
+		]
+	}	
 
     protected request(feature: Feature) {
         if(this.getParameterValue('verb', feature) == 'GET') {

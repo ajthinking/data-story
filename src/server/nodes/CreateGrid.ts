@@ -6,7 +6,7 @@ export default class CreateGrid extends ServerNode {
     public category: string = 'Reader'    
     public inPorts: string[] = []
     public summary = 'Create a set of objects with coordinates x and y'    
-	name = 'CreateGrid'
+	public name = 'CreateGrid'
 
     async run() {
         let gridSizeX = parseInt(this.getParameterValue('grid_size_x'))
@@ -32,18 +32,15 @@ export default class CreateGrid extends ServerNode {
         this.output(features);       
     }
 
-    serialize() {
-        let description = super.serialize()
-
-        description.parameters.push(
-            NodeParameter.make('grid_size_x').withFieldType("Number").withValue(10),
-            NodeParameter.make('grid_size_y').withFieldType("Number").withValue(10),
-            NodeParameter.make('grid_start_x').withFieldType("Number").withValue(0),
-            NodeParameter.make('grid_start_y').withFieldType("Number").withValue(0),
-            NodeParameter.make('grid_spacing_x').withFieldType("Number").withValue(1),
-            NodeParameter.make('grid_spacing_y').withFieldType("Number").withValue(1),                                    
-        )
-
-        return description
-    }    
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.number('grid_size_x').withValue(10),
+            NodeParameter.number('grid_size_y').withValue(10),
+            NodeParameter.number('grid_start_x').withValue(0),
+            NodeParameter.number('grid_start_y').withValue(0),
+            NodeParameter.number('grid_spacing_x').withValue(1),
+            NodeParameter.number('grid_spacing_y').withValue(1),             
+		]
+	}	
 }

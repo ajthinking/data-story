@@ -9988,62 +9988,6 @@ var Feature = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./src/core/NodeDescription.ts":
-/*!*************************************!*\
-  !*** ./src/core/NodeDescription.ts ***!
-  \*************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "NodeDescription": () => (/* binding */ NodeDescription)
-/* harmony export */ });
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var NodeDescription = /*#__PURE__*/function () {
-  function NodeDescription() {
-    _classCallCheck(this, NodeDescription);
-  }
-
-  _createClass(NodeDescription, null, [{
-    key: "deserialize",
-    value: function deserialize(data) {
-      var instance = new this();
-
-      for (var _i = 0, _Object$entries = Object.entries(data); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            key = _Object$entries$_i[0],
-            value = _Object$entries$_i[1];
-
-        instance[key] = value;
-      }
-
-      return instance;
-    }
-  }]);
-
-  return NodeDescription;
-}();
-
-/***/ }),
-
 /***/ "./src/core/NodeModel.ts":
 /*!*******************************!*\
   !*** ./src/core/NodeModel.ts ***!
@@ -10339,6 +10283,26 @@ var NodeParameter = /*#__PURE__*/function () {
     key: "make",
     value: function make(name) {
       return new this(name);
+    }
+  }, {
+    key: "json",
+    value: function json(name) {
+      return this.make(name).withFieldType('JSON_');
+    }
+  }, {
+    key: "number",
+    value: function number(name) {
+      return this.make(name).withFieldType('Number');
+    }
+  }, {
+    key: "string",
+    value: function string(name) {
+      return this.make(name).withFieldType('String_');
+    }
+  }, {
+    key: "js",
+    value: function js(name) {
+      return this.make(name).withFieldType('JS');
     }
   }]);
 
@@ -11310,11 +11274,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ ServerNode)
 /* harmony export */ });
-/* harmony import */ var _core_NodeDescription__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../core/NodeDescription */ "./src/core/NodeDescription.ts");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _core_utils_UID__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/utils/UID */ "./src/core/utils/UID.ts");
-/* harmony import */ var _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../core/NodeParameter */ "./src/core/NodeParameter.ts");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _core_utils_UID__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../core/utils/UID */ "./src/core/utils/UID.ts");
+/* harmony import */ var _core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../core/NodeParameter */ "./src/core/NodeParameter.ts");
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -11339,7 +11302,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-
 var ServerNode = /*#__PURE__*/function () {
   function ServerNode() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -11357,7 +11319,7 @@ var ServerNode = /*#__PURE__*/function () {
     this.nodeReact = 'Node';
     this.summary = 'No summary provided.';
     this.diagram = options.diagram;
-    this.id = (_a = options.id) !== null && _a !== void 0 ? _a : (0,_core_utils_UID__WEBPACK_IMPORTED_MODULE_2__.default)();
+    this.id = (_a = options.id) !== null && _a !== void 0 ? _a : (0,_core_utils_UID__WEBPACK_IMPORTED_MODULE_1__.default)();
     this.parameters = options.parameters ? options.parameters : [];
     this.ports = this.createPorts(options);
   }
@@ -11392,26 +11354,14 @@ var ServerNode = /*#__PURE__*/function () {
         name: this.name,
         nodeReact: this.nodeReact,
         serverNodeType: this.name,
-        parameters: [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('node_name').withValue(this.name)],
+        parameters: this.getParameters(),
         summary: this.summary
       };
     }
   }, {
-    key: "describe",
-    value: function describe() {
-      return _core_NodeDescription__WEBPACK_IMPORTED_MODULE_0__.NodeDescription.deserialize({
-        category: this.category,
-        editableInPorts: this.editableInPorts,
-        editableOutPorts: this.editableOutPorts,
-        inPorts: _toConsumableArray(this.inPorts),
-        outPorts: _toConsumableArray(this.outPorts),
-        key: this.key,
-        name: this.name,
-        nodeReact: this.nodeReact,
-        serverNodeType: this.name,
-        parameters: [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('node_name').withValue(this.name)],
-        summary: this.summary
-      });
+    key: "getParameters",
+    value: function getParameters() {
+      return [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.string('node_name').withValue(this.name)];
     }
   }, {
     key: "getParameter",
@@ -11477,7 +11427,7 @@ var ServerNode = /*#__PURE__*/function () {
 
         return source.features;
       }).flat();
-      return lodash__WEBPACK_IMPORTED_MODULE_1__.cloneDeep(features);
+      return lodash__WEBPACK_IMPORTED_MODULE_0__.cloneDeep(features);
     }
   }, {
     key: "output",
@@ -11529,11 +11479,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _nodes_github_DeleteRepositories__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./nodes/github/DeleteRepositories */ "./src/server/nodes/github/DeleteRepositories.ts");
 /* harmony import */ var _nodes_github_Repositories__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./nodes/github/Repositories */ "./src/server/nodes/github/Repositories.ts");
 /* harmony import */ var _nodes_Sleep__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./nodes/Sleep */ "./src/server/nodes/Sleep.ts");
+/* harmony import */ var _nodes_ThrowError__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./nodes/ThrowError */ "./src/server/nodes/ThrowError.ts");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -11605,7 +11557,8 @@ ServerNodeFactory.nodes = {
   OutputProvider: _nodes_OutputProvider__WEBPACK_IMPORTED_MODULE_12__.default,
   RegExpFilter: _nodes_RegExpFilter__WEBPACK_IMPORTED_MODULE_13__.default,
   Repositories: _nodes_github_Repositories__WEBPACK_IMPORTED_MODULE_15__.default,
-  Sleep: _nodes_Sleep__WEBPACK_IMPORTED_MODULE_16__.default
+  Sleep: _nodes_Sleep__WEBPACK_IMPORTED_MODULE_16__.default,
+  ThrowError: _nodes_ThrowError__WEBPACK_IMPORTED_MODULE_17__.default
 };
 
 /***/ }),
@@ -11641,7 +11594,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var WorkingWithJSON = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
+var WorkingWithJSON = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateJSON__WEBPACK_IMPORTED_MODULE_2__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).finish();
 var ScrapingAMapService = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_CreateGrid__WEBPACK_IMPORTED_MODULE_1__.default).addNode(_nodes_Evaluate__WEBPACK_IMPORTED_MODULE_4__.default).addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).addNode(_nodes_Map__WEBPACK_IMPORTED_MODULE_8__.default).addNode(_nodes_Flatten__WEBPACK_IMPORTED_MODULE_5__.default).addNode(_nodes_DownloadJSON__WEBPACK_IMPORTED_MODULE_3__.default).alsoAdd(_nodes_Inspect__WEBPACK_IMPORTED_MODULE_7__.default).finish();
 var CleanupOldGithubRepos = _core_DiagramModelBuilder__WEBPACK_IMPORTED_MODULE_0__.DiagramModelBuilder.begin().addNode(_nodes_HTTPRequest__WEBPACK_IMPORTED_MODULE_6__.default).finish();
 
@@ -11785,6 +11738,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -11872,12 +11837,11 @@ var CreateAttribute = /*#__PURE__*/function (_ServerNode) {
               case 0:
                 attribute = this.getParameterValue('attribute');
                 value = this.getParameterValue('value');
-                console.log(this);
                 this.output(this.input().map(function (feature) {
                   return feature.set(attribute, value);
                 }));
 
-              case 4:
+              case 3:
               case "end":
                 return _context.stop();
             }
@@ -11886,12 +11850,9 @@ var CreateAttribute = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(CreateAttribute.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('attribute'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('value'));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(CreateAttribute.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.string('attribute'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.string('value')]);
     }
   }]);
 
@@ -11921,6 +11882,18 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12037,12 +12010,9 @@ var CreateGrid = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(CreateGrid.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_size_x').withFieldType("Number").withValue(10), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_size_y').withFieldType("Number").withValue(10), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_start_x').withFieldType("Number").withValue(0), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_start_y').withFieldType("Number").withValue(0), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_spacing_x').withFieldType("Number").withValue(1), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('grid_spacing_y').withFieldType("Number").withValue(1));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(CreateGrid.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.number('grid_size_x').withValue(10), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.number('grid_size_y').withValue(10), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.number('grid_start_x').withValue(0), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.number('grid_start_y').withValue(0), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.number('grid_spacing_x').withValue(1), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.number('grid_spacing_y').withValue(1)]);
     }
   }]);
 
@@ -12072,6 +12042,18 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12172,12 +12154,9 @@ var CreateJSON = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(CreateJSON.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('features').withFieldType("JSON_").withValue('[{ "resource": "todos"}]'));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(CreateJSON.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.json('features').withValue('[{ "resource": "todos"}]')]);
     }
   }]);
 
@@ -12207,6 +12186,18 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12311,12 +12302,9 @@ var CreateSequence = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(CreateSequence.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('number_of_features_to_create').withFieldType("Number").withValue(10));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(CreateSequence.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.number('number_of_features_to_create').withValue(10)]);
     }
   }]);
 
@@ -12347,6 +12335,18 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12454,12 +12454,9 @@ var DownloadJSON = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(DownloadJSON.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('filename').withValue('data.json'));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(DownloadJSON.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.string('filename').withValue('data.json')]);
     }
   }]);
 
@@ -12488,6 +12485,18 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12589,12 +12598,9 @@ var Evaluate = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(Evaluate.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('expression').withFieldType('JS'));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(Evaluate.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.js('expression')]);
     }
   }]);
 
@@ -12748,6 +12754,18 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -12944,12 +12962,9 @@ var HTTPRequest = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(HTTPRequest.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('verb').withValue('GET'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('data').withFieldType("JSON_").withValue('{}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.make('config').withFieldType("JSON_").withValue('{}'));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(HTTPRequest.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.string('url').withValue('https://jsonplaceholder.cypress.io/{{ feature.resource }}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.string('verb').withValue('GET'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.json('data').withValue('{}'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_4__.default.json('config').withValue('{}')]);
     }
   }, {
     key: "request",
@@ -13236,6 +13251,18 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 
 
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13340,12 +13367,9 @@ var Map = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(Map.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('property').withValue('data'));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(Map.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.string('property').withValue('data')]);
     }
   }]);
 
@@ -13375,6 +13399,14 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
@@ -13497,15 +13529,12 @@ var OutputProvider = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(OutputProvider.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('outputs').withFieldType("JSON_").withValue(JSON.stringify({
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(OutputProvider.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.json('outputs').withValue(JSON.stringify({
         o1: [1, 2, 3],
         o2: [4, 5, 6]
-      }, null, 4)));
-      return description;
+      }, null, 4))]);
     }
   }]);
 
@@ -13536,6 +13565,18 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13620,8 +13661,13 @@ var RegExpFilter = /*#__PURE__*/function (_ServerNode) {
     value: function serialize() {
       var description = _get(_getPrototypeOf(RegExpFilter.prototype), "serialize", this).call(this);
 
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('attribute').withValue('name'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.make('expression').withValue('/test|draft|dummy/'));
+      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.string('attribute').withValue('name'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.string('expression').withValue('/test|draft|dummy/'));
       return description;
+    }
+  }, {
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(RegExpFilter.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.string('attribute').withValue('name'), _core_NodeParameter__WEBPACK_IMPORTED_MODULE_3__.default.string('expression').withValue('/test|draft|dummy/')]);
     }
   }, {
     key: "run",
@@ -13661,7 +13707,7 @@ var RegExpFilter = /*#__PURE__*/function (_ServerNode) {
       return features.filter(function (feature) {
         var expression = _this2.getExpression();
 
-        var column = _this2.getParameter('attribute').value;
+        var column = _this2.getParameterValue('attribute');
 
         return returnFailed ? !expression.test(feature.original[column]) : expression.test(feature.original[column]);
       });
@@ -13669,7 +13715,7 @@ var RegExpFilter = /*#__PURE__*/function (_ServerNode) {
   }, {
     key: "getExpression",
     value: function getExpression() {
-      var cleaned = lodash__WEBPACK_IMPORTED_MODULE_2___default().trim(this.getParameter('expression').value, '/');
+      var cleaned = lodash__WEBPACK_IMPORTED_MODULE_2___default().trim(this.getParameterValue('expression'), '/');
 
       return RegExp(cleaned);
     }
@@ -13700,6 +13746,18 @@ __webpack_require__.r(__webpack_exports__);
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13795,7 +13853,7 @@ var Sleep = /*#__PURE__*/function (_ServerNode) {
                     }
 
                     resolve('Node complete');
-                  }, parseInt(_this2.getParameter('seconds_to_sleep').value) * 1000);
+                  }, parseInt(_this2.getParameterValue('seconds_to_sleep')) * 1000);
                 }));
 
               case 2:
@@ -13807,17 +13865,159 @@ var Sleep = /*#__PURE__*/function (_ServerNode) {
       }));
     }
   }, {
-    key: "serialize",
-    value: function serialize() {
-      var description = _get(_getPrototypeOf(Sleep.prototype), "serialize", this).call(this);
-
-      description.parameters.push(_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.make('seconds_to_sleep').withFieldType("Number").withValue(5));
-      return description;
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(Sleep.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_2__.default.number('seconds_to_sleep').withValue(5)]);
     }
   }]);
 
   return Sleep;
 }(_ServerNode__WEBPACK_IMPORTED_MODULE_1__.default);
+
+
+
+/***/ }),
+
+/***/ "./src/server/nodes/ThrowError.ts":
+/*!****************************************!*\
+  !*** ./src/server/nodes/ThrowError.ts ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ThrowError)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _core_NodeParameter__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../core/NodeParameter */ "./src/core/NodeParameter.ts");
+/* harmony import */ var _ServerNode__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ServerNode */ "./src/server/ServerNode.ts");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _get(target, property, receiver) { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get; } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(receiver); } return desc.value; }; } return _get(target, property, receiver || target); }
+
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var __awaiter = undefined && undefined.__awaiter || function (thisArg, _arguments, P, generator) {
+  function adopt(value) {
+    return value instanceof P ? value : new P(function (resolve) {
+      resolve(value);
+    });
+  }
+
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+
+
+
+var ThrowError = /*#__PURE__*/function (_ServerNode) {
+  _inherits(ThrowError, _ServerNode);
+
+  var _super = _createSuper(ThrowError);
+
+  function ThrowError() {
+    var _this;
+
+    _classCallCheck(this, ThrowError);
+
+    _this = _super.apply(this, arguments);
+    _this.category = 'Workflow';
+    _this.summary = 'Throws an error';
+    _this.outPorts = [];
+    _this.name = 'ThrowError';
+    return _this;
+  }
+
+  _createClass(ThrowError, [{
+    key: "run",
+    value: function run() {
+      return __awaiter(this, void 0, void 0, /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!this.input().length) {
+                  _context.next = 2;
+                  break;
+                }
+
+                throw Error(this.getParameterValue('error_message'));
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+    }
+  }, {
+    key: "getParameters",
+    value: function getParameters() {
+      return [].concat(_toConsumableArray(_get(_getPrototypeOf(ThrowError.prototype), "getParameters", this).call(this)), [_core_NodeParameter__WEBPACK_IMPORTED_MODULE_1__.default.string('error_message').withValue('Something went wrong!')]);
+    }
+  }]);
+
+  return ThrowError;
+}(_ServerNode__WEBPACK_IMPORTED_MODULE_2__.default);
 
 
 

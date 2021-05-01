@@ -17,17 +17,14 @@ export default class Sleep extends ServerNode {
                     clearTimeout(wait);
                 }
                 resolve('Node complete');
-            }, parseInt(this.getParameter('seconds_to_sleep').value) * 1000)
+            }, parseInt(this.getParameterValue('seconds_to_sleep')) * 1000)
         })        
     }
-
-    serialize() {
-        let description = super.serialize()
-
-        description.parameters.push(
-            NodeParameter.make('seconds_to_sleep').withFieldType("Number").withValue(5),            
-        )
-
-        return description
-    }    
+	
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.number('seconds_to_sleep').withValue(5),            
+		]
+	}
 }

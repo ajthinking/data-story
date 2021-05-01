@@ -1,4 +1,3 @@
-import { NodeDescription } from "../core/NodeDescription";
 import ServerDiagram from "./ServerDiagram";
 import * as _ from "lodash";
 import Feature from "../core/Feature";
@@ -27,7 +26,7 @@ export default abstract class ServerNode {
     public inPorts: string[] = ['Input']
     public outPorts: string[] = ['Output']
     public key: string = 'test-key'
-    name: string
+    public name: string
     public serverNodeType: string
     public nodeReact: string = 'Node'
     public parameters: any[]
@@ -60,17 +59,6 @@ export default abstract class ServerNode {
         ]
 	}
 
-    // hydrate(data, diagram) {
-	// 	console.log("REMOVE THIS??")
-    //     let instance = new (this as any)(diagram)
-
-    //     for (const [key, value] of Object.entries(data)) {
-    //         instance[key] = value
-    //     }
-
-    //     return instance
-    // }
-
 	serialize() {
 		return {
             category: this.category,
@@ -82,30 +70,16 @@ export default abstract class ServerNode {
             name: this.name,
             nodeReact: this.nodeReact,
             serverNodeType: this.name,
-            parameters: [
-                NodeParameter.make('node_name').withValue(this.name)
-            ],
+            parameters: this.getParameters(),
             summary: this.summary,			
 		}
 	}
 
-    describe() : NodeDescription {
-        return NodeDescription.deserialize({
-            category: this.category,
-            editableInPorts: this.editableInPorts,
-            editableOutPorts: this.editableOutPorts,
-            inPorts: [...this.inPorts],
-            outPorts: [...this.outPorts],
-            key: this.key,
-            name: this.name,
-            nodeReact: this.nodeReact,
-            serverNodeType: this.name,
-            parameters: [
-                NodeParameter.make('node_name').withValue(this.name)
-            ],
-            summary: this.summary,
-        })
-    }
+	getParameters() {
+		return [
+			NodeParameter.string('node_name').withValue(this.name)
+		]
+	}
 
     protected getParameter(name: string) {
         return this.parameters.find(p => p.name == name)

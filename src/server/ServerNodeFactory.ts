@@ -17,6 +17,7 @@ import RegExpFilter from './nodes/RegExpFilter'
 import DeleteRepositories from './nodes/github/DeleteRepositories'
 import Repositories from './nodes/github/Repositories'
 import Sleep from './nodes/Sleep'
+import ThrowError from './nodes/ThrowError'
 
 import { SerializedNodeModel } from '../core/types/SerializedNodeModel'
 
@@ -42,6 +43,7 @@ export default class ServerNodeFactory {
         RegExpFilter,
         Repositories,
         Sleep,
+		ThrowError,
     }
 
     static find(type: string) {

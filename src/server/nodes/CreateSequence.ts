@@ -17,14 +17,11 @@ export default class CreateSequence extends ServerNode {
             })
         );       
     }
-
-	serialize() {
-        let description = super.serialize()
-
-        description.parameters.push(
-            NodeParameter.make('number_of_features_to_create').withFieldType("Number").withValue(10),
-        )
-
-        return description
-    }    
+	
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.number('number_of_features_to_create').withValue(10),
+		]
+	}	
 }

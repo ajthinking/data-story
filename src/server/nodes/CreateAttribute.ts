@@ -10,21 +10,16 @@ export default class CreateAttribute extends ServerNode {
         let attribute = this.getParameterValue('attribute')
         let value = this.getParameterValue('value')
 
-        console.log(this)
-
         this.output(
             this.input().map(feature => feature.set(attribute, value))
         );       
     }
-
-    serialize() {
-        let description = super.serialize()
-
-        description.parameters.push(
-            NodeParameter.make('attribute'),
-            NodeParameter.make('value'),                                   
-        )
-
-        return description
-    }    
+	
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.string('attribute'),
+            NodeParameter.string('value'),              
+		]
+	}	
 }

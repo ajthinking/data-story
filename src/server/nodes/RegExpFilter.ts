@@ -1,9 +1,7 @@
-import { NodeDescription } from "../../core/NodeDescription";
 import ServerNode from "../ServerNode";
 // @ts-ignore
 import _ from 'lodash'
 import NodeParameter from "../../core/NodeParameter";
-import ServerNodeInterface from "../ServerNodeInterface";
 
 export default class RegExpFilter extends ServerNode {
     category: string = 'Workflow'    
@@ -15,12 +13,20 @@ export default class RegExpFilter extends ServerNode {
         let description = super.serialize()
 
         description.parameters.push(
-            NodeParameter.make('attribute').withValue('name'),
-            NodeParameter.make('expression').withValue('/test|draft|dummy/'),            
+            NodeParameter.string('attribute').withValue('name'),
+            NodeParameter.string('expression').withValue('/test|draft|dummy/'),            
         )
 
         return description
     }
+
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.string('attribute').withValue('name'),
+            NodeParameter.string('expression').withValue('/test|draft|dummy/'),            
+		]
+	}	
 
     async run() {
         this.output(this.matching(), 'Passed');
@@ -38,7 +44,7 @@ export default class RegExpFilter extends ServerNode {
     protected filterByRegExp(features, returnFailed = false) {
         return features.filter(feature => {
             let expression = this.getExpression()
-            let column = this.getParameter('attribute').value
+            let column = this.getParameterValue('attribute')
 
             return returnFailed
                 ? !expression.test(feature.original[column])
@@ -47,7 +53,7 @@ export default class RegExpFilter extends ServerNode {
     }
 
     protected getExpression() {
-        let cleaned = _.trim(this.getParameter('expression').value, '/')
+        let cleaned = _.trim(this.getParameterValue('expression'), '/')
         return RegExp(cleaned)
     }
 }

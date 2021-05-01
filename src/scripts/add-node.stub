@@ -18,7 +18,7 @@ export default class NODE_NAME extends ServerNode {
         let description = super.serialize()
 
         description.parameters.push(
-            NodeParameter.make('p1'),
+            NodeParameter.string('p1'),
         )
 
         return description

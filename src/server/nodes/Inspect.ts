@@ -5,9 +5,7 @@ export default class Inspect extends ServerNode {
     public features: any[]
     public summary = 'Display features in a table'    
     public outPorts: string[] = []	
-	name = 'Inspect'
-
-
+	public name = 'Inspect'
 
     async run() {
         this.features = this.input();

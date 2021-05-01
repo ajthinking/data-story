@@ -1,4 +1,3 @@
-import { NodeDescription } from "../../../core/NodeDescription";
 import ServerNodeInterface from "../../ServerNodeInterface";
 import HTTPRequest from "../HTTPRequest";
 

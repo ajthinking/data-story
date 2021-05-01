@@ -16,14 +16,11 @@ export default class Evaluate extends ServerNode {
             })
         );
     }
-
-    serialize() {
-        let description = super.serialize()
-
-        description.parameters.push(
-            NodeParameter.make('expression').withFieldType('JS'),            
-        )
-
-        return description
-    }    
+	
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.js('expression')
+		]
+	}		
 }

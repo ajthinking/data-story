@@ -21,14 +21,11 @@ export default class Map extends ServerNode {
             })
         );
     }
-
-    serialize() {
-        let description = super.serialize()
-
-        description.parameters.push(
-            NodeParameter.make('property').withValue('data'),            
-        )
-
-        return description
-    }    
+	
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.string('property').withValue('data'),            
+		]
+	}	
 }

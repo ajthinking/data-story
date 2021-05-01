@@ -9,11 +9,11 @@ import Inspect from "./nodes/Inspect";
 import Map from "./nodes/Map";
 
 export const WorkingWithJSON = DiagramModelBuilder.begin()
-	.addNode(CreateJSON)			
+	.addNode(CreateJSON)
 	.addNode(HTTPRequest)
 	.addNode(Map)
 	.addNode(Flatten)
-	.addNode(DownloadJSON).alsoAdd(Inspect)
+	.addNode(DownloadJSON)
 	.finish()
 
 export const ScrapingAMapService = DiagramModelBuilder.begin()

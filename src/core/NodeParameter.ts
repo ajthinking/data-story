@@ -12,6 +12,22 @@ export default class NodeParameter {
         return new this(name)
     }
 
+	static json(name: string) {
+		return this.make(name).withFieldType('JSON_')
+	}
+
+	static number(name: string) {
+		return this.make(name).withFieldType('Number')
+	}
+
+	static string(name: string) {
+		return this.make(name).withFieldType('String_')
+	}
+	
+	static js(name: string) {
+		return this.make(name).withFieldType('JS')
+	}	
+
     withFieldType(type: string) {
         this.fieldType = type
         return this

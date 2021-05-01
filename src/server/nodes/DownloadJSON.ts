@@ -16,15 +16,11 @@ export default class DownloadJSON extends ServerNode {
         var blob = new Blob([json], {type: "text/plain;charset=utf-8"});
         saveAs(blob, filename);
     }
-
-    serialize() {
-        let description = super.serialize()
-
-        description.parameters.push(
-            NodeParameter.make('filename').withValue('data.json'),
-            //NodeParameter.make('pretty').withFieldType('Boolean_').withValue(true)
-        )
-
-        return description
-    }      
+	
+	getParameters() {
+		return [
+			...super.getParameters(),
+            NodeParameter.string('filename').withValue('data.json'),
+		]
+	}		
 }
