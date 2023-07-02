@@ -1,0 +1,1 @@
+export { Concatenate } from './Concatenate'

@@ -1,0 +1,1 @@
+export { AskChatGpt } from './AskChatGpt';

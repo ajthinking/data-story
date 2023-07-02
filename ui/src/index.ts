@@ -1,0 +1,1 @@
+export { Hey } from './components/Hey';
