@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 require('dotenv').config({ path: `.env.local` })
 import WebSocket from 'ws'
 import { onMessage } from './onMessage'

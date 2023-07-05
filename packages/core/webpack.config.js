@@ -1,5 +1,5 @@
 const path = require('path');
-// const nodeExternals = require('webpack-node-externals');
+const ShebangPlugin = require('webpack-shebang-plugin');
 
 module.exports = {
   entry: './dist/server/socket.js', // Path to your main js file, check this is right
@@ -9,5 +9,8 @@ module.exports = {
   },
   target: 'node', // IMPORTANT: This is required for webpack-node-externals to work
   // externals: [nodeExternals()], // IMPORTANT: This is required for webpack-node-externals to work
-  mode: 'development' // Use 'production' or 'development' mode
+  mode: 'development', // Use 'production' or 'development' mode
+  plugins: [
+    new ShebangPlugin()
+  ]
 };

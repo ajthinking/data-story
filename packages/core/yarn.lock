@@ -1913,10 +1913,10 @@
     "clone-deep" "^4.0.1"
     "wildcard" "^2.0.0"
 
-"webpack-node-externals@^3.0.0":
-  "integrity" "sha512-LnL6Z3GGDPht/AigwRh2dvL9PQPFQ8skEpVrWZXLWBYmqcaojHNN0onvHzie6rq7EWKrrBfPYqNEzTJgiwEQDQ=="
-  "resolved" "https://registry.npmjs.org/webpack-node-externals/-/webpack-node-externals-3.0.0.tgz"
-  "version" "3.0.0"
+"webpack-shebang-plugin@^1.1.8":
+  "integrity" "sha512-8iHYp37XjytLuTkw8GCb4wm0s/0IWcv03YsfaDbOeRJfzSuBYVOadvc/QXQvr2b55pOEX1ANAEbz1fFSydJWVA=="
+  "resolved" "https://registry.npmjs.org/webpack-shebang-plugin/-/webpack-shebang-plugin-1.1.8.tgz"
+  "version" "1.1.8"
 
 "webpack-sources@^3.2.3":
   "integrity" "sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w=="
