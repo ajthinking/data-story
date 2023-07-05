@@ -1,5 +1,5 @@
-import { Param } from './Param';
-import { PortWithSchema } from './types/PortWithSchema';
+import { Param } from '../Param';
+import { PortWithSchema } from './PortWithSchema';
 
 export type NodeDescription = {
   name: string,

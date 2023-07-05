@@ -1,14 +1,15 @@
 {
   "name": "@data-story/ui",
   "version": "0.0.5",
-  "main": "./dist/index.js",
+  "main": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
-  "type": "commonjs",  
+  "type": "commonjs",
   "files": [
     "/dist"
-  ],  
+  ],
   "scripts": {},
   "dependencies": {
+    "@data-story/core": "*",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.14",
@@ -27,13 +28,15 @@
     "@types/glob": "^8.1.0",
     "@types/ws": "^8.5.4",
     "autoprefixer": "^10.4.13",
+    "css-loader": "^6.8.1",
     "nodemon": "^2.0.21",
     "postcss": "^8.4.21",
+    "style-loader": "^3.3.3",
     "tailwindcss": "^3.2.7",
     "ts-node": "^10.9.1"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
-  }  
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
 }
