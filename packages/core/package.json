@@ -1,9 +1,12 @@
 {
   "name": "@data-story/core",
-  "version": "0.0.5",
+  "version": "0.0.9",
   "main": "dist/index.js",
   "type": "commonjs",
   "types": "dist/index.d.ts",
+  "bin": {
+    "server": "./dist/server/socket.js"
+  },
   "files": [
     "dist"
   ],
