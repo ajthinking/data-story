@@ -3,16 +3,23 @@
 ### Installation
 
 ### in core
+```
 yarn tsc --watch
 npx webpack --watch
+```
 
 ### in ui
+```
 yarn tsc --watch
 npx webpack --watch
+```
 
 ### in client
+```
 yarn dev
+```
 go to localhost:3000, See it crash
+
 
 ```
 - error Error [TypeError]: (0 , react__WEBPACK_IMPORTED_MODULE_1__.createContext) is not a function
