@@ -1,6 +1,7 @@
 # Migrating to a monorepo
 
 ### Installation
+`yarn`
 
 ### in core
 ```
