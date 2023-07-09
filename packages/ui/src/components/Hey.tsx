@@ -1,8 +1,7 @@
-// import React from 'react';
+import React, { useState } from 'react';
 
 export function Hey() {
-  return <>
-      <h1>Hey!</h1>
-    </>;
+  const [message, setMessage] = useState(false);
+
+  return <h1>Hey {message}!</h1>;
 }
-  
