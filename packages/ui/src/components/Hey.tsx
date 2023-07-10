@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-
+import { useState } from "react";
 export function Hey() {
-  const [message, setMessage] = useState(false);
+  const [message, setMessage] = useState("");
 
   return <h1>Hey {message}!</h1>;
 }

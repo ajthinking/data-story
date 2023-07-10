@@ -4,5 +4,6 @@
     "packages/core",
     "packages/ui",
     "packages/client"
-  ]
+  ],
+  "packageManager": "yarn@3.6.1"
 }
