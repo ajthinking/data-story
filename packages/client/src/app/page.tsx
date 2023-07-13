@@ -1,10 +1,7 @@
-import { Hey } from "@data-story/ui";
+"use client";
+
+import { DataStory } from "@data-story/ui";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen">
-      <Hey />
-      {/* <DataStory /> */}
-    </main>
-  )
+  return <main className="flex h-screen">{<DataStory />}</main>;
 }
