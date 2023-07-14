@@ -1,8 +1,8 @@
 import { when } from '../../support/computerTester/ComputerTester';
-import { CreateAttribute } from './CreateAttribute';
+import { CreateProperty } from './CreateProperty';
 
 it('adds an attribute to objects', async () => {
-  await when(CreateAttribute)
+  await when(CreateProperty)
     .hasParams({
       key: "prio",
       value: "zero"
@@ -16,7 +16,7 @@ it('adds an attribute to objects', async () => {
 })
 
 it('adds an interpolated attribute to objects', async () => {
-  await when(CreateAttribute)
+  await when(CreateProperty)
     .hasParams({
       key: "message",
       value: "Hi ${name}!"
@@ -30,7 +30,7 @@ it('adds an interpolated attribute to objects', async () => {
 })
 
 it('adds attribute to objects computed by function evalMath', async () => {
-  await when(CreateAttribute)
+  await when(CreateProperty)
     .hasParams({
       key: "square",
       value: "@evalMath(${nbr}*${nbr})"

@@ -1,7 +1,7 @@
 import { DiagramBuilder } from "./DiagramBuilder";
 import { Executor } from "./Executor";
 import { NullStorage } from "./NullStorage";
-import { ConsoleLog, CreateAttribute, CreateJson, RunDiagram, Signal } from "./computers";
+import { ConsoleLog, CreateProperty, CreateJson, RunDiagram, Signal } from "./computers";
 import { ComputerRegistry } from "./computerRegistry";
 import { promises as fs } from 'fs'
 import { get } from "./utils/get";

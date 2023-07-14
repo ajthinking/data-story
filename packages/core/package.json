@@ -12,9 +12,6 @@
   ],
   "scripts": {
     "tinker": "npx ts-node ./src/tinker.ts",
-    "make:node": "npx ts-node ./core/support/scripts/makeNode/makeNode.ts",
-    "remove:node": "npx ts-node ./core/support/scripts/removeNode/removeNode.ts",
-    "remove:data": "npx ts-node ./core/support/scripts/removeStorageData/removeStorageData.ts",
     "test": "vitest"
   },
   "dependencies": {

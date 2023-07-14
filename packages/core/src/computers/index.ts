@@ -4,7 +4,7 @@ export { AskChatGpt } from './AskChatGpt';
 export { Comment } from './Comment';
 export { Concatenate } from './Concatenate';
 export { ConsoleLog } from './ConsoleLog'
-export { CreateAttribute } from './CreateAttribute';
+export { CreateProperty } from './CreateProperty';
 export { CreateJson } from './CreateJson'
 export { Dump } from './Dump';
 export { Eval } from './Eval';

@@ -4,8 +4,8 @@ import { string, text } from '../../ParamBuilder';
 import { ItemValue } from '../../types/ItemValue';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const CreateAttribute: ComputerConfigFactory = (): ComputerConfig => ({
-  name: 'CreateAttribute',
+export const CreateProperty: ComputerConfigFactory = (): ComputerConfig => ({
+  name: 'CreateProperty',
   inputs: ['input'],
   outputs: ['output'],
   params: {

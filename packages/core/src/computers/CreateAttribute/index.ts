@@ -1,1 +1,0 @@
-export { CreateAttribute } from './CreateAttribute'

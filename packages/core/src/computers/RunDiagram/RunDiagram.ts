@@ -12,7 +12,7 @@ import { Ignore } from '../Ignore';
 import { Log } from '../Log';
 import { Input } from '../Input';
 import { Output } from '../Output';
-import { CreateAttribute } from '../CreateAttribute';
+import { CreateProperty } from '../CreateProperty';
 import { InputDevice } from '../../InputDevice';
 import { NestedInputDevice } from '../../NestedInputDevice';
 import { NestedOutputDevice } from '../../NestedOutputDevice';
@@ -35,7 +35,7 @@ export const RunDiagram: ComputerConfigFactory = (): ComputerConfig => ({
 
     const diagram = new DiagramBuilder()
         .add(Input)
-        .add(CreateAttribute, {
+        .add(CreateProperty, {
           key: 'stamp',
           value: '2021-01-01',
         })
