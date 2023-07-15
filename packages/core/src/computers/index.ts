@@ -15,6 +15,7 @@ export { JsonFile } from './JsonFile';
 export { Input } from './Input';
 export { ListFiles } from './ListFiles';
 export { Log } from './Log';
+export { MapProperties } from './MapProperties';
 export { Merge } from './Merge';
 export { Pass } from './Pass';
 export { ReadFiles } from './ReadFiles';

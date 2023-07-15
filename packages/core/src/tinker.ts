@@ -5,19 +5,35 @@ import { ConsoleLog, CreateProperty, CreateJson, RunDiagram, Signal } from "./co
 import { ComputerRegistry } from "./computerRegistry";
 import { promises as fs } from 'fs'
 import { get } from "./utils/get";
+import { mapAdditive } from "./computers/MapProperties/mapAdditive";
 
 export {}
 
 (async () => {
-  const obj = {
-    user: {
-      name: {
-        first: 'Anders'
+  const original = {
+    id: "some-id",
+    person: {
+      firstname: "John",
+      age: 42
+    }
+  }
+  
+
+  const map = {
+    vendor_id: "id",
+    // properties: {}
+    properties: {
+      name: "person.firstname",
+      metadata: {
+        age: "person.age"
       }
     }
   }
 
+  const mapped = mapAdditive(original, map)
+  // const mapped = mapAdditive({}, {})
+
   console.log(
-    get(obj, 'user.name.first')
+    mapped
   )
 })();
