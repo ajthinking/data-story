@@ -21,7 +21,7 @@ export const InterPolatableTextArea = ({ form, label, rows, id, inputSchema }: {
       <textarea
         rows={rows}
         placeholder=""
-        className="w-full text-xs px-2 py-1 border border-blue-200"
+        className="w-full text-xs text-gray-400 px-2 py-1 border border-blue-200"
         {...form.register(id)}
       >
       </textarea>
@@ -33,10 +33,10 @@ export const InterPolatableTextArea = ({ form, label, rows, id, inputSchema }: {
               form.getValues(id) + '${' + e.target.value + '}'
             )
           }}
-          className="ml-1 max-h-6 border border-gray-300 text-xs w-6 text-gray-300 bg-gray-300 hover:border-gray-400 focus:outline-none appearance-none">
+          className="ml-1 max-h-6 border border-gray-300 text-xs w-6 text-gray-400 bg-gray-300 hover:border-gray-400 focus:outline-none appearance-none">
           <option></option>
           {Object.keys(inputSchema).map((key) => {
-            return <option key={key}>{key}</option>
+            return <option className="text-gray-400" key={key}>{key}</option>
           })}
       </select> 
 

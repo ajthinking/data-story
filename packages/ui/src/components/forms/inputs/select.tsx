@@ -12,11 +12,15 @@ export const Select = ({ register, label, id, options }: {
   >
     <label className="mt-2 mb-1 text-xs text-gray-400">{label}</label>
     <select
-      className="w-full text-xs px-2 py-1 border rounded border-blue-200"
+      className="w-full text-xs text-gray-400 px-2 py-1 border rounded border-blue-200"
       {...register(id)}
     >
       {options!.map((option: string) => {
-        return (<option key={option} value={option}>{option}</option>)
+        return (<option
+          key={option}
+          value={option}
+          className="text-gray-400"
+        >{option}</option>)
       })} 
     </select>
   </div>)

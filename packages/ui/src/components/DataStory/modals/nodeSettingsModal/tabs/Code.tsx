@@ -16,7 +16,7 @@ export function Code({
       <textarea
         readOnly
         placeholder={`{ "someProperty": "string"}`}
-        className="w-full h-96 text-xs font-mono px-2 py-1 border rounded border-blue-200"
+        className="w-full h-96 text-xs text-gray-400 font-mono px-2 py-1 border rounded border-blue-200"
         value={JSON.stringify(node, null, 2)}
       ></textarea>
     </div>

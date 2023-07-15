@@ -33,7 +33,7 @@ const DataStoryNodeComponent = ({ id, data, selected }: {
             key={input.id}
           >
             <CustomHandle id={input.id} isConnectable={true} isInput={true} />           
-            <div className="ml-2 w-full">{input.name}</div>
+            <div className="ml-2 w-full text-gray-500">{input.name}</div>
           </div>))}
         
           {data.outputs.map((output: any) => (<div
@@ -41,7 +41,7 @@ const DataStoryNodeComponent = ({ id, data, selected }: {
             key={output.id}
           >
             {data.inputs.length > 0 && <div className="w-2"></div>}
-            <div className="w-full">{output.name}</div>
+            <div className="w-full text-gray-500">{output.name}</div>
             <CustomHandle id={output.id} isConnectable={true} isInput={false} />           
           </div>))}
         </div>     
