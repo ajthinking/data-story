@@ -3,7 +3,7 @@ name: Publish core
 on:
   push:
     branches:
-      - main
+      - master, main
 
 jobs:
   publish:
