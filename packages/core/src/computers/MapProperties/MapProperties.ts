@@ -12,7 +12,7 @@ export const MapProperties: ComputerConfigFactory = (): ComputerConfig => ({
   outputs: ['output'],
   params: {
     mode: string('mode').value('ADD').get(),
-    map: json('map').get(),
+    map: json('map').value('{}').get(),
   },
 
   async *run({ input, output, params }) {
