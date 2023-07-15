@@ -1,4 +1,4 @@
-name: Test
+name: Test core
 
 on: [push, pull_request]
 
@@ -13,8 +13,8 @@ jobs:
       with:
         node-version: '17.x'
     - name: Install dependencies
-      run: npm install
+      run: yarn
     - name: Build
       run: yarn tsc
     - name: Run tests
-      run: npm run test
+      run: yarn test
