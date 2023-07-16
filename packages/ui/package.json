@@ -31,7 +31,9 @@
     "postcss": "^8.4.21",
     "style-loader": "^3.3.3",
     "tailwindcss": "^3.2.7",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"    
   },
   "peerDependencies": {
     "react": "^18.2.0",
