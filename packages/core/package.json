@@ -1,6 +1,6 @@
 {
   "name": "@data-story/core",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "main": "dist/index.js",
   "type": "commonjs",
   "types": "dist/index.d.ts",
@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "typescript": "4.9.5",
-    "vitest": "^0.29.2",    
+    "vitest": "^0.29.2",
     "@types/glob": "^8.1.0",
     "@types/ws": "^8.5.4",
     "@vitest/coverage-c8": "^0.29.7",

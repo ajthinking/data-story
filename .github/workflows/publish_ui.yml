@@ -37,6 +37,9 @@ jobs:
 
     - name: Version
       run: npm version patch -m "Upgrade to %s"
+    
+    - name: Publish
+      run: npm publish
 
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_MONOREPO }}
