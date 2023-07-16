@@ -4,5 +4,6 @@
     "packages/core",
     "packages/ui",
     "packages/client"
-  ]
+  ],
+  "version": "0.0.1"
 }
