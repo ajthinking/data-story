@@ -13,7 +13,7 @@ export const String_ = ({ register, label, id }: {
     <input
       type="text"
       placeholder=""
-      className="w-full text-xs text-gray-400 px-2 py-1 border rounded border-blue-200"
+      className="w-full bg-white text-xs text-gray-400 px-2 py-1 border rounded border-blue-200"
       {...register(id)}
     >
     </input>

@@ -60,7 +60,7 @@ export const AddNodeModal = ({ setShowModal }: {
   >
     <div>
       <input 
-        className="w-full mb-2 text-gray-500 font-mono text-sm border border-gray-100 rounded px-4 py-4" placeholder={"Type format, action, resource ..."}
+        className="w-full bg-white mb-2 text-gray-500 font-mono text-sm border border-gray-100 rounded px-4 py-4" placeholder={"Type format, action, resource ..."}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         ref={inputReference}
