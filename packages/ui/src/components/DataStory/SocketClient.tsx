@@ -72,7 +72,7 @@ export class SocketClient implements ServerClient {
       }
 
       if(parsed.type === "ExecutionFailure") {
-        console.log("Execution failed: ", {
+        console.error("Execution failed: ", {
           history: parsed.history,
         })
         setTimeout(() => alert(parsed.message), 100)

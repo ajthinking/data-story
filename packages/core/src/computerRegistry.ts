@@ -19,7 +19,7 @@ const computers = (() => {
   return map
 })()
 
-const savedFlows: string[] = ['DoItNow']
+const savedFlows: string[] = []
 
 /**
  * The public registry of all computers

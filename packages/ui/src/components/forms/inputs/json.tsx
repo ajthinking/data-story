@@ -13,7 +13,7 @@ export const Json = ({ register, label, id }: {
     <textarea
       rows={1}
       placeholder="[{}]"
-      className="w-full text-xs text-gray-400 px-2 py-1 border rounded border-blue-200"
+      className="w-full bg-white text-xs text-gray-400 px-2 py-1 border rounded border-blue-200"
       {...register(id)}
     ></textarea>
   </div>)

@@ -21,7 +21,7 @@ export const InterPolatableTextArea = ({ form, label, rows, id, inputSchema }: {
       <textarea
         rows={rows}
         placeholder=""
-        className="w-full text-xs text-gray-500 px-2 py-1 border border-blue-200"
+        className="w-full bg-white text-xs text-gray-500 px-2 py-1 border border-blue-200"
         {...form.register(id)}
       >
       </textarea>

@@ -131,7 +131,6 @@ export const useStore = create<StoreSchema>((set, get) => ({
     )
   },
   onInitServer: () => {
-    console.log("Init server.....")
     type ServerType = 'worker' | 'socket'
     let type = 'socket' as ServerType
 
