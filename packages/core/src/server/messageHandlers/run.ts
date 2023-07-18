@@ -7,6 +7,7 @@ import { ExecutionResult } from '../../ExecutionResult';
 import { ComputerRegistry } from '../../computerRegistry';
 import { ExecutionFailure } from '../../types/ExecutionFailure';
 import { MessageHandler } from '../MessageHandler';
+import { core } from '../../core';
 
 export const run: MessageHandler<RunMessage> = async (ws: WebSocket, data: RunMessage) => {
   const diagram = DiagramFactory.fromReactFlow(
@@ -17,9 +18,11 @@ export const run: MessageHandler<RunMessage> = async (ws: WebSocket, data: RunMe
   await storage.init()
   await storage.createExecution()
 
+  core.boot()
+
   const executor = new Executor(
     diagram, 
-    ComputerRegistry.all(),
+    core.computers, // ComputerRegistry.all(),
     storage
   )
   
