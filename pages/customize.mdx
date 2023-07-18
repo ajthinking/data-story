@@ -1,0 +1,16 @@
+# Customize
+
+You may configure and extend your backend however you want.
+
+```ts
+const app = new Container();
+
+app.register([
+  coreNodeProvider,
+  // ...custom providers 🎈
+]);
+
+app.boot();
+
+export { app };
+```
