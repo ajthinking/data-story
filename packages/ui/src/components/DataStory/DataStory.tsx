@@ -18,7 +18,11 @@ const nodeTypes = {
   // dataStoryOutputNodeComponent: DataStoryNodeComponent,
 };
 
-export const DataStory = () => {
+export const DataStory = ({
+  serverType
+}: {
+  serverType?: string
+}) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     edges: state.edges,

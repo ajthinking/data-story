@@ -17,6 +17,7 @@ import { SocketClient } from './SocketClient';
 import { NodeDescription } from "@data-story/core";
 import { DataStoryNode } from '../Node/DataStoryNode';
 import { ServerClient } from './ServerClient';
+import { JsClient } from './JsClient';
 
 export type StoreSchema = {
   flowName: string;
@@ -131,8 +132,21 @@ export const useStore = create<StoreSchema>((set, get) => ({
     )
   },
   onInitServer: () => {
-    type ServerType = 'worker' | 'socket'
+    type ServerType = 'js' | 'worker' | 'socket'
     let type = 'socket' as ServerType
+
+    // if(type === 'js') {
+    //   const server = new JsClient(
+    //     get().setAvailableNodes,
+    //     get().updateEdgeCounts,
+    //     (nodes) => set({ nodes }),
+    //     (edges) => set({ edges }),
+    //     // (viewport) => set({ viewport }),
+    //   )
+  
+    //   set({ server })
+    //   server.init()
+    // }      
 
     if(type === 'socket') {
       const server = new SocketClient(
