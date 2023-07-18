@@ -1,3 +1,4 @@
+import { NodeDescriptionFactory } from "./NodeDescriptionFactory";
 import { Computer } from "./types/Computer";
 import { ServiceProvider } from "./types/ServiceProvider";
 
@@ -22,5 +23,11 @@ export class Container {
     this.computers = new Map<string, Computer>(
       [...this.computers, ...computers]
     );
+  }
+
+  descriptions() {
+    return Array.from(this.computers.values()).map(computer => {
+      return NodeDescriptionFactory.fromComputer(computer)
+    })  
   }
 }

@@ -8,8 +8,13 @@ import { ComputerRegistry } from '../../computerRegistry';
 import { ExecutionFailure } from '../../types/ExecutionFailure';
 import { MessageHandler } from '../MessageHandler';
 import { core } from '../../core';
+import { Container } from '../../Container';
 
-export const run: MessageHandler<RunMessage> = async (ws: WebSocket, data: RunMessage) => {
+export const run: MessageHandler<RunMessage> = async (
+  ws: WebSocket,
+  data: RunMessage,
+  app: Container
+) => {
   const diagram = DiagramFactory.fromReactFlow(
     data.reactFlow
   )
@@ -18,11 +23,9 @@ export const run: MessageHandler<RunMessage> = async (ws: WebSocket, data: RunMe
   await storage.init()
   await storage.createExecution()
 
-  core.boot()
-
   const executor = new Executor(
     diagram, 
-    core.computers, // ComputerRegistry.all(),
+    app.computers,
     storage
   )
   
