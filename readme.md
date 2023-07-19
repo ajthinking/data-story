@@ -6,7 +6,9 @@ Visual Programming | Data Transformation | ETL | Process design
 
 ## Resources
 
-[Docs](https://data-story-docs.vercel.app/)
+<a href="https://data-story-docs.vercel.app/" target="_blank">Docs</a>
+
+
 
 ## Installation
 ```bash
