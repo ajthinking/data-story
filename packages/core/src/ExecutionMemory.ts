@@ -41,7 +41,6 @@ export class ExecutionMemory {
   }
 
   setNodeStatus(nodeId: NodeId, status: NodeStatus) {
-    if(status === 'COMPLETE') console.log(`Setting node ${nodeId} to ${status}`);
     this.history.push(`Setting node ${nodeId} to ${status}`)
 
     this.nodeStatuses.set(nodeId, status)
