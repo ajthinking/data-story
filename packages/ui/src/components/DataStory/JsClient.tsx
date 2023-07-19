@@ -1,6 +1,11 @@
-import { NodeDescription } from "@data-story/core";
-import { SerializedReactFlow } from "@data-story/core";
+import {
+  NodeDescription,
+  SerializedReactFlow,
+  ServiceProvider,
+  Container,
+} from "@data-story/core";
 import { ServerClient } from './ServerClient';
+import { Computer } from "@data-story/core/dist/types/Computer";
 
 export class JsClient implements ServerClient {
   constructor(
@@ -12,17 +17,41 @@ export class JsClient implements ServerClient {
   ) {}
 
   init() {
-    // const app = minimal
+    const computer: Computer = {
+      name: 'Yeah',
+      label: 'Yeah',
+      params: {},
+      inputs: [],
+      outputs: [],
+      tags: [],
+      run: async function* ({ output }) {          
+        output.push([{
+          id: 1337,
+        }]);
+      }
+    }
 
-    // this.setAvailableNodes(app.descriptions())
+    const nodeProvider = {
+      register(container: Container) {
+        container.addComputers(
+          new Map<string, Computer>()
+            .set('js', computer)
+        )
+      },
+      boot(container: Container) {},
+    }
+
+    const app = new Container();
+    app.register(nodeProvider);
+    app.boot();
+
+    this.setAvailableNodes(app.descriptions())
   }
 
-  describe() {
-
-  }
+  describe() {}
 
   run(reactFlow: SerializedReactFlow) {
-
+    alert('Oooo yea!')
   }
 
   async open(name: string) {

@@ -133,20 +133,21 @@ export const useStore = create<StoreSchema>((set, get) => ({
   },
   onInitServer: () => {
     type ServerType = 'js' | 'worker' | 'socket'
+    // let type = 'js' as ServerType
     let type = 'socket' as ServerType
 
-    // if(type === 'js') {
-    //   const server = new JsClient(
-    //     get().setAvailableNodes,
-    //     get().updateEdgeCounts,
-    //     (nodes) => set({ nodes }),
-    //     (edges) => set({ edges }),
-    //     // (viewport) => set({ viewport }),
-    //   )
+    if(type === 'js') {
+      const server = new JsClient(
+        get().setAvailableNodes,
+        get().updateEdgeCounts,
+        (nodes) => set({ nodes }),
+        (edges) => set({ edges }),
+        // (viewport) => set({ viewport }),
+      )
   
-    //   set({ server })
-    //   server.init()
-    // }      
+      set({ server })
+      server.init()
+    }      
 
     if(type === 'socket') {
       const server = new SocketClient(
