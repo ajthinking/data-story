@@ -39,4 +39,4 @@ jobs:
       run: npm publish      
 
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_MONOREPO }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_DATA_STORY }}
