@@ -27,21 +27,23 @@ export class SocketClient implements ServerClient {
       this.describe()
     };
 
-    // Register on close
+    // Register on error
     this.socket.onerror = (error) => {
-      console.error("WebSocket error: ", error);
+      console.log("WebSocket error: ", error); 
     };
 
     // Register on close
     this.socket.onclose = () => {
-      console.error("WEBSOCKET CLOSED!!!");
+      console.log("WebSocket closed."); 
 
-      if (this.reconnectTries < this.maxReconnectTries) {
+      if (this.reconnectTries < this.maxReconnectTries) { 
         setTimeout(() => {
           console.log("Reconnecting...");
           this.reconnectTries++;
           this.init();
         }, this.reconnectTimeout);
+      } else {
+        console.log("Max reconnect tries reached. Is the server running?");
       }
     };    
 
