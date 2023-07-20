@@ -14,16 +14,29 @@ export const RunModal = ({ setShowModal }: {
 
   const selector = (state: StoreSchema) => ({
     onRun: state.onRun,
+    serverConfig: state.serverConfig,
   });
 
-  const { onRun } = useStore(selector, shallow);
+  const { onRun, serverConfig } = useStore(selector, shallow);
 
   return (<Modal
     title={"Run"}
     setShowModal={setShowModal}
   >
     <div className="flex flex-col space-y-2">
-      <div className="text-xs mb-4 text-gray-500">Server: <span className="ml-2 font-mono text-gray-600">localhost:3100</span></div>
+      <div className="text-xs mb-4 text-gray-500">Server: <span className="ml-2 font-mono text-gray-600">{
+        (() => {
+          if(serverConfig.type === 'SOCKET') {
+            return serverConfig.url;
+          }
+
+          if(serverConfig.type === 'JS') {
+            return 'JS';
+          }
+
+          return 'Unknown';
+        })()
+      }</span></div>
       <div className="flex w-full space-x-2 align-end">
         <button
           ref={runButtonReference}
