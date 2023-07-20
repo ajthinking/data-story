@@ -1,5 +1,6 @@
 # Introduction
 Welcome to DataStory! Your starting point for automation and integrations.
+DataStory is a **simple**, **powerful** and **flexible** visual process automation framework with everything you love from NodeJS.
 <br />
 import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
@@ -15,9 +16,62 @@ export const Demo = () => {
 <Demo />
 
 ## What is DataStory?
+DataStory ships a React component:
+```tsx
+<DataStory
+  server={server}
+/>
+```
+... which connects to a computation server:
+```ts
+const app = new Container();
 
-A **simple**, **powerful** and **flexible** visual process automation framework with everything you love from NodeJS.
+app.register([
+  coreNodeProvider,
+  // ... your custom nodes here 💫
+]);
+```
 
-## Source Code
+... that executes your diagram with real time feedback:
+```ts
+// async generator magic ✨
+const executor = new Executor(diagram)
+```
 
-The source code is available at [https://github.com/ajthinking/data-story](https://github.com/ajthinking/data-story).
+## Tell me more
+
+We may execute diagrams directly via the UI or in headless/serverless environments. Seamlessly convert between UI rendered, JSON serialized and programmically created diagrams/nodes to build any application you can think of.
+```ts
+// A diagram created programmatically 🤖
+const diagram = new DiagramBuilder()
+  .add(Signal)
+  .add(Sleep)
+  .add(ConsoleLog)
+  .get()
+
+// Serializable 📦
+const saved = JSON.stringify(diagram)
+
+// Open saved diagrams 🔧
+const restored = JSON.parse(saved)
+```
+
+We may customize the platform to our needs and easily add our own nodes using well defined patterns:
+```ts
+const customNode = {
+  name: 'My Business Processor',
+  inputs: ['ideas'],
+  outputs: ['unicorns'],
+  
+  async *run({ input, output }) {
+    // logic goes here 🧠
+  },
+};
+```
+
+Make derived and nested diagrams. A diagram is a node and a node is a diagram 🤯
+```ts
+const Contacts = deriveFrom(BaseEntity, { ... }
+```
+
+... and much more. Let's get building! 🚀
