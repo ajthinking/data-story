@@ -2,7 +2,8 @@
 
 We may customize the platform to our needs and easily add our own nodes using well defined patterns:
 ```ts
-const customNode = {
+// Custom node
+const MyBusinessProcessor = {
   name: 'My Business Processor',
   inputs: ['ideas'],
   outputs: ['unicorns'],
@@ -11,9 +12,11 @@ const customNode = {
     // logic goes here 🧠
   },
 };
-```
 
-Make derived and nested diagrams. A diagram is a node and a node is a diagram 🤯
-```ts
+// Derived node
 const Contacts = deriveFrom(BaseEntity, { ... }
+
+
+// A diagram is a node and a node is a diagram 🤯
+const NestedNode = diagram
 ```
