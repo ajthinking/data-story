@@ -7,7 +7,9 @@ import '@data-story/ui/dist/data-story.css';
 export const Demo = () => {
   return (
     <div style={{ width: '50vw', height: '36vh' }}>
-      <DataStory />
+      <DataStory
+        server={{ type: 'JS' }}
+      />
     </div>
   );
 };
@@ -19,9 +21,7 @@ export const Demo = () => {
 ## What is DataStory?
 DataStory ships a React component:
 ```tsx
-<DataStory
-  server={{ type: 'JS' }}
-/>
+<DataStory />
 ```
 ... which connects to a computation server:
 ```ts
