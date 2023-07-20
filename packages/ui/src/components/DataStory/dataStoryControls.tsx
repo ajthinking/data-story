@@ -8,15 +8,18 @@ import { SaveIcon } from './icons/saveIcon';
 import { StoreSchema, useStore } from './store';
 import { shallow } from 'zustand/shallow';
 import { OpenIcon } from './icons/openIcon';
+import { ConfigIcon } from './icons/configIcon';
 
 export function DataStoryControls({
   // setShowConfigModal,
   setShowRunModal,
   setShowAddNodeModal,
+  setShowConfigModal,
 }: {
   // setShowConfigModal: (showConfigModal: boolean) => void;
   setShowRunModal: (showRunModal: boolean) => void;
   setShowAddNodeModal: (showAddNodeModal: boolean) => void;
+  setShowConfigModal: (showConfigModal: boolean) => void;
 }) {
   // const router = useRouter();
 
@@ -27,34 +30,40 @@ export function DataStoryControls({
   const { onSave } = useStore(selector, shallow);
 
   return <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
-        <ControlButton
-          title="Run"
-          aria-label="Run"        
-          onClick={() => setShowRunModal(true)}
-        >
-          <RunIcon />
-        </ControlButton> 
-        <ControlButton
-          onClick={() => setShowAddNodeModal(true)}
-          title="Add Node"
-          aria-label="Add Node"
-        >
-          <AddNodeIcon />
-        </ControlButton>                
-      <ControlButton
-          onClick={() => onSave()}
-          title="Save"
-          aria-label="Save"
-        >
-          <SaveIcon />
-        </ControlButton>
-        {/* <ControlButton
-          onClick={() => router.push('/')}
-          title="Open"
-          aria-label="Open"
-        >
-          <OpenIcon />
-        </ControlButton>                   */}
-      </Controls>;
+    <ControlButton
+      title="Run"
+      aria-label="Run"        
+      onClick={() => setShowRunModal(true)}
+    >
+      <RunIcon />
+    </ControlButton> 
+    <ControlButton
+      onClick={() => setShowAddNodeModal(true)}
+      title="Add Node"
+      aria-label="Add Node"
+    >
+      <AddNodeIcon />
+    </ControlButton>                
+    <ControlButton
+        onClick={() => onSave()}
+        title="Save"
+        aria-label="Save"
+      >
+        <SaveIcon />
+    </ControlButton>
+    <ControlButton
+      onClick={() => {}}
+      title="Open"
+      aria-label="Open"
+    >
+      <OpenIcon />
+    </ControlButton>
+    <ControlButton
+      onClick={() => setShowConfigModal(true)}
+      title="Config"
+      aria-label="Config"
+    >
+      <ConfigIcon />
+    </ControlButton>      
+  </Controls>;
 }
-  

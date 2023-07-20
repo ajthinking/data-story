@@ -4,12 +4,14 @@ import { useEffect, useState } from 'react';
 import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance } from 'reactflow';
 import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
 import { RunModal } from './modals/runModal';
+import { ConfigModal } from './modals/configModal';
 import { AddNodeModal } from './modals/addNodeModal';
 import { StoreSchema, useStore } from './store';
 import { shallow } from 'zustand/shallow'
 import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal';
 import DataStoryCommentNodeComponent from '../Node/DataStoryCommentNodeComponent';
 import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
+import { ServerConfig } from './clients/ServerConfig';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -19,9 +21,9 @@ const nodeTypes = {
 };
 
 export const DataStory = ({
-  serverType
+  server
 }: {
-  serverType?: 'js' | 'socket'
+  server?: ServerConfig
 }) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -37,10 +39,10 @@ export const DataStory = ({
 
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onInit, openNodeModalId, setOpenNodeModalId, traverseNodes } = useStore(selector, shallow);  
 
-  const [showConfigModal] = useState(false);
+  const [showConfigModal, setShowConfigModal] = useState(false);
   const [showRunModal, setShowRunModal] = useState(false);
-  const [showAddNodeModal, setShowAddNodeModal] = useState(false);  
-
+  const [showAddNodeModal, setShowAddNodeModal] = useState(false);
+  
   // MOVE OUT
   useEffect(() => {
     // restore enterkey event listener
@@ -147,23 +149,26 @@ export const DataStory = ({
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        onInit={(rfInstance: ReactFlowInstance<any, any>) => onInit({
-          rfInstance,
-          serverType,
-        })}
+        onInit={(rfInstance: ReactFlowInstance<any, any>) => {
+          onInit({
+            rfInstance,
+            server,
+          })
+        }}
         minZoom={0.25}
         maxZoom={8}
       >     
         <DataStoryControls
           setShowRunModal={setShowRunModal}
           setShowAddNodeModal={setShowAddNodeModal}
-          // setShowConfigModal={setShowConfigModal}
+          setShowConfigModal={setShowConfigModal}
         />
         <Background color="#E7E7E7" variant={BackgroundVariant.Lines} />
       </ReactFlow>
 
       {/* Modals */}
-      {showRunModal && <RunModal setShowModal={setShowRunModal}/>}    
+      {showConfigModal && <ConfigModal setShowModal={setShowConfigModal}/>}
+      {showRunModal && <RunModal setShowModal={setShowRunModal}/>}
       {showAddNodeModal && <AddNodeModal setShowModal={setShowAddNodeModal}/>}    
       {openNodeModalId && <NodeSettingsModal/>}
     </>

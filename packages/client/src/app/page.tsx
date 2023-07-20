@@ -5,8 +5,6 @@ import '@data-story/ui/dist/data-story.css';
 
 export default function Home() {
   return <main className="flex h-screen">
-    <DataStory
-      serverType="js"
-    />
+    <DataStory />
   </main>;
 }

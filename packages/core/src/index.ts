@@ -9,7 +9,3 @@ export type { Param, ParamValue } from './Param'
 
 export { Container } from './Container'
 export type { ServiceProvider } from './types/ServiceProvider'
-
-// This can't be exported since it will use computer registry
-// Computer registry uses nodejs stuff not available in the browser
-// export { minimal } from './core'

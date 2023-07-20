@@ -13,11 +13,12 @@ import {
   ReactFlowInstance,
 } from 'reactflow';
 
-import { SocketClient } from './SocketClient';
+import { SocketClient } from './clients/SocketClient';
 import { NodeDescription } from "@data-story/core";
 import { DataStoryNode } from '../Node/DataStoryNode';
-import { ServerClient } from './ServerClient';
-import { JsClient } from './JsClient';
+import { ServerClient } from './clients/ServerClient';
+import { JsClient } from './clients/JsClient';
+import { ServerConfig } from './clients/ServerConfig';
 
 export type StoreSchema = {
   flowName: string;
@@ -27,6 +28,8 @@ export type StoreSchema = {
   setAvailableNodes: (nodes: NodeDescription[]) => void,
   nodes: DataStoryNode[];
   edges: Edge[];
+  serverConfig: ServerConfig;
+  setServerConfig: (config: ServerConfig) => void;
   server: null | ServerClient;
   refreshNodes: () => void;
   updateNode: (node: DataStoryNode) => void;
@@ -36,10 +39,10 @@ export type StoreSchema = {
   onConnect: OnConnect;
   onInit: (options: {
     rfInstance: ReactFlowInstance,
-    serverType?: 'js' | 'socket'
+    server?: ServerConfig
   }) => void;
   onRun: () => void;
-  onInitServer: (serverType: 'js' | 'socket') => void;
+  onInitServer: (server: ServerConfig) => void;
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   setEdges: (edges: Edge[]) => void;
   openNodeModalId: string | null;
@@ -54,6 +57,12 @@ export type StoreSchema = {
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 export const useStore = create<StoreSchema>((set, get) => ({
+  serverConfig: { type: 'SOCKET', url: 'ws://localhost:3100' },
+  setServerConfig: (config: ServerConfig) => {
+    set({ serverConfig: config })
+
+    console.log("TODO: We should reconnect to the server now...")
+  },
   flowName: 'untitled',
   setFlowName: (name: string) => {
     set({
@@ -127,18 +136,25 @@ export const useStore = create<StoreSchema>((set, get) => ({
   },
   onInit: (options: {
     rfInstance: ReactFlowInstance,
-    serverType?: 'js' | 'socket',
+    server?: ServerConfig,
   }) => {
+    set({
+      serverConfig: options.server || {
+        type: 'SOCKET',
+        url: 'ws://localhost:3100'
+      }
+    })
+
     set({ rfInstance: options.rfInstance })
-    get().onInitServer(options.serverType || 'socket')
+    get().onInitServer(get().serverConfig)
   },
   onRun: () => {
     get().server!.run(
       get().rfInstance!.toObject()      
     )
   },
-  onInitServer: (serverType: 'js' | 'socket') => {
-    if(serverType === 'js') {
+  onInitServer: (server: ServerConfig) => {
+    if(server.type === 'JS') {
       const server = new JsClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
@@ -151,7 +167,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
       server.init()
     }      
 
-    if(serverType === 'socket') {
+    if(server.type === 'SOCKET') {
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
