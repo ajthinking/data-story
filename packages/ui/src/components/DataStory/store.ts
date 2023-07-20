@@ -36,10 +36,10 @@ export type StoreSchema = {
   onConnect: OnConnect;
   onInit: (options: {
     rfInstance: ReactFlowInstance,
-    serverType?: 'js' | 'worker'
+    serverType?: 'js' | 'socket'
   }) => void;
   onRun: () => void;
-  onInitServer: (serverType: 'js' | 'worker') => void;
+  onInitServer: (serverType: 'js' | 'socket') => void;
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   setEdges: (edges: Edge[]) => void;
   openNodeModalId: string | null;
@@ -127,17 +127,17 @@ export const useStore = create<StoreSchema>((set, get) => ({
   },
   onInit: (options: {
     rfInstance: ReactFlowInstance,
-    serverType?: 'js' | 'worker',
+    serverType?: 'js' | 'socket',
   }) => {
     set({ rfInstance: options.rfInstance })
-    get().onInitServer(options.serverType  as const)
+    get().onInitServer(options.serverType || 'socket')
   },
   onRun: () => {
     get().server!.run(
       get().rfInstance!.toObject()      
     )
   },
-  onInitServer: (serverType: 'js' | 'worker' = 'socket') => {
+  onInitServer: (serverType: 'js' | 'socket') => {
     if(serverType === 'js') {
       const server = new JsClient(
         get().setAvailableNodes,
