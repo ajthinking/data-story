@@ -21,7 +21,7 @@ export class SocketClient implements ServerClient {
 
     // Register on open
     this.socket.onopen = () => {
-      console.log("Connected to server!");
+      console.log("Connected to server: localhost:3100");
 
       // Ask the server to describe capabilites
       this.describe()

@@ -1,7 +1,7 @@
 import 'reactflow/dist/style.css';
 import { DataStoryControls } from './dataStoryControls';
 import { useEffect, useState } from 'react';
-import ReactFlow, { Background, BackgroundVariant } from 'reactflow';
+import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance } from 'reactflow';
 import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
 import { RunModal } from './modals/runModal';
 import { AddNodeModal } from './modals/addNodeModal';
@@ -21,7 +21,7 @@ const nodeTypes = {
 export const DataStory = ({
   serverType
 }: {
-  serverType?: string
+  serverType?: 'js' | 'socket'
 }) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -147,7 +147,10 @@ export const DataStory = ({
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        onInit={onInit}
+        onInit={(rfInstance: ReactFlowInstance<any, any>) => onInit({
+          rfInstance,
+          serverType,
+        })}
         minZoom={0.25}
         maxZoom={8}
       >     

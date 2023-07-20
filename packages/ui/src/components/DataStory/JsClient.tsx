@@ -46,6 +46,8 @@ export class JsClient implements ServerClient {
     app.boot();
 
     this.setAvailableNodes(app.descriptions())
+
+    console.log("Connected to server: JS")
   }
 
   describe() {}
