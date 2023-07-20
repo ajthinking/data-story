@@ -1,0 +1,19 @@
+# Custom Nodes
+
+We may customize the platform to our needs and easily add our own nodes using well defined patterns:
+```ts
+const customNode = {
+  name: 'My Business Processor',
+  inputs: ['ideas'],
+  outputs: ['unicorns'],
+  
+  async *run({ input, output }) {
+    // logic goes here 🧠
+  },
+};
+```
+
+Make derived and nested diagrams. A diagram is a node and a node is a diagram 🤯
+```ts
+const Contacts = deriveFrom(BaseEntity, { ... }
+```
