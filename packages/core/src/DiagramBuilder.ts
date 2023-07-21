@@ -66,7 +66,7 @@ export class DiagramBuilder {
       .map(id => parseInt(id))
       .reduce((max, id) => Math.max(max, id), 0)
 
-    return max + 1      
+    return max + 1
   }
 
   protected linkToPrevious(newNode: Node) {

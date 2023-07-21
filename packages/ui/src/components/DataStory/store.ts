@@ -14,7 +14,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from './clients/SocketClient';
-import { NodeDescription } from "@data-story/core";
+import { NodeDescription, SerializedReactFlow } from "@data-story/core";
 import { DataStoryNode } from '../Node/DataStoryNode';
 import { ServerClient } from './clients/ServerClient';
 import { JsClient } from './clients/JsClient';
@@ -39,7 +39,8 @@ export type StoreSchema = {
   onConnect: OnConnect;
   onInit: (options: {
     rfInstance: ReactFlowInstance,
-    server?: ServerConfig
+    server?: ServerConfig,
+    diagram?: SerializedReactFlow,
   }) => void;
   onRun: () => void;
   onInitServer: (server: ServerConfig) => void;
@@ -137,6 +138,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
   onInit: (options: {
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
+    diagram?: SerializedReactFlow,
   }) => {
     set({
       serverConfig: options.server || {
@@ -147,6 +149,11 @@ export const useStore = create<StoreSchema>((set, get) => ({
 
     set({ rfInstance: options.rfInstance })
     get().onInitServer(get().serverConfig)
+
+    if(options.diagram) {
+      get().setNodes(options.diagram.nodes)
+      get().setEdges(options.diagram.edges)
+    }
   },
   onRun: () => {
     get().server!.run(

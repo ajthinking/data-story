@@ -9,3 +9,12 @@ export type { Param, ParamValue } from './Param'
 
 export { Container } from './Container'
 export type { ServiceProvider } from './types/ServiceProvider'
+
+export { DiagramBuilder } from './DiagramBuilder'
+
+export { Signal } from './computers/Signal'
+export { ConsoleLog } from './computers/ConsoleLog'
+
+export { SerializedReactDiagramFactory } from './SerializedReactDiagramFactory'
+
+export { ComputerFactory } from './ComputerFactory'

@@ -1,13 +1,16 @@
 import { SerializedReactFlow } from "./types/SerializedReactFlow"
 import { Diagram } from "./Diagram"
-import { ComputerRegistry } from "./computerRegistry"
+import { NodeDescription } from "./types/NodeDescription"
 
-export const SerializedReactDiagramFactory = {
-  fromDiagram: (diagram: Diagram): SerializedReactFlow => {
+export class SerializedReactDiagramFactory {
+  constructor(
+    public descriptions: NodeDescription[]
+  ) {}
 
+  fromDiagram(diagram: Diagram): SerializedReactFlow {
     return {
       nodes: diagram.nodes.map(node => {
-        const computer = ComputerRegistry.descriptions()
+        const computer = this.descriptions
           .find(computer => computer.name === node.type)!
 
         return {
@@ -55,5 +58,5 @@ export const SerializedReactDiagramFactory = {
         "zoom": 1
       }      
     }   
-  },
+  }
 }

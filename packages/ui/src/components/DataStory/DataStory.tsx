@@ -12,6 +12,7 @@ import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal'
 import DataStoryCommentNodeComponent from '../Node/DataStoryCommentNodeComponent';
 import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
 import { ServerConfig } from './clients/ServerConfig';
+import { SerializedReactFlow } from '@data-story/core';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -21,9 +22,11 @@ const nodeTypes = {
 };
 
 export const DataStory = ({
-  server
+  server,
+  diagram
 }: {
   server?: ServerConfig
+  diagram?: SerializedReactFlow
 }) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -153,6 +156,7 @@ export const DataStory = ({
           onInit({
             rfInstance,
             server,
+            diagram,
           })
         }}
         minZoom={0.25}
