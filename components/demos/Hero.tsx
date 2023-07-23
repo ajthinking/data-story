@@ -1,6 +1,6 @@
 import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, SerializedReactDiagramFactory, Signal } from "@data-story/core";
+import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, Signal } from "@data-story/core";
 import { Computer } from "@data-story/core/dist/types/Computer";
 
 export default () => {
@@ -23,15 +23,12 @@ export default () => {
     .add(Signal)
     .add(ConsoleLog)
     .get()
-  
-  const reactFlow = new SerializedReactDiagramFactory(core.descriptions())
-    .fromDiagram(diagram)
 
   return (
     <div className="w-full sm:w-1/2" style={{ height: '36vh' }}>
       <DataStory
         server={{ type: 'JS' }}
-        diagram={reactFlow}        
+        diagram={diagram}        
       />
     </div>   
   );
