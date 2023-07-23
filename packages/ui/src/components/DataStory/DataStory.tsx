@@ -6,13 +6,13 @@ import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
 import { RunModal } from './modals/runModal';
 import { ConfigModal } from './modals/configModal';
 import { AddNodeModal } from './modals/addNodeModal';
-import { StoreSchema, useStore } from './store';
+import { StoreSchema, useStore } from './store/store';
 import { shallow } from 'zustand/shallow'
 import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal';
 import DataStoryCommentNodeComponent from '../Node/DataStoryCommentNodeComponent';
 import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
 import { ServerConfig } from './clients/ServerConfig';
-import { SerializedReactFlow } from '@data-story/core';
+import { Diagram, SerializedReactFlow } from '@data-story/core';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -26,21 +26,21 @@ export const DataStory = ({
   diagram
 }: {
   server?: ServerConfig
-  diagram?: SerializedReactFlow
+  diagram?: Diagram
 }) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     edges: state.edges,
     onNodesChange: state.onNodesChange,
     onEdgesChange: state.onEdgesChange,
-    onConnect: state.onConnect,
+    connect: state.connect,
     onInit: state.onInit,
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
     traverseNodes: state.traverseNodes,
   });
 
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onInit, openNodeModalId, setOpenNodeModalId, traverseNodes } = useStore(selector, shallow);  
+  const { connect, nodes, edges, onNodesChange, onEdgesChange, onInit, openNodeModalId, setOpenNodeModalId, traverseNodes } = useStore(selector, shallow);  
 
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [showRunModal, setShowRunModal] = useState(false);
@@ -151,7 +151,7 @@ export const DataStory = ({
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
+        onConnect={connect}
         onInit={(rfInstance: ReactFlowInstance<any, any>) => {
           onInit({
             rfInstance,

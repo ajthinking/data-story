@@ -73,6 +73,7 @@ describe('execute', () => {
       inputs: [{
           id: 'input-id',
           name: 'input',
+          schema: {}
       }],
       outputs: [],
       params: {}
@@ -107,6 +108,7 @@ describe('execute', () => {
         {
           id: 'zergling-output-id',
           name: 'output',
+          schema: {}
         }
       ],
       params: {}
@@ -144,6 +146,7 @@ describe('execute', () => {
       outputs: [{
         id: 'Create.1.output',
         name: 'output',
+        schema: {}
       }],
       params: {}
     }
@@ -154,6 +157,7 @@ describe('execute', () => {
       inputs: [{
         id: 'Log.1.input',
         name: 'input',
+        schema: {}
       }],
       outputs: [],
       params: {}

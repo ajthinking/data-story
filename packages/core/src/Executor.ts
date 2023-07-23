@@ -2,7 +2,6 @@ import { Node, NodeId } from './types/Node';
 import { Diagram } from './Diagram';
 import { PortLinkMap } from './types/PortLinkMap';
 import { OutputDevice } from './OutputDevice';
-import { PortId } from './types/Port';
 import { Computer } from './types/Computer';;
 import { LinkId } from './types/Link';
 import { ExecutionUpdate } from './types/ExecutionUpdate';
@@ -146,8 +145,6 @@ export class Executor implements ExecutorInterface {
       if(pendingPromises.length === 0) {
         this.memory.pushHistoryMessage('No pending promises.')
 
-        console.log("No pending promises. Checking for completed nodes.")
-
         // Check for nodes we can mark as complete
         for(const node of this.diagram.nodes) {
           this.attemptToMarkNodeComplete(node);
@@ -248,9 +245,6 @@ export class Executor implements ExecutorInterface {
       const connectedLinks = this.diagram.linksConnectedToPortId(output.id)
       map[output.name] = connectedLinks.map(link => link.id);
     }
-
-    console.log("Making an output device for" + node.id)
-    console.log(map)
 
     return new OutputDevice(map, memory)
   }

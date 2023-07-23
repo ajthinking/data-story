@@ -1,7 +1,6 @@
-import { PortId } from './types/Port'
+import { PortId } from './types/PortId'
 import { Link } from './types/Link'
 import { Node } from './types/Node'
-import { SerializedReactFlow } from './types/SerializedReactFlow'
 
 export class Diagram {
   viewport = {
@@ -15,7 +14,7 @@ export class Diagram {
     public links: Link[],
   ) {}
 
-  linksConnectedToPortId(id: PortId): Link[] {
+  linksConnectedToPortId(id: PortId | undefined): Link[] {
     return this.links.filter(link => link.sourcePortId === id || link.targetPortId === id)
   }
 

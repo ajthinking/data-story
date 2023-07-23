@@ -1,16 +1,16 @@
-import { Connection } from 'reactflow';
-import { NodeDescription, PortWithSchema } from "@data-story/core";
+import { Connection, Edge } from 'reactflow';
+import { Diagram, LinkGuesser, NodeDescription, PortWithSchema, PositionGuesser } from "@data-story/core";
 import { DataStoryNode } from '../../Node/DataStoryNode';
 import { guessConnection } from './guessConnection';
-import { guessPosition } from './guessPosition';
+import { reactFlowNodeToDiagramNode } from '../../../reactFlowToDiagram';
 
 export const makeNodeAndConnection = (
-  existingNodes: DataStoryNode[],
+  diagram: Diagram,
   nodeDescription: NodeDescription
 ): [DataStoryNode, Connection | null] => {
   const scopedId = (name: string) => {
-    const max = existingNodes
-      .filter((node) => node.data.computer === name)
+    const max = diagram.nodes
+      .filter((node) => node.type === name)
       .map((node) => node.id)
       .map((id) => id.split('.')[1])
       .map((id) => parseInt(id))
@@ -20,11 +20,11 @@ export const makeNodeAndConnection = (
   }
 
   const counter = scopedId(nodeDescription.name)
-  const id = `${nodeDescription.name}.${counter}`;  
+  const id = `${nodeDescription.name}.${counter}`;
 
-  const node = {
+  const flowNode = {
     id,
-    position: guessPosition(existingNodes, nodeDescription),
+    position: new PositionGuesser(diagram).guess(nodeDescription),
     data: {
       // Ensure two nodes of same type don't share the same params object
       params: structuredClone(nodeDescription.params),
@@ -51,9 +51,22 @@ export const makeNodeAndConnection = (
     }[nodeDescription.name] ?? "dataStoryNodeComponent",
   }
 
-  const connection = guessConnection(existingNodes, node)
+  const node = reactFlowNodeToDiagramNode(flowNode)
 
-  return [node, connection]
+  const link = new LinkGuesser(diagram).guess(node)
+
+  console.log('link', link)
+
+  const connection = link ? {
+    source: diagram.nodeWithOutputPortId(link.sourcePortId)!.id,
+    target: id,
+    sourceHandle: link.sourcePortId,
+    targetHandle: link.targetPortId,
+  }: null;
+
+  console.log('connection', connection)
+
+  return [flowNode, connection]
 }
 
 // const connection: {

@@ -1,6 +1,6 @@
 import { shallow } from 'zustand/shallow';
 import { Modal } from '../modal'
-import { StoreSchema, useStore } from '../store';
+import { StoreSchema, useStore } from '../store/store';
 import { useEffect, useRef } from 'react';
 
 export const ConfigModal = ({ setShowModal }: {

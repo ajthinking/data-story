@@ -1,6 +1,6 @@
 import { Params, InputSchemas, OutputSchemas, Config, Code } from './tabs';
 import { shallow } from 'zustand/shallow';
-import { StoreSchema, useStore } from '../../store';
+import { StoreSchema, useStore } from '../../store/store';
 import { useForm } from 'react-hook-form';
 import { DataStoryNode } from '../../../Node/DataStoryNode';
 import { useEscapeKey } from '../../hooks/useEscapeKey';

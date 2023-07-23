@@ -1,8 +1,7 @@
 import React from 'react';
-import { StoreSchema, useStore } from '../DataStory/store';
+import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 // import { useRouter } from 'next/router';
-// import { Hey } from '@data-story/ui';
 
 export function Header({ flowName }: { flowName?: string }) {
   // const router = useRouter();

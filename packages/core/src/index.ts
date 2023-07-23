@@ -15,6 +15,10 @@ export { DiagramBuilder } from './DiagramBuilder'
 export { Signal } from './computers/Signal'
 export { ConsoleLog } from './computers/ConsoleLog'
 
-export { SerializedReactDiagramFactory } from './SerializedReactDiagramFactory'
-
 export { ComputerFactory } from './ComputerFactory'
+
+export { Diagram } from './Diagram'
+export type { Link } from './types/Link'
+
+export { PositionGuesser } from './builders/PositionGuesser'
+export { LinkGuesser } from './builders/LinkGuesser'

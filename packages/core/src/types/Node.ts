@@ -1,13 +1,13 @@
 import { Param } from '../Param'
-import { Port } from '../types/Port'
+import { PortWithSchema } from './PortWithSchema'
 
 export type NodeId = string
 
 export type Node = {
   id: NodeId
   type: string
-  inputs: Port[]
-  outputs: Port[]
+  inputs: PortWithSchema[]
+  outputs: PortWithSchema[]
   params: Record<string, Param>
   position?: {
     x: number,

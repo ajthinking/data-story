@@ -1,6 +1,6 @@
 "use client";
 
-import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, SerializedReactDiagramFactory, Signal } from "@data-story/core";
+import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, Signal } from "@data-story/core";
 import { Computer } from "@data-story/core/dist/types/Computer";
 import { DataStory } from "@data-story/ui";
 import '@data-story/ui/dist/data-story.css';
@@ -25,16 +25,11 @@ export default function Home() {
     .add(Signal)
     .add(ConsoleLog)
     .get()
-  
-  const reactFlow = new SerializedReactDiagramFactory(core.descriptions())
-    .fromDiagram(diagram)
-
-  console.log(reactFlow)
 
   return <main className="flex h-screen">
     <DataStory
-      server={{ type: 'JS'}}
-      diagram={reactFlow}
+      // server={{ type: 'JS'}}
+      diagram={diagram}
     />
   </main>;
 }

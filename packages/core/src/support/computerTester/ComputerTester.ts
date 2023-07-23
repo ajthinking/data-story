@@ -6,7 +6,6 @@ import { ItemValue } from '../../types/ItemValue';
 import { Node, NodeId } from '../../types/Node';
 import { OutputDevice } from '../../OutputDevice';
 import { ParamsDevice } from '../../types/ParamsDevice';
-import { Port } from '../../types/Port';
 import { TestStep } from './TestStep';
 
 import {
@@ -186,11 +185,13 @@ export class ComputerTester {
       type: this.computer.name,
       inputs: (this.computer.inputs || []).map(input => ({
         id: `${nodeId}.${input.name}`,
-        name: input.name
+        name: input.name,
+        schema: input.schema,
       })),
       outputs: (this.computer.outputs || []).map(output => ({
         id: `${nodeId}.${output.name}`,
-        name: output.name
+        name: output.name,
+        schema: output.schema,
       })),
       params: {}
     }

@@ -5,7 +5,7 @@ import { NodeDescription } from "@data-story/core";
 import { DataStoryNode } from '../../Node/DataStoryNode';
 import { makeNodeAndConnection } from '../hooks/makeNodeAndConnection';
 import { Modal } from '../modal'
-import { StoreSchema, useStore } from '../store';
+import { StoreSchema, useStore } from '../store/store';
 
 export const AddNodeModal = ({ setShowModal }: {
   setShowModal: (show: boolean) => void
@@ -18,28 +18,25 @@ export const AddNodeModal = ({ setShowModal }: {
   }, [])
 
   const selector = (state: StoreSchema) => ({
+      toDiagram: state.toDiagram,
       nodes: state.nodes,
       edges: state.edges,
-      onAddNode: state.onAddNode,
-      onConnect: state.onConnect,
+      addNode: state.addNode,
+      connect: state.connect,
       availableNodes: state.availableNodes,
   });
 
-  const { nodes, onAddNode, onConnect, availableNodes } = useStore(selector, shallow);
+  const { toDiagram, nodes, edges, addNode, connect, availableNodes } = useStore(selector, shallow);
 
   const doAddNode = (nodeDescription: NodeDescription) => {
-    // Create node and attempt to guess connection
-    const [
-      node,
-      connection
-    ]: [
-      DataStoryNode,
-      Connection | null
-    ] = makeNodeAndConnection(nodes, nodeDescription)
+    const [ node, connection ] = makeNodeAndConnection(
+      toDiagram(),
+      nodeDescription
+    );
 
     // Call React Flow hooks to add node and link to store
-    onAddNode(node)
-    if(connection) onConnect(connection);
+    addNode(node)
+    if(connection) connect(connection);
 
     // Close modal
     setShowModal(false)

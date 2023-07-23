@@ -1,4 +1,4 @@
-import { NodeDescription } from "@data-story/core";
+import { Diagram, NodeDescription } from "@data-story/core";
 import { SerializedReactFlow } from "@data-story/core";
 import { ServerClient } from './ServerClient';
 
@@ -104,13 +104,13 @@ export class SocketClient implements ServerClient {
     this.socket!.send(message);
   }
 
-  run(reactFlow: SerializedReactFlow) {
+  run(diagram: Diagram) {
     const message = JSON.stringify({
       type: "run",
-      reactFlow,
+      diagram,
     }, null, 2)
 
-    this.socket!.send(message);
+    this.socket!.send(message);    
   }
 
   async open(name: string) {

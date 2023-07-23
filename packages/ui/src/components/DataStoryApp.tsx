@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Header } from './Header';
 import { DataStory } from './DataStory';
-import { StoreSchema, useStore } from './DataStory/store';
+import { StoreSchema, useStore } from './DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 export function DataStoryApp({
   defaultFlowName,

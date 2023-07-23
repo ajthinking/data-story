@@ -3,6 +3,7 @@ import {
   SerializedReactFlow,
   ServiceProvider,
   Container,
+  Diagram,
 } from "@data-story/core";
 import { ServerClient } from './ServerClient';
 import { Computer } from "@data-story/core/dist/types/Computer";
@@ -52,8 +53,8 @@ export class JsClient implements ServerClient {
 
   describe() {}
 
-  run(reactFlow: SerializedReactFlow) {
-    alert('Oooo yea!')
+  run(diagram: Diagram) {
+    alert('Oooo yea222!')
   }
 
   async open(name: string) {

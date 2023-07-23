@@ -8,7 +8,7 @@ describe('pull', () => {
     const node: Node = {
       id: 'target',
       type: 'node-type',  
-      inputs: [{id: 'target-input-id', name: 'input'}],
+      inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
       params: {}
     }
@@ -43,7 +43,7 @@ describe('pull', () => {
       const node: Node = {
         id: 'target',
         type: 'node-type',  
-        inputs: [{id: 'target-input-id', name: 'some-other-name'}],
+        inputs: [{id: 'target-input-id', name: 'some-other-name', schema: {}}],
         outputs: [],
         params: {}
       }
@@ -60,7 +60,7 @@ describe('pull', () => {
     const node: Node = {
       id: 'target',
       type: 'node-type',  
-      inputs: [{id: 'target-input-id', name: 'input'}],
+      inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
       params: {}
     }
@@ -93,7 +93,7 @@ describe('pull', () => {
     const node: Node = {
       id: 'target',
       type: 'node-type',  
-      inputs: [{id: 'target-input-id', name: 'input'}],
+      inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
       params: {}
     }
@@ -124,7 +124,7 @@ describe('pullFrom', () => {
     const node: Node = {
       id: 'target',
       type: 'node-type',  
-      inputs: [{id: 'target-input-id', name: 'numbers'}],
+      inputs: [{id: 'target-input-id', name: 'numbers', schema: {}}],
       outputs: [],
       params: {}
     }
@@ -156,7 +156,7 @@ describe('pullFrom', () => {
     const node: Node = {
       id: 'target',
       type: 'node-type',  
-      inputs: [{id: 'target-input-id', name: 'numbers'}],
+      inputs: [{id: 'target-input-id', name: 'numbers', schema: {}}],
       outputs: [],
       params: {}
     }
@@ -191,7 +191,7 @@ describe('params', () => {
     const node: Node = {
       id: 'target',
       type: 'node-type',  
-      inputs: [{id: 'target-input-id', name: 'input'}],
+      inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
       params: {}
     }

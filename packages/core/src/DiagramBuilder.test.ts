@@ -41,9 +41,9 @@ describe('add', () => {
 
     expect(nodeInputs).toMatchObject([
       [],
-      [{id: 'Pass.1.input', name: 'input'}],
-      [{id: 'Pass.2.input', name: 'input'}],
-      [{id: 'Ignore.1.input', name: 'input'}]
+      [{id: 'Pass.1.input', name: 'input', schema: {}}],
+      [{id: 'Pass.2.input', name: 'input', schema: {}}],
+      [{id: 'Ignore.1.input', name: 'input', schema: {}}]
     ])
 
     expect(nodeOutputs).toMatchObject([

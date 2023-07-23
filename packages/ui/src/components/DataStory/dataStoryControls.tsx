@@ -5,7 +5,7 @@ import React from 'react';
 import { RunIcon } from './icons/runIcon';
 import { AddNodeIcon } from './icons/addNodeIcon';
 import { SaveIcon } from './icons/saveIcon';
-import { StoreSchema, useStore } from './store';
+import { StoreSchema, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
 import { OpenIcon } from './icons/openIcon';
 import { ConfigIcon } from './icons/configIcon';

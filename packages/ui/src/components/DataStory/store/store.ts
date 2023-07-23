@@ -13,66 +13,96 @@ import {
   ReactFlowInstance,
 } from 'reactflow';
 
-import { SocketClient } from './clients/SocketClient';
-import { NodeDescription, SerializedReactFlow } from "@data-story/core";
-import { DataStoryNode } from '../Node/DataStoryNode';
-import { ServerClient } from './clients/ServerClient';
-import { JsClient } from './clients/JsClient';
-import { ServerConfig } from './clients/ServerConfig';
+import { SocketClient } from '../clients/SocketClient';
+import { Diagram, NodeDescription } from "@data-story/core";
+import { DataStoryNode } from '../../Node/DataStoryNode';
+import { ServerClient } from '../clients/ServerClient';
+import { JsClient } from '../clients/JsClient';
+import { ServerConfig } from '../clients/ServerConfig';
+import { reactFlowToDiagram } from '../../../reactFlowToDiagram';
+import { reactFlowFromDiagram } from '../../../reactFlowFromDiagram';
 
 export type StoreSchema = {
-  flowName: string;
-  setFlowName: (name: string) => void;
+  /** The main reactflow instance */
   rfInstance: ReactFlowInstance | undefined;
+  toDiagram: () => Diagram;
+  
+  /** Addable Nodes */
   availableNodes: NodeDescription[],
   setAvailableNodes: (nodes: NodeDescription[]) => void,
+
+  /** The Nodes */
   nodes: DataStoryNode[];
+  updateNode: (node: DataStoryNode) => void;
+  refreshNodes: () => void;
+  addNode: (node: DataStoryNode) => void;
+  onNodesChange: OnNodesChange;
+  setNodes: (nodes: DataStoryNode[]) => void;
+  traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;  
+
+  /** The Edges */
   edges: Edge[];
+  onEdgesChange: OnEdgesChange;
+  updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
+  setEdges: (edges: Edge[]) => void;
+  connect: OnConnect;
+  calculateInputSchema: (node: DataStoryNode) => void;  
+
+  /** The Server and its config */
   serverConfig: ServerConfig;
   setServerConfig: (config: ServerConfig) => void;
   server: null | ServerClient;
-  refreshNodes: () => void;
-  updateNode: (node: DataStoryNode) => void;
-  onAddNode: (node: DataStoryNode) => void;
-  onNodesChange: OnNodesChange;
-  onEdgesChange: OnEdgesChange;
-  onConnect: OnConnect;
+  onInitServer: (server: ServerConfig) => void;
+
+  /** When DataStory component initializes */
   onInit: (options: {
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
-    diagram?: SerializedReactFlow,
+    diagram?: Diagram,
   }) => void;
+
+  /** Run the diagram */
   onRun: () => void;
-  onInitServer: (server: ServerConfig) => void;
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  setEdges: (edges: Edge[]) => void;
+  
+  /** Modals */
   openNodeModalId: string | null;
   setOpenNodeModalId: (id: string | null) => void;
   open: (nodes: DataStoryNode[], edges: Edge[]) => void;
+
+  /** Not used/implemented at the moment */
+  flowName: string;
+  setFlowName: (name: string) => void;
   onOpen: () => void;
   onSave: () => void;
-  setNodes: (nodes: DataStoryNode[]) => void;
-  traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;
-  calculateInputSchema: (node: DataStoryNode) => void;
 };
 
-// this is our useStore hook that we can use in our components to get parts of the store and call actions
 export const useStore = create<StoreSchema>((set, get) => ({
+  // DEFAULTS
   serverConfig: { type: 'SOCKET', url: 'ws://localhost:3100' },
+  flowName: 'untitled',
+  rfInstance: undefined,
+  nodes: [],
+  edges: [],
+  server: null,
+  availableNodes: [],
+  openNodeModalId: null,  
+  
+  // METHODS
+  toDiagram: () => {
+    const reactFlowObject = get().rfInstance!.toObject()
+
+    return reactFlowToDiagram(reactFlowObject)
+  },
   setServerConfig: (config: ServerConfig) => {
     set({ serverConfig: config })
 
     console.log("TODO: We should reconnect to the server now...")
   },
-  flowName: 'untitled',
   setFlowName: (name: string) => {
     set({
       flowName: name,
     });
   },
-  rfInstance: undefined,
-  nodes: [],
-  edges: [],
   onNodesChange: (changes: NodeChange[]) => {
     set({
       nodes: applyNodeChanges(changes, get().nodes),
@@ -83,7 +113,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
       edges: applyEdgeChanges(changes, get().edges),
     });
   },
-  onConnect: (connection: Connection) => {
+  connect: (connection: Connection) => {
     const fromHandleId = connection.sourceHandle;
     const toHandleId = connection.targetHandle;
 
@@ -100,7 +130,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
       get().calculateInputSchema(targetNode)
     }
   },
-  onAddNode: (node: DataStoryNode) => {
+  addNode: (node: DataStoryNode) => {
     set({
       nodes: [...get().nodes.map(node => {
         // When adding a node, deselect all other nodes
@@ -138,7 +168,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
   onInit: (options: {
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
-    diagram?: SerializedReactFlow,
+    diagram?: Diagram,
   }) => {
     set({
       serverConfig: options.server || {
@@ -151,13 +181,15 @@ export const useStore = create<StoreSchema>((set, get) => ({
     get().onInitServer(get().serverConfig)
 
     if(options.diagram) {
-      get().setNodes(options.diagram.nodes)
-      get().setEdges(options.diagram.edges)
+      const flow = reactFlowFromDiagram(options.diagram)
+
+      get().setNodes(flow.nodes)
+      get().setEdges(flow.edges)
     }
   },
   onRun: () => {
     get().server!.run(
-      get().rfInstance!.toObject()      
+      get().toDiagram()      
     )
   },
   onInitServer: (server: ServerConfig) => {
@@ -187,8 +219,6 @@ export const useStore = create<StoreSchema>((set, get) => ({
       server.init()
     }    
   },
-  server: null,
-  availableNodes: [],
   setAvailableNodes: (availableNodes: NodeDescription[]) => {
     set({ availableNodes })
   },
@@ -213,7 +243,6 @@ export const useStore = create<StoreSchema>((set, get) => ({
 
     get().setEdges(newEdges);
   },
-  openNodeModalId: null,
   setOpenNodeModalId: (id: string | null) => {
     set({ openNodeModalId: id })
   },
@@ -359,3 +388,4 @@ export const useStore = create<StoreSchema>((set, get) => ({
     // get().updateNode(node)
   },
 }));
+

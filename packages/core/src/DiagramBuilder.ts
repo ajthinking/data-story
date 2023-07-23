@@ -2,9 +2,9 @@ import { Computer, ComputerConfigFactory } from './types/Computer';
 import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
 import { Node } from './types/Node';
-import { Port } from './types/Port';
 import { Link } from './types/Link';
 import { PositionGuesser } from './builders/PositionGuesser';
+import { PortWithSchema } from './types/PortWithSchema';
 
 export class DiagramBuilder {
   diagram: Diagram
@@ -26,11 +26,19 @@ export class DiagramBuilder {
     const node: Node = {
       id: nodeId,
       type: computer.name,
+      // The inputs have not yet been assigned ids, to it here
       inputs: (computer.inputs ?? []).map(input => {
-        return { id: `${nodeId}.${input.name}`, name: input.name }
+        return {
+          ...input,
+          id: `${nodeId}.${input.name}`, name: input.name
+        }
       }),
+      // The outputs have not yet been assigned ids, to it here
       outputs: (computer.outputs ?? []).map(output => {
-        return { id: `${nodeId}.${output.name}`, name: output.name }
+        return {
+          ...output,
+          id: `${nodeId}.${output.name}`, name: output.name
+        }
       }),
       // default params
       params: computer.params,
@@ -42,7 +50,7 @@ export class DiagramBuilder {
     }
 
     node.position = new PositionGuesser(
-      this.diagram.nodes
+      this.diagram
     ).guess(node)
 
     this.diagram.nodes.push(node)
@@ -72,15 +80,15 @@ export class DiagramBuilder {
   protected linkToPrevious(newNode: Node) {
     const previousNode = this.previousNode!
 
-    const previousNodePort: Port | undefined = previousNode.outputs.at(0)
-    const newNodePort: Port | undefined = newNode.inputs.at(0)
+    const previousNodePort: PortWithSchema | undefined = previousNode.outputs.at(0)
+    const newNodePort: PortWithSchema | undefined = newNode.inputs.at(0)
 
     if(!previousNodePort || !newNodePort) return
 
     const link: Link = {
       id: `${previousNodePort.id}--->${newNodePort.id}`,
-      sourcePortId: previousNodePort.id,
-      targetPortId: newNodePort.id,
+      sourcePortId: previousNodePort.id!,
+      targetPortId: newNodePort.id!,
     }
 
     this.diagram.links.push(link)
