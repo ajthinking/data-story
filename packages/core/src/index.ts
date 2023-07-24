@@ -21,3 +21,7 @@ export type { Link } from './types/Link'
 
 export { PositionGuesser } from './builders/PositionGuesser'
 export { LinkGuesser } from './builders/LinkGuesser'
+
+export { NullStorage } from './NullStorage'
+
+export { Executor } from './Executor'

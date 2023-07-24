@@ -3,12 +3,16 @@ import {
   ServiceProvider,
   Container,
   Diagram,
+  NullStorage,
+  Executor,
 } from "@data-story/core";
 import { ServerClient } from './ServerClient';
 import { Computer } from "@data-story/core/dist/types/Computer";
 import { SerializedReactFlow } from "../../../SerializedReactFlow";
 
 export class JsClient implements ServerClient {
+  // private app: Container;
+
   constructor(
     private setAvailableNodes: (nodes: NodeDescription[]) => void,
     private updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
@@ -18,43 +22,41 @@ export class JsClient implements ServerClient {
   ) {}
 
   init() {
-    const computer: Computer = {
-      name: 'Yeah',
-      label: 'Yeah',
-      params: {},
-      inputs: [],
-      outputs: [],
-      tags: [],
-      run: async function* ({ output }) {          
-        output.push([{
-          id: 1337,
-        }]);
-      }
-    }
-
-    const nodeProvider = {
-      register(container: Container) {
-        container.addComputers(
-          new Map<string, Computer>()
-            .set('js', computer)
-        )
-      },
-      boot(container: Container) {},
-    }
-
-    const app = new Container();
-    app.register(nodeProvider);
-    app.boot();
-
-    this.setAvailableNodes(app.descriptions())
+    this.setAvailableNodes([]) //this.app.descriptions())
 
     console.log("Connected to server: JS")
   }
 
   describe() {}
 
-  run(diagram: Diagram) {
-    alert('Oooo yea222!')
+  run(diagram: Diagram) {  
+    // const storage = new NullStorage()
+
+    
+  
+    // const executor = new Executor(
+    //   diagram, 
+    //   this.app.computers,
+    //   storage
+    // )
+    
+    
+    // const execution = executor.execute();
+
+    // function handleUpdates(iterator: AsyncIterator<any>) {
+    //   iterator.next().then(({ value: update, done }) => {
+    //     if (!done) {
+    //       // Do something with the update
+    //       console.log(update);
+    //       // Then wait for the next one
+    //       handleUpdates(iterator);
+    //     }
+    //   });
+    // }
+    
+    // handleUpdates(execution[Symbol.asyncIterator]());
+
+    alert("Running!")
   }
 
   async open(name: string) {

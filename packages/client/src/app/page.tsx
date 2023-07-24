@@ -6,9 +6,9 @@ import { DataStory } from "@data-story/ui";
 import '@data-story/ui/dist/data-story.css';
 
 export default function Home() {
-  const core = new Container();
+  const app = new Container();
 
-  core.register({
+  app.register({
     register(container: Container) {
       container.addComputers(
         new Map<string, Computer>()
@@ -19,7 +19,7 @@ export default function Home() {
     boot(container: Container) {},
   });
 
-  core.boot();
+  app.boot();
 
   const diagram = new DiagramBuilder()
     .add(Signal)
@@ -28,7 +28,7 @@ export default function Home() {
 
   return <main className="flex h-screen">
     <DataStory
-      // server={{ type: 'JS'}}
+      server={{ type: 'JS', app }}
       diagram={diagram}
     />
   </main>;
