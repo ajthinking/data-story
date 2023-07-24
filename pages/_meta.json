@@ -1,15 +1,21 @@
 {
   "index": "Introduction",
   "getting_started": "Getting Started",
+  "docs": {
+    "title": "Docs",
+    "type": "page",
+    "href": "/"
+  },
   "about": {
     "title": "About",
     "type": "page"
   },
-  "contact": {
-    "title": "Contact ↗",
+  "playground": {
+    "title": "Playground",
     "type": "page",
-    "href": "https://twitter.com/shuding_",
-    "newWindow": true
+    "theme": {
+      "layout": "full"
+    }    
   },
   "customize": "Customize"
 }
