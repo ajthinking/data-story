@@ -12,7 +12,7 @@ import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal'
 import DataStoryCommentNodeComponent from '../Node/DataStoryCommentNodeComponent';
 import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
 import { ServerConfig } from './clients/ServerConfig';
-import { Diagram, SerializedReactFlow } from '@data-story/core';
+import { Diagram } from '@data-story/core';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,

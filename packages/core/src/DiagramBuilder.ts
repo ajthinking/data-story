@@ -4,7 +4,7 @@ import { Diagram } from './Diagram';
 import { Node } from './types/Node';
 import { Link } from './types/Link';
 import { PositionGuesser } from './builders/PositionGuesser';
-import { PortWithSchema } from './types/PortWithSchema';
+import { Port } from './types/Port';
 
 export class DiagramBuilder {
   diagram: Diagram
@@ -80,8 +80,8 @@ export class DiagramBuilder {
   protected linkToPrevious(newNode: Node) {
     const previousNode = this.previousNode!
 
-    const previousNodePort: PortWithSchema | undefined = previousNode.outputs.at(0)
-    const newNodePort: PortWithSchema | undefined = newNode.inputs.at(0)
+    const previousNodePort: Port | undefined = previousNode.outputs.at(0)
+    const newNodePort: Port | undefined = newNode.inputs.at(0)
 
     if(!previousNodePort || !newNodePort) return
 

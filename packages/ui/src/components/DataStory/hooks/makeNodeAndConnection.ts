@@ -1,7 +1,7 @@
-import { Connection, Edge } from 'reactflow';
-import { Diagram, LinkGuesser, NodeDescription, PortWithSchema, PositionGuesser } from "@data-story/core";
+import { Connection } from 'reactflow';
+import { Diagram, LinkGuesser, NodeDescription, AbstractPort, PositionGuesser } from "@data-story/core";
 import { DataStoryNode } from '../../Node/DataStoryNode';
-import { guessConnection } from './guessConnection';
+
 import { reactFlowNodeToDiagramNode } from '../../../reactFlowToDiagram';
 
 export const makeNodeAndConnection = (
@@ -30,13 +30,13 @@ export const makeNodeAndConnection = (
       params: structuredClone(nodeDescription.params),
       computer: nodeDescription.name,
       label: nodeDescription.label ?? nodeDescription.name,
-      inputs: nodeDescription.inputs.map((input: PortWithSchema) => {
+      inputs: nodeDescription.inputs.map((input: AbstractPort) => {
         return {
           id: `${id}.${input.name}`,
           ...input
         }
       }),
-      outputs: nodeDescription.outputs.map((output: PortWithSchema) => {
+      outputs: nodeDescription.outputs.map((output: AbstractPort) => {
         return {
           id: `${id}.${output.name}`,
           ...output

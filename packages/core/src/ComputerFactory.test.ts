@@ -22,7 +22,7 @@ describe('fromComputerConfig', () => {
     })
   })
 
-  it('upgrades simple string inputs and outputs to PortWithSchema', () => {
+  it('upgrades simple string inputs and outputs to Port', () => {
     const config = {
       name: 'test computer',
       inputs: ['input1', 'input2'],

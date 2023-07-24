@@ -1,7 +1,7 @@
-import { SerializedReactFlow } from "../../types/SerializedReactFlow"
+import { Diagram } from "../../Diagram"
 
 export type SaveMessage = {
   type: "save"
   name: string
-  reactFlow: SerializedReactFlow
+  diagram: Diagram
 }

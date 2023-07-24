@@ -22,12 +22,12 @@ export type SerializedReactFlowNode = {
     computer: string,
     label: string,
     inputs: {
-      id?: string,
+      id: string,
       name: string,
       schema: any,
     }[],
     outputs: {
-      id?: string,
+      id: string,
       name: string,
       schema: any,      
     }[],

@@ -1,11 +1,11 @@
 import { Diagram } from './Diagram';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
-import { PortWithSchema } from './types/PortWithSchema';
+import { Port } from './types/Port';
 
 describe('linksConnectedToPortId', () => {
   it('returns links connected to port', () => {
-    const port: PortWithSchema = {
+    const port: Port = {
       id: 'port-id',
       name: 'My Port',
       schema: {}
@@ -24,7 +24,7 @@ describe('linksConnectedToPortId', () => {
 
 describe('nodeWithOutputPortId', () => {
   it('returns the node given a output port id', () => {
-    const output: PortWithSchema = {
+    const output: Port = {
       id: 'output-port-id',
       name: 'output',
       schema: {}

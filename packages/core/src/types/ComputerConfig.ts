@@ -1,7 +1,7 @@
 import { Computer, NextArgument, NextResult, PortName, ReturnResult, RunArgs } from './Computer'
 import { InputDeviceInterface } from './InputDeviceInterface'
 import { Param } from '../Param'
-import { PortWithSchema } from './PortWithSchema'
+import { AbstractPort } from './Port'
 
 /**
  * Provides a simple way to create a computer
@@ -10,8 +10,8 @@ export interface ComputerConfig {
   name?: string
   label?: string
   category?: string
-  inputs?: (PortName  | PortWithSchema)[]
-  outputs?: (PortName | PortWithSchema)[]
+  inputs?: (PortName  | AbstractPort)[]
+  outputs?: (PortName | AbstractPort)[]
   params?: Record<string, Param>
   tags?: string[]
 

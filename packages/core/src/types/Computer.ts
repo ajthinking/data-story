@@ -9,7 +9,7 @@ import { InputDeviceInterface } from './InputDeviceInterface'
 import { OutputDeviceInterface } from '../OutputDevice'
 import { Param } from '../Param'
 import { ParamsDevice } from './ParamsDevice'
-import { PortWithSchema } from './PortWithSchema'
+import { AbstractPort, Port } from './Port'
 import { Storage } from './Storage'
 import { Diagram } from '../Diagram'
 import { Executor } from '../Executor'
@@ -27,8 +27,8 @@ export interface Computer {
   name: string
   label: string
   category?: string
-  inputs: PortWithSchema[]
-  outputs: PortWithSchema[]
+  inputs: AbstractPort[]
+  outputs: AbstractPort[]
   params: Record<string, Param>
   tags: string[]
 

@@ -1,6 +1,6 @@
 import { Diagram, NodeDescription } from "@data-story/core";
-import { SerializedReactFlow } from "@data-story/core";
 import { ServerClient } from './ServerClient';
+import { SerializedReactFlow } from "../../../SerializedReactFlow";
 
 export class SocketClient implements ServerClient {
   private socket?: WebSocket;

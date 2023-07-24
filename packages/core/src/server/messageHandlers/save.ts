@@ -12,6 +12,6 @@ export const save: MessageHandler<SaveMessage> = async (
 
   await storage.put(
     data.name,
-    JSON.stringify(data.reactFlow, null, 2)
+    JSON.stringify(data.diagram, null, 2)
   )
 }

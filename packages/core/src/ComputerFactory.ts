@@ -1,12 +1,12 @@
 import { Computer, PortName } from './types/Computer';
 import { ComputerConfig } from './types/ComputerConfig';
 import { DefaultParams } from './Param';
-import { PortWithSchema } from './types/PortWithSchema';
+import { AbstractPort, Port } from './types/Port';
 
 /**
- * Ensure all inputs/outputs are PortWithSchema
+ * Ensure all inputs/outputs are Port
  */
-const portableToPortWithSchema = (portable: PortName | PortWithSchema): PortWithSchema => {
+const portableToPort = (portable: PortName | AbstractPort): AbstractPort => {
   return typeof portable === 'string'
     ? ({ name: portable, schema: {} })
     : portable;
@@ -18,8 +18,8 @@ export const ComputerFactory = {
       name: config.name ?? 'unnamed',
       label: config.label ?? config.name ?? 'unlabeled',
       category: config.category,
-      inputs: config.inputs?.map(portableToPortWithSchema) ?? [],
-      outputs: config.outputs?.map(portableToPortWithSchema) ?? [],
+      inputs: config.inputs?.map(portableToPort) ?? [],
+      outputs: config.outputs?.map(portableToPort) ?? [],
       params: config.params
         ? { ...DefaultParams, ...config.params}
         : { ...DefaultParams },
