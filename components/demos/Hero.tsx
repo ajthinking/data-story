@@ -4,9 +4,9 @@ import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, Signal } from "
 import { Computer } from "@data-story/core/dist/types/Computer";
 
 export default () => {
-  const core = new Container();
+  const app = new Container();
 
-  core.register({
+  app.register({
     register(container: Container) {
       container.addComputers(
         new Map<string, Computer>()
@@ -17,7 +17,7 @@ export default () => {
     boot(container: Container) {},
   });
 
-  core.boot();
+  app.boot();
 
   const diagram = new DiagramBuilder()
     .add(Signal)
@@ -27,7 +27,7 @@ export default () => {
   return (
     <div className="w-full sm:w-1/2" style={{ height: '36vh' }}>
       <DataStory
-        server={{ type: 'JS' }}
+        server={{ type: 'JS', app }}
         diagram={diagram}        
       />
     </div>   

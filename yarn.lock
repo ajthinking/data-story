@@ -22,8 +22,8 @@ __metadata:
   linkType: hard
 
 "@data-story/core@npm:*":
-  version: 0.0.44
-  resolution: "@data-story/core@npm:0.0.44"
+  version: 0.0.50
+  resolution: "@data-story/core@npm:0.0.50"
   dependencies:
     "@hubspot/api-client": ^8.8.1
     "@types/node": 18.14.2
@@ -33,20 +33,20 @@ __metadata:
     ws: ^8.12.1
   bin:
     server: dist/server.js
-  checksum: 62f952b66cd13fc85003c4c2c47e85e0738c2843bb0f9a3e15d88f47559b6c3580ee541130dea9e55a62d817424ba1fbaed873bdcd2ba153b990cd01880b5ed4
+  checksum: aeead9135bb8a84c8cf15853ea8e177093c2f60c351bf48747e06e864782e268fb27092aba48ed8a8c8882242cb07cd7bbf01931bbb7e03ffbe51ee9e2e705b0
   languageName: node
   linkType: hard
 
-"@data-story/ui@npm:^0.0.35":
-  version: 0.0.35
-  resolution: "@data-story/ui@npm:0.0.35"
+"@data-story/ui@npm:^0.0.41":
+  version: 0.0.41
+  resolution: "@data-story/ui@npm:0.0.41"
   dependencies:
     "@data-story/core": "*"
     reactflow: ^11.5.6
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
-  checksum: 207c85a2afcd3e16f4347fbfdd66c4f39d2b836a49d230888d8378182242e8fd1cffb8879f91c4197075c57ecc22e1ac5df981ead79d87d9b214e08d2fa60e71
+  checksum: ef6dd7ec9cb7f564464828b22cd7aa40941a23fc89a40df049d86734f6342bc45eeca1b26d2adc5210d6187144eedaf9ffe0a9055b48291a744c24615e74f9b6
   languageName: node
   linkType: hard
 
@@ -3150,7 +3150,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nextra-docs-template@workspace:."
   dependencies:
-    "@data-story/ui": ^0.0.35
+    "@data-story/ui": ^0.0.41
     "@types/node": 18.11.10
     next: ^13.0.6
     nextra: latest
