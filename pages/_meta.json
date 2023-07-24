@@ -1,5 +1,6 @@
 {
   "index": "Introduction",
+  "getting_started": "Getting Started",
   "about": {
     "title": "About",
     "type": "page"
@@ -10,6 +11,5 @@
     "href": "https://twitter.com/shuding_",
     "newWindow": true
   },
-  "installation": "Installation",
   "customize": "Customize"
 }

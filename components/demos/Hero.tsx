@@ -28,7 +28,8 @@ export default () => {
     <div className="w-full sm:w-1/2" style={{ height: '36vh' }}>
       <DataStory
         server={{ type: 'JS', app }}
-        diagram={diagram}        
+        diagram={diagram}
+        callback={(options: any) => setTimeout(options.run, 100)}
       />
     </div>   
   );
