@@ -157,6 +157,12 @@ export const DataStory = ({
             rfInstance,
             server,
             diagram,
+            callback: (options: any) => {
+              setTimeout(() => {
+                console.log("Running the callback!")
+                options.run()
+              }, 500)
+            }
           })
         }}
         minZoom={0.25}

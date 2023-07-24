@@ -59,6 +59,7 @@ export type StoreSchema = {
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
     diagram?: Diagram,
+    callback?: (server: any) => void,
   }) => void;
 
   /** Run the diagram */
@@ -169,6 +170,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
     diagram?: Diagram,
+    callback?: (options: { run: () => void}) => void
   }) => {
     set({
       serverConfig: options.server || {
@@ -185,6 +187,19 @@ export const useStore = create<StoreSchema>((set, get) => ({
 
       get().setNodes(flow.nodes)
       get().setEdges(flow.edges)
+    }
+
+    if(options.callback) {
+      const run = () => {
+        console.log("In the runner!")
+        console.log(get().server)
+
+        get().server?.run(
+          get().toDiagram()
+        )
+      }
+
+      options.callback({ run })
     }
   },
   onRun: () => {

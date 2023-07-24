@@ -28,7 +28,9 @@ export class JsClient implements ServerClient {
 
   describe() {}
 
-  run(diagram: Diagram) {  
+  run(diagram: Diagram) {
+    console.log("Running in JS Client?")
+
     const storage = new NullStorage()    
   
     const executor = new Executor(
@@ -44,6 +46,8 @@ export class JsClient implements ServerClient {
       iterator.next().then(({ value: update, done }) => {
         if (!done) {
           // Do something with the update
+          console.log("Got an update")
+          console.log("DIAGRAM", diagram)
           this.updateEdgeCounts(update.counts)
           // Then wait for the next one
           handleUpdates(iterator);
