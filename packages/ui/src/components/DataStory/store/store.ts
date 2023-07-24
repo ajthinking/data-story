@@ -192,21 +192,22 @@ export const useStore = create<StoreSchema>((set, get) => ({
       get().toDiagram()      
     )
   },
-  onInitServer: (server: ServerConfig) => {
-    if(server.type === 'JS') {
+  onInitServer: (serverConfig: ServerConfig) => {
+    if(serverConfig.type === 'JS') {
       const server = new JsClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
         (nodes) => set({ nodes }),
         (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
+        serverConfig.app
       )
   
       set({ server })
       server.init()
     }      
 
-    if(server.type === 'SOCKET') {
+    if(serverConfig.type === 'SOCKET') {
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
