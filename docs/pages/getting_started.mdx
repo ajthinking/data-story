@@ -1,0 +1,55 @@
+# Installation
+```bash copy
+yarn add @data-story/ui
+```
+
+## Usage
+
+### With NodeJS server
+
+```js copy
+import { DataStory } from '@data-story/ui'
+import '@data-story/ui/dist/data-story.css';
+
+export default function Home() {
+  return (
+    <div style={{ height: '100vh', width: '100%' }}>
+      <DataStory />
+    </div>
+  )
+}
+```
+
+Next, start a server:
+```bash
+npx @data-story/core server
+```
+
+That's it!
+
+> With this installation, you will use all available nodes in `@data-story/core`.
+
+### With JS server
+First, create an app:
+```ts
+const app = new Container();
+
+app.register({
+  register(container: Container) {
+    container.addComputers(
+      new Map<string, Computer>()
+        .set('Signal', ComputerFactory.fromComputerConfig(Signal()))
+        .set('ConsoleLog', ComputerFactory.fromComputerConfig(ConsoleLog()))
+    )
+  },
+  boot(container: Container) {},
+});
+
+app.boot();
+```
+Pass this app into the `server` parameter along with a `JS` type:
+```tsx
+<DataStory
+  server={{ type: 'JS', app }}
+/>
+```

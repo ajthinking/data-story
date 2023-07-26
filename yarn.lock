@@ -100,6 +100,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@data-story/ui@npm:^0.0.43":
+  version: 0.0.43
+  resolution: "@data-story/ui@npm:0.0.43"
+  dependencies:
+    "@data-story/core": "*"
+    reactflow: ^11.5.6
+  peerDependencies:
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: e45f7fea1c1ab9342ac4175d8d3fa989ebccf25eea2b691b051d8bb6be3041067d92bbd034135957ffc326a84e5a8ed7cd57bca9b75bd5d55457535e0fa3d458
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:^0.5.0":
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
@@ -5726,11 +5739,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nextra-docs-template@workspace:packages/docs":
+"nextra-docs-template@workspace:docs":
   version: 0.0.0-use.local
-  resolution: "nextra-docs-template@workspace:packages/docs"
+  resolution: "nextra-docs-template@workspace:docs"
   dependencies:
-    "@data-story/ui": "*"
+    "@data-story/ui": ^0.0.43
     "@types/node": 18.11.10
     next: ^13.0.6
     nextra: latest

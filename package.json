@@ -4,7 +4,7 @@
     "packages/core",
     "packages/ui",
     "packages/client",
-    "packages/docs"
+    "docs"
   ],
   "version": "0.0.1",
   "packageManager": "yarn@3.6.1"
