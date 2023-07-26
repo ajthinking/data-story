@@ -23,10 +23,12 @@ const nodeTypes = {
 
 export const DataStory = ({
   server,
-  diagram
+  diagram,
+  callback
 }: {
   server?: ServerConfig
   diagram?: Diagram
+  callback?: (options: any) => void
 }) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -157,12 +159,7 @@ export const DataStory = ({
             rfInstance,
             server,
             diagram,
-            callback: (options: any) => {
-              setTimeout(() => {
-                console.log("Running the callback!")
-                options.run()
-              }, 500)
-            }
+            callback
           })
         }}
         minZoom={0.25}

@@ -191,10 +191,8 @@ export const useStore = create<StoreSchema>((set, get) => ({
 
     if(options.callback) {
       const run = () => {
-        console.log("In the runner!")
-        console.log(get().server)
-
         get().server?.run(
+          // TODO it seems this does not await setNodes/setEdges?
           get().toDiagram()
         )
       }

@@ -28,8 +28,9 @@ export default function Home() {
 
   return <main className="flex h-screen">
     <DataStory
-      server={{ type: 'JS', app }}
-      diagram={diagram}
+      // server={{ type: 'JS', app }}
+      // diagram={diagram}
+      // callback={(options: any) => setTimeout(options.run, 100)}
     />
   </main>;
 }
