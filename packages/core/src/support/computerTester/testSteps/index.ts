@@ -1,5 +1,3 @@
-export { expectCanRun } from './expectCanRun'
-export { expectCantRun } from './expectCantRun'
 export { expectError } from './expectError'
 export { expectOutput } from './expectOutput'
 export { expectOutputs } from './expectOutputs'

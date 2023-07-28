@@ -10,8 +10,6 @@ import { TestStep } from './TestStep';
 
 import {
   doRun,
-  expectCanRun,
-  expectCantRun,
   expectError,
   expectOutput,
   expectOutputs,
@@ -138,20 +136,6 @@ export class ComputerTester {
 
     return this
   }
-
-  // TODO
-  // expectCanRun() {
-  //   this.steps.push([expectCanRun, []])
-
-  //   return this
-  // }
-
-  // TODO  
-  // expectCantRun() {
-  //   this.steps.push([expectCantRun, []])
-
-  //   return this
-  // }
 
   expectDone() {
     this.steps.push([expectDone, []])
