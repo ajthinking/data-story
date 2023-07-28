@@ -1,6 +1,7 @@
 import { Diagram, NodeDescription } from "@data-story/core";
 import { ServerClient } from './ServerClient';
 import { SerializedReactFlow } from "../../../SerializedReactFlow";
+import { Hook } from "@data-story/core/dist/types/Hook";
 
 export class SocketClient implements ServerClient {
   private socket?: WebSocket;
@@ -59,9 +60,18 @@ export class SocketClient implements ServerClient {
       if (parsed.type === "ExecutionUpdate") {
         this.updateEdgeCounts(parsed.counts)
 
-        for(const hook of parsed.hooks) {
+        for(const hook of parsed.hooks as Hook[]) {
           if(hook.type === 'CONSOLE_LOG') {
             console.log(...hook.args)
+          }
+
+          if(hook.type === 'UPDATES') {
+            const providedCallback = (...data: any) => {
+              console.log("THIS IS THE UPDATE HOOK!")
+              console.log("DataPassed", data)
+            }
+
+            providedCallback(...hook.args)
           }
         }
         return;

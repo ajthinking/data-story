@@ -25,3 +25,4 @@ export { Signal } from './Signal'
 export { Sleep } from './Sleep'
 export { Throw } from './Throw';
 export { Output } from './Output';
+export { Updates } from './Updates'

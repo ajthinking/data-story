@@ -31,6 +31,22 @@ export default function Home() {
       // server={{ type: 'JS', app }}
       // diagram={diagram}
       // callback={(options: any) => setTimeout(options.run, 100)}
+
+      // Sketch
+      // hooks={{
+      //   onInit: () => {},
+      //   onRun: () => {},
+      //   onUpdate: () => {
+      //     // display a graph
+      //   },
+      //   onComplete: () => {},
+      //   onFail: () => {},
+      //   onAddNode: () => {},
+      //   onRemoveNode: () => {},
+      //   onAddEdge: () => {},
+      //   onRemoveEdge: () => {},
+      //   onMoveNode: () => {},
+      // }}
     />
   </main>;
 }
