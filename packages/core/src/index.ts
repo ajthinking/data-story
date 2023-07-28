@@ -17,6 +17,7 @@ export { LinkGuesser } from './builders/LinkGuesser'
 export { NullStorage } from './NullStorage'
 export { Executor } from './Executor'
 export type { Hook } from './types/Hook'
+export { Updates } from './computers/Updates'
 
 // We can't export NodeJs dependent stuff here,
 // Because browsers will break

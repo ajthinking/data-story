@@ -9,7 +9,7 @@ export const ConsoleLog: ComputerConfigFactory = (): ComputerConfig => ({
   label: 'Console.log',
   inputs: ['input'],
   params: {
-    message: string('message').get(),
+    message: string('message').value(undefined).get(),
   },
 
   async *run({ input, hooks, params: rawParams }) {

@@ -22,6 +22,9 @@ export const makeNodeAndConnection = (
   const counter = scopedId(nodeDescription.name)
   const id = `${nodeDescription.name}.${counter}`;
 
+  console.log("ABOUT TO DO A DEEP CLONE")
+  console.log(nodeDescription.params)
+
   const flowNode = {
     id,
     position: new PositionGuesser(diagram).guess(nodeDescription),

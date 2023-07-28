@@ -21,7 +21,7 @@ export class JsClient implements ServerClient {
   ) {}
 
   init() {
-    this.setAvailableNodes([]) //this.app.descriptions())
+    this.setAvailableNodes(this.app.descriptions())
 
     console.log("Connected to server: JS")
   }
@@ -46,6 +46,27 @@ export class JsClient implements ServerClient {
       iterator.next().then(({ value: update, done }) => {
         if (!done) {
           this.updateEdgeCounts(update.counts)
+          for(const hook of update.hooks) {
+            if(hook.type === 'CONSOLE_LOG') {
+              console.log(...hook.args)
+            } else {
+              const userHook = this.app.hooks.get(hook.type)
+
+              if(userHook) {
+                userHook(...hook.args)
+              }
+            }
+  
+            if(hook.type === 'UPDATES') {
+              const providedCallback = (...data: any) => {
+                console.log("THIS IS THE UPDATE HOOK!")
+                console.log("DataPassed", data)
+              }
+  
+              providedCallback(...hook.args)
+            }
+          }          
+
           // Then wait for the next one
           handleUpdates(iterator);
         }

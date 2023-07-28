@@ -1,22 +1,33 @@
 "use client";
 
-import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, Signal } from "@data-story/core";
+import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, Signal, Updates } from "@data-story/core";
 import { Computer } from "@data-story/core/dist/types/Computer";
 import { DataStory } from "@data-story/ui";
 import '@data-story/ui/dist/data-story.css';
+import { useState } from "react";
 
 export default function Home() {
+  const [id, setId] = useState(0);
   const app = new Container();
 
   app.register({
-    register(container: Container) {
-      container.addComputers(
+    register(app: Container) {
+      // Add some computers
+      app.addComputers(
         new Map<string, Computer>()
           .set('Signal', ComputerFactory.fromComputerConfig(Signal()))
           .set('ConsoleLog', ComputerFactory.fromComputerConfig(ConsoleLog()))
+          .set('Updates', ComputerFactory.fromComputerConfig(Updates()))
       )
+
+      // Add some hooks
+      app.addHooks({
+        UPDATES: (count: string) => {
+          setId(parseInt(count));
+        } 
+      })
     },
-    boot(container: Container) {},
+    boot(app: Container) {},
   });
 
   app.boot();
@@ -26,9 +37,9 @@ export default function Home() {
     .add(ConsoleLog)
     .get()
 
-  return <main className="flex h-screen">
+  return <main className="h-screen">
     <DataStory
-      // server={{ type: 'JS', app }}
+      server={{ type: 'JS', app }}
       // diagram={diagram}
       // callback={(options: any) => setTimeout(options.run, 100)}
 

@@ -9,7 +9,7 @@ export const Updates: ComputerConfigFactory = (): ComputerConfig => ({
   label: 'Updates',
   inputs: ['input'],
   params: {
-    json: string('json').get(),
+    json: string('json').value('').get(),
   },
 
   async *run({ input, hooks, params: rawParams }) {
