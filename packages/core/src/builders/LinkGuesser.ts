@@ -1,6 +1,5 @@
 import { Diagram } from "../Diagram";
 import { Link } from "../types/Link";
-import { NodeDescription } from "../types/NodeDescription";
 import { Node } from "../types/Node";
 
 export class LinkGuesser {
