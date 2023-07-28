@@ -1,5 +1,4 @@
 export * from './HubSpot'
-export * from './Placeholders'
 export { AskChatGpt } from './AskChatGpt';
 export { Comment } from './Comment';
 export { Concatenate } from './Concatenate';

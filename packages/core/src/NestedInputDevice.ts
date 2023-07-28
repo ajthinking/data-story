@@ -19,6 +19,10 @@ export class NestedInputDevice implements InputDeviceInterface {
     return this.inputDevice.pullFrom(name, count)
   }
 
+  havePort(name: string): boolean {
+    return this.inputDevice.havePort(name)
+  }
+
   haveItemsAtInput(name: string) {
     return this.inputDevice.haveItemsAtInput(name)
   }

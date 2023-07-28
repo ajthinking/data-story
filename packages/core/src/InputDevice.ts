@@ -48,9 +48,16 @@ export class InputDevice implements InputDeviceInterface {
     return pulled.map(item => new ItemWithParams(item, this.params))
   }
 
+  havePort(name: string): boolean {
+    return this.node.inputs.some(input => input.name === name)
+  }
+
   haveItemsAtInput(name: string): boolean {
     const port = this.node.inputs.find(input => input.name === name)!
+
     const links = this.diagram.linksConnectedToPortId(port.id)
+
+    
 
     for(const link of links) {
       if(this.memory.getLinkItems(link.id)!.length > 0) return true
