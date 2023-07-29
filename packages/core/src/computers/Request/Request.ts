@@ -8,7 +8,10 @@ export const Request: ComputerConfigFactory = (): ComputerConfig => ({
   outputs: ['items', 'response', 'error'],
   params: {
     url: string('url').value('https://jsonplaceholder.typicode.com/todos').get(),
-    method: select('method').options(['GET', 'POST', 'PUT', 'DELETE']).get().value('GET'),
+    method: select('method')
+      .options(['GET', 'POST', 'PUT', 'DELETE'])
+      .value('GET')
+      .get(),
     body: json('body').value('{}').get(),
     config: json('config').value('{}').get(),
     // itemPath: string('itemPath').value('data').get(),

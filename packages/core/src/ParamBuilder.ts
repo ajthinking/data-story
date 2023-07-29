@@ -14,6 +14,7 @@ export class ParamBuilder {
   selectOptions?: string[]
   inputSchemaFromPort?: PortName
   defaultRows: number = 1
+  paramValue: undefined | any = undefined
 
   constructor(options: {
     name: string,
@@ -28,7 +29,7 @@ export class ParamBuilder {
   }
 
   value(value: ParamValue): ParamBuilder {
-    this.value = value
+    this.paramValue = value
 
     return this
   }
@@ -56,7 +57,7 @@ export class ParamBuilder {
       id: this.name,
       name: this.name,
       type: this.type,
-      value: this.value,
+      value: this.paramValue,
       rows: this.defaultRows,
       selectOptions: this.selectOptions,
       inputSchemaFromPort: this.inputSchemaFromPort
