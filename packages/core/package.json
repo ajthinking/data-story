@@ -10,6 +10,9 @@
   "files": [
     "dist"
   ],
+  "exports": {
+    "./node/": "./dist/node/index.js"
+  },
   "scripts": {
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "vitest"
