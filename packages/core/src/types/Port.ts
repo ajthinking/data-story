@@ -1,13 +1,16 @@
+export type PortName = string
+
 export type AbstractPort = {
-  name: string,
+  name: PortName,
   schema: {
     [key: string]: any,
   },
 }
 
+
 export type Port = {
   id: string,
-  name: string,
+  name: PortName,
   schema: {
     [key: string]: any,
   },

@@ -1,4 +1,4 @@
-import { Ignore, CreateJson, Pass } from './computers';
+import { Ignore, CreateJson, Pass, Merge } from './computers';
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
 
@@ -76,5 +76,40 @@ describe('add', () => {
       .get()
 
     expect(diagram.links).toMatchObject([])
+  })
+})
+
+describe('on', () => {
+  it('can link to specified port on most recent node', () => {
+    const diagram = new DiagramBuilder()
+      .add(Merge)
+      .from('not_merged').add(Pass)
+      .get();
+
+    expect(diagram.links).toMatchObject([
+      { id: 'Merge.1.not_merged--->Pass.1.input' },
+    ])
+  }),
+
+  it('throws if no such port exists', () => {
+    expect(() => {
+      new DiagramBuilder()
+        .add(Merge)
+        .from('bad_port').add(Pass)
+        .get();
+    }).toThrowError('Bad on directive: bad_port. Port not found on Merge.1')
+  })
+
+  it('can link to a previous node port', () => {
+    const diagram = new DiagramBuilder()
+      .add(Merge)
+      .from('merged').add(Pass)
+      .from('Merge.1.not_merged').add(Pass)
+      .get();
+
+    expect(diagram.links).toMatchObject([
+      { id: 'Merge.1.merged--->Pass.1.input' },
+      { id: 'Merge.1.not_merged--->Pass.2.input' },
+    ])
   })
 })

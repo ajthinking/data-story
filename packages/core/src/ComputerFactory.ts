@@ -1,7 +1,7 @@
-import { Computer, PortName } from './types/Computer';
 import { ComputerConfig } from './types/ComputerConfig';
 import { DefaultParams } from './Param';
-import { AbstractPort, Port } from './types/Port';
+import { AbstractPort, Port, PortName } from './types/Port';
+import { Computer } from './types/Computer';
 
 /**
  * Ensure all inputs/outputs are Port

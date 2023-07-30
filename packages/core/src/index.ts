@@ -18,6 +18,8 @@ export { NullStorage } from './NullStorage'
 export { Executor } from './Executor'
 export type { Hook } from './types/Hook'
 export { Updates } from './computers/Updates'
+export { Merge } from './computers/Merge'
+export { Pass } from './computers/Pass'
 
 // We can't export NodeJs dependent stuff here,
 // Because browsers will break

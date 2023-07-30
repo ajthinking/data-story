@@ -1,6 +1,6 @@
 
-import { PortName } from './types/Computer'
 import { Param, ParamValue } from './Param'
+import { PortName } from './types/Port'
 
 export const string = (name: string) => new ParamBuilder({name, type: 'string'})
 export const number = (name: string) => new ParamBuilder({name, type: 'number'})

@@ -1,7 +1,6 @@
 export type NextResult = undefined
 export type ReturnResult = void | never
 export type NextArgument = void
-export type PortName = string
 
 import { ComputerConfig } from './ComputerConfig'
 import { HooksDevice } from './HooksDevice'

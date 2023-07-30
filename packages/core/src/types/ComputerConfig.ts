@@ -1,7 +1,7 @@
-import { Computer, NextArgument, NextResult, PortName, ReturnResult, RunArgs } from './Computer'
+import { Computer, NextArgument, NextResult, ReturnResult, RunArgs } from './Computer'
 import { InputDeviceInterface } from './InputDeviceInterface'
 import { Param } from '../Param'
-import { AbstractPort } from './Port'
+import { AbstractPort, PortName } from './Port'
 
 /**
  * Provides a simple way to create a computer

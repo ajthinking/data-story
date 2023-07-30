@@ -4,14 +4,30 @@ import { Diagram } from './Diagram';
 import { Node } from './types/Node';
 import { Link } from './types/Link';
 import { PositionGuesser } from './builders/PositionGuesser';
-import { Port } from './types/Port';
+import { Port, PortName } from './types/Port';
 
 export class DiagramBuilder {
   diagram: Diagram
   previousNode: Node | null = null
+  fromDirective: PortName | null = null
+  toDirective: PortName | null = null
 
   constructor() {
     this.diagram = new Diagram([], [])
+  }
+
+  from(directive: string) {
+    this.fromDirective = directive
+    return this
+  }
+
+  on(directive: string) {
+    return this.from(directive)
+  }
+
+  to(directive: string) {
+    this.toDirective = directive
+    return this
   }
 
   add(
@@ -55,9 +71,11 @@ export class DiagramBuilder {
 
     this.diagram.nodes.push(node)
     
-    if (this.previousNode) this.linkToPrevious(node)
+    this.link(node)
 
     this.previousNode = node
+
+    this.fromDirective = null
 
     return this
   }
@@ -77,20 +95,79 @@ export class DiagramBuilder {
     return max + 1
   }
 
-  protected linkToPrevious(newNode: Node) {
-    const previousNode = this.previousNode!
+  protected link(newNode: Node) {
+    const originPort = this.getPortToLinkTo()
 
-    const previousNodePort: Port | undefined = previousNode.outputs.at(0)
-    const newNodePort: Port | undefined = newNode.inputs.at(0)
+    const newNodePort = this.toDirective
+      ? newNode.inputs.find(input => input.name === this.toDirective)
+      : newNode.inputs.at(0);
 
-    if(!previousNodePort || !newNodePort) return
+    if(!originPort || !newNodePort) return
 
     const link: Link = {
-      id: `${previousNodePort.id}--->${newNodePort.id}`,
-      sourcePortId: previousNodePort.id!,
+      id: `${originPort.id}--->${newNodePort.id}`,
+      sourcePortId: originPort.id!,
       targetPortId: newNodePort.id!,
     }
 
     this.diagram.links.push(link)
+  }
+
+  protected getPortToLinkTo(): Port | undefined {
+    if(!this.previousNode) return
+
+    // 1. Default: First port on the most recent node
+    if(!this.fromDirective) {
+      return this.previousNode.outputs.at(0)
+    }
+
+    // 2. A specified port on the most recent node
+    if(
+      // Is a port name
+      typeof this.fromDirective === 'string'
+      // Is not in format "node.port"
+      && !this.fromDirective.includes('.')
+    ) {
+      const port = this.previousNode.outputs.find(
+        output => output.name === this.fromDirective
+      )
+
+      console.log(this.previousNode.outputs)
+
+      if(!port) throw new Error(`Bad on directive: ${this.fromDirective}. Port not found on ${this.previousNode.id}`)
+
+      return port
+    }
+
+    // 3. A specified port on a specified node
+    if(
+      // Is a port name
+      typeof this.fromDirective === 'string'
+      // Is not in format "node.port"
+      && this.fromDirective.includes('.')
+    ) {
+      const parts = this.fromDirective.split('.')
+
+      // Node counter may be omitted - assume 1
+      const [nodeType, nodeId, portName] = parts.length === 3
+        ? parts
+        : [parts.at(0), 1, parts.at(1)]
+
+      const origin = this.diagram.nodes.find(
+        node => node.id === `${nodeType}.${nodeId}`
+      )
+      if(!origin) throw new Error(`Bad on directive: ${this.fromDirective}. Could not find origin node`)
+
+      const port = origin?.outputs.find(
+        output => output.name === portName
+      )
+
+      if(!port) throw new Error(`Bad on directive: ${this.fromDirective}. Could not find origin port`)
+
+      return port
+    }
+
+    // No port found
+    return undefined
   }
 }

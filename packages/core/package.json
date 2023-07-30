@@ -1,6 +1,6 @@
 {
   "name": "@data-story/core",
-  "version": "0.0.55",
+  "version": "0.0.57",
   "main": "dist/index.js",
   "type": "commonjs",
   "types": "dist/index.d.ts",
@@ -10,9 +10,6 @@
   "files": [
     "dist"
   ],
-  "exports": {
-    "./node/": "./dist/node/index.js"
-  },
   "scripts": {
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "vitest"

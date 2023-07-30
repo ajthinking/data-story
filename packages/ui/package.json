@@ -1,6 +1,6 @@
 {
   "name": "@data-story/ui",
-  "version": "0.0.46",
+  "version": "0.0.48",
   "main": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
   "type": "commonjs",
