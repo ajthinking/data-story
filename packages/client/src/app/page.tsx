@@ -14,38 +14,36 @@ import { useState } from "react";
 
 export default function Home() {
   // const [id, setId] = useState(0);
-  const app = new Container();
+  // const app = new Container();
 
-  app.register({
-    register(app: Container) {
-      // Add some computers
-      app.addComputers(
-        new Map<string, Computer>()
-          .set('Signal', ComputerFactory.fromComputerConfig(Signal()))
-          .set('ConsoleLog', ComputerFactory.fromComputerConfig(ConsoleLog()))
-          .set('Updates', ComputerFactory.fromComputerConfig(Updates()))
-          .set('Merge', ComputerFactory.fromComputerConfig(Merge()))
-      )
-    },
-    boot(app: Container) {},
-  });
+  // app.register({
+  //   register(app: Container) {
+  //     // Add some computers
+  //     app.addComputers(
+  //       new Map<string, Computer>()
+  //         .set('Signal', ComputerFactory.fromComputerConfig(Signal()))
+  //         .set('ConsoleLog', ComputerFactory.fromComputerConfig(ConsoleLog()))
+  //         .set('Updates', ComputerFactory.fromComputerConfig(Updates()))
+  //         .set('Merge', ComputerFactory.fromComputerConfig(Merge()))
+  //     )
+  //   },
+  //   boot(app: Container) {},
+  // });
 
-  app.boot();
+  // app.boot();
 
-  const diagram = new DiagramBuilder()
-    .add(Signal)
-    .add(Merge)
-    .add(ConsoleLog)
-    .on('Merge.not_merged').add(Merge)
-    .add(Signal)
-    .from('output').to('suppliers').add(Merge)
-    .get()
+  // const diagram = new DiagramBuilder()
+  //   .add(Signal, { count: 50 })
+  //   .add(Merge)
+  //   .add(ConsoleLog)
+  //   .on('Merge.not_merged').add(ConsoleLog)
+  //   .get()
 
   return <main className="h-screen">
     {/* By default it will use the websocket server */}
     <DataStory
-      server={{ type: 'JS', app }}
-      diagram={diagram}
+      // server={{ type: 'JS', app }}
+      // diagram={diagram}
       // callback={(options: any) => setTimeout(options.run, 100)}
     />
   </main>;

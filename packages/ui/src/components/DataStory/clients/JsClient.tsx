@@ -69,12 +69,15 @@ export class JsClient implements ServerClient {
 
           // Then wait for the next one
           handleUpdates(iterator);
+        } else {
+          setTimeout(() => alert("Execution complete 💫"), 100)
         }
       });
     }
     
     // Not sure what this is but it works
     handleUpdates(execution[Symbol.asyncIterator]());
+    
   }
 
   async open(name: string) {
