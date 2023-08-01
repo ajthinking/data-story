@@ -29,3 +29,10 @@ export const ComputerFactory = {
     };
   }
 }
+
+
+/*
+  ComputerConfigFactory: Creating a unique ComputerConfig
+  ComputerConfig: Serializeable
+  Computer: The Instance
+*/

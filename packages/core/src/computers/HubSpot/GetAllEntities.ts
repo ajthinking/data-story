@@ -54,7 +54,7 @@ export const GetAllEntities: ComputerConfigFactory = (): ComputerConfig => ({
         nextPage = page.paging?.next;        
       } catch(e) {
         // TODO add better error handling
-        output.pushTo('errors', ['Error fetching page'])
+        output.pushTo('errors', [{ error: 'Error fetching page'}])
         return
       }
 

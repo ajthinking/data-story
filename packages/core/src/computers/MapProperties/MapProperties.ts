@@ -24,6 +24,8 @@ export const MapProperties: ComputerConfigFactory = (): ComputerConfig => ({
       output.push(incoming.map(item => {
         if(mode === 'ADD') return mapAdditive(item.value, map)
         if(mode === 'REPLACE') return mapReplace(item.value, map)
+
+        throw new Error(`Unknown mode: ${mode}`)
       }))
 
       yield;

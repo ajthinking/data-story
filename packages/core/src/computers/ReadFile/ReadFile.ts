@@ -14,8 +14,8 @@ export const ReadFile: ComputerConfigFactory = (): ComputerConfig => ({
   async *run({ input, output }) {
     const [ { params: { path } } ] = input.pull(1)
 
-    const readData = await fs.readFile(path, 'utf-8')
+    const content = await fs.readFile(path, 'utf-8')
 
-    output.push([readData])
+    output.push([{ content }])
   },
 });

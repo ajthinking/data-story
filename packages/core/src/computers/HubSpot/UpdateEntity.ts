@@ -29,7 +29,7 @@ export const UpdateEntity: ComputerConfigFactory = (): ComputerConfig => ({
           output.pushTo('updated', [result])
           yield;
         } catch(e) {
-          output.pushTo('errors', ['Could not update entity'])
+          output.pushTo('errors', [{ error: 'Could not update entity'}])
           yield;
         }
       }

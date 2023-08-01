@@ -20,6 +20,7 @@ export type { Hook } from './types/Hook'
 export { Updates } from './computers/Updates'
 export { Merge } from './computers/Merge'
 export { Pass } from './computers/Pass'
+export { Sample } from './computers/Sample'
 
 // We can't export NodeJs dependent stuff here,
 // Because browsers will break

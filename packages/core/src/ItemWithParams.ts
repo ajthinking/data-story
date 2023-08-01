@@ -2,6 +2,23 @@ import { ItemValue } from './types/ItemValue';
 import { ParamValue } from './Param';
 import { evalMath } from './utils/evalMath';
 
+export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWithParams => {
+  // This does not always catch all cases
+  if(item instanceof ItemWithParams) return true;
+  
+  if(
+    item !== null
+    && typeof item === 'object'
+    && 'type' in item && item.type === 'ItemWithParams'
+    && 'value' in item
+    && 'params' in item
+  ) return true;
+  
+  // const isLikelyItemWithParams = typeof i === 'object' && 'value' in i && 'params' in i
+
+  return false;
+}
+
 export class ItemWithParams {
   type = 'ItemWithParams' as const
   value: ItemValue;

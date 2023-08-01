@@ -38,14 +38,14 @@ export const RunCommand: ComputerConfigFactory = (): ComputerConfig => ({
 
       if(stdout) {
         console.log("STD OUT")
-        output.push([stdout])
+        output.push([{ stdout }])
         yield;
         continue;
       }
 
       if(stderr) {
         console.log("EXEC ERROR")
-        output.pushTo('error', [stderr])
+        output.pushTo('error', [{ stderr }])
         yield;
         continue;
       }

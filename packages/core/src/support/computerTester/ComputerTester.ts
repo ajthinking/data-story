@@ -106,8 +106,10 @@ export class ComputerTester {
     }
   }
   
-  doRun() {
-    this.steps.push([doRun, []])
+  doRun(times: number = 1) {
+    for(let i = 0; i < times; i++) {
+      this.steps.push([doRun, []])
+    }
 
     return this
   }
