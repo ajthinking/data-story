@@ -1,20 +1,20 @@
 import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, Signal } from "@data-story/core";
+import { ComputerFactory, ConsoleLog, Application, DiagramBuilder, Signal } from "@data-story/core";
 import { Computer } from "@data-story/core/dist/types/Computer";
 
 export default () => {
-  const app = new Container();
+  const app = new Application();
 
   app.register({
-    register(container: Container) {
-      container.addComputers(
+    register(app: Application) {
+      app.addComputers(
         new Map<string, Computer>()
           .set('Signal', ComputerFactory.fromComputerConfig(Signal()))
           .set('ConsoleLog', ComputerFactory.fromComputerConfig(ConsoleLog()))
       )
     },
-    boot(container: Container) {},
+    boot(app: Application) {},
   });
 
   app.boot();

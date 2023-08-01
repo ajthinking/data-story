@@ -32,17 +32,17 @@ That's it!
 ### With JS server
 First, create an app:
 ```ts
-const app = new Container();
+const app = new Application();
 
 app.register({
-  register(container: Container) {
-    container.addComputers(
+  register(app: Application) {
+    app.addComputers(
       new Map<string, Computer>()
         .set('Signal', ComputerFactory.fromComputerConfig(Signal()))
         .set('ConsoleLog', ComputerFactory.fromComputerConfig(ConsoleLog()))
     )
   },
-  boot(container: Container) {},
+  boot(app: Application) {},
 });
 
 app.boot();
