@@ -29,7 +29,7 @@ jobs:
 
         if [ $HTTP_STATUS -eq 200 ]; then
           echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
-          echo "exit0 here but ignoring it"
+          exit 0
         else
           echo "Version does not exist."
         fi
