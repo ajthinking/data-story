@@ -2,7 +2,7 @@ import { shallow } from 'zustand/shallow';
 import { Modal } from '../modal'
 import { StoreSchema, useStore } from '../store/store';
 import { useEffect, useRef } from 'react';
-import { Container } from '@data-story/core';
+import { Application } from '@data-story/core';
 
 export const ConfigModal = ({ setShowModal }: {
   setShowModal: (show: boolean) => void
@@ -28,7 +28,7 @@ export const ConfigModal = ({ setShowModal }: {
       setServerConfig({
         type: 'JS',
         // TODO provide a default app here?
-        app: new Container(),
+        app: new Application(),
       });
     }
   };

@@ -1,6 +1,6 @@
 "use client";
 
-import { ComputerFactory, ConsoleLog, Container, DiagramBuilder, Merge, Signal, Updates } from "@data-story/core";
+import { ComputerFactory, ConsoleLog, Application, DiagramBuilder, Merge, Signal, Updates } from "@data-story/core";
 import { Computer } from "@data-story/core/dist/types/Computer";
 import { DataStory } from "@data-story/ui";
 import '@data-story/ui/dist/data-story.css';
@@ -14,10 +14,10 @@ import { useState } from "react";
 
 export default function Home() {
   // const [id, setId] = useState(0);
-  // const app = new Container();
+  // const app = new Application();
 
   // app.register({
-  //   register(app: Container) {
+  //   register(app: Application) {
   //     // Add some computers
   //     app.addComputers(
   //       new Map<string, Computer>()
@@ -27,7 +27,7 @@ export default function Home() {
   //         .set('Merge', ComputerFactory.fromComputerConfig(Merge()))
   //     )
   //   },
-  //   boot(app: Container) {},
+  //   boot(app: Application) {},
   // });
 
   // app.boot();

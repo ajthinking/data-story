@@ -1,7 +1,7 @@
 import {
   NodeDescription,
   ServiceProvider,
-  Container,
+  Application,
   Diagram,
   NullStorage,
   Executor,
@@ -17,7 +17,7 @@ export class JsClient implements ServerClient {
     private setNodes: (nodes: any) => void,
     private setEdges: (edges: any) => void,
     // private setViewport: (viewport: any) => void,
-    private app: Container,
+    private app: Application,
   ) {}
 
   init() {

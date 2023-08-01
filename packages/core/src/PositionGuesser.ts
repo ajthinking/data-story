@@ -1,6 +1,6 @@
-import { Diagram } from "../Diagram";
-import { Node } from "../types/Node";
-import { NodeDescription } from "../types/NodeDescription";
+import { Diagram } from "./Diagram";
+import { Node } from "./types/Node";
+import { NodeDescription } from "./types/NodeDescription";
 
 export class PositionGuesser {
   constructor(

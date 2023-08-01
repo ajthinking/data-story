@@ -2,12 +2,12 @@ import { promises as fs } from 'fs'
 import { OpenMessage } from '../messages/OpenMessage'
 import { MessageHandler } from '../MessageHandler'
 import WebSocket from 'ws';
-import { Container } from '../../Container';
+import { Application } from '../../Application';
 
 export const open: MessageHandler<OpenMessage> = async (
   ws: WebSocket,
   message: OpenMessage,
-  app: Container  
+  app: Application  
 ) => {
   const response = {
     type: 'OpenResponse',

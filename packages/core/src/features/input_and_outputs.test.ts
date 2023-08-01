@@ -56,23 +56,3 @@ describe('Input and outputs without any data passed', () => {
       .ok()
   })
 });
-
-// it('it will output top level outputs to the exeuctionUpdate', async () => {
-//   const diagram = new DiagramBuilder()
-//     .add(CreateJson, { json: JSON.stringify({
-//       msg: 'hey!'
-//     })})
-//     .add(Output)
-//     .get()
-
-//   await whenRunning(diagram)
-//     .expectUpdates([
-//       items: [{
-//         msg: 'hey!'
-//       }]
-//     ])
-//     .expectSuccess()
-
-//   // Consider trottle!  
-//   // This will be super cool because we will enter ability to manipultate the DOM etc
-// })

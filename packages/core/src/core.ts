@@ -1,10 +1,10 @@
-import { Container } from "./Container";
+import { Application } from "./Application";
 import { ComputerRegistry } from "./computerRegistry";
 import { coreNodeProvider } from "./coreNodesProvider";
 import { Computer } from "./types/Computer";
 
-// This is the default container
-const core = new Container();
+// This is the default app
+const core = new Application();
 
 core.register([
   coreNodeProvider,
@@ -14,17 +14,17 @@ core.boot();
 
 export { core };
 
-// This is a minimal container
-const minimal = new Container();
+// This is a minimal app
+const minimal = new Application();
 minimal.register({
-  register: (container: Container) => {
+  register: (app: Application) => {
     const all = ComputerRegistry.all();
 
     const some = new Map<string, Computer>()
       .set('Signal', all.get('Signal')!)
       .set('ConsoleLog', all.get('ConsoleLog')!)
 
-    container.addComputers(some);
+    app.addComputers(some);
   },
   boot: () => {}
 });

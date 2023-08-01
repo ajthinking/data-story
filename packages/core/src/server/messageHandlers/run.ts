@@ -5,13 +5,13 @@ import { FileStorage } from '../../FileStorage';
 import { ExecutionResult } from '../../ExecutionResult';
 import { ExecutionFailure } from '../../types/ExecutionFailure';
 import { MessageHandler } from '../MessageHandler';
-import { Container } from '../../Container';
+import { Application } from '../../Application';
 import { Diagram } from '../../Diagram';
 
 export const run: MessageHandler<RunMessage> = async (
   ws: WebSocket,
   data: RunMessage,
-  app: Container
+  app: Application
 ) => {
   // const diagram = DiagramFactory.fromReactFlow(
   //   data.reactFlow

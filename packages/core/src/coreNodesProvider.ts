@@ -1,12 +1,12 @@
-import { Container } from "./Container";
+import { Application } from "./Application";
 import { ComputerRegistry } from "./computerRegistry";
 import { ServiceProvider } from "./types/ServiceProvider";
 
 export const coreNodeProvider: ServiceProvider = {
-  register: (container: Container) => {
+  register: (app: Application) => {
     const all = ComputerRegistry.all()
-    container.addComputers(all)
+    app.addComputers(all)
   },
   
-  boot: (container: Container) => {}
+  boot: (app: Application) => {}
 }

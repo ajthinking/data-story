@@ -1,9 +1,9 @@
 import WebSocket from 'ws';
 import { onMessage } from './onMessage';
-import { Container } from '../Container';
+import { Application } from '../Application';
 
 interface SocketServerOptions {
-  app: Container;
+  app: Application;
   port?: number;
 }
 

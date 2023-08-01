@@ -1,12 +1,12 @@
 import WebSocket from 'ws';
 import { describe, open, run, save } from './messageHandlers'
 import { MessageHandler } from './MessageHandler';
-import { Container } from '../Container';
+import { Application } from '../Application';
 
 export const onMessage = async (
   ws: WebSocket,
   message: string,
-  app: Container,
+  app: Application,
 ) => {
   const parsed: { type: string } = JSON.parse(message.toString())
 

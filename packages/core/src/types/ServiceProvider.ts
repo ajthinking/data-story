@@ -1,6 +1,6 @@
-import { Container } from "../Container";
+import { Application } from "../Application";
 
 export type ServiceProvider = {
-  register: (container: Container) => void;
-  boot: (container: Container) => void;
+  register: (app: Application) => void;
+  boot: (app: Application) => void;
 }

@@ -2,12 +2,12 @@ import { MessageHandler } from '../MessageHandler';
 import { ComputerRegistry } from '../../computerRegistry';
 import { DescribeMessage } from '../messages/DescribeMessage';
 import WebSocket from 'ws';
-import { Container } from '../../Container';
+import { Application } from '../../Application';
 
 export const describe: MessageHandler<DescribeMessage> = async (
   ws: WebSocket,
   data: DescribeMessage,
-  app: Container
+  app: Application
 ) => {
   const response = {
     type: 'DescribeResponse',

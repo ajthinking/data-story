@@ -3,7 +3,7 @@ import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
 import { Node } from './types/Node';
 import { Link } from './types/Link';
-import { PositionGuesser } from './builders/PositionGuesser';
+import { PositionGuesser } from './PositionGuesser';
 import { Port, PortName } from './types/Port';
 
 export class DiagramBuilder {

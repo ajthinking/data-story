@@ -1,4 +1,4 @@
-import { Container } from "@data-story/core";
+import { Application } from "@data-story/core";
 
 export type WebSocketServerConfig = {
   type: 'SOCKET';
@@ -7,7 +7,7 @@ export type WebSocketServerConfig = {
 
 export type JsServerConfig = {
   type: 'JS';
-  app: Container;
+  app: Application;
 }
 
 export type ServerConfig = WebSocketServerConfig | JsServerConfig

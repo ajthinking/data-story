@@ -2,7 +2,7 @@ import { NodeDescriptionFactory } from "./NodeDescriptionFactory";
 import { Computer } from "./types/Computer";
 import { ServiceProvider } from "./types/ServiceProvider";
 
-export class Container {
+export class Application {
   providers: ServiceProvider[] = []
   computers = new Map<string, Computer>()
   hooks = new Map<string, Function>()
