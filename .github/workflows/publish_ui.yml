@@ -24,8 +24,8 @@ jobs:
       id: check
       run: |
         PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
-        echo "::set-output name=version::$PACKAGE_VERSION"
-        RESPONSE=$(curl --silent --head --fail https://registry.npmjs.org/@data-story/ui/$PACKAGE_VERSION)
+        echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+        RESPONSE=$(curl --silent --head https://registry.npmjs.org/@data-story/ui/$PACKAGE_VERSION) || true
         if [ $? -eq 0 ]; then
           echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
           exit 0
