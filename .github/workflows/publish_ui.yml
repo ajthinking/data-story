@@ -24,11 +24,14 @@ jobs:
       id: check
       run: |
         PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
-        echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
-        RESPONSE=$(curl --silent --head https://registry.npmjs.org/@data-story/ui/$PACKAGE_VERSION) || true
-        if [ $? -eq 0 ]; then
+        echo "Version: $PACKAGE_VERSION"
+        HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/ui/$PACKAGE_VERSION)
+
+        if [ $HTTP_STATUS -eq 200 ]; then
           echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
-          exit 0
+          echo "exit0 here but ignoring it"
+        else
+          echo "Version does not exist."
         fi
 
     - name: remove overlying workspace
@@ -45,9 +48,6 @@ jobs:
 
     - name: Bundle
       run: npx webpack
-
-    - name: Version
-      run: npm version patch -m "Upgrade to %s"
     
     - name: Publish
       run: npm publish
