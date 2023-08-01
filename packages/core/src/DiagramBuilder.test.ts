@@ -1,4 +1,4 @@
-import { Ignore, CreateJson, Pass, Merge } from './computers';
+import { Ignore, CreateJson, Pass, Merge, Signal } from './computers';
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
 
@@ -53,6 +53,46 @@ describe('add', () => {
       []
     ])
   })
+
+  it('can set params', () => {
+    const diagram = new DiagramBuilder()
+      .add(Signal, { label: 'Sigge' })
+      .get()
+
+    expect(diagram.nodes).toMatchObject([
+      {
+        params: {
+          label: {
+            value: 'Sigge'
+          }
+        },
+      },
+    ])
+  })
+
+  it.todo('can set params without affecting other nodes', () => {
+    const diagram = new DiagramBuilder()
+      .add(Signal, { label: 'Sigge' })
+      .add(Pass)
+      .get()
+
+    expect(diagram.nodes).toMatchObject([
+      {
+        params: {
+          label: {
+            value: 'Sigge'
+          }
+        },
+      },
+      {
+        params: {
+          label: {
+            value: 'Pass' // is Sigge!!!
+          }
+        }
+      },
+    ])
+  })  
 
   it('links nodes together if possible', () => {
     const diagram = new DiagramBuilder()
