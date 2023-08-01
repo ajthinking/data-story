@@ -29,24 +29,30 @@ jobs:
 
         if [ $HTTP_STATUS -eq 200 ]; then
           echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
-          exit 0
+          echo "VERSION_EXISTS=true" >> $GITHUB_ENV
         else
           echo "Version does not exist."
+          echo "VERSION_EXISTS=false" >> $GITHUB_ENV          
         fi
 
     - name: remove overlying workspace
+      if: ${{ env.VERSION_EXISTS == 'false' }}    
       run: rm ../../yarn.lock && rm ../../package.json
 
     - name: Install dependencies
+      if: ${{ env.VERSION_EXISTS == 'false' }}    
       run: yarn
 
     - name: Build
+      if: ${{ env.VERSION_EXISTS == 'false' }}    
       run: yarn tsc
 
     - name: Bundle
+      if: ${{ env.VERSION_EXISTS == 'false' }}    
       run: npx webpack      
     
     - name: Publish
+      if: ${{ env.VERSION_EXISTS == 'false' }}    
       run: npm publish      
 
       env:
