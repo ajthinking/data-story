@@ -99,7 +99,7 @@ describe('descriptions', () => {
   it('returns descriptions of all computers', () => {
     const app = new Application()
 
-    const computer1 = ComputerFactory.fromComputerConfig(
+    const computer1 = ComputerFactory.get(
       Signal()
     )
 

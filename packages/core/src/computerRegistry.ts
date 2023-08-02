@@ -11,7 +11,7 @@ const computers = (() => {
 
   for(const configFactory of Object.values(computerConfigFactories)) {
     const config = configFactory()
-    const computer = ComputerFactory.fromComputerConfig(config)
+    const computer = ComputerFactory.get(config)
     
     map.set(computer.name, computer)
   }
@@ -28,16 +28,4 @@ export const ComputerRegistry = {
   all() {
     return computers
   },
-
-  descriptions() {
-    const primitives = Array.from(computers.values()).map(computer => {
-      return NodeDescriptionFactory.fromComputer(computer)
-    })
-
-    const saved = savedFlows.map(flow => {
-      return NodeDescriptionFactory.fromSavedFlow(flow)
-    })
-
-    return [...primitives, ...saved]
-  }
 }

@@ -7,7 +7,7 @@ describe('fromComputerConfig', () => {
       name: 'test computer',
     } as ComputerConfig
 
-    const computer = ComputerFactory.fromComputerConfig(config)
+    const computer = ComputerFactory.get(config)
 
     expect(computer).toMatchObject({
       name: 'test computer',
@@ -29,7 +29,7 @@ describe('fromComputerConfig', () => {
       outputs: ['output1', 'output2'],
     } as ComputerConfig
 
-    const computer = ComputerFactory.fromComputerConfig(config)
+    const computer = ComputerFactory.get(config)
 
     expect(computer).toMatchObject({
       name: 'test computer',

@@ -35,7 +35,7 @@ export class DiagramBuilder {
     params: Record<string, any> = {}
   ) {
     const config = typeof addable === 'function' ? addable() : addable
-    const computer = ComputerFactory.fromComputerConfig(config)
+    const computer = ComputerFactory.get(config)
 
     const nodeId = `${computer.name}.${this.getScopedId(computer.name)}`
 

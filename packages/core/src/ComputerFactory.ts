@@ -13,21 +13,26 @@ const portableToPort = (portable: PortName | AbstractPort): AbstractPort => {
 }
 
 export const ComputerFactory = {
-  fromComputerConfig(config: ComputerConfig): Computer {
+  get(config: ComputerConfig): Computer {
     return {
-      name: config.name ?? 'unnamed',
-      label: config.label ?? config.name ?? 'unlabeled',
-      category: config.category,
-      inputs: config.inputs?.map(portableToPort) ?? [],
-      outputs: config.outputs?.map(portableToPort) ?? [],
-      params: config.params
-        ? { ...DefaultParams, ...config.params}
-        : { ...DefaultParams },
-      tags: config.tags ?? [],
+      // Properties
+      ...structuredClone({
+        name: config.name ?? 'unnamed',
+        label: config.label ?? config.name ?? 'unlabeled',
+        category: config.category,
+        inputs: config.inputs?.map(portableToPort) ?? [],
+        outputs: config.outputs?.map(portableToPort) ?? [],
+        params: {
+          ...DefaultParams,
+          ...(config.params ?? {}),
+        },
+        tags: config.tags ?? [],
+      }),
+      // Methods
       run: config.run ?? (async function*() {}),
       canRun: config.canRun,
     };
-  }
+  },
 }
 
 

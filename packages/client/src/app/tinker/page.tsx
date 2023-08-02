@@ -13,11 +13,11 @@ export default function Home() {
       // Add some computers
       app.addComputers(
         new Map<string, Computer>()
-          .set('Signal', ComputerFactory.fromComputerConfig(Signal()))
-          .set('ConsoleLog', ComputerFactory.fromComputerConfig(ConsoleLog()))
-          .set('Updates', ComputerFactory.fromComputerConfig(Updates()))
-          .set('Merge', ComputerFactory.fromComputerConfig(Merge()))
-          .set('Sample', ComputerFactory.fromComputerConfig(Sample()))
+          .set('Signal', ComputerFactory.get(Signal()))
+          .set('ConsoleLog', ComputerFactory.get(ConsoleLog()))
+          .set('Updates', ComputerFactory.get(Updates()))
+          .set('Merge', ComputerFactory.get(Merge()))
+          .set('Sample', ComputerFactory.get(Sample()))
       )
     },
     boot(app: Application) {},

@@ -4,8 +4,9 @@ import { ServiceProvider } from "./types/ServiceProvider";
 
 export const coreNodeProvider: ServiceProvider = {
   register: (app: Application) => {
-    const all = ComputerRegistry.all()
-    app.addComputers(all)
+    app.addComputers(
+      ComputerRegistry.all()
+    )
   },
   
   boot: (app: Application) => {}

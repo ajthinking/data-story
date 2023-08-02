@@ -64,7 +64,7 @@ export class ComputerTester {
   computer: Computer
 
   constructor(computerConfig: ComputerConfig) {
-    this.computer = ComputerFactory.fromComputerConfig(computerConfig)
+    this.computer = ComputerFactory.get(computerConfig)
   }  
 
   /**
