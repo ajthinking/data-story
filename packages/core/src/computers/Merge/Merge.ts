@@ -1,9 +1,9 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { ItemValue } from '../../types/ItemValue';
 import { string } from '../../ParamBuilder';
 
-export const Merge: ComputerConfigFactory = (): ComputerConfig => ({
+export const Merge: ComputerConfig = {
   name: 'Merge',
   inputs: ['requestors', 'suppliers'],
   outputs: [
@@ -55,4 +55,4 @@ export const Merge: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

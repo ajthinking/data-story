@@ -1,8 +1,8 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { json } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const CreateJson: ComputerConfigFactory = (): ComputerConfig => ({
+export const CreateJson: ComputerConfig = {
   name: 'CreateJson',  
   outputs: ['output'],
   params: {
@@ -22,4 +22,4 @@ export const CreateJson: ComputerConfigFactory = (): ComputerConfig => ({
       throw error;
     }
   },
-});
+};

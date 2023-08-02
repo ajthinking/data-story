@@ -1,10 +1,10 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ItemWithParams } from '../../ItemWithParams';
 import { string, text } from '../../ParamBuilder';
 import { ItemValue } from '../../types/ItemValue';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Dump: ComputerConfigFactory = (): ComputerConfig => ({
+export const Dump: ComputerConfig = {
   name: 'Dump',
   inputs: ['input'],
   params: {
@@ -29,4 +29,4 @@ export const Dump: ComputerConfigFactory = (): ComputerConfig => ({
     })      
 
   },
-});
+};

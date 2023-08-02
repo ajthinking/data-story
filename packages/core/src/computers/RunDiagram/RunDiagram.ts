@@ -1,4 +1,3 @@
-import { ComputerConfigFactory } from '../../types/Computer';
 import { string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { DiagramBuilder } from '../../DiagramBuilder';
@@ -8,7 +7,7 @@ import { CreateProperty } from '../CreateProperty';
 import { NestedInputDevice } from '../../NestedInputDevice';
 import { NestedOutputDevice } from '../../NestedOutputDevice';
 
-export const RunDiagram: ComputerConfigFactory = (): ComputerConfig => ({
+export const RunDiagram: ComputerConfig = {
   name: 'RunDiagram',
   inputs: ['input'],
   outputs: ['output'],
@@ -65,4 +64,4 @@ export const RunDiagram: ComputerConfigFactory = (): ComputerConfig => ({
       yield; // TODO we could optimize to enable yielding inside the for loop 
     }
   },
-});
+};

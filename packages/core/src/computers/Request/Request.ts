@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { json, select, string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Request: ComputerConfigFactory = (): ComputerConfig => ({
+export const Request: ComputerConfig = {
   name: 'Request',
   outputs: ['items', 'response', 'error'],
   params: {
@@ -30,4 +30,4 @@ export const Request: ComputerConfigFactory = (): ComputerConfig => ({
     
     yield
   },
-});
+};

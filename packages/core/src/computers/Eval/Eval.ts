@@ -1,8 +1,7 @@
 import { json } from '../../ParamBuilder';
-import { Computer, ComputerConfigFactory } from '../../types/Computer';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Eval: ComputerConfigFactory = (): ComputerConfig => ({
+export const Eval: ComputerConfig = {
   name: 'Eval',
   inputs: [{
     name: 'input',
@@ -34,4 +33,4 @@ export const Eval: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

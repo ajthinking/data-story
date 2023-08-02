@@ -1,8 +1,8 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Throw: ComputerConfigFactory = (): ComputerConfig => ({
+export const Throw: ComputerConfig = {
   name: 'Throw',
   inputs: ['input'],
   params: {
@@ -13,4 +13,4 @@ export const Throw: ComputerConfigFactory = (): ComputerConfig => ({
     const [item] = input.pull(1)
     throw Error(item.params.message)
   },
-});
+};

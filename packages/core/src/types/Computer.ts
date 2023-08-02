@@ -37,5 +37,3 @@ export interface Computer {
     input: InputDeviceInterface,
   }) => boolean
 }
-
-export type ComputerConfigFactory = (options?: any) => ComputerConfig

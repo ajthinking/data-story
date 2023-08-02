@@ -1,4 +1,4 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { json, number, string } from '../../ParamBuilder';
 import { hubspot } from './hubspot';
@@ -20,7 +20,7 @@ type EntityPage = {
   }
 }
 
-export const GetAllEntities: ComputerConfigFactory = (): ComputerConfig => ({
+export const GetAllEntities: ComputerConfig = {
   name: 'GetAll',
   outputs: ['all', 'errors'],
   params: {
@@ -63,4 +63,4 @@ export const GetAllEntities: ComputerConfigFactory = (): ComputerConfig => ({
     
     } while (nextPage && taken < params.limit);
   },
-});
+};

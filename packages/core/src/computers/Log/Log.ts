@@ -1,7 +1,7 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Log: ComputerConfigFactory = (): ComputerConfig => ({
+export const Log: ComputerConfig = {
   name: 'Log',
   inputs: ['input'],
 
@@ -14,4 +14,4 @@ export const Log: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

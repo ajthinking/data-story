@@ -1,10 +1,10 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ItemWithParams } from '../../ItemWithParams';
 import { string, text } from '../../ParamBuilder';
 import { ItemValue } from '../../types/ItemValue';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const ConsoleLog: ComputerConfigFactory = (): ComputerConfig => ({
+export const ConsoleLog: ComputerConfig = {
   name: 'ConsoleLog',
   label: 'Console.log',
   inputs: ['input'],
@@ -31,4 +31,4 @@ export const ConsoleLog: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

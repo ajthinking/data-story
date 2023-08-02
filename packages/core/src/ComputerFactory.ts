@@ -1,6 +1,6 @@
 import { ComputerConfig } from './types/ComputerConfig';
 import { DefaultParams } from './Param';
-import { AbstractPort, Port, PortName } from './types/Port';
+import { AbstractPort, PortName } from './types/Port';
 import { Computer } from './types/Computer';
 
 /**
@@ -34,10 +34,3 @@ export const ComputerFactory = {
     };
   },
 }
-
-
-/*
-  ComputerConfigFactory: Creating a unique ComputerConfig
-  ComputerConfig: Serializeable
-  Computer: The Instance
-*/

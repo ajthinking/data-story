@@ -1,4 +1,4 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { string } from '../../ParamBuilder';
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
@@ -22,7 +22,7 @@ async function awaitableExec(command: string): Promise<{
   }
 }
 
-export const RunCommand: ComputerConfigFactory = (): ComputerConfig => ({
+export const RunCommand: ComputerConfig = {
   name: 'RunCommand',
   inputs: ['input'],
   outputs: ['output', 'error'],
@@ -60,4 +60,4 @@ export const RunCommand: ComputerConfigFactory = (): ComputerConfig => ({
       throw new Error("Unknown exec result!")
     }
   },
-});
+};

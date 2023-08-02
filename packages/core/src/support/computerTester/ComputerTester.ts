@@ -1,4 +1,4 @@
-import { Computer, ComputerConfigFactory } from '../../types/Computer';
+import { Computer } from '../../types/Computer';
 import { Diagram } from '../../Diagram';
 import { Executor, NodeStatus } from '../../Executor';
 import { PortLinkMap } from '../../types/PortLinkMap';
@@ -27,8 +27,8 @@ import { ComputerFactory } from '../../ComputerFactory';
 import { LinkId } from '../../types/Link';
 import { ComputerRegistry } from '../../computerRegistry';
 
-export const when = (factory: ComputerConfigFactory) => {
-  return new ComputerTester(factory())
+export const when = (computerConfig: ComputerConfig) => {
+  return new ComputerTester(computerConfig)
 }
 
 export type ExpectedOutputItems = {

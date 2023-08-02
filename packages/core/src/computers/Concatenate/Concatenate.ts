@@ -1,8 +1,7 @@
 import { string } from '../../ParamBuilder';
-import { Computer, ComputerConfigFactory } from '../../types/Computer';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Concatenate: ComputerConfigFactory = (): ComputerConfig => ({
+export const Concatenate: ComputerConfig = {
   name: 'Concatenate',
   inputs: ['input'],
   outputs: ['output'],
@@ -29,4 +28,4 @@ export const Concatenate: ComputerConfigFactory = (): ComputerConfig => ({
         .join(params.delimiter),
     }])
   },
-});
+};

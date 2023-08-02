@@ -1,9 +1,8 @@
 import { Configuration, OpenAIApi } from 'openai';
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { string } from '../../ParamBuilder';
 
-export const AskChatGpt: ComputerConfigFactory = (): ComputerConfig => ({
+export const AskChatGpt: ComputerConfig = {
   name: 'AskChatGpt',
   inputs: ['input'],
   outputs: ['completions'],
@@ -38,4 +37,4 @@ export const AskChatGpt: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

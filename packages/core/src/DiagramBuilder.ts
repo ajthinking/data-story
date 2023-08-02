@@ -1,10 +1,11 @@
-import { Computer, ComputerConfigFactory } from './types/Computer';
+import { Computer } from './types/Computer';
 import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
 import { Node } from './types/Node';
 import { Link } from './types/Link';
 import { PositionGuesser } from './PositionGuesser';
 import { Port, PortName } from './types/Port';
+import { ComputerConfig } from './types/ComputerConfig';
 
 export class DiagramBuilder {
   diagram: Diagram
@@ -31,10 +32,9 @@ export class DiagramBuilder {
   }
 
   add(
-    addable: ComputerConfigFactory | Computer,
+    config: ComputerConfig,
     params: Record<string, any> = {}
   ) {
-    const config = typeof addable === 'function' ? addable() : addable
     const computer = ComputerFactory.get(config)
 
     const nodeId = `${computer.name}.${this.getScopedId(computer.name)}`

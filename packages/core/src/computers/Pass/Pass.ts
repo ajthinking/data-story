@@ -1,7 +1,7 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Pass: ComputerConfigFactory = (): ComputerConfig => ({
+export const Pass: ComputerConfig = {
   name: 'Pass',
   inputs: ['input'],
   outputs: ['output'],
@@ -14,4 +14,4 @@ export const Pass: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

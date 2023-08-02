@@ -1,9 +1,9 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ItemValue } from '../../types/ItemValue';
 import { string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Filter: ComputerConfigFactory = (): ComputerConfig => ({
+export const Filter: ComputerConfig = {
   name: 'Filter',
   inputs: ['input'],
   outputs: ['passed', 'failed'],
@@ -29,4 +29,4 @@ export const Filter: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

@@ -1,11 +1,11 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ItemValue } from '../../types/ItemValue';
 import { json, string } from '../../ParamBuilder';
 import { hubspot } from './hubspot';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { CrmEntity } from './CrmEntity';
 
-export const UpdateEntity: ComputerConfigFactory = (): ComputerConfig => ({
+export const UpdateEntity: ComputerConfig = {
   name: 'UpdateEntity',
   inputs: ['input'],
   outputs: ['updated', 'errors'],
@@ -35,4 +35,4 @@ export const UpdateEntity: ComputerConfigFactory = (): ComputerConfig => ({
       }
     }
   },
-});
+};

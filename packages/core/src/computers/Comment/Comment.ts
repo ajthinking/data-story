@@ -1,8 +1,8 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { json, string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Comment: ComputerConfigFactory = (): ComputerConfig => ({
+export const Comment: ComputerConfig = {
   name: 'Comment',
   inputs: [],
   outputs: [],
@@ -11,4 +11,4 @@ export const Comment: ComputerConfigFactory = (): ComputerConfig => ({
   },
 
   async *run({}) {},
-});
+};

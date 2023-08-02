@@ -1,9 +1,9 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ItemWithParams } from '../../ItemWithParams';
 import { string, text } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const CreateProperty: ComputerConfigFactory = (): ComputerConfig => ({
+export const CreateProperty: ComputerConfig = {
   name: 'CreateProperty',
   inputs: ['input'],
   outputs: ['output'],
@@ -23,4 +23,4 @@ export const CreateProperty: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

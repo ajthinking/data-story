@@ -100,7 +100,7 @@ describe('descriptions', () => {
     const app = new Application()
 
     const computer1 = ComputerFactory.get(
-      Signal()
+      Signal
     )
 
     app.addComputers(

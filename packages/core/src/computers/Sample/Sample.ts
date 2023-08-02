@@ -1,8 +1,7 @@
-import { ComputerConfigFactory } from '../../types/Computer';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { number } from '../../ParamBuilder';
 
-export const Sample: ComputerConfigFactory = (): ComputerConfig => ({
+export const Sample: ComputerConfig = {
   name: 'Sample',
   inputs: ['input'],
   outputs: ['sampled', 'not_sampled'],
@@ -30,4 +29,4 @@ export const Sample: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

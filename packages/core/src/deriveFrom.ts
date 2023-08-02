@@ -1,5 +1,6 @@
-import { ComputerConfigFactory } from './types/Computer';
 import { DefaultParams, ParamValue } from './Param';
+import { ComputerConfig } from './types/ComputerConfig';
+import { ComputerFactory } from './ComputerFactory';
 
 export type DeriveFromOptions = {
   name: string,
@@ -9,30 +10,29 @@ export type DeriveFromOptions = {
   tags?: string[],
 }
 
+// TODO is this duplicating ComputerFactory?
 export const deriveFrom = (
-  computerFactory: ComputerConfigFactory,
+  computerConfig: ComputerConfig,
   options: Record<string, ParamValue>
 ) => {
-  return () => {
-    const template = computerFactory();
-    template.name = options.name;
+  const template = ComputerFactory.get(computerConfig);
+  template.name = options.name;
 
-    template.tags = [
-      ...(template.tags || []),
-      ...(options.tags || []),
-    ]
+  template.tags = [
+    ...(template.tags || []),
+    ...(options.tags || []),
+  ]
 
-    template.category = options.category || template.category
-    template.label = options.label || template.label
+  template.category = options.category || template.category
+  template.label = options.label || template.label
 
-    if(!template.params) template.params = {}
-      
-    template.params = { ...DefaultParams, ...template.params }
-  
-    for (const [paramName, paramValue] of Object.entries(options.params || {})) {
-      template.params[paramName].value = paramValue
-    }
-  
-    return template
+  if(!template.params) template.params = {}
+    
+  template.params = { ...DefaultParams, ...template.params }
+
+  for (const [paramName, paramValue] of Object.entries(options.params || {})) {
+    template.params[paramName].value = paramValue
   }
+
+  return template
 }

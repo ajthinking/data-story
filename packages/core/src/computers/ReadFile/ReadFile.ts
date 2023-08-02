@@ -1,9 +1,8 @@
-import { ComputerConfigFactory } from '../../types/Computer';
 import { string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { promises as fs } from 'fs';
 
-export const ReadFile: ComputerConfigFactory = (): ComputerConfig => ({
+export const ReadFile: ComputerConfig = {
   name: 'ReadFile',
   inputs: ['input'],
   outputs: ['output'],
@@ -18,4 +17,4 @@ export const ReadFile: ComputerConfigFactory = (): ComputerConfig => ({
 
     output.push([{ content }])
   },
-});
+};

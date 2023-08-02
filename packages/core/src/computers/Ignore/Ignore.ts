@@ -1,7 +1,7 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Ignore: ComputerConfigFactory = (): ComputerConfig => ({
+export const Ignore: ComputerConfig = {
   name: 'Ignore',
   inputs: ['input'],
 
@@ -11,4 +11,4 @@ export const Ignore: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

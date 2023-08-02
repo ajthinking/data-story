@@ -1,10 +1,10 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { string } from '../../ParamBuilder';
 import { promises as fs } from 'fs'
 import * as nodePath from 'path'
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const ListFiles: ComputerConfigFactory = (): ComputerConfig => ({
+export const ListFiles: ComputerConfig = {
   name: 'ListFiles',
   inputs: ['input'],
   outputs: [{
@@ -37,4 +37,4 @@ export const ListFiles: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

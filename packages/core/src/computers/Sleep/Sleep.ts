@@ -1,9 +1,9 @@
-import { ComputerConfigFactory, RunArgs } from '../../types/Computer';
+
 import { number } from '../../ParamBuilder';
 import { sleep } from '../../utils/sleep';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
-export const Sleep: ComputerConfigFactory = (): ComputerConfig => ({
+export const Sleep: ComputerConfig = {
   name: 'Sleep',
   inputs: ['input'],
   outputs: ['output'],
@@ -20,4 +20,4 @@ export const Sleep: ComputerConfigFactory = (): ComputerConfig => ({
       yield;
     }
   },
-});
+};

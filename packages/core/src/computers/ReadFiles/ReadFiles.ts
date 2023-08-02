@@ -1,10 +1,9 @@
 import glob from 'glob';
-import { ComputerConfigFactory } from '../../types/Computer';
 import { string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { promises as fs } from 'fs';
 
-export const ReadFiles: ComputerConfigFactory = (): ComputerConfig => ({
+export const ReadFiles: ComputerConfig = {
   name: 'ReadFiles',
   inputs: [{
     name: 'input',
@@ -32,4 +31,4 @@ export const ReadFiles: ComputerConfigFactory = (): ComputerConfig => ({
       output.pushTo('files', [{ path, content }])
     }
   },
-});
+};
