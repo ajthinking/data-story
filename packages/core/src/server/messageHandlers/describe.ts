@@ -1,5 +1,4 @@
 import { MessageHandler } from '../MessageHandler';
-import { ComputerRegistry } from '../../computerRegistry';
 import { DescribeMessage } from '../messages/DescribeMessage';
 import WebSocket from 'ws';
 import { Application } from '../../Application';

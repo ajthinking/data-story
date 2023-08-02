@@ -1,10 +1,3 @@
-import { DiagramBuilder } from "./DiagramBuilder";
-import { Executor } from "./Executor";
-import { NullStorage } from "./NullStorage";
-import { ConsoleLog, CreateProperty, CreateJson, RunDiagram, Signal } from "./computers";
-import { ComputerRegistry } from "./computerRegistry";
-import { promises as fs } from 'fs'
-import { get } from "./utils/get";
 import { mapAdditive } from "./computers/MapProperties/mapAdditive";
 
 export {}

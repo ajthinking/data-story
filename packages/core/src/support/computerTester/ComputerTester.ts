@@ -7,6 +7,7 @@ import { Node, NodeId } from '../../types/Node';
 import { OutputDevice } from '../../OutputDevice';
 import { ParamsDevice } from '../../types/ParamsDevice';
 import { TestStep } from './TestStep';
+import * as computerConfigs from '../../computers'
 
 import {
   doRun,
@@ -25,7 +26,6 @@ import { InputDevice } from '../../InputDevice';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { ComputerFactory } from '../../ComputerFactory';
 import { LinkId } from '../../types/Link';
-import { ComputerRegistry } from '../../computerRegistry';
 
 export const when = (computerConfig: ComputerConfig) => {
   return new ComputerTester(computerConfig)
@@ -64,7 +64,7 @@ export class ComputerTester {
   computer: Computer
 
   constructor(computerConfig: ComputerConfig) {
-    this.computer = ComputerFactory.get(computerConfig)
+    this.computer = new ComputerFactory().get(computerConfig)
   }  
 
   /**
@@ -90,7 +90,11 @@ export class ComputerTester {
           executorFactory: (diagram: any) => {
             return new Executor(
               diagram,
-              ComputerRegistry.all(),
+              // TODO: this should be injectable, not hardcoded take all
+              new Map(Object.values(computerConfigs).map(config => {
+                const computer = new ComputerFactory().get(config);
+                return [computer.name, computer];
+              })),
               new NullStorage()
             )
           }

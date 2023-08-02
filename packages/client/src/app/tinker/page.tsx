@@ -1,7 +1,6 @@
 "use client";
 
-import { ComputerFactory, ConsoleLog, Application, DiagramBuilder, Merge, Signal, Updates, Sample } from "@data-story/core";
-import { Computer } from "@data-story/core/dist/types/Computer";
+import { ConsoleLog, Application, DiagramBuilder, Merge, Signal, Updates, Sample } from "@data-story/core";
 import { DataStory } from "@data-story/ui";
 import '@data-story/ui/dist/data-story.css';
 
@@ -9,18 +8,16 @@ export default function Home() {
   const app = new Application();
 
   app.register({
-    register(app: Application) {
-      // Add some computers
-      app.addComputers(
-        new Map<string, Computer>()
-          .set('Signal', ComputerFactory.get(Signal()))
-          .set('ConsoleLog', ComputerFactory.get(ConsoleLog()))
-          .set('Updates', ComputerFactory.get(Updates()))
-          .set('Merge', ComputerFactory.get(Merge()))
-          .set('Sample', ComputerFactory.get(Sample()))
-      )
+    register(app) {
+      app.addComputers([
+        Signal,
+        Merge,
+        Updates,
+        Sample,
+        ConsoleLog,
+      ])
     },
-    boot(app: Application) {},
+    boot(app) {},
   });
 
   app.boot();

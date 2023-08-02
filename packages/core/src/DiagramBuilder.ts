@@ -35,7 +35,7 @@ export class DiagramBuilder {
     config: ComputerConfig,
     params: Record<string, any> = {}
   ) {
-    const computer = ComputerFactory.get(config)
+    const computer = new ComputerFactory().get(config)
 
     const nodeId = `${computer.name}.${this.getScopedId(computer.name)}`
 

@@ -15,7 +15,7 @@ export const deriveFrom = (
   computerConfig: ComputerConfig,
   options: Record<string, ParamValue>
 ) => {
-  const template = ComputerFactory.get(computerConfig);
+  const template = new ComputerFactory().get(computerConfig);
   template.name = options.name;
 
   template.tags = [

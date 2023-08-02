@@ -1,12 +1,17 @@
 import { Application } from "./Application";
-import { ComputerRegistry } from "./computerRegistry";
 import { ServiceProvider } from "./types/ServiceProvider";
+import * as computerConfigs from './computers'
+import { ComputerFactory } from "./ComputerFactory";
 
 export const coreNodeProvider: ServiceProvider = {
   register: (app: Application) => {
-    app.addComputers(
-      ComputerRegistry.all()
-    )
+    // Make all computers and put in a Map
+    const computers = new Map(Object.values(computerConfigs).map(config => {
+      const computer = new ComputerFactory().get(config);
+      return [computer.name, computer];
+    }));
+    
+    app.addComputers(computers);
   },
   
   boot: (app: Application) => {}

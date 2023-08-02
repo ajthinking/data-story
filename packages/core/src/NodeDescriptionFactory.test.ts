@@ -14,7 +14,7 @@ describe('fromComputer', () => {
       }],
     } as ComputerConfig
 
-    const computer = ComputerFactory.get(config)
+    const computer = new ComputerFactory().get(config)
 
     const nodeDescription = NodeDescriptionFactory.fromComputer(computer)
 

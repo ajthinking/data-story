@@ -4,7 +4,8 @@ import { ExecutionUpdate } from '../../types/ExecutionUpdate';
 import { Executor } from '../../Executor';
 
 import { NullStorage } from '../../NullStorage';
-import { ComputerRegistry } from '../../computerRegistry';
+import * as computerConfigs from '../../computers'
+import { ComputerFactory } from '../../ComputerFactory';
 
 export const whenRunning = (diagram: Diagram) => {
   return new DiagramExecutionTester(diagram)
@@ -17,10 +18,13 @@ export class DiagramExecutionTester {
   constructor(public diagram: Diagram) {}
 
   async ok() {
-
     const executor = new Executor(
       this.diagram, 
-      ComputerRegistry.all(),
+      // TODO: this should be injectable, not hardcoded take all
+      new Map(Object.values(computerConfigs).map(config => {
+        const computer = new ComputerFactory().get(config);
+        return [computer.name, computer];
+      })),
       await this.makeStorage()
     )
     

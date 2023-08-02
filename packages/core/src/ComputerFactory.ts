@@ -12,7 +12,11 @@ const portableToPort = (portable: PortName | AbstractPort): AbstractPort => {
     : portable;
 }
 
-export const ComputerFactory = {
+export class ComputerFactory {
+  constructor(
+    public computerConfigs: ComputerConfig[] = [],
+  ) {}
+
   get(config: ComputerConfig): Computer {
     return {
       // Properties
@@ -32,5 +36,5 @@ export const ComputerFactory = {
       run: config.run ?? (async function*() {}),
       canRun: config.canRun,
     };
-  },
+  }
 }
