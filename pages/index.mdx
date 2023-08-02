@@ -36,7 +36,7 @@ We may execute diagrams directly via the UI or in headless/serverless environmen
 // A diagram created programmatically 🤖
 const diagram = new DiagramBuilder()
   .add(Signal)
-  .add(Sleep)
+  .add(Sleep, { duration: 500 })
   .add(ConsoleLog)
   .get()
 

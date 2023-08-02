@@ -8,11 +8,10 @@ export default () => {
 
   app.register({
     register(app: Application) {
-      app.addComputers(
-        new Map<string, Computer>()
-          .set('Signal', ComputerFactory.fromComputerConfig(Signal()))
-          .set('ConsoleLog', ComputerFactory.fromComputerConfig(ConsoleLog()))
-      )
+      app.addComputers([
+        Signal,
+        ConsoleLog
+      ])
     },
     boot(app: Application) {},
   });

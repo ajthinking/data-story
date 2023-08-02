@@ -22,8 +22,8 @@ __metadata:
   linkType: hard
 
 "@data-story/core@npm:*":
-  version: 0.0.62
-  resolution: "@data-story/core@npm:0.0.62"
+  version: 0.0.67
+  resolution: "@data-story/core@npm:0.0.67"
   dependencies:
     "@hubspot/api-client": ^8.8.1
     "@types/node": 18.14.2
@@ -33,20 +33,20 @@ __metadata:
     ws: ^8.12.1
   bin:
     server: dist/server.js
-  checksum: 2483cf5b351709d810dcba50aeba329bd059b7810eb016efd700bd04b39b5d2c0d5e1c05d136bbddf56532636fa1667620483f1fba146c5f58962cf1f5f995d4
+  checksum: 0375bae5686709de7c2ecd9aa38612f48baa7085e1e667c400a0b09090adc3948d5ed1062b7e807247d4709f325b380f1561e755e59c699b6a505ceb5d6ed3fd
   languageName: node
   linkType: hard
 
-"@data-story/ui@npm:^0.0.51":
-  version: 0.0.51
-  resolution: "@data-story/ui@npm:0.0.51"
+"@data-story/ui@npm:^0.0.58":
+  version: 0.0.58
+  resolution: "@data-story/ui@npm:0.0.58"
   dependencies:
     "@data-story/core": "*"
     reactflow: ^11.5.6
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
-  checksum: 594b26057f88ea879b98fbbe7fa49cce00c5231cb44840e8c1ad26089bee55e5d408c0de52d3a5b1fa7a400ce258d0f0b79887f8037c3ea1268d7cfbbc208eb4
+  checksum: 268c3290e6c0f22dac1c678cd19e1ca73bee58e8e4d050463e51582697efa3be78ac4847c81cb7071de35d417a17aafa13f4422317bf1bcdccf7847a407337f1
   languageName: node
   linkType: hard
 
@@ -815,9 +815,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 20.4.5
-  resolution: "@types/node@npm:20.4.5"
-  checksum: 36a0304a8dc346a1b2d2edac4c4633eecf70875793d61a5274d0df052d7a7af7a8e34f29884eac4fbd094c4f0201477dcb39c0ecd3307ca141688806538d1138
+  version: 20.4.6
+  resolution: "@types/node@npm:20.4.6"
+  checksum: 28dfc13da87f579264840bc5b8a2cde2dcb93662464a0d58f0fa98eba1aae978e3c73e893474238c4a1226d0b1a14e3936520ff9795e1c4e06fad3282be83d18
   languageName: node
   linkType: hard
 
@@ -3150,7 +3150,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nextra-docs-template@workspace:."
   dependencies:
-    "@data-story/ui": ^0.0.51
+    "@data-story/ui": ^0.0.58
     "@types/node": 18.11.10
     next: ^13.0.6
     nextra: latest
