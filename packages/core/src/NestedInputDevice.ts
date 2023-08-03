@@ -1,4 +1,3 @@
-import { InputDevice } from "./InputDevice";
 import { InputDeviceInterface } from "./types/InputDeviceInterface";
 
 /**
