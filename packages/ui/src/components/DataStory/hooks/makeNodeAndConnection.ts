@@ -22,9 +22,6 @@ export const makeNodeAndConnection = (
   const counter = scopedId(nodeDescription.name)
   const id = `${nodeDescription.name}.${counter}`;
 
-  console.log("ABOUT TO DO A DEEP CLONE")
-  console.log(nodeDescription.params)
-
   const flowNode = {
     id,
     position: new PositionGuesser(diagram).guess(nodeDescription),
@@ -58,16 +55,12 @@ export const makeNodeAndConnection = (
 
   const link = new LinkGuesser(diagram).guess(node)
 
-  console.log('link', link)
-
   const connection = link ? {
     source: diagram.nodeWithOutputPortId(link.sourcePortId)!.id,
     target: id,
     sourceHandle: link.sourcePortId,
     targetHandle: link.targetPortId,
   }: null;
-
-  console.log('connection', connection)
 
   return [flowNode, connection]
 }

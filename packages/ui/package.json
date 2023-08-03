@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@data-story/core": "*",
-    "reactflow": "^11.5.6"
+    "reactflow": "^11.7.4"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
@@ -33,7 +33,7 @@
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
     "ws": "^8.12.1",
-    "zustand": "^4.3.6"
+    "zustand": "^4.3.9"
   },
   "peerDependencies": {
     "react": "^18.2.0",
