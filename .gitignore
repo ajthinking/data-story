@@ -2,6 +2,7 @@ node_modules
 ignore
 .yarn
 .env
+.turbo
 
 notes
 notes.*

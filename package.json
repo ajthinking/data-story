@@ -1,4 +1,5 @@
 {
+  "name": "data-story",
   "private": true,
   "workspaces": [
     "packages/core",
@@ -6,6 +7,15 @@
     "packages/client",
     "packages/docs"
   ],
+  "scripts": {
+    "dev": "yarn kill && turbo run dev --parallel",
+    "kill": "kill-port 3000 3001 3100",
+    "build": "turbo build"
+  },
   "version": "0.0.1",
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@3.6.1",
+  "devDependencies": {
+    "kill-port": "^2.0.1",
+    "turbo": "^1.10.12"
+  }
 }

@@ -11,8 +11,10 @@
     "dist"
   ],
   "scripts": {
+    "dev": "ts-node ./src/server/socket.ts",
     "tinker": "npx ts-node ./src/tinker.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "build": "tsc && webpack"
   },
   "dependencies": {
     "@hubspot/api-client": "^8.8.1",
