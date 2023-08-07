@@ -1,0 +1,21 @@
+{
+  "index": "Introduction",
+  "getting-started": "Getting Started",
+  "docs": {
+    "title": "Docs",
+    "type": "page",
+    "href": "/"
+  },
+  "about": {
+    "title": "About",
+    "type": "page"
+  },
+  "playground": {
+    "title": "Playground",
+    "type": "page",
+    "theme": {
+      "layout": "full"
+    }    
+  },
+  "customize": "Customize"
+}

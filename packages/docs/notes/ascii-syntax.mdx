@@ -1,0 +1,44 @@
+### DataStory Markdown
+> Should we do something this?
+
+Node1.output connected to Node2.input:
+```
+Node1 -> Node2
+```
+
+Named output:
+```
+Node1
+items --> Node2
+```
+
+Named output & input
+```
+Node1     Node2
+items --> incoming
+```
+
+Edges (to complex?)
+```
+| Node1 |     | Node2    |
+| items | --> | incoming |        | Log   |
+              | errors   | -----> | input |
+```
+
+
+Graphical representation or by reference?
+By reference - not cool.
+```
+Node1.1.items --> Node2.2.incoming
+```
+
+Lets try simple graphical for a larger example:
+```
+Contacts                      Merge
+     all -------------------> requestors
+  errors --> Log         ┌--> suppliers
+                         │        merged -----------> MapProperties --> Contacts.update
+JsonFile                 │    not_merged --> Log
+     all ----------------┘
+  errors --> Log
+```
