@@ -3,7 +3,8 @@
   "workspaces": [
     "packages/core",
     "packages/ui",
-    "packages/client"
+    "packages/client",
+    "packages/docs"
   ],
   "version": "0.0.1",
   "packageManager": "yarn@3.6.1"
