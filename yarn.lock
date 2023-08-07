@@ -69,6 +69,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@data-story/docs@workspace:packages/docs":
+  version: 0.0.0-use.local
+  resolution: "@data-story/docs@workspace:packages/docs"
+  dependencies:
+    "@data-story/ui": ^0.0.58
+    "@types/node": 18.11.10
+    next: ^13.0.6
+    nextra: latest
+    nextra-theme-docs: latest
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^4.9.3
+  languageName: unknown
+  linkType: soft
+
 "@data-story/ui@*, @data-story/ui@^0.0.58, @data-story/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@data-story/ui@workspace:packages/ui"
@@ -5839,21 +5854,6 @@ __metadata:
   checksum: 50bd443ffe09424c1a94d6606d41886ccd1d65185e125aa199957ea92c5e4d1c226f1675f3e5ea92e88f43f8355824ba50db52a8aeae225f7a86b6c901d25527
   languageName: node
   linkType: hard
-
-"nextra-docs-template@workspace:packages/docs":
-  version: 0.0.0-use.local
-  resolution: "nextra-docs-template@workspace:packages/docs"
-  dependencies:
-    "@data-story/ui": ^0.0.58
-    "@types/node": 18.11.10
-    next: ^13.0.6
-    nextra: latest
-    nextra-theme-docs: latest
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    typescript: ^4.9.3
-  languageName: unknown
-  linkType: soft
 
 "nextra-theme-docs@npm:latest":
   version: 2.10.0
