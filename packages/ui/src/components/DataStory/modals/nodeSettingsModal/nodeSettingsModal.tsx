@@ -25,9 +25,10 @@ export const NodeSettingsModal = () => {
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
     refreshNodes: state.refreshNodes,
+    setNodes: state.setNodes,
   });  
 
-  const { nodes, openNodeModalId, setOpenNodeModalId } = useStore(selector, shallow);
+  const { nodes, openNodeModalId, setOpenNodeModalId, setNodes } = useStore(selector, shallow);
 
   const node = nodes.find((node: DataStoryNode) => node.id === openNodeModalId)!
 
@@ -47,11 +48,19 @@ export const NodeSettingsModal = () => {
 
   const saveAndClose = () => {
     form.handleSubmit((submitted) => {
-      for (const [key, value] of Object.entries(submitted)) {
-        node.data.params[key].value = value
-      }      
-
-      node.data.label = submitted.label
+      setNodes(
+        nodes.map((n) => {
+          if (n.id === node.id) {
+            const newData = { ...n.data };
+            for (const [key, value] of Object.entries(submitted)) {
+              newData.params[key].value = value;
+            }
+            newData.label = submitted.label;
+            n.data = newData;
+          }
+          return n;
+        })
+      );
     })()
     
     close()
