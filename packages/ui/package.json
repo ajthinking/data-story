@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@data-story/core": "*",
-    "reactflow": "^11.7.4"
+    "reactflow": "^11.8.1"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",

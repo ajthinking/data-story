@@ -4,14 +4,6 @@ import { ConsoleLog, Application, DiagramBuilder, Merge, Signal, Updates, Sample
 import { DataStory } from "@data-story/ui";
 import '@data-story/ui/dist/data-story.css';
 
-// TODO: Until warnings are fixed
-// This could not be resolved by downgrading to zustand: 4.3.9
-let originalWarn = console.warn.bind(console);
-console.warn = (message, ...optionalParams) => {
-  if (message.includes('zustand')) return;
-  originalWarn(message, ...optionalParams);
-}
-
 export default function Home() {
   const app = new Application();
 
@@ -47,18 +39,16 @@ export default function Home() {
     .get()
 
   return <div className="h-screen">
-    <div className="h-screen">
+    <div style={{ height: 400 }}>
       <DataStory
         server={{ type: 'JS', app }}
         diagram={diagram}
-        callback={(options: any) => setTimeout(options.run, 100)}
       />
     </div>
-    <div className="h-screen">
+    <div style={{ height: 400 }}>
       <DataStory
         server={{ type: 'JS', app }}
         diagram={diagram}
-        callback={(options: any) => setTimeout(options.run, 100)}
       />
     </div>    
   </div>
