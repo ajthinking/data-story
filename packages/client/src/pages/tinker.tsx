@@ -31,11 +31,6 @@ export default function Home() {
       supplier_merge_property: 'id',
     })
     .from('Signal.output').add(Sample)
-
-
-    // .add(Sample)
-    // .add(ConsoleLog)
-    // .on('Merge.not_merged').add(ConsoleLog)
     .get()
 
   return <div className="h-screen">
