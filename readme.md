@@ -12,7 +12,7 @@ Visual Programming | Data Transformation | ETL | Process design
 
 ## Installation
 ```bash
-yarn add @data-story/ui`
+yarn add @data-story/ui
 ```
 
 ## Example Usage
