@@ -22,28 +22,29 @@ export default function Home() {
 
   app.boot();
 
-  const diagram = new DiagramBuilder()
-    .add(Signal, {
-      count: 300
-    })
-    .add(Merge, {
-      requestor_merge_property: 'id',
-      supplier_merge_property: 'id',
-    })
-    .from('Signal.output').add(Sample)
-    .get()
+  // const diagram = new DiagramBuilder()
+  //   .add(Signal, {
+  //     count: 300
+  //   })
+  //   .add(Merge, {
+  //     requestor_merge_property: 'id',
+  //     supplier_merge_property: 'id',
+  //   })
+  //   .from('Signal.output').add(Sample)
+  //   .get()
 
   return <div className="h-screen">
     <div style={{ height: 400 }}>
       <DataStory
         server={{ type: 'JS', app }}
-        diagram={diagram}
+        // diagram={diagram}
       />
     </div>
+    <div className="bg-blue-500 text-blue-500">Diagram 2</div>
     <div style={{ height: 400 }}>
       <DataStory
         server={{ type: 'JS', app }}
-        diagram={diagram}
+        // diagram={diagram}
       />
     </div>    
   </div>
