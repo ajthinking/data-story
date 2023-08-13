@@ -7,7 +7,7 @@ Visual Programming | Data Transformation | ETL | Process design
 ## Resources
 
 <a href="https://data-story-docs.vercel.app/" target="_blank">Docs</a>
-
+| <a href="https://data-story-docs.vercel.app/playground" target="_blank">Playground</a>
 
 
 ## Installation
