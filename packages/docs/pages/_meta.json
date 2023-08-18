@@ -6,10 +6,6 @@
     "type": "page",
     "href": "/"
   },
-  "about": {
-    "title": "About",
-    "type": "page"
-  },
   "playground": {
     "title": "Playground",
     "type": "page",

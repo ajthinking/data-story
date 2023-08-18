@@ -11,7 +11,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/ajthinking/data-story-docs',
   footer: {
-    text: 'Nextra Docs Template',
+    text: 'Built with Nextra',
   },
 }
 
