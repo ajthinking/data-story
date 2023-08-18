@@ -9,7 +9,7 @@ const config: DocsThemeConfig = {
   chat: {
     link: 'https://discord.com',
   },
-  docsRepositoryBase: 'https://github.com/ajthinking/data-story/packages/docs',
+  docsRepositoryBase: 'https://github.com/ajthinking/data-story/blob/main/packages/docs',
   // footer: {
   //   text: 'Built with Nextra',
   // },
