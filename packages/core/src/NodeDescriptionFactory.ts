@@ -13,24 +13,4 @@ export const NodeDescriptionFactory = {
       tags: computer.tags,
     }
   },
-
-  fromSavedFlow: (flow: string): NodeDescription => {
-    const computer = flow as any // TODO
-
-    return {
-      name: flow,
-      label: flow,
-      category: flow,
-      inputs: [{
-        name: 'input',
-        schema: {}
-      }],
-      outputs: [{
-        name: 'output',
-        schema: {}
-      }],
-      params: {},
-      tags: [],
-    }    
-  }
 }

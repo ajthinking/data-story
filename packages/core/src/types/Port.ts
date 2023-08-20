@@ -7,7 +7,6 @@ export type AbstractPort = {
   },
 }
 
-
 export type Port = {
   id: string,
   name: PortName,

@@ -1,4 +1,4 @@
-import { Computer, NextArgument, NextResult, ReturnResult, RunArgs } from './Computer'
+import { NextArgument, NextResult, ReturnResult, RunArgs } from './Computer'
 import { InputDeviceInterface } from './InputDeviceInterface'
 import { Param } from '../Param'
 import { AbstractPort, PortName } from './Port'

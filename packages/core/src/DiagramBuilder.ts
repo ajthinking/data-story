@@ -1,4 +1,3 @@
-import { Computer } from './types/Computer';
 import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
 import { Node } from './types/Node';

@@ -1,5 +1,5 @@
 import { DiagramBuilder } from "../DiagramBuilder"
-import { CreateJson, Input, Output } from "../computers"
+import { Input, Output } from "../computers"
 import { whenRunning } from "../support/diagramExecutionTester/DiagramExecutionTester"
 
 describe('Input and outputs without any data passed', () => {

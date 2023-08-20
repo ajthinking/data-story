@@ -1,4 +1,3 @@
-import { expect } from 'vitest';
 import { ComputerTester } from '../ComputerTester';
 import { TestStep } from '../TestStep';
 

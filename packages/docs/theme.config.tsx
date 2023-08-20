@@ -10,9 +10,9 @@ const config: DocsThemeConfig = {
     link: 'https://discord.com',
   },
   docsRepositoryBase: 'https://github.com/ajthinking/data-story/blob/main/packages/docs',
-  // footer: {
-  //   text: 'Built with Nextra',
-  // },
+  footer: {
+    text: 'Built with Nextra',
+  },
 }
 
 export default config
