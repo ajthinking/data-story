@@ -1,32 +1,34 @@
 # Contributing
+## Packages summary
+* core - the computation part
+* ui - the react component
+* client - a sample implementation
+
 ## Development Installation
 ```
 yarn set version berry
 yarn dev
 ```
+This will allow you to work on all packages simultaneously.
 
-## Development Installation Per Package
-### in root
+## Per Package Installation
+Alternatively you may install per package, but this will require quite a few terminals.
+
 ```
+# in root
 yarn set version berry
 yarn
 npx nodemon -x "npx @data-story/core server"
-```
 
-### in core
-```
+# in core
 yarn tsc --watch
 npx webpack --watch
-```
 
-### in ui
-```
+# in ui
 yarn tsc --watch
 yarn watch:css
 npx webpack --watch
-```
 
-### in client
-```
+# in client
 yarn dev
 ```
