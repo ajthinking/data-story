@@ -21,8 +21,5 @@ export { Updates } from './computers/Updates'
 export { Merge } from './computers/Merge'
 export { Pass } from './computers/Pass'
 export { Sample } from './computers/Sample'
-
-// We can't export NodeJs dependent stuff here,
-// Because browsers will break
-// But sometimes we want stuff depending on fs etc.
-// What to do?
+export type { ComputerConfig } from './types/ComputerConfig'
+export type { string, json, number } from './ParamBuilder'
