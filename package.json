@@ -2,11 +2,7 @@
   "name": "data-story",
   "private": true,
   "workspaces": [
-    "packages/core",
-    "packages/nodejs-nodes",
-    "packages/ui",
-    "packages/client",
-    "packages/docs"
+    "packages/*"
   ],
   "scripts": {
     "dev": "yarn kill && turbo run dev --parallel",
