@@ -1,4 +1,4 @@
-import { when } from '../../support/computerTester/ComputerTester';
+import { when } from '@data-story/core/dist/support/computerTester/ComputerTester';
 import { ListFiles } from './ListFiles';
 import { Dirent, promises as fs } from 'fs';
 

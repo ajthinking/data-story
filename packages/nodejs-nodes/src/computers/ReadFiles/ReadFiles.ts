@@ -1,6 +1,6 @@
 import glob from 'glob';
-import { string } from '../../ParamBuilder';
-import { ComputerConfig } from '../../types/ComputerConfig';
+import { string } from '@data-story/core/dist/ParamBuilder';
+import { ComputerConfig } from '@data-story/core/dist/types/ComputerConfig';
 import { promises as fs } from 'fs';
 
 export const ReadFiles: ComputerConfig = {

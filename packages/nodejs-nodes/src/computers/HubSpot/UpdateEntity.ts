@@ -1,8 +1,8 @@
 
-import { ItemValue } from '../../types/ItemValue';
-import { json, string } from '../../ParamBuilder';
+import { ItemValue } from '@data-story/core/dist/types/ItemValue';
+import { json, string } from '@data-story/core/dist/ParamBuilder';
 import { hubspot } from './hubspot';
-import { ComputerConfig } from '../../types/ComputerConfig';
+import { ComputerConfig } from '@data-story/core/dist/types/ComputerConfig';
 import { CrmEntity } from './CrmEntity';
 
 export const UpdateEntity: ComputerConfig = {
