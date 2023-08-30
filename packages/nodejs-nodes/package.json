@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "test": "vitest",
-    "build": "tsc && webpack"
+    "build": ""
   },
   "dependencies": {
     "@data-story/core": "*",
