@@ -21,7 +21,7 @@ import { DataStory } from '@data-story/ui'
 
 export default function Home() {
   return (
-    <main>
+    <main className="h-screen">
       <DataStory />
     </main>
   )
