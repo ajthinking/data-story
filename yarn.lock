@@ -48,6 +48,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@data-story/client@workspace:packages/client"
   dependencies:
+    "@data-story/nodejs-nodes": "*"
     "@data-story/ui": "*"
     "@types/node": 20.3.3
     "@types/react": 18.2.14
@@ -103,7 +104,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@data-story/nodejs-nodes@workspace:packages/nodejs-nodes":
+"@data-story/nodejs-nodes@*, @data-story/nodejs-nodes@workspace:packages/nodejs-nodes":
   version: 0.0.0-use.local
   resolution: "@data-story/nodejs-nodes@workspace:packages/nodejs-nodes"
   dependencies:

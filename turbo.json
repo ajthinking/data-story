@@ -13,7 +13,10 @@
       "outputs": ["dist"]
     },
     "@data-story/client#build": {
-      "dependsOn": ["@data-story/ui#build"],
+      "dependsOn": [
+        "@data-story/ui#build",
+        "@data-story/nodejs-nodes#build"
+      ],
       "outputs": [".next"]
     },
     "@data-story/docs#build": {

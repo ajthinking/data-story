@@ -1,3 +1,3 @@
-export const temp = {
-  comment: 'the nodes will be exported. 3'
+export const Something = {
+  comment: 'the nodes will be exported. 5'
 }
