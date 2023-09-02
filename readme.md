@@ -5,8 +5,8 @@ Visual Programming | Data Transformation | ETL | Process design
 ![ds_readme_gif](https://user-images.githubusercontent.com/3457668/229267838-b8dcc5cc-9639-4f95-962b-48eae8250d4e.gif)
 
 
-<a href="https://data-story-docs.vercel.app/" target="_blank">Docs</a>
-| <a href="https://data-story-docs.vercel.app/playground" target="_blank">Playground</a>
+<a href="https://datastory.dev/" target="_blank">Docs</a>
+| <a href="https://datastory.dev/playground" target="_blank">Playground</a>
 
 
 ## Installation
