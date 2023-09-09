@@ -1,6 +1,6 @@
 import { Application } from "./Application";
 import { coreNodeProvider } from "./coreNodesProvider";
-import { nodeJsNodesProvider } from "./node/NodeJsNodeProvider";
+import { nodeJsNodesProvider } from "./node/nodeJsNodeProvider";
 
 // This is the default app
 const core = new Application();
