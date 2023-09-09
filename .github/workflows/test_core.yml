@@ -15,7 +15,7 @@ jobs:
       with:
         node-version: '17.x'
     - name: remove overlying workspace
-      run: rm ../../yarn.lock && rm ../../package.json
+      run: rm  -f ../../yarn.lock && rm  -f ../../package.json
               
     - name: Install dependencies
       run: yarn

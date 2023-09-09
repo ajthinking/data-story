@@ -37,7 +37,7 @@ jobs:
 
     - name: remove overlying workspace
       if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: rm ../../yarn.lock && rm ../../package.json
+      run: rm  -f ../../yarn.lock && rm  -f ../../package.json
 
     - name: Install dependencies
       if: ${{ env.VERSION_EXISTS == 'false' }}    
