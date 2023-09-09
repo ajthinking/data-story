@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@data-story/nodejs-nodes": "*",
     "@data-story/ui": "*",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",

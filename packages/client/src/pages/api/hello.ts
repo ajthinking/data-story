@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Something } from '@data-story/nodejs-nodes'
 
 import { nodeStuff } from '@data-story/core/dist/nodeStuff';
 
@@ -14,7 +13,6 @@ export default async function handler(
 
   res.status(200).json({
     message: 'Hello from Next.js!',
-    s: Something,
     items,
     comment: nodeStuff.comment
   })

@@ -3,10 +3,6 @@
   "pipeline": {
     "@data-story/core#build": {
       "outputs": ["dist"]
-    },
-    "@data-story/nodejs-nodes#build": {
-      "dependsOn": ["@data-story/core#build"],
-      "outputs": ["dist"]
     },    
     "@data-story/ui#build": {
       "dependsOn": ["@data-story/core#build"],
@@ -14,8 +10,7 @@
     },
     "@data-story/client#build": {
       "dependsOn": [
-        "@data-story/ui#build",
-        "@data-story/nodejs-nodes#build"
+        "@data-story/ui#build"
       ],
       "outputs": [".next"]
     },
