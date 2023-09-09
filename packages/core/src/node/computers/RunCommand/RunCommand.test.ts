@@ -1,8 +1,8 @@
-import { when } from '@data-story/core/dist/support/computerTester/ComputerTester';
-import { AskChatGpt } from './AskChatGpt';
+import { when } from '../../../support/computerTester/ComputerTester';
+import { RunCommand } from './RunCommand';
 
 it.todo('does something', async () => {
-  await when(AskChatGpt)
+  await when(RunCommand)
     .hasDefaultParams()
     .getsInput([{i: 1}, {i: 2}])
     .doRun()

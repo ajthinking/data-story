@@ -1,8 +1,8 @@
 
-import { string } from '@data-story/core/dist/ParamBuilder';
+import { string } from '../../../ParamBuilder';
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
-import { ComputerConfig } from '@data-story/core/dist/types/ComputerConfig';
+import { ComputerConfig } from '../../../types/ComputerConfig';
 
 const exec = promisify(execCallback);
 

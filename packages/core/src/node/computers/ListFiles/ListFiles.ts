@@ -1,8 +1,8 @@
 
-import { string } from '@data-story/core/dist/ParamBuilder';
+import { string } from '../../../ParamBuilder';
 import { promises as fs } from 'fs'
 import * as nodePath from 'path'
-import { ComputerConfig } from '@data-story/core/dist/types/ComputerConfig';
+import { ComputerConfig } from '../../../types/ComputerConfig';
 
 export const ListFiles: ComputerConfig = {
   name: 'ListFiles',

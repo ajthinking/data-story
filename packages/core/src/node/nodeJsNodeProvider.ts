@@ -1,9 +1,9 @@
-import { Application } from "@data-story/core";
-import { ServiceProvider } from "@data-story/core";
+import { Application } from '../Application';
+import { ComputerFactory } from '../ComputerFactory';
+import { ServiceProvider } from '../types/ServiceProvider';
 import * as computerConfigs from './computers'
-import { ComputerFactory } from "@data-story/core";
 
-export const NodeJsNodesProvider: ServiceProvider = {
+export const nodeJsNodesProvider: ServiceProvider = {
   register: (app: Application) => {
     // Make all computers and put in a Map
     const computers = new Map(Object.values(computerConfigs).map(config => {

@@ -1,4 +1,4 @@
-import { deriveFrom } from '@data-story/core/dist/deriveFrom';
+import { deriveFrom } from '../../../deriveFrom'
 import { GetAllEntities } from './GetAllEntities'
 import { UpdateEntity } from './UpdateEntity'
 

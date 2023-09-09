@@ -1,7 +1,7 @@
 import { hubspot } from './hubspot';
 import { CrmEntity } from './CrmEntity';
-import { ComputerConfig } from '@data-story/core/dist/types/ComputerConfig';
-import { string, json, number } from '@data-story/core/dist/ParamBuilder';
+import { ComputerConfig } from '../../../types/ComputerConfig';
+import { string, json, number } from '../../../ParamBuilder';
 
 type EntityPage = {
   results: {

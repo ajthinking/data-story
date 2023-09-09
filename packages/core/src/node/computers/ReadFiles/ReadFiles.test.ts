@@ -1,4 +1,4 @@
-import { when } from '@data-story/core/dist/support/computerTester/ComputerTester';
+import { when } from '../../../support/computerTester/ComputerTester';
 import { ReadFiles } from './ReadFiles';
 
 it.todo('does something', async () => {

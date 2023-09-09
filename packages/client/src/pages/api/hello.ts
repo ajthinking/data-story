@@ -1,15 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Something } from '@data-story/nodejs-nodes'
 
-//import { nodeStuff } from '@data-story/core/dist/nodeStuff';
+import { nodeStuff } from '@data-story/core/dist/nodeStuff';
+
+const fs = nodeStuff.fs;
  
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+
+  const items = await fs.readdir('./');
+
   res.status(200).json({
     message: 'Hello from Next.js!',
-    x: 'Something',
-    y: Something,
+    s: Something,
+    items,
+    comment: nodeStuff.comment
   })
 }
