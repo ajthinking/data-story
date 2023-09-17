@@ -29,4 +29,4 @@ export default function Home() {
 ```
 
 ## License
-MIT
+[MIT](https://opensource.org/licenses/MIT)
