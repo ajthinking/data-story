@@ -27,3 +27,6 @@ export default function Home() {
   )
 }
 ```
+
+## License
+MIT
