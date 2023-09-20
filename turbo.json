@@ -8,13 +8,13 @@
       "dependsOn": ["@data-story/core#build"],
       "outputs": ["dist"]
     },
-    "@data-story/client#build": {
+    "@data-story/client#dev": {
       "dependsOn": [
         "@data-story/ui#build"
       ],
       "outputs": [".next"]
     },
-    "@data-story/docs#build": {
+    "@data-story/docs#dev": {
       "dependsOn": ["@data-story/ui#build"],
       "outputs": [".next"]
     },

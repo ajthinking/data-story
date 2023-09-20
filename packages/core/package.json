@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "dev": "ts-node ./src/server/socket.ts",
+    "dev": "echo _____RUNNING_CORE_DEV_____ && ts-node ./src/server/socket.ts",
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "vitest",
     "build": "tsc && webpack"

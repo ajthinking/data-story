@@ -8,7 +8,7 @@
     "/dist"
   ],
   "scripts": {
-    "build": "tsc && webpack && yarn run build:css",
+    "build": "echo _____RUNNING_UI_BUILD_____ && tsc && webpack && yarn run build:css",
     "build:css": "tailwindcss build -o ./dist/data-story.css",
     "watch:css": "nodemon -e tsx -x 'npx tailwindcss build -o ./dist/data-story.css'"
   },
