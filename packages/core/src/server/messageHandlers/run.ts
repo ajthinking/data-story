@@ -47,14 +47,14 @@ export const run: MessageHandler<RunMessage> = async (
         )
       )
     )    
-  } catch(error) {
+  } catch(error: any) {
     if (ws.readyState === WebSocket.OPEN) {
       console.log("Sending ExecutionFailure to client")
       console.log(error)
 
       const failure: ExecutionFailure = {
         type: "ExecutionFailure",
-        message: 'Execution failed 😩 \nPlease review logs.',
+        message: error.message,
         history: executor.memory.getHistory()
       }
 

@@ -2,7 +2,6 @@ export type NextResult = undefined
 export type ReturnResult = void | never
 export type NextArgument = void
 
-import { ComputerConfig } from './ComputerConfig'
 import { HooksDevice } from './HooksDevice'
 import { InputDeviceInterface } from './InputDeviceInterface'
 import { OutputDeviceInterface } from '../OutputDevice'
@@ -12,6 +11,7 @@ import { AbstractPort, Port } from './Port'
 import { Storage } from './Storage'
 import { Diagram } from '../Diagram'
 import { Executor } from '../Executor'
+import { Node } from './Node'
 
 export type RunArgs = {
   input: InputDeviceInterface,
@@ -20,6 +20,7 @@ export type RunArgs = {
   storage?: Storage,
   hooks: HooksDevice,
   executorFactory?: (diagram: Diagram) => Executor,
+  node: Node,
 }
 
 export interface Computer {

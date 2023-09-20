@@ -97,7 +97,8 @@ export class ComputerTester {
               })),
               new NullStorage()
             )
-          }
+          },
+          node: this.node,
         })
     )
 

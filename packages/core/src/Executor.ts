@@ -77,6 +77,7 @@ export class Executor implements ExecutorInterface {
           executorFactory: (diagram: any) => {
             return new Executor(diagram, this.computers, this.storage)
           },
+          node,
         }),
       )
     }
