@@ -1,0 +1,1 @@
+export { MapProperties } from './MapProperties';

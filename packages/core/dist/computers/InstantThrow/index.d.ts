@@ -1,0 +1,1 @@
+export { InstantThrow } from './InstantThrow';

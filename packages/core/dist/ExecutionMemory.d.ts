@@ -1,0 +1,45 @@
+import { NodeStatus } from './Executor';
+import { LinkId } from './types/Link';
+import { NodeId } from './types/Node';
+import { InputDeviceInterface } from './types/InputDeviceInterface';
+import { OutputDeviceInterface } from './OutputDevice';
+import { ItemValue } from './types/ItemValue';
+type MemoryValues = {
+    nodeStatuses?: Map<NodeId, NodeStatus>;
+    nodeRunners?: Map<NodeId, AsyncGenerator<undefined, void, void>>;
+    linkItems?: Map<LinkId, ItemValue[]>;
+    linkCounts?: Map<LinkId, number>;
+    inputDevices?: Map<NodeId, InputDeviceInterface>;
+    outputDevices?: Map<NodeId, OutputDeviceInterface>;
+    hooks?: any[];
+};
+export declare class ExecutionMemory {
+    nodeStatuses: Map<NodeId, NodeStatus>;
+    nodeRunners: Map<NodeId, AsyncGenerator<undefined, void, void>>;
+    linkItems: Map<LinkId, ItemValue[]>;
+    linkCounts: Map<LinkId, number>;
+    inputDevices: Map<NodeId, InputDeviceInterface>;
+    outputDevices: Map<NodeId, OutputDeviceInterface>;
+    hooks: any[];
+    history: string[];
+    constructor(values?: MemoryValues);
+    getNodeStatus(nodeId: NodeId): NodeStatus | undefined;
+    setNodeStatus(nodeId: NodeId, status: NodeStatus): void;
+    getNodeStatuses(): Map<NodeId, NodeStatus>;
+    getNodeRunner(nodeId: NodeId): AsyncGenerator<undefined, void, void> | undefined;
+    setNodeRunner(nodeId: NodeId, status: AsyncGenerator<undefined, void, void>): void;
+    getLinkItems(linkId: LinkId): ItemValue[] | undefined;
+    pullLinkItems(linkId: LinkId, count?: number): ItemValue[];
+    pushLinkItems(linkId: LinkId, items: ItemValue[]): void;
+    setLinkItems(linkId: LinkId, items: ItemValue[]): void;
+    getLinkCount(linkId: LinkId): number | undefined;
+    getLinkCounts(): Map<LinkId, number>;
+    setLinkCount(linkId: LinkId, count: number): void;
+    getInputDevice(nodeId: NodeId): InputDeviceInterface | undefined;
+    setInputDevice(nodeId: NodeId, device: InputDeviceInterface): void;
+    getHistory(): string[];
+    pushHistoryMessage(message: string): void;
+    pushHooks(hooks: any[]): void;
+    pullHooks(): any[];
+}
+export {};
