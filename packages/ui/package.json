@@ -10,10 +10,12 @@
   "scripts": {
     "build": "echo _____RUNNING_UI_BUILD_____ && tsc && webpack && yarn run build:css",
     "build:css": "tailwindcss build -o ./dist/data-story.css",
-    "watch:css": "nodemon -e tsx -x 'npx tailwindcss build -o ./dist/data-story.css'"
+    "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
+    "dev": "nodemon -e '*' -x 'npx tailwindcss build -o ./dist/data-story.css'"
   },
   "dependencies": {
     "@data-story/core": "*",
+    "concurrently": "^8.2.1",
     "reactflow": "^11.8.1"
   },
   "devDependencies": {
