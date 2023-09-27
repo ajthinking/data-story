@@ -17,5 +17,5 @@
   },
   "dependencies": {
     "reactflow": "^11.8.1"
-  }  
+  }
 }
