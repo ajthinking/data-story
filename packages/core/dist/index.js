@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deriveFrom = exports.Sample = exports.Pass = exports.Merge = exports.Updates = exports.Executor = exports.NullStorage = exports.LinkGuesser = exports.PositionGuesser = exports.Diagram = exports.ComputerFactory = exports.ConsoleLog = exports.Signal = exports.DiagramBuilder = exports.Application = exports.flattenObjectOneLevel = exports.pascalToSentenceCase = exports.get = void 0;
+exports.coreNodeProvider = exports.deriveFrom = exports.Sample = exports.Pass = exports.Merge = exports.Updates = exports.Executor = exports.NullStorage = exports.LinkGuesser = exports.PositionGuesser = exports.Diagram = exports.ComputerFactory = exports.ConsoleLog = exports.Signal = exports.DiagramBuilder = exports.Application = exports.flattenObjectOneLevel = exports.pascalToSentenceCase = exports.get = void 0;
 var get_1 = require("./utils/get");
 Object.defineProperty(exports, "get", { enumerable: true, get: function () { return get_1.get; } });
 var pascalToSentenceCase_1 = require("./utils/pascalToSentenceCase");
@@ -37,3 +37,5 @@ var Sample_1 = require("./computers/Sample");
 Object.defineProperty(exports, "Sample", { enumerable: true, get: function () { return Sample_1.Sample; } });
 var deriveFrom_1 = require("./deriveFrom");
 Object.defineProperty(exports, "deriveFrom", { enumerable: true, get: function () { return deriveFrom_1.deriveFrom; } });
+var coreNodeProvider_1 = require("./coreNodeProvider");
+Object.defineProperty(exports, "coreNodeProvider", { enumerable: true, get: function () { return coreNodeProvider_1.coreNodeProvider; } });

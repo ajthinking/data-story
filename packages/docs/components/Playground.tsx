@@ -1,20 +1,13 @@
 import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { ComputerFactory, ConsoleLog, Application, DiagramBuilder, Signal } from "@data-story/core";
-import { Computer } from "@data-story/core/dist/types/Computer";
+import { coreNodeProvider, Application } from "@data-story/core";
 
 export default () => {
   const app = new Application();
 
-  app.register({
-    register(app: Application) {
-      app.addComputers([
-        Signal,
-        ConsoleLog
-      ])
-    },
-    boot(app: Application) {},
-  });
+  app.register([
+    coreNodeProvider
+  ]);
 
   app.boot();
 

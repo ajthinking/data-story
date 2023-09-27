@@ -1,5 +1,5 @@
 import { Application } from "./Application";
-import { coreNodeProvider } from "./coreNodesProvider";
+import { coreNodeProvider } from "./coreNodeProvider";
 import { nodeJsNodesProvider } from "./node/nodeJsNodeProvider";
 
 // This is the default app

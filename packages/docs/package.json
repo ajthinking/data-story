@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Nextra docs template",
   "scripts": {
-    "dev2": "next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start"
   },
