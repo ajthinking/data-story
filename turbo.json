@@ -19,7 +19,7 @@
       "outputs": [".next"]
     },
     "build": {
-      "dependsOn": ["test", "^build"]
+      "dependsOn": ["^build"]
     },
     "dev": {
       "cache": false,
