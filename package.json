@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo run dev --parallel",
+    "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
     "kill": "kill-port 3000 3001 3100",
     "build": "turbo build"
   },

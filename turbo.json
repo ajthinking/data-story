@@ -3,7 +3,15 @@
   "pipeline": {
     "@data-story/core#build": {
       "outputs": ["dist"]
-    },    
+    },
+    "@data-story/core#dev": {
+      "outputs": ["dist"]
+    },
+    "@data-story/ui#dev": {
+      "outputs": ["dist"],
+      "cache": true,
+      "persistent": true
+    },
     "@data-story/ui#build": {
       "dependsOn": ["@data-story/core#build"],
       "outputs": ["dist"]
@@ -22,6 +30,7 @@
       "dependsOn": ["^build"]
     },
     "dev": {
+      "dependsOn": ["^dev"],
       "cache": false,
       "persistent": true
     },
