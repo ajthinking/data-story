@@ -1,5 +1,3 @@
-
-import { sleep } from '../../utils/sleep';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const InstantThrow: ComputerConfig = {

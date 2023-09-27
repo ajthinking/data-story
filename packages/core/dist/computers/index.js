@@ -14,7 +14,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Sample = exports.Updates = exports.Output = exports.Throw = exports.Sleep = exports.Signal = exports.RunDiagram = exports.Request = exports.Pass = exports.Merge = exports.MapProperties = exports.Log = exports.Input = exports.InstantThrow = exports.Ignore = exports.Filter = exports.Eval = exports.Dump = exports.CreateJson = exports.CreateProperty = exports.ConsoleLog = exports.Concatenate = exports.Comment = void 0;
+exports.Sample = exports.Updates = exports.Output = exports.Throw = exports.Sleep = exports.Signal = exports.RunDiagram = exports.RandomInt = exports.Request = exports.Pass = exports.Merge = exports.MapProperties = exports.Log = exports.Input = exports.InstantThrow = exports.Ignore = exports.Filter = exports.Eval = exports.Dump = exports.CreateJson = exports.CreateProperty = exports.ConsoleLog = exports.Concatenate = exports.Comment = void 0;
 __exportStar(require("./HubSpot"), exports);
 // export { AskChatGpt } from './AskChatGpt';
 var Comment_1 = require("./Comment");
@@ -53,6 +53,8 @@ Object.defineProperty(exports, "Pass", { enumerable: true, get: function () { re
 var Request_1 = require("./Request");
 Object.defineProperty(exports, "Request", { enumerable: true, get: function () { return Request_1.Request; } });
 // export { RunCommand } from './RunCommand';
+var RandomInt_1 = require("./RandomInt");
+Object.defineProperty(exports, "RandomInt", { enumerable: true, get: function () { return RandomInt_1.RandomInt; } });
 var RunDiagram_1 = require("./RunDiagram");
 Object.defineProperty(exports, "RunDiagram", { enumerable: true, get: function () { return RunDiagram_1.RunDiagram; } });
 var Signal_1 = require("./Signal");

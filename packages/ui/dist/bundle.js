@@ -6588,7 +6588,7 @@ var CatWrapper_1 = __webpack_require__(/*! ./components/Cat/CatWrapper */ "./dis
 Object.defineProperty(exports, "CatWrapper", ({ enumerable: true, get: function () { return CatWrapper_1.CatWrapper; } }));
 var Cat_1 = __webpack_require__(/*! ./components/Cat/Cat */ "./dist/components/Cat/Cat.js");
 Object.defineProperty(exports, "Cat", ({ enumerable: true, get: function () { return Cat_1.Cat; } }));
-exports.stuffFromUi = 1234;
+exports.stuffFromUi = 123;
 
 })();
 

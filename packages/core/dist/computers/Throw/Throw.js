@@ -13,6 +13,7 @@ var __asyncGenerator = (this && this.__asyncGenerator) || function (thisArg, _ar
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Throw = void 0;
+const NodeRunError_1 = require("../../NodeRunError");
 const ParamBuilder_1 = require("../../ParamBuilder");
 exports.Throw = {
     name: 'Throw',
@@ -20,10 +21,18 @@ exports.Throw = {
     params: {
         message: (0, ParamBuilder_1.string)('message').value('Some error').get()
     },
-    run({ input }) {
+    run({ input, node }) {
         return __asyncGenerator(this, arguments, function* run_1() {
             const [item] = input.pull(1);
-            throw Error(item.params.message);
+            // throw Error(
+            //   item.params.message
+            //   + ' in node '
+            //   + node.id
+            // )
+            throw new NodeRunError_1.NodeRunError({
+                message: item.params.message,
+                node,
+            });
         });
     },
 };

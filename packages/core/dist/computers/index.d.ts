@@ -15,6 +15,7 @@ export { MapProperties } from './MapProperties';
 export { Merge } from './Merge';
 export { Pass } from './Pass';
 export { Request } from './Request';
+export { RandomInt } from './RandomInt';
 export { RunDiagram } from './RunDiagram';
 export { Signal } from './Signal';
 export { Sleep } from './Sleep';

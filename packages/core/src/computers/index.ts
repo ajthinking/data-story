@@ -20,6 +20,7 @@ export { Pass } from './Pass';
 // export { ReadFiles } from './ReadFiles';
 export { Request } from './Request'
 // export { RunCommand } from './RunCommand';
+export { RandomInt } from './RandomInt';
 export { RunDiagram } from './RunDiagram';
 export { Signal } from './Signal'
 export { Sleep } from './Sleep'

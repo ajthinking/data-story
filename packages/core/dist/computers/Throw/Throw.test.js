@@ -15,7 +15,7 @@ it('throws with a default message', () => __awaiter(void 0, void 0, void 0, func
     yield (0, ComputerTester_1.when)(Throw_1.Throw)
         .hasDefaultParams()
         .getsInput([{ i: 1 }])
-        .expectError("Some error")
+        .expectError("Some error\nThrown in node Throw.1")
         .doRun()
         .ok();
 }));
