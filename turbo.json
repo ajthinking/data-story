@@ -8,6 +8,7 @@
       "outputs": ["dist"]
     },
     "@data-story/ui#dev": {
+      "dependsOn": ["@data-story/ui#build"],
       "outputs": ["dist"],
       "cache": true,
       "persistent": true

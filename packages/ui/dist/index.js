@@ -7,4 +7,4 @@ var CatWrapper_1 = require("./components/Cat/CatWrapper");
 Object.defineProperty(exports, "CatWrapper", { enumerable: true, get: function () { return CatWrapper_1.CatWrapper; } });
 var Cat_1 = require("./components/Cat/Cat");
 Object.defineProperty(exports, "Cat", { enumerable: true, get: function () { return Cat_1.Cat; } });
-exports.stuffFromUi = 123;
+exports.stuffFromUi = 1234;
