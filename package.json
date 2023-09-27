@@ -14,5 +14,8 @@
   "devDependencies": {
     "kill-port": "^2.0.1",
     "turbo": "^1.10.12"
-  }
+  },
+  "dependencies": {
+    "reactflow": "^11.8.1"
+  }  
 }
