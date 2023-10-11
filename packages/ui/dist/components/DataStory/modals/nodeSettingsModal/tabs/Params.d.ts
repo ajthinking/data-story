@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { DataStoryNode } from '../../../../Node/DataStoryNode';
 import { UseFormReturn } from 'react-hook-form';
 export declare function Params({ node, form }: {

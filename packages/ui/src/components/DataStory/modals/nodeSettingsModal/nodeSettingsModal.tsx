@@ -68,7 +68,7 @@ export const NodeSettingsModal = () => {
 
   useEscapeKey(close);
 
-  const TabComponent = TAB_COMPONENTS[tab as keyof typeof TAB_COMPONENTS] as any;
+  const TabComponent = TAB_COMPONENTS[tab as keyof typeof TAB_COMPONENTS];
 
   return <>
     <div className="flex justify-center overflow-x-hidden fixed inset-0 z-50 outline-none focus:outline-none">
