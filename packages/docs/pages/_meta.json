@@ -13,5 +13,12 @@
       "layout": "full"
     }    
   },
-  "customize": "Customize"
+  "customize": "Customize",
+  "contributing": "Contributing",
+  "nodes": {
+    "title": "Nodes",
+    "closed": true,
+    "defaultMenuCollapsed": true
+  },
+  "issues": "Issues"
 }
