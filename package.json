@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
-    "kill": "kill-port 3000 3001 3100",
+    "kill": "kill-port 3000 3100",
     "build": "turbo build"
   },
   "version": "0.0.1",

@@ -17,12 +17,6 @@
       "dependsOn": ["@data-story/core#build"],
       "outputs": ["dist"]
     },
-    "@data-story/client#dev": {
-      "dependsOn": [
-        "@data-story/ui#build"
-      ],
-      "outputs": [".next"]
-    },
     "@data-story/docs#dev": {
       "dependsOn": ["@data-story/ui#build"],
       "outputs": [".next"]
