@@ -16,9 +16,7 @@
   "customize": "Customize",
   "contributing": "Contributing",
   "nodes": {
-    "title": "Nodes",
-    "closed": true,
-    "defaultMenuCollapsed": true
+    "title": "Nodes"
   },
   "issues": "Issues"
 }
