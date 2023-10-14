@@ -5,15 +5,18 @@ import { ServerConfig } from "./clients/ServerConfig";
 export const DataStory = ({
   server,
   diagram,
-  callback
+  callback,
+  hideToolbar = false,
 }: {
   server?: ServerConfig
   diagram?: Diagram
+  hideToolbar?: boolean
   callback?: (options: any) => void
 }) => {
   return <Workbench
     server={server}
     diagram={diagram}
     callback={callback}
+    hideToolbar={hideToolbar}
   />
 };

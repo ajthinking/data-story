@@ -25,11 +25,13 @@ const nodeTypes = {
 export const Workbench = ({
   server,
   diagram,
-  callback
+  callback,
+  hideToolbar = false,
 }: {
   server?: ServerConfig
   diagram?: Diagram
   callback?: (options: any) => void
+  hideToolbar?: boolean
 }) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -81,12 +83,19 @@ export const Workbench = ({
         }}
         minZoom={0.25}
         maxZoom={8}
+        fitView={true}
+        fitViewOptions = {{
+          padding: 0.25,
+          // minZoom: 0.3,
+          // maxZoom: 2,
+          // duration: 5,
+        }}
       >     
-        <DataStoryControls
+        {!hideToolbar && <DataStoryControls
           setShowRunModal={setShowRunModal}
           setShowAddNodeModal={setShowAddNodeModal}
           setShowConfigModal={setShowConfigModal}
-        />
+        />}
         <Background color="#E7E7E7" variant={BackgroundVariant.Lines} />
       </ReactFlow>
 

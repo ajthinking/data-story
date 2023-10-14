@@ -2,7 +2,9 @@
   "name": "data-story",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/core",
+    "packages/ui",
+    "packages/docs"
   ],
   "scripts": {
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",

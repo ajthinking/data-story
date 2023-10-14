@@ -21,8 +21,12 @@ export { Updates } from './computers/Updates'
 export { Merge } from './computers/Merge'
 export { Pass } from './computers/Pass'
 export { Sample } from './computers/Sample'
+export { Sleep } from './computers/Sleep'
+export { Ignore } from './computers/Ignore'
 export type { ComputerConfig } from './types/ComputerConfig'
 export type { string, json, number } from './ParamBuilder'
 export type { ItemValue } from './types/ItemValue'
 export { deriveFrom } from './deriveFrom'
 export { coreNodeProvider } from './coreNodeProvider'
+
+export const stuffFromCore: 7 = 7;
