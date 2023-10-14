@@ -1,24 +1,19 @@
-# Contributing
-## Packages summary
-* core - the computation part
-* ui - the react component
-* docs - this website
+# Contributing 🙏
+### Packages summary
+* core - the computation part 🧠
+* ui - the react component 📦
+* docs - this website 📚
 
-## Development Installation
-```
+### Development Installation
+```bash
 yarn set version berry
 yarn
-yarn dev
 ```
-This will allow you to work on all packages simultaneously.
 
-## Per Package Installation
-Alternatively you may install per package, but this will require quite a few terminals.
+Then, to work on all packages, setup these commands to all run simultaneously:
 
-```
+```bash
 # in root
-yarn set version berry
-yarn
 npx nodemon -x "npx @data-story/core server"
 
 # in core
@@ -29,4 +24,20 @@ npx webpack --watch
 yarn tsc --watch
 yarn watch:css
 npx webpack --watch
+
+# in docs
+yarn dev
 ```
+
+
+### Monorepo installation 🆘
+> HELP WANTED
+
+Instead of the above cumbersome 7+ terminal setup we would like to be able to work on everything from root like this:
+```
+yarn set version berry
+yarn
+yarn dev
+```
+
+There are some  `turbo.json` config prepared but its not really working.
