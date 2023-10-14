@@ -74,11 +74,14 @@ __metadata:
   dependencies:
     "@data-story/ui": "*"
     "@types/node": 18.11.10
+    autoprefixer: ^10.4.16
     next: ^13.0.6
     nextra: latest
     nextra-theme-docs: latest
+    postcss: ^8.4.31
     react: ^18.2.0
     react-dom: ^18.2.0
+    tailwindcss: ^3.3.3
     typescript: ^4.9.3
   languageName: unknown
   linkType: soft
@@ -1849,7 +1852,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.13":
+"autoprefixer@npm:^10.4.13, autoprefixer@npm:^10.4.16":
   version: 10.4.16
   resolution: "autoprefixer@npm:10.4.16"
   dependencies:
@@ -6229,7 +6232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.31, postcss@npm:^8.4.21, postcss@npm:^8.4.23, postcss@npm:^8.4.27":
+"postcss@npm:8.4.31, postcss@npm:^8.4.21, postcss@npm:^8.4.23, postcss@npm:^8.4.27, postcss@npm:^8.4.31":
   version: 8.4.31
   resolution: "postcss@npm:8.4.31"
   dependencies:
@@ -7184,7 +7187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.2.7":
+"tailwindcss@npm:^3.2.7, tailwindcss@npm:^3.3.3":
   version: 3.3.3
   resolution: "tailwindcss@npm:3.3.3"
   dependencies:
