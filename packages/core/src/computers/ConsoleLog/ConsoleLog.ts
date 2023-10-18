@@ -21,7 +21,7 @@ export const ConsoleLog: ComputerConfig = {
           type: 'CONSOLE_LOG',
           args: [
             // If nothing passed log the whole item 
-            rawParams.message === undefined
+            !rawParams.message
               ? item.value
               : item.params.message
           ]
