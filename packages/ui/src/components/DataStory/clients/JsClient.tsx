@@ -29,8 +29,6 @@ export class JsClient implements ServerClient {
   describe() {}
 
   run(diagram: Diagram) {
-    console.log("Running in JS Client?")
-
     const storage = new NullStorage()    
   
     const executor = new Executor(
