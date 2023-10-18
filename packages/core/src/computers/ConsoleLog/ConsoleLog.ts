@@ -1,7 +1,6 @@
 
 import { ItemWithParams } from '../../ItemWithParams';
-import { string, text } from '../../ParamBuilder';
-import { ItemValue } from '../../types/ItemValue';
+import { string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const ConsoleLog: ComputerConfig = {

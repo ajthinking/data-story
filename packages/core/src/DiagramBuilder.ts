@@ -70,11 +70,23 @@ export class DiagramBuilder {
 
     this.diagram.nodes.push(node)
     
-    this.link(node)
+    this.linkToNewNode(node)
 
     this.previousNode = node
 
     this.fromDirective = null
+
+    return this
+  }
+
+  link(from: string, to: string) {
+    const link: Link = {
+      id: `${from}--->${to}`,
+      sourcePortId: from,
+      targetPortId: to,
+    }
+
+    this.diagram.links.push(link)
 
     return this
   }
@@ -94,7 +106,7 @@ export class DiagramBuilder {
     return max + 1
   }
 
-  protected link(newNode: Node) {
+  protected linkToNewNode(newNode: Node) {
     const originPort = this.getPortToLinkTo()
 
     const newNodePort = this.toDirective
