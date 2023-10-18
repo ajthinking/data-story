@@ -1,7 +1,6 @@
 import { DataStory, DataStoryNodeComponent } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { ConsoleLog, Application, DiagramBuilder, Signal, Merge, coreNodeProvider } from "@data-story/core";
-import { ReactFlowProvider } from 'reactflow'
+import { Application, DiagramBuilder, Merge, coreNodeProvider } from "@data-story/core";
 
 export default () => {
   const app = new Application();
@@ -22,26 +21,6 @@ export default () => {
         hideToolbar={true}
       />
     </div>
-
-    {/* <ReactFlowProvider>
-      <DataStoryNodeComponent
-        id={'dummy'}
-        data={{
-          label: 'Dummy',
-          computer: 'dummy',
-          inputs: [{
-            id: 'in',
-            name: 'in',
-            schema: {},
-          }],
-          outputs: [],
-          params: {},
-        }}
-        selected={false}
-      />
-    </ReactFlowProvider> */}
-
-
   </div>
   );
 };
