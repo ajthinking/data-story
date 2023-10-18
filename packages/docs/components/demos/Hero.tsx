@@ -1,6 +1,11 @@
 import { DataStory, stuff } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { ConsoleLog, Application, DiagramBuilder, Signal, Sleep, coreNodeProvider, Pass, Ignore, Merge } from "@data-story/core";
+import {
+  Application,
+  DiagramBuilder,
+  coreNodeProvider,
+  nodes,
+} from "@data-story/core";
 
 export default () => {
   console.log(stuff)
@@ -10,6 +15,8 @@ export default () => {
   app.register(coreNodeProvider);
 
   app.boot();
+
+  const { Signal, Merge, ConsoleLog, Ignore } = nodes;
 
   const diagram = new DiagramBuilder()
     .add(Signal, { label: 'Companies', count: 555, period: 10 })

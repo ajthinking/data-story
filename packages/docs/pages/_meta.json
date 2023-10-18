@@ -15,8 +15,9 @@
   },
   "customize": "Customize",
   "contributing": "Contributing",
+  "custom-nodes": "Custom Nodes",
+  "issues": "Issues",
   "nodes": {
     "title": "Nodes"
-  },
-  "issues": "Issues"
+  }
 }
