@@ -18,6 +18,7 @@ export default () => {
 
   const { Signal, Merge, ConsoleLog, Ignore } = nodes;
 
+  // Faking something more interesting than "Signals"
   const diagram = new DiagramBuilder()
     .add(Signal, { label: 'Companies', count: 555, period: 10 })
     .add(Merge, {
