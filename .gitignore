@@ -6,4 +6,4 @@ node_modules
 notes
 notes.*
 
-private
+packages/private
