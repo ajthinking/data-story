@@ -14,6 +14,7 @@ import {
   expectError,
   expectOutput,
   expectOutputs,
+  expectHooks,
   getsInput,
   getsInputs,
 } from "./testSteps";
@@ -26,6 +27,7 @@ import { InputDevice } from '../../InputDevice';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { ComputerFactory } from '../../ComputerFactory';
 import { LinkId } from '../../types/Link';
+import { Hook } from '../../types/Hook';
 
 export const when = (computerConfig: ComputerConfig) => {
   return new ComputerTester(computerConfig)
@@ -59,6 +61,7 @@ export class ComputerTester {
   runner: AsyncGenerator | null = null
   inputDevice: InputDeviceInterface | null = null
   outputDevice: OutputDevice | null = null
+  hooksDevice: { register: (hook: Hook) => void} = { register: vi.fn() }
   memory: ExecutionMemory | null = null
   expectedErrorMessage: string | undefined
   computer: Computer
@@ -86,7 +89,7 @@ export class ComputerTester {
           output: this.outputDevice,
           params: this.makeParamsDevice(),
           storage: new NullStorage(),
-          hooks: { register() {} },
+          hooks: this.hooksDevice,
           executorFactory: (diagram: any) => {
             return new Executor(
               diagram,
@@ -152,6 +155,12 @@ export class ComputerTester {
 
   expectError(message: string) {
     this.steps.push([expectError, [message]])
+
+    return this
+  }
+
+  expectHooks(hooks: Hook[]) {
+    this.steps.push([expectHooks, [hooks]])
 
     return this
   }

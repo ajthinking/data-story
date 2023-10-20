@@ -4,6 +4,7 @@ import { NodeId } from './types/Node'
 import { InputDeviceInterface } from './types/InputDeviceInterface'
 import { OutputDeviceInterface } from './OutputDevice'
 import { ItemValue } from './types/ItemValue'
+import { Hook } from './types/Hook'
 
 type MemoryValues = {
   nodeStatuses?: Map<NodeId, NodeStatus>,
@@ -22,7 +23,7 @@ export class ExecutionMemory {
   linkCounts: Map<LinkId, number>
   inputDevices: Map<NodeId, InputDeviceInterface>
   outputDevices: Map<NodeId, OutputDeviceInterface>
-  hooks: any[]
+  hooks: Hook[]
   
   history: string[] = []
 
@@ -117,7 +118,7 @@ export class ExecutionMemory {
     this.history.push(message)
   }
 
-  pushHooks(hooks: any[]) {
+  pushHooks(hooks: Hook[]) {
     this.hooks.push(...hooks)
   }
 

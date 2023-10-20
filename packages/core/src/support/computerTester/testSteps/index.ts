@@ -1,4 +1,5 @@
 export { expectError } from './expectError'
+export { expectHooks } from './expectHooks'
 export { expectOutput } from './expectOutput'
 export { expectOutputs } from './expectOutputs'
 export { doRun } from './doRun'

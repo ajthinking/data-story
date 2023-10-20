@@ -276,7 +276,10 @@ describe('ExecutionMemory', () => {
   describe('pushHooks', () => {
     it('pushes hooks correctly', () => {
       const memory = new ExecutionMemory();
-      const hooks = ['hook1', 'hook2'];
+      const hooks = [{
+        type: 'TEST_HOOK',
+        args: ['arg1', 'arg2']
+      }];
 
       memory.pushHooks(hooks);
 
@@ -287,7 +290,11 @@ describe('ExecutionMemory', () => {
   describe('pullHooks', () => {
     it('pulls hooks correctly', () => {
       const memory = new ExecutionMemory();
-      const hooks = ['hook1', 'hook2'];
+      const hooks = [{
+        type: 'TEST_HOOK',
+        args: ['arg1', 'arg2']
+      }];
+
       memory.pushHooks(hooks);
 
       const pulled = memory.pullHooks();
