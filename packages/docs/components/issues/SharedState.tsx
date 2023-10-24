@@ -12,7 +12,6 @@ export default function SharedState() {
   .get()
   app.boot();
 
-  console.log('app --- app1')
   const diagram1 = new DiagramBuilder().get();
   const app1 = new Application();
   app1.register(coreNodeProvider);

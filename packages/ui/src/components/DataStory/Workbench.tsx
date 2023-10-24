@@ -1,6 +1,6 @@
 import 'reactflow/dist/style.css';
 import { DataStoryControls } from './dataStoryControls';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from 'reactflow';
 import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
 import { RunModal } from './modals/runModal';
@@ -28,11 +28,11 @@ const getReactFlowId = () => {
 }
 
 export const Workbench = ({
-                            server,
-                            diagram,
-                            callback,
-                            hideToolbar = false,
-                          }: {
+                             server,
+                             diagram,
+                             callback,
+                             hideToolbar = false,
+                           }: {
   server?: ServerConfig
   diagram?: Diagram
   callback?: (options: any) => void
@@ -50,24 +50,12 @@ export const Workbench = ({
     traverseNodes: state.traverseNodes,
   });
 
-  const {
-    connect,
-    nodes,
-    edges,
-    onNodesChange,
-    onEdgesChange,
-    onInit,
-    openNodeModalId,
-    setOpenNodeModalId,
-    traverseNodes
-  } = useStore(selector, shallow);
+  const { connect, nodes, edges, onNodesChange, onEdgesChange, onInit, openNodeModalId, setOpenNodeModalId, traverseNodes } = useStore(selector, shallow);
 
   const [ id ] = useState(getReactFlowId);
-  const [ showConfigModal, setShowConfigModal ] = useState(false);
-  const [ showRunModal, setShowRunModal ] = useState(false);
-  const [ showAddNodeModal, setShowAddNodeModal ] = useState(false);
-
-  console.log(diagram, 'diagram ?? 111', nodes, 'nodes ?? 111');
+  const [showConfigModal, setShowConfigModal] = useState(false);
+  const [showRunModal, setShowRunModal] = useState(false);
+  const [showAddNodeModal, setShowAddNodeModal] = useState(false);
 
   useHotkeys({
     nodes,
@@ -87,43 +75,44 @@ export const Workbench = ({
         <ReactFlow
           id={id}
           className="bg-gray-50"
-          nodes={ nodes }
-          edges={ edges }
-          nodeTypes={ nodeTypes }
-          onNodesChange={ onNodesChange }
-          onEdgesChange={ onEdgesChange }
-          onConnect={ connect }
-          onInit={ (rfInstance: ReactFlowInstance<any, any>) => {
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={nodeTypes}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={connect}
+          onInit={(rfInstance: ReactFlowInstance<any, any>) => {
             onInit({
               rfInstance,
               server,
               diagram,
               callback
             })
-          } }
-          minZoom={ 0.25 }
-          maxZoom={ 8 }
-          fitView={ true }
-          fitViewOptions={ {
+          }}
+          minZoom={0.25}
+          maxZoom={8}
+          fitView={true}
+          fitViewOptions = {{
             padding: 0.25,
             // minZoom: 0.3,
             // maxZoom: 2,
             // duration: 5,
-          } }
+          }}
         >
-          { !hideToolbar && <DataStoryControls
-            setShowRunModal={ setShowRunModal }
-            setShowAddNodeModal={ setShowAddNodeModal }
-            setShowConfigModal={ setShowConfigModal }
-          /> }
-        <Background color="#E7E7E7" variant={BackgroundVariant.Lines} />
+          {!hideToolbar && <DataStoryControls
+            setShowRunModal={setShowRunModal}
+            setShowAddNodeModal={setShowAddNodeModal}
+            setShowConfigModal={setShowConfigModal}
+          />}
+          <Background color="#E7E7E7" variant={BackgroundVariant.Lines} />
         </ReactFlow>
       </ReactFlowProvider>
-      {/* Modals */ }
-      { showConfigModal && <ConfigModal setShowModal={ setShowConfigModal }/> }
-      { showRunModal && <RunModal setShowModal={ setShowRunModal }/> }
-      { showAddNodeModal && <AddNodeModal setShowModal={ setShowAddNodeModal }/> }
-      { openNodeModalId && <NodeSettingsModal/> }
+
+      {/* Modals */}
+      {showConfigModal && <ConfigModal setShowModal={setShowConfigModal}/>}
+      {showRunModal && <RunModal setShowModal={setShowRunModal}/>}
+      {showAddNodeModal && <AddNodeModal setShowModal={setShowAddNodeModal}/>}
+      {openNodeModalId && <NodeSettingsModal/>}
     </>
   );
 }

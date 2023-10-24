@@ -129,23 +129,23 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
 
     // Calculate input schema for the target node
     const targetNode = get().nodes.find(node => node.id === connection.target)
-    if (targetNode) {
+    if(targetNode) {
       get().calculateInputSchema(targetNode)
     }
   },
   addNode: (node: DataStoryNode) => {
     set({
-      nodes: [ ...get().nodes.map(node => {
+      nodes: [...get().nodes.map(node => {
         // When adding a node, deselect all other nodes
         node.selected = false
         return node
-      }), node ],
+      }), node],
     })
   },
   updateNode: (node: DataStoryNode) => {
     set({
       nodes: get().nodes.map(existingNode => {
-        if (existingNode.id === node.id) {
+        if(existingNode.id === node.id) {
           return node
         }
 
@@ -155,14 +155,14 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
   },
   setNodes: (nodes: DataStoryNode[]) => {
     set({
-      nodes: [ ...nodes ],
+      nodes: [...nodes],
     })
   },
   refreshNodes: () => {
     console.log(get().nodes)
 
     set({
-      nodes: [ ...get().nodes ],
+      nodes: [...get().nodes],
     })
   },
   setEdges(edges: Edge[]) {
@@ -184,14 +184,14 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
     set({ rfInstance: options.rfInstance })
     get().onInitServer(get().serverConfig)
 
-    if (options.diagram) {
+    if(options.diagram) {
       const flow = reactFlowFromDiagram(options.diagram)
 
       get().setNodes(flow.nodes)
       get().setEdges(flow.edges)
     }
 
-    if (options.callback) {
+    if(options.callback) {
       const run = () => {
         get().server?.run(
           // TODO it seems this does not await setNodes/setEdges?
@@ -208,7 +208,7 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
     )
   },
   onInitServer: (serverConfig: ServerConfig) => {
-    if (serverConfig.type === 'JS') {
+    if(serverConfig.type === 'JS') {
       const server = new JsClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
@@ -222,7 +222,7 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
       server.init()
     }
 
-    if (serverConfig.type === 'SOCKET') {
+    if(serverConfig.type === 'SOCKET') {
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
@@ -239,14 +239,14 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
     set({ availableNodes })
   },
   updateEdgeCounts: (edgeCounts: Record<string, number>) => {
-    for (const [ id, count ] of Object.entries(edgeCounts)) {
+    for(const [id, count] of Object.entries(edgeCounts)) {
       const edge = get().edges.find(edge => edge.id === id)
-      if (edge) edge.label = count
+      if(edge) edge.label = count
     }
 
     const newEdges = get().edges.map((edge: Edge) => {
-      Object.entries(edgeCounts).forEach(([ id, count ]) => {
-        if (edge.id === id) {
+      Object.entries(edgeCounts).forEach(([id, count]) => {
+        if(edge.id === id) {
           edge.label = count
           edge.labelBgStyle = {
             opacity: 0.6,
@@ -274,12 +274,12 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
   onSave: () => {
     let name = get().flowName
 
-    if (name === "untitled" || name === "" || name === undefined) {
+    if(name === "untitled" || name === "" || name === undefined) {
       alert("Please choose a name before saving.")
       return
     }
 
-    if (!name.endsWith(".json")) name = name + ".json"
+    if(!name.endsWith(".json")) name = name + ".json"
 
     get().server!.save(
       name,
@@ -292,10 +292,10 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
     const selectedNodes = get().nodes.filter(node => node.selected)
 
     // If multiple nodes are selected we cant navigate
-    if (selectedNodes.length > 1) return
+    if(selectedNodes.length > 1) return
 
     // If no nodes are selected, select the first node
-    if (selectedNodes.length === 0 && get().nodes.length > 0) {
+    if(selectedNodes.length === 0 && get().nodes.length > 0) {
       const firstNode = get().nodes.at(0)!
       firstNode.selected = true
       get().updateNode(firstNode)
@@ -303,22 +303,22 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
     }
 
     // // If one node is selected, navigate
-    if (selectedNodes.length === 1 && get().nodes.length > 0) {
+    if(selectedNodes.length === 1 && get().nodes.length > 0) {
       const node = selectedNodes.at(0)!
       const otherNodes = get().nodes.filter(otherNode => otherNode.id !== node.id)
 
       // Find the closest node in the direction
-      if (direction === 'up') {
+      if(direction === 'up') {
         const closestNode = otherNodes.reduce((closest, otherNode) => {
-          if (otherNode.position.y < node.position.y) {
-            if (closest === null) return otherNode
-            if (otherNode.position.y > closest.position.y) return otherNode
+          if(otherNode.position.y < node.position.y) {
+            if(closest === null) return otherNode
+            if(otherNode.position.y > closest.position.y) return otherNode
           }
 
           return closest
         }, null as DataStoryNode | null)
 
-        if (closestNode) {
+        if(closestNode) {
           node.selected = false
           get().updateNode(node)
           closestNode.selected = true
@@ -326,17 +326,17 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
         }
       }
 
-      if (direction === 'down') {
+      if(direction === 'down') {
         const closestNode = otherNodes.reduce((closest, otherNode) => {
-          if (otherNode.position.y > node.position.y) {
-            if (closest === null) return otherNode
-            if (otherNode.position.y < closest.position.y) return otherNode
+          if(otherNode.position.y > node.position.y) {
+            if(closest === null) return otherNode
+            if(otherNode.position.y < closest.position.y) return otherNode
           }
 
           return closest
         }, null as DataStoryNode | null)
 
-        if (closestNode) {
+        if(closestNode) {
           node.selected = false
           get().updateNode(node)
           closestNode.selected = true
@@ -344,17 +344,17 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
         }
       }
 
-      if (direction === 'left') {
+      if(direction === 'left') {
         const closestNode = otherNodes.reduce((closest, otherNode) => {
-          if (otherNode.position.x < node.position.x) {
-            if (closest === null) return otherNode
-            if (otherNode.position.x > closest.position.x) return otherNode
+          if(otherNode.position.x < node.position.x) {
+            if(closest === null) return otherNode
+            if(otherNode.position.x > closest.position.x) return otherNode
           }
 
           return closest
         }, null as DataStoryNode | null)
 
-        if (closestNode) {
+        if(closestNode) {
           node.selected = false
           get().updateNode(node)
           closestNode.selected = true
@@ -362,17 +362,17 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
         }
       }
 
-      if (direction === 'right') {
+      if(direction === 'right') {
         const closestNode = otherNodes.reduce((closest, otherNode) => {
-          if (otherNode.position.x > node.position.x) {
-            if (closest === null) return otherNode
-            if (otherNode.position.x < closest.position.x) return otherNode
+          if(otherNode.position.x > node.position.x) {
+            if(closest === null) return otherNode
+            if(otherNode.position.x < closest.position.x) return otherNode
           }
 
           return closest
         }, null as DataStoryNode | null)
 
-        if (closestNode) {
+        if(closestNode) {
           node.selected = false
           get().updateNode(node)
           closestNode.selected = true
@@ -387,11 +387,11 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
 
     links.forEach(link => {
       const sourceNode = get().nodes.find(node => node.id === link.source)
-      if (!sourceNode) return
+      if(!sourceNode) return
 
       const sourcePortName = sourceNode.data.outputs.find(output => output.id === link.sourceHandle)?.name
       const targetPortName = node.data.inputs.find(input => input.id === link.targetHandle)?.name
-      if (!sourcePortName || !targetPortName) return;
+      if(!sourcePortName || !targetPortName) return;
 
       const outputSchema = sourceNode.data.outputs.find(output => output.id === link.sourceHandle)?.schema
 
@@ -411,13 +411,13 @@ export const DataStoryContext = React.createContext<ReturnType<typeof createStor
 export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
   const store = React.useContext(DataStoryContext);
   if(!store) throw new Error('useStore must be used within a DataStoryProvider');
-  // @ts-ignore
+// @ts-ignore
   return store(...params);
 };
 
 
 export const DataStoryProvider = ({ children }: { children: React.ReactNode }) => {
-  const [ useLocalStore ] = useState(() => createStore());
+  const [useLocalStore] = useState(() => createStore());
 
   return <DataStoryContext.Provider value={ useLocalStore }>
     { children }
