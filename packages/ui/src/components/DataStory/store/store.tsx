@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create, StoreApi, UseBoundStore } from 'zustand';
 import {
   Connection,
   Edge,
@@ -21,12 +21,13 @@ import { JsClient } from '../clients/JsClient';
 import { ServerConfig } from '../clients/ServerConfig';
 import { reactFlowToDiagram } from '../../../reactFlowToDiagram';
 import { reactFlowFromDiagram } from '../../../reactFlowFromDiagram';
+import React, { useState } from "react";
 
 export type StoreSchema = {
   /** The main reactflow instance */
   rfInstance: ReactFlowInstance | undefined;
   toDiagram: () => Diagram;
-  
+
   /** Addable Nodes */
   availableNodes: NodeDescription[],
   setAvailableNodes: (nodes: NodeDescription[]) => void,
@@ -38,7 +39,7 @@ export type StoreSchema = {
   addNode: (node: DataStoryNode) => void;
   onNodesChange: OnNodesChange;
   setNodes: (nodes: DataStoryNode[]) => void;
-  traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;  
+  traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;
 
   /** The Edges */
   edges: Edge[];
@@ -46,7 +47,7 @@ export type StoreSchema = {
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
-  calculateInputSchema: (node: DataStoryNode) => void;  
+  calculateInputSchema: (node: DataStoryNode) => void;
 
   /** The Server and its config */
   serverConfig: ServerConfig;
@@ -64,7 +65,7 @@ export type StoreSchema = {
 
   /** Run the diagram */
   onRun: () => void;
-  
+
   /** Modals */
   openNodeModalId: string | null;
   setOpenNodeModalId: (id: string | null) => void;
@@ -77,7 +78,7 @@ export type StoreSchema = {
   onSave: () => void;
 };
 
-export const useStore = create<StoreSchema>((set, get) => ({
+export const createStore = () => create<StoreSchema>((set, get) => ({
   // DEFAULTS
   serverConfig: { type: 'SOCKET', url: 'ws://localhost:3100' },
   flowName: 'untitled',
@@ -86,8 +87,9 @@ export const useStore = create<StoreSchema>((set, get) => ({
   edges: [],
   server: null,
   availableNodes: [],
-  openNodeModalId: null,  
-  
+  openNodeModalId: null,
+
+
   // METHODS
   toDiagram: () => {
     const reactFlowObject = get().rfInstance!.toObject()
@@ -121,7 +123,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
     set({
       edges: addEdge({
         ...connection,
-        id: `${fromHandleId}--->${toHandleId}`,
+        id: `${ fromHandleId }--->${ toHandleId }`,
       }, get().edges),
     });
 
@@ -170,7 +172,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
     diagram?: Diagram,
-    callback?: (options: { run: () => void}) => void
+    callback?: (options: { run: () => void }) => void
   }) => {
     set({
       serverConfig: options.server || {
@@ -202,7 +204,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
   },
   onRun: () => {
     get().server!.run(
-      get().toDiagram()      
+      get().toDiagram()
     )
   },
   onInitServer: (serverConfig: ServerConfig) => {
@@ -215,10 +217,10 @@ export const useStore = create<StoreSchema>((set, get) => ({
         // (viewport) => set({ viewport }),
         serverConfig.app
       )
-  
+
       set({ server })
       server.init()
-    }      
+    }
 
     if(serverConfig.type === 'SOCKET') {
       const server = new SocketClient(
@@ -228,10 +230,10 @@ export const useStore = create<StoreSchema>((set, get) => ({
         (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
       )
-  
+
       set({ server })
       server.init()
-    }    
+    }
   },
   setAvailableNodes: (availableNodes: NodeDescription[]) => {
     set({ availableNodes })
@@ -239,12 +241,12 @@ export const useStore = create<StoreSchema>((set, get) => ({
   updateEdgeCounts: (edgeCounts: Record<string, number>) => {
     for(const [id, count] of Object.entries(edgeCounts)) {
       const edge = get().edges.find(edge => edge.id === id)
-      if (edge) edge.label = count
+      if(edge) edge.label = count
     }
 
     const newEdges = get().edges.map((edge: Edge) => {
       Object.entries(edgeCounts).forEach(([id, count]) => {
-        if (edge.id === id) {
+        if(edge.id === id) {
           edge.label = count
           edge.labelBgStyle = {
             opacity: 0.6,
@@ -275,13 +277,13 @@ export const useStore = create<StoreSchema>((set, get) => ({
     if(name === "untitled" || name === "" || name === undefined) {
       alert("Please choose a name before saving.")
       return
-    }    
+    }
 
     if(!name.endsWith(".json")) name = name + ".json"
 
     get().server!.save(
       name,
-      get().rfInstance!.toObject()      
+      get().rfInstance!.toObject()
     )
 
     console.log("Saving...")
@@ -318,7 +320,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
 
         if(closestNode) {
           node.selected = false
-          get().updateNode(node)          
+          get().updateNode(node)
           closestNode.selected = true
           get().updateNode(closestNode)
         }
@@ -354,7 +356,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
 
         if(closestNode) {
           node.selected = false
-          get().updateNode(node)          
+          get().updateNode(node)
           closestNode.selected = true
           get().updateNode(closestNode)
         }
@@ -372,7 +374,7 @@ export const useStore = create<StoreSchema>((set, get) => ({
 
         if(closestNode) {
           node.selected = false
-          get().updateNode(node)          
+          get().updateNode(node)
           closestNode.selected = true
           get().updateNode(closestNode)
         }
@@ -403,3 +405,21 @@ export const useStore = create<StoreSchema>((set, get) => ({
   },
 }));
 
+export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);
+
+// @ts-ignore: UseBoundStore is an overloaded function, so the type of params here cannot be accurately inferred.
+export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
+  const store = React.useContext(DataStoryContext);
+  if(!store) throw new Error('useStore must be used within a DataStoryProvider');
+// @ts-ignore
+  return store(...params);
+};
+
+
+export const DataStoryProvider = ({ children }: { children: React.ReactNode }) => {
+  const [useLocalStore] = useState(() => createStore());
+
+  return <DataStoryContext.Provider value={ useLocalStore }>
+    { children }
+  </DataStoryContext.Provider>;
+}
