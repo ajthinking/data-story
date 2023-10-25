@@ -20,14 +20,25 @@ export default () => {
 
   // Faking something more interesting than "Signals"
   const diagram = new DiagramBuilder()
-    .add(Signal, { label: 'Companies', count: 555, period: 10 })
+    .add(Signal, {
+      label: 'Companies',
+      count: 555,
+      period: 10 }
+    )
     .add(Merge, {
       requestor_merge_property: 'id',
       supplier_merge_property: 'id',
     })
-    .add(ConsoleLog, { label: 'Companies::Update'})
-    .from('Merge.1.not_merged').add(Ignore, { label: 'Discard'})
-    .add(Signal, { label: 'Owners', period: 10 })
+    .add(ConsoleLog, {
+      label: 'Companies::Update'
+    })
+    .from('Merge.1.not_merged').add(Ignore, {
+      label: 'Discard'
+    })
+    .add(Signal, {
+      label: 'Owners',
+      period: 10
+    })
     .link('Signal.2.output', 'Merge.1.suppliers')
     .get()
 
