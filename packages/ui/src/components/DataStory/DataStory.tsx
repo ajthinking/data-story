@@ -4,11 +4,11 @@ import { ServerConfig } from "./clients/ServerConfig";
 import { DataStoryProvider } from "./store/store";
 
 export const DataStory = ({
-                            server,
-                            diagram,
-                            callback,
-                            hideToolbar = false,
-                          }: {
+  server,
+  diagram,
+  callback,
+  hideToolbar = false,
+}: {
   server?: ServerConfig
   diagram?: Diagram
   hideToolbar?: boolean
@@ -21,5 +21,5 @@ export const DataStory = ({
       callback={ callback }
       hideToolbar={ hideToolbar }
     />
-  </DataStoryProvider>
+  </DataStoryProvider>;
 };

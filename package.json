@@ -17,6 +17,7 @@
   "packageManager": "yarn@3.6.4",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^0.1.2",
+    "@typescript-eslint/parser": "^6.9.0",
     "eslint": "^8.52.0",
     "kill-port": "^2.0.1",
     "turbo": "^1.10.12"
