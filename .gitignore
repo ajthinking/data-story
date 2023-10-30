@@ -2,6 +2,7 @@ node_modules
 .yarn
 .env
 .turbo
+.idea
 
 notes
 notes.*

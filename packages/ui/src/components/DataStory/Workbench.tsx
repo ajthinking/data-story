@@ -1,19 +1,19 @@
-import 'reactflow/dist/style.css';
-import { DataStoryControls } from './dataStoryControls';
-import { useEffect, useState } from 'react';
-import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from 'reactflow';
-import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
-import { RunModal } from './modals/runModal';
-import { ConfigModal } from './modals/configModal';
-import { AddNodeModal } from './modals/addNodeModal';
-import { StoreSchema, useStore } from './store/store';
-import { shallow } from 'zustand/shallow'
-import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal';
-import DataStoryCommentNodeComponent from '../Node/DataStoryCommentNodeComponent';
-import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
-import { ServerConfig } from './clients/ServerConfig';
-import { Diagram } from '@data-story/core';
-import { useHotkeys } from './useHotkeys';
+import "reactflow/dist/style.css";
+import { DataStoryControls } from "./dataStoryControls";
+import { useEffect, useState } from "react";
+import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from "reactflow";
+import DataStoryNodeComponent from "../Node/DataStoryNodeComponent";
+import { RunModal } from "./modals/runModal";
+import { ConfigModal } from "./modals/configModal";
+import { AddNodeModal } from "./modals/addNodeModal";
+import { StoreSchema, useStore } from "./store/store";
+import { shallow } from "zustand/shallow";
+import { NodeSettingsModal } from "./modals/nodeSettingsModal/nodeSettingsModal";
+import DataStoryCommentNodeComponent from "../Node/DataStoryCommentNodeComponent";
+import DataStoryInputNodeComponent from "../Node/DataStoryInputNodeComponent";
+import { ServerConfig } from "./clients/ServerConfig";
+import { Diagram } from "@data-story/core";
+import { useHotkeys } from "./useHotkeys";
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -24,15 +24,15 @@ const nodeTypes = {
 
 let ReactFlowId = 1;
 const getReactFlowId = () => {
-  return 'data_story_id_' + (ReactFlowId++);
-}
+  return "data_story_id_" + (ReactFlowId++);
+};
 
-export const Workbench = ({
-                             server,
-                             diagram,
-                             callback,
-                             hideToolbar = false,
-                           }: {
+export const Workbench = ({ 
+  server,
+  diagram,
+  callback,
+  hideToolbar = false,
+}: {
   server?: ServerConfig
   diagram?: Diagram
   callback?: (options: any) => void
@@ -67,7 +67,7 @@ export const Workbench = ({
     showAddNodeModal,
     traverseNodes,
     setShowAddNodeModal,
-  })
+  });
 
   return (
     <>
@@ -87,7 +87,7 @@ export const Workbench = ({
               server,
               diagram,
               callback
-            })
+            });
           }}
           minZoom={0.25}
           maxZoom={8}
@@ -115,4 +115,4 @@ export const Workbench = ({
       {openNodeModalId && <NodeSettingsModal/>}
     </>
   );
-}
+};

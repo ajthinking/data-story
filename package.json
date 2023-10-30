@@ -11,12 +11,22 @@
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
     "kill": "kill-port 3000 3100",
     "build": "turbo build",
-    "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts"
+    "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
+    "lint": "eslint .",
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx,tsx,ts}": "eslint"
   },
   "version": "0.0.1",
   "packageManager": "yarn@3.6.4",
   "devDependencies": {
+    "@stylistic/eslint-plugin": "^0.1.2",
+    "@typescript-eslint/parser": "^6.9.0",
+    "eslint": "^8.52.0",
+    "husky": "^8.0.0",
     "kill-port": "^2.0.1",
+    "lint-staged": "^15.0.2",
     "turbo": "^1.10.12"
   }
 }

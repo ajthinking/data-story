@@ -5,14 +5,14 @@ import { ComputerConfig } from "./types/ComputerConfig";
 import { ServiceProvider } from "./types/ServiceProvider";
 
 export class Application {
-  providers: ServiceProvider[] = []
-  computers = new Map<string, Computer>()
-  hooks = new Map<string, Function>()
+  providers: ServiceProvider[] = [];
+  computers = new Map<string, Computer>();
+  hooks = new Map<string, Function>();
 
   register(provider: ServiceProvider | ServiceProvider[]) {
     this.providers.push(
       ...(Array.isArray(provider) ? provider : [provider])
-    )
+    );
   }
 
   boot() {
@@ -23,7 +23,7 @@ export class Application {
   }
 
   addComputers(computers: Map<string, Computer> | ComputerConfig[]) {
-    if (computers instanceof Map) {
+    if(computers instanceof Map) {
       this.computers = new Map([...this.computers, ...computers]);
     } else {
       const newComputers = new Map(computers.map(config => {
@@ -43,7 +43,7 @@ export class Application {
 
   descriptions() {
     return Array.from(this.computers.values()).map(computer => {
-      return NodeDescriptionFactory.fromComputer(computer)
-    })  
+      return NodeDescriptionFactory.fromComputer(computer);
+    });  
   }
 }
