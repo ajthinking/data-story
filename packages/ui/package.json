@@ -19,6 +19,7 @@
     "reactflow": "^11.8.1"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@types/glob": "^8.1.0",
     "@types/node": "18.14.2",
     "@types/react": "18.0.28",
