@@ -5,7 +5,7 @@ import {
   DiagramBuilder,
   coreNodeProvider,
   nodes,
-} from "@data-story/core";
+} from '@data-story/core';
 
 export default () => {
   console.log(stuff)

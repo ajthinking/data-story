@@ -1,19 +1,19 @@
-import "reactflow/dist/style.css";
-import { DataStoryControls } from "./dataStoryControls";
-import { useEffect, useState } from "react";
-import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from "reactflow";
-import DataStoryNodeComponent from "../Node/DataStoryNodeComponent";
-import { RunModal } from "./modals/runModal";
-import { ConfigModal } from "./modals/configModal";
-import { AddNodeModal } from "./modals/addNodeModal";
-import { StoreSchema, useStore } from "./store/store";
-import { shallow } from "zustand/shallow";
-import { NodeSettingsModal } from "./modals/nodeSettingsModal/nodeSettingsModal";
-import DataStoryCommentNodeComponent from "../Node/DataStoryCommentNodeComponent";
-import DataStoryInputNodeComponent from "../Node/DataStoryInputNodeComponent";
-import { ServerConfig } from "./clients/ServerConfig";
-import { Diagram } from "@data-story/core";
-import { useHotkeys } from "./useHotkeys";
+import 'reactflow/dist/style.css';
+import { DataStoryControls } from './dataStoryControls';
+import { useEffect, useState } from 'react';
+import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from 'reactflow';
+import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
+import { RunModal } from './modals/runModal';
+import { ConfigModal } from './modals/configModal';
+import { AddNodeModal } from './modals/addNodeModal';
+import { StoreSchema, useStore } from './store/store';
+import { shallow } from 'zustand/shallow';
+import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal';
+import DataStoryCommentNodeComponent from '../Node/DataStoryCommentNodeComponent';
+import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
+import { ServerConfig } from './clients/ServerConfig';
+import { Diagram } from '@data-story/core';
+import { useHotkeys } from './useHotkeys';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -24,7 +24,7 @@ const nodeTypes = {
 
 let ReactFlowId = 1;
 const getReactFlowId = () => {
-  return "data_story_id_" + (ReactFlowId++);
+  return 'data_story_id_' + (ReactFlowId++);
 };
 
 export const Workbench = ({ 
@@ -74,7 +74,7 @@ export const Workbench = ({
       <ReactFlowProvider>
         <ReactFlow
           id={id}
-          className="bg-gray-50"
+          className='bg-gray-50'
           nodes={nodes}
           edges={edges}
           nodeTypes={nodeTypes}
@@ -104,7 +104,7 @@ export const Workbench = ({
             setShowAddNodeModal={setShowAddNodeModal}
             setShowConfigModal={setShowConfigModal}
           />}
-          <Background color="#E7E7E7" variant={BackgroundVariant.Lines} />
+          <Background color='#E7E7E7' variant={BackgroundVariant.Lines} />
         </ReactFlow>
       </ReactFlowProvider>
 

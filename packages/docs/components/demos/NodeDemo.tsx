@@ -1,6 +1,6 @@
 import { DataStory, DataStoryNodeComponent } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { Application, DiagramBuilder, nodes, coreNodeProvider } from "@data-story/core";
+import { Application, DiagramBuilder, nodes, coreNodeProvider } from '@data-story/core';
 
 export default ({ nodeName }: { nodeName: string}) => {
   const app = new Application();

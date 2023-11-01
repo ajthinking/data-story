@@ -1,5 +1,5 @@
-import { Diagram } from "@data-story/core";
-import { SerializedReactFlow } from "../../../SerializedReactFlow";
+import { Diagram } from '@data-story/core';
+import { SerializedReactFlow } from '../../../SerializedReactFlow';
 
 export interface ServerClient {
   init: () => void;

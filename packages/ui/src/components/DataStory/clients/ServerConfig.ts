@@ -1,4 +1,4 @@
-import { Application } from "@data-story/core";
+import { Application } from '@data-story/core';
 
 export type WebSocketServerConfig = {
   type: 'SOCKET';

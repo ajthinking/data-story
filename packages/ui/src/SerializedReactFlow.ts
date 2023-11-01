@@ -1,4 +1,4 @@
-import { Param } from "@data-story/core"
+import { Param } from '@data-story/core'
 
 export type SerializedReactFlow = {
   nodes: SerializedReactFlowNode[],

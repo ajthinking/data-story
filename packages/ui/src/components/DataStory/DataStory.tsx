@@ -1,7 +1,7 @@
-import { Diagram } from "@data-story/core";
-import { Workbench } from "./Workbench";
-import { ServerConfig } from "./clients/ServerConfig";
-import { DataStoryProvider } from "./store/store";
+import { Diagram } from '@data-story/core';
+import { Workbench } from './Workbench';
+import { ServerConfig } from './clients/ServerConfig';
+import { DataStoryProvider } from './store/store';
 
 export const DataStory = ({
   server,
