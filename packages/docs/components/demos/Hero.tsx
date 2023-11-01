@@ -43,7 +43,7 @@ export default () => {
     .get()
 
   return (
-    <div className="w-full sm:w-1/2" style={{ height: '36vh' }}>
+    <div className="w-full mt-4" style={{ height: '36vh' }}>
       <DataStory
         server={{ type: 'JS', app }}
         diagram={diagram}

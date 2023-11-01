@@ -13,9 +13,7 @@ export default () => {
 
   return (
     <div className="w-full" style={{ height: '100vh' }}>
-      <DataStory
-        server={{ type: 'JS', app }}
-      />
+      <DataStory server={{ type: 'JS', app }} />
     </div>   
   );
 };
