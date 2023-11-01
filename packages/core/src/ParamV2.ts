@@ -33,6 +33,15 @@ export type DynamicInputType = {
   help: string,
 }
 
+export type LogicExpression = {
+  type: 'LogicExpression',
+  name: string,
+  label: string,
+  value: any,
+  help: string,
+  operators: any[],
+}
+
 const params: ParamV2[] = JSON.parse('')
 
 export type ParamV2 = Select  | Repeatable<ParamV2[]>
@@ -96,3 +105,37 @@ const REPEATABLE = {
   availableTypes: ['string'],
   inputSchemaFromPort: 'requestor'
 }
+
+/*
+
+// JSON FIRST MAPPING? SINCE ITS DEVELOPER FIRST.
+
+{
+  _id: 2000,
+  name: 'Acme',
+  person: 1234,
+  _embedded: {
+    person: {
+      id: 1234,
+      name: 'John',
+      company: 2000,
+    }
+  }
+}
+
+{
+  properties: {
+    lime_id: ${_id},
+    name: ${name},
+  },
+}
+
+// DOT NOTATED MAPPING? TO KEEP TABLE FLAT
+
+{
+  updated_at: @now(),
+  properties.name: ${name},
+  properties.lime_id: ${person},
+}
+
+*/
