@@ -44,12 +44,12 @@ export function DataStoryControls({
     >
       <AddNodeIcon />
     </ControlButton>                
-    <ControlButton
-        onClick={() => onSave()}
-        title="Save"
-        aria-label="Save"
-      >
-        <SaveIcon />
+    {/* <ControlButton
+      onClick={() => onSave()}
+      title="Save"
+      aria-label="Save"
+    >
+      <SaveIcon />
     </ControlButton>
     <ControlButton
       onClick={() => {}}
@@ -64,6 +64,6 @@ export function DataStoryControls({
       aria-label="Config"
     >
       <ConfigIcon />
-    </ControlButton>      
+    </ControlButton>       */}
   </Controls>;
 }
