@@ -1,4 +1,4 @@
-import { DataStory, stuff } from '@data-story/ui'
+import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
 import {
   Application,
@@ -8,8 +8,6 @@ import {
 } from '@data-story/core';
 
 export default () => {
-  console.log(stuff)
-
   const app = new Application();
 
   app.register(coreNodeProvider);

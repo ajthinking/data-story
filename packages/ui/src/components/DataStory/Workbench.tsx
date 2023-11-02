@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from 'reactflow';
 import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
 import { RunModal } from './modals/runModal';
-import { ConfigModal } from './modals/configModal';
 import { AddNodeModal } from './modals/addNodeModal';
 import { StoreSchema, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
@@ -102,14 +101,12 @@ export const Workbench = ({
           {!hideToolbar && <DataStoryControls
             setShowRunModal={setShowRunModal}
             setShowAddNodeModal={setShowAddNodeModal}
-            setShowConfigModal={setShowConfigModal}
           />}
           <Background color='#E7E7E7' variant={BackgroundVariant.Lines} />
         </ReactFlow>
       </ReactFlowProvider>
 
       {/* Modals */}
-      {showConfigModal && <ConfigModal setShowModal={setShowConfigModal}/>}
       {showRunModal && <RunModal setShowModal={setShowRunModal}/>}
       {showAddNodeModal && <AddNodeModal setShowModal={setShowAddNodeModal}/>}
       {openNodeModalId && <NodeSettingsModal/>}
