@@ -22,5 +22,3 @@ export { deriveFrom } from './deriveFrom'
 export { coreNodeProvider } from './coreNodeProvider'
 
 export * as nodes from './computers'
-
-export const stuffFromCore: 7 = 7;

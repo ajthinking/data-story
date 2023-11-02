@@ -69,13 +69,10 @@ export type StoreSchema = {
   /** Modals */
   openNodeModalId: string | null;
   setOpenNodeModalId: (id: string | null) => void;
-  open: (nodes: DataStoryNode[], edges: Edge[]) => void;
 
   /** Not used/implemented at the moment */
   flowName: string;
   setFlowName: (name: string) => void;
-  onOpen: () => void;
-  onSave: () => void;
 };
 
 export const createStore = () => create<StoreSchema>((set, get) => ({
@@ -261,32 +258,6 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
   },
   setOpenNodeModalId: (id: string | null) => {
     set({ openNodeModalId: id })
-  },
-  onOpen: () => {
-    get().server!.open('demo.story.json')
-
-    console.log('Opening...')
-  },
-  open: (nodes: DataStoryNode[], edges: any) => {
-    get().setNodes(nodes);
-    get().setEdges(edges);
-  },
-  onSave: () => {
-    let name = get().flowName
-
-    if(name === 'untitled' || name === '' || name === undefined) {
-      alert('Please choose a name before saving.')
-      return
-    }
-
-    if(!name.endsWith('.json')) name = name + '.json'
-
-    get().server!.save(
-      name,
-      get().rfInstance!.toObject()
-    )
-
-    console.log('Saving...')
   },
   traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => {
     const selectedNodes = get().nodes.filter(node => node.selected)
