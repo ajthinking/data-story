@@ -1,4 +1,4 @@
-import { evalMath } from "./evalMath"
+import { evalMath } from './evalMath'
 
 it('returns the result of an expression', () => {
   const expression = '1.0+2-3*4/5'

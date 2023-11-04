@@ -1,4 +1,4 @@
-import { ItemValue } from "./ItemValue"
+import { ItemValue } from './ItemValue'
 
 export interface Storage {
   currentExecutionId: string | null

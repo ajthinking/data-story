@@ -1,4 +1,3 @@
-import { describe, expect, it } from 'vitest'
 import { ItemWithParams } from './ItemWithParams'
 import { Param } from './Param'
 
@@ -23,7 +22,7 @@ describe('params', () => {
     const item = new ItemWithParams(
       { name: 'Bob' },
       { greeting: 'Hello ${name}!'
-    })
+      })
 
     expect(item.params.greeting).toEqual('Hello Bob!')
   })

@@ -18,7 +18,7 @@ export const onMessage = async (
   }
 
   const handler = handlers[parsed.type];
-  if(!handler) throw("Unknown message type: " + parsed.type)
+  if(!handler) throw('Unknown message type: ' + parsed.type)
 
   await handler(ws, parsed, app)
 }

@@ -1,7 +1,7 @@
-import { Application } from "./Application"
-import { ComputerFactory } from "./ComputerFactory"
-import { Signal } from "./computers"
-import { ServiceProvider } from "./types/ServiceProvider"
+import { Application } from './Application'
+import { ComputerFactory } from './ComputerFactory'
+import { Signal } from './computers'
+import { ServiceProvider } from './types/ServiceProvider'
 
 describe('register', () => {
   it('can register a single provider', () => {

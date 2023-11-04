@@ -1,4 +1,4 @@
-import { InputDeviceInterface } from "./types/InputDeviceInterface";
+import { InputDeviceInterface } from './types/InputDeviceInterface';
 
 /**
  * A specialized input device

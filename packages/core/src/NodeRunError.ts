@@ -1,4 +1,4 @@
-import { Node } from "./types/Node";
+import { Node } from './types/Node';
 
 export class NodeRunError extends Error {
   constructor({ message, node }: { message: string, node: Node}) {

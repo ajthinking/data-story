@@ -1,4 +1,4 @@
-import { OutputDeviceInterface } from "./OutputDevice";
+import { OutputDeviceInterface } from './OutputDevice';
 
 export class NestedOutputDevice implements OutputDeviceInterface {
   constructor(private outputDevice: OutputDeviceInterface) {}

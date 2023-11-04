@@ -1,7 +1,7 @@
-import { Diagram } from "../../Diagram"
+import { Diagram } from '../../Diagram'
 
 export type SaveMessage = {
-  type: "save"
+  type: 'save'
   name: string
   diagram: Diagram
 }

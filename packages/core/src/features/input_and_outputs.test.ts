@@ -1,6 +1,6 @@
-import { DiagramBuilder } from "../DiagramBuilder"
-import { Input, Output } from "../computers"
-import { whenRunning } from "../support/diagramExecutionTester/DiagramExecutionTester"
+import { DiagramBuilder } from '../DiagramBuilder'
+import { Input, Output } from '../computers'
+import { whenRunning } from '../support/diagramExecutionTester/DiagramExecutionTester'
 
 describe('Input and outputs without any data passed', () => {
   it('can run a diagram with a single input', async () => {

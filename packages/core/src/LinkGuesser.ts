@@ -1,6 +1,6 @@
-import { Diagram } from "./Diagram";
-import { Link } from "./types/Link";
-import { Node } from "./types/Node";
+import { Diagram } from './Diagram';
+import { Link } from './types/Link';
+import { Node } from './types/Node';
 
 export class LinkGuesser {
   constructor(

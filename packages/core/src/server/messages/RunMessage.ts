@@ -1,5 +1,5 @@
-import { Diagram } from "../../Diagram"
+import { Diagram } from '../../Diagram'
 export type RunMessage = {
-  type: "run"
+  type: 'run'
   diagram: Diagram
 }

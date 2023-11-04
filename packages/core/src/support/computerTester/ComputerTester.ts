@@ -17,7 +17,7 @@ import {
   expectHooks,
   getsInput,
   getsInputs,
-} from "./testSteps";
+} from './testSteps';
 
 import { expectDone } from './testSteps/expectDone';
 import { ExecutionMemory } from '../../ExecutionMemory';
@@ -83,26 +83,26 @@ export class ComputerTester {
 
     // Initialize runner
     this.memory.setNodeRunner(
-        this.node.id,
-        this.computer.run({
-          input: this.inputDevice,
-          output: this.outputDevice,
-          params: this.makeParamsDevice(),
-          storage: new NullStorage(),
-          hooks: this.hooksDevice,
-          executorFactory: (diagram: any) => {
-            return new Executor(
-              diagram,
-              // TODO: this should be injectable, not hardcoded take all
-              new Map(Object.values(computerConfigs).map(config => {
-                const computer = new ComputerFactory().get(config);
-                return [computer.name, computer];
-              })),
-              new NullStorage()
-            )
-          },
-          node: this.node,
-        })
+      this.node.id,
+      this.computer.run({
+        input: this.inputDevice,
+        output: this.outputDevice,
+        params: this.makeParamsDevice(),
+        storage: new NullStorage(),
+        hooks: this.hooksDevice,
+        executorFactory: (diagram: any) => {
+          return new Executor(
+            diagram,
+            // TODO: this should be injectable, not hardcoded take all
+            new Map(Object.values(computerConfigs).map(config => {
+              const computer = new ComputerFactory().get(config);
+              return [computer.name, computer];
+            })),
+            new NullStorage()
+          )
+        },
+        node: this.node,
+      })
     )
 
     // Runner handle
@@ -199,7 +199,7 @@ export class ComputerTester {
     // Create dangling links to the inputs
     const inputLinks = node.inputs.map(inputPort => ({
       id: `dangling-link-to-port-${inputPort.id}`,
-      sourcePortId: `dangling-source-port-id`,
+      sourcePortId: 'dangling-source-port-id',
       targetPortId: `${nodeId}.${inputPort.name}`,
     }))
 
@@ -207,7 +207,7 @@ export class ComputerTester {
     const outputLinks = node.outputs.map(outputPort => ({
       id: `dangling-link-from-port-${outputPort.id}`,
       sourcePortId: `${nodeId}.${outputPort.name}`,
-      targetPortId: `dangling-target-port-id`,
+      targetPortId: 'dangling-target-port-id',
     }))
     
     return new Diagram([node], [
