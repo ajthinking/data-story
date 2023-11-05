@@ -2,7 +2,7 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span className="font-bold bg-yellow-500 tracking-wide font-mono text-blue-400">
+  logo: <span className="font-bold tracking-wide font-mono text-blue-400">
     {'<DataStory />'}
   </span>,
   project: {
