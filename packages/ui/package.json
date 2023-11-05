@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@data-story/core": "*",
+    "clsx": "^2.0.0",
     "concurrently": "^8.2.1",
     "reactflow": "^11.8.1"
   },

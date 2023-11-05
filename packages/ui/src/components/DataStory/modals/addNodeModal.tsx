@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { Connection } from 'reactflow';
 import { shallow } from 'zustand/shallow';
 import { NodeDescription } from '@data-story/core';
-import { DataStoryNode } from '../../Node/DataStoryNode';
 import { makeNodeAndConnection } from '../hooks/makeNodeAndConnection';
 import { Modal } from '../modal';
 import { StoreSchema, useStore } from '../store/store';
+import clsx from 'clsx';
 
 export const AddNodeModal = ({ setShowModal }: { setShowModal: (show: boolean) => void }) => {
   const inputReference = useRef<HTMLInputElement>(null);
@@ -63,7 +62,12 @@ export const AddNodeModal = ({ setShowModal }: { setShowModal: (show: boolean) =
           return (
             <button
               tabIndex={0}
-              className='flex justify-between font-bold cursor-pointer bg-slate-100 hover:bg-slate-200 text-gray-400 flex items-center px-4 py-2 border border-gray-300 text-base shadow'
+              className={clsx(
+                'flex justify-between items-center px-4 py-2',
+                'text-base font-bold text-gray-400 cursor-pointer',
+                'border border-gray-300 shadow',
+                'bg-gray-100 hover:bg-slate-200'
+              )}
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}
             >

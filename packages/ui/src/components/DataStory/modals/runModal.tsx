@@ -2,6 +2,7 @@ import { shallow } from 'zustand/shallow';
 import { Modal } from '../modal'
 import { StoreSchema, useStore } from '../store/store';
 import { useEffect, useRef } from 'react';
+import clsx from 'clsx';
 
 export const RunModal = ({ setShowModal }: {
   setShowModal: (show: boolean) => void
@@ -40,7 +41,12 @@ export const RunModal = ({ setShowModal }: {
       <div className='flex w-full justify-center items-center space-x-2'>
         <button
           ref={runButtonReference}
-          className='flex justify-center space-y-4 space-x-2 mt-4 font-mono text-xs uppercase px-16 py-2 rounded text-gray-50 bg-blue-500 hover:bg-blue-600'
+          className={clsx(
+            'flex w-full space-y-4 space-x-2 mt-4 px-16 py-2',
+            'bg-blue-500 hover:bg-blue-600',
+            'font-mono text-xs text-gray-50 uppercase',
+            'rounded'
+          )}
           onClick={() => {
             onRun()
             setShowModal(false)
