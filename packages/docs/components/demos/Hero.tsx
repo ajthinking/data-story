@@ -47,6 +47,7 @@ export default () => {
         diagram={diagram}
         callback={(options: any) => setTimeout(options.run, 100)}
         hideToolbar={true}
+        hideTabs={true}
       />
     </div>   
   );

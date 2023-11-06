@@ -19,6 +19,7 @@ export default ({ nodeName }: { nodeName: string}) => {
         server={{ type: 'JS', app }}
         diagram={diagram}
         hideToolbar={true}
+        hideTabs={true}
       />
     </div>
   </div>
