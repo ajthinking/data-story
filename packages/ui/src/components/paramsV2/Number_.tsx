@@ -1,6 +1,6 @@
 import { UseFormRegister } from 'react-hook-form';
 
-export function String_({
+export function Number_({
   id,
   register,
 }: {
@@ -9,7 +9,8 @@ export function String_({
 }) {
   return (
     <input
-      className="border p-2 w-full text-xs"
+      type="number"
+      className="border p-2  w-full"
       {...register(id)}
     />
   );

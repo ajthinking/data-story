@@ -4,6 +4,7 @@ export { flattenObjectOneLevel } from './utils/flattenObjectOneLevel'
 export type { NodeDescription } from './types/NodeDescription'
 export type { Port, AbstractPort } from './types/Port'
 export type { Param, ParamValue } from './Param'
+export type { ParamV2 } from './ParamV2';
 export { Application } from './Application'
 export type { ServiceProvider } from './types/ServiceProvider'
 export { DiagramBuilder } from './DiagramBuilder'

@@ -5,12 +5,40 @@ export interface AbstractParam {
   help: string
 }
 
+export type String_ = {
+  type: 'String_',
+  name: string,
+  label: string,
+  value: string,
+  help: string,
+}
+
+export type Interpretable = {
+  type: 'Interpretable',
+  name: string,
+  label: string,
+  value: string,
+  help: string,
+  schemaFromPort?: string,
+}
+
+export type Number_ = {
+  type: 'Number_',
+  name: string,
+  label: string,
+  value: number,
+  help: string,
+}
+
 export type Select = {
   type: 'Select',
   name: string,
   label: string,
   value: string,
-  options: string[],
+  options: {
+    value: string,
+    label: string,
+  }[],
   help: string,
 }
 
@@ -23,8 +51,8 @@ export type Repeatable<RepeatableRow> = {
   help: string,
 }
 
-export type DynamicInputType = {
-  type: 'DynamicInputType',
+export type DynamicInput = {
+  type: 'DynamicInput',
   selectedType: string,
   availableTypes: string[],
   name: string,
@@ -44,7 +72,7 @@ export type LogicExpression = {
 
 const params: ParamV2[] = JSON.parse('')
 
-export type ParamV2 = Select  | Repeatable<ParamV2[]>
+export type ParamV2 = String_ | Number_ | Select | Interpretable | DynamicInput  | Repeatable<ParamV2[]>
 
 const example_repeatable_row = [
   {

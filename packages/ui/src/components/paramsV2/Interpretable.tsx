@@ -1,28 +1,54 @@
-export function Interpretable({value}: {value?: string}) {
+import { UseFormRegister } from 'react-hook-form';
+
+export function Interpretable({
+  id,
+  register,
+  setValue,
+  getValues,
+  interpretableProperties,
+  interpretableFunctions,
+}: {
+  id: string,
+  register: UseFormRegister<Record<string, any>>,
+  setValue: any,
+  getValues: any,
+  interpretableProperties: string[],
+  interpretableFunctions: string[],  
+}) {
   return (
     <div className="flex w-full">
       <input
-        onChange={()=>{}}
-        value={value || ''}
-        className="border p-2 w-full">
+        className="text-xs p-2 w-full"
+        {...register(id)}
+      >
       </input>
       <select
+        defaultValue="___PROP"
         className="text-xs appearance-none border p-2 focus:outline-none focus:ring focus:border-blue-300"
         onChange={(event) => {
-          // setType(event.target.value as Type);
+          setValue(
+            id,
+            getValues(id) + '${' + event.target.value + '}'
+          )
         }}
       >
-        {['prop1', 'prop2', 'nested.prop'].map((type) => (
+        <option disabled value={'___PROP'}>prop</option>
+        {interpretableProperties.map((type) => (
           <option key={type} value={type}>{type}</option>
         ))}
       </select>
       <select
+        defaultValue="___FUNC"
         className="text-xs appearance-none border p-2 focus:outline-none focus:ring focus:border-blue-300"
         onChange={(event) => {
-          // setType(event.target.value as Type);
+          const current = getValues(id)
+          const func = event.target.value
+
+          setValue(id, `${current}@${func}(`)
         }}
       >
-        {['uppercase', 'lowercase', 'trim'].map((type) => (
+        <option disabled value={'___FUNC'}>func</option>
+        {interpretableFunctions.map((type) => (
           <option key={type} value={type}>{type}</option>
         ))}
       </select>      
