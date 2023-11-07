@@ -13,7 +13,7 @@ export function Params({
   node: DataStoryNode,
   form: UseFormReturn<{
     [x: string]: any;
-}, any>
+  }, any>
 
 }) {
   const nonDefaultParams = Object.values(node.data.params).filter((param) => {
