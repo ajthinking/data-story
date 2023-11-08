@@ -16,7 +16,7 @@ export function Interpretable({
   interpretableFunctions: string[],  
 }) {
   return (
-    <div className="flex w-full">
+    <div className="flex w-full text-gray-400">
       <input
         className="text-xs p-2 w-full"
         {...register(id)}

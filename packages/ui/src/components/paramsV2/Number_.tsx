@@ -9,8 +9,7 @@ export function Number_({
 }) {
   return (
     <input
-      type="number"
-      className="border p-2  w-full"
+      className="border p-2 w-full text-xs"
       {...register(id)}
     />
   );

@@ -73,7 +73,7 @@ export function DynamicInput({
 
         {availableTypes.length > 1 && (
           <select
-            className="text-xs appearance-none border p-2 focus:outline-none focus:ring focus:border-blue-300"
+            className="text-xs text-gray-400 appearance-none border p-2 focus:outline-none focus:ring focus:border-blue-300"
             onChange={(event) => {
               setType(event.target.value);
             }}
@@ -85,7 +85,7 @@ export function DynamicInput({
         )}
         {availableTypes.length === 1 && (
           <div
-            className="text-xs text-gray-100 appearance-none p-2"
+            className="text-xs text-gray-400 appearance-none p-2"
           >({availableTypes[0]})
           </div>
         )}    

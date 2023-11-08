@@ -9,7 +9,7 @@ export function String_({
 }) {
   return (
     <input
-      className="border p-2 w-full text-xs"
+      className="border p-2 w-full text-xs text-gray-400"
       {...register(id)}
     />
   );
