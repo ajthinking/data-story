@@ -15,7 +15,7 @@ export function Select({
   return (
     <select
       {...register(id)}
-      className="p-2 text-xs">
+      className="p-2 text-xs text-gray-400">
       <option></option>
       {options.map(option => {
         return <option className="text-gray-400" key={option.value}>{option.label}</option>

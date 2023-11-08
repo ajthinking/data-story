@@ -9,9 +9,9 @@ import { useForm } from 'react-hook-form';
 
 export function FormV2({ params }: { params: ParamV2[] }) {
   const components = {
-    Number_,
     Select,
     String_,
+    Number_,
     Interpretable,
     DynamicInput,
     Repeatable,
@@ -102,7 +102,7 @@ export function FormV2({ params }: { params: ParamV2[] }) {
 
       <div
         onClick={onSubmit}
-        className="flex justify-center mb-12 border cursor-pointer border-rounded border-white bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        className="flex justify-center mb-12 border cursor-pointer border-rounded border-white bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Submit
       </div>
     </div>

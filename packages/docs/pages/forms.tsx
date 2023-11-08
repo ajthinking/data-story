@@ -34,6 +34,7 @@ export default function Home() {
       name: 'welcome_message',
       label: 'Welcome Message',
       type: 'Interpretable',
+      schemaFromPort: 'input',
       value: 'Hello {{name}}',
       help: 'An Interpretable Input',
     },
@@ -61,6 +62,31 @@ export default function Home() {
         {
           name: 'level',
           label: 'Level',
+          type: 'DynamicInput',
+          selectedType: 'String_',
+          availableTypes: ['String_', 'Interpretable'],
+          value: '',
+          help: 'How good are you at this skill?',
+        },        
+      ],
+      help: 'A Repeatable input',
+      value: []
+    },
+    {
+      name: 'skills',
+      label: 'Skills',
+      type: 'Repeatable',
+      row: [
+        {
+          name: 'skill',
+          label: 'Property',
+          type: 'String_',
+          value: '',
+          help: 'Describe the skill',
+        },
+        {
+          name: 'level',
+          label: 'Port',
           type: 'DynamicInput',
           selectedType: 'String_',
           availableTypes: ['String_', 'Interpretable'],
