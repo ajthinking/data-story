@@ -127,7 +127,7 @@ export class Executor implements ExecutorInterface {
             this.memory.setNodeStatus(node.id, 'AVAILABLE')
           })        
           .catch((error: Error) => {
-            console.log("Registering an execution error")
+            console.log('Registering an execution error')
             this.memory.pushHistoryMessage(error.message || 'Error in node')
             executionError = error;
           })
@@ -165,7 +165,7 @@ export class Executor implements ExecutorInterface {
     }
 
     if(executionError) {
-      console.log("Rethrowing the execution error in an awaitable timeline")
+      console.log('Rethrowing the execution error in an awaitable timeline')
       throw(executionError)
     }
 

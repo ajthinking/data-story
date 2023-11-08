@@ -1,4 +1,3 @@
-import { Computer } from './types/Computer'
 import { ComputerConfig } from './types/ComputerConfig'
 import { ComputerFactory } from './ComputerFactory'
 import { DefaultParams } from './Param'

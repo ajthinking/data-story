@@ -23,7 +23,7 @@ export const AskChatGpt: ComputerConfig = {
       const [ { params: { prompt } } ] = input.pull(1)
 
       const completion = await openai.createCompletion({
-        model: "text-davinci-003",
+        model: 'text-davinci-003',
         prompt,
         temperature: 0,
         max_tokens: 500,

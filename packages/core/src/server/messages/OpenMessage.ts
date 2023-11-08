@@ -1,4 +1,4 @@
 export type OpenMessage = {
-  type: "open"
+  type: 'open'
   name: string
 }

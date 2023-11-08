@@ -1,44 +1,40 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "es2021": true
+  'env': {
+    'browser': true,
+    'es2021': true
   },
-  "overrides": [
+  'overrides': [
     {
-      "env": {
-        "node": true
+      'env': {
+        'node': true
       },
-      "files": [
-        ".eslintrc.{js,cjs}"
+      'files': [
+        '.eslintrc.{js,cjs}'
       ],
-      "parserOptions": {
-        "sourceType": "script"
+      'parserOptions': {
+        'sourceType': 'script'
       }
     }
   ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
+  'parser': '@typescript-eslint/parser',
+  'parserOptions': {
+    'ecmaVersion': 'latest',
+    'sourceType': 'module'
   },
-  "plugins": [
-    "@stylistic"
+  'plugins': [
+    '@stylistic'
   ],
-  "rules": {
-    "@stylistic/indent": [
-      "error",
+  'rules': {
+    '@stylistic/indent': [
+      'error',
       2
     ],
-    "@stylistic/linebreak-style": "off",
-    "@stylistic/quotes": [
-      "error",
-      "double"
+    '@stylistic/linebreak-style': 'off',
+    '@stylistic/quotes': [
+      'error',
+      'single'
     ],
-    "@stylistic/semi": [
-      "warn",
-      "always"
-    ],
-    "@stylistic/eol-last": "off",
-    "@stylistic/space-infix-ops": ["error", { "int32Hint": false }]
+    '@stylistic/eol-last': 'off',
+    '@stylistic/space-infix-ops': ['error', { 'int32Hint': false }]
   }
 };

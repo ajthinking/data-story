@@ -16,7 +16,7 @@ const DataStoryCommentNodeComponent = ({ id, data }: {
   return (
     (
       <div
-        className="max-w-xl text-xs font-mono bg-gray-50 text-blue-600 p-4 rounded shadow-xl"
+        className="max-w-xl prose prose-slate font-mono bg-gray-50 p-4 rounded shadow-xl"
         onDoubleClick={() => setOpenNodeModalId(id)}
       >
         {data.params.content.value}

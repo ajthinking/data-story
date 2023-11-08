@@ -1,6 +1,6 @@
 import { DataStory, DataStoryNodeComponent } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { Application, DiagramBuilder, nodes, coreNodeProvider } from "@data-story/core";
+import { Application, DiagramBuilder, nodes, coreNodeProvider } from '@data-story/core';
 
 export default ({ nodeName }: { nodeName: string}) => {
   const app = new Application();
@@ -14,11 +14,12 @@ export default ({ nodeName }: { nodeName: string}) => {
     .get()
 
   return (<div>
-    <div className="w-full sm:w-1/2" style={{ height: '36vh' }}>
+    <div className="w-full" style={{ height: '36vh' }}>
       <DataStory
         server={{ type: 'JS', app }}
         diagram={diagram}
         hideToolbar={true}
+        hideTabs={true}
       />
     </div>
   </div>

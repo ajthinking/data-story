@@ -30,7 +30,7 @@ export const ListFiles: ComputerConfig = {
             type: entry.isDirectory() ? 'directory' : 'file',
             fullPath: nodePath.join(path, entry.name),
           };
-      });      
+        });      
 
       output.push(entries)
 

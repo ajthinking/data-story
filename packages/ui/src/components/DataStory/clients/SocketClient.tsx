@@ -1,7 +1,7 @@
-import { Diagram, NodeDescription } from "@data-story/core";
+import { Diagram, NodeDescription } from '@data-story/core';
 import { ServerClient } from './ServerClient';
-import { SerializedReactFlow } from "../../../SerializedReactFlow";
-import { Hook } from "@data-story/core/dist/types/Hook";
+import { SerializedReactFlow } from '../../../SerializedReactFlow';
+import { Hook } from '@data-story/core/dist/types/Hook';
 
 export class SocketClient implements ServerClient {
   private socket?: WebSocket;
@@ -18,11 +18,11 @@ export class SocketClient implements ServerClient {
   ) {}
 
   init() {
-    this.socket = new WebSocket("ws://localhost:3100")   
+    this.socket = new WebSocket('ws://localhost:3100')   
 
     // Register on open
     this.socket.onopen = () => {
-      console.log("Connected to server: localhost:3100");
+      console.log('Connected to server: localhost:3100');
 
       // Ask the server to describe capabilites
       this.describe()
@@ -30,34 +30,34 @@ export class SocketClient implements ServerClient {
 
     // Register on error
     this.socket.onerror = (error) => {
-      console.log("WebSocket error: ", error); 
+      console.log('WebSocket error: ', error); 
     };
 
     // Register on close
     this.socket.onclose = () => {
-      console.log("WebSocket closed."); 
+      console.log('WebSocket closed.'); 
 
       if (this.reconnectTries < this.maxReconnectTries) { 
         setTimeout(() => {
-          console.log("Reconnecting...");
+          console.log('Reconnecting...');
           this.reconnectTries++;
           this.init();
         }, this.reconnectTimeout);
       } else {
-        console.log("Max reconnect tries reached. Is the server running?");
+        console.log('Max reconnect tries reached. Is the server running?');
       }
     };    
 
     this.socket.onmessage = ((data) => {
       const parsed = JSON.parse(data.data)
 
-      if (parsed.type === "DescribeResponse") {
+      if (parsed.type === 'DescribeResponse') {
         this.setAvailableNodes(parsed.availableNodes)
 
         return;
       }
 
-      if (parsed.type === "ExecutionUpdate") {
+      if (parsed.type === 'ExecutionUpdate') {
         this.updateEdgeCounts(parsed.counts)
 
         for(const hook of parsed.hooks as Hook[]) {
@@ -67,8 +67,8 @@ export class SocketClient implements ServerClient {
 
           if(hook.type === 'UPDATES') {
             const providedCallback = (...data: any) => {
-              console.log("THIS IS THE UPDATE HOOK!")
-              console.log("DataPassed", data)
+              console.log('THIS IS THE UPDATE HOOK!')
+              console.log('DataPassed', data)
             }
 
             providedCallback(...hook.args)
@@ -77,14 +77,14 @@ export class SocketClient implements ServerClient {
         return;
       }
 
-      if(parsed.type === "ExecutionResult") {
-        setTimeout(() => alert("Execution complete 💫"), 100)
+      if(parsed.type === 'ExecutionResult') {
+        setTimeout(() => alert('Execution complete 💫'), 100)
 
         return
       }
 
-      if(parsed.type === "ExecutionFailure") {
-        console.error("Execution failed: ", {
+      if(parsed.type === 'ExecutionFailure') {
+        console.error('Execution failed: ', {
           history: parsed.history,
         })
         setTimeout(() => alert(parsed.message), 100)
@@ -92,7 +92,7 @@ export class SocketClient implements ServerClient {
         return
       }   
       
-      if(parsed.type === "OpenResponse") {
+      if(parsed.type === 'OpenResponse') {
         const flow = parsed.flow;
 
         // const { x = 0, y = 0, zoom = 1 } = flow.viewport;
@@ -102,13 +102,13 @@ export class SocketClient implements ServerClient {
         return;
       }
 
-      throw("Unknown message type: " + parsed.type)
+      throw('Unknown message type: ' + parsed.type)
     }) 
   }
 
   describe() {
     const message = JSON.stringify({
-      type: "describe",
+      type: 'describe',
     })
 
     this.socket!.send(message);
@@ -116,7 +116,7 @@ export class SocketClient implements ServerClient {
 
   run(diagram: Diagram) {
     const message = JSON.stringify({
-      type: "run",
+      type: 'run',
       diagram,
     }, null, 2)
 
@@ -125,7 +125,7 @@ export class SocketClient implements ServerClient {
 
   async open(name: string) {
     const message = JSON.stringify({
-      type: "open",
+      type: 'open',
       name,
     })
 
@@ -134,7 +134,7 @@ export class SocketClient implements ServerClient {
 
   async save(name: string, reactFlow: SerializedReactFlow) {
     const message = JSON.stringify({
-      type: "save",
+      type: 'save',
       name,
       reactFlow  
     })

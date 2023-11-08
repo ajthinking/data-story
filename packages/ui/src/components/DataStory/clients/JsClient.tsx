@@ -5,10 +5,10 @@ import {
   Diagram,
   NullStorage,
   Executor,
-} from "@data-story/core";
+} from '@data-story/core';
 import { ServerClient } from './ServerClient';
-import { Computer } from "@data-story/core/dist/types/Computer";
-import { SerializedReactFlow } from "../../../SerializedReactFlow";
+import { Computer } from '@data-story/core/dist/types/Computer';
+import { SerializedReactFlow } from '../../../SerializedReactFlow';
 
 export class JsClient implements ServerClient {
   constructor(
@@ -23,7 +23,7 @@ export class JsClient implements ServerClient {
   init() {
     this.setAvailableNodes(this.app.descriptions())
 
-    console.log("Connected to server: JS")
+    console.log('Connected to server: JS')
   }
 
   describe() {}
@@ -57,8 +57,8 @@ export class JsClient implements ServerClient {
   
             if(hook.type === 'UPDATES') {
               const providedCallback = (...data: any) => {
-                console.log("THIS IS THE UPDATE HOOK!")
-                console.log("DataPassed", data)
+                console.log('THIS IS THE UPDATE HOOK!')
+                console.log('DataPassed', data)
               }
   
               providedCallback(...hook.args)
@@ -68,7 +68,7 @@ export class JsClient implements ServerClient {
           // Then wait for the next one
           handleUpdates(iterator);
         } else {
-          setTimeout(() => alert("Execution complete 💫"), 100)
+          setTimeout(() => alert('Execution complete 💫'), 100)
         }
       });
     }

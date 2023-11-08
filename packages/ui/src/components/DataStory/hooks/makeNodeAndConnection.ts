@@ -1,5 +1,5 @@
 import { Connection } from 'reactflow';
-import { Diagram, LinkGuesser, NodeDescription, AbstractPort, PositionGuesser } from "@data-story/core";
+import { Diagram, LinkGuesser, NodeDescription, AbstractPort, PositionGuesser } from '@data-story/core';
 import { DataStoryNode } from '../../Node/DataStoryNode';
 
 import { reactFlowNodeToDiagramNode } from '../../../reactFlowToDiagram';
@@ -45,10 +45,10 @@ export const makeNodeAndConnection = (
     },
     selected: true,
     type: {
-      Comment: "dataStoryCommentNodeComponent",
-      //Input: "dataStoryInputNodeComponent",
-      //Output: "dataStoryOutputNodeComponent",
-    }[nodeDescription.name] ?? "dataStoryNodeComponent",
+      Comment: 'dataStoryCommentNodeComponent',
+      //Input: 'dataStoryInputNodeComponent',
+      //Output: 'dataStoryOutputNodeComponent',
+    }[nodeDescription.name] ?? 'dataStoryNodeComponent',
   }
 
   const node = reactFlowNodeToDiagramNode(flowNode)
@@ -60,7 +60,7 @@ export const makeNodeAndConnection = (
     target: id,
     sourceHandle: link.sourcePortId,
     targetHandle: link.targetPortId,
-  }: null;
+  } : null;
 
   return [flowNode, connection]
 }

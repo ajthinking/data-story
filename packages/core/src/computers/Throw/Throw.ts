@@ -12,11 +12,6 @@ export const Throw: ComputerConfig = {
 
   async *run({ input, node }) {
     const [item] = input.pull(1)
-    // throw Error(
-    //   item.params.message
-    //   + ' in node '
-    //   + node.id
-    // )
     throw new NodeRunError({
       message: item.params.message,
       node,

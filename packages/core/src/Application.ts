@@ -1,8 +1,8 @@
-import { ComputerFactory } from "./ComputerFactory";
-import { NodeDescriptionFactory } from "./NodeDescriptionFactory";
-import { Computer } from "./types/Computer";
-import { ComputerConfig } from "./types/ComputerConfig";
-import { ServiceProvider } from "./types/ServiceProvider";
+import { ComputerFactory } from './ComputerFactory';
+import { NodeDescriptionFactory } from './NodeDescriptionFactory';
+import { Computer } from './types/Computer';
+import { ComputerConfig } from './types/ComputerConfig';
+import { ServiceProvider } from './types/ServiceProvider';
 
 export class Application {
   providers: ServiceProvider[] = [];

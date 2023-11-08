@@ -1,15 +1,13 @@
-import { DataStory, stuff } from '@data-story/ui'
+import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
 import {
   Application,
   DiagramBuilder,
   coreNodeProvider,
   nodes,
-} from "@data-story/core";
+} from '@data-story/core';
 
 export default () => {
-  console.log(stuff)
-
   const app = new Application();
 
   app.register(coreNodeProvider);
@@ -43,12 +41,13 @@ export default () => {
     .get()
 
   return (
-    <div className="w-full sm:w-1/2" style={{ height: '36vh' }}>
+    <div className="w-full mt-4" style={{ height: '36vh' }}>
       <DataStory
         server={{ type: 'JS', app }}
         diagram={diagram}
         callback={(options: any) => setTimeout(options.run, 100)}
         hideToolbar={true}
+        hideTabs={true}
       />
     </div>   
   );

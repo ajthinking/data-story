@@ -1,5 +1,5 @@
 export class ExecutionResult {
-  type = "ExecutionResult"
+  type = 'ExecutionResult'
 
   constructor(
     public id: string,

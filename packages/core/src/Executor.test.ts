@@ -71,9 +71,9 @@ describe('execute', () => {
       id: 'node-id',
       type: 'Accepter',
       inputs: [{
-          id: 'input-id',
-          name: 'input',
-          schema: {}
+        id: 'input-id',
+        name: 'input',
+        schema: {}
       }],
       outputs: [],
       params: {}

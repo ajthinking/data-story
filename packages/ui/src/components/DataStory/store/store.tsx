@@ -14,14 +14,14 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { Diagram, NodeDescription } from "@data-story/core";
+import { Diagram, NodeDescription } from '@data-story/core';
 import { DataStoryNode } from '../../Node/DataStoryNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig } from '../clients/ServerConfig';
 import { reactFlowToDiagram } from '../../../reactFlowToDiagram';
 import { reactFlowFromDiagram } from '../../../reactFlowFromDiagram';
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -69,13 +69,10 @@ export type StoreSchema = {
   /** Modals */
   openNodeModalId: string | null;
   setOpenNodeModalId: (id: string | null) => void;
-  open: (nodes: DataStoryNode[], edges: Edge[]) => void;
 
   /** Not used/implemented at the moment */
   flowName: string;
   setFlowName: (name: string) => void;
-  onOpen: () => void;
-  onSave: () => void;
 };
 
 export const createStore = () => create<StoreSchema>((set, get) => ({
@@ -99,7 +96,7 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
   setServerConfig: (config: ServerConfig) => {
     set({ serverConfig: config })
 
-    console.log("TODO: We should reconnect to the server now...")
+    console.log('TODO: We should reconnect to the server now...')
   },
   setFlowName: (name: string) => {
     set({
@@ -262,32 +259,6 @@ export const createStore = () => create<StoreSchema>((set, get) => ({
   setOpenNodeModalId: (id: string | null) => {
     set({ openNodeModalId: id })
   },
-  onOpen: () => {
-    get().server!.open("demo.story.json")
-
-    console.log("Opening...")
-  },
-  open: (nodes: DataStoryNode[], edges: any) => {
-    get().setNodes(nodes);
-    get().setEdges(edges);
-  },
-  onSave: () => {
-    let name = get().flowName
-
-    if(name === "untitled" || name === "" || name === undefined) {
-      alert("Please choose a name before saving.")
-      return
-    }
-
-    if(!name.endsWith(".json")) name = name + ".json"
-
-    get().server!.save(
-      name,
-      get().rfInstance!.toObject()
-    )
-
-    console.log("Saving...")
-  },
   traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => {
     const selectedNodes = get().nodes.filter(node => node.selected)
 
@@ -411,7 +382,7 @@ export const DataStoryContext = React.createContext<ReturnType<typeof createStor
 export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
   const store = React.useContext(DataStoryContext);
   if(!store) throw new Error('useStore must be used within a DataStoryProvider');
-// @ts-ignore
+  // @ts-ignore
   return store(...params);
 };
 

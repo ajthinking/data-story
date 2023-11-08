@@ -26,18 +26,18 @@ export const InterPolatableTextArea = ({ form, label, rows, id, inputSchema }: {
       >
       </textarea>
       <select
-          value={i}
-          onChange={(e) => {
-            form.setValue(
-              id,
-              form.getValues(id) + '${' + e.target.value + '}'
-            )
-          }}
-          className="ml-1 max-h-6 border border-gray-300 text-xs w-6 text-gray-400 bg-gray-300 hover:border-gray-400 focus:outline-none appearance-none">
-          <option></option>
-          {Object.keys(inputSchema).map((key) => {
-            return <option className="text-gray-400" key={key}>{key}</option>
-          })}
+        value={i}
+        onChange={(e) => {
+          form.setValue(
+            id,
+            form.getValues(id) + '${' + e.target.value + '}'
+          )
+        }}
+        className="ml-1 max-h-6 border border-gray-300 text-xs w-6 text-gray-400 bg-gray-300 hover:border-gray-400 focus:outline-none appearance-none">
+        <option></option>
+        {Object.keys(inputSchema).map((key) => {
+          return <option className="text-gray-400" key={key}>{key}</option>
+        })}
       </select> 
 
     </div>

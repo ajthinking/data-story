@@ -37,27 +37,27 @@ export const RunCommand: ComputerConfig = {
       const { stdout, stderr, error } = await awaitableExec(command);
 
       if(stdout) {
-        console.log("STD OUT")
+        console.log('STD OUT')
         output.push([{ stdout }])
         yield;
         continue;
       }
 
       if(stderr) {
-        console.log("EXEC ERROR")
+        console.log('EXEC ERROR')
         output.pushTo('error', [{ stderr }])
         yield;
         continue;
       }
 
       if(error) {
-        console.log("error (not stderr)")
+        console.log('error (not stderr)')
         output.pushTo('error', [error])
         yield;
         continue;
       }      
 
-      throw new Error("Unknown exec result!")
+      throw new Error('Unknown exec result!')
     }
   },
 };

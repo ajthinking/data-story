@@ -1,4 +1,4 @@
-import { NodeDescription } from "@data-story/core";
+import { NodeDescription } from '@data-story/core';
 import { DataStoryNode } from '../../Node/DataStoryNode';
 
 export const guessPosition = (existingNodes: DataStoryNode[], nodeDescription: NodeDescription) => {

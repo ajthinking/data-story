@@ -1,6 +1,6 @@
 {
   "name": "@data-story/ui",
-  "version": "0.0.59",
+  "version": "0.0.69",
   "main": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
   "type": "commonjs",
@@ -15,10 +15,12 @@
   },
   "dependencies": {
     "@data-story/core": "*",
+    "clsx": "^2.0.0",
     "concurrently": "^8.2.1",
     "reactflow": "^11.8.1"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@types/glob": "^8.1.0",
     "@types/node": "18.14.2",
     "@types/react": "18.0.28",

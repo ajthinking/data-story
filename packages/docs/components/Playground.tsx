@@ -1,6 +1,6 @@
 import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { coreNodeProvider, Application } from "@data-story/core";
+import { coreNodeProvider, Application } from '@data-story/core';
 
 export default () => {
   const app = new Application();
@@ -13,9 +13,7 @@ export default () => {
 
   return (
     <div className="w-full" style={{ height: '100vh' }}>
-      <DataStory
-        server={{ type: 'JS', app }}
-      />
+      <DataStory server={{ type: 'JS', app }} />
     </div>   
   );
 };
