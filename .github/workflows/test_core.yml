@@ -13,10 +13,8 @@ jobs:
     - name: Use Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '17.x'
-    - name: remove overlying workspace
-      run: rm  -f ../../yarn.lock && rm  -f ../../package.json
-              
+        node-version: '18.x'
+
     - name: Install dependencies
       run: yarn
     - name: Build
