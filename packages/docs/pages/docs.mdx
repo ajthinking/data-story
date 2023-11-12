@@ -1,0 +1,68 @@
+# Introduction
+Visual programming for `React` and `NodeJs` 🚀
+
+import Hero from '../components/demos/Hero'
+
+<Hero />
+
+## What is DataStory?
+DataStory ships a React component:
+```tsx
+<DataStory />
+```
+... which connects to a computation server:
+```ts
+const app = new Application();
+
+app.register([
+  coreNodeProvider,
+  // ... your custom nodes here 💫
+]);
+```
+
+... that executes your diagram with real time feedback:
+```ts
+// async generator magic ✨
+const executor = new Executor(diagram)
+```
+
+## Tell me more
+
+We may execute diagrams directly via the UI or in headless/serverless environments and seamlessly convert between UI rendered, JSON serialized and programmically created diagrams/nodes to build any application you can think of.
+```ts
+// A diagram created programmatically 🤖
+const diagram = new DiagramBuilder()
+  .add(Signal)
+  .add(Sleep, { duration: 500 })
+  .add(ConsoleLog)
+  .get()
+
+// Serializable 📦
+const saved = JSON.stringify(diagram)
+
+// Open saved diagrams 🔧
+const restored = JSON.parse(saved)
+```
+
+We may customize the platform to our needs and easily add our own nodes using well defined patterns:
+```ts
+// Custom node
+const MyBusinessProcessor = {
+  name: 'My Business Processor',
+  inputs: ['ideas'],
+  outputs: ['unicorns'],
+  
+  async *run({ input, output }) {
+    // logic goes here 🧠
+  },
+};
+
+// Derived node
+const Contacts = deriveFrom(BaseEntity, { ... }
+
+
+// A diagram is a node and a node is a diagram 🤯
+const NestedNode = diagram
+```
+
+... and much more - Let's get building! 🚀
