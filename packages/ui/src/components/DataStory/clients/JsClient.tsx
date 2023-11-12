@@ -68,7 +68,7 @@ export class JsClient implements ServerClient {
           // Then wait for the next one
           handleUpdates(iterator);
         } else {
-          setTimeout(() => alert('Execution complete 💫'), 100)
+          // setTimeout(() => alert('Execution complete 💫'), 100)
         }
       });
     }

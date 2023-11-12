@@ -1,20 +1,24 @@
-import Hero from '../components/demos/Hero'
-import NodeDemo from '../components/demos/NodeDemo'
+import Hero from '../demos/Hero'
+import NodeDemo from '../demos/NodeDemo'
 
-export default function Home() {
+export default () => {
   return (<div>
-    <div className="flex w-full flex-wrap">
-      <section className="min-w-md flex-1 h-screen mx-auto px-4 sm:px-6 lg:px-8">
+    {/* <div className="flex flex-col md:flex-row w-full">
+      <div className="bg-red-500 w-full md:w-auto">Rött</div>
+      <div className="bg-green-500 w-full md:w-auto">Grönt</div>
+    </div> */}
+    <div className="flex flex-col md:flex-row w-full h-screen">
+      <section className="flex w-full flex-initial mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className="my-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:pl-8 flex gap-3 lg:flex-justify lg:flex flex-col lg:flex-row">
           <div className="sm:text-center lg:text-left">
-            <h1 className="text-4xl tracking-tight font-extrabold text-gray-800 sm:text-5xl md:text-6xl">
-              <span className="block xl:inline">Visual compute with</span>
-              <span className="block text-indigo-600 xl:inline"> {'<DataStory />'}</span>
-            </h1>
+            <div className="text-4xl tracking-tight font-extrabold text-gray-800 sm:text-5xl md:text-6xl">
+              <div className="text-xl lg:text-3xl mb-8 whitespace-nowrap overflow:auto">real-time data workflows</div>
+              <div className=" text-indigo-600 mb-12"> {'<DataStory />'}</div>
+            </div>
             <p
               className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-            Build, visualize and execute <span className="italic">your</span> business case.
+            Build, visualize and execute <span className="italic">your</span> business case with React and NodeJS.
             </p>
             <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
               <div className="rounded-md shadow">
@@ -34,11 +38,11 @@ export default function Home() {
         </div>
 
       </section>
-      <div className="flex flex-1 min-w-md h-64 mt-16 mr-8">
+      <div className="flex w-full min-w-sm h-64 mt-16 mr-8">
         <Hero />
       </div>
     </div>
-    <div>
+    {/* <div>
       <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
         <div className="text-2xl text-gray-800 font-bold">We have all the Nodes!</div>
       </div>
@@ -77,6 +81,6 @@ export default function Home() {
         <div className="text-xl text-gray-50">Do your business</div>
       </div>
       <Hero />
-    </div>        
+    </div>         */}
   </div>)
 }
