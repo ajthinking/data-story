@@ -7,7 +7,7 @@ export const CreateJson: ComputerConfig = {
   outputs: ['output'],
   params: {
     json: json('json').value(JSON.stringify(
-      [{ "path": "/Users/anders/Code/data-story/core/computers"}]
+      [{ 'path': '/Users/anders/Code/data-story/core/computers'}]
     )).get(),
   },
 
