@@ -1,5 +1,5 @@
 import { ParamV2 } from '@data-story/core';
-import { ExampleForm, FormV2 } from '@data-story/ui';
+import { DropDown, ExampleForm, FormV2 } from '@data-story/ui';
 import '@data-story/ui/dist/data-story.css';
 
 export default function Home() {
@@ -73,16 +73,16 @@ export default function Home() {
       value: []
     },
     {
-      name: 'skills',
-      label: 'Skills',
+      name: 'tasks',
+      label: 'Tasks',
       type: 'Repeatable',
       row: [
         {
-          name: 'skill',
+          name: 'task',
           label: 'Property',
           type: 'String_',
           value: '',
-          help: 'Describe the skill',
+          help: 'Describe the task',
         },
         {
           name: 'level',
@@ -91,7 +91,7 @@ export default function Home() {
           selectedType: 'String_',
           availableTypes: ['String_', 'Interpretable'],
           value: '',
-          help: 'How good are you at this skill?',
+          help: 'How hard is the task?',
         },        
       ],
       help: 'A Repeatable input',
@@ -99,8 +99,74 @@ export default function Home() {
     },    
   ]
 
+  const closeAndLog = ({ close }) => {
+    close();
+    console.log('closeAndLog')
+  }
+
   // Lets render them in a form
-  return <div className="bg-blue-950 p-12 flex w-full flex-col items-center">
+  return <div className="bg-blue-950 p-12 flex w-full flex-col">
+    <div className="flex justify-center w-full py-12">
+      <DropDown optionGroups={[
+        {
+          label: 'mode',
+          options: [
+            'interpretable',
+            'map',
+          ].map((name) => ({
+            label: name,
+            value: name,
+            callback: closeAndLog
+          }))
+        },
+        {
+          label: 'type',
+          options: [
+            'string',
+            'number',
+            'date',
+            'json',
+            'js',
+          ].map((name) => ({
+            label: name,
+            value: name,
+            callback: closeAndLog
+          }))
+        },        
+        {
+          label: 'properties',
+          options: [
+            'id',
+            'created_at',
+            'updated_at',
+            'properties',
+            'properties.name',
+            'properties.description',
+            'properties.price',
+            'properties.quantity',
+            'properties.category',
+          ].map((name) => ({
+            label: name,
+            value: name,
+            callback: closeAndLog
+          }))
+        },
+        {
+          label: 'functions',
+          options: [
+            'trim',
+            'lowercase',
+            'uppercase',
+            'replace',
+            'split',
+          ].map((name) => ({
+            label: name,
+            value: name,
+            callback: closeAndLog
+          }))
+        }        
+      ]}/>
+    </div>
     <FormV2 params={params} />
     {/* <ExampleForm /> */}
   </div>
