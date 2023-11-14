@@ -12,8 +12,7 @@
     "build:css": "tailwindcss build -o ./dist/data-story.css",
     "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
     "watch:tsc": "tsc --watch",
-    "watch:webpack": "webpack --watch",
-    "dev": "nodemon -e '*' -x 'npx tailwindcss build -o ./dist/data-story.css && tsc && webpack'"
+    "watch:webpack": "webpack --watch"
   },
   "dependencies": {
     "@data-story/core": "*",

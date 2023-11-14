@@ -11,9 +11,9 @@
     "dist"
   ],
   "scripts": {
-    "dev": "echo _____RUNNING_CORE_DEV_____ && nodemon --exec ts-node ./src/server/socket.ts",
     "watch:tsc": "tsc --watch",
     "watch:webpack": "webpack --watch",
+    "watch:server": "nodemon -x 'npx @data-story/core server'",
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "vitest",
     "build": "tsc && webpack"
