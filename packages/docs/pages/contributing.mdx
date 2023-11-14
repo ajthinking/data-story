@@ -13,18 +13,6 @@ Then, to work on all packages, setup these commands to all run simultaneously:
 
 ```bash
 # in root
-npx nodemon -x "npx @data-story/core server"
-
-# in core
-yarn tsc --watch
-npx webpack --watch
-
-# in ui
-yarn tsc --watch
-yarn watch:css
-npx webpack --watch
-
-# in docs
 yarn dev
 ```
 
@@ -34,7 +22,6 @@ yarn dev
 
 Instead of the above cumbersome 7+ terminal setup we would like to be able to work on everything from root like this:
 ```
-yarn set version berry
 yarn
 yarn dev
 ```
