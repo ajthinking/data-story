@@ -11,6 +11,8 @@
     "build": "echo _____RUNNING_UI_BUILD_____ && tsc && webpack && yarn run build:css",
     "build:css": "tailwindcss build -o ./dist/data-story.css",
     "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
+    "watch:tsc": "tsc --watch",
+    "watch:webpack": "webpack --watch",
     "dev": "nodemon -e '*' -x 'npx tailwindcss build -o ./dist/data-story.css && tsc && webpack'"
   },
   "dependencies": {
