@@ -8,18 +8,19 @@ export default () => {
       <div className="bg-green-500 w-full md:w-auto">Grönt</div>
     </div> */}
     <div className="flex flex-col md:flex-row w-full h-screen">
-      <section className="flex w-full flex-initial mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="absolute z-10 flex w-1/2 z-50 top-24 flex-initial mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className="my-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:pl-8 flex gap-3 lg:flex-justify lg:flex flex-col lg:flex-row">
           <div className="sm:text-center lg:text-left">
-            <div className="text-4xl tracking-tight font-extrabold text-gray-800 sm:text-5xl md:text-6xl">
-              <div className="text-xl lg:text-3xl mb-8 whitespace-nowrap overflow:auto">real-time data workflows</div>
-              <div className=" text-indigo-600 mb-12"> {'<DataStory />'}</div>
+            <div className="select-none text-2xl tracking-tight font-extrabold text-gray-800 sm:text-4xl md:text-4xl">
+              {/* <div className="text-xl lg:text-3xl mb-8 whitespace-nowrap overflow:auto">real-time data workflows</div> */}
+              <div className="text-indigo-600">Realtime Automation</div>
+              <div className="text-indigo-600">for React and NodeJS</div>
             </div>
-            <p
+            {/* <p
               className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
             Build, visualize and execute <span className="italic">your</span> business case with React and NodeJS.
-            </p>
+            </p> */}
             <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
               <div className="rounded-md shadow">
                 <a href="/docs"
@@ -36,7 +37,6 @@ export default () => {
             </div>
           </div>
         </div>
-
       </section>
       <div className="flex w-full min-w-sm h-64 mt-16 mr-8">
         <Hero />

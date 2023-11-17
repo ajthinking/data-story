@@ -3,3 +3,6 @@ dist/*
 
 # Ignore all '.min.js' files
 *.min.js
+
+# Temporary measure while migrating nodes
+holding/**/*

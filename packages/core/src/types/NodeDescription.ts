@@ -1,4 +1,5 @@
 import { Param } from '../Param';
+import { ParamV3 } from '../ParamV3';
 import { AbstractPort } from './Port';
 
 export type NodeDescription = {
@@ -7,6 +8,6 @@ export type NodeDescription = {
   category?: string,
   inputs: AbstractPort[],
   outputs: AbstractPort[],
-  params: Record<string, Param>,
+  params: ParamV3[],
   tags: string[],
 }

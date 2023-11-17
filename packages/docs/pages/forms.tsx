@@ -120,6 +120,17 @@ export default function Home() {
           }))
         },
         {
+          label: 'mode specifics',
+          options: [
+            'interpretable?',
+            'typeCast?',
+          ].map((name) => ({
+            label: name,
+            value: name,
+            callback: closeAndLog
+          }))
+        },        
+        {
           label: 'type',
           options: [
             'string',

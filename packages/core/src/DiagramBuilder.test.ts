@@ -1,7 +1,6 @@
-import { Ignore, CreateJson, Pass, Merge, Signal } from './computers';
+import { Ignore, CreateJson, Pass, Signal } from './computers';
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
-
 
 describe('get', () => {
   it('returns the diagram', () => {
@@ -56,18 +55,20 @@ describe('add', () => {
 
   it('can set params', () => {
     const diagram = new DiagramBuilder()
-      .add(Signal, { label: 'Sigge' })
+      .add(Signal, { period: 99 })
       .get()
+    
+    const periodParam = diagram
+      .nodes[0]
+      .params
+      .find(param => param.name === 'period')
 
-    expect(diagram.nodes).toMatchObject([
-      {
-        params: {
-          label: {
-            value: 'Sigge'
-          }
-        },
+    expect(periodParam).toMatchObject({
+      name: 'period',
+      inputMode: {
+        value: 99
       },
-    ])
+    })
   })
 
   it.todo('can set params without affecting other nodes', () => {
@@ -119,37 +120,37 @@ describe('add', () => {
   })
 })
 
-describe('on', () => {
-  it('can link to specified port on most recent node', () => {
-    const diagram = new DiagramBuilder()
-      .add(Merge)
-      .from('not_merged').add(Pass)
-      .get();
+// describe('on', () => {
+// it('can link to specified port on most recent node', () => {
+//   const diagram = new DiagramBuilder()
+//     .add(Merge)
+//     .from('not_merged').add(Pass)
+//     .get();
 
-    expect(diagram.links).toMatchObject([
-      { id: 'Merge.1.not_merged--->Pass.1.input' },
-    ])
-  }),
+//   expect(diagram.links).toMatchObject([
+//     { id: 'Merge.1.not_merged--->Pass.1.input' },
+//   ])
+// }),
 
-  it('throws if no such port exists', () => {
-    expect(() => {
-      new DiagramBuilder()
-        .add(Merge)
-        .from('bad_port').add(Pass)
-        .get();
-    }).toThrowError('Bad on directive: bad_port. Port not found on Merge.1')
-  })
+// it('throws if no such port exists', () => {
+//   expect(() => {
+//     new DiagramBuilder()
+//       .add(Merge)
+//       .from('bad_port').add(Pass)
+//       .get();
+//   }).toThrowError('Bad on directive: bad_port. Port not found on Merge.1')
+// })
 
-  it('can link to a previous node port', () => {
-    const diagram = new DiagramBuilder()
-      .add(Merge)
-      .from('merged').add(Pass)
-      .from('Merge.1.not_merged').add(Pass)
-      .get();
+// it('can link to a previous node port', () => {
+//   const diagram = new DiagramBuilder()
+//     .add(Merge)
+//     .from('merged').add(Pass)
+//     .from('Merge.1.not_merged').add(Pass)
+//     .get();
 
-    expect(diagram.links).toMatchObject([
-      { id: 'Merge.1.merged--->Pass.1.input' },
-      { id: 'Merge.1.not_merged--->Pass.2.input' },
-    ])
-  })
-})
+//   expect(diagram.links).toMatchObject([
+//     { id: 'Merge.1.merged--->Pass.1.input' },
+//     { id: 'Merge.1.not_merged--->Pass.2.input' },
+//   ])
+// })
+// })

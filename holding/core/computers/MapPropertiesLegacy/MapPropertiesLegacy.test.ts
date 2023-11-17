@@ -1,44 +1,44 @@
 import { when } from '../../support/computerTester/ComputerTester';
-import { MapProperties } from './MapProperties';
+import { MapPropertiesLegacy } from './MapPropertiesLegacy';
 
 
 describe('when mode is ADD', () => {
   it('maps incoming items according to the schema passed', async () => {
     const incoming = [
       {
-        id: "some-id",
+        id: 'some-id',
         person: {
-          firstname: "John",
+          firstname: 'John',
           age: 42
         }
       }
     ]
   
     const map = JSON.stringify({
-      vendor_id: "id",
+      vendor_id: 'id',
       properties: {
-        name: "person.firstname",
+        name: 'person.firstname',
         metadata: {
-          age: "person.age"
+          age: 'person.age'
         }
       }
     })
   
   
   
-    await when(MapProperties)
+    await when(MapPropertiesLegacy)
       .hasParams({ map })
       .getsInput(incoming)
       .doRun()
       .expectOutput([{
-        id: "some-id",
-        vendor_id: "some-id",
+        id: 'some-id',
+        vendor_id: 'some-id',
         person: {
-          firstname: "John",
+          firstname: 'John',
           age: 42
         },
         properties: {
-          name: "John",
+          name: 'John',
           metadata: {
             age: 42
           }
@@ -52,34 +52,34 @@ describe('when mode is REPLACE', () => {
   it('maps incoming items according to the schema passed', async () => {
     const incoming = [
       {
-        id: "some-id",
+        id: 'some-id',
         person: {
-          firstname: "John",
+          firstname: 'John',
           age: 42
         }
       }
     ]
   
     const map = JSON.stringify({
-      vendor_id: "id",
+      vendor_id: 'id',
       properties: {
-        name: "person.firstname",
+        name: 'person.firstname',
         metadata: {
-          age: "person.age"
+          age: 'person.age'
         }
       }
     })
   
   
   
-    await when(MapProperties)
+    await when(MapPropertiesLegacy)
       .hasParams({ map })
       .getsInput(incoming)
       .doRun()
       .expectOutput([{
-        vendor_id: "some-id",
+        vendor_id: 'some-id',
         properties: {
-          name: "John",
+          name: 'John',
           metadata: {
             age: 42
           }

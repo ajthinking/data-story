@@ -24,14 +24,14 @@ export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
   }; 
 
   return (
-    <div className='py-6 pb-8'>
+    <div className="">
       <div className="relative inline-block">
         <button
           type="button" 
-          className="px-4 py-2 text-gray-50 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs inline-flex items-center"
+          className="px-4 py-2 text-xs text-white bg-blue-400 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xs inline-flex items-center"
           onClick={toggleDropdown}
         ><ConfigIcon /></button>
-        {isOpen && (<div className="max-h-128 overflow-scroll absolute origin-top-right mt-4 right-0 z-50 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        {isOpen && (<div className="max-h-128 overflow-scroll absolute origin-top-right mt-4 right-0 z-100 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           {optionGroups.map((optionGroup) => {
             return (
               <div className="mb-2" key={optionGroup.label}>

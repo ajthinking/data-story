@@ -1,6 +1,7 @@
 import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
-import { coreNodeProvider, Application } from '@data-story/core';
+import { coreNodeProvider, Application, DiagramBuilder } from '@data-story/core';
+import { ConsoleLog, Map, Signal } from '@data-story/core/dist/computers';
 
 export default () => {
   const app = new Application();
@@ -11,9 +12,20 @@ export default () => {
 
   app.boot();
 
+  const diagram = new DiagramBuilder()
+    .add(Signal, { period: 1000, count: 1 })
+    .add(Map, {
+      properties: [{ key: 'Identifier', value: '${id}' }]
+    })
+    .add(ConsoleLog)
+    .get()
+
   return (
     <div className="w-full" style={{ height: '100vh' }}>
-      <DataStory server={{ type: 'JS', app }} />
+      <DataStory 
+        server={{ type: 'JS', app }}
+        diagram={diagram}
+      />
     </div>   
   );
 };

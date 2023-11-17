@@ -2,7 +2,7 @@ import { Diagram } from './Diagram';
 import { Executor } from './Executor';
 import { Computer, RunArgs } from './types/Computer';
 import { DiagramBuilder } from './DiagramBuilder';
-import { CreateJson, Ignore, Log, Signal, Throw } from './computers';;
+import { CreateJson, Ignore, Signal, Throw } from './computers';;
 import { NullStorage } from './NullStorage';
 import { whenRunning } from './support/diagramExecutionTester/DiagramExecutionTester';
 import { Link } from './types/Link';
@@ -36,7 +36,7 @@ describe('execute', () => {
       type: 'Dummy',
       inputs: [],
       outputs: [],
-      params: {}
+      params: []
     }
 
     const diagram = new Diagram([node], [])
@@ -76,7 +76,7 @@ describe('execute', () => {
         schema: {}
       }],
       outputs: [],
-      params: {}
+      params: []
     }
 
     const diagram = new Diagram([node], [])
@@ -111,7 +111,7 @@ describe('execute', () => {
           schema: {}
         }
       ],
-      params: {}
+      params: []
     }
 
     const diagram = new Diagram([node], [])
@@ -148,7 +148,7 @@ describe('execute', () => {
         name: 'output',
         schema: {}
       }],
-      params: {}
+      params: []
     }
 
     const log: Node = {
@@ -160,7 +160,7 @@ describe('execute', () => {
         schema: {}
       }],
       outputs: [],
-      params: {}
+      params: []
     }
     
     const link: Link = {

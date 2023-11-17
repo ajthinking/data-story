@@ -1,6 +1,5 @@
 import { ComputerConfig } from './types/ComputerConfig'
 import { ComputerFactory } from './ComputerFactory'
-import { DefaultParams } from './Param'
 import { NodeDescriptionFactory } from './NodeDescriptionFactory'
 
 describe('fromComputer', () => {
@@ -25,9 +24,7 @@ describe('fromComputer', () => {
         schema: {},
       }],
       outputs: [],
-      params: {
-        ...DefaultParams
-      },
+      params: [],
       tags: [],
     })
   })

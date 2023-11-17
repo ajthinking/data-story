@@ -61,7 +61,11 @@ export class DiagramBuilder {
 
     // set explicit params
     for(const [key, value] of Object.entries(params)) {
-      node.params[key].value = value
+      const param = node.params.find(param => param.name === key)
+
+      if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
+
+      param.inputMode.value = value
     }
 
     node.position = new PositionGuesser(

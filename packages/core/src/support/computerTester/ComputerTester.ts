@@ -193,7 +193,7 @@ export class ComputerTester {
         name: output.name,
         schema: output.schema,
       })),
-      params: {}
+      params: []
     }
 
     // Create dangling links to the inputs
@@ -251,7 +251,7 @@ export class ComputerTester {
         continue
       }
 
-      device[param.name] = param.value
+      device[param.name] = param.inputMode.value
     }
 
     return device as ParamsDevice;

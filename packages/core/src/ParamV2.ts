@@ -44,11 +44,11 @@ export type Select = {
 
 export type Repeatable<RepeatableRow> = {
   type: 'Repeatable',
-  row: RepeatableRow,
   name: string,
-  label: string,
-  value: RepeatableRow[],
   help: string,
+  label: string,
+  row: RepeatableRow,
+  value: RepeatableRow[],
 }
 
 export type DynamicInput = {

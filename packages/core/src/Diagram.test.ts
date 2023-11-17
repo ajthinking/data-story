@@ -35,7 +35,7 @@ describe('nodeWithOutputPortId', () => {
       type: 'MyNode',  
       inputs: [],
       outputs: [output],
-      params: {}
+      params: []
     }
 
     const diagram = new Diagram([node], [])

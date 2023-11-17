@@ -23,3 +23,4 @@ export { deriveFrom } from './deriveFrom'
 export { coreNodeProvider } from './coreNodeProvider'
 
 export * as nodes from './computers'
+export * from './ParamV3'

@@ -10,21 +10,3 @@ export type Param = {
   selectOptions?: string[],
   inputSchemaFromPort?: string,
 }
-
-export const name: Param = {
-  id: 'name',
-  name: 'name',
-  type: 'string',
-  value: '',
-  rows: 1,
-}
-
-export const label: Param = {
-  id: 'label',
-  name: 'label',
-  type: 'string',
-  value: '',
-  rows: 1,  
-}
-
-export const DefaultParams = { name, label }

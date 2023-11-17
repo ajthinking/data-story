@@ -1,4 +1,4 @@
-import { DefaultParams, ParamValue } from './Param';
+import { ParamValue } from './Param';
 import { ComputerConfig } from './types/ComputerConfig';
 import { ComputerFactory } from './ComputerFactory';
 
@@ -15,6 +15,8 @@ export const deriveFrom = (
   computerConfig: ComputerConfig,
   options: Record<string, ParamValue>
 ) => {
+  throw Error('TODO')
+
   const template = new ComputerFactory().get(computerConfig);
   template.name = options.name;
 
@@ -26,12 +28,13 @@ export const deriveFrom = (
   template.category = options.category || template.category
   template.label = options.label || template.label
 
-  if(!template.params) template.params = {}
+  if(!template.params) template.params = []
     
-  template.params = { ...DefaultParams, ...template.params }
+  template.params = { ...template.params }
 
   for (const [paramName, paramValue] of Object.entries(options.params || {})) {
-    template.params[paramName].value = paramValue
+    // TODO
+    // template.params[paramName].value = paramValue
   }
 
   return template

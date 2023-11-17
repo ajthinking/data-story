@@ -13,13 +13,15 @@ const DataStoryCommentNodeComponent = ({ id, data }: {
 
   const { setOpenNodeModalId } = useStore(selector, shallow);
 
+  const contentParam = data.params.find((param) => param.name === 'content')!
+
   return (
     (
       <div
         className="max-w-xl prose prose-slate font-mono bg-gray-50 p-4 rounded shadow-xl"
         onDoubleClick={() => setOpenNodeModalId(id)}
       >
-        {data.params.content.value}
+        {contentParam.inputMode.value as string}
       </div>
     )
   );

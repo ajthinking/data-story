@@ -22,7 +22,6 @@ export function Repeatable({
   getValues: any,
 }) {
   const defaultRows = () => {
-    console.log('Deafault Rows!!', param.value)
     if(param.value.length === 0) return [structuredClone(param.row)]
     
     return param.value
