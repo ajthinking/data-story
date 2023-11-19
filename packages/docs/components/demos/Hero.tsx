@@ -6,6 +6,7 @@ import {
   coreNodeProvider,
   nodes,
 } from '@data-story/core';
+import { Comment, Map } from '@data-story/core/dist/computers';
 
 export default () => {
   const app = new Application();
@@ -40,11 +41,19 @@ export default () => {
   //   .link('Signal.2.output', 'Merge.1.suppliers')
   //   .get()
 
+  const diagram = new DiagramBuilder()
+    .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
+    .add({...Map, label: 'Automation'})
+    .add({...ConsoleLog, label: 'for React & NodeJS'})
+
+    .above('Signal.1').add(Comment, { content: '### Welcome to DataStory!'})
+    .get()
+
   return (
     <div className="w-full mt-4" style={{ height: '36vh' }}>
       <DataStory
         server={{ type: 'JS', app }}
-        // diagram={diagram}
+        diagram={diagram}
         callback={(options: any) => setTimeout(options.run, 100)}
         hideToolbar={true}
         hideTabs={true}

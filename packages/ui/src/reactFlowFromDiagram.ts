@@ -31,7 +31,11 @@ export const reactFlowFromDiagram = (diagram: Diagram): SerializedReactFlow => {
             }
           }),
         },
-        type: 'dataStoryNodeComponent',
+        type: (() => {
+          if(node.type === 'Comment') return 'dataStoryCommentNodeComponent';
+
+          return 'dataStoryNodeComponent'
+        })(),
       }
     }),
     edges: diagram.links.map(link => {
