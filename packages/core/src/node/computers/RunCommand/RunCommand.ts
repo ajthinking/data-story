@@ -1,5 +1,4 @@
 
-import { string } from '../../../ParamBuilder';
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
 import { ComputerConfig } from '../../../types/ComputerConfig';
@@ -26,9 +25,24 @@ export const RunCommand: ComputerConfig = {
   name: 'RunCommand',
   inputs: ['input'],
   outputs: ['output', 'error'],
-  params: {
-    command: string('command').value('echo "Hello World"').get(),
-  },
+  params: [
+    {
+      name: 'command',
+      label: 'Command',
+      help: 'Command to run',
+      inputMode: {
+        type: 'Stringable',
+        selected: true,
+        multiline: true,
+        canInterpolate: false,
+        interpolate: false,
+        evaluations: [],
+        casts: [],
+        value: 'say "Hello World"',
+      },
+      alternativeInputModes: [],
+    }    
+  ],
 
   async *run({ input, output, params }) {
     while(true) {

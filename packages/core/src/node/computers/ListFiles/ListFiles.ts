@@ -15,9 +15,24 @@ export const ListFiles: ComputerConfig = {
       fullPath: 'string',
     }
   }],
-  params: {
-    path: string('path').value('/').get(),
-  },
+  params: [
+    {
+      name: 'path',
+      label: 'Path',
+      help: 'Dir to list',
+      inputMode: {
+        type: 'Stringable',
+        selected: true,
+        multiline: true,
+        canInterpolate: false,
+        interpolate: false,
+        evaluations: [],
+        casts: [],
+        value: '/',
+      },
+      alternativeInputModes: [],
+    }    
+  ],
 
   async *run({ input, output }) {
     while(true) {

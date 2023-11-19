@@ -6,12 +6,30 @@ export const AskChatGpt: ComputerConfig = {
   name: 'AskChatGpt',
   inputs: ['input'],
   outputs: ['completions'],
-  params: {
-    prompt: string('prompt').value('What is the meaning of life?').get(),
-  },
+  params: [
+    {
+      name: 'prompt',
+      label: 'Prompt',
+      help: 'Chat prompt',
+      inputMode: {
+        type: 'Stringable',
+        selected: true,
+        multiline: true,
+        canInterpolate: true,
+        interpolate: true,
+        evaluations: [],
+        casts: [],
+        value: 'What is the meaning of life?',
+      },
+      alternativeInputModes: [],
+    },    
+  ],
+
   category: 'API',
 
   async *run({ input, output }) {
+
+    if(!process.env.OPEN_AI_SECRET) throw Error('OPEN_AI_SECRET env not set')
 
     const openai = new OpenAIApi(
       new Configuration({
