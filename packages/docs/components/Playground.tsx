@@ -22,7 +22,8 @@ export default () => {
 
   return (
     <div className="w-full" style={{ height: '100vh' }}>
-      <DataStory 
+      <DataStory
+        // server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
         server={{ type: 'JS', app }}
         diagram={diagram}
       />
