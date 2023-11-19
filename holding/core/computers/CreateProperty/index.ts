@@ -1,1 +1,0 @@
-export { CreateProperty } from './CreateProperty'

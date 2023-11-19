@@ -24,7 +24,7 @@ export function Params({
       {node.data.params.map((param) => {
         return (<div className="flex flex-col border-b border-white pb-4" key={param.name}>
           <label title="axx" className="my-2 text-sm tracking-wide font-bold uppercase text-slate-400">{param.label || 'no-label'}</label>
-          <div className="mt-2 mb-2 text-xs text-slate-400">{param.help || 'no-help'}</div>
+          {param.help && (<div className="mt-2 mb-2 text-xs text-slate-400">{param.help || 'no-help'}</div>)}
 
           {/* Horizontal layout */}
           {param.inputMode.type === 'Stringable' && <div className="flex">

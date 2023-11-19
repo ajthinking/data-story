@@ -1,1 +1,0 @@
-export { MapPropertiesLegacy } from './MapPropertiesLegacy'

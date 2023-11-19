@@ -53,15 +53,6 @@ export class JsClient implements ServerClient {
                 userHook(...hook.args)
               }
             }
-  
-            if(hook.type === 'UPDATES') {
-              const providedCallback = (...data: any) => {
-                console.log('THIS IS THE UPDATE HOOK!')
-                console.log('DataPassed', data)
-              }
-  
-              providedCallback(...hook.args)
-            }
           }          
 
           // Then wait for the next one

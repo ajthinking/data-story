@@ -1,3 +1,5 @@
+import { snakeCaseToTitleCase } from './utils/snakeCaseToTitleCase'
+
 /**
  * CASTS ****************************************
  */
@@ -214,4 +216,148 @@ const MapMap: ParamV3 = {
     value: [],
   },
   alternativeInputModes: [],
+}
+
+// quick param builders
+
+// Provides a param with sensible defaults
+export const param = ({
+  name,
+  label,
+  help,
+  inputMode,
+}: {
+  name: string,
+  label?: string,
+  help?: string,
+  inputMode?: {
+    type?: 'Stringable',
+    multiline?: boolean,
+    canInterpolate?: boolean,
+    interpolate?: boolean,
+    casts?: Cast[],
+    evaluations?: Evaluation[],
+    value?: string,
+  }
+}): ParamV3 => {
+  return {
+    name,
+    label: label || snakeCaseToTitleCase(name),
+    help: help || '',
+    inputMode: {
+      type: 'Stringable',
+      selected: true,
+      multiline: inputMode?.multiline || false,
+      canInterpolate: inputMode?.canInterpolate || true,
+      interpolate: inputMode?.interpolate || true,
+      casts: inputMode?.casts || [], 
+      value: inputMode?.value || '',
+    },
+    alternativeInputModes: [],
+  }
+}
+
+export const str = ({
+  name,
+  label,
+  help,
+  multiline,
+  canInterpolate,
+  interpolate,
+  evaluations,
+  value,
+}: {
+  name: string,
+  label?: string,
+  help?: string,
+  multiline?: boolean,
+  canInterpolate?: boolean,
+  interpolate?: boolean,
+  evaluations?: Evaluation[],
+  value?: string,
+}): ParamV3 => {
+  return param({
+    name,
+    label,
+    inputMode: {
+      multiline: multiline,
+      canInterpolate: canInterpolate,
+      interpolate: interpolate,
+      evaluations: evaluations,
+      casts: [
+        { ...StringCast, selected: true },
+      ],
+      value: value,
+    }
+  })
+}
+
+export const num = ({
+  name,
+  label,
+  help,
+  multiline,
+  canInterpolate,
+  interpolate,
+  evaluations,
+  value,
+}: {
+  name: string,
+  label?: string,
+  help?: string,
+  multiline?: boolean,
+  canInterpolate?: boolean,
+  interpolate?: boolean,
+  evaluations?: Evaluation[],
+  value?: string,
+}): ParamV3 => {
+  return param({
+    name,
+    label,
+    inputMode: {
+      multiline: multiline,
+      canInterpolate: canInterpolate,
+      interpolate: interpolate,
+      evaluations: evaluations,
+      casts: [
+        { ...NumberCast, selected: true },
+      ],
+      value: value,
+    }
+  })
+}
+
+export const json_ = ({
+  name,
+  label,
+  help,
+  multiline,
+  canInterpolate,
+  interpolate,
+  evaluations,
+  value,
+}: {
+  name: string,
+  label?: string,
+  help?: string,
+  multiline?: boolean,
+  canInterpolate?: boolean,
+  interpolate?: boolean,
+  evaluations?: Evaluation[],
+  value?: string,
+}): ParamV3 => {
+  return param({
+    name,
+    label,
+    inputMode: {
+      multiline: multiline,
+      canInterpolate: canInterpolate,
+      interpolate: interpolate,
+      casts: [],
+      evaluations: evaluations || [
+        { ...JsonEvaluation, selected: true}
+      ],
+      value: value,
+    }
+  })
 }

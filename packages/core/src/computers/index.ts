@@ -7,19 +7,18 @@ export { CreateJson } from './CreateJson'
 // export { Eval } from './Eval';
 // export { Filter } from './Filter';
 export { Ignore } from './Ignore'
-// export { InstantThrow } from './InstantThrow';
-// export { Input } from './Input';
-// export { Log } from './Log';
+export { InstantThrow } from './InstantThrow';
+export { Input } from './Input';
+export { Log } from './Log';
 export { Map } from './Map'
-// export { MapPropertiesLegacy } from './MapPropertiesLegacy';
 // export { Merge } from './Merge';
 export { Pass } from './Pass';
-// export { Request } from './Request'
+export { Request } from './Request'
 // export { RandomInt } from './RandomInt';
 // export { RunDiagram } from './RunDiagram';
 export { Signal } from './Signal'
-// export { Sleep } from './Sleep'
+export { Sleep } from './Sleep'
 export { Throw } from './Throw';
-// export { Output } from './Output';
+export { Output } from './Output';
 // export { Updates } from './Updates'
-// export { Sample } from './Sample';
+export { Sample } from './Sample';
