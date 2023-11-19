@@ -1,6 +1,6 @@
 import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
-import { Node } from './types/Node';
+import { Node, NodeId } from './types/Node';
 import { Link } from './types/Link';
 import { PositionGuesser } from './PositionGuesser';
 import { Port, PortName } from './types/Port';
@@ -11,6 +11,7 @@ export class DiagramBuilder {
   previousNode: Node | null = null
   fromDirective: PortName | null = null
   toDirective: PortName | null = null
+  aboveDirective: NodeId | null = null
 
   constructor() {
     this.diagram = new Diagram([], [])
@@ -19,6 +20,11 @@ export class DiagramBuilder {
   from(directive: string) {
     this.fromDirective = directive
     return this
+  }
+
+  above(directive: string) {
+    this.aboveDirective = directive
+    return this;
   }
 
   on(directive: string) {
@@ -40,6 +46,7 @@ export class DiagramBuilder {
 
     const node: Node = {
       id: nodeId,
+      label: config.label,
       type: computer.name,
       // The inputs have not yet been assigned ids, to it here
       inputs: (computer.inputs ?? []).map(input => {
@@ -61,12 +68,28 @@ export class DiagramBuilder {
 
     // set explicit params
     for(const [key, value] of Object.entries(params)) {
-      node.params[key].value = value
+      const param = node.params.find(param => param.name === key)
+
+      if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
+
+      param.inputMode.value = value
+    }
+    
+    if(this.aboveDirective) {
+      const aboveNode = this.diagram.nodes.find(node => node.id === this.aboveDirective)
+
+      if(!aboveNode) throw new Error(`Bad above directive: ${this.aboveDirective}. Node not found`)
+
+      node.position = {
+        x: aboveNode.position!.x,
+        y: aboveNode.position!.y - 100,
+      }
+    } else {
+      node.position = new PositionGuesser(
+        this.diagram
+      ).guess(node)
     }
 
-    node.position = new PositionGuesser(
-      this.diagram
-    ).guess(node)
 
     this.diagram.nodes.push(node)
     
@@ -75,6 +98,8 @@ export class DiagramBuilder {
     this.previousNode = node
 
     this.fromDirective = null
+
+    this.aboveDirective = null
 
     return this
   }

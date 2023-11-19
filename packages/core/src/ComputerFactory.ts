@@ -1,5 +1,4 @@
 import { ComputerConfig } from './types/ComputerConfig';
-import { DefaultParams } from './Param';
 import { AbstractPort, PortName } from './types/Port';
 import { Computer } from './types/Computer';
 
@@ -26,10 +25,7 @@ export class ComputerFactory {
         category: config.category,
         inputs: config.inputs?.map(portableToPort) ?? [],
         outputs: config.outputs?.map(portableToPort) ?? [],
-        params: {
-          ...DefaultParams,
-          ...(config.params ?? {}),
-        },
+        params: config.params ?? [],
         tags: config.tags ?? [],
       }),
       // Methods

@@ -6,8 +6,8 @@ import { ItemValue } from '../../types/ItemValue';
 import { mapAdditive } from './mapAdditive';
 import { mapReplace } from './mapReplace';
 
-export const MapProperties: ComputerConfig = {
-  name: 'MapProperties',
+export const MapPropertiesLegacy: ComputerConfig = {
+  name: 'MapPropertiesLegacy',
   inputs: ['input'],
   outputs: ['output'],
   params: {

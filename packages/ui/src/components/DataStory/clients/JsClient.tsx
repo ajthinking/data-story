@@ -32,11 +32,10 @@ export class JsClient implements ServerClient {
     const storage = new NullStorage()    
   
     const executor = new Executor(
-      diagram, 
+      diagram,
       this.app.computers,
       storage
     )
-    
     
     const execution = executor.execute();
 
@@ -68,14 +67,13 @@ export class JsClient implements ServerClient {
           // Then wait for the next one
           handleUpdates(iterator);
         } else {
-          // setTimeout(() => alert('Execution complete 💫'), 100)
+          console.log('Execution complete 💫')
         }
       });
     }
     
     // Not sure what this is but it works
     handleUpdates(execution[Symbol.asyncIterator]());
-    
   }
 
   async open(name: string) {

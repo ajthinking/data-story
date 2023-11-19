@@ -10,7 +10,7 @@ describe('pull', () => {
       type: 'node-type',  
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
-      params: {}
+      params: []
     }
 
     const links = [
@@ -45,7 +45,7 @@ describe('pull', () => {
         type: 'node-type',  
         inputs: [{id: 'target-input-id', name: 'some-other-name', schema: {}}],
         outputs: [],
-        params: {}
+        params: []
       }
 
       const diagram = new Diagram([node], [])
@@ -62,7 +62,7 @@ describe('pull', () => {
       type: 'node-type',  
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
-      params: {}
+      params: []
     }
 
     const links = [
@@ -95,7 +95,7 @@ describe('pull', () => {
       type: 'node-type',  
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
-      params: {}
+      params: []
     }
 
     const links = [
@@ -126,7 +126,7 @@ describe('pullFrom', () => {
       type: 'node-type',  
       inputs: [{id: 'target-input-id', name: 'numbers', schema: {}}],
       outputs: [],
-      params: {}
+      params: []
     }
 
     const links = [
@@ -158,7 +158,7 @@ describe('pullFrom', () => {
       type: 'node-type',  
       inputs: [{id: 'target-input-id', name: 'numbers', schema: {}}],
       outputs: [],
-      params: {}
+      params: []
     }
 
     const links = [
@@ -193,7 +193,7 @@ describe('params', () => {
       type: 'node-type',  
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
-      params: {}
+      params: []
     }
 
     const links = [

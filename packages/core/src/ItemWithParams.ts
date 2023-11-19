@@ -13,8 +13,6 @@ export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWi
     && 'value' in item
     && 'params' in item
   ) return true;
-  
-  // const isLikelyItemWithParams = typeof i === 'object' && 'value' in i && 'params' in i
 
   return false;
 }
@@ -28,7 +26,7 @@ export class ItemWithParams {
     this.value = value;
     this.params = new Proxy({}, {
       get: (_, prop: string) => {
-        const paramValue = params[prop];
+        const paramValue = params[prop]
 
         // We can only use params that exist
         if (!paramValue) return undefined;

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { DataStoryNode } from '../../../Node/DataStoryNode';
 import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
-import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
+import { InputMode, Param, ParamV3, ParamValue, pascalToSentenceCase, string } from '@data-story/core';
 
 type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Config';
 
@@ -32,33 +32,51 @@ export const NodeSettingsModal = () => {
 
   const node = nodes.find((node: DataStoryNode) => node.id === openNodeModalId)!
 
-  const defaultParamValues = Object.values(node.data.params)
-    .reduce((acc: Record<string, ParamValue>, param: Param) => {
-      acc[param.name] = param.value
+  const defaultValues = {
+    label: node.data.label,
+    params: node.data.params.reduce((acc, param: ParamV3) => {
+      acc[param.name] = param.inputMode.value
       return acc
-    }, {})
+
+    }, {} as Record<string, InputMode['value']>)
+  }
 
   const form = useForm({
-    defaultValues: {
-      ...defaultParamValues,
-      ...{ label: node.data.label} as Record<string, any>
-    }
+    defaultValues,
   });
 
   const close = () => setOpenNodeModalId(null);
 
   const saveAndClose = () => {
-    form.handleSubmit((submitted) => {
+    form.handleSubmit((submitted: {
+      label: string,
+      params: Record<string, InputMode['value']>
+    }) => {
       setNodes(
         nodes.map((n) => {
           if (n.id === node.id) {
+            // Root level fields
             const newData = { ...n.data };
-            for (const [key, value] of Object.entries(submitted)) {
-              newData.params[key].value = value;
-            }
             newData.label = submitted.label;
+
+            console.log({submitted})
+
+            // Param fields
+            for (const [key, value] of Object.entries(submitted.params)) {
+              console.log({
+                key,
+                value              
+              })
+
+              const param = newData.params.find((p) => p.name === key)!;
+              param.inputMode.value = value;
+
+              console.log(`Setting ${key} to ${value}`)
+            }
+
             n.data = newData;
           }
+
           return n;
         })
       );
@@ -104,7 +122,7 @@ export const NodeSettingsModal = () => {
           <TabComponent node={node} register={form.register} form={form}/>
 
           {/* ***** FOOTER ***** */}
-          <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+          <div className="my-2 flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
             <button className="text-gray-500 focus:text-gray-800 background-transparent font-bold uppercase px-6 py-2 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button" onClick={close}>
               Close
             </button>
@@ -112,7 +130,6 @@ export const NodeSettingsModal = () => {
               Save
             </button>}
           </div>
-          <div className="h-12"></div>
         </div>
       </div>
     </div>

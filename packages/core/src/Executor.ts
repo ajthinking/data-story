@@ -254,7 +254,7 @@ export class Executor implements ExecutorInterface {
     const device: Partial<ParamsDevice> = {}
 
     for(const param of Object.values(node.params)) {
-      device[param.name] = param.value
+      device[param.name] = param.inputMode.value
     }
 
     return device as ParamsDevice;

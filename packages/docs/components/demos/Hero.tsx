@@ -6,6 +6,7 @@ import {
   coreNodeProvider,
   nodes,
 } from '@data-story/core';
+import { Comment, Map } from '@data-story/core/dist/computers';
 
 export default () => {
   const app = new Application();
@@ -14,30 +15,38 @@ export default () => {
 
   app.boot();
 
-  const { Signal, Merge, ConsoleLog, Ignore } = nodes;
+  const { Signal, /* Merge */ ConsoleLog, Ignore } = nodes;
 
   // Faking something more interesting than "Signals"
+  // const diagram = new DiagramBuilder()
+  //   .add(Signal, {
+  //     label: 'Companies',
+  //     count: 555,
+  //     period: 10 }
+  //   )
+  //   // .add(Merge, {
+  //   //   requestor_merge_property: 'id',
+  //   //   supplier_merge_property: 'id',
+  //   // })
+  //   .add(ConsoleLog, {
+  //     label: 'Companies::Update'
+  //   })
+  //   .from('Merge.1.not_merged').add(Ignore, {
+  //     label: 'Discard'
+  //   })
+  //   .add(Signal, {
+  //     label: 'Owners',
+  //     period: 10
+  //   })
+  //   .link('Signal.2.output', 'Merge.1.suppliers')
+  //   .get()
+
   const diagram = new DiagramBuilder()
-    .add(Signal, {
-      label: 'Companies',
-      count: 555,
-      period: 10 }
-    )
-    .add(Merge, {
-      requestor_merge_property: 'id',
-      supplier_merge_property: 'id',
-    })
-    .add(ConsoleLog, {
-      label: 'Companies::Update'
-    })
-    .from('Merge.1.not_merged').add(Ignore, {
-      label: 'Discard'
-    })
-    .add(Signal, {
-      label: 'Owners',
-      period: 10
-    })
-    .link('Signal.2.output', 'Merge.1.suppliers')
+    .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
+    .add({...Map, label: 'Automation'})
+    .add({...ConsoleLog, label: 'for React & NodeJS'})
+
+    .above('Signal.1').add(Comment, { content: '### Welcome to DataStory!'})
     .get()
 
   return (

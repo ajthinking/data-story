@@ -15,7 +15,7 @@ export const reactFlowFromDiagram = (diagram: Diagram): SerializedReactFlow => {
         data: {
           params: node.params,
           computer: node.type,
-          label: (node?.params?.label?.value || node.type) as string,
+          label: (node?.label || node.type) as string,
           inputs: node.inputs.map(input => {
             return {
               id: `${node.id}.${input.name}`,
@@ -31,7 +31,11 @@ export const reactFlowFromDiagram = (diagram: Diagram): SerializedReactFlow => {
             }
           }),
         },
-        type: 'dataStoryNodeComponent',
+        type: (() => {
+          if(node.type === 'Comment') return 'dataStoryCommentNodeComponent';
+
+          return 'dataStoryNodeComponent'
+        })(),
       }
     }),
     edges: diagram.links.map(link => {

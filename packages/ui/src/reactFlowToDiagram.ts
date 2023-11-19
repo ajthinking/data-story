@@ -43,7 +43,7 @@ export const reactFlowToDiagram = (flow: SerializedReactFlow): Diagram => {
           schema: output.schema,
         }
       }),
-      params: flowNode.data.params || {},
+      params: flowNode.data.params || [],
       position: flowNode.position,
     }
   })
