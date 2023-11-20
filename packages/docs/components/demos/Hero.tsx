@@ -41,12 +41,14 @@ export default () => {
   //   .link('Signal.2.output', 'Merge.1.suppliers')
   //   .get()
 
+  const welcomeMarkdown = '### Welcome to DataStory 👋'
+
   const diagram = new DiagramBuilder()
     .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
     .add({...Map, label: 'Automation'})
     .add({...ConsoleLog, label: 'for React & NodeJS'})
 
-    .above('Signal.1').add(Comment, { content: '### Welcome to DataStory!'})
+    .above('Signal.1').add(Comment, { content: welcomeMarkdown})
     .get()
 
   return (
