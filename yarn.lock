@@ -89,6 +89,7 @@ __metadata:
     postcss: "npm:^8.4.31"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
+    source-map-loader: "npm:^4.0.1"
     tailwindcss: "npm:^3.3.3"
     typescript: "npm:^4.9.3"
   languageName: unknown
@@ -3194,7 +3195,6 @@ __metadata:
     husky: "npm:^8.0.0"
     kill-port: "npm:^2.0.1"
     lint-staged: "npm:^15.0.2"
-    source-map-loader: "npm:^4.0.1"
     turbo: "npm:^1.10.12"
   languageName: unknown
   linkType: soft

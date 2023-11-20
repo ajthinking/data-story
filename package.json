@@ -27,7 +27,6 @@
     "husky": "^8.0.0",
     "kill-port": "^2.0.1",
     "lint-staged": "^15.0.2",
-    "source-map-loader": "^4.0.1",
     "turbo": "^1.10.12"
   }
 }
