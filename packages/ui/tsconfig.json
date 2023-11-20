@@ -21,7 +21,8 @@
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "noImplicitAny": true,
-    "types": ["node", "react"]
+    "types": ["node", "react"],
+    "sourceMap": true
   },
   "ts-node": {
     "compilerOptions": {

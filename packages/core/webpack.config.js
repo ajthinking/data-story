@@ -2,7 +2,7 @@ const path = require('path');
 const ShebangPlugin = require('webpack-shebang-plugin');
 
 module.exports = {
-  devtool: "source-map",
+  devtool: 'source-map',
   entry: './dist/server/socket.js', // Path to your main js file, check this is right
   output: {
     path: path.resolve(__dirname, 'dist'),
