@@ -22,7 +22,6 @@ export const ListFiles: ComputerConfig = {
       help: 'Dir to list',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: true,
         canInterpolate: false,
         interpolate: false,

@@ -15,7 +15,6 @@ export const Sleep: ComputerConfig = {
       help: 'How many ms to sleep?', 
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: false,
         canInterpolate: true,
         interpolate: true,

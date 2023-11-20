@@ -14,7 +14,6 @@ export const Throw: ComputerConfig = {
       help: 'What to throw',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: false,
         canInterpolate: true,
         interpolate: true,

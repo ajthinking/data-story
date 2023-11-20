@@ -22,7 +22,6 @@ export const Signal: ComputerConfig = {
       help: 'How many ms between each signal?', 
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: false,
         canInterpolate: true,
         interpolate: true,
@@ -39,7 +38,6 @@ export const Signal: ComputerConfig = {
       help: 'How many times to send the signal?',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: false,
         canInterpolate: true,
         interpolate: true,

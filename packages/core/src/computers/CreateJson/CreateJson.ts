@@ -13,7 +13,6 @@ export const CreateJson: ComputerConfig = {
       help: 'Enter JSON', 
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: true,
         canInterpolate: true,
         interpolate: true,

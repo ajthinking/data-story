@@ -13,7 +13,6 @@ export const Map: ComputerConfig = {
       help: 'The properties to create',
       inputMode: {
         type: 'Repeatable',
-        selected: true,
         row: [
           {
             name: 'key',
@@ -21,7 +20,6 @@ export const Map: ComputerConfig = {
             help: 'The key to create',
             inputMode: {
               type: 'Stringable',
-              selected: true,
               multiline: false,
               canInterpolate: true,
               interpolate: true,
@@ -35,7 +33,6 @@ export const Map: ComputerConfig = {
             help: 'The value to create',
             inputMode: {
               type: 'Stringable',
-              selected: true,
               multiline: false,
               canInterpolate: true,
               interpolate: true,
