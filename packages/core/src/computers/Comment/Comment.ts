@@ -13,7 +13,6 @@ export const Comment: ComputerConfig = {
       help: 'Markdown content',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: true,
         canInterpolate: false,
         interpolate: false,

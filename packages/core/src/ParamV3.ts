@@ -64,7 +64,6 @@ export const evaluation = (type: string): Evaluation => {
  */
 export type Stringable = {
   type: 'Stringable',
-  selected: boolean,
   multiline: boolean,
   canInterpolate: boolean,
   interpolate?: boolean,
@@ -75,7 +74,6 @@ export type Stringable = {
 
 export type PropertySelection = {
   type: 'PropertySelection',
-  selected: boolean,
   multiline: boolean,
   casts?: Cast[],
   value: string  
@@ -83,7 +81,6 @@ export type PropertySelection = {
 
 export type Repeatable<RepeatableRow> = {
   type: 'Repeatable',
-  selected: boolean,
   row: RepeatableRow,
   value: ParamV3[]
 }
@@ -114,7 +111,6 @@ const SignalPeriod: ParamV3 = {
   // Further more it describes how the backend should interpret it
   inputMode: {
     type: 'Stringable',
-    selected: true,
     multiline: false,
     canInterpolate: true,
     interpolate: true,
@@ -133,7 +129,6 @@ const ConsoleLogMessage: ParamV3 = {
   help: 'What to log',
   inputMode: {
     type: 'Stringable',
-    selected: true,
     multiline: false,
     canInterpolate: true,
     interpolate: true,
@@ -160,7 +155,6 @@ const MapMap: ParamV3 = {
   help: 'Create a map of keys and values',
   inputMode: {
     type: 'Repeatable',
-    selected: true,
     row: [
       {
         name: 'path',
@@ -168,7 +162,6 @@ const MapMap: ParamV3 = {
         help: 'The key to use in the output. You may use dot separated notation to create nested properties.',
         inputMode: {
           type: 'Stringable',
-          selected: true,
           multiline: false,
           canInterpolate: false,
           casts: [
@@ -184,7 +177,6 @@ const MapMap: ParamV3 = {
         help: 'The value to use in the output',
         inputMode: {
           type: 'Stringable',
-          selected: true,
           multiline: false,
           canInterpolate: true,
           interpolate: true,
@@ -202,7 +194,6 @@ const MapMap: ParamV3 = {
         alternativeInputModes: [
           {
             type: 'PropertySelection',
-            selected: false,
             multiline: false,
             casts: [
               NumberCast,
@@ -246,7 +237,6 @@ export const param = ({
     help: help || '',
     inputMode: {
       type: 'Stringable',
-      selected: true,
       multiline: inputMode?.multiline || false,
       canInterpolate: inputMode?.canInterpolate || true,
       interpolate: inputMode?.interpolate || true,

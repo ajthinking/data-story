@@ -22,7 +22,6 @@ export const ReadFiles: ComputerConfig = {
       help: 'Glob pattern to include',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: true,
         canInterpolate: true,
         interpolate: true,
@@ -38,7 +37,6 @@ export const ReadFiles: ComputerConfig = {
       help: 'Glob pattern to ignore',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: true,
         canInterpolate: true,
         interpolate: true,

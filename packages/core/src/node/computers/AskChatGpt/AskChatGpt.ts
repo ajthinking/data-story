@@ -13,7 +13,6 @@ export const AskChatGpt: ComputerConfig = {
       help: 'Chat prompt',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: true,
         canInterpolate: true,
         interpolate: true,

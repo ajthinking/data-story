@@ -32,7 +32,6 @@ export const RunCommand: ComputerConfig = {
       help: 'Command to run',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: true,
         canInterpolate: false,
         interpolate: false,

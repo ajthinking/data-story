@@ -15,7 +15,6 @@ export const ConsoleLog: ComputerConfig = {
       help: 'What to log',
       inputMode: {
         type: 'Stringable',
-        selected: true,
         multiline: false,
         canInterpolate: true,
         interpolate: true,
