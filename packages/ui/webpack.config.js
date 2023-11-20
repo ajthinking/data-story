@@ -1,9 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  devtool: "source-map",
+  devtool: 'source-map',
   mode: 'development',
-  entry: './dist/index.js',
+  entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -18,6 +18,11 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource'
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: '/node_modules/'
       }
     ]
   },
@@ -26,6 +31,6 @@ module.exports = {
     'react-dom': 'react-dom'
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   }
 };
