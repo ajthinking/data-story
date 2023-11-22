@@ -1,6 +1,6 @@
 import 'reactflow/dist/style.css';
 import { DataStoryControls } from './dataStoryControls';
-import { useEffect, useState } from 'react';
+import { useId, useState } from 'react';
 import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from 'reactflow';
 import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
 import { RunModal } from './modals/runModal';
@@ -21,12 +21,7 @@ const nodeTypes = {
   // dataStoryOutputNodeComponent: DataStoryNodeComponent,
 };
 
-let ReactFlowId = 1;
-const getReactFlowId = () => {
-  return 'data_story_id_' + (ReactFlowId++);
-};
-
-export const Workbench = ({ 
+export const Workbench = ({
   server,
   diagram,
   callback,
@@ -51,7 +46,7 @@ export const Workbench = ({
 
   const { connect, nodes, edges, onNodesChange, onEdgesChange, onInit, openNodeModalId, setOpenNodeModalId, traverseNodes } = useStore(selector, shallow);
 
-  const [ id ] = useState(getReactFlowId);
+  const id = useId()
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [showRunModal, setShowRunModal] = useState(false);
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
