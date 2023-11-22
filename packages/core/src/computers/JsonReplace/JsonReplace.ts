@@ -14,7 +14,9 @@ export const JsonReplace: ComputerConfig = {
     while(true) {
       const incoming = input!.pull()
 
-      const replacers = incoming.map(item => item.params.json)
+      const replacers = incoming
+        .map(item => item.params.json as string)
+        .map(json => JSON.parse(json))
 
       output.push(replacers)
 

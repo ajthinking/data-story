@@ -1,5 +1,3 @@
-
-import { string } from '../../../ParamBuilder';
 import { promises as fs } from 'fs'
 import * as nodePath from 'path'
 import { ComputerConfig } from '../../../types/ComputerConfig';
@@ -35,7 +33,8 @@ export const ListFiles: ComputerConfig = {
 
   async *run({ input, output }) {
     while(true) {
-      const [ { params: { path } } ] = input.pull(1)
+      const [ incoming ] = input.pull(1)
+      const path = incoming.params.path as string
 
       const entries = (await fs.readdir(path, { withFileTypes: true }))
         .map((entry) => {

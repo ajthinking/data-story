@@ -45,7 +45,8 @@ export const RunCommand: ComputerConfig = {
 
   async *run({ input, output, params }) {
     while(true) {
-      const [ { params: { command } } ] = input.pull()
+      const [ incoming ] = input.pull(1)
+      const command = incoming.params.command as string
 
       const { stdout, stderr, error } = await awaitableExec(command);
 

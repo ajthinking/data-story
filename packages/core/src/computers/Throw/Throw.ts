@@ -1,6 +1,5 @@
 
 import { NodeRunError } from '../../NodeRunError';
-import { string } from '../../ParamBuilder';
 import { HjsonEvaluation, JsEvaluation, JsonEvaluation, NumberCast, StringCast } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
@@ -35,7 +34,7 @@ export const Throw: ComputerConfig = {
   async *run({ input, node }) {
     const [item] = input.pull(1)
     throw new NodeRunError({
-      message: item.params.message,
+      message: item.params.message as string,
       node,
     })
   },

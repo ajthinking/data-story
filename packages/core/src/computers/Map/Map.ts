@@ -51,7 +51,7 @@ export const Map: ComputerConfig = {
     while(true) {
       const [ item ] = input.pull(1)
 
-      const map = item.params.properties as { key: string, value: any }[]
+      const map = item.params.properties as any
 
       const result = {
         ...item.value,

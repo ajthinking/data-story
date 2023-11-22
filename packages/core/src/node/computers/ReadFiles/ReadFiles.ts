@@ -49,7 +49,9 @@ export const ReadFiles: ComputerConfig = {
   ],  
 
   async *run({ input, output }) {
-    const [{ params: { include, ignore } }] = input.pull(1)
+    const [ incoming ] = input.pull(1)
+    const include = incoming.params.include as string
+    const ignore = incoming.params.ignore as string
 
     const paths = glob.sync(include, { ignore });
 

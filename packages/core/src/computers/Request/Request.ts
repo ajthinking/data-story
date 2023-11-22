@@ -1,6 +1,4 @@
 import axios from 'axios';
-
-import { json, select, string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { json_, str } from '../../Param';
 

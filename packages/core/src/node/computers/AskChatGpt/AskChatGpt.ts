@@ -1,6 +1,5 @@
 import { Configuration, OpenAIApi } from 'openai';
 import { ComputerConfig } from '../../../types/ComputerConfig';
-import { string } from '../../../ParamBuilder';
 
 export const AskChatGpt: ComputerConfig = {
   name: 'AskChatGpt',
