@@ -1,4 +1,6 @@
-import { create, StoreApi, UseBoundStore } from 'zustand';
+import { StoreApi, UseBoundStore } from 'zustand';
+import { createWithEqualityFn } from 'zustand/traditional'
+
 import {
   Connection,
   Edge,
@@ -75,7 +77,7 @@ export type StoreSchema = {
   setFlowName: (name: string) => void;
 };
 
-export const createStore = () => create<StoreSchema>((set, get) => ({
+export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
   // DEFAULTS
   serverConfig: { type: 'SOCKET', url: 'ws://localhost:3100' },
   flowName: 'untitled',

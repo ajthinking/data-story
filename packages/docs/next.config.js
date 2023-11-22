@@ -20,6 +20,7 @@ module.exports = {
         enforce: 'pre',
         use: ['source-map-loader'],
       });
+      baseConfig.ignoreWarnings = [/Failed to parse source map/];
     }
 
     return baseConfig;
