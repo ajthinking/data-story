@@ -35,10 +35,6 @@ jobs:
           echo "VERSION_EXISTS=false" >> $GITHUB_ENV
         fi
 
-    - name: remove overlying workspace
-      if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: rm  -f ../../yarn.lock && rm  -f ../../package.json
-
     - name: Install dependencies
       if: ${{ env.VERSION_EXISTS == 'false' }}    
       run: npm install
