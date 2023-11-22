@@ -9,6 +9,7 @@ export { CreateJson } from './CreateJson'
 export { Ignore } from './Ignore'
 export { InstantThrow } from './InstantThrow';
 export { Input } from './Input';
+export { JsonReplace } from './JsonReplace'
 export { Log } from './Log';
 export { Map } from './Map'
 // export { Merge } from './Merge';
