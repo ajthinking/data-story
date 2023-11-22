@@ -1,4 +1,4 @@
-import Hero from '../demos/Hero'
+import HeroFlow from '../demos/HeroFlow'
 import NodeDemo from '../demos/NodeDemo'
 
 export default () => {
@@ -30,7 +30,7 @@ export default () => {
         </div>
       </section>          
       <div className="flex flex-1 flex-initial w-full min-w-sm h-64 mt-16 mr-8">
-        <Hero />
+        <HeroFlow />
       </div>        
     </div>
   )
