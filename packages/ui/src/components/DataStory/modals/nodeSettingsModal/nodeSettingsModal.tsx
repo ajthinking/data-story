@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { DataStoryNode } from '../../../Node/DataStoryNode';
 import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
-import { InputMode, Param, ParamValue, pascalToSentenceCase, string } from '@data-story/core';
+import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 
 type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Config';
 
