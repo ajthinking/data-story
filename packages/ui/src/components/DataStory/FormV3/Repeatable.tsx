@@ -1,4 +1,4 @@
-import { ParamV3, Repeatable as RepeatableMode, Repeatable } from '@data-story/core';
+import { Param, Repeatable as RepeatableMode, Repeatable } from '@data-story/core';
 import { useState } from 'react';
 import { UseFormRegister, UseFormReturn } from 'react-hook-form';
 import { Stringable } from './Stringable';
@@ -12,7 +12,7 @@ export function Repeatable({
     [x: string]: any;
   }, any>  
   name: string,
-  mode: RepeatableMode<ParamV3[]>
+  mode: RepeatableMode<Param[]>
 }) {
   const defaultRows = () => {
     if(mode.value.length === 0) return [structuredClone(mode.row)]
@@ -61,7 +61,7 @@ export function Repeatable({
               className="bg-white border-b dark:border-gray-700"
               key={i}
             >
-              {mode.row.map((column: ParamV3) => {
+              {mode.row.map((column: Param) => {
 
                 return (<td
                   key={column.name}

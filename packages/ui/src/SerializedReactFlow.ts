@@ -1,4 +1,4 @@
-import { Param, ParamV3 } from '@data-story/core'
+import { Param } from '@data-story/core'
 
 export type SerializedReactFlow = {
   nodes: SerializedReactFlowNode[],
@@ -31,7 +31,7 @@ export type SerializedReactFlowNode = {
       name: string,
       schema: any,      
     }[],
-    params: ParamV3[],
+    params: Param[],
   },
   selected?: boolean,
   type?: string,

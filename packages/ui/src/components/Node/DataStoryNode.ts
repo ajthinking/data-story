@@ -1,8 +1,8 @@
-import { Param, ParamV3, Port } from '@data-story/core';
+import { Param, Port } from '@data-story/core';
 import { Node } from 'reactflow';
 
 export type DataStoryNodeData = {
-  params: ParamV3[],
+  params: Param[],
   computer: string,
   label: string,
   inputs: Port[],

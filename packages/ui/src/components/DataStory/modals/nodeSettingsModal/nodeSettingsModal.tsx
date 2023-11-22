@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { DataStoryNode } from '../../../Node/DataStoryNode';
 import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
-import { InputMode, Param, ParamV3, ParamValue, pascalToSentenceCase, string } from '@data-story/core';
+import { InputMode, Param, ParamValue, pascalToSentenceCase, string } from '@data-story/core';
 
 type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Config';
 
@@ -34,11 +34,11 @@ export const NodeSettingsModal = () => {
 
   const defaultValues = {
     label: node.data.label,
-    params: node.data.params.reduce((acc, param: ParamV3) => {
+    params: node.data.params.reduce((acc, param: Param) => {
       acc[param.name] = param.inputMode.value
       return acc
 
-    }, {} as Record<string, InputMode['value']>)
+    }, {} as Record<string, ParamValue>)
   }
 
   const form = useForm({
@@ -50,7 +50,7 @@ export const NodeSettingsModal = () => {
   const saveAndClose = () => {
     form.handleSubmit((submitted: {
       label: string,
-      params: Record<string, InputMode['value']>
+      params: Record<string, ParamValue>
     }) => {
       setNodes(
         nodes.map((n) => {
