@@ -7,22 +7,6 @@
       "layout": "raw"
     }    
   },
-  "getting-started": "Getting Started",
-  "playground": {
-    "title": "Playground",
-    "display": "hidden",
-    "type": "page",
-    "theme": {
-      "layout": "raw"
-    }    
-  },  
-  "customize": "Customize",
-  "contributing": "Contributing",
-  "custom-nodes": "Custom Nodes",
-  "issues": "Issues",
-  "nodes": {
-    "title": "Nodes"
-  },
   "menu": {
     "title": "Resources",
     "type": "menu",
@@ -41,8 +25,30 @@
       },
       "github": {
         "title": "GitHub",
+        "newWindow": true,
         "href": "https://github.com/ajthinking/data-story"
       }
     }
-  } 
+  },  
+  "getting-started": "Getting Started",  
+  "customize": "Customize",
+  "custom-nodes": "Custom Nodes",
+  "contributing": "Contributing",
+  "nodes": {
+    "title": "Nodes"
+  },
+
+  "playground": {
+    "title": "Playground",
+    "display": "hidden",
+    "type": "page",
+    "theme": {
+      "layout": "raw"
+    }    
+  },
+  "docs": {
+    "title": "Docs",
+    "display": "hidden",
+    "type": "menu"
+  }
 }
