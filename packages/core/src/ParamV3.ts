@@ -271,8 +271,8 @@ export const str = ({
     label,
     inputMode: {
       multiline: multiline,
-      canInterpolate: canInterpolate,
-      interpolate: interpolate,
+      canInterpolate: canInterpolate ?? true,
+      interpolate: interpolate ?? true,
       evaluations: evaluations,
       casts: [
         { ...StringCast, selected: true },
@@ -306,8 +306,8 @@ export const num = ({
     label,
     inputMode: {
       multiline: multiline,
-      canInterpolate: canInterpolate,
-      interpolate: interpolate,
+      canInterpolate: canInterpolate ?? true,
+      interpolate: interpolate ?? true,
       evaluations: evaluations,
       casts: [
         { ...NumberCast, selected: true },
@@ -340,9 +340,9 @@ export const json_ = ({
     name,
     label,
     inputMode: {
-      multiline: multiline,
-      canInterpolate: canInterpolate,
-      interpolate: interpolate,
+      multiline: multiline ?? true,
+      canInterpolate: canInterpolate ?? true,
+      interpolate: interpolate ?? true,
       casts: [],
       evaluations: evaluations || [
         { ...JsonEvaluation, selected: true}
