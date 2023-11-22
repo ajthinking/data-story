@@ -36,7 +36,9 @@ export const AskChatGpt: ComputerConfig = {
     );
 
     while(true) {
-      const [ { params: { prompt } } ] = input.pull(1)
+      const [ incoming ] = input.pull(1)
+
+      const prompt = incoming.params.prompt as string
 
       const completion = await openai.createCompletion({
         model: 'text-davinci-003',

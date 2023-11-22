@@ -1,3 +1,4 @@
+import { PortName } from './types/Port'
 import { snakeCaseToTitleCase } from './utils/snakeCaseToTitleCase'
 
 /**
@@ -67,16 +68,17 @@ export type Stringable = {
   multiline: boolean,
   canInterpolate: boolean,
   interpolate?: boolean,
+  interpolationsFromPort?: PortName[],
   casts?: Cast[],
   evaluations?: Evaluation[],
-  value: string
+  value: string | number
 }
 
 export type PropertySelection = {
   type: 'PropertySelection',
   multiline: boolean,
   casts?: Cast[],
-  value: string  
+  value: string
 }
 
 export type Repeatable<RepeatableRow> = {

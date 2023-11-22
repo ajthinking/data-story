@@ -12,20 +12,20 @@ export default () => {
 
   app.boot();
 
-  // const diagram = new DiagramBuilder()
-  //   .add(Signal, { period: 1000, count: 1 })
-  //   .add(Map, {
-  //     properties: [{ key: 'Identifier', value: '${id}' }]
-  //   })
-  //   .add(ConsoleLog)
-  //   .get()
+  const diagram = new DiagramBuilder()
+    .add(Signal, { period: 1000, count: 1 })
+    .add(Map, {
+      properties: [{ key: 'greeting', value: '' }]
+    })
+    .add(ConsoleLog)
+    .get()
 
   return (
     <div className="w-full" style={{ height: '100vh' }}>
       <DataStory
         // server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
         server={{ type: 'JS', app }}
-        // diagram={diagram}
+        diagram={diagram}
       />
     </div>   
   );

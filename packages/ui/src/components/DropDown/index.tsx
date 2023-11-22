@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
-import { ConfigIcon } from '../DataStory/icons/configIcon';
+import { useState } from 'react';
+import { useEscapeKey } from '../DataStory/hooks/useEscapeKey';
 
 export type Option = {
   label: string
@@ -10,6 +10,7 @@ export type Option = {
 export type OptionGroup = {
   label?: string
   options: Option[]
+  emptyMessage?: string
 }
 
 export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
@@ -21,14 +22,19 @@ export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
 
   const closeDropdown = () => {
     setIsOpen(false);
-  }; 
+  };
+
+  // Cant use this as it will close the whole modal
+  // useEscapeKey(() => {
+  //   closeDropdown();
+  // });
 
   return (
     <div className="">
       <div className="ml-1 relative bg-gray-50">
         <button
           type="button" 
-          className="px-2 py-1 text-xs text-gray-200 group-hover:text-gray-800 font-medium text-xs inline-flex items-center"
+          className="px-2 py-1 text-xs text-gray-200 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
           onClick={toggleDropdown}
         ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3">
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -56,6 +62,7 @@ export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
                     )
                   })}
                 </ul>
+                {optionGroup.options.length === 0 && <div className="text-xs text-gray-400 px-2 py-2">{optionGroup.emptyMessage ?? 'HAHA'}</div>}
               </div>
             )
           })}

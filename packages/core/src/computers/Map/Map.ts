@@ -23,6 +23,7 @@ export const Map: ComputerConfig = {
               multiline: false,
               canInterpolate: true,
               interpolate: true,
+              interpolationsFromPort: ['input'],
               value: '',
             },
             alternativeInputModes: [],
