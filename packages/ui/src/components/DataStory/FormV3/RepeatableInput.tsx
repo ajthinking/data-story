@@ -1,9 +1,10 @@
 import { Param, Repeatable as RepeatableMode, Repeatable } from '@data-story/core';
 import { useState } from 'react';
 import { UseFormRegister, UseFormReturn } from 'react-hook-form';
-import { Stringable } from './Stringable';
+import { StringableInput } from './StringableInput';
+import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
 
-export function Repeatable({
+export function RepeatableInput({
   name,
   form,
   mode,
@@ -14,6 +15,8 @@ export function Repeatable({
   name: string,
   mode: RepeatableMode<Param[]>
 }) {
+  console.log('Rendering RepeatableInput')
+
   const defaultRows = () => {
     if(mode.value.length === 0) return [structuredClone(mode.row)]
     
@@ -62,14 +65,14 @@ export function Repeatable({
               key={i}
             >
               {mode.row.map((column: Param) => {
-
                 return (<td
                   key={column.name}
                   scope="row"
                   className="border font-medium whitespace-nowrap"
                 >
-                  {column.inputMode.type === 'Stringable' && <Stringable
+                  {column.inputMode.type === 'Stringable' && <StringableWithConfig
                     form={form}
+                    param={column}
                     {...column}
                     name={`${name}.${i}.${column.name}`}
                   />}       

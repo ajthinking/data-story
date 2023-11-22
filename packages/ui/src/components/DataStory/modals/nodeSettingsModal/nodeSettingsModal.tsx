@@ -65,13 +65,12 @@ export const NodeSettingsModal = () => {
             for (const [key, value] of Object.entries(submitted.params)) {
               console.log({
                 key,
-                value              
+                value,
+                newDataParams: newData.params
               })
 
               const param = newData.params.find((p) => p.name === key)!;
               param.inputMode.value = value;
-
-              console.log(`Setting ${key} to ${value}`)
             }
 
             n.data = newData;

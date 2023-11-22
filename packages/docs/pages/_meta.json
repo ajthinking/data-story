@@ -49,6 +49,6 @@
   "docs": {
     "title": "Docs",
     "display": "hidden",
-    "type": "menu"
+    "type": "doc"
   }
 }
