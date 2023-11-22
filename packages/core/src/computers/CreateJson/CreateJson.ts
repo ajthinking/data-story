@@ -1,7 +1,7 @@
 
 import { json } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
-import { StringCast } from '../../ParamV3';
+import { StringCast } from '../../Param';
 
 export const CreateJson: ComputerConfig = {
   name: 'CreateJson',  

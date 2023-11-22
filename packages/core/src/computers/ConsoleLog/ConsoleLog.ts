@@ -1,6 +1,6 @@
 
 import { ItemWithParams } from '../../ItemWithParams';
-import { HjsonEvaluation, JsEvaluation, JsonEvaluation, NumberCast, StringCast } from '../../ParamV3';
+import { HjsonEvaluation, JsEvaluation, JsonEvaluation, NumberCast, StringCast } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const ConsoleLog: ComputerConfig = {

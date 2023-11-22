@@ -2,7 +2,7 @@
 import { number } from '../../ParamBuilder';
 import { sleep } from '../../utils/sleep';
 import { ComputerConfig } from '../../types/ComputerConfig';
-import { NumberCast } from '../../ParamV3';
+import { NumberCast } from '../../Param';
 
 export const Sleep: ComputerConfig = {
   name: 'Sleep',

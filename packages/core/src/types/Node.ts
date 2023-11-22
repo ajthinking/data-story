@@ -1,4 +1,4 @@
-import { ParamV3 } from '../ParamV3'
+import { Param } from '../Param'
 import { Port } from './Port'
 
 export type NodeId = string
@@ -9,7 +9,7 @@ export type Node = {
   label?: string
   inputs: Port[]
   outputs: Port[]
-  params: ParamV3[]
+  params: Param[]
   position?: {
     x: number,
     y: number,

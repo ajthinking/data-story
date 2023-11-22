@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { json, select, string } from '../../ParamBuilder';
 import { ComputerConfig } from '../../types/ComputerConfig';
-import { json_, str } from '../../ParamV3';
+import { json_, str } from '../../Param';
 
 export const Request: ComputerConfig = {
   name: 'Request',

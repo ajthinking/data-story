@@ -10,7 +10,7 @@ describe('value', () => {
   it('can be accessed when params is supplied', () => {
     const item = new ItemWithParams(
       { name: 'Bob' },
-      { greeting: { value: 'Hello ${name}!' } as Param }
+      { greeting: { value: 'Hello ${name}!' } }
     )
 
     expect(item.value).toEqual({ name: 'Bob' })

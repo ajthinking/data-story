@@ -12,7 +12,6 @@ import { Storage } from './Storage'
 import { Diagram } from '../Diagram'
 import { Executor } from '../Executor'
 import { Node } from './Node'
-import { ParamV3 } from '../ParamV3'
 
 export type RunArgs = {
   input: InputDeviceInterface,
@@ -30,7 +29,7 @@ export interface Computer {
   category?: string
   inputs: AbstractPort[]
   outputs: AbstractPort[]
-  params: ParamV3[]
+  params: Param[]
   tags: string[]
 
   run: (args: RunArgs) => AsyncGenerator<NextResult, ReturnResult, NextArgument>

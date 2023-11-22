@@ -17,25 +17,25 @@ export const deriveFrom = (
 ) => {
   throw Error('TODO')
 
-  const template = new ComputerFactory().get(computerConfig);
-  template.name = options.name;
+  // const template = new ComputerFactory().get(computerConfig);
+  // template.name = options.name;
 
-  template.tags = [
-    ...(template.tags || []),
-    ...(options.tags || []),
-  ]
+  // template.tags = [
+  //   ...(template.tags || []),
+  //   ...(options.tags || []),
+  // ]
 
-  template.category = options.category || template.category
-  template.label = options.label || template.label
+  // template.category = options.category || template.category
+  // template.label = options.label || template.label
 
-  if(!template.params) template.params = []
+  // if(!template.params) template.params = []
     
-  template.params = { ...template.params }
+  // template.params = { ...template.params }
 
-  for (const [paramName, paramValue] of Object.entries(options.params || {})) {
-    // TODO
-    // template.params[paramName].value = paramValue
-  }
+  // for (const [paramName, paramValue] of Object.entries(options.params || {})) {
+  //   // TODO
+  //   // template.params[paramName].value = paramValue
+  // }
 
-  return template
+  // return template
 }

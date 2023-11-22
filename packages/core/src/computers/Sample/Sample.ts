@@ -1,5 +1,5 @@
 import { ComputerConfig } from '../../types/ComputerConfig';
-import { num } from '../../ParamV3';
+import { num } from '../../Param';
 
 export const Sample: ComputerConfig = {
   name: 'Sample',

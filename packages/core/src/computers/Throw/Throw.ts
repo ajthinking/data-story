@@ -1,7 +1,7 @@
 
 import { NodeRunError } from '../../NodeRunError';
 import { string } from '../../ParamBuilder';
-import { HjsonEvaluation, JsEvaluation, JsonEvaluation, NumberCast, StringCast } from '../../ParamV3';
+import { HjsonEvaluation, JsEvaluation, JsonEvaluation, NumberCast, StringCast } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const Throw: ComputerConfig = {

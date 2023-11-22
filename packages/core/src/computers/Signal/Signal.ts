@@ -1,6 +1,6 @@
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { sleep } from '../../utils/sleep';
-import { NumberCast } from '../../ParamV3';
+import { NumberCast } from '../../Param';
 import { OutputDevice } from '../../OutputDevice';
 import { RunArgs } from '../../types/Computer';
 

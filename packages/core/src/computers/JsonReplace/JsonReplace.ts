@@ -1,5 +1,5 @@
 
-import { json_ } from '../../ParamV3';
+import { json_ } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const JsonReplace: ComputerConfig = {
