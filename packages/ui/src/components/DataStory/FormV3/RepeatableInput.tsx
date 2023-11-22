@@ -3,17 +3,20 @@ import { useState } from 'react';
 import { UseFormRegister, UseFormReturn } from 'react-hook-form';
 import { StringableInput } from './StringableInput';
 import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
+import { DataStoryNode } from '../../Node/DataStoryNode';
 
 export function RepeatableInput({
   name,
   form,
   mode,
+  node,
 }: {
   form: UseFormReturn<{
     [x: string]: any;
   }, any>  
   name: string,
   mode: RepeatableMode<Param[]>
+  node: DataStoryNode,
 }) {
   console.log('Rendering RepeatableInput')
 
@@ -75,6 +78,7 @@ export function RepeatableInput({
                     param={column}
                     {...column}
                     name={`${name}.${i}.${column.name}`}
+                    node={node}
                   />}       
                 </td>)
               })}

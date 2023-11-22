@@ -28,12 +28,14 @@ export function Params({
             param={param}
             form={form}
             name={param.name}
+            node={node}
           />}
 
           {/* Vertical layout */}
           {param.inputMode.type === 'Repeatable' && <RepeatableWithConfig
             param={param}
             form={form}
+            node={node}
           />}      
 
 
