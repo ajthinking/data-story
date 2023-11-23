@@ -43,6 +43,6 @@ jobs:
     - name: Publish
       if: ${{ env.VERSION_EXISTS == 'false' }}    
       run: |
-        yarn config set -H npmScopes.data-story.npmRegistryServer "https://registry.npmjs.org/"
+        yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
         yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
-        cd packages/ui && yarn npm publish
+        cd packages/ui && yarn npm publish --access public
