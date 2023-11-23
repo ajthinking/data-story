@@ -1,6 +1,6 @@
 {
   "name": "@data-story/ui",
-  "version": "0.0.69",
+  "version": "0.0.70",
   "main": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
   "type": "commonjs",
@@ -8,7 +8,7 @@
     "/dist"
   ],
   "scripts": {
-    "build": "echo _____RUNNING_UI_BUILD_____ && tsc && webpack && yarn run build:css",
+    "build": "echo _____RUNNING_UI_BUILD_____ && webpack && yarn run build:css",
     "build:css": "tailwindcss build -o ./dist/data-story.css",
     "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
     "watch:webpack": "webpack --watch"
