@@ -37,23 +37,15 @@ jobs:
 
     - name: Install dependencies
       if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: npm install
+      run: yarn
 
     - name: Build
       if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: npx tsc
+      run: yarn build
 
-    - name: Build css
-      if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: npx tailwindcss build -o ./dist/data-story.css
-
-    - name: Bundle
-      if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: npx webpack
-    
     - name: Publish
       if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: npm publish
+      run: yarn npm publish
 
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_DATA_STORY }}
