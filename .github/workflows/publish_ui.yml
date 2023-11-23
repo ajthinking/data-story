@@ -42,7 +42,6 @@ jobs:
 
     - name: Publish
       if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: cd packages/ui && yarn npm publish
-
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_DATA_STORY }}
+      run: |
+        yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
+        cd packages/ui && yarn npm publish
