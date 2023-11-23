@@ -20,7 +20,7 @@ jobs:
     - name: Check version
       id: check
       run: |
-        PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
+        PACKAGE_VERSION=$(node -p -e "require('./packages/ui/package.json').version")
         echo "Version: $PACKAGE_VERSION"
         HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/ui/$PACKAGE_VERSION)
 
