@@ -19,6 +19,11 @@
         "title": "Playground",
         "href": "/playground"
       },
+      "downloads": {
+        "title": "Downloads",
+        "newWindow": true,
+        "href": "/downloads"
+      },      
       "about": {
         "title": "Docs",
         "href": "/docs"
@@ -46,9 +51,14 @@
       "layout": "raw"
     }    
   },
+  "downloads": {
+    "title": "Downloads",
+    "display": "hidden",
+    "type": "doc"
+  },  
   "docs": {
     "title": "Docs",
     "display": "hidden",
     "type": "doc"
-  }
+  }  
 }
