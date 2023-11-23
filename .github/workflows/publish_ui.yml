@@ -8,9 +8,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/ui    
 
     steps:
     - uses: actions/checkout@v2
@@ -45,7 +42,7 @@ jobs:
 
     - name: Publish
       if: ${{ env.VERSION_EXISTS == 'false' }}    
-      run: yarn npm publish
+      run: cd packages/ui && yarn npm publish
 
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_DATA_STORY }}
