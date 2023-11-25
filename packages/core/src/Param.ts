@@ -76,8 +76,12 @@ export type Stringable = {
 
 export type PropertySelection = {
   type: 'PropertySelection',
-  multiline: boolean,
-  casts?: Cast[],
+  value: string
+}
+
+export type PortSelection = {
+  type: 'PortSelection',
+  allowCreate: boolean,
   value: string
 }
 
@@ -87,7 +91,11 @@ export type Repeatable<RepeatableRow> = {
   value: Param[]
 }
 
-export type InputMode = Stringable | PropertySelection | Repeatable<Param[]>
+export type InputMode =
+  Stringable |
+  PropertySelection |
+  PortSelection |
+  Repeatable<Param[]>
 
 /**
  * The param type ****************************************
@@ -198,11 +206,6 @@ const MapMap: Param = {
         alternativeInputModes: [
           {
             type: 'PropertySelection',
-            multiline: false,
-            casts: [
-              NumberCast,
-              StringCast,
-            ],
             value: '',
           }
         ],
