@@ -2,6 +2,7 @@ import { Param, Repeatable as RepeatableMode, Repeatable } from '@data-story/cor
 import { useState } from 'react';
 import { UseFormRegister, UseFormReturn } from 'react-hook-form';
 import { StringableInput } from './StringableInput';
+import { PortSelectionInput } from '../modals/nodeSettingsModal/tabs/Params/PortSelectionInput';
 import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
 import { DataStoryNode } from '../../Node/DataStoryNode';
 
@@ -77,7 +78,14 @@ export function RepeatableInput({
                     {...column}
                     name={`${name}.${i}.${column.name}`}
                     node={node}
-                  />}       
+                  />}
+                  {column.inputMode.type === 'PortSelection' && <PortSelectionInput
+                    form={form}
+                    param={column}
+                    {...column}
+                    name={`${name}.${i}.${column.name}`}
+                    node={node}
+                  />}                         
                 </td>)
               })}
             </tr>)

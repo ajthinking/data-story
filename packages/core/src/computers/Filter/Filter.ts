@@ -24,10 +24,17 @@ export const Filter: ComputerConfig = {
             name: 'value',
             value: 'id',
           }),
-          str({
+          {
             name: 'port',
-            value: 'output',
-          }),
+            label: 'Port',
+            help: 'The port to map to',
+            inputMode: {
+              type: 'PortSelection',
+              value: '',
+              allowCreate: true,
+            },
+            alternativeInputModes: [],
+          }
         ],
         value: [],
       },
