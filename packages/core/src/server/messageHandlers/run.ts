@@ -49,18 +49,18 @@ export const run: MessageHandler<RunMessage> = async (
     )    
   } catch(error: any) {
     if (ws.readyState === WebSocket.OPEN) {
-      console.log("Sending ExecutionFailure to client")
+      console.log('Sending ExecutionFailure to client')
       console.log(error)
 
       const failure: ExecutionFailure = {
-        type: "ExecutionFailure",
+        type: 'ExecutionFailure',
         message: error.message,
         history: executor.memory.getHistory()
       }
 
       ws.send(JSON.stringify(failure))
     } else {
-      console.log("WebSocket connection closed, unable to send ExecutionFailure")
+      console.log('WebSocket connection closed, unable to send ExecutionFailure')
     }
 
     return;
