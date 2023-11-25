@@ -120,6 +120,21 @@ describe('add', () => {
   })
 })
 
+describe('on', () => {
+  it('can link to a previous node port', () => {
+    const diagram = new DiagramBuilder()
+      .add(CreateJson)
+      .add(Pass)
+      .from('CreateJson.1.output').add(Ignore)
+      .get();
+
+    expect(diagram.links).toMatchObject([
+      { id: 'CreateJson.1.output--->Pass.1.input' },
+      { id: 'CreateJson.1.output--->Ignore.1.input' },
+    ])
+  })
+})
+
 // describe('on', () => {
 // it('can link to specified port on most recent node', () => {
 //   const diagram = new DiagramBuilder()
@@ -139,18 +154,5 @@ describe('add', () => {
 //       .from('bad_port').add(Pass)
 //       .get();
 //   }).toThrowError('Bad on directive: bad_port. Port not found on Merge.1')
-// })
-
-// it('can link to a previous node port', () => {
-//   const diagram = new DiagramBuilder()
-//     .add(Merge)
-//     .from('merged').add(Pass)
-//     .from('Merge.1.not_merged').add(Pass)
-//     .get();
-
-//   expect(diagram.links).toMatchObject([
-//     { id: 'Merge.1.merged--->Pass.1.input' },
-//     { id: 'Merge.1.not_merged--->Pass.2.input' },
-//   ])
 // })
 // })

@@ -5,57 +5,56 @@ import {
   DiagramBuilder,
   coreNodeProvider,
   nodes,
+  prettyMarkdown,
 } from '@data-story/core';
 import { Comment, Map } from '@data-story/core/dist/computers';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 export default () => {
+  const { height, width } = useWindowDimensions();
+  const isSmallScreen = width < 768;
+
+  console.log('width', width);
+  console.log('height', height);
+
   const app = new Application();
 
   app.register(coreNodeProvider);
 
   app.boot();
 
-  const { Signal, /* Merge */ ConsoleLog, Ignore } = nodes;
+  const { Signal, Pass, ConsoleLog, Ignore } = nodes;
 
-  // Faking something more interesting than "Signals"
-  // const diagram = new DiagramBuilder()
-  //   .add(Signal, {
-  //     label: 'Companies',
-  //     count: 555,
-  //     period: 10 }
-  //   )
-  //   // .add(Merge, {
-  //   //   requestor_merge_property: 'id',
-  //   //   supplier_merge_property: 'id',
-  //   // })
-  //   .add(ConsoleLog, {
-  //     label: 'Companies::Update'
-  //   })
-  //   .from('Merge.1.not_merged').add(Ignore, {
-  //     label: 'Discard'
-  //   })
-  //   .add(Signal, {
-  //     label: 'Owners',
-  //     period: 10
-  //   })
-  //   .link('Signal.2.output', 'Merge.1.suppliers')
-  //   .get()
+  const welcomeMarkdown = prettyMarkdown`
+    ### Welcome to DataStory 👋
+    Real time data processing for NodeJS and React.  
+    [docs](/docs) | [playground](/playground)
+  `
 
-  const welcomeMarkdown = '### Welcome to DataStory 👋'
-
-  const diagram = new DiagramBuilder()
+  // Good for computers
+  const bigDiagram = new DiagramBuilder()
     .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
-    .add({...Map, label: 'Automation'})
-    .add({...ConsoleLog, label: 'for React & NodeJS'})
-
+    .add({...Pass, label: 'Automation'})
+    .add({...Ignore, label: 'for React & NodeJS'})
     .above('Signal.1').add(Comment, { content: welcomeMarkdown})
+    .from('Signal.1.output').below('Pass.1').add({...Ignore, label: 'in Your App'})
+    .addJitter({x: 60, y: 25})
+    .get()
+
+  // Good for mobile
+  const smallDiagram = new DiagramBuilder()
+    .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
+    .add({...Ignore, label: 'Automation'})
+    .above('Signal.1').add(Comment, { content: welcomeMarkdown})
+    .from('Signal.1.output').below('Ignore.1').add({...Ignore, label: 'in Your App'})
+    .addJitter({x: 60, y: 25})    
     .get()
 
   return (
-    <div className="w-full mt-4" style={{ height: '36vh' }}>
+    <div className="w-full h-1/2 sm:h-screen">
       <DataStory
         server={{ type: 'JS', app }}
-        diagram={diagram}
+        diagram={isSmallScreen ? smallDiagram : bigDiagram}
         callback={(options: any) => setTimeout(options.run, 100)}
         hideToolbar={true}
         hideTabs={true}

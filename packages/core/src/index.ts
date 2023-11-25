@@ -1,4 +1,5 @@
 export { get } from './utils/get'
+export { prettyMarkdown } from './utils/prettyMarkdown'
 export { pascalToSentenceCase } from './utils/pascalToSentenceCase'
 export { flattenObjectOneLevel } from './utils/flattenObjectOneLevel'
 export type { NodeDescription } from './types/NodeDescription'

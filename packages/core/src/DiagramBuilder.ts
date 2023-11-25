@@ -12,6 +12,7 @@ export class DiagramBuilder {
   fromDirective: PortName | null = null
   toDirective: PortName | null = null
   aboveDirective: NodeId | null = null
+  belowDirective: NodeId | null = null
 
   constructor() {
     this.diagram = new Diagram([], [])
@@ -26,6 +27,11 @@ export class DiagramBuilder {
     this.aboveDirective = directive
     return this;
   }
+
+  below(directive: string) {
+    this.belowDirective = directive
+    return this;
+  }  
 
   on(directive: string) {
     return this.from(directive)
@@ -82,7 +88,16 @@ export class DiagramBuilder {
 
       node.position = {
         x: aboveNode.position!.x,
-        y: aboveNode.position!.y - 100,
+        y: aboveNode.position!.y - 200,
+      }
+    } else if(this.belowDirective) {
+      const belowNode = this.diagram.nodes.find(node => node.id === this.belowDirective)
+
+      if(!belowNode) throw new Error(`Bad below directive: ${this.belowDirective}. Node not found`)
+
+      node.position = {
+        x: belowNode.position!.x,
+        y: belowNode.position!.y + 100,
       }
     } else {
       node.position = new PositionGuesser(
@@ -100,6 +115,7 @@ export class DiagramBuilder {
     this.fromDirective = null
 
     this.aboveDirective = null
+    this.belowDirective = null
 
     return this
   }
@@ -112,6 +128,16 @@ export class DiagramBuilder {
     }
 
     this.diagram.links.push(link)
+
+    return this
+  }
+
+  addJitter(jitter = {x: 50, y: 25 }) {
+
+    for(const node of this.diagram.nodes) {
+      node.position!.x += (0.5 - Math.random()) * jitter.x
+      node.position!.y += (0.5 - Math.random()) * jitter.y
+    }
 
     return this
   }
