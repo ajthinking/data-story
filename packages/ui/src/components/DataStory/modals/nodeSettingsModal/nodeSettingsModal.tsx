@@ -1,4 +1,4 @@
-import { Params, InputSchemas, OutputSchemas, Config, Code } from './tabs';
+import { Params, InputSchemas, OutputSchemas, Code } from './tabs';
 import { shallow } from 'zustand/shallow';
 import { StoreSchema, useStore } from '../../store/store';
 import { useForm } from 'react-hook-form';
@@ -7,14 +7,13 @@ import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 
-type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Config';
+type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code';
 
 const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   Params,
   InputSchemas,
   OutputSchemas,
   Code,
-  Config,
 };
 
 export const NodeSettingsModal = () => {
@@ -34,6 +33,7 @@ export const NodeSettingsModal = () => {
 
   const defaultValues = {
     label: node.data.label,
+    outputs: JSON.stringify(node.data.outputs, null, 2),
     params: node.data.params.reduce((acc, param: Param) => {
       acc[param.name] = param.inputMode.value
       return acc
@@ -50,6 +50,7 @@ export const NodeSettingsModal = () => {
   const saveAndClose = () => {
     form.handleSubmit((submitted: {
       label: string,
+      outputs: string,
       params: Record<string, ParamValue>
     }) => {
       setNodes(
@@ -58,17 +59,10 @@ export const NodeSettingsModal = () => {
             // Root level fields
             const newData = { ...n.data };
             newData.label = submitted.label;
-
-            console.log({submitted})
+            newData.outputs = JSON.parse(submitted.outputs);
 
             // Param fields
             for (const [key, value] of Object.entries(submitted.params)) {
-              console.log({
-                key,
-                value,
-                newDataParams: newData.params
-              })
-
               const param = newData.params.find((p) => p.name === key)!;
               param.inputMode.value = value;
             }

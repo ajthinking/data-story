@@ -18,8 +18,6 @@ export function RepeatableInput({
   mode: RepeatableMode<Param[]>
   node: DataStoryNode,
 }) {
-  console.log('Rendering RepeatableInput')
-
   const defaultRows = () => {
     if(mode.value.length === 0) return [structuredClone(mode.row)]
     
