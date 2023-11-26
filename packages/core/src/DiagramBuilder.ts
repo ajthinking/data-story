@@ -5,6 +5,7 @@ import { Link } from './types/Link';
 import { PositionGuesser } from './PositionGuesser';
 import { Port, PortName } from './types/Port';
 import { ComputerConfig } from './types/ComputerConfig';
+import { Fake } from './computers/Fake/Fake';
 
 export class DiagramBuilder {
   diagram: Diagram
@@ -132,7 +133,7 @@ export class DiagramBuilder {
     return this
   }
 
-  addJitter(jitter = {x: 50, y: 25 }) {
+  jiggle(jitter = {x: 50, y: 25 }) {
 
     for(const node of this.diagram.nodes) {
       node.position!.x += (0.5 - Math.random()) * jitter.x
@@ -140,6 +141,40 @@ export class DiagramBuilder {
     }
 
     return this
+  }
+
+  linkByLabel(fromLabelDotOutput: string, toLabelDotInput: string) {
+    const fromNode = this.diagram.nodes.find(node => node.label === fromLabelDotOutput.split('.')[0])
+    const toNode = this.diagram.nodes.find(node => node.label === toLabelDotInput.split('.')[0])
+
+    if(!fromNode) throw new Error(`Bad from label: ${fromLabelDotOutput}. Node not found`)
+    if(!toNode) throw new Error(`Bad to label: ${toLabelDotInput}. Node not found`)
+
+    const fromPort = fromNode.outputs.find(output => output.name === fromLabelDotOutput.split('.')[1])
+    const toPort = toNode.inputs.find(input => input.name === toLabelDotInput.split('.')[1])
+
+    if(!fromPort) throw new Error(`Bad from label: ${fromLabelDotOutput}. Port not found`)
+    if(!toPort) throw new Error(`Bad to label: ${toLabelDotInput}. Port not found`)
+
+    return this.link(fromPort.id!, toPort.id!)
+  }
+
+  addFake({
+    label,
+    inputs = [],
+    outputs = [],
+  
+  }: {
+    label: string,
+    inputs?: string[],
+    outputs?: string[],
+  }) {
+    return this.add({
+      ...Fake,
+      label,
+      inputs: inputs.map((name) => ({ name, schema: { type: 'object' } })),
+      outputs: outputs.map((name) => ({ name, schema: { type: 'object' } })),
+    })
   }
 
   get() {

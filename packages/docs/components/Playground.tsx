@@ -1,7 +1,7 @@
 import { DataStory } from '@data-story/ui'
 import '@data-story/ui/dist/data-story.css';
 import { coreNodeProvider, Application, DiagramBuilder } from '@data-story/core';
-import { ConsoleLog, Map, Signal } from '@data-story/core/dist/computers';
+import { ConsoleLog, Map, Signal, Fake } from '@data-story/core/dist/computers';
 
 export default () => {
   const app = new Application();
@@ -12,12 +12,57 @@ export default () => {
 
   app.boot();
 
-  const diagram = new DiagramBuilder()
-    .add(Signal, { period: 1000, count: 1 })
-    .add(Map, {
-      properties: [{ key: 'greeting', value: '' }]
+  const fake = ({
+    label,
+    inputs = [],
+    outputs = [] 
+  }: {
+    label: string,
+    inputs?: string[],
+    outputs?: string[],
+  }) => {
+    return {
+      ...Fake,
+      label,
+      inputs: inputs.map((name) => ({ name, schema: { type: 'object' } })),
+      outputs: outputs.map((name) => ({ name, schema: { type: 'object' } })),
+    }
+  }
+
+  // HubSpot Example
+  const diagram = new DiagramBuilder() 
+    .addFake({
+      label: 'Lime.persons',
+      outputs: ['persons', 'error']
     })
-    .add(ConsoleLog)
+    .addFake({
+      label: 'qualifyPersons',
+      inputs: ['persons'],
+      outputs: ['passed', 'failed']
+    })
+    .addFake({
+      label: 'Merge',
+      inputs: ['requestor', 'suppliers'],
+      outputs: ['merged', 'not_merged'],
+    })
+    .add(Map)
+    .addFake({
+      label: 'Contacts.create',
+      inputs: ['contacts'],
+      outputs: ['created', 'error'],
+    })
+    .addFake({
+      label: 'saveLocalCopy',
+      inputs: ['input']
+    })    
+    .addFake({
+      label: 'Owners',
+      outputs: ['owners', 'error']
+    })
+    .linkByLabel('Owners.owners', 'Merge.suppliers')
+    
+    .jiggle()
+    
     .get()
 
   return (
@@ -25,7 +70,7 @@ export default () => {
       <DataStory
         // server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
         server={{ type: 'JS', app }}
-        diagram={diagram}
+        // diagram={diagram}
       />
     </div>   
   );

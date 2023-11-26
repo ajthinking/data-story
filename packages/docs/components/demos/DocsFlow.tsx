@@ -31,7 +31,7 @@ export default () => {
     .add({...Ignore, label: 'Actions'})
     .from('Pass.1.output').below('Ignore.1').add({...Pass, label: 'APIs'})
     .add({...Ignore, label: 'Storage'})
-    .addJitter({x: 60, y: 25})
+    .jiggle({x: 60, y: 25})
     .above('Signal.1').add(Comment, { content: prettyMarkdown`
       ### DataStory 🔥
       Combine data sources, transforms, actions, APIs, storage and more. Create custom nodes for your business logic.
