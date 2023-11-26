@@ -5,7 +5,7 @@ import {
   DiagramBuilder,
   coreNodeProvider,
   nodes,
-  prettyMarkdown,
+  multiline,
 } from '@data-story/core';
 import { Comment, Map } from '@data-story/core/dist/computers';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
@@ -25,7 +25,7 @@ export default () => {
 
   const { Signal, Pass, ConsoleLog, Ignore } = nodes;
 
-  const welcomeMarkdown = prettyMarkdown`
+  const welcomeMarkdown = multiline`
     ### Welcome to DataStory 👋
     Real time data processing for NodeJS and React.  
     [docs](/docs) | [playground](/playground)

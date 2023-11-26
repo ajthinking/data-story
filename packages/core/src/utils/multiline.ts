@@ -1,4 +1,4 @@
-export const prettyMarkdown = (strings: TemplateStringsArray, ...values: any[]) => {
+export const multiline = (strings: TemplateStringsArray, ...values: any[]) => {
   // Combine the strings with the values
   let combinedString = strings.reduce((result, str, i) => {
     return result + str + (values[i] !== undefined ? values[i] : '');
