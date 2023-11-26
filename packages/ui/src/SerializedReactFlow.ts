@@ -21,6 +21,7 @@ export type SerializedReactFlowNode = {
   data: {
     computer: string,
     label: string,
+    color?: string,
     inputs: {
       id: string,
       name: string,

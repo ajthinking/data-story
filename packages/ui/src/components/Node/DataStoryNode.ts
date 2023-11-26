@@ -5,6 +5,7 @@ export type DataStoryNodeData = {
   params: Param[],
   computer: string,
   label: string,
+  color?: string,
   inputs: Port[],
   outputs: Port[],
 }

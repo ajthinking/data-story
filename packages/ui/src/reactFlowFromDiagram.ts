@@ -16,6 +16,7 @@ export const reactFlowFromDiagram = (diagram: Diagram): SerializedReactFlow => {
           params: node.params,
           computer: node.type,
           label: (node?.label || node.type) as string,
+          color: node.color,
           inputs: node.inputs.map(input => {
             return {
               id: `${node.id}.${input.name}`,

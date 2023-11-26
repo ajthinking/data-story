@@ -28,6 +28,7 @@ export const makeNodeAndConnection = (
     data: {
       // Ensure two nodes of same type don't share the same params object
       params: structuredClone(nodeDescription.params),
+      color: nodeDescription.color,
       computer: nodeDescription.name,
       label: nodeDescription.label ?? nodeDescription.name,
       inputs: nodeDescription.inputs.map((input: AbstractPort) => {
