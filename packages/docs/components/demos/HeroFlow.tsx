@@ -37,7 +37,11 @@ export default () => {
     .add({...Pass, label: 'Automation'})
     .add({...Ignore, label: 'for React & NodeJS'})
     .above('Signal.1').add(Comment, { content: welcomeMarkdown})
-    .from('Signal.1.output').below('Pass.1').add({...Ignore, label: 'in Your App'})
+    .from('Signal.1.output').below('Pass.1').add({
+      ...Ignore,
+      label: 'in Your App',
+      color: '#FFBF00',
+    })
     .jiggle({x: 60, y: 25})
     .get()
 
@@ -46,7 +50,11 @@ export default () => {
     .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
     .add({...Ignore, label: 'Automation'})
     .above('Signal.1').add(Comment, { content: welcomeMarkdown})
-    .from('Signal.1.output').below('Ignore.1').add({...Ignore, label: 'in Your App'})
+    .from('Signal.1.output').below('Ignore.1').add({
+      ...Ignore,
+      label: 'in Your App',
+      color: '#FFBF00',
+    })
     .jiggle({x: 60, y: 25})    
     .get()
 

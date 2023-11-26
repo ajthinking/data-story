@@ -54,6 +54,7 @@ export class DiagramBuilder {
     const node: Node = {
       id: nodeId,
       label: config.label,
+      color: config.color,
       type: computer.name,
       // The inputs have not yet been assigned ids, to it here
       inputs: (computer.inputs ?? []).map(input => {
@@ -228,8 +229,6 @@ export class DiagramBuilder {
       const port = this.previousNode.outputs.find(
         output => output.name === this.fromDirective
       )
-
-      console.log(this.previousNode.outputs)
 
       if(!port) throw new Error(`Bad on directive: ${this.fromDirective}. Port not found on ${this.previousNode.id}`)
 

@@ -18,13 +18,13 @@ const DataStoryNodeComponent = ({ id, data, selected }: {
   return (
     (
       <div
-        className={"text-xs" + (selected ? ' shadow-xl' : '')}
+        className={'text-xs' + (selected ? ' shadow-xl' : '')}
         onDoubleClick={() => {
           setOpenNodeModalId(id)
         }}
       >
         <div className="w-32" />
-        <div className={"flex py-1 text-xs font-bold font-mono tracking-wide border border-gray-400 rounded bg-blue-600 text-gray-100 px-2" + (selected ? ' bg-blue-700 shadow-xl' : '') }>
+        <div className={'flex py-1 text-xs font-bold font-mono tracking-wide border border-gray-400 rounded bg-blue-600 text-gray-100 px-2' + (selected ? ' bg-blue-700 shadow-xl' : '' + (data.color ? ` bg-[${data.color}]` : ''))}>
           { data.label }
         </div>
         <div className="flex flex-col mx-2">
