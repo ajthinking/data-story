@@ -38,7 +38,7 @@ export default () => {
     .add({...Ignore, label: 'for React & NodeJS'})
     .above('Signal.1').add(Comment, { content: welcomeMarkdown})
     .from('Signal.1.output').below('Pass.1').add({...Ignore, label: 'in Your App'})
-    .addJitter({x: 60, y: 25})
+    .jiggle({x: 60, y: 25})
     .get()
 
   // Good for mobile
@@ -47,7 +47,7 @@ export default () => {
     .add({...Ignore, label: 'Automation'})
     .above('Signal.1').add(Comment, { content: welcomeMarkdown})
     .from('Signal.1.output').below('Ignore.1').add({...Ignore, label: 'in Your App'})
-    .addJitter({x: 60, y: 25})    
+    .jiggle({x: 60, y: 25})    
     .get()
 
   return (

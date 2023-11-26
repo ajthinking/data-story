@@ -5,6 +5,7 @@ export { ConsoleLog } from './ConsoleLog'
 export { CreateJson } from './CreateJson'
 // export { Dump } from './Dump';
 // export { Eval } from './Eval';
+export { Fake } from './Fake'
 export { Filter } from './Filter';
 export { Ignore } from './Ignore'
 export { InstantThrow } from './InstantThrow';
