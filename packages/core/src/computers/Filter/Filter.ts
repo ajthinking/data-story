@@ -53,7 +53,13 @@ export const Filter: ComputerConfig = {
         const property = params.property as string
         const value = item.value[property]
 
-        const mapping = portMap.find((mapping: any) => mapping.value === value)
+        console.log({
+          portMap,
+          property,
+          value,
+        })
+
+        const mapping = portMap.find((mapping: any) => mapping.value == value)
 
         return mapping?.port ?? 'unfiltered'
       })()
