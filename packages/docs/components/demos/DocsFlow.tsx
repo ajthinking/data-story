@@ -5,7 +5,7 @@ import {
   DiagramBuilder,
   coreNodeProvider,
   nodes,
-  prettyMarkdown,
+  multiline,
 } from '@data-story/core';
 import { Comment, Map } from '@data-story/core/dist/computers';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
@@ -32,7 +32,7 @@ export default () => {
     .from('Pass.1.output').below('Ignore.1').add({...Pass, label: 'APIs'})
     .add({...Ignore, label: 'Storage'})
     .jiggle({x: 60, y: 25})
-    .above('Signal.1').add(Comment, { content: prettyMarkdown`
+    .above('Signal.1').add(Comment, { content: multiline`
       ### DataStory 🔥
       Combine data sources, transforms, actions, APIs, storage and more. Create custom nodes for your business logic.
     `})
