@@ -36,7 +36,7 @@ describe('register', () => {
 
     expect(app.providers).toMatchObject([
       provider1,
-      provider1
+      provider2
     ])
   })
 })
