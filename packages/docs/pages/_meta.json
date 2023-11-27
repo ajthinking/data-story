@@ -51,6 +51,14 @@
       "layout": "raw"
     }    
   },
+  "pitchdeck": {
+    "title": "Playground",
+    "display": "hidden",
+    "type": "page",
+    "theme": {
+      "layout": "raw"
+    }    
+  },  
   "downloads": {
     "title": "Downloads",
     "display": "hidden",

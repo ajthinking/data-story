@@ -1,4 +1,4 @@
-import { Param } from '@data-story/core'
+import { Param, PortSelection } from '@data-story/core'
 import { UseFormReturn } from 'react-hook-form';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
 import { useState } from 'react';
@@ -27,7 +27,9 @@ export function PortSelectionInput({
       schema: JSON.parse(newPortSchema)
     }
 
-    node.data.outputs.unshift(newPort)
+    const alreadyExists = node.data.outputs.find((port) => port.name === newPortName)
+
+    if(!alreadyExists) node.data.outputs.unshift(newPort)
 
     setAddPortOpen(false)
 
@@ -35,6 +37,8 @@ export function PortSelectionInput({
     form.setValue(name!, newPortName)
     form.setValue('outputs', JSON.stringify(node.data.outputs, null, 2))
   }
+
+  const allowCreate = (param.inputMode as PortSelection).allowCreate
 
   return (<div className="group flex flex-col bg-gray-50">
     <div className="flex justify-between">
@@ -48,11 +52,11 @@ export function PortSelectionInput({
           value={output.name}
         >{output.name}</option>))}
       </select>
-      <button
+      {allowCreate && <button
         onClick={() => setAddPortOpen(!addPortOpen)}
         key={'add-port'}
         className="bg-gray-50 px-2 py-1"
-      >+ Add port</button>
+      >+ Add port</button>}
     </div>
     {addPortOpen && <div className="flex p-2 space-y-2 flex-col">
       <input
