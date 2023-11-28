@@ -11,10 +11,22 @@
     "build": "echo _____RUNNING_UI_BUILD_____ && webpack && yarn run build:css",
     "build:css": "tailwindcss build -o ./dist/data-story.css",
     "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
-    "watch:webpack": "webpack --watch"
+    "watch:webpack": "webpack --watch",
+    "release": "yarn run -T release-it"
+  },
+  "release-it": {
+    "git": false,
+    "skipChecks": true,
+    "npm": {
+      "publish": false,
+      "skipChecks": true,
+      "versionArgs": [
+        "--workspaces-update=false"
+      ]
+    }
   },
   "dependencies": {
-    "@data-story/core": "*",
+    "@data-story/core": "workspace:*",
     "clsx": "^2.0.0",
     "concurrently": "^8.2.1",
     "markdown-it": "^13.0.2",
