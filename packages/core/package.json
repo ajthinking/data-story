@@ -21,7 +21,6 @@
   },
   "release-it": {
     "git": false,
-    "skipChecks": true,
     "npm": {
       "publish": false,
       "skipChecks": true,

@@ -14,7 +14,8 @@
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
     "lint": "eslint .",
     "postinstall": "[ \"$CI\" = \"true\" ] || husky install",
-    "release": "npm run release --workspaces && release-it"
+    "release-core": "yarn workspace @data-story/core run release && yarn release-ui",
+    "release-ui": "yarn workspace @data-story/ui run release"
   },
   "release-it": {
     "increment": false,
