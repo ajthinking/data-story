@@ -79,7 +79,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@data-story/core@npm:*, @data-story/core@workspace:packages/core":
+"@data-story/core@workspace:*, @data-story/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@data-story/core@workspace:packages/core"
   dependencies:
@@ -107,7 +107,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@data-story/docs@workspace:packages/docs"
   dependencies:
-    "@data-story/ui": "npm:*"
+    "@data-story/ui": "workspace:*"
     "@types/node": "npm:*"
     "@types/react": "npm:*"
     autoprefixer: "npm:^10.4.16"
@@ -123,11 +123,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@data-story/ui@npm:*, @data-story/ui@workspace:packages/ui":
+"@data-story/ui@workspace:*, @data-story/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@data-story/ui@workspace:packages/ui"
   dependencies:
-    "@data-story/core": "npm:*"
+    "@data-story/core": "workspace:*"
     "@tailwindcss/typography": "npm:^0.5.10"
     "@types/glob": "npm:^8.1.0"
     "@types/markdown-it": "npm:^13.0.6"
