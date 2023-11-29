@@ -75,8 +75,8 @@ export class ExecutionMemory {
   }
 
   pushLinkItems(linkId: LinkId, items: ItemValue[]): void {
-    const linkItems = this.linkItems.get(linkId)!    
-    linkItems.concat(items)
+    const linkItems = this.linkItems.get(linkId)!
+    this.linkItems.set(linkId, linkItems.concat(items))
 
     this.history.push(`Pushed ${items.length} items to link ${linkId}`)
   }
