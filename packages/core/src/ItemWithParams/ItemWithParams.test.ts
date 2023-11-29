@@ -1,5 +1,5 @@
 import { ItemWithParams } from './ItemWithParams'
-import { Param, str } from './Param'
+import { Param, str } from '../Param'
 
 describe('value', () => {
   it('can be accessed when no params is supplied', () => {
