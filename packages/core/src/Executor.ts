@@ -6,7 +6,6 @@ import { Computer } from './types/Computer';;
 import { LinkId } from './types/Link';
 import { ExecutionUpdate } from './types/ExecutionUpdate';
 import { isFinished } from './utils/isFinished';
-import { ParamsDevice } from './types/ParamsDevice';
 import { Storage } from './types/Storage';
 import { ExecutionMemory } from './ExecutionMemory';
 import { ExecutorInterface } from './types/ExecutorInterface';
@@ -14,6 +13,7 @@ import { InputDevice } from './InputDevice';
 import { mapToRecord } from './utils/mapToRecord';
 import { Hook } from './types/Hook';
 import { ItemValue } from './types/ItemValue';
+import { toLookup } from './utils/toLookup';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
@@ -67,7 +67,7 @@ export class Executor implements ExecutorInterface {
         computer.run({
           input: inputDevice,
           output: outputDevice,
-          params: this.makeParamsDevice(computer, node),
+          params: toLookup(node.params, 'name', 'inputMode.value'),
           storage: this.storage,
           hooks: {
             register: (hook: Hook) => {
@@ -248,16 +248,6 @@ export class Executor implements ExecutorInterface {
     }
 
     return new OutputDevice(map, memory)
-  }
-
-  protected makeParamsDevice(computer: Computer, node: Node): ParamsDevice {
-    const device: Partial<ParamsDevice> = {}
-
-    for(const param of Object.values(node.params)) {
-      device[param.name] = param.inputMode.value
-    }
-
-    return device as ParamsDevice;
   }
 
   /**
