@@ -1,12 +1,10 @@
 name: Publish UI
 
 on:
-  push:
-    branches:
-      - main
   workflow_run:
-    workflows: ["Core CI"]
-    types: [completed]
+    workflows: [ "Core CI" ]
+    branches: [ main ]  # It is stipulated that Core CI must be performed on the main branch.
+    types: [ completed ]
 jobs:
   publish:
     runs-on: ubuntu-latest
