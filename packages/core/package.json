@@ -16,7 +16,18 @@
     "watch:server": "nodemon -x 'npx @data-story/core server'",
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "vitest",
-    "build": "tsc && webpack"
+    "build": "tsc && webpack",
+    "release": "yarn run -T release-it"
+  },
+  "release-it": {
+    "git": false,
+    "npm": {
+      "publish": false,
+      "skipChecks": true,
+      "versionArgs": [
+        "--workspaces-update=false"
+      ]
+    }
   },
   "dependencies": {
     "@types/node": "18.14.2",

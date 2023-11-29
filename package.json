@@ -13,7 +13,27 @@
     "build": "turbo build",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
     "lint": "eslint .",
-    "postinstall": "[ \"$CI\" = \"true\" ] || husky install"
+    "postinstall": "[ \"$CI\" = \"true\" ] || husky install",
+    "release-core": "yarn workspace @data-story/core run release && yarn release-ui",
+    "release-ui": "yarn workspace @data-story/ui run release"
+  },
+  "release-it": {
+    "increment": false,
+    "git": {
+      "requireCleanWorkingDir": false,
+      "tag": false,
+      "push": false
+    },
+    "github": {
+      "release": false
+    },
+    "npm": {
+      "publish": false,
+      "skipChecks": true,
+      "versionArgs": [
+        "--workspaces-update=false"
+      ]
+    }
   },
   "lint-staged": {
     "*.{js,jsx,tsx,ts}": "eslint"
@@ -27,6 +47,7 @@
     "husky": "^8.0.0",
     "kill-port": "^2.0.1",
     "lint-staged": "^15.0.2",
+    "release-it": "^17.0.0",
     "turbo": "^1.10.12"
   }
 }
