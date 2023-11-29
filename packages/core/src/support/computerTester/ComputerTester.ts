@@ -5,7 +5,6 @@ import { PortLinkMap } from '../../types/PortLinkMap';
 import { ItemValue } from '../../types/ItemValue';
 import { Node, NodeId } from '../../types/Node';
 import { OutputDevice } from '../../OutputDevice';
-import { ParamsDevice } from '../../types/ParamsDevice';
 import { TestStep } from './TestStep';
 import * as computerConfigs from '../../computers'
 
@@ -29,6 +28,7 @@ import { ComputerFactory } from '../../ComputerFactory';
 import { LinkId } from '../../types/Link';
 import { Hook } from '../../types/Hook';
 import { Param } from '../../Param';
+import { toLookup } from '../../utils/toLookup';
 
 export const when = (computerConfig: ComputerConfig) => {
   return new ComputerTester(computerConfig)
@@ -88,7 +88,7 @@ export class ComputerTester {
       this.computer.run({
         input: this.inputDevice,
         output: this.outputDevice,
-        params: this.makeParamsDevice(),
+        params: toLookup(this.computer.params, 'name', 'inputMode.value'),
         storage: new NullStorage(),
         hooks: this.hooksDevice,
         executorFactory: (diagram: any) => {
@@ -222,7 +222,7 @@ export class ComputerTester {
       this.node!,
       this.diagram!,
       this.memory!,
-      this.makeParams() || [], //this.makeParamsDevice(),
+      this.makeParams() || [],
     )
   }
 
@@ -253,24 +253,6 @@ export class ComputerTester {
     }
 
     return params
-  }
-
-  protected makeParamsDevice(): ParamsDevice {
-    const device: Partial<ParamsDevice> = {}
-    const params = this.computer.params || {}
-
-    for(const param of Object.values(params)) {
-      const hasExplicitValue = this.explicitParams.hasOwnProperty(param.name)
-
-      if(hasExplicitValue) {
-        device[param.name] = this.explicitParams[param.name]
-        continue
-      }
-
-      device[param.name] = param.inputMode.value
-    }
-
-    return device as ParamsDevice;
   }
 
   protected makeExecutionMemory() {
