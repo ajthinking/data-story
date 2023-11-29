@@ -1,7 +1,7 @@
 import { LinkId } from './types/Link'
 import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams } from './ItemWithParams'
-import { ParamValue } from './Param'
+import { Param, ParamValue } from './Param'
 import { Diagram } from './Diagram'
 import { Node } from './types/Node'
 import { InputDeviceInterface } from './types/InputDeviceInterface'
@@ -19,7 +19,7 @@ export class InputDevice implements InputDeviceInterface {
     // The current execution state
     private memory: ExecutionMemory,
     // The params passed in the node
-    private params: Record<string, ParamValue>
+    private params: Param[]
   ) {}
 
   /**

@@ -1,5 +1,5 @@
 import { ItemValue } from './types/ItemValue';
-import { ParamValue } from './Param';
+import { Param, ParamValue } from './Param';
 import { evalMath } from './utils/evalMath';
 
 export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWithParams => {
@@ -22,11 +22,11 @@ export class ItemWithParams {
   value: ItemValue;
   params: Record<string, ParamValue>;
 
-  constructor(value: ItemValue, params: Record<string, ParamValue>) {
+  constructor(value: ItemValue, rawParams: Param[]) {
     this.value = value;
     this.params = new Proxy({}, {
-      get: (_, prop: string) => {
-        const paramValue = params[prop]
+      get: (_, key: string) => {
+        const paramValue = rawParams.find(p => p.name === key)?.inputMode.value;
 
         // We can only use params that exist
         if (!paramValue) return undefined;
@@ -59,5 +59,3 @@ export class ItemWithParams {
     });
   }
 }
-
-const i1 = { i: 1 }

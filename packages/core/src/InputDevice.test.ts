@@ -1,6 +1,7 @@
 import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { InputDevice } from './InputDevice'
+import { Param, Stringable } from './Param'
 import { Node } from './types/Node'
 
 describe('pull', () => {
@@ -26,7 +27,7 @@ describe('pull', () => {
         .set('link-2', [{i: 3}, {i: 4}])      
     })
 
-    const input = new InputDevice(node, diagram, memory, {})
+    const input = new InputDevice(node, diagram, memory, [])
 
     expect(input.pull()).toMatchObject([
       { value: {i: 1} },
@@ -52,7 +53,7 @@ describe('pull', () => {
 
       const memory = new ExecutionMemory()
 
-      new InputDevice(node, diagram, memory, {}).pull()
+      new InputDevice(node, diagram, memory, []).pull()
     }).toThrowError()
   })
 
@@ -78,7 +79,7 @@ describe('pull', () => {
         .set('link-2', [{i: 3}, {i: 4}])      
     })
 
-    const input = new InputDevice(node, diagram, memory, {})
+    const input = new InputDevice(node, diagram, memory, [])
     input.pull()
 
     const atLink1 = memory.getLinkItems('link-1')
@@ -111,7 +112,7 @@ describe('pull', () => {
         .set('link-2', [{i: 3}, {i: 4}])      
     })
 
-    const input = new InputDevice(node, diagram, memory, {})
+    const input = new InputDevice(node, diagram, memory, [])
 
     expect(input.pull(1)).toMatchObject([{ value: {i: 1} }])
     expect(input.pull(2)).toMatchObject([{ value: {i: 2} }, { value: {i: 3} }])
@@ -142,7 +143,7 @@ describe('pullFrom', () => {
         .set('link-2', [{i: 3}, {i: 4}])      
     })
 
-    const input = new InputDevice(node, diagram, memory, {})
+    const input = new InputDevice(node, diagram, memory, [])
 
     expect(input.pullFrom('numbers')).toMatchObject([
       { value: {i: 1} },
@@ -174,7 +175,7 @@ describe('pullFrom', () => {
         .set('link-2', [{i: 3}, {i: 4}])      
     })
 
-    const input = new InputDevice(node, diagram, memory, {})
+    const input = new InputDevice(node, diagram, memory, [])
     input.pullFrom('numbers')
 
     const atLink1 = memory.getLinkItems('link-1')
@@ -207,9 +208,19 @@ describe('params', () => {
         .set('link-1', [{ name: 'Bob' }])      
     })
 
-    const params = {
-      greeting: 'Hello ${name}',
-    }
+    const params: Param[] = [{
+      name: 'greeting',
+      label: 'Greeting',
+      help: 'The greeting to use',
+      inputMode: {
+        type: 'Stringable',
+        value: 'Hello ${name}',
+        multiline: false,
+        canInterpolate: true,
+        interpolate: true,
+      } as Stringable,
+      alternativeInputModes: [],
+    }]
 
     const input = new InputDevice(node, diagram, memory, params)
 
