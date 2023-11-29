@@ -249,6 +249,7 @@ export const param = ({
       interpolate: inputMode?.interpolate || true,
       casts: inputMode?.casts || [], 
       value: inputMode?.value || '',
+      evaluations: inputMode?.evaluations || [],
     },
     alternativeInputModes: [],
   }
