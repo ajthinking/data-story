@@ -37,7 +37,7 @@ jobs:
         github.event.workflow_run.conclusion == 'failure' ||
         github.event.workflow_run.conclusion == 'cancelled'
       run: |
-        echo "The triggering workflow failed or was cancelled. The conclusion is ${{ github.event.workflow_run.conclusion }}."
+        echo "The 'Core CI' workflow is ${{ github.event.workflow_run.conclusion }}."
         exit 1 # Exit with a failure
 
     - name: Install dependencies
