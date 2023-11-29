@@ -28,6 +28,7 @@ import { ComputerConfig } from '../../types/ComputerConfig';
 import { ComputerFactory } from '../../ComputerFactory';
 import { LinkId } from '../../types/Link';
 import { Hook } from '../../types/Hook';
+import { Param } from '../../Param';
 
 export const when = (computerConfig: ComputerConfig) => {
   return new ComputerTester(computerConfig)
@@ -221,7 +222,7 @@ export class ComputerTester {
       this.node!,
       this.diagram!,
       this.memory!,
-      this.makeParamsDevice(),
+      this.makeParams() || [], //this.makeParamsDevice(),
     )
   }
 
@@ -237,6 +238,21 @@ export class ComputerTester {
     }
 
     return new OutputDevice(map, this.memory!)
+  }
+
+  protected makeParams(): Param[] {
+    const params = this.computer.params || []
+
+    for(const param of params) {
+      const hasExplicitValue = this.explicitParams.hasOwnProperty(param.name)
+
+      if(hasExplicitValue) {
+        param.inputMode.value = this.explicitParams[param.name]
+        continue
+      }
+    }
+
+    return params
   }
 
   protected makeParamsDevice(): ParamsDevice {

@@ -235,7 +235,7 @@ export class Executor implements ExecutorInterface {
       node,
       this.diagram,
       memory,
-      this.makeParamsDevice(this.computers.get(node.type)!, node)
+      node.params,
     )
   }
 
