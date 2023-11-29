@@ -55,7 +55,7 @@ describe('boot', () => {
       boot: vi.fn(),
     }
 
-    app.register([provider1, provider2])
+    app.register([provider1, provider1])
 
     app.boot()
 
