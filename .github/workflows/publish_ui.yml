@@ -1,10 +1,10 @@
-name: Publish ui
+name: Publish UI
 
 on:
-  push:
-    branches:
-      - main
-
+  workflow_run:
+    workflows: [ "Core CI" ]
+    branches: [ main ]  # It is stipulated that Core CI must be performed on the main branch.
+    types: [ completed ]
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -31,6 +31,14 @@ jobs:
           echo "Version does not exist."
           echo "VERSION_EXISTS=false" >> $GITHUB_ENV
         fi
+
+    - name: Check Core CI status
+      if: >
+        github.event.workflow_run.conclusion == 'failure' ||
+        github.event.workflow_run.conclusion == 'cancelled'
+      run: |
+        echo "The 'Core CI' workflow is ${{ github.event.workflow_run.conclusion }}."
+        exit 1 # Exit with a failure
 
     - name: Install dependencies
       if: ${{ env.VERSION_EXISTS == 'false' }}    
