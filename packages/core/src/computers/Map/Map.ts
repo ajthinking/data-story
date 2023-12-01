@@ -1,4 +1,5 @@
 
+import { JsEvaluation, JsonEvaluation } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const Map: ComputerConfig = {
@@ -37,6 +38,10 @@ export const Map: ComputerConfig = {
               multiline: false,
               canInterpolate: true,
               interpolate: true,
+              evaluations: [
+                JsonEvaluation,
+                JsEvaluation,
+              ],
               value: '',
             },
             alternativeInputModes: [],

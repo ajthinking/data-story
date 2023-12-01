@@ -62,7 +62,7 @@ export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
                     )
                   })}
                 </ul>
-                {optionGroup.options.length === 0 && <div className="text-xs text-gray-400 px-2 py-2">{optionGroup.emptyMessage ?? 'HAHA'}</div>}
+                {optionGroup.options.length === 0 && <div className="text-xs text-gray-400 px-2 py-2">{optionGroup.emptyMessage ?? 'N/A'}</div>}
               </div>
             )
           })}

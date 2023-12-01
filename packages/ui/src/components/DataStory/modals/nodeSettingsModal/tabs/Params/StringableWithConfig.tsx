@@ -45,6 +45,19 @@ const paramOptions = (param: Param, node: DataStoryNode): OptionGroup => {
   }
 }
 
+const evaluationOptions = (param: Param): OptionGroup => {
+  const inputMode = param.inputMode as Stringable
+
+  return {
+    label: 'Evaluation',
+    options: (inputMode.evaluations || []).map((evaluation) => ({
+      label: evaluation.label,
+      value: evaluation.type,
+      callback: () => {}
+    })),
+  }
+}
+
 export function StringableWithConfig({
   param,
   form,
@@ -67,6 +80,7 @@ export function StringableWithConfig({
     <DropDown optionGroups={[
       inputModeOptions(),
       paramOptions(param, node),
+      evaluationOptions(param),
     ]} />
   </div>) 
 }
