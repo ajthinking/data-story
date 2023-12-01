@@ -53,6 +53,11 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
     transformedValue = JSON.parse(transformedValue);
   }
 
+  if(selectedEvaluation?.type === 'JS') {
+    const fn = eval(transformedValue);
+    transformedValue = fn(itemValue);
+  }
+
   // **********************************************************************
   // CAST
   // **********************************************************************
