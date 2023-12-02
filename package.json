@@ -5,6 +5,7 @@
     "packages/core",
     "packages/ui",
     "packages/docs",
+    "packages/openai",
     "packages/private/*"
   ],
   "scripts": {

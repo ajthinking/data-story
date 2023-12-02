@@ -1,3 +1,5 @@
+import { when } from './support/computerTester/ComputerTester'
+
 export { get } from './utils/get'
 export { multiline } from './utils/multiline'
 export { pascalToSentenceCase } from './utils/pascalToSentenceCase'
@@ -21,5 +23,6 @@ export type { ItemValue } from './types/ItemValue'
 export { deriveFrom } from './deriveFrom'
 export { coreNodeProvider } from './coreNodeProvider'
 
+export { when } from './support/computerTester/ComputerTester'
 export * as nodes from './computers'
 export * from './Param'
