@@ -8,14 +8,16 @@ const app = new Application();
 
 app.register([
   coreNodeProvider,
-  nodeJsNodesProvider,
+  // nodeJsNodesProvider,
+  // openAiProvider
 ]);
 
 app.boot();
 
-const server = new SocketServer({
-  app,
-  port: 3100
-})
+// SocketServer is not exported from @data-story/core
+// const server = new SocketServer({
+//   app,
+//   port: 3100
+// })
 
-server.start()
+// server.start()
