@@ -14,9 +14,6 @@ export default () => {
   const { height, width } = useWindowDimensions();
   const isSmallScreen = width < 768;
 
-  console.log('width', width);
-  console.log('height', height);
-
   const app = new Application();
 
   app.register(coreNodeProvider);

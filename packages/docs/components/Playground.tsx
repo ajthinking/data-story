@@ -72,6 +72,6 @@ export default () => {
         server={{ type: 'JS', app }}
         // diagram={diagram}
       />
-    </div>   
+    </div>
   );
 };
