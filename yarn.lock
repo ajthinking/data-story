@@ -165,8 +165,6 @@ __metadata:
     webpack-cli: "npm:^5.1.4"
     webpack-shebang-plugin: "npm:^1.1.8"
     ws: "npm:^8.12.1"
-  bin:
-    server: dist/server.js
   languageName: unknown
   linkType: soft
 
