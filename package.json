@@ -6,6 +6,7 @@
     "packages/ui",
     "packages/docs",
     "packages/nodejs",
+    "packages/openai",
     "packages/private/*"
   ],
   "scripts": {
