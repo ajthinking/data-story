@@ -101,6 +101,7 @@ __metadata:
   resolution: "@data-story/docs@workspace:packages/docs"
   dependencies:
     "@data-story/nodejs": "workspace:*"
+    "@data-story/openai": "workspace:*"
     "@data-story/ui": "workspace:*"
     "@types/node": "npm:*"
     "@types/react": "npm:*"
@@ -141,6 +142,29 @@ __metadata:
     ws: "npm:^8.12.1"
   bin:
     server: dist/server.js
+  languageName: unknown
+  linkType: soft
+
+"@data-story/openai@workspace:*, @data-story/openai@workspace:packages/openai":
+  version: 0.0.0-use.local
+  resolution: "@data-story/openai@workspace:packages/openai"
+  dependencies:
+    "@data-story/core": "workspace:*"
+    "@types/glob": "npm:^8.1.0"
+    "@types/node": "npm:18.14.2"
+    "@types/ws": "npm:^8.5.4"
+    "@vitest/coverage-c8": "npm:^0.29.7"
+    axios: "npm:^1.3.4"
+    dotenv: "npm:^16.0.3"
+    nodemon: "npm:^2.0.21"
+    openai: "npm:^3.2.1"
+    ts-node: "npm:^10.9.1"
+    typescript: "npm:4.9.5"
+    vitest: "npm:^0.29.2"
+    webpack: "npm:^5.88.1"
+    webpack-cli: "npm:^5.1.4"
+    webpack-shebang-plugin: "npm:^1.1.8"
+    ws: "npm:^8.12.1"
   languageName: unknown
   linkType: soft
 

@@ -20,6 +20,7 @@
   "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
     "@data-story/nodejs": "workspace:*",
+    "@data-story/openai": "workspace:*",
     "@data-story/ui": "workspace:*",
     "next": "^13.0.6",
     "nextra": "latest",
