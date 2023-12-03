@@ -12,10 +12,9 @@
   ],
   "scripts": {
     "watch:tsc": "tsc --watch",
-    "watch:webpack": "webpack --watch",
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "vitest",
-    "build": "tsc && webpack",
+    "build": "tsc",
     "release": "yarn run -T release-it"
   },
   "release-it": {

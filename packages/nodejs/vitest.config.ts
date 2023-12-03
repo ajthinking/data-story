@@ -8,8 +8,6 @@ export default defineConfig({
       exclude: [
         './**/*.test.ts',
         './dist/**',
-        './src/types/**',
-        './src/support/computerTester/**'
       ]
     },
   },
