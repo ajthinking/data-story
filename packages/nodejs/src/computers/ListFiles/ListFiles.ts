@@ -4,7 +4,6 @@ import * as nodePath from 'path'
 
 export const ListFiles: ComputerConfig = {
   name: 'ListFiles',
-  label: 'ListFninFiles',
   inputs: ['input'],
   outputs: [{
     name: 'output',

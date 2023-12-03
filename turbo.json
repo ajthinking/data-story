@@ -5,8 +5,7 @@
       "dependsOn": [
         "watch:webpack",
         "watch:tsc",
-        "watch:css",
-        "watch:server"
+        "watch:css"
       ],
       "cache": false,
       "persistent": true
