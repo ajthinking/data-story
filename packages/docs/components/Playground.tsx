@@ -68,10 +68,10 @@ export default () => {
   return (
     <div className="w-full" style={{ height: '100vh' }}>
       <DataStory
-        // server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
-        server={{ type: 'JS', app }}
+        server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
+        // server={{ type: 'JS', app }}
         // diagram={diagram}
       />
-    </div>   
+    </div>
   );
 };
