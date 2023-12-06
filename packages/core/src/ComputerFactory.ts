@@ -22,6 +22,7 @@ export class ComputerFactory {
       ...structuredClone({
         name: config.name ?? 'unnamed',
         label: config.label ?? config.name ?? 'unlabeled',
+        docs: config.docs,
         category: config.category,
         inputs: config.inputs?.map(portableToPort) ?? [],
         outputs: config.outputs?.map(portableToPort) ?? [],

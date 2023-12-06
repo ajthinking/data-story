@@ -1,4 +1,4 @@
-import { Params, InputSchemas, OutputSchemas, Code } from './tabs';
+import { Params, InputSchemas, OutputSchemas, Code, Docs } from './tabs';
 import { shallow } from 'zustand/shallow';
 import { StoreSchema, useStore } from '../../store/store';
 import { useForm } from 'react-hook-form';
@@ -7,9 +7,10 @@ import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 
-type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code';
+type TabKey = 'Docs' | 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code';
 
 const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
+  Docs,
   Params,
   InputSchemas,
   OutputSchemas,

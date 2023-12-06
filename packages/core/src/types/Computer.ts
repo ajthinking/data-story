@@ -26,6 +26,7 @@ export type RunArgs = {
 export interface Computer {
   name: string
   label: string
+  docs?: string
   category?: string
   inputs: AbstractPort[]
   outputs: AbstractPort[]
