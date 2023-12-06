@@ -33,11 +33,11 @@
     "**/*.ts",
     "**/*.tsx",
     "**/**/*.ts",
+    "../cypress.d.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "cypress",
     "cypress.config.ts",
   ]
 }
