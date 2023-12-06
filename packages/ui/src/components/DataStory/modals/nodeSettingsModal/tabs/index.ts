@@ -1,4 +1,5 @@
 export { Code } from './Code'
+export { Docs } from './Docs'
 export { InputSchemas } from './InputSchemas'
 export { OutputSchemas } from './OutputSchemas'
 export { Params } from './Params'

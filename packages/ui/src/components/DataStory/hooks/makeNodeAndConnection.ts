@@ -3,6 +3,7 @@ import { Diagram, LinkGuesser, NodeDescription, AbstractPort, PositionGuesser } 
 import { DataStoryNode } from '../../Node/DataStoryNode';
 
 import { reactFlowNodeToDiagramNode } from '../../../reactFlowToDiagram';
+import { SerializedReactFlowNode } from '../../../SerializedReactFlow';
 
 export const makeNodeAndConnection = (
   diagram: Diagram,
@@ -22,14 +23,15 @@ export const makeNodeAndConnection = (
   const counter = scopedId(nodeDescription.name)
   const id = `${nodeDescription.name}.${counter}`;
 
-  const flowNode = {
+  const flowNode: SerializedReactFlowNode = {
     id,
     position: new PositionGuesser(diagram).guess(nodeDescription),
     data: {
+      computer: nodeDescription.name,
+      docs: nodeDescription.docs,
       // Ensure two nodes of same type don't share the same params object
       params: structuredClone(nodeDescription.params),
       color: nodeDescription.color,
-      computer: nodeDescription.name,
       label: nodeDescription.label ?? nodeDescription.name,
       inputs: nodeDescription.inputs.map((input: AbstractPort) => {
         return {

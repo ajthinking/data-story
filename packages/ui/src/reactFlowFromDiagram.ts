@@ -13,6 +13,7 @@ export const reactFlowFromDiagram = (diagram: Diagram): SerializedReactFlow => {
           y: node.position!.y
         },
         data: {
+          docs: node.docs,
           params: node.params,
           computer: node.type,
           label: (node?.label || node.type) as string,

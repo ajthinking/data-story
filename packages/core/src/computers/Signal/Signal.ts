@@ -3,11 +3,16 @@ import { sleep } from '../../utils/sleep';
 import { NumberCast } from '../../Param';
 import { OutputDevice } from '../../OutputDevice';
 import { RunArgs } from '../../types/Computer';
+import { multiline } from '../../utils/multiline';
 
 export const Signal: ComputerConfig = {
   name: 'Signal',
+  docs: multiline`
+    ### Description
+    Creates an item every X ms, Y times. Useful for testing.
+    The output will look like \`{ id: 1 }, { id: 2 }\` etc.
+  `,
   inputs: [],
-
   outputs: [{
     name: 'output',
     schema: {

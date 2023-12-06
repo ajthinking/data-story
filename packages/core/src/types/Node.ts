@@ -5,6 +5,7 @@ export type NodeId = string
 
 export type Node = {
   id: NodeId
+  docs?: string
   type: string
   label?: string
   color?: string

@@ -1,16 +1,20 @@
 
 import { ComputerConfig } from '../../types/ComputerConfig';
+import { multiline } from '../../utils/multiline';
 import { sleep } from '../../utils/sleep';
 
 export const Fake: ComputerConfig = {
   name: 'Fake',
   label: 'Fake',
+  docs: multiline`
+    ### Description
+    This is a Fake node, used to visualize an example.
+    You may configure desired faked input and output ports on creation.
+    Label can be set to any value.
+  `,  
   params: [],
 
-  canRun({
-    isAvailable,
-    input,
-  }) {
+  canRun({ isAvailable }) {
     return isAvailable();
   },
 
