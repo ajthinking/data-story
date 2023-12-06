@@ -4,7 +4,7 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext",
+      "esnext"
     ],
     "declaration": true,
     "allowJs": true,
@@ -21,7 +21,7 @@
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "noImplicitAny": true,
-    "types": ["node", "react"],
+    "types": ["node", "react", "cypress"],
     "sourceMap": true
   },
   "ts-node": {
@@ -32,10 +32,12 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "**/**/*.ts"
+    "**/**/*.ts",
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "cypress",
+    "cypress.config.ts",
   ]
 }

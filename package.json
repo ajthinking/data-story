@@ -51,6 +51,7 @@
     "kill-port": "^2.0.1",
     "lint-staged": "^15.0.2",
     "release-it": "^17.0.0",
-    "turbo": "^1.10.12"
+    "turbo": "^1.10.12",
+    "@types/mocha": "^10.0.6"
   }
 }

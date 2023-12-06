@@ -1749,6 +1749,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/mocha@npm:^10.0.6":
+  version: 10.0.6
+  resolution: "@types/mocha@npm:10.0.6"
+  checksum: fc73626e81e89c32d06b7ff9b72c4177b46d579cdd932f796614adc026852d84cb849d743473ba572cb4d9ea6d8c04e3749552d326c26495ec1c4b46e6e0a0c0
+  languageName: node
+  linkType: hard
+
 "@types/ms@npm:*":
   version: 0.7.34
   resolution: "@types/ms@npm:0.7.34"
@@ -4077,6 +4084,7 @@ __metadata:
   resolution: "data-story@workspace:."
   dependencies:
     "@stylistic/eslint-plugin": "npm:^0.1.2"
+    "@types/mocha": "npm:^10.0.6"
     "@typescript-eslint/parser": "npm:^6.9.0"
     cypress: "npm:^13.6.1"
     eslint: "npm:^8.52.0"
