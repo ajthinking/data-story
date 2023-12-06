@@ -1,8 +1,35 @@
 import { Param, Stringable } from '@data-story/core'
 import { StringableInput } from '../../../../FormV3/StringableInput'
 import { UseFormReturn } from 'react-hook-form';
-import { DropDown, OptionGroup } from '../../../../../DropDown';
+import { DropDown, Option, OptionGroup } from '../../../../../DropDown';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+
+export function StringableWithConfig({
+  param,
+  form,
+  name,
+  node,
+}: {
+  param: Param
+  form: UseFormReturn<{
+    [x: string]: any;
+  }, any>,
+  name?: string,
+  node: DataStoryNode,
+}) {
+  return (<div className="group flex bg-gray-50">
+    <StringableInput
+      form={form}
+      {...param}
+      name={name ?? param.name}
+    />
+    <DropDown optionGroups={[
+      inputModeOptions(),
+      paramOptions(param, node),
+      evaluationOptions(form, param),
+    ]} />
+  </div>) 
+}
 
 const inputModeOptions = (): OptionGroup => {
   return {
@@ -12,7 +39,7 @@ const inputModeOptions = (): OptionGroup => {
       {
         label: 'Stringable',
         value: 'Stringable',
-        callback: () => {}
+        callback: (options) => {},
       }
     ]
   }
@@ -45,42 +72,34 @@ const paramOptions = (param: Param, node: DataStoryNode): OptionGroup => {
   }
 }
 
-const evaluationOptions = (param: Param): OptionGroup => {
-  const inputMode = param.inputMode as Stringable
-
-  return {
-    label: 'Evaluation',
-    options: (inputMode.evaluations || []).map((evaluation) => ({
-      label: evaluation.label,
-      value: evaluation.type,
-      callback: () => {}
-    })),
-  }
-}
-
-export function StringableWithConfig({
-  param,
-  form,
-  name,
-  node,
-}: {
-  param: Param
+const evaluationOptions = (
   form: UseFormReturn<{
     [x: string]: any;
   }, any>,
-  name?: string,
-  node: DataStoryNode,
-}) {
-  return (<div className="group flex bg-gray-50">
-    <StringableInput
-      form={form}
-      {...param}
-      name={name ?? param.name}
-    />
-    <DropDown optionGroups={[
-      inputModeOptions(),
-      paramOptions(param, node),
-      evaluationOptions(param),
-    ]} />
-  </div>) 
+  param: Param
+): OptionGroup => {
+  const inputMode = param.inputMode as Stringable
+
+  const evaluations = inputMode.evaluations ?? []
+
+  return {
+    label: 'Evaluation',
+    selectable: true,
+    options: evaluations.map(evaluation => ({
+      label: evaluation.label,
+      value: evaluation.type,
+      selected: evaluation.selected,
+      callback: (options: {
+        close: () => void,
+        selectedIndex: number,
+      }) => {
+        options.close()
+
+        evaluations.map((e, i) => {
+          e.selected = i === options.selectedIndex
+          return e
+        })
+      }
+    })),
+  }
 }
