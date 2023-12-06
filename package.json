@@ -45,6 +45,7 @@
   "devDependencies": {
     "@stylistic/eslint-plugin": "^0.1.2",
     "@typescript-eslint/parser": "^6.9.0",
+    "cypress": "^13.6.1",
     "eslint": "^8.52.0",
     "husky": "^8.0.0",
     "kill-port": "^2.0.1",
