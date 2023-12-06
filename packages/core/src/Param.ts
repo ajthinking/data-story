@@ -346,6 +346,7 @@ export const json_ = ({
 }): Param => {
   return param({
     name,
+    help,
     label,
     inputMode: {
       multiline: multiline ?? true,
