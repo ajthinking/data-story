@@ -33,7 +33,6 @@ export function PortSelectionInput({
 
     setAddPortOpen(false)
 
-    console.log({ name })
     form.setValue(name!, newPortName)
     form.setValue('outputs', JSON.stringify(node.data.outputs, null, 2))
   }

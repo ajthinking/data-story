@@ -4,13 +4,21 @@ import { useEscapeKey } from '../DataStory/hooks/useEscapeKey';
 export type Option = {
   label: string
   value: string
-  callback: ({ close }: { close: () => void}) => void
+  selected?: boolean
+  callback: ({
+    close,
+    selectedIndex,
+  }: {
+    close: () => void,
+    selectedIndex: number
+  }) => void
 }
 
 export type OptionGroup = {
   label?: string
   options: Option[]
   emptyMessage?: string
+  selectable?: boolean
 }
 
 export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
@@ -48,16 +56,29 @@ export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
                 <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                   {optionGroup.options.map((option) => {
                     return (
-                      <li key={option.label}>
-                        <a
-                          href="#"
-                          className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
-                          onClick={() => option.callback({ close: () => {
-                            setIsOpen(false)
-                          }})}
+                      <li key={option.label} className="cursor-pointer">
+                        <div
+                          className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
+                          onClick={() => {
+                            if(optionGroup.selectable) {
+                              optionGroup.options.forEach((option) => {
+                                option.selected = false
+                              })
+
+                              option.selected = true
+                            }
+
+                            option.callback({
+                              close: () => {
+                                setIsOpen(false)
+                              },
+                              selectedIndex: optionGroup.options.findIndex((option) => option.selected),
+                            })}
+                          }
                         >
                           {option.label}
-                        </a>
+                          {option.selected && (<div className="">✓</div>)}
+                        </div>
                       </li>
                     )
                   })}
