@@ -50,6 +50,14 @@
       "layout": "raw"
     }    
   },
+  "playground-node": {
+    "title": "Playground NodeJS",
+    "display": "hidden",
+    "type": "page",
+    "theme": {
+      "layout": "raw"
+    }    
+  },  
   "pitchdeck": {
     "title": "Playground",
     "display": "hidden",

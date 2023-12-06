@@ -13,6 +13,8 @@ export class Application {
     this.providers.push(
       ...(Array.isArray(provider) ? provider : [provider])
     );
+
+    return this;
   }
 
   boot() {
@@ -20,6 +22,8 @@ export class Application {
       provider.register(this);
       provider.boot(this);
     });
+
+    return this;    
   }
 
   addComputers(computers: Map<string, Computer> | ComputerConfig[]) {
