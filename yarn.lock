@@ -29,6 +29,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-plugin-utils@npm:^7.22.5":
+  version: 7.22.5
+  resolution: "@babel/helper-plugin-utils@npm:7.22.5"
+  checksum: ab220db218089a2aadd0582f5833fd17fa300245999f5f8784b10f5a75267c4e808592284a29438a0da365e702f05acb369f99e1c915c02f9f9210ec60eab8ea
+  languageName: node
+  linkType: hard
+
+"@babel/helper-string-parser@npm:^7.23.4":
+  version: 7.23.4
+  resolution: "@babel/helper-string-parser@npm:7.23.4"
+  checksum: c352082474a2ee1d2b812bd116a56b2e8b38065df9678a32a535f151ec6f58e54633cc778778374f10544b930703cca6ddf998803888a636afa27e2658068a9c
+  languageName: node
+  linkType: hard
+
 "@babel/helper-validator-identifier@npm:^7.22.20":
   version: 7.22.20
   resolution: "@babel/helper-validator-identifier@npm:7.22.20"
@@ -47,12 +61,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/parser@npm:^7.23.0":
+  version: 7.23.5
+  resolution: "@babel/parser@npm:7.23.5"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: 828c250ace0c58f9dc311fd13ad3da34e86ed27a5c6b4183ce9d85be250e78eeb71a13f6d51a368c46f8cbe51106c726bfbb158bf46a89db3a168a0002d3050a
+  languageName: node
+  linkType: hard
+
+"@babel/plugin-syntax-jsx@npm:^7.22.5":
+  version: 7.23.3
+  resolution: "@babel/plugin-syntax-jsx@npm:7.23.3"
+  dependencies:
+    "@babel/helper-plugin-utils": "npm:^7.22.5"
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 89037694314a74e7f0e7a9c8d3793af5bf6b23d80950c29b360db1c66859d67f60711ea437e70ad6b5b4b29affe17eababda841b6c01107c2b638e0493bafb4e
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.21.0":
   version: 7.23.5
   resolution: "@babel/runtime@npm:7.23.5"
   dependencies:
     regenerator-runtime: "npm:^0.14.0"
   checksum: 0f1669f639af30a0a2948ffcefa2c61935f337b0777bd94f8d7bc66bba8e7d4499e725caeb0449540d9c6d67399b733c4e719babb43ce9a0f33095aa01b42b37
+  languageName: node
+  linkType: hard
+
+"@babel/types@npm:^7.8.3":
+  version: 7.23.5
+  resolution: "@babel/types@npm:7.23.5"
+  dependencies:
+    "@babel/helper-string-parser": "npm:^7.23.4"
+    "@babel/helper-validator-identifier": "npm:^7.22.20"
+    to-fast-properties: "npm:^2.0.0"
+  checksum: a623a4e7f396f1903659099da25bfa059694a49f42820f6b5288347f1646f0b37fb7cc550ba45644e9067149368ef34ccb1bd4a4251ec59b83b3f7765088f363
   languageName: node
   linkType: hard
 
@@ -83,6 +128,19 @@ __metadata:
   dependencies:
     "@jridgewell/trace-mapping": "npm:0.3.9"
   checksum: b6e38a1712fab242c86a241c229cf562195aad985d0564bd352ac404be583029e89e93028ffd2c251d2c407ecac5fb0cbdca94a2d5c10f29ac806ede0508b3ff
+  languageName: node
+  linkType: hard
+
+"@cypress/grep@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@cypress/grep@npm:4.0.1"
+  dependencies:
+    debug: "npm:^4.3.4"
+    find-test-names: "npm:^1.19.0"
+    globby: "npm:^11.0.4"
+  peerDependencies:
+    cypress: ">=10"
+  checksum: 686caea26537803a512c03069c15801237e10efece12be6a1a65d0807cc2514e14ffff23f7a86538d1abdbae13bab76a2fe800fc3b013544c454d64c72995558
   languageName: node
   linkType: hard
 
@@ -4082,6 +4140,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "data-story@workspace:."
   dependencies:
+    "@cypress/grep": "npm:^4.0.1"
     "@stylistic/eslint-plugin": "npm:^0.1.2"
     "@types/mocha": "npm:^10.0.6"
     "@typescript-eslint/parser": "npm:^6.9.0"
@@ -4125,7 +4184,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:4.3.4, debug@npm:^4, debug@npm:^4.0.0, debug@npm:^4.1.1, debug@npm:^4.3.2, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:4.3.4, debug@npm:^4, debug@npm:^4.0.0, debug@npm:^4.1.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -5233,6 +5292,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"find-test-names@npm:^1.19.0":
+  version: 1.28.14
+  resolution: "find-test-names@npm:1.28.14"
+  dependencies:
+    "@babel/parser": "npm:^7.23.0"
+    "@babel/plugin-syntax-jsx": "npm:^7.22.5"
+    acorn-walk: "npm:^8.2.0"
+    debug: "npm:^4.3.3"
+    globby: "npm:^11.0.4"
+    simple-bin-help: "npm:^1.8.0"
+  bin:
+    find-test-names: bin/find-test-names.js
+    print-tests: bin/print-tests.js
+    update-test-count: bin/update-test-count.js
+  checksum: 1295f63129230b54f9e32a8e9a85be47ad9d1c177f2f4c5f91310d79068222d30e7e66328ef0b853a89c335cb432d2e03ca4bc23adfcf790b40268e03f9f6c14
+  languageName: node
+  linkType: hard
+
 "find-up@npm:^4.0.0":
   version: 4.1.0
   resolution: "find-up@npm:4.1.0"
@@ -5723,7 +5800,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^11.1.0":
+"globby@npm:^11.0.4, globby@npm:^11.1.0":
   version: 11.1.0
   resolution: "globby@npm:11.1.0"
   dependencies:
@@ -10613,6 +10690,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"simple-bin-help@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "simple-bin-help@npm:1.8.0"
+  checksum: 2333be11a8863f9ea7c5fbd9824824bcc56bfd91e436ea4364bd117600e9a2971ecdbaf1782924b53d3c16f393200e85ddbdf075a454375f80572481cd0aecd3
+  languageName: node
+  linkType: hard
+
 "simple-update-notifier@npm:^1.0.7":
   version: 1.1.0
   resolution: "simple-update-notifier@npm:1.1.0"
@@ -11336,6 +11420,13 @@ __metadata:
   dependencies:
     rimraf: "npm:^3.0.0"
   checksum: 445148d72df3ce99356bc89a7857a0c5c3b32958697a14e50952c6f7cf0a8016e746ababe9a74c1aa52f04c526661992f14659eba34d3c6701d49ba2f3cf781b
+  languageName: node
+  linkType: hard
+
+"to-fast-properties@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "to-fast-properties@npm:2.0.0"
+  checksum: be2de62fe58ead94e3e592680052683b1ec986c72d589e7b21e5697f8744cdbf48c266fa72f6c15932894c10187b5f54573a3bcf7da0bfd964d5caf23d436168
   languageName: node
   linkType: hard
 

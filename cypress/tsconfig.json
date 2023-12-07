@@ -8,7 +8,8 @@
     "types": [
       "cypress",
       "node",
-      "react"
+      "react",
+      "@cypress/grep"
     ],
     "jsx": "react-jsx",
     "esModuleInterop": true
