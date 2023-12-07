@@ -18,6 +18,7 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+import '../../packages/ui/output.css';
 
 import { mount } from 'cypress/react18'
 
