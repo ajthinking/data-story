@@ -44,6 +44,7 @@
   "packageManager": "yarn@4.0.1",
   "devDependencies": {
     "@stylistic/eslint-plugin": "^0.1.2",
+    "@types/mocha": "^10.0.6",
     "@typescript-eslint/parser": "^6.9.0",
     "cypress": "^13.6.1",
     "eslint": "^8.52.0",
@@ -51,7 +52,6 @@
     "kill-port": "^2.0.1",
     "lint-staged": "^15.0.2",
     "release-it": "^17.0.0",
-    "turbo": "^1.10.12",
-    "@types/mocha": "^10.0.6"
+    "turbo": "^1.10.12"
   }
 }
