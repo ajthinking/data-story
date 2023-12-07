@@ -38,6 +38,7 @@
 
 // React 18
 import { mount } from 'cypress/react18'
+import { ReactNode } from 'react';
 
 declare global {
   namespace Cypress {
@@ -47,7 +48,7 @@ declare global {
     }
   }
 }
-Cypress.Commands.add('mount', (component, options) => {
+Cypress.Commands.add('mount', (component: ReactNode, options) => {
   // Wrap any parent components needed
   // ie: return mount(<MyProvider>{component}</MyProvider>, options)
   return mount(component, options)
