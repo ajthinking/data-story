@@ -19,6 +19,7 @@ const DataStoryNodeComponent = ({ id, data, selected }: {
     (
       <div
         className={'text-xs' + (selected ? ' shadow-xl' : '')}
+        data-cy="data-story-node-component"
         onDoubleClick={() => {
           setOpenNodeModalId(id)
         }}

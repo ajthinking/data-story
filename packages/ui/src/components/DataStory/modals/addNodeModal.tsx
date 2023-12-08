@@ -48,8 +48,9 @@ export const AddNodeModal = ({ setShowModal }: { setShowModal: (show: boolean) =
 
   return (
     <Modal setShowModal={setShowModal}>
-      <div>
+      <div data-cy="add-node-modal">
         <input
+          data-cy='add-node-modal-input'
           className='w-full bg-white mb-2 text-gray-500 font-mono text-sm border border-gray-100 rounded px-4 py-4'
           placeholder={'Type format, action, resource ...'}
           value={search}
@@ -57,7 +58,7 @@ export const AddNodeModal = ({ setShowModal }: { setShowModal: (show: boolean) =
           ref={inputReference}
         ></input>
       </div>
-      <div className='group grid grid-cols-2 gap-2'>
+      <div className='group grid grid-cols-2 gap-2' data-cy='add-node-modal-node-list'>
         {matchingNodes.map((nodeDescription: NodeDescription) => {
           return (
             <button
