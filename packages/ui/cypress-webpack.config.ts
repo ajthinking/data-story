@@ -2,6 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 
 const config: webpack.Configuration = {
+  devtool: 'source-map',
   mode: 'development', // "production" | "development" | "none"
   entry: './src/index.ts',
   output: {
@@ -19,12 +20,15 @@ const config: webpack.Configuration = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource'
+      },
     ],
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', 'jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
-  devtool: 'source-map',
 };
 
 export default config;
