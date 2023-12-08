@@ -18,8 +18,8 @@
     "postinstall": "[ \"$CI\" = \"true\" ] || husky install",
     "release-core": "yarn workspace @data-story/core run release && yarn release-ui",
     "release-ui": "yarn workspace @data-story/ui run release",
-    "cy:open": "cypress open",
-    "cy:e2e": "cypress run ./cypress.config.ts --spec 'cypress/e2e/**/*'"
+    "cy:e2e": "cypress run ./cypress.config.ts --spec 'cypress/e2e/**/*'",
+    "cy:open": "cypress open"
   },
   "release-it": {
     "increment": false,
