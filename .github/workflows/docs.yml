@@ -17,4 +17,4 @@ jobs:
       - name: Build
         run: yarn build
       - name: Run tests
-        run: yarn cy:e2e
+        run: yarn ci:e2e
