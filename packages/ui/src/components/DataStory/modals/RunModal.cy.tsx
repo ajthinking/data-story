@@ -15,7 +15,7 @@ function getEl(name: 'run-modal' | 'run-modal-server' | 'run-modal-button') {
   return cy.dataCy(name);
 }
 
-describe('<RunModal />', { tags: ['@ui'] }, () => {
+describe('<RunModal />', () => {
 
   it('renders', () => {
     mountRunModal();

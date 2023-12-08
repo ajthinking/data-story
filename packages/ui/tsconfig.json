@@ -21,7 +21,7 @@
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "noImplicitAny": true,
-    "types": ["node", "react", "cypress", "@cypress/grep"],
+    "types": ["node", "react", "cypress"],
     "sourceMap": true
   },
   "ts-node": {

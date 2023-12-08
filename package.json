@@ -18,7 +18,8 @@
     "postinstall": "[ \"$CI\" = \"true\" ] || husky install",
     "release-core": "yarn workspace @data-story/core run release && yarn release-ui",
     "release-ui": "yarn workspace @data-story/ui run release",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "cy:e2e": "cypress run ./cypress.config.ts --spec 'cypress/e2e/**/*'"
   },
   "release-it": {
     "increment": false,
@@ -44,7 +45,6 @@
   "version": "0.0.1",
   "packageManager": "yarn@4.0.1",
   "devDependencies": {
-    "@cypress/grep": "^4.0.1",
     "@stylistic/eslint-plugin": "^0.1.2",
     "@types/mocha": "^10.0.6",
     "@typescript-eslint/parser": "^6.9.0",

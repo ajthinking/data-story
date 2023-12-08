@@ -13,7 +13,7 @@
     "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
     "watch:webpack": "webpack --watch",
     "release": "yarn run -T release-it",
-    "test:component": "yarn run -T cypress run --project ../../ ../../cypress.config.ts --component --env grepTags=@ui"
+    "test:component": "yarn run -T cypress run --project ../../ ../../cypress.config.ts --component --spec 'src/**/*.cy.tsx'"
   },
   "release-it": {
     "git": false,
