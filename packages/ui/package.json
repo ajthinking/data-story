@@ -12,7 +12,8 @@
     "build:css": "tailwindcss build -o ./dist/data-story.css",
     "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
     "watch:webpack": "webpack --watch",
-    "release": "yarn run -T release-it"
+    "release": "yarn run -T release-it",
+    "test:component": "yarn run -T cypress run --project ../../ ../../cypress.config.ts --component --spec 'src/**/*.cy.tsx'"
   },
   "release-it": {
     "git": false,
@@ -37,8 +38,8 @@
     "@types/glob": "^8.1.0",
     "@types/markdown-it": "^13.0.6",
     "@types/node": "18.14.2",
-    "@types/react": "18.0.28",
-    "@types/react-dom": "18.0.11",
+    "@types/react": "*",
+    "@types/react-dom": "*",
     "@types/ws": "^8.5.4",
     "autoprefixer": "^10.4.13",
     "axios": "^1.3.4",

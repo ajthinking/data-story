@@ -24,8 +24,8 @@ export const RunModal = ({ setShowModal }: {
     title={'Run'}
     setShowModal={setShowModal}
   >
-    <div className='flex flex-col space-y-2'>
-      <div className='text-xs mb-4 text-gray-500'>Server: <span className='ml-2 font-mono text-gray-600'>{
+    <div className='flex flex-col space-y-2'  data-cy='run-modal'>
+      <div className='text-xs mb-4 text-gray-500'>Server: <span data-cy='run-modal-server' className='ml-2 font-mono text-gray-600'>{
         (() => {
           if(serverConfig.type === 'SOCKET') {
             return serverConfig.url;
@@ -41,6 +41,7 @@ export const RunModal = ({ setShowModal }: {
       <div className='flex w-full justify-center items-center space-x-2'>
         <button
           ref={runButtonReference}
+          data-cy='run-modal-button'
           className={clsx(
             'flex w-full space-y-4 space-x-2 mt-4 px-16 py-2',
             'bg-blue-500 hover:bg-blue-600',

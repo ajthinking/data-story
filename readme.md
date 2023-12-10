@@ -28,5 +28,17 @@ export default function Home() {
 }
 ```
 
+## Testing
+When you're writing tests in your local environment
+
+```bash 
+# run component tests
+yarn cy:open
+
+# run e2e tests
+yarn dev
+yarn cy:open
+```
+
 ## License
 [MIT](https://opensource.org/licenses/MIT)

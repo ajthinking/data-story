@@ -31,6 +31,9 @@
       "outputs": ["dist"],
       "cache": true
     },
-    "lint": {}
+    "lint": {},
+    "test:component": {
+      "cache": true
+    }
   }
 }

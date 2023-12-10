@@ -8,7 +8,7 @@ export default ({ mode}: { mode?: 'js' | 'node' }) => {
     .boot();
 
   return (
-    <div className="w-full" style={{ height: '100vh' }}>
+    <div className="w-full" style={{ height: '100vh' }} data-cy="playground">
       <DataStory
         server={mode === 'node'
           ? { type: 'SOCKET', url: 'ws://localhost:3100' }

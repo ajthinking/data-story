@@ -20,6 +20,7 @@ export function DataStoryControls({
     <ControlButton
       onClick={() => setShowAddNodeModal(true)}
       title="Add Node"
+      data-cy="add-node-button"
       aria-label="Add Node"
     >
       <AddNodeIcon />
