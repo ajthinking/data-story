@@ -1,0 +1,91 @@
+import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { JsClient } from './JsClient';
+import { Application, Diagram, Executor, NodeDescription } from '@data-story/core';
+
+vi.mock('@data-story/core', () => {
+  const originalModule = vi.importActual('@data-story/core');
+  return {
+    ...originalModule,
+    Executor: vi.fn(() => ({
+      execute: vi.fn(),
+    })),
+  };
+});
+
+describe('JsClient', () => {
+  let setAvailableNodesMock: (nodes: NodeDescription[]) => void;
+  let updateEdgeCountsMock: (edgeCounts: Record<string, number>) => void;
+  let appMock: Application;
+  let client: JsClient;
+  let consoleLogSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    setAvailableNodesMock = vi.fn();
+    updateEdgeCountsMock = vi.fn();
+    appMock = {
+      descriptions: vi.fn().mockReturnValue([]),
+      computers: [],
+      hooks: new Map(),
+      // Add any other properties or methods expected by the Application type
+    } as unknown as Application; // Cast to Application if necessary
+    client = new JsClient(
+      setAvailableNodesMock,
+      updateEdgeCountsMock,
+      vi.fn(), // setNodes
+      vi.fn(), // setEdges
+      appMock
+    );
+    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleLogSpy.mockRestore();
+  });
+
+  it('should set available nodes and log connection on init', () => {
+    client.init();
+    expect(setAvailableNodesMock).toHaveBeenCalledWith([]);
+    expect(console.log).toHaveBeenCalledWith('Connected to server: JS');
+  });
+
+  it('should execute diagram and handle updates on run', async () => {
+    const diagramMock = new Diagram([], []);
+    await client.run(diagramMock);
+
+
+    // Mock the Executor class with the required arguments
+    const executorMock = {
+      execute: vi.fn(() => ({
+        [Symbol.asyncIterator]: function* () {
+          yield { value: { counts: { '1': 1 } }, done: false };
+          return { value: null, done: true };
+        },
+      })),
+    };
+
+    // Replace the Executor's constructor with a mock that returns the executorMock
+    vi.mocked(Executor).mockImplementation(() => executorMock as unknown as Executor);
+
+    await client.run(diagramMock);
+
+    expect(executorMock.execute).toHaveBeenCalled();
+    expect(updateEdgeCountsMock).toHaveBeenCalledWith({ '1': 1 });
+    expect(console.log).toHaveBeenCalledWith('Execution complete 💫');
+  });
+
+  it('should not throw when open is called', async () => {
+    await expect(client.open('test')).resolves.not.toThrow();
+  });
+
+  it('should not throw when save is called', async () => {
+    await expect(client.save('test', {
+      nodes: [],
+      edges: [],
+      viewport: {
+        x: 0,
+        y: 0,
+        zoom: 1,
+      },
+    })).resolves.not.toThrow();
+  });
+});
