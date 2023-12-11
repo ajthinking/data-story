@@ -49,6 +49,7 @@
     "@stylistic/eslint-plugin": "^0.1.2",
     "@types/mocha": "^10.0.6",
     "@typescript-eslint/parser": "^6.9.0",
+    "@vitest/coverage-c8": "^0.29.7",
     "cypress": "^13.6.1",
     "eslint": "^8.52.0",
     "husky": "^8.0.0",
@@ -56,6 +57,7 @@
     "lint-staged": "^15.0.2",
     "release-it": "^17.0.0",
     "start-server-and-test": "^2.0.3",
-    "turbo": "^1.10.12"
+    "turbo": "^1.10.12",
+    "vitest": "^0.29.2"
   }
 }
