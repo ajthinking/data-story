@@ -13,6 +13,7 @@
     "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
     "watch:webpack": "webpack --watch",
     "release": "yarn run -T release-it",
+    "test:unit": "yarn run -T vitest --config vitest.config.ts --coverage --passWithNoTests",
     "test:component": "yarn run -T cypress run --project ../../ ../../cypress.config.ts --component --spec 'src/**/*.cy.tsx'"
   },
   "release-it": {
