@@ -13,7 +13,7 @@ jobs:
     defaults:
       run:
         working-directory: ./packages/core
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
@@ -60,7 +60,7 @@ jobs:
   publish_ui:
     needs: publish_core
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js
