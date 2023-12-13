@@ -9,6 +9,8 @@ vi.mock('@data-story/core', () => {
     Executor: vi.fn(() => ({
       execute: vi.fn(),
     })),
+    Diagram: vi.fn(),
+    NullStorage: vi.fn(),
   };
 });
 
@@ -48,19 +50,29 @@ describe('JsClient', () => {
     expect(console.log).toHaveBeenCalledWith('Connected to server: JS');
   });
 
-  it('should execute diagram and handle updates on run', async () => {
+  it('should execute diagram and handle updates on run', async() => {
     const diagramMock = new Diagram([], []);
-    await client.run(diagramMock);
-
 
     // Mock the Executor class with the required arguments
     const executorMock = {
-      execute: vi.fn(() => ({
-        [Symbol.asyncIterator]: function* () {
-          yield { value: { counts: { '1': 1 } }, done: false };
-          return { value: null, done: true };
-        },
-      })),
+      execute: vi.fn(() => {
+        let hasYielded = false; // Closure variable to track the state
+        return {
+          [Symbol.asyncIterator]: () => ({
+            next: () => {
+              if (!hasYielded) {
+                hasYielded = true; // Update the state to indicate the value has been yielded
+                return Promise.resolve({
+                  value: { counts: { '1': 1 }, hooks: [{ type: 'CONSOLE_LOG', args: ['Log message'] }] },
+                  done: false
+                });
+              } else {
+                return Promise.resolve({ value: undefined, done: true });
+              }
+            }
+          }),
+        };
+      }),
     };
 
     // Replace the Executor's constructor with a mock that returns the executorMock
@@ -70,14 +82,17 @@ describe('JsClient', () => {
 
     expect(executorMock.execute).toHaveBeenCalled();
     expect(updateEdgeCountsMock).toHaveBeenCalledWith({ '1': 1 });
+    expect(console.log).toHaveBeenCalledWith('Log message');
+
+    await client.run(diagramMock);
     expect(console.log).toHaveBeenCalledWith('Execution complete 💫');
   });
 
-  it('should not throw when open is called', async () => {
+  it('should not throw when open is called', async() => {
     await expect(client.open('test')).resolves.not.toThrow();
   });
 
-  it('should not throw when save is called', async () => {
+  it('should not throw when save is called', async() => {
     await expect(client.save('test', {
       nodes: [],
       edges: [],
