@@ -35,7 +35,7 @@ export const Map: ComputerConfig = {
             help: 'The value to create',
             inputMode: {
               type: 'Stringable',
-              multiline: false,
+              multiline: true,
               canInterpolate: true,
               interpolate: true,
               evaluations: [

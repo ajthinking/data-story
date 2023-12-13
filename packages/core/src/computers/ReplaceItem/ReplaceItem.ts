@@ -23,11 +23,6 @@ export const ReplaceItem: ComputerConfig = {
     while(true) {
       const incoming = input!.pull()
 
-      console.log(
-        incoming[0].params,
-        incoming[0].params.json,
-      )
-
       const replacers = incoming.map(item => item.params.json as ItemValue)
 
       output.push(replacers)
