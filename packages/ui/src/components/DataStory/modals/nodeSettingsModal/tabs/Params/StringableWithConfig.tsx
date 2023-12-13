@@ -21,6 +21,7 @@ export function StringableWithConfig({
     <StringableInput
       form={form}
       {...param}
+      inputMode={param.inputMode as Stringable}
       name={name ?? param.name}
     />
     <DropDown optionGroups={[
