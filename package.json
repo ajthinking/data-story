@@ -13,6 +13,7 @@
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
     "kill": "kill-port 3000 3100",
     "build": "turbo build",
+    "ci:test": "turbo test --filter=@data-story/core --filter=@data-story/ui --filter=@data-story/docs && yarn ci:e2e",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
     "lint": "eslint .",
     "postinstall": "[ \"$CI\" = \"true\" ] || husky install",

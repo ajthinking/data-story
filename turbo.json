@@ -32,8 +32,12 @@
       "cache": true
     },
     "lint": {},
-    "test:component": {
+    "ci:e2e": {
       "cache": true
+    },
+    "test": {
+      "cache": true,
+      "dependsOn": ["build"]
     }
   }
 }
