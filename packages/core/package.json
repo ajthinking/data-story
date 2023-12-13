@@ -25,6 +25,7 @@
     }
   },
   "dependencies": {
+    "@data-story/hjson": "workspace:*",
     "@types/node": "18.14.2",
     "axios": "^1.3.4",
     "dotenv": "^16.0.3"

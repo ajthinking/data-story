@@ -1,4 +1,4 @@
-import { common } from './hjson-common';
+import common from './hjson-common.js';
 
 function makeComment(b, a, x) {
   var c;
@@ -191,7 +191,7 @@ function rootComment(value, setText, header) {
   return comment.r[header] || '';
 }
 
-module.exports = {
+export default {
   extract: function(value) { return extractComments(value, true); },
   merge: mergeComments,
   header: function(value, setText) { return rootComment(value, setText, 0); },

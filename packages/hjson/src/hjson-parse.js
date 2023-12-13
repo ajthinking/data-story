@@ -1,5 +1,5 @@
-import common from './hjson-common';
-import dsf from './hjson-dsf';
+import common from './hjson-common.js';
+import dsf from './hjson-dsf.js';
 
 export default function(source, opt) {
 

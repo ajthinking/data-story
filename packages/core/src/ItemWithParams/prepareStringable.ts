@@ -2,7 +2,7 @@ import { Param, Stringable } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
-import Hjson from '../hjson/hjson';
+import Hjson from '@data-story/hjson';
 
 export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   // **********************************************************************

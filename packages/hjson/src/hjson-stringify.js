@@ -1,7 +1,7 @@
-export default function(data, opt) {
+import common from './hjson-common.js';
+import dsf from './hjson-dsf.js';
 
-  var common = require('./hjson-common');
-  var dsf = require('./hjson-dsf');
+export default function(data, opt) {
 
   var plainToken = {
     obj:  [ '{', '}' ],

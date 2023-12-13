@@ -1,9 +1,9 @@
-import parse from './hjson-parse';
-import common from './hjson-common';
-import version from './hjson-version';
-import stringify from './hjson-stringify';
-import comments from './hjson-comments';
-import dsf from './hjson-dsf';
+import parse from './hjson-parse.js';
+import common from './hjson-common.js';
+import version from './hjson-version.js';
+import stringify from './hjson-stringify.js';
+import comments from './hjson-comments.js';
+import dsf from './hjson-dsf.js';
 
 export default {
   parse: parse,
@@ -31,5 +31,4 @@ export default {
   comments: comments,
 
   dsf: dsf.std,
-
 };
