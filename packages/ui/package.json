@@ -1,6 +1,6 @@
 {
   "name": "@data-story/ui",
-  "version": "0.0.72",
+  "version": "0.0.71",
   "main": "./dist/bundle.js",
   "types": "./dist/index.d.ts",
   "type": "commonjs",
@@ -13,9 +13,10 @@
     "watch:css": "nodemon -e ts -x 'npx tailwindcss build -o ./dist/data-story.css'",
     "watch:webpack": "webpack --watch",
     "release": "yarn run -T release-it",
-    "test:unit": "yarn run -T vitest run --config vitest.config.ts --coverage --passWithNoTests",
+    "ci:unit": "yarn run -T vitest run --config vitest.config.ts --coverage --passWithNoTests",
+    "test:unit": "yarn run -T vitest --config vitest.config.ts --coverage --passWithNoTests",
     "test:component": "yarn run -T cypress run --project ../../ ../../cypress.config.ts --component --spec 'src/**/*.cy.tsx'",
-    "test": "yarn run test:unit && yarn run test:component"
+    "test": "yarn run ci:unit && yarn run test:component"
   },
   "release-it": {
     "git": false,

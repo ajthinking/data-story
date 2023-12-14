@@ -32,12 +32,15 @@ export default function Home() {
 When you're writing tests in your local environment
 
 ```bash 
-# run component tests
+# run component tests and then chose component test
 yarn cy:open
 
-# run e2e tests
+# run e2e tests and then chose e2e test
 yarn dev
 yarn cy:open
+
+# test on ci, only run @data-story/ui,  @data-story/core and e2e tests
+yarn ci:test
 ```
 
 ## License

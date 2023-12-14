@@ -13,14 +13,14 @@
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
     "kill": "kill-port 3000 3100",
     "build": "turbo build",
-    "ci:test": "turbo test --filter=@data-story/core --filter=@data-story/ui --filter=@data-story/docs && yarn ci:e2e",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
     "lint": "eslint .",
     "postinstall": "[ \"$CI\" = \"true\" ] || husky install",
     "release-core": "yarn workspace @data-story/core run release && yarn release-ui",
     "release-ui": "yarn workspace @data-story/ui run release",
-    "cy:e2e": "cypress run ./cypress.config.ts --spec 'cypress/e2e/**/*'",
+    "ci:test": "turbo test --filter=@data-story/core --filter=@data-story/ui --filter=@data-story/docs && yarn ci:e2e",
     "ci:e2e": "start-server-and-test 'yarn dev' 3000 'yarn cy:e2e'",
+    "cy:e2e": "cypress run ./cypress.config.ts --spec 'cypress/e2e/**/*'",
     "cy:open": "cypress open"
   },
   "release-it": {
