@@ -2,7 +2,13 @@
   "name": "@data-story/hjson",
   "version": "0.0.2",
   "packageManager": "yarn@4.0.1",
-  "main": "dist/hjson.bundle.js",
+  "types": "./src/index.d.ts",
+  "main": "./dist/hjson.bundle.cjs",
+  "module": "./dist/hjson.bundle.mjs",
+  "exports": {
+    "import": "./dist/hjson.bundle.mjs",
+    "require": "./dist/hjson.bundle.cjs"
+  },
   "scripts": {
     "build": "webpack --config webpack.config.js"
   },
