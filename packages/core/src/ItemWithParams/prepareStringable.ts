@@ -2,6 +2,7 @@ import { Param, Stringable } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
+import Hjson from '@data-story/hjson';
 
 export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   // **********************************************************************
@@ -51,6 +52,10 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
 
   if(selectedEvaluation?.type === 'JSON') {
     transformedValue = JSON.parse(transformedValue);
+  }
+
+  if(selectedEvaluation?.type === 'HJSON') {
+    transformedValue = Hjson.parse(transformedValue);
   }
 
   if(selectedEvaluation?.type === 'JS') {

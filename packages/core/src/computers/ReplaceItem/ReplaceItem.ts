@@ -1,5 +1,5 @@
 
-import { JsEvaluation, JsonEvaluation, json_ } from '../../Param';
+import { JsEvaluation, JsonEvaluation, HjsonEvaluation, json_ } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { ItemValue } from '../../types/ItemValue';
 
@@ -11,9 +11,11 @@ export const ReplaceItem: ComputerConfig = {
     json_({
       name: 'json',
       value: '{}',
-      help: 'Replace the item with this JSON (default) or a JS function',
+      help: 'Replace the item with this HJSON (default), strict JSON or a JS function',
       evaluations: [
-        { ...JsonEvaluation, selected: true },
+        { ...HjsonEvaluation, selected: true },
+        // { ...JsonEvaluation, selected: true },
+        JsonEvaluation,
         JsEvaluation,
       ]
     })
