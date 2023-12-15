@@ -1,13 +1,11 @@
 import {
   NodeDescription,
-  ServiceProvider,
   Application,
   Diagram,
   NullStorage,
   Executor,
 } from '@data-story/core';
 import { ServerClient } from './ServerClient';
-import { Computer } from '@data-story/core/dist/types/Computer';
 import { SerializedReactFlow } from '../../../SerializedReactFlow';
 
 export class JsClient implements ServerClient {

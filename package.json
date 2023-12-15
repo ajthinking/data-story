@@ -19,8 +19,9 @@
     "postinstall": "[ \"$CI\" = \"true\" ] || husky install",
     "release-core": "yarn workspace @data-story/core run release && yarn release-ui",
     "release-ui": "yarn workspace @data-story/ui run release",
-    "cy:e2e": "cypress run ./cypress.config.ts --spec 'cypress/e2e/**/*'",
+    "ci:test": "turbo test --filter=@data-story/core --filter=@data-story/ui --filter=@data-story/docs && yarn ci:e2e",
     "ci:e2e": "start-server-and-test 'yarn dev' 3000 'yarn cy:e2e'",
+    "cy:e2e": "cypress run ./cypress.config.ts --spec 'cypress/e2e/**/*'",
     "cy:open": "cypress open"
   },
   "release-it": {
@@ -50,6 +51,7 @@
     "@stylistic/eslint-plugin": "^0.1.2",
     "@types/mocha": "^10.0.6",
     "@typescript-eslint/parser": "^6.9.0",
+    "@vitest/coverage-c8": "^0.29.7",
     "cypress": "^13.6.1",
     "eslint": "^8.52.0",
     "husky": "^8.0.0",
@@ -57,6 +59,7 @@
     "lint-staged": "^15.0.2",
     "release-it": "^17.0.0",
     "start-server-and-test": "^2.0.3",
-    "turbo": "^1.10.12"
+    "turbo": "^1.10.12",
+    "vitest": "^0.29.2"
   }
 }
