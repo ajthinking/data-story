@@ -2,9 +2,13 @@
 import { JsEvaluation, JsonEvaluation, HjsonEvaluation, json_ } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { ItemValue } from '../../types/ItemValue';
+import { multiline } from '../../utils/multiline';
 
 export const ReplaceItem: ComputerConfig = {
   name: 'ReplaceItem',
+  docs: multiline`
+  Replaces the item with a new value. Supported input are: HJSON, JSON and JS function
+  `,
   inputs: ['input'],
   outputs: ['output'],
   params: [
