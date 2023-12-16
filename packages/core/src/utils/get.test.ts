@@ -64,3 +64,14 @@ it('returns undefined if nested key does not exist', () => {
   expect(get(object, 'a.bad.d')).toBe(undefined)
   expect(get(object, 'a.b.bad')).toBe(undefined)
 })
+
+it('can return a value from an array', () => {
+  const array = [1, '2', true]
+
+  expect(get(array)).toBe(array)
+  expect(get(array, '')).toBe(array)
+  expect(get(array, '0')).toBe(array[0])
+  expect(get(array, '1')).toBe(array[1])
+  expect(get(array, '2')).toBe(array[2])
+  expect(get(array, 'bad')).toBe(undefined)
+})

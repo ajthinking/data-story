@@ -2,6 +2,7 @@ import { ItemValue } from '../types/ItemValue';
 import { Param, ParamValue } from '../Param';
 import { evalMath } from '../utils/evalMath';
 import { prepareStringable } from './prepareStringable';
+import { prepareRepeatable } from './prepareRepeatable';
 
 export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWithParams => {
   // This does not always catch all cases
@@ -31,6 +32,9 @@ export class ItemWithParams {
         if (!param) throw new Error(`Param "${key}" does not exist`);
 
         if(param.inputMode.type === 'Stringable') return prepareStringable(value, param);
+
+        // TODO
+        // if(param.inputMode.type === 'Repeatable') return prepareRepeatable(value, param);
 
         // Default to the raw value
         return param.inputMode.value;

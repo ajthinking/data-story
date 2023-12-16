@@ -1,4 +1,4 @@
-import { Param, Stringable } from '@data-story/core';
+import { Param, Stringable, get } from '@data-story/core';
 import { useEffect, useState } from 'react';
 import { UseFormRegister, UseFormReturn } from 'react-hook-form';
 
@@ -25,16 +25,18 @@ export function StringableInput({
   // Effect to update rows when the content changes
   useEffect(() => {
     const subscription = form.watch((value, formEvent) => {
-      // console.log({
-      //   msg: 'CHANGE!',
-      //   name,
-      //   inputMode,
-      //   value,
-      //   formEvent
-      // })
+      console.log({
+        msg: 'CHANGE!',
+        name,
+        inputMode,
+        value,
+        formEvent
+      })
       if (formEvent.name === `params.${name}` && formEvent.type === 'change') {
         try {
-          const newRows = calculateRows(value.params[name]);
+          const fieldValue = get(value.params, name)
+
+          const newRows = calculateRows(fieldValue);
           setRows(newRows);
         } catch (e) {
           // TODO: Refactor to support Repeatables
