@@ -18,7 +18,7 @@ export function Docs({
       className="flex flex-col"
     >
       <div
-        className="w-full prose prose-p:text-gray-400 prose-p:text-xs prose-h3:text-sm prose-h3:uppercase prose-h3:text-gray-400 prose-sm prose-slate font-mono p-4 rounded prose-a:text-blue-500"
+        className="w-full prose prose-p:text-gray-400 prose-h3:tracking-wide prose-p:text-xs prose-h3:text-sm prose-h3:uppercase prose-h3:text-gray-400 prose-sm prose-slate font-mono p-4 rounded prose-a:text-blue-500"
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />      
     </div>

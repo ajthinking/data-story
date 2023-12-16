@@ -7,14 +7,14 @@ import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 
-type TabKey = 'Docs' | 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code';
+type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Docs';
 
 const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
-  Docs,
   Params,
   InputSchemas,
   OutputSchemas,
   Code,
+  Docs,
 };
 
 export const NodeSettingsModal = () => {

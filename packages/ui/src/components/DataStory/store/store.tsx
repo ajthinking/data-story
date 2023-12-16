@@ -134,12 +134,19 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   addNode: (node: DataStoryNode) => {
     set({
-      nodes: [...get().nodes.map(node => {
-        // When adding a node, deselect all other nodes
-        node.selected = false
-        return node
-      }), node],
+      nodes: [
+        ...get().nodes.map(node => {
+          // When adding a node, deselect all other nodes
+          node.selected = false
+          return node
+        }),
+        node
+      ],
     })
+
+    setTimeout(() => {
+      get().rfInstance?.fitView();
+    }, 1);
   },
   updateNode: (node: DataStoryNode) => {
     set({

@@ -1,10 +1,9 @@
 import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
+import { Logo } from './components/logo'
 
 const config: DocsThemeConfig = {
-  logo: <span className="font-bold tracking-wide font-mono text-blue-400">
-    {'<DataStory />'}
-  </span>,
+  logo: Logo,
   project: {
     link: 'https://github.com/ajthinking/data-story',
   },
