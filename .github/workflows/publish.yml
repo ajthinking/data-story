@@ -161,7 +161,7 @@ jobs:
 
       - name: Dump core node_modules
         if: ${{ env.VERSION_EXISTS == 'false' }}
-        run: cat ./node_modules/@data-story/core/dist/index.d.ts
+        run: cat ~/.npm./node_modules/@data-story/core/dist/index.d.ts
       
       - name: Build
         if: ${{ env.VERSION_EXISTS == 'false' }}
