@@ -1,5 +1,5 @@
 import { ItemValue } from '@data-story/core';
-import { Storage } from '@data-story/core/dist/types/Storage';
+import { Storage } from '@data-story/core';
 import { promises as fs } from 'fs';
 
 export class FileStorage implements Storage {
