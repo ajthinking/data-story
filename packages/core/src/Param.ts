@@ -85,6 +85,15 @@ export type PortSelection = {
   value: string
 }
 
+export type Select = {
+  type: 'Select',
+  options: {
+    label: string
+    value: any
+  }[],
+  value: string
+}
+
 export type Repeatable<RepeatableRow> = {
   type: 'Repeatable',
   row: RepeatableRow,
@@ -92,6 +101,7 @@ export type Repeatable<RepeatableRow> = {
 }
 
 export type InputMode =
+  Select |
   Stringable |
   PropertySelection |
   PortSelection |

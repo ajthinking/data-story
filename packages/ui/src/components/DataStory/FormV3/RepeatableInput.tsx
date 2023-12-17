@@ -70,7 +70,7 @@ export function RepeatableInput({
                 return (<td
                   key={column.name}
                   scope="row"
-                  className="border font-medium whitespace-nowrap"
+                  className="border font-medium whitespace-nowrap bg-gray-50 align-top"
                 >
                   {column.inputMode.type === 'Stringable' && <StringableWithConfig
                     form={form}

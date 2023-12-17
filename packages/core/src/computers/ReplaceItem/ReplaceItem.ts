@@ -12,24 +12,46 @@ export const ReplaceItem: ComputerConfig = {
   inputs: ['input'],
   outputs: ['output'],
   params: [
+    {
+      name: 'mode',
+      label: 'Mode',
+      help: '',
+      inputMode: {
+        type: 'Select',
+        value: 'MERGE',
+        options: [
+          { value: 'MERGE', label: 'MERGE' },
+          { value: 'REPLACE', label: 'REPLACE' },
+        ],
+      },
+      alternativeInputModes: [],
+    },
     json_({
       name: 'json',
-      value: '{}',
-      help: 'Replace the item with this HJSON (default), strict JSON or a JS function',
+      value: '{\n\tfoo: bar\n}',
+      help: '',
       evaluations: [
         { ...HjsonEvaluation, selected: true },
-        // { ...JsonEvaluation, selected: true },
         JsonEvaluation,
         JsEvaluation,
       ]
     })
   ],
   
-  async *run({ input, output }) {
+  async *run({ input, output, params }) {
     while(true) {
       const incoming = input!.pull()
 
-      const replacers = incoming.map(item => item.params.json as ItemValue)
+      const replacers = incoming.map(item => {
+        if(params.mode === 'REPLACE') return item.params.json as ItemValue;
+
+        if(params.mode === 'MERGE')return {
+          ...item.value,
+          ...item.params.json as Object,
+        }
+
+        throw new Error(`Unknown mode: ${params.mode}`)
+      })
 
       output.push(replacers)
 

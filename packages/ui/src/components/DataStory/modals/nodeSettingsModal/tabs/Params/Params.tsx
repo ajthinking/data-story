@@ -5,6 +5,7 @@ import { RepeatableInput } from '../../../../FormV3/RepeatableInput';
 import { StringableInput } from '../../../../FormV3/StringableInput';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
+import { SelectInput } from '../../../../FormV3/SelectInput';
 
 export function Params({
   node,
@@ -36,7 +37,15 @@ export function Params({
             param={param}
             form={form}
             node={node}
-          />}      
+          />}
+
+          {param.inputMode.type === 'Select' && <SelectInput
+            // param={param}
+            name={param.name}
+            form={form}
+            inputMode={param.inputMode}
+            // node={node}
+          />}    
 
 
           {/* <h1 className="bg-red-500 text-white">{ selectedMode?.type ?? 'no-mode' }</h1> */}
