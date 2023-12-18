@@ -58,6 +58,7 @@
     "husky": "^8.0.0",
     "kill-port": "^2.0.1",
     "lint-staged": "^15.0.2",
+    "postcss-cli": "^11.0.0",
     "release-it": "^17.0.0",
     "start-server-and-test": "^2.0.3",
     "turbo": "^1.10.12",
