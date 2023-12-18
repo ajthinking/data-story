@@ -1,4 +1,5 @@
 const path = require('path');
+const deps = require('./package.json').dependencies;
 
 module.exports = {
   devtool: 'source-map',
@@ -18,11 +19,12 @@ module.exports = {
       }
     ]
   },
-  externals: {
-    'react': 'react',
-    'react-dom': 'react-dom'
-  },
+  externals: [
+    'react',
+    'react-dom',
+    ...Object.keys(deps)
+  ],
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: [ '.js', '.jsx', '.ts', '.tsx' ]
   }
 };

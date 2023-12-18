@@ -2,7 +2,7 @@
   "name": "@data-story/ui",
   "version": "0.0.71",
   "main": "./dist/bundle.js",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/src/index.d.ts",
   "type": "commonjs",
   "files": [
     "/dist"
