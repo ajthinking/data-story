@@ -8,6 +8,7 @@
     "/dist"
   ],
   "scripts": {
+    "analyze": "webpack --profile --json > stats.json && yarn run -T webpack-bundle-analyzer stats.json",
     "build": "echo _____RUNNING_UI_BUILD_____ && webpack && yarn run build:css",
     "build:css": "yarn run -T postcss ./src/styles/globals.css -o ./dist/data-story.css",
     "watch:css": "yarn run build:css --watch",
@@ -34,7 +35,8 @@
     "clsx": "^2.0.0",
     "concurrently": "^8.2.1",
     "markdown-it": "^13.0.2",
-    "reactflow": "^11.8.1"
+    "reactflow": "^11.8.1",
+    "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
@@ -54,8 +56,7 @@
     "typescript": "4.9.5",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
-    "ws": "^8.12.1",
-    "zustand": "^4.3.9"
+    "ws": "^8.12.1"
   },
   "peerDependencies": {
     "react": "^18.2.0",
