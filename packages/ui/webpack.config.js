@@ -1,4 +1,5 @@
 const path = require('path');
+const deps = require('./package.json').dependencies;
 
 module.exports = {
   devtool: 'source-map',
@@ -12,25 +13,18 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-      },
-      {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource'
-      },
-      {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: '/node_modules/'
       }
     ]
   },
-  externals: {
-    'react': 'react',
-    'react-dom': 'react-dom'
-  },
+  externals: [
+    'react',
+    'react-dom',
+    ...Object.keys(deps)
+  ],
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: [ '.js', '.jsx', '.ts', '.tsx' ]
   }
 };

@@ -1,4 +1,3 @@
-import 'reactflow/dist/style.css';
 import { DataStoryControls } from './dataStoryControls';
 import { useId, useState } from 'react';
 import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from 'reactflow';

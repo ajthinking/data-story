@@ -1,5 +1,4 @@
 import { DataStory } from '@data-story/ui'
-import '@data-story/ui/dist/data-story.css';
 import {
   Application,
   DiagramBuilder,
