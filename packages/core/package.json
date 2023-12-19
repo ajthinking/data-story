@@ -12,7 +12,7 @@
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "yarn run -T vitest run",
     "watch:test": "yarn run -T vitest",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "release": "yarn run -T release-it"
   },
   "release-it": {
