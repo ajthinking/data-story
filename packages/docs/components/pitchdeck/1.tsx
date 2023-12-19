@@ -1,5 +1,4 @@
 import { DataStory } from '@data-story/ui'
-import '@data-story/ui/dist/data-story.css';
 import { coreNodeProvider, Application, DiagramBuilder, multiline } from '@data-story/core';
 import { ConsoleLog, Map, Signal, Fake, Comment } from '@data-story/core/dist/computers';
 

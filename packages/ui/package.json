@@ -4,7 +4,13 @@
   "main": "./dist/bundle.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
-    "./data-story.css": "./dist/data-story.css"
+    "./data-story.css": "./dist/data-story.css",
+    ".": {
+      "import": "./dist/bundle.js",
+      "require": "./dist/bundle.js",
+      "default": "./dist/bundle.js",
+      "types": "./dist/src/index.d.ts"
+    }
   },
   "type": "commonjs",
   "files": [
