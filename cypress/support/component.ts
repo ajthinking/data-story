@@ -18,7 +18,7 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
-import '../../packages/ui/dist/data-story.css';
+import '@data-story/ui/data-story.css';
 
 import { mount } from 'cypress/react18'
 
