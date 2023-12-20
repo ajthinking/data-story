@@ -1,7 +1,7 @@
-import { Diagram, Link } from '@data-story/core'
+import { Diagram, Node, Link } from '@data-story/core'
 import { SerializedReactFlow, SerializedReactFlowNode } from './SerializedReactFlow'
 
-export const reactFlowNodeToDiagramNode = (flowNode: SerializedReactFlowNode) => {
+export const reactFlowNodeToDiagramNode = (flowNode: SerializedReactFlowNode): Node => {
   return {
     id: flowNode.id,        
     type: flowNode.data.computer,

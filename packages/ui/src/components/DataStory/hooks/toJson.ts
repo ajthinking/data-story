@@ -7,7 +7,7 @@ export const toJson = (rfInstance: ReactFlowInstance) => {
     navigator.clipboard.writeText(JSON.stringify(flow, null, 2))
       .then(() => {
         console.log('Text copied to clipboard');
-        alert("Copied diagram as JSON!")
+        alert('Copied diagram as JSON!')
       }).catch(e => {
         console.log('Error', e);
         alert(e)
