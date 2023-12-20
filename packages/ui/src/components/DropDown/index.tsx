@@ -1,3 +1,4 @@
+import '../../styles/globals.css';
 import { useState } from 'react';
 import { useEscapeKey } from '../DataStory/hooks/useEscapeKey';
 

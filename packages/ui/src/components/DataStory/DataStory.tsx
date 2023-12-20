@@ -1,3 +1,4 @@
+import './../../styles/globals.css';
 import { Diagram } from '@data-story/core';
 import { Workbench } from './Workbench';
 import { ServerConfig } from './clients/ServerConfig';
