@@ -234,6 +234,7 @@ __metadata:
     css-loader: "npm:^6.8.1"
     markdown-it: "npm:^13.0.2"
     postcss: "npm:^8.4.21"
+    postcss-loader: "npm:^7.3.3"
     react-hook-form: "npm:^7.43.8"
     reactflow: "npm:^11.8.1"
     style-loader: "npm:^3.3.3"
@@ -3581,7 +3582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cosmiconfig@npm:8.3.6":
+"cosmiconfig@npm:8.3.6, cosmiconfig@npm:^8.2.0":
   version: 8.3.6
   resolution: "cosmiconfig@npm:8.3.6"
   dependencies:
@@ -7082,7 +7083,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jiti@npm:^1.19.1":
+"jiti@npm:^1.18.2, jiti@npm:^1.19.1":
   version: 1.21.0
   resolution: "jiti@npm:1.21.0"
   bin:
@@ -9738,6 +9739,20 @@ __metadata:
     postcss:
       optional: true
   checksum: f5519426707a7c31baaabcedf4aea0376dfdef517b69895db2ce274811ee609d0bd566a3170bf477703bd1c910f09163a299112a3d07b4537552037c8257a4c5
+  languageName: node
+  linkType: hard
+
+"postcss-loader@npm:^7.3.3":
+  version: 7.3.3
+  resolution: "postcss-loader@npm:7.3.3"
+  dependencies:
+    cosmiconfig: "npm:^8.2.0"
+    jiti: "npm:^1.18.2"
+    semver: "npm:^7.3.8"
+  peerDependencies:
+    postcss: ^7.0.0 || ^8.0.1
+    webpack: ^5.0.0
+  checksum: 743a4286db68169d271bef31e6e9351874bcf2dfa408b82c648c2d5bfba9c862cbfe3004494d927469654d6ac8b82fe647f2b80a186c1dbd44d81632eec1e838
   languageName: node
   linkType: hard
 
