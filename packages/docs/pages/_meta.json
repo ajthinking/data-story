@@ -38,8 +38,11 @@
   "getting-started": "Getting Started",  
   "customize": "Customize",
   "contributing": "Contributing",
-  "nodes": {
-    "title": "Nodes"
+  "core-nodes": {
+    "title": "Core Nodes"
+  },
+  "nodejs-nodes": {
+    "title": "NodeJS Nodes"
   },
 
   "playground": {
