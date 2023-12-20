@@ -7,7 +7,6 @@ on:
     types: [ completed ]
 
 jobs:
-  
   publish_core:
     runs-on: ubuntu-latest
     defaults:
@@ -86,14 +85,6 @@ jobs:
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
       
-      - name: Check Core Publish status
-        if: >
-          github.event.workflow_run.conclusion == 'failure' ||
-          github.event.workflow_run.conclusion == 'cancelled'
-        run: |
-          echo "The 'Core Publish' workflow is ${{ github.event.workflow_run.conclusion }}."
-          exit 1 # Exit with a failure
-      
       - name: Install dependencies
         if: ${{ env.VERSION_EXISTS == 'false' }}
         run: yarn
@@ -110,12 +101,10 @@ jobs:
           cd packages/ui && yarn npm publish --access public
 
 
+  
   publish_nodejs:
     needs: publish_core    
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/nodejs
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v2
@@ -140,21 +129,6 @@ jobs:
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
 
-      - name: Check Core Publish status
-        if: >
-          github.event.workflow_run.conclusion == 'failure' ||
-          github.event.workflow_run.conclusion == 'cancelled'
-        run: |
-          echo "The 'Core Publish' workflow is ${{ github.event.workflow_run.conclusion }}."
-          exit 1 # Exit with a failure
-      
-      - name: Check Test CI status
-        if: >
-          github.event.workflow_run.conclusion == 'failure' ||
-          github.event.workflow_run.conclusion == 'cancelled'
-        run: |
-          echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
-          exit 1 # Exit with a failure
       - name: Install dependencies
         if: ${{ env.VERSION_EXISTS == 'false' }}
         run: yarn
@@ -168,4 +142,4 @@ jobs:
         run: |
           yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
           yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
-          yarn npm publish --access public
+          cd packages/nodejs && yarn npm publish --access public
