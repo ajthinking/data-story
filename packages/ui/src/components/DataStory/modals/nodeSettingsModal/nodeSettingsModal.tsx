@@ -94,7 +94,7 @@ export const NodeSettingsModal = () => {
               className="pr-4 mt-4 bg-white flex flex-col align-center justify-center text-lg text-gray-400 font-bold tracking widest"
             />
             <div className="flex">
-              {form.getValues('label') !== 'Signal' && <div className="flex flex-col pr-4 my-2 mt-3 italic flex flex-col align-center justify-center text-sm text-gray-400 font-base tracking widest">
+              {form.getValues('label') !== node.data.computer && <div className="flex flex-col pr-4 my-2 mt-3 italic flex flex-col align-center justify-center text-sm text-gray-400 font-base tracking widest">
                 renamed from {node.data.computer}
               </div>}
               <div className="cursor-pointer p-1 ml-auto text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none" onClick={close}>
