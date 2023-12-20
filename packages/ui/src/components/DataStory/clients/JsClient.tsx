@@ -65,10 +65,6 @@ export class JsClient implements ServerClient {
     handleUpdates(execution[Symbol.asyncIterator]());
   }
 
-  async open(name: string) {
-
-  }
-
   async save(name: string, reactFlow: SerializedReactFlow) {
 
   }

@@ -123,15 +123,6 @@ export class SocketClient implements ServerClient {
     this.socket!.send(message);    
   }
 
-  async open(name: string) {
-    const message = JSON.stringify({
-      type: 'open',
-      name,
-    })
-
-    this.socket!.send(message);
-  }
-
   async save(name: string, reactFlow: SerializedReactFlow) {
     const message = JSON.stringify({
       type: 'save',
