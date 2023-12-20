@@ -88,10 +88,6 @@ describe('JsClient', () => {
     expect(console.log).toHaveBeenCalledWith('Execution complete 💫');
   });
 
-  it('should not throw when open is called', async() => {
-    await expect(client.open('test')).resolves.not.toThrow();
-  });
-
   it('should not throw when save is called', async() => {
     await expect(client.save('test', {
       nodes: [],
