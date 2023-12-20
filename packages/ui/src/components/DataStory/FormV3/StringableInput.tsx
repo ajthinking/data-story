@@ -25,13 +25,13 @@ export function StringableInput({
   // Effect to update rows when the content changes
   useEffect(() => {
     const subscription = form.watch((value, formEvent) => {
-      console.log({
-        msg: 'CHANGE!',
-        name,
-        inputMode,
-        value,
-        formEvent
-      })
+      // console.log({
+      //   msg: 'CHANGE!',
+      //   name,
+      //   inputMode,
+      //   value,
+      //   formEvent
+      // })
       if (formEvent.name === `params.${name}` && formEvent.type === 'change') {
         try {
           const fieldValue = get(value.params, name)
