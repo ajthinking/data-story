@@ -31,9 +31,6 @@ jobs:
             
   publish_core:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./packages/core
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
@@ -50,7 +47,7 @@ jobs:
       - name: Check version
         id: check
         run: |
-          PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
+          PACKAGE_VERSION=$(node -p -e "require('./packages/core/package.json').version")
           echo "Version: $PACKAGE_VERSION"
           HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/core/$PACKAGE_VERSION)
           
@@ -75,7 +72,7 @@ jobs:
         run: |
           yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
           yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
-          yarn npm publish --access public
+          cd packages/ui && yarn npm publish --access public
     
   publish_ui:
     needs: publish_core
