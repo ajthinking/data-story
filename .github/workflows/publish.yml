@@ -30,6 +30,7 @@ jobs:
             packages/nodejs/dist
             
   publish_core:
+    needs: build_and_upload_artifacts
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
