@@ -1,11 +1,9 @@
-# Installation
+### Installation
 ```bash copy
 yarn add @data-story/ui
 ```
 
-## Usage
-
-### With NodeJS server
+### Basic Usage
 
 ```js copy
 import { DataStory } from '@data-story/ui'
@@ -20,37 +18,25 @@ export default function Home() {
 }
 ```
 
-Next, start a server:
+> With this basic usage, you will get all available nodes in `@data-story/core` and an inline JS server.
+
+### Usage with NodeJS
+First, also install:
 ```bash
-npx @data-story/core server
+yarn add @data-story/nodejs
 ```
 
-That's it!
-
-> With this installation, you will use all available nodes in `@data-story/core`.
-
-### With JS server
-First, create an app and provider:
-```ts
-const app = new Application();
-
-const provider = {
-  register(app) {
-    app.addComputers([
-      Signal,
-      ConsoleLog
-    ])
-  },
-  boot(app) {},
-}
-
-app.register(provider);
-
-app.boot();
-```
-Pass this app into the `server` parameter along with a `JS` type:
+Then, when using the component, instruct it to listen on a websocket:
 ```tsx
 <DataStory
-  server={{ type: 'JS', app }}
+  server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
 />
 ```
+
+Finally, start a server:
+```bash
+npx @data-story/nodejs server
+```
+
+
+

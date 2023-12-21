@@ -91,14 +91,19 @@ export const NodeSettingsModal = () => {
           <div className="flex items-start justify-between px-8 py-2 border-solid border-slate-200 rounded-t">
             <input
               {...form.register('label')}
-              className="pr-4 bg-white mt-4 flex flex-col align-center justify-center text-lg text-gray-400 font-bold tracking widest"
+              className="pr-4 mt-4 bg-white flex flex-col align-center justify-center text-lg text-gray-400 font-bold tracking widest"
             />
-            <div className="cursor-pointer p-1 ml-auto text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none" onClick={close}>
-              <span className="text-gray-500 h-6 w-6 text-2xl block outline-none focus:outline-none">
+            <div className="flex">
+              {form.getValues('label') !== node.data.computer && <div className="flex flex-col pr-4 my-2 mt-3 italic flex flex-col align-center justify-center text-sm text-gray-400 font-base tracking widest">
+                renamed from {node.data.computer}
+              </div>}
+              <div className="cursor-pointer p-1 ml-auto text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none" onClick={close}>
+                <span className="text-gray-500 h-6 w-6 text-2xl block outline-none focus:outline-none">
                 ×
-              </span>
-            </div>
-          </div>
+                </span>
+              </div>
+            </div>          
+          </div>          
           {/* ***** TABS ***** */}
           <div className="mx-8 flex space-x-8 text-xxs uppercase text-gray-400">           
             {Object.keys(TAB_COMPONENTS).map((key) => (

@@ -37,36 +37,38 @@ export class JsClient implements ServerClient {
     
     const execution = executor.execute();
 
+    // For each update run this function
     const handleUpdates = (iterator: AsyncIterator<any>) => {
-      iterator.next().then(({ value: update, done }) => {
-        if (!done) {
-          this.updateEdgeCounts(update.counts)
-          for(const hook of update.hooks) {
-            if(hook.type === 'CONSOLE_LOG') {
-              console.log(...hook.args)
-            } else {
-              const userHook = this.app.hooks.get(hook.type)
-
-              if(userHook) {
-                userHook(...hook.args)
+      iterator.next()
+        .then(({ value: update, done }) => {
+          if (!done) {
+            this.updateEdgeCounts(update.counts)
+            for(const hook of update.hooks) {
+              if(hook.type === 'CONSOLE_LOG') {
+                console.log(...hook.args)
+              } else {
+                const userHook = this.app.hooks.get(hook.type)
+  
+                if(userHook) {
+                  userHook(...hook.args)
+                }
               }
-            }
-          }          
-
-          // Then wait for the next one
-          handleUpdates(iterator);
-        } else {
-          console.log('Execution complete 💫')
-        }
-      });
+            }          
+  
+            // Then wait for the next one
+            handleUpdates(iterator);
+          } else {
+            console.log('Execution complete 💫')
+          }
+        })
+        .catch((error: any) => {
+          alert('There was an error! Review console!')
+          console.log('Error', error)
+        })
     }
     
-    // Not sure what this is but it works
+    // Start the updates
     handleUpdates(execution[Symbol.asyncIterator]());
-  }
-
-  async open(name: string) {
-
   }
 
   async save(name: string, reactFlow: SerializedReactFlow) {

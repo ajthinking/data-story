@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { NodeDescription } from '@data-story/core';
-import { makeNodeAndConnection } from '../hooks/makeNodeAndConnection';
 import { Modal } from '../modal';
 import { StoreSchema, useStore } from '../store/store';
 import clsx from 'clsx';
@@ -15,24 +14,14 @@ export const AddNodeModal = ({ setShowModal }: { setShowModal: (show: boolean) =
   }, []);
 
   const selector = (state: StoreSchema) => ({
-    toDiagram: state.toDiagram,
-    nodes: state.nodes,
-    edges: state.edges,
-    addNode: state.addNode,
-    connect: state.connect,
+    addNodeFromDescription: state.addNodeFromDescription,
     availableNodes: state.availableNodes,
   });
 
-  const { toDiagram, nodes, edges, addNode, connect, availableNodes } = useStore(selector, shallow);
+  const { addNodeFromDescription, availableNodes } = useStore(selector, shallow);
 
   const doAddNode = (nodeDescription: NodeDescription) => {
-    const [node, connection] = makeNodeAndConnection(toDiagram(), nodeDescription);
-
-    // Call React Flow hooks to add node and link to store
-    addNode(node);
-    if (connection) connect(connection);
-
-    // Close modal
+    addNodeFromDescription(nodeDescription);
     setShowModal(false);
   };
 

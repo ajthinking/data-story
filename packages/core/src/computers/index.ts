@@ -3,6 +3,7 @@ export { Comment } from './Comment';
 export { ConsoleLog } from './ConsoleLog'
 // export { CreateProperty } from './CreateProperty';
 export { CreateJson } from './CreateJson'
+export { Describe } from './Describe'
 // export { Dump } from './Dump';
 // export { Eval } from './Eval';
 export { Fake } from './Fake'

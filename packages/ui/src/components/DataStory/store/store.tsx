@@ -16,14 +16,15 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { Diagram, NodeDescription } from '@data-story/core';
+import { AbstractPort, Diagram, Node, LinkGuesser, NodeDescription, PositionGuesser } from '@data-story/core';
 import { DataStoryNode } from '../../Node/DataStoryNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig } from '../clients/ServerConfig';
-import { reactFlowToDiagram } from '../../../reactFlowToDiagram';
+import { reactFlowNodeToDiagramNode, reactFlowToDiagram } from '../../../reactFlowToDiagram';
 import { reactFlowFromDiagram } from '../../../reactFlowFromDiagram';
 import React, { useState } from 'react';
+import { SerializedReactFlowNode } from '../../../SerializedReactFlow';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -39,6 +40,7 @@ export type StoreSchema = {
   updateNode: (node: DataStoryNode) => void;
   refreshNodes: () => void;
   addNode: (node: DataStoryNode) => void;
+  addNodeFromDescription: (nodeDescription: NodeDescription) => void;
   onNodesChange: OnNodesChange;
   setNodes: (nodes: DataStoryNode[]) => void;
   traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;
@@ -147,6 +149,69 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     setTimeout(() => {
       get().rfInstance?.fitView();
     }, 1);
+  },
+  addNodeFromDescription: (nodeDescription: NodeDescription) => {
+    const diagram = get().toDiagram()
+
+    const scopedId = (name: string) => {
+      const max = diagram.nodes
+        .filter((node) => node.type === name)
+        .map((node) => node.id)
+        .map((id) => id.split('.')[1])
+        .map((id) => parseInt(id))
+        .reduce((max, id) => Math.max(max, id), 0)
+  
+      return max + 1      
+    }
+  
+    const counter = scopedId(nodeDescription.name)
+    const id = `${nodeDescription.name}.${counter}`;
+  
+    const flowNode: DataStoryNode = {
+      id,
+      position: new PositionGuesser(diagram).guess(nodeDescription),
+      data: {
+        computer: nodeDescription.name,
+        docs: nodeDescription.docs,
+        // Ensure two nodes of same type don't share the same params object
+        params: structuredClone(nodeDescription.params),
+        color: nodeDescription.color,
+        label: nodeDescription.label ?? nodeDescription.name,
+        inputs: nodeDescription.inputs.map((input: AbstractPort) => {
+          return {
+            id: `${id}.${input.name}`,
+            ...input
+          }
+        }),
+        outputs: nodeDescription.outputs.map((output: AbstractPort) => {
+          return {
+            id: `${id}.${output.name}`,
+            ...output
+          }
+        }),
+      },
+      selected: true,
+      type: {
+        Comment: 'dataStoryCommentNodeComponent',
+        //Input: 'dataStoryInputNodeComponent',
+        //Output: 'dataStoryOutputNodeComponent',
+      }[nodeDescription.name] ?? 'dataStoryNodeComponent',
+    }
+  
+    const node: Node = reactFlowNodeToDiagramNode(flowNode)
+  
+    const link = new LinkGuesser(diagram).guess(node)
+  
+    const connection = link ? {
+      source: diagram.nodeWithOutputPortId(link.sourcePortId)!.id,
+      target: id,
+      sourceHandle: link.sourcePortId,
+      targetHandle: link.targetPortId,
+    } : null;
+  
+    get().addNode(flowNode);
+
+    if (connection) get().connect(connection);
   },
   updateNode: (node: DataStoryNode) => {
     set({
