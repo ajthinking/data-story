@@ -2,11 +2,33 @@ name: Publish CI
 
 on:
   workflow_run:
-    workflows: [ "Test CI" ]
-    branches: [ main ]  # It is stipulated that Core CI must be performed on the main branch.
-    types: [ completed ]
+    workflows: ["Test CI"]
+    branches: [main]
+    types: [completed]
 
 jobs:
+  build_and_upload_artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        run: yarn
+      - name: Build
+        run: yarn build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-artifacts
+          path: |
+            packages/core/dist
+            packages/ui/dist
+            packages/nodejs/dist
+            
   publish_core:
     runs-on: ubuntu-latest
     defaults:
@@ -20,7 +42,11 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: packages
       - name: Check version
         id: check
         run: |
@@ -43,22 +69,14 @@ jobs:
         run: |
           echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
           exit 1 # Exit with a failure
-      - name: Install dependencies
-        if: ${{ env.VERSION_EXISTS == 'false' }}
-        run: yarn
-      
-      - name: Build
-        if: ${{ env.VERSION_EXISTS == 'false' }}
-        run: yarn build
       
       - name: Publish
         if: ${{ env.VERSION_EXISTS == 'false' }}
         run: |
-         yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
-         yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
-         yarn npm publish --access public
- 
-  
+          yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
+          yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
+          yarn npm publish --access public
+    
   publish_ui:
     needs: publish_core
     runs-on: ubuntu-latest
@@ -70,6 +88,11 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: packages
       - name: Check version
         id: check
         run: |
@@ -84,26 +107,15 @@ jobs:
             echo "Version does not exist."
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
-      
-      - name: Install dependencies
-        if: ${{ env.VERSION_EXISTS == 'false' }}
-        run: yarn
-      
-      - name: Build
-        if: ${{ env.VERSION_EXISTS == 'false' }}
-        run: yarn build
-      
       - name: Publish
         if: ${{ env.VERSION_EXISTS == 'false' }}
         run: |
           yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
           yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
           cd packages/ui && yarn npm publish --access public
-
-
   
   publish_nodejs:
-    needs: publish_core    
+    needs: publish_core
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
@@ -113,7 +125,11 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: packages
       - name: Check version
         id: check
         run: |
@@ -128,14 +144,6 @@ jobs:
             echo "Version does not exist."
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
-
-      - name: Install dependencies
-        if: ${{ env.VERSION_EXISTS == 'false' }}
-        run: yarn
-      
-      - name: Build
-        if: ${{ env.VERSION_EXISTS == 'false' }}
-        run: yarn build
       
       - name: Publish
         if: ${{ env.VERSION_EXISTS == 'false' }}
@@ -143,3 +151,4 @@ jobs:
           yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
           yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
           cd packages/nodejs && yarn npm publish --access public
+          
