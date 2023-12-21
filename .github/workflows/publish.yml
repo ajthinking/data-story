@@ -2,9 +2,9 @@ name: Publish CI
 
 on:
   workflow_run:
-    workflows: ["Test CI"]
-    branches: [main]
-    types: [completed]
+    workflows: [ "Test CI" ]
+    branches: [ main ]
+    types: [ completed ]
 
 jobs:
   build_and_upload_artifacts:
