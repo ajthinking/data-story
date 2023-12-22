@@ -14,7 +14,7 @@ const CustomHandle = ({ id, isConnectable, isInput }: {
         className="relative bg-red-500"
         type="target"
         position={Position.Left}
-        style={{ opacity: 0, position: "relative", height: 12, width: 12, top: 8, left: 0}}
+        style={{ opacity: 0, position: 'relative', height: 12, width: 12, top: 8, left: 0}}
         id={id}
         isConnectable={isConnectable}
       />                                
@@ -22,17 +22,17 @@ const CustomHandle = ({ id, isConnectable, isInput }: {
   );
 
   return (
-      <div className="flex w-full items-right justify-end -mx-4">
-        <div className="absolute my-0.5"><PortIcon /></div>
-        <Handle
-          className="relative"
-          type="source"
-          position={Position.Right}
-          style={{ opacity: 0, backgroundColor: "", position: "relative", height: 12, width: 12, top: 8, right: 0}}
-          id={id}
-          isConnectable={isConnectable}
-        />                                
-      </div>            
+    <div className="flex w-full items-right justify-end -mx-4">
+      <div className="absolute my-0.5"><PortIcon /></div>
+      <Handle
+        className="relative"
+        type="source"
+        position={Position.Right}
+        style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 8, right: 0}}
+        id={id}
+        isConnectable={isConnectable}
+      />                                
+    </div>            
   );
 };
 
