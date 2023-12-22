@@ -1,12 +1,15 @@
 # Ignore all files in the 'dist' directory
 
 **/dist/**/*
+**/coverage/*
+**/.next/*
 
 # Ignore all '.min.js' files
 *.min.js
 
 # Temporary measure while migrating nodes
 holding/**/*
+
 .github
 .husky
 .turbo
