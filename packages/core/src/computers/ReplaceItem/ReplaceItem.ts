@@ -40,7 +40,7 @@ export const ReplaceItem: ComputerConfig = {
   
   async *run({ input, output, params }) {
     while(true) {
-      const incoming = input!.pull()
+      const incoming = input.pull()
 
       const replacers = incoming.map(item => {
         if(params.mode === 'REPLACE') return item.params.json as ItemValue;

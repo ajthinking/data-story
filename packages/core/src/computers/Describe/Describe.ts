@@ -52,7 +52,7 @@ export const Describe: ComputerConfig = {
   },
 
   async *run({ input, output, params }) {
-    const incoming = input!.pull()
+    const incoming = input.pull()
       .map(i => get(i.value, String(params.path)))
 
     const description = describeCollection(incoming)

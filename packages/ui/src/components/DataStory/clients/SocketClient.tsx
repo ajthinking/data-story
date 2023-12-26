@@ -4,16 +4,16 @@ import { SerializedReactFlow } from '../../../SerializedReactFlow';
 import { Hook } from '@data-story/core/dist/types/Hook';
 
 export class SocketClient implements ServerClient {
-  private socket?: WebSocket;
-  private maxReconnectTries = 100;
-  private reconnectTimeout = 1000;
-  private reconnectTries = 0;
+  protected socket?: WebSocket;
+  protected maxReconnectTries = 100;
+  protected reconnectTimeout = 1000;
+  protected reconnectTries = 0;
 
   constructor(
-    private setAvailableNodes: (nodes: NodeDescription[]) => void,
-    private updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    private setNodes: (nodes: any) => void,
-    private setEdges: (edges: any) => void,
+    protected setAvailableNodes: (nodes: NodeDescription[]) => void,
+    protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+    protected setNodes: (nodes: any) => void,
+    protected setEdges: (edges: any) => void,
     // private setViewport: (viewport: any) => void,
   ) {}
 
@@ -106,14 +106,6 @@ export class SocketClient implements ServerClient {
     }) 
   }
 
-  describe() {
-    const message = JSON.stringify({
-      type: 'describe',
-    })
-
-    this.socket!.send(message);
-  }
-
   run(diagram: Diagram) {
     const message = JSON.stringify({
       type: 'run',
@@ -132,4 +124,12 @@ export class SocketClient implements ServerClient {
 
     this.socket!.send(message);
   }
+
+  protected describe() {
+    const message = JSON.stringify({
+      type: 'describe',
+    })
+
+    this.socket!.send(message);
+  }  
 }

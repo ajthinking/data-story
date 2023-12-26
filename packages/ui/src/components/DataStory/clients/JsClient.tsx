@@ -24,8 +24,6 @@ export class JsClient implements ServerClient {
     console.log('Connected to server: JS')
   }
 
-  describe() {}
-
   run(diagram: Diagram) {
     const storage = new NullStorage()    
   

@@ -8,7 +8,7 @@ export const Pass: ComputerConfig = {
   
   async *run({ input, output }) {
     while(true) {
-      const incoming = input!.pull()
+      const incoming = input.pull()
       output.push(incoming)
 
       yield;

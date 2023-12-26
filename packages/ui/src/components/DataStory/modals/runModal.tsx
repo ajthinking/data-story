@@ -43,7 +43,7 @@ export const RunModal = ({ setShowModal }: {
           ref={runButtonReference}
           data-cy='run-modal-button'
           className={clsx(
-            'flex w-full space-y-4 space-x-2 mt-4 px-16 py-2',
+            'flex w-full items-center justify-center space-y-4 mt-4 px-16 py-2',
             'bg-blue-500 hover:bg-blue-600',
             'font-mono text-xs text-gray-50 uppercase',
             'rounded'
