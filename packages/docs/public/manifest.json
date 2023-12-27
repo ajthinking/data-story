@@ -13,8 +13,9 @@
   "screenshots": [],
   "icons": [
     {
-      "src": "/public/favicon.png",
-      "type": "image/png"
+      "src": "/favicon.png",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [],
