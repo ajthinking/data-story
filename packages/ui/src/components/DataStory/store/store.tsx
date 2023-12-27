@@ -22,9 +22,7 @@ import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig } from '../clients/ServerConfig';
 import { reactFlowNodeToDiagramNode, reactFlowToDiagram } from '../../../reactFlowToDiagram';
-import { reactFlowFromDiagram } from '../../../reactFlowFromDiagram';
 import React, { useState } from 'react';
-import { SerializedReactFlowNode } from '../../../SerializedReactFlow';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -256,10 +254,42 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     get().onInitServer(get().serverConfig)
 
     if(options.diagram) {
-      const flow = reactFlowFromDiagram(options.diagram)
+      const diagram = options.diagram
 
-      get().setNodes(flow.nodes)
-      get().setEdges(flow.edges)
+      get().setNodes(diagram.nodes.map(node => {
+        return {
+          width: 128,
+          height: 52,
+          id: node.id,
+          position: {
+            x: node.position!.x,
+            y: node.position!.y
+          },
+          data: {
+            docs: node.docs,
+            params: node.params,
+            computer: node.type,
+            label: (node?.label || node.type) as string,
+            color: node.color,
+            inputs: node.inputs,
+            outputs: node.outputs,
+          },
+          type: (() => {
+            if(node.type === 'Comment') return 'dataStoryCommentNodeComponent';
+  
+            return 'dataStoryNodeComponent'
+          })(),
+        }
+      }));
+      get().setEdges(diagram.links.map(link => {
+        return {
+          sourceHandle: link.sourcePortId,
+          targetHandle: link.targetPortId,
+          source: diagram.nodes.find(node => node.outputs.find(output => output.id === link.sourcePortId) !== undefined)!.id,
+          target: diagram.nodes.find(node => node.inputs.find(input => input.id === link.targetPortId) !== undefined)!.id,
+          id: link.id,
+        }
+      }))
     }
 
     if(options.callback) {
