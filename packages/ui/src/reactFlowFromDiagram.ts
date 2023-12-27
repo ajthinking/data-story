@@ -18,20 +18,8 @@ export const reactFlowFromDiagram = (diagram: Diagram): SerializedReactFlow => {
           computer: node.type,
           label: (node?.label || node.type) as string,
           color: node.color,
-          inputs: node.inputs.map(input => {
-            return {
-              id: input.id,
-              name: input.name,
-              schema: input.schema,
-            }
-          }),
-          outputs: node.outputs.map(output => {
-            return {
-              id: output.id,
-              name: output.name,
-              schema: output.schema,
-            }
-          }),
+          inputs: node.inputs,
+          outputs: node.outputs,
         },
         type: (() => {
           if(node.type === 'Comment') return 'dataStoryCommentNodeComponent';
