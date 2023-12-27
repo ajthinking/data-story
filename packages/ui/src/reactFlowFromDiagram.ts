@@ -20,14 +20,14 @@ export const reactFlowFromDiagram = (diagram: Diagram): SerializedReactFlow => {
           color: node.color,
           inputs: node.inputs.map(input => {
             return {
-              id: `${node.id}.${input.name}`,
+              id: input.id,
               name: input.name,
               schema: input.schema,
             }
           }),
           outputs: node.outputs.map(output => {
             return {
-              id: `${node.id}.${output.name}`,
+              id: output.id,
               name: output.name,
               schema: output.schema,
             }
