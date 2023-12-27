@@ -1,0 +1,23 @@
+{
+  "background_color": "#fff",
+  "description": "data-story :  A visual process builder",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "data-story",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "datasotry",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "categories": [],
+  "screenshots": [],
+  "icons": [
+    {
+      "src": "/public/favicon.png",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [],
+  "id": "1227",
+  "lang": "en"
+}
