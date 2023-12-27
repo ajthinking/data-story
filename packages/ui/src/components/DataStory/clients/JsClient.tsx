@@ -6,7 +6,6 @@ import {
   Executor,
 } from '@data-story/core';
 import { ServerClient } from './ServerClient';
-import { SerializedReactFlow } from '../../../SerializedReactFlow';
 
 export class JsClient implements ServerClient {
   constructor(
@@ -69,7 +68,7 @@ export class JsClient implements ServerClient {
     handleUpdates(execution[Symbol.asyncIterator]());
   }
 
-  async save(name: string, reactFlow: SerializedReactFlow) {
+  async save(name: string, diagram: Diagram) {
 
   }
 }

@@ -89,14 +89,8 @@ describe('JsClient', () => {
   });
 
   it('should not throw when save is called', async() => {
-    await expect(client.save('test', {
-      nodes: [],
-      edges: [],
-      viewport: {
-        x: 0,
-        y: 0,
-        zoom: 1,
-      },
-    })).resolves.not.toThrow();
+    const diagram = new Diagram([], []);
+
+    await expect(client.save('test', diagram)).resolves.not.toThrow();
   });
 });
