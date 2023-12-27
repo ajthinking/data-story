@@ -1,28 +1,4 @@
 {
-  "background_color": "#fff",
-  "description": "data-story :  A visual process builder",
-  "dir": "ltr",
-  "display": "standalone",
-  "name": "data-story",
-  "orientation": "portrait",
-  "scope": "/",
-  "short_name": "datasotry",
-  "start_url": "/",
-  "theme_color": "#ffffff",
-  "categories": [],
-  "screenshots": [
-    {
-      "src": "android/android-launchericon-512-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "windows11/LargeTile.scale-400.png",
-      "sizes": "1240x1240",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ],
   "icons": [
     {
       "src": "windows11/SmallTile.scale-100.png",
@@ -102,9 +78,7 @@
     },
     {
       "src": "windows11/LargeTile.scale-400.png",
-      "sizes": "1240x1240",
-      "type": "image/png",
-      "form_factor": "wide"
+      "sizes": "1240x1240"
     },
     {
       "src": "windows11/Square44x44Logo.scale-100.png",
@@ -348,8 +322,7 @@
     },
     {
       "src": "android/android-launchericon-512-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "sizes": "512x512"
     },
     {
       "src": "android/android-launchericon-192-192.png",
@@ -475,8 +448,5 @@
       "src": "ios/1024.png",
       "sizes": "1024x1024"
     }
-  ],
-  "shortcuts": [],
-  "id": "1227",
-  "lang": "en"
+  ]
 }
