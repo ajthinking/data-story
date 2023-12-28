@@ -1,5 +1,3 @@
-'use client';
-
 import { DataStory } from '@data-story/ui'
 import { coreNodeProvider, Application, DiagramBuilder } from '@data-story/core';
 
