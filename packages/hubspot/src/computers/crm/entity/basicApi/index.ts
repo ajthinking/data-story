@@ -1,1 +1,0 @@
-export { getById } from './getById';

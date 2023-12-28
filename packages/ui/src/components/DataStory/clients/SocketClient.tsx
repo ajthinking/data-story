@@ -77,7 +77,7 @@ export class SocketClient implements ServerClient {
       }
 
       if(parsed.type === 'ExecutionResult') {
-        // setTimeout(() => alert('Execution complete 💫'), 100)
+        console.log('Execution complete 💫')
 
         return
       }
