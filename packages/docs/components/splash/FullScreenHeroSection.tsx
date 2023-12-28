@@ -1,3 +1,5 @@
+'use client';
+
 import HeroFlow from '../demos/HeroFlow'
 
 export default () => {
