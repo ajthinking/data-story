@@ -1,5 +1,5 @@
 import { Param, Stringable } from '@data-story/core'
-import { StringableInput } from '../../../../FormV3/StringableInput'
+import { StringableInput } from '../../../../Form/StringableInput'
 import { UseFormReturn } from 'react-hook-form';
 import { DropDown, Option, OptionGroup } from '../../../../../DropDown';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';

@@ -1,8 +1,8 @@
 import { Param } from '@data-story/core'
-import { StringableInput } from '../../../../FormV3/StringableInput'
+import { StringableInput } from '../../../../Form/StringableInput'
 import { UseFormReturn } from 'react-hook-form';
 import { DropDown } from '../../../../../DropDown';
-import { RepeatableInput } from '../../../../FormV3/RepeatableInput';
+import { RepeatableInput } from '../../../../Form/RepeatableInput';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
 
 export function RepeatableWithConfig({
