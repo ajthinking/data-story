@@ -1,11 +1,11 @@
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
 import { UseFormReturn } from 'react-hook-form';
 import { DropDown } from '../../../../../DropDown';
-import { RepeatableInput } from '../../../../FormV3/RepeatableInput';
-import { StringableInput } from '../../../../FormV3/StringableInput';
+import { RepeatableInput } from '../../../../Form/RepeatableInput';
+import { StringableInput } from '../../../../Form/StringableInput';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
-import { SelectInput } from '../../../../FormV3/SelectInput';
+import { SelectInput } from '../../../../Form/SelectInput';
 
 export function Params({
   node,
