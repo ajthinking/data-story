@@ -1,6 +1,7 @@
 import '../globals.css'
 import Head from 'next/head';
-import icons from '../public/icons.json';
+import manifest from '../public/manifest.json';
+
 
 export default function extra({ Component, pageProps }) {
   return (
@@ -9,7 +10,7 @@ export default function extra({ Component, pageProps }) {
         <title>data-story</title>
         // We will generate corresponding links in the Head for all images in the icons folder
         {
-          icons.icons.map(({src, sizes}) => (
+          manifest.icons.map(({src, sizes}) => (
             <link key={src} rel="icon" href={`/${src}`} sizes={sizes} />
           ))
         }
