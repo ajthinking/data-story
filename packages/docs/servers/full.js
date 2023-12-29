@@ -2,6 +2,7 @@
 
 import { Application, coreNodeProvider } from '@data-story/core';
 import { SocketServer, nodeJsProvider } from '@data-story/nodejs';
+import { hubspotProvider } from '@data-story/hubspot';
 import { openAiProvider } from '@data-story/openai';
 
 import dotenv from 'dotenv';
@@ -12,7 +13,9 @@ const app = new Application();
 app.register([
   coreNodeProvider,
   nodeJsProvider,
-  openAiProvider
+  hubspotProvider,
+  openAiProvider,
+
 ]);
 
 app.boot();

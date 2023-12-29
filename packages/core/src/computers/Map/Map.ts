@@ -1,5 +1,5 @@
 
-import { JsEvaluation, JsonEvaluation } from '../../Param';
+import { JsEvaluation, JsonEvaluation, NumberCast, StringCast } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const Map: ComputerConfig = {
@@ -42,9 +42,14 @@ export const Map: ComputerConfig = {
                 JsonEvaluation,
                 JsEvaluation,
               ],
+              casts: [
+                NumberCast,
+                StringCast,
+              ],              
               value: '',
             },
             alternativeInputModes: [],
+
           },          
         ],
         value: [],

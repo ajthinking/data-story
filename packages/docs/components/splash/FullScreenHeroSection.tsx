@@ -1,5 +1,4 @@
 import HeroFlow from '../demos/HeroFlow'
-import NodeDemo from '../demos/NodeDemo'
 
 export default () => {
   return (

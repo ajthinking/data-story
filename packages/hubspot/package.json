@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@data-story/core": "workspace:*",
+    "@hubspot/api-client": "^10.2.0",
     "@types/node": "18.14.2",
     "axios": "^1.3.4",
     "dotenv": "^16.0.3",

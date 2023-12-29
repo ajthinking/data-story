@@ -1,6 +1,5 @@
 import { Diagram, NodeDescription } from '@data-story/core';
 import { ServerClient } from './ServerClient';
-import { SerializedReactFlow } from '../../../SerializedReactFlow';
 import { Hook } from '@data-story/core/dist/types/Hook';
 
 export class SocketClient implements ServerClient {
@@ -78,7 +77,7 @@ export class SocketClient implements ServerClient {
       }
 
       if(parsed.type === 'ExecutionResult') {
-        // setTimeout(() => alert('Execution complete 💫'), 100)
+        console.log('Execution complete 💫')
 
         return
       }
@@ -115,11 +114,11 @@ export class SocketClient implements ServerClient {
     this.socket!.send(message);    
   }
 
-  async save(name: string, reactFlow: SerializedReactFlow) {
+  async save(name: string, diagram: Diagram) {
     const message = JSON.stringify({
       type: 'save',
       name,
-      reactFlow  
+      diagram  
     })
 
     this.socket!.send(message);

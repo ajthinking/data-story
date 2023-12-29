@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
+    "@data-story/hubspot": "workspace:*",
     "@data-story/nodejs": "workspace:*",
     "@data-story/openai": "workspace:*",
     "@data-story/ui": "workspace:*",
