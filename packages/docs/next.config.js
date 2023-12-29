@@ -13,7 +13,6 @@ const nextraConfig = withNextra(pwaConfig);
 
 module.exports = {
   ...nextraConfig,
-  // ...pwaConfig,
   images: {
     unoptimized: true,
   },

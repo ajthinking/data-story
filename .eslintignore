@@ -15,3 +15,7 @@ holding/**/*
 .turbo
 .yarn
 
+# ignore Service Worker files
+/public/sw.js
+/public/workbox-*.js
+
