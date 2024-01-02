@@ -6,7 +6,7 @@ import * as store from '../store/store';
 function mountRunModal(): void {
   cy.mount(
     <DataStoryProvider>
-      <RunModal setShowModal={(show) => show}/>
+      <RunModal showModal={true} setShowModal={(show) => show}/>
     </DataStoryProvider>
   )
 }
