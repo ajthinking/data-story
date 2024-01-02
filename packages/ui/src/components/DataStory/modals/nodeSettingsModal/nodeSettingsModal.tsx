@@ -17,7 +17,9 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   Docs,
 };
 
-export const NodeSettingsModal = () => {
+export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
+  if(!showModal) return null;
+
   const [tab, setTab] = useState<TabKey>('Params')
 
   const selector = (state: StoreSchema) => ({
