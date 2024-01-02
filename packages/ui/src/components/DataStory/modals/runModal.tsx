@@ -4,9 +4,12 @@ import { StoreSchema, useStore } from '../store/store';
 import { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-export const RunModal = ({ setShowModal }: {
+export const RunModal = ({ showModal, setShowModal }: {
+  showModal: boolean,
   setShowModal: (show: boolean) => void
 }) => {
+  if(!showModal) return null;
+
   const runButtonReference = useRef<HTMLButtonElement>(null);  
 
   useEffect(() => {
