@@ -5,7 +5,12 @@ import { Modal } from '../modal';
 import { StoreSchema, useStore } from '../store/store';
 import clsx from 'clsx';
 
-export const AddNodeModal = ({ setShowModal }: { setShowModal: (show: boolean) => void }) => {
+export const AddNodeModal = ({ showModal, setShowModal }: {
+  showModal: boolean,
+  setShowModal: (show: boolean) => void
+}) => {
+  if(!showModal) return null;
+
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
 

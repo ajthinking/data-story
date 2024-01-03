@@ -92,18 +92,19 @@ export const Workbench = ({
             // duration: 5,
           }}
         >
-          {!hideToolbar && <DataStoryControls
+          <DataStoryControls
+            hideToolbar={hideToolbar}
             setShowRunModal={setShowRunModal}
             setShowAddNodeModal={setShowAddNodeModal}
-          />}
+          />
           <Background color='#E7E7E7' variant={BackgroundVariant.Lines} />
         </ReactFlow>
       </ReactFlowProvider>
 
       {/* Modals */}
-      {showRunModal && <RunModal setShowModal={setShowRunModal}/>}
-      {showAddNodeModal && <AddNodeModal setShowModal={setShowAddNodeModal}/>}
-      {openNodeModalId && <NodeSettingsModal/>}
+      <RunModal showModal={showRunModal} setShowModal={setShowRunModal}/>
+      <AddNodeModal showModal={showAddNodeModal} setShowModal={setShowAddNodeModal}/>
+      <NodeSettingsModal showModal={Boolean(openNodeModalId)} />
     </>
   );
 };
