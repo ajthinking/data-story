@@ -1,13 +1,13 @@
 {
   "background_color": "#fff",
-  "description": "data-story :  A visual process builder",
+  "description": "data-story-PWA :  A visual process builder",
   "dir": "ltr",
   "display": "standalone",
-  "name": "data-story",
+  "name": "data-story-PWA",
   "orientation": "portrait",
   "scope": "/",
-  "short_name": "datastory",
-  "start_url": "/playground",
+  "short_name": "datastoryPWA",
+  "start_url": "/",
   "theme_color": "#ffffff",
   "categories": [],
   "screenshots": [
