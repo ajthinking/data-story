@@ -12620,6 +12620,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pwa@workspace:packages/pwa"
   dependencies:
+    "@data-story/core": "workspace:*"
+    "@data-story/hubspot": "workspace:*"
+    "@data-story/nodejs": "workspace:*"
+    "@data-story/openai": "workspace:*"
+    "@data-story/ui": "workspace:*"
     "@types/react": "npm:^18.2.43"
     "@types/react-dom": "npm:^18.2.17"
     "@typescript-eslint/eslint-plugin": "npm:^6.14.0"

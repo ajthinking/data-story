@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@data-story/core": "workspace:*",
+    "@data-story/hubspot": "workspace:*",
+    "@data-story/nodejs": "workspace:*",
+    "@data-story/openai": "workspace:*",
+    "@data-story/ui": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
