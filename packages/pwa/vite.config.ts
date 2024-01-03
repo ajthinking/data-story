@@ -3,18 +3,17 @@ import react from '@vitejs/plugin-react'
 import { type ManifestOptions, VitePWA } from 'vite-plugin-pwa'
 import manifest from './public/manifest.json';
 
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), VitePWA({
     registerType: 'autoUpdate',
-    strategies: 'injectManifest',
     srcDir: 'src',
-    filename: 'sw.ts',
     workbox: {
       clientsClaim: true,
-      skipWaiting: true
+      skipWaiting: true,
     },
-    includeAssets: ['./public/favicon.ico', './public/robots.txt', './public/manifest.json'],
+    includeAssets: ['./public/favicon.ico', './public/robots.txt'],
     manifest: manifest as ManifestOptions
   })],
   optimizeDeps: {
