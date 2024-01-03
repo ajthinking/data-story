@@ -24,7 +24,6 @@
     "@data-story/openai": "workspace:*",
     "@data-story/ui": "workspace:*",
     "next": "^13.0.6",
-    "next-pwa": "^5.6.0",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
     "react": "^18.2.0",

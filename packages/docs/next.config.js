@@ -2,14 +2,8 @@ const withNextra = require('nextra')({
   theme: 'nextra-theme-docs',
   themeConfig: './theme.config.tsx',
 })
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  register: true,
-  skipWaiting: true
-});
 
-const pwaConfig = withPWA();
-const nextraConfig = withNextra(pwaConfig);
+const nextraConfig = withNextra({});
 
 module.exports = {
   ...nextraConfig,
