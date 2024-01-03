@@ -1,5 +1,5 @@
 import { DataStory } from '@data-story/ui'
-import { coreNodeProvider, Application, DiagramBuilder } from '@data-story/core';
+import { coreNodeProvider, Application } from '@data-story/core';
 
 export default ({ mode}: { mode?: 'js' | 'node' }) => {
   const app = new Application()
