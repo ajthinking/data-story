@@ -9,7 +9,8 @@
     "packages/hjson",
     "packages/openai",
     "packages/hubspot",
-    "packages/private/*"
+    "packages/private/*",
+    "packages/pwa"
   ],
   "scripts": {
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
