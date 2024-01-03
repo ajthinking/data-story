@@ -6,7 +6,7 @@ function App({ mode}: { mode?: 'js' | 'node' }) {
     .boot();
 
   return (
-    <div style={{ height: '100vh', width: '100vw' }} data-cy="playground">
+    <div style={{ height: '100vh', width: '100vw', overflow: 'hidden' }} data-cy="playground">
       <UI.DataStory
         server={mode === 'node'
           ? { type: 'SOCKET', url: 'ws://localhost:3100' }
