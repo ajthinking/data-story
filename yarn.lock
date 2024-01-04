@@ -1603,6 +1603,31 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@data-story/pwa@workspace:packages/pwa":
+  version: 0.0.0-use.local
+  resolution: "@data-story/pwa@workspace:packages/pwa"
+  dependencies:
+    "@data-story/core": "workspace:*"
+    "@data-story/hubspot": "workspace:*"
+    "@data-story/nodejs": "workspace:*"
+    "@data-story/openai": "workspace:*"
+    "@data-story/ui": "workspace:*"
+    "@types/react": "npm:^18.2.43"
+    "@types/react-dom": "npm:^18.2.17"
+    "@typescript-eslint/eslint-plugin": "npm:^6.14.0"
+    "@typescript-eslint/parser": "npm:^6.14.0"
+    "@vitejs/plugin-react": "npm:^4.2.1"
+    eslint: "npm:^8.55.0"
+    eslint-plugin-react-hooks: "npm:^4.6.0"
+    eslint-plugin-react-refresh: "npm:^0.4.5"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    typescript: "npm:^5.2.2"
+    vite: "npm:^5.0.8"
+    vite-plugin-pwa: "npm:^0.17.4"
+  languageName: unknown
+  linkType: soft
+
 "@data-story/ui@workspace:*, @data-story/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@data-story/ui@workspace:packages/ui"
@@ -12411,31 +12436,6 @@ __metadata:
   checksum: 32784254b76e455e92169ab88339cf3df8b5d63e52b7e6d0568f065e53946659d4c30e4b75de435c37033b7902bd1c785f142be4afb8aa984a86cf2d7e9a8421
   languageName: node
   linkType: hard
-
-"pwa@workspace:packages/pwa":
-  version: 0.0.0-use.local
-  resolution: "pwa@workspace:packages/pwa"
-  dependencies:
-    "@data-story/core": "workspace:*"
-    "@data-story/hubspot": "workspace:*"
-    "@data-story/nodejs": "workspace:*"
-    "@data-story/openai": "workspace:*"
-    "@data-story/ui": "workspace:*"
-    "@types/react": "npm:^18.2.43"
-    "@types/react-dom": "npm:^18.2.17"
-    "@typescript-eslint/eslint-plugin": "npm:^6.14.0"
-    "@typescript-eslint/parser": "npm:^6.14.0"
-    "@vitejs/plugin-react": "npm:^4.2.1"
-    eslint: "npm:^8.55.0"
-    eslint-plugin-react-hooks: "npm:^4.6.0"
-    eslint-plugin-react-refresh: "npm:^0.4.5"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    typescript: "npm:^5.2.2"
-    vite: "npm:^5.0.8"
-    vite-plugin-pwa: "npm:^0.17.4"
-  languageName: unknown
-  linkType: soft
 
 "qs@npm:6.10.4":
   version: 6.10.4
