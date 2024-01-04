@@ -26,6 +26,7 @@ module.exports = {
   externals: [
     'react',
     'react-dom',
+    'react/jsx-runtime',
     ...Object.keys(deps)
   ],
   resolve: {

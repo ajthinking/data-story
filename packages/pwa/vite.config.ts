@@ -5,7 +5,8 @@ import manifest from './public/manifest.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(),
+  plugins: [
+    react(),
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
@@ -20,6 +21,9 @@ export default defineConfig({
     })
   ],
   optimizeDeps: {
-    include: ["@data-story/core", "@data-story/hubspot", "@data-story/nodejs", "@data-story/openai", "@data-story/ui"]
+    include: ["react/jsx-runtime", "@data-story/core", "@data-story/hubspot", "@data-story/nodejs", "@data-story/openai", "@data-story/ui"]
+  },
+  resolve: {
+    preserveSymlinks: true,
   },
 })
