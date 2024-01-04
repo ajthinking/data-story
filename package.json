@@ -63,6 +63,7 @@
     "postcss-cli": "^11.0.0",
     "release-it": "^17.0.0",
     "start-server-and-test": "^2.0.3",
+    "ts-loader": "^9.5.1",
     "turbo": "^1.10.12",
     "vitest": "^0.29.2",
     "webpack-bundle-analyzer": "^4.10.1"
