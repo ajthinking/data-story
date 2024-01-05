@@ -5,38 +5,36 @@ import { DataStoryNodeData } from './DataStoryNode';
 import MarkdownIt from 'markdown-it';
 import CustomHandle from './CustomHandle';
 import { PortIcon } from '../DataStory/icons/portIcon';
-import { Handle, Position } from 'reactflow';
+import { Handle, NodeResizer, Position } from 'reactflow';
 
 const markdown = new MarkdownIt();
 
-const DataStoryPeekNodeComponent = ({ id, data }: {
+const DataStoryPeekNodeComponent = ({ id, data, selected }: {
   id: string,
-  data: DataStoryNodeData
+  data: DataStoryNodeData,
+  selected: boolean
 }) => {
+  const [minimized, setMinimized] = React.useState(false);
+
   const selector = (state: StoreSchema) => ({
-    setOpenNodeModalId: state.setOpenNodeModalId,
     peeks: state.peeks,
   });
 
-  const { setOpenNodeModalId, peeks } = useStore(selector, shallow);
-
-  const mock = {
-  }
+  const { peeks } = useStore(selector, shallow);
 
   const input = data.inputs[0]
 
   const peek = peeks[id]
 
-  const peekContent = peek ? peek : mock
-
-  const htmlContent = markdown.render('```\n' + JSON.stringify(peekContent, null, 2) + '\n```');
-
   return (
-    (       
+    (
       <div
-        className="shadow-xl bg-gray-50 rounded p-4 border border-gray-300"
-        onDoubleClick={() => setOpenNodeModalId(id)}
-      >        
+        className="shadow-xl bg-gray-50 rounded p-4 border border-gray-300 overflow-hidden"
+        onClick={() => {
+          if(minimized) setMinimized(false);
+        }}
+        onDoubleClick={() => setMinimized(!minimized)}
+      >
         <div className="absolute mx-1 my-4 z-30">
           <Handle
             className="relative"
@@ -47,17 +45,17 @@ const DataStoryPeekNodeComponent = ({ id, data }: {
             isConnectable={true}
           />
         </div>       
-        {/* <div
-          className="prose prose-slate prose-2xl font-mono bg-gray-50 shadow-xl prose-a:text-blue-500"
-          dangerouslySetInnerHTML={{ __html: htmlContent }}>
-        </div> */}
-        <div className="bg-gray-50 text-gray-600 font-mono text-xs">
+        {!minimized && <div className="bg-gray-50 text-gray-600 font-mono text-xs">
           <pre>
-            {JSON.stringify(peekContent, null, 2)}
+            {peek && JSON.stringify(peek, null, 2)}
+            {!peek && '🕒'}
           </pre>
-        </div>      
-      </div>
+        </div>}
 
+        {minimized && <div className="bg-gray-50 text-gray-600 font-mono text-xs">
+          🙈
+        </div>}
+      </div>
     )
   );
 };
