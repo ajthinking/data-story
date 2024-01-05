@@ -1,0 +1,92 @@
+{
+  "background_color": "#fff",
+  "description": "data-story-PWA :  A visual process builder",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "data-story-PWA",
+  "orientation": "portrait",
+  "scope": "/",
+  "short_name": "datastoryPWA",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "categories": [],
+  "screenshots": [
+    {
+      "src": "android/android-launchericon-512-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "windows11/LargeTile.scale-400.png",
+      "sizes": "1240x1240",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "android/android-launchericon-192-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "android/android-launchericon-512-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "ios/180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "windows11/Square150x150Logo.scale-100.png",
+      "sizes": "150x150",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "windows11/StoreLogo.scale-100.png",
+      "sizes": "50x50",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "windows11/Square44x44Logo.scale-100.png",
+      "sizes": "44x44",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "windows11/Wide310x150Logo.scale-100.png",
+      "sizes": "310x150",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "windows11/LargeTile.scale-100.png",
+      "sizes": "310x310",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "android/android-launchericon-512-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "windows11/LargeTile.scale-400.png",
+      "sizes": "1240x1240",
+      "type": "image/png",
+      "form_factor": "wide",
+        "purpose": "any"
+    }
+  ],
+  "shortcuts": [],
+  "id": "1227",
+  "lang": "en"
+}
