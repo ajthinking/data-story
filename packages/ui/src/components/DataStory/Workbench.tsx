@@ -12,11 +12,13 @@ import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
 import { ServerConfig } from './clients/ServerConfig';
 import { Diagram } from '@data-story/core';
 import { useHotkeys } from './useHotkeys';
+import DataStoryPeekNodeComponent from '../Node/DataStoryPeekNodeComponent';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
   dataStoryCommentNodeComponent: DataStoryCommentNodeComponent,
   dataStoryInputNodeComponent: DataStoryInputNodeComponent,
+  dataStoryPeekNodeComponent: DataStoryPeekNodeComponent,
   // dataStoryOutputNodeComponent: DataStoryNodeComponent,
 };
 
