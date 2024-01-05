@@ -11,6 +11,7 @@ export class SocketClient implements ServerClient {
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+    protected setPeek: (key: string, peek: any) => void,    
     protected setNodes: (nodes: any) => void,
     protected setEdges: (edges: any) => void,
     // private setViewport: (viewport: any) => void,
@@ -62,9 +63,10 @@ export class SocketClient implements ServerClient {
         for(const hook of parsed.hooks as Hook[]) {
           if(hook.type === 'CONSOLE_LOG') {
             console.log(...hook.args)
-          }
-
-          if(hook.type === 'UPDATES') {
+          } else if(hook.type === 'PEEK') {
+            const [ nodeId, item ] = hook.args
+            this.setPeek(nodeId, item)
+          } else if(hook.type === 'UPDATES') {
             const providedCallback = (...data: any) => {
               console.log('THIS IS THE UPDATE HOOK!')
               console.log('DataPassed', data)

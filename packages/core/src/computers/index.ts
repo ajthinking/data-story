@@ -16,6 +16,7 @@ export { Log } from './Log';
 export { Map } from './Map'
 // export { Merge } from './Merge';
 export { Pass } from './Pass';
+export { Peek } from './Peek'
 export { Request } from './Request'
 // export { RandomInt } from './RandomInt';
 // export { RunDiagram } from './RunDiagram';

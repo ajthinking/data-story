@@ -17,6 +17,7 @@ vi.mock('@data-story/core', () => {
 describe('JsClient', () => {
   let setAvailableNodesMock: (nodes: NodeDescription[]) => void;
   let updateEdgeCountsMock: (edgeCounts: Record<string, number>) => void;
+  let setPeekMock: (peek: string, item: any) => void;
   let appMock: Application;
   let client: JsClient;
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
@@ -24,6 +25,7 @@ describe('JsClient', () => {
   beforeEach(() => {
     setAvailableNodesMock = vi.fn();
     updateEdgeCountsMock = vi.fn();
+    setPeekMock = vi.fn();
     appMock = {
       descriptions: vi.fn().mockReturnValue([]),
       computers: [],
@@ -33,6 +35,7 @@ describe('JsClient', () => {
     client = new JsClient(
       setAvailableNodesMock,
       updateEdgeCountsMock,
+      setPeekMock,
       vi.fn(), // setNodes
       vi.fn(), // setEdges
       appMock

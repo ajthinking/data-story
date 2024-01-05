@@ -42,6 +42,8 @@ export type StoreSchema = {
   onNodesChange: OnNodesChange;
   setNodes: (nodes: DataStoryNode[]) => void;
   traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;
+  peeks: Record<string, any>;
+  setPeek: (key: string, peek: any) => void;
 
   /** The Edges */
   edges: Edge[];
@@ -87,6 +89,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   server: null,
   availableNodes: [],
   openNodeModalId: null,
+  peeks: {},
 
 
   // METHODS
@@ -191,6 +194,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       selected: true,
       type: {
         Comment: 'dataStoryCommentNodeComponent',
+        Peek: 'dataStoryPeekNodeComponent',
         //Input: 'dataStoryInputNodeComponent',
         //Output: 'dataStoryOutputNodeComponent',
       }[nodeDescription.name] ?? 'dataStoryNodeComponent',
@@ -225,6 +229,14 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setNodes: (nodes: DataStoryNode[]) => {
     set({
       nodes: [...nodes],
+    })
+  },
+  setPeek: (key: string, peek: any) => {
+    set({
+      peeks: {
+        ...get().peeks,
+        [key]: peek,
+      },
     })
   },
   refreshNodes: () => {
@@ -313,6 +325,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new JsClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
+        get().setPeek,
         (nodes) => set({ nodes }),
         (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
@@ -327,6 +340,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
+        get().setPeek,        
         (nodes) => set({ nodes }),
         (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
