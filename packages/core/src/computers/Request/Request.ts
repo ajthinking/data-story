@@ -1,9 +1,11 @@
 import axios from 'axios';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { json_, str } from '../../Param';
+import Hjson from '@data-story/hjson';
 
 export const Request: ComputerConfig = {
   name: 'Request',
+  inputs: ['input'],
   outputs: ['items', 'response', 'error'],
   params: [
     str({
@@ -24,24 +26,27 @@ export const Request: ComputerConfig = {
     }),    
   ],
 
-  async *run({ output, params }) {
-    const { url, method, body, config } = params as {
-      url: string,
-      method: string,
-      body: any,
-      config: any,
+  async *run({ input, output, params }) {
+    while(true) {
+      const [ incoming ] = input.pull(1)
+      const { url, method, body, config } = incoming.params as {
+        url: string,
+        method: string,
+        body: any,
+        config: any,
+      }
+  
+      if(method === 'GET') {
+        const response = await axios.get(url, config)
+        output.pushTo('items', await response.data)
+      }
+  
+      if(method === 'POST') {
+        const response = await axios.post(url, body, config)
+        output.pushTo('items', await response.data)
+      }
+      
+      yield;
     }
-
-    if(method === 'GET') {
-      const response = await axios.get(url, config)
-      output.pushTo('items', await response.data)
-    }
-
-    if(method === 'POST') {
-      const response = await axios.post(url, body, config)
-      output.pushTo('items', await response.data)
-    }
-    
-    yield
   },
 };
