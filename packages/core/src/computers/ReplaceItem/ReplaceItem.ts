@@ -2,6 +2,7 @@
 import { JsEvaluation, JsonEvaluation, HjsonEvaluation, json_ } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { ItemValue } from '../../types/ItemValue';
+import { merge } from '../../utils/merge';
 import { multiline } from '../../utils/multiline';
 
 export const ReplaceItem: ComputerConfig = {
@@ -45,10 +46,7 @@ export const ReplaceItem: ComputerConfig = {
       const replacers = incoming.map(item => {
         if(params.mode === 'REPLACE') return item.params.json as ItemValue;
 
-        if(params.mode === 'MERGE')return {
-          ...item.value,
-          ...item.params.json as Object,
-        }
+        if(params.mode === 'MERGE') return merge(item.value, item.params.json as Object);
 
         throw new Error(`Unknown mode: ${params.mode}`)
       })
