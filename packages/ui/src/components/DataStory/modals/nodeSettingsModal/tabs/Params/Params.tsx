@@ -6,6 +6,7 @@ import { StringableInput } from '../../../../Form/StringableInput';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
 import { SelectInput } from '../../../../Form/SelectInput';
+import { SelectFileWithConfig } from './SelectFileWithConfig';
 
 export function Params({
   node,
@@ -45,8 +46,13 @@ export function Params({
             form={form}
             inputMode={param.inputMode}
             // node={node}
-          />}    
+          />}
 
+          {param.inputMode.type === 'SelectFile' && <SelectFileWithConfig
+            param={param}
+            form={form}
+            node={node}
+          />}
 
           {/* <h1 className="bg-red-500 text-white">{ selectedMode?.type ?? 'no-mode' }</h1> */}
 
@@ -56,4 +62,3 @@ export function Params({
     {node.data.params.length === 0 && <div className="text-xs text-gray-400">No parameters</div>}
   </div>;
 }
-  

@@ -10,12 +10,8 @@ export const ReadFile: ComputerConfig = {
       label: 'Path',
       help: 'Path to file',
       inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: false,
-        interpolate: false,
-        evaluations: [],
-        casts: [],
+        type: 'SelectFile',
+        path: '',
         value: '',
       },
       alternativeInputModes: [],
@@ -40,7 +36,7 @@ export const readFileFn = async() => {
 
   try {
     // show file picker
-    const [fileHandle] = await window.showOpenFilePicker({
+    const [fileHandle] = await window.showOpenFilePicker!({
       types: [
         {
           description: 'Text Files',

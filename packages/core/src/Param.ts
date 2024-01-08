@@ -94,6 +94,12 @@ export type Select = {
   value: string
 }
 
+export type SelectButton = {
+  type: 'SelectFile',
+  path: string,
+  value: string
+}
+
 export type Repeatable<RepeatableRow> = {
   type: 'Repeatable',
   row: RepeatableRow,
@@ -105,7 +111,8 @@ export type InputMode =
   Stringable |
   PropertySelection |
   PortSelection |
-  Repeatable<Param[]>
+  Repeatable<Param[]> |
+  SelectButton
 
 /**
  * The param type ****************************************
