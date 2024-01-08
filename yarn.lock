@@ -3742,6 +3742,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/wicg-file-system-access@npm:^2023.10.4":
+  version: 2023.10.4
+  resolution: "@types/wicg-file-system-access@npm:2023.10.4"
+  checksum: ca116c5eb51071e374a082cec37920500317e540557dd2bf62f75b7db1206e68d902a17cee463dc93667da9d6d6a86a0774d842c574a7758a27f7c59ea5db919
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^8.5.4":
   version: 8.5.10
   resolution: "@types/ws@npm:8.5.10"
@@ -6185,6 +6192,7 @@ __metadata:
   dependencies:
     "@stylistic/eslint-plugin": "npm:^0.1.2"
     "@types/mocha": "npm:^10.0.6"
+    "@types/wicg-file-system-access": "npm:^2023.10.4"
     "@typescript-eslint/parser": "npm:^6.9.0"
     "@vitest/coverage-c8": "npm:^0.29.7"
     cypress: "npm:^13.6.1"

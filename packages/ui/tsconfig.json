@@ -21,7 +21,7 @@
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "noImplicitAny": true,
-    "types": ["node", "react", "cypress"],
+    "types": ["node", "react", "cypress","@types/wicg-file-system-access"],
     "sourceMap": true
   },
   "ts-node": {
