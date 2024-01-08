@@ -28,3 +28,4 @@ export type { ExecutionFailure } from './types/ExecutionFailure'
 export { when } from './support/computerTester/ComputerTester'
 export * as nodes from './computers'
 export * from './Param'
+export type { Computer } from './types/Computer';
