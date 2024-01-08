@@ -28,6 +28,35 @@ export const ReadFile: ComputerConfig = {
 
 export const ReadComputer = new ComputerFactory().get(ReadFile);
 
+interface FileSystemFileHandle {
+  getFile: () => Promise<File>;
+}
+
+export const readFileFn = async() => {
+  const handleFileRead = async(fileHandle: FileSystemFileHandle) => {
+    const file = await fileHandle.getFile();
+    return await file.text();
+  };
+
+  try {
+    // show file picker
+    const [fileHandle] = await window.showOpenFilePicker({
+      types: [
+        {
+          description: 'Text Files',
+          accept: {
+            'text/csv': ['.csv'],
+            'application/json': ['.json'],
+          },
+        },
+      ],
+    });
+
+    return await handleFileRead(fileHandle as unknown as FileSystemFileHandle);
+  } catch(error) {
+    console.error('File selection was cancelled or failed', error);
+  }
+};
 
 
 
