@@ -13,6 +13,7 @@
     "packages/pwa"
   ],
   "scripts": {
+    "dev:pwa": "yarn workspace @data-story/pwa run dev",
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
     "kill": "kill-port 3000 3100",
     "build": "turbo build",

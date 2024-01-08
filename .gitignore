@@ -32,3 +32,4 @@ packages/private
 # Cypress artifacts
 cypress/screenshots/
 cypress/videos/
+.vercel

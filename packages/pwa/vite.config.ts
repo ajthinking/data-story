@@ -16,6 +16,8 @@ export default defineConfig({
         clientsClaim: true,
         skipWaiting: true,
       },
+      injectRegister: 'auto',
+      strategies: 'generateSW',
       includeAssets: ['./public/favicon.ico', './public/robots.txt'],
       manifest: manifest as ManifestOptions
     })
