@@ -1,14 +1,14 @@
 {
   "name": "@data-story/ui",
   "version": "0.0.71",
-  "main": "./dist/bundle.js",
+  "main": "./dist/bundle.cjs.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
     "./data-story.css": "./dist/data-story.css",
     ".": {
-      "import": "./dist/bundle.js",
-      "require": "./dist/bundle.js",
-      "default": "./dist/bundle.js",
+      "import": "./dist/bundle.cjs.js",
+      "require": "./dist/bundle.cjs.js",
+      "default": "./dist/bundle.cjs.js",
       "types": "./dist/src/index.d.ts"
     }
   },
