@@ -20,9 +20,12 @@ module.exports = {
     'sourceType': 'module'
   },
   'plugins': [
-    '@stylistic'
+    '@stylistic',
+    'react-hooks'
   ],
   'rules': {
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     '@stylistic/indent': [
       'error',
       2

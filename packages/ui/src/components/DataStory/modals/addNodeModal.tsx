@@ -9,7 +9,6 @@ export const AddNodeModal = ({ showModal, setShowModal }: {
   showModal: boolean,
   setShowModal: (show: boolean) => void
 }) => {
-  if(!showModal) return null;
 
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
@@ -39,6 +38,8 @@ export const AddNodeModal = ({ showModal, setShowModal }: {
     .filter((nodeDescription: NodeDescription) => {
       return JSON.stringify(nodeDescription).toLowerCase().includes(search.toLowerCase());
     });
+
+  if(!showModal) return null;
 
   return (
     <Modal setShowModal={setShowModal}>

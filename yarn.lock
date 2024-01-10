@@ -6189,6 +6189,7 @@ __metadata:
     "@vitest/coverage-c8": "npm:^0.29.7"
     cypress: "npm:^13.6.1"
     eslint: "npm:^8.52.0"
+    eslint-plugin-react-hooks: "npm:^4.6.0"
     husky: "npm:^8.0.0"
     kill-port: "npm:^2.0.1"
     lint-staged: "npm:^15.0.2"
