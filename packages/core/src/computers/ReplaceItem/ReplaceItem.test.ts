@@ -26,17 +26,33 @@ it('merges items when mode is set to MERGE', () => {
     .hasParams({
       mode: 'MERGE',
       json: `{
-        newKey: newValue
+        properties: {
+          newProp: newPropValue
+        }
       }`
     })
     .getsInput([
       {},
-      { existingKey: 'existingValue' }
+      {
+        id: 1,
+        properties: {
+          existingProp: 'existingPropValue'
+        }
+      }
     ])
     .doRun()
     .expectOutput([
-      { newKey: 'newValue' },
-      { existingKey: 'existingValue', newKey: 'newValue' },
+      {
+        properties: {
+          newProp: 'newPropValue',
+        }
+      },      
+      {
+        properties: {
+          existingProp: 'existingPropValue',
+          newProp: 'newPropValue',
+        }
+      },
     ])
     .ok()
 })

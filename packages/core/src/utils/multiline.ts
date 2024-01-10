@@ -7,10 +7,13 @@ export const multiline = (strings: TemplateStringsArray, ...values: any[]) => {
   // Split the string into lines
   let lines = combinedString.split('\n');
 
-  // Remove the first line if it is empty
-  if (lines[0].trim() === '') {
-    lines = lines.slice(1);
+  // Throw if the first line is not empty
+  if (lines[0].trim() !== '') {
+    throw new Error(`First line of multiline string must be empty. The content was ${combinedString}`);
   }
+
+  // Remove the first line
+  lines = lines.slice(1);
 
   // Find the minimum indentation of all lines (except empty lines)
   const baseIndentation = Math.min(...lines.filter(line => line.trim() !== '').map(line => line.search(/\S|$/)));

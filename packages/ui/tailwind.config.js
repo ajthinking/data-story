@@ -3,9 +3,9 @@ module.exports = {
   content: ['./src/components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      // make a super small font size
       fontSize: {
         xxs: '.5rem',
+        xxxs: '.25rem',
       },
       spacing: {
         128: '32rem',

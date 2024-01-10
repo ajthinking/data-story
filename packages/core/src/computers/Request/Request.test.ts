@@ -10,6 +10,7 @@ it('outputs items at data by default when using GET', async () => {
 
   await when(Request)
     .hasDefaultParams()
+    .getsInput([{}])
     .doRun()
     .expectOutputs({
       items: [{i: 1}, {i: 2}, {i: 3}]
@@ -24,6 +25,7 @@ it('outputs items at data by default when using POST', async () => {
 
   await when(Request)
     .hasParams({ method: 'POST' })
+    .getsInput([{}])    
     .doRun()
     .expectOutputs({
       items: [{i: 1}, {i: 2}, {i: 3}]
