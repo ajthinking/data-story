@@ -13,7 +13,8 @@
     "packages/pwa"
   ],
   "scripts": {
-    "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
+    "dev:pwa": "yarn build && yarn workspace @data-story/pwa run dev",
+    "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn build && yarn kill && turbo dev --parallel",
     "kill": "kill-port 3000 3100",
     "build": "turbo build",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
@@ -65,7 +66,7 @@
     "release-it": "^17.0.0",
     "start-server-and-test": "^2.0.3",
     "ts-loader": "^9.5.1",
-    "turbo": "^1.10.12",
+    "turbo": "<1.11.0",
     "vitest": "^0.29.2",
     "webpack-bundle-analyzer": "^4.10.1"
   }
