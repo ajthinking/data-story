@@ -28,6 +28,7 @@ jobs:
             packages/core/dist
             packages/ui/dist
             packages/nodejs/dist
+            packages/hjson/dist
             
   publish_core:
     needs: build_and_upload_artifacts
