@@ -18,7 +18,6 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
 };
 
 export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
-  if(!showModal) return null;
 
   const [tab, setTab] = useState<TabKey>('Params')
 
@@ -35,9 +34,9 @@ export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
   const node = nodes.find((node: DataStoryNode) => node.id === openNodeModalId)!
 
   const defaultValues = {
-    label: node.data.label,
-    outputs: JSON.stringify(node.data.outputs, null, 2),
-    params: node.data.params.reduce((acc, param: Param) => {
+    label: node?.data?.label,
+    outputs: JSON.stringify(node?.data?.outputs, null, 2),
+    params: node?.data?.params.reduce((acc, param: Param) => {
       acc[param.name] = param.inputMode.value
       return acc
 
@@ -84,6 +83,8 @@ export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
   useEscapeKey(close);
 
   const TabComponent = TAB_COMPONENTS[tab as keyof typeof TAB_COMPONENTS];
+
+  if(!showModal) return null;
 
   return <>
     <div className="flex justify-center overflow-x-hidden fixed inset-0 z-50 outline-none focus:outline-none">
