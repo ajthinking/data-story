@@ -25,12 +25,12 @@ export function SelectFile({ param, form, node, inputMode }: {
   );
 }
 
-const FileSelect = ({onChange, value, name, disabled} : {
+const FileSelect = React.forwardRef(({onChange, value, name, disabled } : {
   onChange: 	(value: FileSystemFileHandle) => void
   value: FileSystemFileHandle,
   disabled?: boolean,
   name: string,
-}) => {
+}, ref: React.ForwardedRef<HTMLDivElement>) => {
 
   const [fileContent, setFileContent] = useState<string>('');
   const [fileName, setFileName] = useState<string>('');
@@ -68,7 +68,7 @@ const FileSelect = ({onChange, value, name, disabled} : {
     }
   };
   return (
-    <div>
+    <div ref={ref}>
       <button
         onClick={handleFileSelect}
         name={name}
@@ -85,4 +85,4 @@ const FileSelect = ({onChange, value, name, disabled} : {
       </pre>
     </div>
   );
-}
+})
