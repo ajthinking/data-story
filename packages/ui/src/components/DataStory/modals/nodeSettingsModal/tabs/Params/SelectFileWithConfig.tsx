@@ -1,5 +1,5 @@
 import { SelectFile } from '../../../../Form/SelectFile';
-import { Param, SelectButton } from '@data-story/core';
+import { Param, SelectFileButton } from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
 
@@ -15,7 +15,7 @@ export function SelectFileWithConfig({ param, form, node }: {
       form={form}
       param={param}
       node={node}
-      inputMode={param.inputMode as SelectButton}
+      inputMode={param.inputMode as SelectFileButton}
     />          
   </div>) 
 }

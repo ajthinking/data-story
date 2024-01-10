@@ -1,5 +1,5 @@
 import { DataStoryNode } from '../../Node/DataStoryNode';
-import { Param, SelectButton } from '@data-story/core';
+import { Param, SelectFileButton } from '@data-story/core';
 import { Controller, UseFormReturn } from 'react-hook-form';
 import React, { useEffect, useState } from 'react';
 
@@ -13,7 +13,7 @@ export function SelectFile({ param, form, node, inputMode }: {
     [x: string]: any;
   }, any>,
   node: DataStoryNode,
-  inputMode: SelectButton,
+  inputMode: SelectFileButton,
 }) {
 
   return (

@@ -94,7 +94,7 @@ export type Select = {
   value: string
 }
 
-export type SelectButton = {
+export type SelectFileButton = {
   type: 'SelectFile',
   path: string,
   value: string
@@ -112,7 +112,7 @@ export type InputMode =
   PropertySelection |
   PortSelection |
   Repeatable<Param[]> |
-  SelectButton
+  SelectFileButton
 
 /**
  * The param type ****************************************

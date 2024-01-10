@@ -55,5 +55,4 @@ const esmConfig = {
   }
 };
 
-// 导出两个配置
 module.exports = [commonJsConfig ];
