@@ -20,7 +20,7 @@
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
     "lint": "eslint .",
     "postinstall": "[ \"$CI\" = \"true\" ] || husky install",
-    "release-core": "yarn workspace @data-story/core run release && yarn release-ui",
+    "release-core": "yarn workspace @data-story/core run release && yarn release-ui && yarn release-nodejs",
     "release-ui": "yarn workspace @data-story/ui run release",
     "release-nodejs": "yarn workspace @data-story/nodejs run release",
     "ci:test": "turbo test --filter=@data-story/core --filter=@data-story/ui --filter=@data-story/docs && yarn ci:e2e",

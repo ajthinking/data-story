@@ -1,6 +1,6 @@
 {
   "name": "@data-story/ui",
-  "version": "0.0.71",
+  "version": "0.0.72",
   "main": "./dist/bundle.cjs.js",
   "types": "./dist/src/index.d.ts",
   "exports": {
