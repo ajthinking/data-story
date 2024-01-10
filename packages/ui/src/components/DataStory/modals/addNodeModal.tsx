@@ -5,11 +5,14 @@ import { Modal } from '../modal';
 import { StoreSchema, useStore } from '../store/store';
 import clsx from 'clsx';
 
-export const AddNodeModal = ({ showModal, setShowModal }: {
-  showModal: boolean,
-  setShowModal: (show: boolean) => void
-}) => {
+export interface AddNodeModalContentProps {
 
+  setShowModal: (show: boolean) => void
+}
+
+export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
+
+  const {setShowModal}: AddNodeModalContentProps = props;
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
 
@@ -39,7 +42,6 @@ export const AddNodeModal = ({ showModal, setShowModal }: {
       return JSON.stringify(nodeDescription).toLowerCase().includes(search.toLowerCase());
     });
 
-  if(!showModal) return null;
 
   return (
     <Modal setShowModal={setShowModal}>
@@ -87,4 +89,13 @@ export const AddNodeModal = ({ showModal, setShowModal }: {
       </div>
     </Modal>
   );
+}
+export const AddNodeModal = ({ showModal, setShowModal }: {
+  showModal: boolean,
+  setShowModal: (show: boolean) => void
+}) => {
+
+  if(!showModal) return null;
+
+  return (<AddNodeModalContentProps setShowModal={setShowModal}/>)
 };

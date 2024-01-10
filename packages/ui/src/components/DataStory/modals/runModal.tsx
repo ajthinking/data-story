@@ -4,13 +4,15 @@ import { StoreSchema, useStore } from '../store/store';
 import { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-export const RunModal = ({ showModal, setShowModal }: {
-  showModal: boolean,
+export interface RunModalContentProps {
   setShowModal: (show: boolean) => void
-}) => {
-  if(!showModal) return null;
+}
 
-  const runButtonReference = useRef<HTMLButtonElement>(null);  
+export const RunModalContent = (props: RunModalContentProps) => {
+
+  const {setShowModal}: RunModalContentProps = props;
+
+  const runButtonReference = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     runButtonReference?.current?.focus();
@@ -61,4 +63,13 @@ export const RunModal = ({ showModal, setShowModal }: {
       </div>
     </div>
   </Modal>)
+}
+export const RunModal = ({ showModal, setShowModal }: {
+  showModal: boolean,
+  setShowModal: (show: boolean) => void
+}) => {
+
+  if(!showModal) return null;
+
+  return (<RunModalContent setShowModal={setShowModal} />)
 }
