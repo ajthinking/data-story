@@ -1,8 +1,7 @@
 import WebSocket from 'ws';
 import { RunMessage } from '../messages/RunMessage';
-import { FileStorage } from '../../FileStorage';
 import { MessageHandler } from '../MessageHandler';
-import { Application, Diagram, Executor, ExecutionResult, ExecutionFailure } from '@data-story/core';
+import { Application, Diagram, Executor, ExecutionResult, ExecutionFailure, NullStorage } from '@data-story/core';
 
 export const run: MessageHandler<RunMessage> = async (
   ws: WebSocket,
@@ -19,9 +18,8 @@ export const run: MessageHandler<RunMessage> = async (
     data.diagram.links,
   )
 
-  const storage = new FileStorage('.datastory')
+  const storage = new NullStorage()
   await storage.init()
-  await storage.createExecution()
 
   const executor = new Executor(
     diagram, 
