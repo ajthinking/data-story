@@ -17,8 +17,7 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   Docs,
 };
 
-export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
-  if(!showModal) return null;
+export const NodeSettingsModalContent = () => {
 
   const [tab, setTab] = useState<TabKey>('Params')
 
@@ -28,16 +27,16 @@ export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
     setOpenNodeModalId: state.setOpenNodeModalId,
     refreshNodes: state.refreshNodes,
     setNodes: state.setNodes,
-  });  
+  });
 
   const { nodes, openNodeModalId, setOpenNodeModalId, setNodes } = useStore(selector, shallow);
 
   const node = nodes.find((node: DataStoryNode) => node.id === openNodeModalId)!
 
   const defaultValues = {
-    label: node.data.label,
-    outputs: JSON.stringify(node.data.outputs, null, 2),
-    params: node.data.params.reduce((acc, param: Param) => {
+    label: node?.data?.label,
+    outputs: JSON.stringify(node?.data?.outputs, null, 2),
+    params: node?.data?.params.reduce((acc, param: Param) => {
       acc[param.name] = param.inputMode.value
       return acc
 
@@ -77,7 +76,7 @@ export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
         })
       );
     })()
-    
+
     close()
   }
 
@@ -104,10 +103,10 @@ export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
                 ×
                 </span>
               </div>
-            </div>          
-          </div>          
+            </div>
+          </div>
           {/* ***** TABS ***** */}
-          <div className="mx-8 flex space-x-8 text-xxs uppercase text-gray-400">           
+          <div className="mx-8 flex space-x-8 text-xxs uppercase text-gray-400">
             {Object.keys(TAB_COMPONENTS).map((key) => (
               <div
                 key={key}
@@ -136,4 +135,11 @@ export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
     </div>
     <div className="opacity-25 fixed inset-0 z-40 bg-black" />
   </>;
+}
+
+export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
+
+  if(!showModal) return null;
+
+  return (<NodeSettingsModalContent/>);
 }
