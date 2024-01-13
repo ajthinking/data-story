@@ -9,11 +9,9 @@
     "packages/hjson",
     "packages/openai",
     "packages/hubspot",
-    "packages/private/*",
-    "packages/pwa"
+    "packages/private/*"
   ],
   "scripts": {
-    "dev:pwa": "yarn build && yarn workspace @data-story/pwa run dev",
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn build && yarn kill && turbo dev --parallel",
     "kill": "kill-port 3000 3100",
     "build": "turbo build",
