@@ -43,16 +43,5 @@ yarn cy:open
 yarn ci:test
 ```
 
-## PWA
-you can install playground as a PWA app on your device
-
-```bash
-cd ./packages/pwa
-yarn
-
-# run dev server
-yarn dev
-```
-
 ## License
 [MIT](https://opensource.org/licenses/MIT)
