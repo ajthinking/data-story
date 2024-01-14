@@ -8,15 +8,13 @@ export const Peek: ComputerConfig = {
   inputs: ['input'],
 
   async *run({ input, hooks, params: rawParams, node }) {
-    const [ first ] = input.pull(1) as ItemWithParams[]
-
-    hooks.register({
-      type: 'PEEK',
-      args: [ node.id, first.value ]
-    })    
-
     while(true) {
-      input.pull()
+      const incoming = input.pull()
+
+      hooks.register({
+        type: 'PEEK',
+        args: [ node.id, incoming.map(i => i.value) ]
+      })
 
       yield;
     }
