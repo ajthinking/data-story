@@ -1,13 +1,8 @@
-import {
-  NodeDescription,
-  Application,
-  Diagram,
-  NullStorage,
-  Executor,
-} from '@data-story/core';
-import { ServerClient } from './ServerClient';
+import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@data-story/core';
+import { loadDiagramFromJSON, saveDiagramToJSON, ServerClient } from './ServerClient';
 
 export class JsClient implements ServerClient {
+  name: string;
   constructor(
     private setAvailableNodes: (nodes: NodeDescription[]) => void,
     private updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
@@ -16,12 +11,13 @@ export class JsClient implements ServerClient {
     private setEdges: (edges: any) => void,
     // private setViewport: (viewport: any) => void,
     private app: Application,
-  ) {}
+  ) {
+    this.name = 'JSClient';
+  }
 
-  init() {
+  init () {
     this.setAvailableNodes(this.app.descriptions())
-
-    console.log('Connected to server: JS')
+    return this.load(this.name)?.diagram;
   }
 
   run(diagram: Diagram) {
@@ -70,9 +66,21 @@ export class JsClient implements ServerClient {
     
     // Start the updates
     handleUpdates(execution[Symbol.asyncIterator]());
+
+    this.save(this.name, diagram);
   }
 
   async save(name: string, diagram: Diagram) {
+    const resultJSON = saveDiagramToJSON(name, diagram);
 
+    localStorage.setItem(name ?? this.name, resultJSON);
+  }
+
+  load(name: string) {
+    const resultJSON = localStorage.getItem(name ?? this.name);
+
+    if(!resultJSON) return null;
+
+    return loadDiagramFromJSON(resultJSON!);
   }
 }
