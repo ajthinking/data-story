@@ -6,14 +6,6 @@ export interface ServerClient {
   save: (name: string, diagram: Diagram) => {}
 }
 
-export type ConstructorParams = {
-  setAvailableNodes: (nodes: NodeDescription[]) => void;
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  setPeek: (key: string, peek: any) => void;
-  setNodes: (nodes: any) => void;
-  setEdges: (edges: any) => void;
-};
-
 export const saveDiagramToJSON = (name: string, diagram: Diagram) => {
 
   return JSON.stringify({
