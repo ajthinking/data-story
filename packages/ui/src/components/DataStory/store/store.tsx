@@ -22,7 +22,7 @@ import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig } from '../clients/ServerConfig';
 import { reactFlowNodeToDiagramNode, reactFlowToDiagram } from '../../../reactFlowToDiagram';
-import React, { useState } from 'react';
+import React, { useImperativeHandle, useState } from 'react';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -63,7 +63,7 @@ export type StoreSchema = {
   onInit: (options: {
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
-    diagram?: Diagram,
+    initDiagram?: Diagram,
     callback?: (server: any) => void,
   }) => void;
 
@@ -216,6 +216,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     if (connection) get().connect(connection);
   },
   updateNode: (node: DataStoryNode) => {
+
     set({
       nodes: get().nodes.map(existingNode => {
         if(existingNode.id === node.id) {
@@ -258,7 +259,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   onInit: (options: {
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
-    diagram?: Diagram,
+    initDiagram?: Diagram,
     callback?: (options: { run: () => void }) => void
   }) => {
     set({
@@ -271,8 +272,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ rfInstance: options.rfInstance })
     get().onInitServer(get().serverConfig)
 
-    if(options.diagram) {
-      const diagram = options.diagram
+    if(options.initDiagram) {
+      const diagram = options.initDiagram;
 
       get().setNodes(diagram.nodes.map(node => {
         return {
@@ -347,7 +348,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
-        get().addPeekItems,        
+        get().addPeekItems,
         (nodes) => set({ nodes }),
         (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
@@ -512,10 +513,17 @@ export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
 };
 
 
-export const DataStoryProvider = ({ children }: { children: React.ReactNode }) => {
+export const DataStoryProvider = React.forwardRef( ({ children }: { children: React.ReactNode }, ref) => {
   const [useLocalStore] = useState(() => createStore());
+  const toDiagram = useLocalStore().toDiagram;
+
+  useImperativeHandle(ref, () => {
+    return {
+      toDiagram: toDiagram,
+    };
+  }, [toDiagram]);
 
   return <DataStoryContext.Provider value={ useLocalStore }>
     { children }
   </DataStoryContext.Provider>;
-}
+} );
