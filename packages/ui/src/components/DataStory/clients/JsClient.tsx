@@ -11,7 +11,7 @@ export class JsClient implements ServerClient {
   constructor(
     private setAvailableNodes: (nodes: NodeDescription[]) => void,
     private updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    private setPeek: (key: string, peek: any) => void,
+    private addPeekItems: (key: string, peek: any[]) => void,
     private setNodes: (nodes: any) => void,
     private setEdges: (edges: any) => void,
     // private setViewport: (viewport: any) => void,
@@ -45,8 +45,8 @@ export class JsClient implements ServerClient {
               if(hook.type === 'CONSOLE_LOG') {
                 console.log(...hook.args)
               } else if(hook.type === 'PEEK') {
-                const [ nodeId, item ] = hook.args
-                this.setPeek(nodeId, item)
+                const [ nodeId, items ] = hook.args
+                this.addPeekItems(nodeId, items)
               } else {
                 const userHook = this.app.hooks.get(hook.type)
   

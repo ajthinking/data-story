@@ -42,8 +42,8 @@ export type StoreSchema = {
   onNodesChange: OnNodesChange;
   setNodes: (nodes: DataStoryNode[]) => void;
   traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;
-  peeks: Record<string, any>;
-  setPeek: (key: string, peek: any) => void;
+  peeks: Record<string, any[]>;
+  addPeekItems: (key: string, peekItems: any[]) => void;
 
   /** The Edges */
   edges: Edge[];
@@ -231,11 +231,17 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       nodes: [...nodes],
     })
   },
-  setPeek: (key: string, peek: any) => {
+  addPeekItems: (key: string, peekItems: any[]) => {
+    const all = get().peeks
+    const existingAtKey = all[key] ?? []
+
     set({
       peeks: {
-        ...get().peeks,
-        [key]: peek,
+        ...all,
+        [key]: [
+          ...existingAtKey,
+          ...peekItems
+        ],
       },
     })
   },
@@ -316,6 +322,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     }
   },
   onRun: () => {
+    set({ peeks: {}})
     get().server!.run(
       get().toDiagram()
     )
@@ -325,7 +332,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new JsClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
-        get().setPeek,
+        get().addPeekItems,
         (nodes) => set({ nodes }),
         (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
@@ -340,7 +347,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
-        get().setPeek,        
+        get().addPeekItems,        
         (nodes) => set({ nodes }),
         (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
