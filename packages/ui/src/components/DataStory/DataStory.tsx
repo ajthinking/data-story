@@ -7,13 +7,13 @@ import { useState } from 'react';
 
 export const DataStory = ({
   server,
-  diagram,
+  initDiagram,
   callback,
   hideToolbar = false,
   hideTabs = false,
 }: {
   server?: ServerConfig
-  diagram?: Diagram
+  initDiagram?: Diagram
   hideToolbar?: boolean
   callback?: (options: any) => void
   hideTabs?: boolean
@@ -33,7 +33,7 @@ export const DataStory = ({
     </div>}
     {(active === 'main') && <Workbench
       server={ server }
-      diagram={ diagram }
+      initDiagram={ initDiagram }
       callback={ callback }
       hideToolbar={ hideToolbar }
     />}

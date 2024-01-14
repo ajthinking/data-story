@@ -24,12 +24,12 @@ const nodeTypes = {
 
 export const Workbench = ({
   server,
-  diagram,
+  initDiagram,
   callback,
   hideToolbar = false,
 }: {
   server?: ServerConfig
-  diagram?: Diagram
+  initDiagram?: Diagram
   callback?: (options: any) => void
   hideToolbar?: boolean
 }) => {
@@ -80,7 +80,7 @@ export const Workbench = ({
             onInit({
               rfInstance,
               server,
-              diagram,
+              initDiagram: initDiagram,
               callback
             });
           }}
