@@ -16,6 +16,12 @@ export const Deals: ComputerConfig = {
       help: 'The entity to retrieve.',
       value: 'deals',
     }),
+    str({
+      name: 'properties',
+      label: 'Properties',
+      help: 'Comma separated list of properties.',
+      value: '',
+    }),     
     num({
       name: 'limit',
       label: 'Limit',
@@ -35,7 +41,9 @@ export const Deals: ComputerConfig = {
       ? Number(params.limit)
       : Infinity
     const entity = params.entity as CrmEntity
-    const properties: string[] = []
+    const properties: string[] = (params.properties as string)
+      .split(',')
+      .map((p) => p.trim())
     let nextPage = null;
     
     do {
