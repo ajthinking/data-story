@@ -57,7 +57,7 @@ export default () => {
         // server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
         server={{ type: 'JS', app }}
         callback={(options: any) => setTimeout(options.run, 100)}
-        diagram={diagram}
+        initDiagram={diagram}
       />
     </div>   
   );

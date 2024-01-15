@@ -16,7 +16,7 @@ export default ({ nodeName }: { nodeName: string}) => {
     <div className="w-full" style={{ height: '36vh' }}>
       <DataStory
         server={{ type: 'JS', app }}
-        diagram={diagram}
+        initDiagram={diagram}
         hideToolbar={true}
         hideTabs={true}
       />
