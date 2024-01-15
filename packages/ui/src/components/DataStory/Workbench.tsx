@@ -80,7 +80,7 @@ export const Workbench = ({
             onInit({
               rfInstance,
               server,
-              initDiagram: initDiagram,
+              initDiagram,
               callback
             });
           }}
