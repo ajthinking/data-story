@@ -16,7 +16,7 @@ yarn add @data-story/ui
 
 ## Example Usage
 ```tsx
-import '@data-story/ui/dist/data-story.css';
+import '@data-story/ui/data-story.css';
 import { DataStory } from '@data-story/ui'
 
 export default function Home() {
