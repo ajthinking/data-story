@@ -1,6 +1,7 @@
 import { DataStory } from '@data-story/ui'
-import { coreNodeProvider, Application, DiagramBuilder, multiline } from '@data-story/core';
-import { ConsoleLog, Map, Signal, Fake, Comment } from '@data-story/core/dist/computers';
+import { coreNodeProvider, Application, DiagramBuilder, multiline, nodes } from '@data-story/core';
+
+const { Comment, Map } = nodes;
 
 export default () => {
   const app = new Application();

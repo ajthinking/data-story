@@ -1,6 +1,6 @@
 import { Diagram, NodeDescription } from '@data-story/core';
 import { ServerClient } from './ServerClient';
-import { Hook } from '@data-story/core/dist/types/Hook';
+import { Hook } from '@data-story/core';
 
 export class SocketClient implements ServerClient {
   protected socket?: WebSocket;

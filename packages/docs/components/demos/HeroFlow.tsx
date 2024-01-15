@@ -6,7 +6,6 @@ import {
   nodes,
   multiline,
 } from '@data-story/core';
-import { Comment, Map } from '@data-story/core/dist/computers';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 export default () => {
@@ -19,7 +18,7 @@ export default () => {
 
   app.boot();
 
-  const { Signal, Pass, ConsoleLog, Ignore } = nodes;
+  const { Signal, Pass, Comment, Ignore } = nodes;
 
   const welcomeMarkdown = multiline`
     ### Welcome to DataStory 👋
