@@ -1,6 +1,6 @@
-import { DataStory } from '@data-story/ui'
 import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React from 'react';
+import { DataStory } from '@data-story/ui';
 
 const saveDiagram = (key: string, diagram: Diagram) => {
 
@@ -43,13 +43,6 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
   const { diagram } = loadDiagram(LocalStorageKey);
   const [initDiagram] = React.useState<Diagram>(diagram);
 
-  // 1. 使用 saveDiagramToJSON 进行 diagram 的保存 localStorage
-
-
-  // 2. 讨论后面的问题
-  // 3. 说明每个字段的含义和使用：initDiagram and dataStoryRef.current.toDiagram
-  // 4. 提PR
-
   return (
     <div className="w-full" style={{ height: '100vh' }} data-cy="playground">
       <button
@@ -58,9 +51,14 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
           saveDiagram(LocalStorageKey, diagram);
         }}
         style={{ zIndex: 1000, top: 200 }}
-        className="fixed left-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-lg inline-block">
-        save diagram
+        className="fixed bg-blue-300 hover:bg-blue-400 text-black py-1 px-2 text-sm rounded inline-flex items-center">
+        <svg className="fill-current w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path
+            d="M17.707 7.293l-5-5A.999.999 0 0 0 12 2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a.999.999 0 0 0-.293-.707zM12 3.414L15.586 7H12V3.414zM16 16H4V4h7v5h5v7z"/>
+        </svg>
+        <span>Save</span>
       </button>
+
       <DataStory
         ref={dataStoryRef}
         initDiagram={initDiagram}
