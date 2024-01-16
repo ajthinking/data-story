@@ -3,6 +3,13 @@ import React from 'react';
 import { SaveIcon, useDataStoryControls } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
 
+export interface LocalDiagram {
+  type: 'load' | 'save';
+  version: string;
+  name: string;
+  diagram: Diagram;
+}
+
 const getCoreVersion = () => {
   const { version } = require('@data-story/core/package.json');
   return version;
@@ -14,29 +21,30 @@ const saveDiagram = (key: string, diagram: Diagram) => {
     version: getCoreVersion(),
     name: key,
     diagram
-  });
+  } as LocalDiagram);
 
   localStorage?.setItem(key, diagramJSON);
 };
 
-export const loadDiagram = (key: string) => {
+export const loadDiagram = (key: string): LocalDiagram => {
+  const initDiagram: LocalDiagram = {
+    type: 'load',
+    version: getCoreVersion(),
+    name: key,
+    diagram: null
+  }
+
   if (typeof window === 'undefined' || !localStorage?.getItem(key)) {
-    return {
-      type: 'load',
-      version: getCoreVersion(),
-      name: key,
-      diagram: null
-    };
+    return initDiagram;
   }
 
   const json = localStorage?.getItem(key);
   const { name, diagram } = JSON.parse(json);
 
-  return {
-    type: 'load',
-    name,
-    diagram
-  };
+  initDiagram.diagram = new Diagram(diagram.nodes, diagram.links);
+  initDiagram.name = name;
+
+  return initDiagram;
 }
 
 export const LocalStorageKey = 'data-story-diagram';
