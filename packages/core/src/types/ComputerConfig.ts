@@ -22,5 +22,6 @@ export interface ComputerConfig {
   canRun?: (options: {
     isAvailable: () => boolean,
     input: InputDeviceInterface,
+    params: Record<string, Param>
   }) => boolean  
 }
