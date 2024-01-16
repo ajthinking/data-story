@@ -5,11 +5,13 @@ import { AddNodeIcon } from './icons/addNodeIcon';
 export function DataStoryControls({
   hideToolbar = false,
   setShowRunModal,
-  setShowAddNodeModal,
+  setShowAddNodeModal, 
+  slotComponent
 }: {
   hideToolbar?: boolean;
   setShowRunModal: (showRunModal: boolean) => void;
   setShowAddNodeModal: (showAddNodeModal: boolean) => void;
+  slotComponent?: React.ReactNode;
 }) {
   if(hideToolbar) return null;
 
@@ -29,5 +31,6 @@ export function DataStoryControls({
     >
       <AddNodeIcon />
     </ControlButton>
+    {slotComponent}
   </Controls>;
 }

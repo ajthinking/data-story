@@ -13,6 +13,7 @@ import { ServerConfig } from './clients/ServerConfig';
 import { Diagram } from '@data-story/core';
 import { useHotkeys } from './useHotkeys';
 import DataStoryPeekNodeComponent from '../Node/DataStoryPeekNodeComponent';
+import { WorkbenchProps } from './types';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -22,17 +23,14 @@ const nodeTypes = {
   // dataStoryOutputNodeComponent: DataStoryNodeComponent,
 };
 
+
 export const Workbench = ({
   server,
   initDiagram,
   callback,
   hideToolbar = false,
-}: {
-  server?: ServerConfig
-  initDiagram?: Diagram
-  callback?: (options: any) => void
-  hideToolbar?: boolean
-}) => {
+  slotComponent,
+}: WorkbenchProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     edges: state.edges,
@@ -95,6 +93,7 @@ export const Workbench = ({
           }}
         >
           <DataStoryControls
+            slotComponent={slotComponent}
             hideToolbar={hideToolbar}
             setShowRunModal={setShowRunModal}
             setShowAddNodeModal={setShowAddNodeModal}

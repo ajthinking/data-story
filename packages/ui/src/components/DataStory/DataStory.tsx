@@ -4,6 +4,7 @@ import { Workbench } from './Workbench';
 import { ServerConfig } from './clients/ServerConfig';
 import { DataStoryProvider } from './store/store';
 import { forwardRef,useState } from 'react';
+import { DataStoryProps } from './types';
 
 export const DataStory = forwardRef( ({
   server,
@@ -11,13 +12,8 @@ export const DataStory = forwardRef( ({
   callback,
   hideToolbar = false,
   hideTabs = false,
-}: {
-  server?: ServerConfig
-  initDiagram?: Diagram
-  hideToolbar?: boolean
-  callback?: (options: any) => void
-  hideTabs?: boolean
-}, ref) => {
+  slotComponent,
+}: DataStoryProps, ref) => {
   const [active, setActive] = useState('main');
 
   const activeClass = 'rounded-t font-bold text-slate-800 cursor-pointer px-4 py-1 bg-gray-50 border-l border-r border-t border-slate-400';
@@ -36,6 +32,7 @@ export const DataStory = forwardRef( ({
       initDiagram={ initDiagram }
       callback={ callback }
       hideToolbar={ hideToolbar }
+      slotComponent={ slotComponent }
     />}
   </DataStoryProvider>;
 } )

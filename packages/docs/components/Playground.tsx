@@ -43,8 +43,8 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
   const { diagram } = loadDiagram(LocalStorageKey);
   const [initDiagram] = React.useState<Diagram>(diagram);
 
-  return (
-    <div className="w-full" style={{ height: '100vh' }} data-cy="playground">
+  const SaveComponent = () => {
+    return (
       <button
         onClick={() => {
           const diagram = dataStoryRef.current.toDiagram();
@@ -58,8 +58,13 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
         </svg>
         <span>Save</span>
       </button>
+    );
+  }
 
+  return (
+    <div className="w-full" style={{ height: '100vh' }} data-cy="playground">
       <DataStory
+        slotComponent={<SaveComponent />}
         ref={dataStoryRef}
         initDiagram={initDiagram}
         server={mode === 'node'
