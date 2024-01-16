@@ -22,7 +22,7 @@ import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig } from '../clients/ServerConfig';
 import { reactFlowNodeToDiagramNode, reactFlowToDiagram } from '../../../reactFlowToDiagram';
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useState } from 'react';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -513,17 +513,10 @@ export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
 };
 
 
-export const DataStoryProvider = React.forwardRef( ({ children }: { children: React.ReactNode }, ref) => {
+export const DataStoryProvider =  ({ children }: { children: React.ReactNode }) => {
   const [useLocalStore] = useState(() => createStore());
-  const toDiagram = useLocalStore().toDiagram;
-
-  useImperativeHandle(ref, () => {
-    return {
-      toDiagram: toDiagram,
-    };
-  }, [toDiagram]);
 
   return <DataStoryContext.Provider value={ useLocalStore }>
     { children }
   </DataStoryContext.Provider>;
-} );
+};
