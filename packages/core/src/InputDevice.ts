@@ -52,15 +52,15 @@ export class InputDevice implements InputDeviceInterface {
     return this.node.inputs.some(input => input.name === name)
   }
 
-  haveItemsAtInput(name: string): boolean {
+  haveItemsAtInput(name: string, minimum?: number): boolean {
     const port = this.node.inputs.find(input => input.name === name)!
 
     const links = this.diagram.linksConnectedToPortId(port.id)
 
-    
+    const requiredItems = minimum || 1
 
     for(const link of links) {
-      if(this.memory.getLinkItems(link.id)!.length > 0) return true
+      if(this.memory.getLinkItems(link.id)!.length >= requiredItems) return true
     }
 
     return false

@@ -14,6 +14,7 @@ import { mapToRecord } from './utils/mapToRecord';
 import { Hook } from './types/Hook';
 import { ItemValue } from './types/ItemValue';
 import { toLookup } from './utils/toLookup';
+import { arrayToRecord } from './utils/arrayToRecord';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
@@ -202,7 +203,8 @@ export class Executor implements ExecutorInterface {
       const hook = computer.canRun
       if(hook) return hook({
         isAvailable: () => this.memory.getNodeStatus(node.id) === 'AVAILABLE',
-        input: this.memory.getInputDevice(node.id)!
+        input: this.memory.getInputDevice(node.id)!,
+        params: arrayToRecord(node.params, 'name')
       })
 
       // Decide with some heuristics

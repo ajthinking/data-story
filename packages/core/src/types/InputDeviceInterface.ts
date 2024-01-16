@@ -6,7 +6,7 @@ export interface InputDeviceInterface {
   pull: (count?: number) => ItemWithParams[]
   pullFrom: (name: string, count?: number) => ItemWithParams[]
   havePort(name: string): boolean;
-  haveItemsAtInput(name: string): boolean;
+  haveItemsAtInput(name: string, minimum?: number): boolean;
   haveAllItemsAtInput(name: string): boolean;
   haveAllItemsAtAllInputs(): boolean;
   haveItemsAtAnyInput(): boolean;
