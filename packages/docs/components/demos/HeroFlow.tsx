@@ -57,7 +57,7 @@ export default () => {
     <div className="w-full h-1/2 sm:h-screen">
       <DataStory
         server={{ type: 'JS', app }}
-        diagram={isSmallScreen ? smallDiagram : bigDiagram}
+        initDiagram={isSmallScreen ? smallDiagram : bigDiagram}
         callback={(options: any) => setTimeout(options.run, 100)}
         hideToolbar={true}
         hideTabs={true}

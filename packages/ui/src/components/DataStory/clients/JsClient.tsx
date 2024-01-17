@@ -1,10 +1,4 @@
-import {
-  NodeDescription,
-  Application,
-  Diagram,
-  NullStorage,
-  Executor,
-} from '@data-story/core';
+import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 
 export class JsClient implements ServerClient {
@@ -16,9 +10,10 @@ export class JsClient implements ServerClient {
     private setEdges: (edges: any) => void,
     // private setViewport: (viewport: any) => void,
     private app: Application,
-  ) {}
+  ) {
+  }
 
-  init() {
+  init () {
     this.setAvailableNodes(this.app.descriptions())
 
     console.log('Connected to server: JS')
@@ -73,6 +68,6 @@ export class JsClient implements ServerClient {
   }
 
   async save(name: string, diagram: Diagram) {
-
   }
+
 }

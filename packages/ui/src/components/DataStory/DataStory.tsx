@@ -1,23 +1,17 @@
 import './../../styles/globals.css';
-import { Diagram } from '@data-story/core';
 import { Workbench } from './Workbench';
-import { ServerConfig } from './clients/ServerConfig';
 import { DataStoryProvider } from './store/store';
 import { useState } from 'react';
+import { DataStoryProps } from './types';
 
-export const DataStory = ({
+export const DataStory =  ({
   server,
-  diagram,
+  initDiagram,
   callback,
   hideToolbar = false,
   hideTabs = false,
-}: {
-  server?: ServerConfig
-  diagram?: Diagram
-  hideToolbar?: boolean
-  callback?: (options: any) => void
-  hideTabs?: boolean
-}) => {
+  slotComponent,
+}: DataStoryProps) => {
   const [active, setActive] = useState('main');
 
   const activeClass = 'rounded-t font-bold text-slate-800 cursor-pointer px-4 py-1 bg-gray-50 border-l border-r border-t border-slate-400';
@@ -33,9 +27,10 @@ export const DataStory = ({
     </div>}
     {(active === 'main') && <Workbench
       server={ server }
-      diagram={ diagram }
+      initDiagram={ initDiagram }
       callback={ callback }
       hideToolbar={ hideToolbar }
+      slotComponent={ slotComponent }
     />}
   </DataStoryProvider>;
 }
