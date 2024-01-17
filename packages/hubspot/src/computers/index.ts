@@ -1,4 +1,3 @@
-export { Contacts } from './Contacts'
-export { Companies } from './Companies'
-export { Deals } from './Deals'
-export { Tickets } from './Tickets'
+export * from './Companies'
+export * from './Contacts'
+export * from './Deals'

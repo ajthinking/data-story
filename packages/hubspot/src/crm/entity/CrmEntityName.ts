@@ -1,0 +1,1 @@
+export type CrmEntityName = 'contacts' | 'companies' | 'deals' | 'tickets' | 'products'

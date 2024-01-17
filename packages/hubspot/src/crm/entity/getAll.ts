@@ -1,11 +1,11 @@
 import { ComputerConfig, num, str } from '@data-story/core';
 import { Client } from '@hubspot/api-client';
-import { EntityPage } from '../types/EntityPage';
-import { CrmEntity } from '../types/CrmEntity';
+import { EntityPage } from './EntityPage';
+import { CrmEntityName } from './CrmEntityName';
 
-export const Tickets: ComputerConfig = {
-  name: 'Tickets',
-  label: 'Tickets',
+const Template: ComputerConfig = {
+  name: 'NAME',
+  label: 'LABEL',
   inputs: [],
   outputs: ['all', 'errors'],
   category: 'Hubspot',
@@ -14,18 +14,18 @@ export const Tickets: ComputerConfig = {
       name: 'entity',
       label: 'Entity',
       help: 'The entity to retrieve.',
-      value: 'tickets',
+      value: 'ENTITY',
     }),
     str({
       name: 'properties',
       label: 'Properties',
       help: 'Comma separated list of properties.',
       value: '',
-    }),    
+    }),     
     num({
       name: 'limit',
       label: 'Limit',
-      help: 'The maximum number of tickets to return.',
+      help: 'The maximum number of companies to return.',
       value: String('300'),
     }),
   ],
@@ -40,7 +40,7 @@ export const Tickets: ComputerConfig = {
     const limit = params.limit
       ? Number(params.limit)
       : Infinity
-    const entity = params.entity as CrmEntity
+    const entity = params.entity as CrmEntityName
     const properties: string[] = (params.properties as string)
       .split(',')
       .map((p) => p.trim())
@@ -75,4 +75,20 @@ export const Tickets: ComputerConfig = {
 
     yield;
   },
+}
+
+export const getAll = (name: string) => {
+  const { run, ...templateProperties } = Template
+
+  const config = {
+    ...structuredClone(templateProperties),
+    name,
+    label: name,
+    run,
+  }
+  
+  const entityParam = config.params!.find((p) => p.name === 'entity')
+  entityParam!.inputMode.value = name.toLowerCase()
+
+  return config
 }

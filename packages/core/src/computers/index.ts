@@ -28,3 +28,4 @@ export { Output } from './Output';
 export { Sample } from './Sample';
 export { Unique } from './Unique'
 export { Await } from './Await'
+export { Merge } from './Merge'
