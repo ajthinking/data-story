@@ -34,8 +34,8 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
 
   const matchingNodes = availableNodes
     .sort((a: NodeDescription, b: NodeDescription) => {
-      if ((a.category || ') < (b.category || ')) return -1;
-      if ((a.category || ') > (b.category || ')) return 1;
+      if ((a.category || '') < (b.category || '')) return -1;
+      if ((a.category || '') > (b.category || '')) return 1;
       return 0;
     })
     .filter((nodeDescription: NodeDescription) => {
