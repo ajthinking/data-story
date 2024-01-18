@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "@data-story/core": "workspace:*",
-    "@types/node": "18.14.2",
     "axios": "^1.3.4",
     "dotenv": "^16.0.3",
     "openai": "^3.2.1",
@@ -37,6 +36,7 @@
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
+    "@types/node": "18.14.2",
     "@types/ws": "^8.5.4",
     "nodemon": "^2.0.21",
     "ts-node": "^10.9.1",
