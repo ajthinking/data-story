@@ -27,8 +27,7 @@
     }
   },
   "files": [
-    "dist/main",
-    "dist/vite"
+    "dist/**/*"
   ],
   "scripts": {
     "build-vite": "vite build",
