@@ -1,4 +1,4 @@
-import type { Configuration } from 'webpack';
+import type { Configuration, HotModuleReplacementPlugin } from 'webpack';
 
 import { rules } from './webpack.rules';
 import { plugins } from './webpack.plugins';
