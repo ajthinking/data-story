@@ -1,10 +1,11 @@
 {
-  "name": "data-story/alfa",
   "productName": "data-story/alfa",
+  "name": "@data-story/alfa",
   "version": "0.0.1",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
+    "dev:desktop": "electron-forge start",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",

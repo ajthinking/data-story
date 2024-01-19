@@ -9,11 +9,13 @@
     "packages/hjson",
     "packages/openai",
     "packages/hubspot",
-    "packages/desktop",
+    "packages/alfa",
     "packages/private/*"
   ],
   "scripts": {
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn build && yarn kill && turbo dev --parallel",
+    "dev:desktop": "turbo dev:desktop --parallel",
+    "start:alfa": "turbo dev --filter=@data-story/core --filter=@data-story/ui --filter=@data-story/alfa",
     "kill": "kill-port 3000 3100",
     "build": "turbo build",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
