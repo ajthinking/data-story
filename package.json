@@ -9,7 +9,7 @@
     "packages/hjson",
     "packages/openai",
     "packages/hubspot",
-    "packages/alfa",
+    "packages/desktop",
     "packages/private/*"
   ],
   "scripts": {
