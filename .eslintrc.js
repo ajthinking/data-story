@@ -21,7 +21,8 @@ module.exports = {
   },
   'plugins': [
     '@stylistic',
-    'react-hooks'
+    'react-hooks',
+    'import'
   ],
   'rules': {
     'react-hooks/rules-of-hooks': 'error',

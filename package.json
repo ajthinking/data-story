@@ -9,10 +9,12 @@
     "packages/hjson",
     "packages/openai",
     "packages/hubspot",
+    "packages/desktop",
     "packages/private/*"
   ],
   "scripts": {
-    "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn build && yarn kill && turbo dev --parallel",
+    "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
+    "dev:desktop": "turbo dev:desktop --parallel",
     "kill": "kill-port 3000 3100",
     "build": "turbo build",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
@@ -56,6 +58,7 @@
     "@vitest/coverage-c8": "^0.29.7",
     "cypress": "^13.6.1",
     "eslint": "^8.52.0",
+    "eslint-plugin-import": "^2.25.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.0",
     "kill-port": "^2.0.1",
