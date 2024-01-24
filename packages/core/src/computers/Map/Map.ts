@@ -1,5 +1,7 @@
-
-import { JsEvaluation, JsonEvaluation, NumberCast, StringCast } from '../../Param';
+import { numberCast } from '../../Param/casts/numberCast';
+import { stringCast } from '../../Param/casts/stringCast';
+import { jsEvaluation } from '../../Param/evaluations/jsEvaluation';
+import { jsonEvaluation } from '../../Param/evaluations/jsonEvaluation';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const Map: ComputerConfig = {
@@ -27,7 +29,6 @@ export const Map: ComputerConfig = {
               interpolationsFromPort: ['input'],
               value: '',
             },
-            alternativeInputModes: [],
           },
           {
             name: 'value',
@@ -39,22 +40,19 @@ export const Map: ComputerConfig = {
               canInterpolate: true,
               interpolate: true,
               evaluations: [
-                JsonEvaluation,
-                JsEvaluation,
+                jsonEvaluation,
+                jsEvaluation,
               ],
               casts: [
-                NumberCast,
-                StringCast,
+                numberCast,
+                stringCast,
               ],              
               value: '',
             },
-            alternativeInputModes: [],
-
           },          
         ],
         value: [],
       },
-      alternativeInputModes: [],
     },
   ],
 

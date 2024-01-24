@@ -1,7 +1,7 @@
 
 import { sleep } from '../../utils/sleep';
 import { ComputerConfig } from '../../types/ComputerConfig';
-import { NumberCast } from '../../Param';
+import { numberCast } from '../../Param/casts/numberCast';
 
 export const Sleep: ComputerConfig = {
   name: 'Sleep',
@@ -18,11 +18,10 @@ export const Sleep: ComputerConfig = {
         canInterpolate: true,
         interpolate: true,
         casts: [
-          {...NumberCast, selected: true}
+          {...numberCast, selected: true}
         ],
         value: String(100)
       },
-      alternativeInputModes: []
     },    
   ],
 

@@ -1,64 +1,12 @@
-import { PortName } from './types/Port'
-import { snakeCaseToTitleCase } from './utils/snakeCaseToTitleCase'
-
-/**
- * CASTS ****************************************
- */
-export type Cast = {
-  type: string,
-  label: string,
-  selected?: boolean,
-}
-
-export const NumberCast: Cast = {
-  type: 'NumberCast',
-  label: 'Number',
-}
-
-export const StringCast: Cast = {
-  type: 'StringCast',
-  label: 'String',
-}
-
-/**
- * EVALUATIONS ****************************************
- */
-export type Evaluation = {
-  type: string,
-  label: string,
-  selected?: boolean,
-}
-
-export const JsEvaluation: Evaluation = {
-  type: 'JS',
-  label: 'JS',
-}
-
-export const JsonEvaluation: Evaluation = {
-  type: 'JSON',
-  label: 'JSON',
-}
-
-export const HjsonEvaluation: Evaluation = {
-  type: 'HJSON',
-  label: 'HJSON',
-}
-
-export const evaluation = (type: string): Evaluation => {
-  if(type === 'JS') {
-    return JsEvaluation
-  }
-
-  if(type === 'JSON') {
-    return JsonEvaluation
-  }
-
-  if(type === 'HJSON') {
-    return HjsonEvaluation
-  }
-
-  throw new Error(`Unknown evaluation type: ${type}`)
-}
+import { PortName } from '../types/Port'
+import { snakeCaseToTitleCase } from '../utils/snakeCaseToTitleCase'
+import { Cast } from './Cast'
+import { Evaluation } from './Evaluation'
+import { numberCast } from './casts/numberCast'
+import { stringCast } from './casts/stringCast'
+import { hjsonEvaluation } from './evaluations/hjsonEvaluation'
+import { jsEvaluation } from './evaluations/jsEvaluation'
+import { jsonEvaluation } from './evaluations/jsonEvaluation'
 
 /**
  * The mode types ****************************************
@@ -115,116 +63,9 @@ export type Param = {
   label: string,
   help: string,
   inputMode: InputMode,
-  alternativeInputModes: InputMode[],
 }
 
 export type ParamValue = Param['inputMode']['value']
-
-
-/**
- * SAMPLE REAL USE CASES OF PARAM IMPLEMENTATIONS ****************************************
- */
-// Signal.period
-const SignalPeriod: Param = {
-  name: 'period',
-  label: 'period',
-  help: 'How many ms between each signal',
-  // A mode describes how the frontend should render it
-  // Further more it describes how the backend should interpret it
-  inputMode: {
-    type: 'Stringable',
-    multiline: false,
-    canInterpolate: true,
-    interpolate: true,
-    casts: [
-      {...NumberCast, selected: true}
-    ],
-    value: '1000',
-  },
-  alternativeInputModes: []
-}
-
-// ConsoleLog.message
-const ConsoleLogMessage: Param = {
-  name: 'message',
-  label: 'message',
-  help: 'What to log',
-  inputMode: {
-    type: 'Stringable',
-    multiline: false,
-    canInterpolate: true,
-    interpolate: true,
-    evaluations: [
-      JsEvaluation,
-      JsonEvaluation,
-      HjsonEvaluation,
-    ],
-    casts: [
-      NumberCast,
-      StringCast,
-    ],
-    value: '',
-  },
-  alternativeInputModes: [],
-}
-
-/**
- * MAP.map
- */
-const MapMap: Param = {
-  name: 'map',
-  label: 'map',
-  help: 'Create a map of keys and values',
-  inputMode: {
-    type: 'Repeatable',
-    row: [
-      {
-        name: 'path',
-        label: 'Path',
-        help: 'The key to use in the output. You may use dot separated notation to create nested properties.',
-        inputMode: {
-          type: 'Stringable',
-          multiline: false,
-          canInterpolate: false,
-          casts: [
-            { ...StringCast, selected: true },
-          ],
-          value: '',
-        },
-        alternativeInputModes: [],
-      },
-      {
-        name: 'value',
-        label: 'Value',
-        help: 'The value to use in the output',
-        inputMode: {
-          type: 'Stringable',
-          multiline: false,
-          canInterpolate: true,
-          interpolate: true,
-          evaluations: [
-            JsEvaluation,
-            JsonEvaluation,
-            HjsonEvaluation,
-          ],              
-          casts: [
-            NumberCast,
-            StringCast,
-          ],
-          value: '',
-        },
-        alternativeInputModes: [
-          {
-            type: 'PropertySelection',
-            value: '',
-          }
-        ],
-      },
-    ],
-    value: [],
-  },
-  alternativeInputModes: [],
-}
 
 // quick param builders
 
@@ -261,7 +102,6 @@ export const param = ({
       value: inputMode?.value || '',
       evaluations: inputMode?.evaluations || [],
     },
-    alternativeInputModes: [],
   }
 }
 
@@ -293,7 +133,7 @@ export const str = ({
       interpolate: interpolate ?? true,
       evaluations: evaluations,
       casts: [
-        { ...StringCast, selected: true },
+        { ...stringCast, selected: true },
       ],
       value: value,
     }
@@ -328,7 +168,7 @@ export const num = ({
       interpolate: interpolate ?? true,
       evaluations: evaluations,
       casts: [
-        { ...NumberCast, selected: true },
+        { ...numberCast, selected: true },
       ],
       value: value,
     }
@@ -364,7 +204,7 @@ export const json_ = ({
       interpolate: interpolate ?? true,
       casts: [],
       evaluations: evaluations || [
-        { ...JsonEvaluation, selected: true}
+        { ...jsonEvaluation, selected: true}
       ],
       value: value,
     }

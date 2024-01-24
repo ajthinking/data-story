@@ -19,7 +19,6 @@ export const Comment: ComputerConfig = {
         casts: [],
         value: '',
       },
-      alternativeInputModes: [],
     }    
   ],
 

@@ -1,8 +1,6 @@
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { sleep } from '../../utils/sleep';
-import { NumberCast } from '../../Param';
-import { OutputDevice } from '../../OutputDevice';
-import { RunArgs } from '../../types/Computer';
+import { numberCast } from '../../Param/casts/numberCast';
 import { multiline } from '../../utils/multiline';
 
 export const Signal: ComputerConfig = {
@@ -31,11 +29,10 @@ export const Signal: ComputerConfig = {
         canInterpolate: true,
         interpolate: true,
         casts: [
-          {...NumberCast, selected: true}
+          {...numberCast, selected: true}
         ],
         value: String(50)
       },
-      alternativeInputModes: []
     },
     {
       name: 'count',
@@ -47,11 +44,10 @@ export const Signal: ComputerConfig = {
         canInterpolate: true,
         interpolate: true,
         casts: [
-          {...NumberCast, selected: true}
+          {...numberCast, selected: true}
         ],
         value: String(300)
       },
-      alternativeInputModes: []
     },  
   ],
 

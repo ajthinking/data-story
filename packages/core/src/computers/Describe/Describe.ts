@@ -2,7 +2,8 @@
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { multiline } from '../../utils/multiline';
 import { describeCollection, truncateDescription } from './describeCollection';
-import { NumberCast, StringCast } from '../../Param';
+import { stringCast } from '../../Param/casts/stringCast';
+import { numberCast } from '../../Param/casts/numberCast';
 import { get } from '../../utils/get';
 
 export const Describe: ComputerConfig = {
@@ -23,11 +24,10 @@ export const Describe: ComputerConfig = {
         canInterpolate: true,
         interpolate: true,
         casts: [
-          {...StringCast, selected: true}
+          {...stringCast, selected: true}
         ],
         value: ''
       },
-      alternativeInputModes: []
     },
     {
       name: 'truncate_limit',
@@ -39,11 +39,10 @@ export const Describe: ComputerConfig = {
         canInterpolate: true,
         interpolate: true,
         casts: [
-          {...NumberCast, selected: true}
+          {...numberCast, selected: true}
         ],
         value: String(10)
       },
-      alternativeInputModes: []
     },    
   ],
   
