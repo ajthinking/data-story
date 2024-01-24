@@ -1,8 +1,6 @@
 // Add this to the end of the existing file
 import './app';
 
-window.electronAPI.loadPreferences()
-
 
 // function submitJson() {
 //   // Retrieve JSON data from your input field (assuming it's a valid JSON string)

@@ -9,3 +9,4 @@ contextBridge.exposeInMainWorld('electron', {
     ipcRenderer.send(channel, data);
   }
 });
+console.log('preload script loaded successfully'); // 确认预加载脚本已经加载并执行到这里

@@ -2,7 +2,6 @@ import { ControlButton } from 'reactflow';
 import React from 'react';
 import { SaveIcon, useDataStoryControls } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
-import { ipcRenderer } from 'electron';
 
 export interface LocalDiagram {
   type: 'load' | 'save';
@@ -24,7 +23,7 @@ const saveDiagram = (key: string, diagram: Diagram) => {
     diagram
   } as LocalDiagram);
 
-  ipcRenderer.send('save-json', diagramJSON);
+  window.electron.send('save-json', diagramJSON);
 };
 
 export const loadDiagram = (key: string): LocalDiagram => {
@@ -60,7 +59,6 @@ export const SaveComponent = () => {
       onClick={() => {
         const diagram = getDiagram();
         saveDiagram(LocalStorageKey, diagram);
-        window.alert('Diagram saved!');
       }}>
       <SaveIcon />
     </ControlButton>
