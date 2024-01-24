@@ -29,7 +29,6 @@ export const ReadFiles: ComputerConfig = {
         casts: [],
         value: '${path}/**/*.ts',
       },
-      alternativeInputModes: [],
     },
     {
       name: 'ignore',
@@ -44,7 +43,6 @@ export const ReadFiles: ComputerConfig = {
         casts: [],
         value: '**/node_modules/**',
       },
-      alternativeInputModes: [],
     },        
   ],  
 

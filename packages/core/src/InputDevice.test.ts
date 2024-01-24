@@ -219,7 +219,6 @@ describe('params', () => {
         canInterpolate: true,
         interpolate: true,
       } as Stringable,
-      alternativeInputModes: [],
     }]
 
     const input = new InputDevice(node, diagram, memory, params)

@@ -19,8 +19,7 @@ export const AskChatGpt: ComputerConfig = {
         casts: [],
         value: 'What is the meaning of life?',
       },
-      alternativeInputModes: [],
-    },    
+    },
   ],
 
   category: 'API',

@@ -1,6 +1,6 @@
 
 import { ComputerConfig } from '../../types/ComputerConfig';
-import { NumberCast } from '../../Param';
+import { numberCast } from '../../Param/casts/numberCast';
 
 export const Await: ComputerConfig = {
   name: 'Await',
@@ -17,11 +17,10 @@ export const Await: ComputerConfig = {
         canInterpolate: true,
         interpolate: true,
         casts: [
-          {...NumberCast, selected: true}
+          {...numberCast, selected: true}
         ],
         value: 'Infinity'
       },
-      alternativeInputModes: []
     },    
   ],
 

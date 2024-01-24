@@ -1,6 +1,4 @@
 
-import { ItemWithParams } from '../../ItemWithParams/ItemWithParams';
-import { HjsonEvaluation, JsEvaluation, JsonEvaluation, NumberCast, StringCast } from '../../Param';
 import { ComputerConfig } from '../../types/ComputerConfig';
 
 export const Peek: ComputerConfig = {

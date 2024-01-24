@@ -1,5 +1,8 @@
 
-import { JsEvaluation, JsonEvaluation, HjsonEvaluation, json_ } from '../../Param';
+import { json_ } from '../../Param';
+import { jsEvaluation } from '../../Param/evaluations/jsEvaluation';
+import { jsonEvaluation } from '../../Param/evaluations/jsonEvaluation';
+import { hjsonEvaluation } from '../../Param/evaluations/hjsonEvaluation';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { ItemValue } from '../../types/ItemValue';
 import { merge } from '../../utils/merge';
@@ -25,16 +28,15 @@ export const ReplaceItem: ComputerConfig = {
           { value: 'REPLACE', label: 'REPLACE' },
         ],
       },
-      alternativeInputModes: [],
     },
     json_({
       name: 'json',
       value: '{\n\tfoo: bar\n}',
       help: '',
       evaluations: [
-        { ...HjsonEvaluation, selected: true },
-        JsonEvaluation,
-        JsEvaluation,
+        { ...hjsonEvaluation, selected: true },
+        jsonEvaluation,
+        jsEvaluation,
       ]
     })
   ],

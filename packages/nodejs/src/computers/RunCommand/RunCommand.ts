@@ -39,7 +39,6 @@ export const RunCommand: ComputerConfig = {
         casts: [],
         value: 'say "Hello World"',
       },
-      alternativeInputModes: [],
     }    
   ],
 

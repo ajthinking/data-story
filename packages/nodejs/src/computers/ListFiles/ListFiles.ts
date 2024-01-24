@@ -27,7 +27,6 @@ export const ListFiles: ComputerConfig = {
         casts: [],
         value: '/',
       },
-      alternativeInputModes: [],
     }    
   ],
 

@@ -33,12 +33,10 @@ export const Filter: ComputerConfig = {
               value: '',
               allowCreate: true,
             },
-            alternativeInputModes: [],
           }
         ],
         value: [],
       },
-      alternativeInputModes: [],
     },
   ],
 
