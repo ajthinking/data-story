@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@data-story/core": "workspace:*",
+    "@data-story/hubspot": "workspace:*",
     "@data-story/nodejs": "workspace:*",
     "@data-story/ui": "workspace:*",
     "electron-squirrel-startup": "^1.0.0",
