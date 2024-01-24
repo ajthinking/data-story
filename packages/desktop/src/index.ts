@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, dialog, ipcMain } from 'electron';
 import { Application, coreNodeProvider } from '@data-story/core';
 import { nodeJsProvider, SocketServer } from '@data-story/nodejs';
 import dotenv from 'dotenv';
@@ -6,6 +6,7 @@ import path from 'path';
 import fs from 'fs';
 import os from 'os';
 import { hubspotProvider } from '@data-story/hubspot';
+import { DebugableSocketServer } from './DebugableSocketServer';
 
 // ************************************************************************************************
 // Electron app, window etc
@@ -28,6 +29,8 @@ const createWindow = (): void => {
     height: 600,
     width: 800,
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
@@ -44,11 +47,10 @@ const createWindow = (): void => {
         ]
       }
     });
-  });  
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
@@ -58,7 +60,7 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
-  
+
   const settings = readSettings();
   writeSettings(settings);
   if(settings.workspace) loadEnvs(settings.workspace);
@@ -72,9 +74,39 @@ app.on('activate', () => {
   }
 });
 
-// ************************************************************************************************
-// DataStory Server
-// ************************************************************************************************
+// Listen for the 'save-json' message from the renderer process
+ipcMain.on('save-json', (event, jsonData) => {
+  // dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] })
+
+  // Show the save dialog
+  dialog.showSaveDialog({
+    title: 'Save your JSON file',
+    defaultPath: path.join(app.getPath('documents'), 'a.json'),
+    filters: [
+      { name: 'JSON Files', extensions: ['json'] }
+    ]
+  }).then((file) => {
+    if (!file.canceled && file.filePath) {
+      // Convert the JSON object to a string
+      const jsonContent = JSON.stringify(jsonData, null, 2);
+
+      // Write the file
+      fs.writeFile(file.filePath, jsonContent, (err) => {
+        if (err) {
+          console.error('Failed to save the file:', err);
+        } else {
+          console.log('The file has been saved');
+        }
+      });
+    }
+  }).catch(err => {
+    console.error(err);
+  });
+});
+
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and import them here.
+
 const dataStory = new Application();
 
 dataStory.register([

@@ -1,6 +1,8 @@
 import { DataStory } from '@data-story/ui';
 import { Application, coreNodeProvider } from '@data-story/core';
 import { createRoot } from 'react-dom/client';
+import React from 'react';
+import { SaveComponent } from './save';
 // eslint-disable-next-line import/no-unresolved
 import '@data-story/ui/data-story.css';
 
@@ -26,5 +28,6 @@ root.render(<div style={{
       type: 'SOCKET',
       url: 'http://localhost:3100',
     }}
+    slotComponent={<SaveComponent/>}
   />
 </div>);
