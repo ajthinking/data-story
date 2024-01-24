@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
+import { hubspotProvider } from '@data-story/hubspot';
 
 // ************************************************************************************************
 // Electron app, window etc
@@ -79,6 +80,7 @@ const dataStory = new Application();
 dataStory.register([
   coreNodeProvider,
   nodeJsProvider,
+  hubspotProvider,
 ]);
 
 dataStory.boot();

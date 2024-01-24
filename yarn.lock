@@ -146,6 +146,7 @@ __metadata:
   resolution: "@data-story/desktop@workspace:packages/desktop"
   dependencies:
     "@data-story/core": "workspace:*"
+    "@data-story/hubspot": "workspace:*"
     "@data-story/nodejs": "workspace:*"
     "@data-story/ui": "workspace:*"
     "@electron-forge/cli": "npm:^7.1.0"
