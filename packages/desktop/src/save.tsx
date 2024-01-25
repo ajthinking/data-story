@@ -2,6 +2,7 @@ import { ControlButton } from 'reactflow';
 import React from 'react';
 import { SaveIcon, useDataStoryControls, OpenIcon } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
+import IpcRendererEvent = Electron.IpcRendererEvent;
 
 export interface LocalDiagram {
   type: 'load' | 'save';
@@ -24,6 +25,7 @@ const saveDiagram = (key: string, diagram: Diagram) => {
   } as LocalDiagram);
 
   window.electron.send('save-json', diagramJSON);
+
 };
 
 export const loadDiagram = (key: string): LocalDiagram => {
@@ -34,6 +36,10 @@ export const loadDiagram = (key: string): LocalDiagram => {
     diagram: null
   }
 
+  window.electron.send('open-file-dialog', key);
+  window.electron.receive('selected-file', (event: IpcRendererEvent, data: any) => {
+    console.log('selected-file', data);
+  });
   if (typeof window === 'undefined' || !localStorage?.getItem(key)) {
     return initDiagram;
   }

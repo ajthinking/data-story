@@ -5,8 +5,11 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 
 contextBridge.exposeInMainWorld('electron', {
-  send: (channel: 'save-json', data: string) => {
+  receive: (channel: string, data: any) => {
+    ipcRenderer.on(channel, data);
+  },
+
+  send: (channel: string, data?: string) => {
     ipcRenderer.send(channel, data);
   }
 });
-console.log('preload script loaded successfully'); // 确认预加载脚本已经加载并执行到这里

@@ -104,6 +104,33 @@ ipcMain.on('save-json', (event, jsonData) => {
   });
 });
 
+ipcMain.on('open-file-dialog', (event) => {
+  dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [
+      { name: 'JSON', extensions: ['json'] }
+    ]
+  }).then(result => {
+    if (!result.canceled && result.filePaths.length > 0) {
+
+      const data = fs.readFileSync(result.filePaths[0], 'utf8');
+      if (!data) return;
+      const diagram = JSON.parse(data);
+      console.log(diagram);
+
+      event.sender.send('selected-file', {
+        type: 'load',
+        version: '1.0.0',
+        name: 'test',
+        diagram
+      });
+    }
+  }).catch(err => {
+    console.log(err);
+  });
+});
+
+
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
