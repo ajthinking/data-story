@@ -3,7 +3,7 @@ import React from 'react';
 import { SaveIcon, useDataStoryControls, OpenIcon } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
 import { LocalDiagram } from './types';
-import { canBeParsedAsJSON, getCoreVersion } from './common';
+import { tryParseJSON, getCoreVersion } from './common';
 
 const saveDiagram = (diagram: Diagram) => {
 
@@ -20,19 +20,18 @@ export const loadDiagram = async (): Promise<LocalDiagram> => {
   const initDiagram: LocalDiagram = {
     type: 'load',
     version: getCoreVersion(),
-    diagram: null
+    diagram: new Diagram([], [])
   }
 
-  const result = await window.electron.openFileDialog();
-
-  if(!canBeParsedAsJSON(result)){
+  const file = await window.electron.openFileDialog();
+  const { valid, result } = tryParseJSON(file);
+  if(!valid){
+    console.warn('Could not parse JSON', result);
     return initDiagram;
   }
 
-  const diagramInfo = JSON.parse(result);
-  const diagram = diagramInfo.diagram ?? {nodes: [], links: []};
+  const diagram = result.diagram ?? new Diagram([], []);
   initDiagram.diagram = new Diagram(diagram.nodes, diagram.links);
-
   return initDiagram;
 }
 
@@ -41,7 +40,7 @@ export const SaveComponent = () => {
   const { getDiagram, updateDiagram } = useDataStoryControls()
 
   const handleOpenFile = async () => {
-    const diagramInfo = await loadDiagram()
+    const diagramInfo = await loadDiagram();
 
     if(updateDiagram && diagramInfo.diagram){
       updateDiagram(diagramInfo.diagram);

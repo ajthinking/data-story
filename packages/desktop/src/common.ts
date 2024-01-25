@@ -3,11 +3,17 @@ export const getCoreVersion = () => {
   return version;
 }
 
-export const canBeParsedAsJSON = (data: string) => {
+export const tryParseJSON = (data: string) => {
   try {
-    JSON.parse(data);
-    return true;
+    const result = JSON.parse(data);
+    return {
+      valid: true,
+      result
+    }
   } catch (e) {
-    return false;
+    return {
+      valid: false,
+      result: data
+    }
   }
 }

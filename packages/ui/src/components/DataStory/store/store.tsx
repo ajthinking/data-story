@@ -335,7 +335,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   updateDiagram: (diagram: Diagram) => {
 
     get().setNodes(getNodes(diagram.nodes));
-    get().setEdges(getEdges(diagram))
+    get().setEdges(getEdges(diagram));
   },
   onRun: () => {
     set({ peeks: {} })

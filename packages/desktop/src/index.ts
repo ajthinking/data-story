@@ -1,13 +1,12 @@
-import { app, BrowserWindow, Menu, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { Application, coreNodeProvider } from '@data-story/core';
 import { nodeJsProvider, SocketServer } from '@data-story/nodejs';
 import dotenv from 'dotenv';
 import path from 'path';
+import fsAsync from 'fs/promises';
 import fs from 'fs';
 import os from 'os';
 import { hubspotProvider } from '@data-story/hubspot';
-import { DebugableSocketServer } from './DebugableSocketServer';
-import { getCoreVersion } from './common';
 
 // ************************************************************************************************
 // Electron app, window etc
@@ -24,50 +23,43 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-ipcMain.on('save-diagram', (event, jsonData: string) => {
+ipcMain.handle('save-diagram', async(event, jsonData: string) => {
 
-  // Show the save dialog
-  dialog.showSaveDialog({
-    title: 'Save your Diagram JSON',
-    defaultPath: path.join(app.getPath('documents'), 'a.json'),
-    filters: [
-      { name: 'JSON Files', extensions: ['json'] }
-    ]
-  }).then((file) => {
+  try {
+    // Show the save dialog
+    const file = await dialog.showSaveDialog({
+      title: 'Save your Diagram JSON',
+      defaultPath: path.join(app.getPath('documents'), 'diagram.json'),
+      filters: [
+        { name: 'JSON Files', extensions: ['json'] }
+      ]
+    });
     if (!file.canceled && file.filePath) {
-
-      // Write the file
-      fs.writeFile(file.filePath, jsonData, (err) => {
-        if (err) {
-          console.error('Failed to save the file:', err);
-        } else {
-          console.log('The file has been saved');
-        }
-      });
+      await fsAsync.writeFile(file.filePath, jsonData);
     }
-  }).catch(err => {
+  } catch(err) {
     console.error(err);
-    new Error(err);
-  });
+    return err;
+  }
 });
-
-ipcMain.handle('open-diagram', async () => {
-  return dialog.showOpenDialog({
-    properties: ['openFile'],
-    filters: [
-      { name: 'JSON', extensions: ['json'] }
-    ]
-  }).then(result => {
+ipcMain.handle('open-diagram', async(): Promise<string> => {
+  try {
+    const result = await dialog.showOpenDialog({
+      properties: ['openFile'],
+      filters: [
+        { name: 'JSON', extensions: ['json'] }
+      ]
+    });
 
     if (!result.canceled && result.filePaths.length > 0) {
-      const data = fs.readFileSync(result.filePaths[0], 'utf8');
-      return data ? data : {};
+      const data = fsAsync.readFile(result.filePaths[0], 'utf8');
+      return data ? data : '{}';
     }
-
-  }).catch(err => {
-    console.log(err);
-    new Error(err);
-  });
+    return '{}';
+  } catch(err) {
+    console.error(err);
+    return err;
+  }
 });
 
 const createWindow = (): void => {
@@ -110,7 +102,7 @@ app.on('ready', () => {
 
   const settings = readSettings();
   writeSettings(settings);
-  if(settings.workspace) loadEnvs(settings.workspace);
+  if (settings.workspace) loadEnvs(settings.workspace);
 });
 
 app.on('activate', () => {
@@ -153,7 +145,7 @@ function readSettings() {
       const rawSettings = fs.readFileSync(settingsFilePath).toString();
       return JSON.parse(rawSettings);
     }
-  } catch (err) {
+  } catch(err) {
     console.error('Error reading settings file:', err);
   }
 
@@ -165,7 +157,7 @@ function writeSettings(settings: Record<string, any>) {
     const settingsString = JSON.stringify(settings, null, 2); // Pretty print
     fs.writeFileSync(settingsFilePath, settingsString);
     console.log('Saved settings!')
-  } catch (err) {
+  } catch(err) {
     console.error('Error writing settings file:', err);
   }
 }
