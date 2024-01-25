@@ -1,6 +1,6 @@
 import { ControlButton } from 'reactflow';
 import React from 'react';
-import { SaveIcon, useDataStoryControls } from '@data-story/ui';
+import { SaveIcon, useDataStoryControls, OpenIcon } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
 
 export interface LocalDiagram {
@@ -53,14 +53,24 @@ export const SaveComponent = () => {
   const { getDiagram } = useDataStoryControls()
 
   return (
-    <ControlButton
-      title="Save"
-      aria-label="Save"
-      onClick={() => {
-        const diagram = getDiagram();
-        saveDiagram(LocalStorageKey, diagram);
-      }}>
-      <SaveIcon />
-    </ControlButton>
+    <>
+      <ControlButton
+        title="Save"
+        aria-label="Save"
+        onClick={() => {
+          const diagram = getDiagram();
+          saveDiagram(LocalStorageKey, diagram);
+        }}>
+        <SaveIcon/>
+      </ControlButton>
+      <ControlButton
+        title="Open"
+        aria-label="Open"
+        onClick={() => {
+          loadDiagram(LocalStorageKey)
+        }}>
+        <OpenIcon />
+      </ControlButton>
+    </>
   );
 }
