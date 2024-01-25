@@ -13,8 +13,7 @@ const saveDiagram = (diagram: Diagram) => {
     diagram
   } as LocalDiagram, null, 2);
 
-  window.electron.send('save-json', diagramJSON);
-
+  window.electron.saveDiagram( diagramJSON);
 };
 
 export const loadDiagram = async (): Promise<LocalDiagram> => {

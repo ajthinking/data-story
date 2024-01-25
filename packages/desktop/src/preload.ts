@@ -6,16 +6,13 @@ import { LocalDiagram } from './types';
 
 
 contextBridge.exposeInMainWorld('electron', {
-  receive: (channel: string, data: any) => {
-    ipcRenderer.on(channel, data);
+
+  saveDiagram: async(data: string): Promise<void> => {
+    ipcRenderer.send('save-diagram', data);
   },
 
-  send: (channel: string, data?: string) => {
-    ipcRenderer.send(channel, data);
-  },
-
-  openFileDialog: async (): Promise<LocalDiagram> => {
-    return await ipcRenderer.invoke('open-file-dialog');
+  openFileDialog: async(): Promise<LocalDiagram> => {
+    return await ipcRenderer.invoke('open-diagram');
   },
 
 });

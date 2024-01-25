@@ -24,13 +24,11 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-
-// Listen for the 'save-json' message from the renderer process
-ipcMain.on('save-json', (event, jsonData: string) => {
+ipcMain.on('save-diagram', (event, jsonData: string) => {
 
   // Show the save dialog
   dialog.showSaveDialog({
-    title: 'Save your JSON file',
+    title: 'Save your Diagram JSON',
     defaultPath: path.join(app.getPath('documents'), 'a.json'),
     filters: [
       { name: 'JSON Files', extensions: ['json'] }
@@ -49,24 +47,26 @@ ipcMain.on('save-json', (event, jsonData: string) => {
     }
   }).catch(err => {
     console.error(err);
+    new Error(err);
   });
 });
 
-ipcMain.handle('open-file-dialog', (event) => {
+ipcMain.handle('open-diagram', async () => {
   return dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
       { name: 'JSON', extensions: ['json'] }
     ]
   }).then(result => {
+
     if (!result.canceled && result.filePaths.length > 0) {
       const data = fs.readFileSync(result.filePaths[0], 'utf8');
-
       return data ? data : {};
     }
+
   }).catch(err => {
     console.log(err);
-    return err;
+    new Error(err);
   });
 });
 
