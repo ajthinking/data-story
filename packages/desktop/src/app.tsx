@@ -1,5 +1,5 @@
 import { DataStory } from '@data-story/ui';
-import { Application, coreNodeProvider } from '@data-story/core';
+import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import { SaveComponent } from './save';
@@ -9,25 +9,26 @@ import '@data-story/ui/data-story.css';
 const container = document.getElementById('root');
 const root = createRoot(container);
 
-const app = new Application();
+export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
+  const app = new Application()
+    .register(coreNodeProvider)
+    .boot();
 
-app.register([
-  coreNodeProvider
-]);
+  // const { diagram } = loadDiagram(LocalStorageKey);
+  // const [initDiagram] = React.useState<Diagram>(diagram);
 
-app.boot();
+  return (
+    <div style={{
+      height: '95vh',
+      margin: '0px',
+    }} data-cy="playground">
+      <DataStory
+        slotComponent={<SaveComponent/>}
+        // initDiagram={initDiagram}
+        server={{ type: 'JS', app }}
+      />
+    </div>
+  );
+};
 
-root.render(<div style={{
-  // height: '400px',
-  height: '95vh',
-  // width: '400px',
-  margin: '0px',
-}}>
-  <DataStory
-    server={{
-      type: 'SOCKET',
-      url: 'http://localhost:3100',
-    }}
-    slotComponent={<SaveComponent/>}
-  />
-</div>);
+root.render(<App />);

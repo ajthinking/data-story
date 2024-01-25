@@ -2,25 +2,14 @@ import { ControlButton } from 'reactflow';
 import React from 'react';
 import { SaveIcon, useDataStoryControls, OpenIcon } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
-import IpcRendererEvent = Electron.IpcRendererEvent;
+import { LocalDiagram } from './types';
+import { getCoreVersion } from './common';
 
-export interface LocalDiagram {
-  type: 'load' | 'save';
-  version: string;
-  name: string;
-  diagram: Diagram;
-}
-
-const getCoreVersion = () => {
-  const { version } = require('@data-story/core/package.json');
-  return version;
-}
-const saveDiagram = (key: string, diagram: Diagram) => {
+const saveDiagram = (diagram: Diagram) => {
 
   const diagramJSON = JSON.stringify({
     type: 'save',
     version: getCoreVersion(),
-    name: key,
     diagram
   } as LocalDiagram);
 
@@ -28,32 +17,28 @@ const saveDiagram = (key: string, diagram: Diagram) => {
 
 };
 
-export const loadDiagram = (key: string): LocalDiagram => {
+export const loadDiagram = async (): Promise<LocalDiagram> => {
   const initDiagram: LocalDiagram = {
     type: 'load',
     version: getCoreVersion(),
-    name: key,
     diagram: null
   }
 
-  window.electron.send('open-file-dialog', key);
-  window.electron.receive('selected-file', (event: IpcRendererEvent, data: any) => {
-    console.log('selected-file', data);
-  });
-  if (typeof window === 'undefined' || !localStorage?.getItem(key)) {
+  const result = await window.electron.openFileDialog();
+  console.log('result', result);
+
+  if(!result && !result.diagram){
     return initDiagram;
   }
 
-  const json = localStorage?.getItem(key);
-  const { name, diagram } = JSON.parse(json);
+  const diagram = JSON.parse(result.diagram);
 
   initDiagram.diagram = new Diagram(diagram.nodes, diagram.links);
-  initDiagram.name = name;
+  console.log('initDiagram', initDiagram);
 
   return initDiagram;
 }
 
-export const LocalStorageKey = 'data-story-diagram';
 
 export const SaveComponent = () => {
   const { getDiagram } = useDataStoryControls()
@@ -65,7 +50,7 @@ export const SaveComponent = () => {
         aria-label="Save"
         onClick={() => {
           const diagram = getDiagram();
-          saveDiagram(LocalStorageKey, diagram);
+          saveDiagram(diagram);
         }}>
         <SaveIcon/>
       </ControlButton>
@@ -73,7 +58,7 @@ export const SaveComponent = () => {
         title="Open"
         aria-label="Open"
         onClick={() => {
-          loadDiagram(LocalStorageKey)
+          loadDiagram()
         }}>
         <OpenIcon />
       </ControlButton>

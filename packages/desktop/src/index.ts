@@ -7,6 +7,7 @@ import fs from 'fs';
 import os from 'os';
 import { hubspotProvider } from '@data-story/hubspot';
 import { DebugableSocketServer } from './DebugableSocketServer';
+import { getCoreVersion } from './common';
 
 // ************************************************************************************************
 // Electron app, window etc
@@ -22,6 +23,60 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+
+// Listen for the 'save-json' message from the renderer process
+ipcMain.on('save-json', (event, jsonData) => {
+
+  // Show the save dialog
+  dialog.showSaveDialog({
+    title: 'Save your JSON file',
+    defaultPath: path.join(app.getPath('documents'), 'a.json'),
+    filters: [
+      { name: 'JSON Files', extensions: ['json'] }
+    ]
+  }).then((file) => {
+    if (!file.canceled && file.filePath) {
+      // Convert the JSON object to a string
+      const jsonContent = JSON.stringify(jsonData, null, 2);
+
+      // Write the file
+      fs.writeFile(file.filePath, jsonContent, (err) => {
+        if (err) {
+          console.error('Failed to save the file:', err);
+        } else {
+          console.log('The file has been saved');
+        }
+      });
+    }
+  }).catch(err => {
+    console.error(err);
+  });
+});
+
+ipcMain.handle('open-file-dialog', (event) => {
+  return dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [
+      { name: 'JSON', extensions: ['json'] }
+    ]
+  }).then(result => {
+    if (!result.canceled && result.filePaths.length > 0) {
+
+      const data = fs.readFileSync(result.filePaths[0], 'utf8');
+      if (!data) return;
+
+      return {
+        type: 'load',
+        version: getCoreVersion(),
+        diagram: JSON.parse(data)
+      };
+    }
+  }).catch(err => {
+    console.log(err);
+    return err;
+  });
+});
 
 const createWindow = (): void => {
   // Create the browser window.
@@ -72,62 +127,6 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
-});
-
-// Listen for the 'save-json' message from the renderer process
-ipcMain.on('save-json', (event, jsonData) => {
-  // dialog.showOpenDialog({ properties: ['openFile', 'multiSelections'] })
-
-  // Show the save dialog
-  dialog.showSaveDialog({
-    title: 'Save your JSON file',
-    defaultPath: path.join(app.getPath('documents'), 'a.json'),
-    filters: [
-      { name: 'JSON Files', extensions: ['json'] }
-    ]
-  }).then((file) => {
-    if (!file.canceled && file.filePath) {
-      // Convert the JSON object to a string
-      const jsonContent = JSON.stringify(jsonData, null, 2);
-
-      // Write the file
-      fs.writeFile(file.filePath, jsonContent, (err) => {
-        if (err) {
-          console.error('Failed to save the file:', err);
-        } else {
-          console.log('The file has been saved');
-        }
-      });
-    }
-  }).catch(err => {
-    console.error(err);
-  });
-});
-
-ipcMain.on('open-file-dialog', (event) => {
-  dialog.showOpenDialog({
-    properties: ['openFile'],
-    filters: [
-      { name: 'JSON', extensions: ['json'] }
-    ]
-  }).then(result => {
-    if (!result.canceled && result.filePaths.length > 0) {
-
-      const data = fs.readFileSync(result.filePaths[0], 'utf8');
-      if (!data) return;
-      const diagram = JSON.parse(data);
-      console.log(diagram);
-
-      event.sender.send('selected-file', {
-        type: 'load',
-        version: '1.0.0',
-        name: 'test',
-        diagram
-      });
-    }
-  }).catch(err => {
-    console.log(err);
-  });
 });
 
 
