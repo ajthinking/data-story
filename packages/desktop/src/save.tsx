@@ -11,7 +11,7 @@ const saveDiagram = (diagram: Diagram) => {
     type: 'save',
     version: getCoreVersion(),
     diagram
-  } as LocalDiagram);
+  } as LocalDiagram, null, 2);
 
   window.electron.send('save-json', diagramJSON);
 
@@ -25,23 +25,33 @@ export const loadDiagram = async (): Promise<LocalDiagram> => {
   }
 
   const result = await window.electron.openFileDialog();
-  console.log('result', result);
+  const diagramInfo = JSON.parse(result);
 
-  if(!result && !result.diagram){
+  if(!diagramInfo && !diagramInfo.diagram){
     return initDiagram;
   }
 
-  const diagram = JSON.parse(result.diagram);
-
+  const diagram = diagramInfo.diagram;
   initDiagram.diagram = new Diagram(diagram.nodes, diagram.links);
-  console.log('initDiagram', initDiagram);
 
   return initDiagram;
 }
 
 
-export const SaveComponent = () => {
+export const SaveComponent = (props: {
+  updateDiagram?: (diagram: Diagram) => void;
+}) => {
   const { getDiagram } = useDataStoryControls()
+  const { updateDiagram } = props;
+
+  const handleOpenFile = async () => {
+    const diagramInfo = await loadDiagram()
+
+    console.log('diagramInfo', diagramInfo.diagram);
+    if(updateDiagram && diagramInfo.diagram){
+      updateDiagram(diagramInfo.diagram);
+    }
+  }
 
   return (
     <>
@@ -57,9 +67,7 @@ export const SaveComponent = () => {
       <ControlButton
         title="Open"
         aria-label="Open"
-        onClick={() => {
-          loadDiagram()
-        }}>
+        onClick={handleOpenFile}>
         <OpenIcon />
       </ControlButton>
     </>

@@ -26,7 +26,7 @@ if (require('electron-squirrel-startup')) {
 
 
 // Listen for the 'save-json' message from the renderer process
-ipcMain.on('save-json', (event, jsonData) => {
+ipcMain.on('save-json', (event, jsonData: string) => {
 
   // Show the save dialog
   dialog.showSaveDialog({
@@ -37,11 +37,9 @@ ipcMain.on('save-json', (event, jsonData) => {
     ]
   }).then((file) => {
     if (!file.canceled && file.filePath) {
-      // Convert the JSON object to a string
-      const jsonContent = JSON.stringify(jsonData, null, 2);
 
       // Write the file
-      fs.writeFile(file.filePath, jsonContent, (err) => {
+      fs.writeFile(file.filePath, jsonData, (err) => {
         if (err) {
           console.error('Failed to save the file:', err);
         } else {
@@ -62,15 +60,9 @@ ipcMain.handle('open-file-dialog', (event) => {
     ]
   }).then(result => {
     if (!result.canceled && result.filePaths.length > 0) {
-
       const data = fs.readFileSync(result.filePaths[0], 'utf8');
-      if (!data) return;
 
-      return {
-        type: 'load',
-        version: getCoreVersion(),
-        diagram: JSON.parse(data)
-      };
+      return data ? data : {};
     }
   }).catch(err => {
     console.log(err);

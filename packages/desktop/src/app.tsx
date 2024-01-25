@@ -14,17 +14,22 @@ export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
     .register(coreNodeProvider)
     .boot();
 
-  // const { diagram } = loadDiagram(LocalStorageKey);
-  // const [initDiagram] = React.useState<Diagram>(diagram);
+  const [initDiagram, setInitDiagram] = React.useState<Diagram>();
+  const updateDiagram = (diagram: Diagram) => {
+    setInitDiagram(diagram);
+  }
 
   return (
     <div style={{
       height: '95vh',
       margin: '0px',
     }} data-cy="playground">
+      <div>
+        {JSON.stringify(initDiagram)}
+      </div>
       <DataStory
-        slotComponent={<SaveComponent/>}
-        // initDiagram={initDiagram}
+        slotComponent={<SaveComponent updateDiagram={ updateDiagram } />}
+        initDiagram={initDiagram}
         server={{ type: 'JS', app }}
       />
     </div>
