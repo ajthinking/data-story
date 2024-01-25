@@ -38,16 +38,12 @@ export const loadDiagram = async (): Promise<LocalDiagram> => {
 }
 
 
-export const SaveComponent = (props: {
-  updateDiagram?: (diagram: Diagram) => void;
-}) => {
-  const { getDiagram } = useDataStoryControls()
-  const { updateDiagram } = props;
+export const SaveComponent = () => {
+  const { getDiagram, updateDiagram } = useDataStoryControls()
 
   const handleOpenFile = async () => {
     const diagramInfo = await loadDiagram()
 
-    console.log('diagramInfo', diagramInfo.diagram);
     if(updateDiagram && diagramInfo.diagram){
       updateDiagram(diagramInfo.diagram);
     }

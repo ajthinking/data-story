@@ -1,4 +1,4 @@
-import { Controls, ControlButton } from 'reactflow';
+import { ControlButton, Controls } from 'reactflow';
 import { RunIcon } from './icons/runIcon';
 import { AddNodeIcon } from './icons/addNodeIcon';
 import { Diagram } from '@data-story/core';
@@ -7,6 +7,7 @@ import React, { useMemo } from 'react';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
+  updateDiagram: (diagram: Diagram) => void;
 };
 
 const DataStoryControlsContext = React.createContext<DataStoryControlsType>(null as unknown as DataStoryControlsType);
@@ -22,7 +23,7 @@ export function useDataStoryControls() {
 export function DataStoryControls({
   hideToolbar = false,
   setShowRunModal,
-  setShowAddNodeModal, 
+  setShowAddNodeModal,
   slotComponent
 }: {
   hideToolbar?: boolean;
@@ -32,31 +33,37 @@ export function DataStoryControls({
 }) {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
+    updateDiagram: state.updateDiagram,
   });
 
-  const { toDiagram } = useStore(selector);
+  const { toDiagram, updateDiagram } = useStore(selector);
 
-  const context: DataStoryControlsType = useMemo(() => ({ getDiagram: () => {
-    return toDiagram();
-  } }), [toDiagram]);
+  const context: DataStoryControlsType = useMemo(() => ({
+    getDiagram: () => {
+      return toDiagram();
+    },
+    updateDiagram: (diagram: Diagram) => {
+      updateDiagram(diagram);
+    }
+  }), [updateDiagram, toDiagram]);
 
-  if(hideToolbar) return null;
+  if (hideToolbar) return null;
 
   return <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
     <ControlButton
       title="Run"
-      aria-label="Run"        
+      aria-label="Run"
       onClick={() => setShowRunModal(true)}
     >
-      <RunIcon />
-    </ControlButton> 
+      <RunIcon/>
+    </ControlButton>
     <ControlButton
       onClick={() => setShowAddNodeModal(true)}
       title="Add Node"
       data-cy="add-node-button"
       aria-label="Add Node"
     >
-      <AddNodeIcon />
+      <AddNodeIcon/>
     </ControlButton>
 
     <DataStoryControlsContext.Provider value={context}>
