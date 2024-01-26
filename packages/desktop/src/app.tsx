@@ -10,9 +10,6 @@ const container = document.getElementById('root');
 const root = createRoot(container);
 
 export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
-  const app = new Application()
-    .register(coreNodeProvider)
-    .boot();
 
   return (
     <div style={{
@@ -21,7 +18,10 @@ export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
     }} data-cy="playground">
       <DataStory
         slotComponent={<SaveComponent  />}
-        server={{ type: 'JS', app }}
+        server={{
+          type: 'SOCKET',
+          url: 'http://localhost:3100',
+        }}
       />
     </div>
   );
