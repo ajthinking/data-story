@@ -1,8 +1,9 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import { Application, coreNodeProvider } from '@data-story/core';
 import { nodeJsProvider, SocketServer } from '@data-story/nodejs';
 import dotenv from 'dotenv';
 import path from 'path';
+import fsAsync from 'fs/promises';
 import fs from 'fs';
 import os from 'os';
 import { hubspotProvider } from '@data-story/hubspot';
@@ -22,12 +23,53 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
+ipcMain.handle('save-diagram', async(event, jsonData: string) => {
+
+  try {
+    // Show the save dialog
+    const file = await dialog.showSaveDialog({
+      title: 'Save your Diagram JSON',
+      defaultPath: path.join(app.getPath('documents'), 'diagram.json'),
+      filters: [
+        { name: 'JSON Files', extensions: ['json'] }
+      ]
+    });
+    if (!file.canceled && file.filePath) {
+      await fsAsync.writeFile(file.filePath, jsonData);
+    }
+  } catch(err) {
+    console.error(err);
+    return err;
+  }
+});
+ipcMain.handle('open-diagram', async(): Promise<string> => {
+  try {
+    const result = await dialog.showOpenDialog({
+      properties: ['openFile'],
+      filters: [
+        { name: 'JSON', extensions: ['json'] }
+      ]
+    });
+
+    if (!result.canceled && result.filePaths.length > 0) {
+      const data = fsAsync.readFile(result.filePaths[0], 'utf8');
+      return data ? data : '{}';
+    }
+    return '{}';
+  } catch(err) {
+    console.error(err);
+    return err;
+  }
+});
+
 const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
     webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
     },
   });
@@ -44,11 +86,10 @@ const createWindow = (): void => {
         ]
       }
     });
-  });  
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
-
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
 };
@@ -58,10 +99,10 @@ const createWindow = (): void => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   createWindow()
-  
+
   const settings = readSettings();
   writeSettings(settings);
-  if(settings.workspace) loadEnvs(settings.workspace);
+  if (settings.workspace) loadEnvs(settings.workspace);
 });
 
 app.on('activate', () => {
@@ -72,9 +113,10 @@ app.on('activate', () => {
   }
 });
 
-// ************************************************************************************************
-// DataStory Server
-// ************************************************************************************************
+
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and import them here.
+
 const dataStory = new Application();
 
 dataStory.register([
@@ -103,7 +145,7 @@ function readSettings() {
       const rawSettings = fs.readFileSync(settingsFilePath).toString();
       return JSON.parse(rawSettings);
     }
-  } catch (err) {
+  } catch(err) {
     console.error('Error reading settings file:', err);
   }
 
@@ -115,7 +157,7 @@ function writeSettings(settings: Record<string, any>) {
     const settingsString = JSON.stringify(settings, null, 2); // Pretty print
     fs.writeFileSync(settingsFilePath, settingsString);
     console.log('Saved settings!')
-  } catch (err) {
+  } catch(err) {
     console.error('Error writing settings file:', err);
   }
 }
