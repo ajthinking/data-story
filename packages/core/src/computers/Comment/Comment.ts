@@ -10,15 +10,13 @@ export const Comment: ComputerConfig = {
       name: 'content',
       label: 'Content',
       help: 'Markdown content',
-      inputMode: {
-        type: 'Stringable',
-        multiline: true,
-        canInterpolate: false,
-        interpolate: false,
-        evaluations: [],
-        casts: [],
-        value: '',
-      },
+      type: 'Stringable',
+      multiline: true,
+      canInterpolate: false,
+      interpolate: false,
+      evaluations: [],
+      casts: [],
+      value: '',
     }    
   ],
 

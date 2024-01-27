@@ -17,22 +17,20 @@ export const ConsoleLog: ComputerConfig = {
       name: 'message',
       label: 'message',
       help: 'What to log. Leave blank to log the whole item.',
-      inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-        evaluations: [
-          jsEvaluation,
-          jsonEvaluation,
-          hjsonEvaluation,
-        ],
-        casts: [
-          numberCast,
-          stringCast,
-        ],
-        value: '',
-      },
+      type: 'Stringable',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
+      evaluations: [
+        jsEvaluation,
+        jsonEvaluation,
+        hjsonEvaluation,
+      ],
+      casts: [
+        numberCast,
+        stringCast,
+      ],
+      value: '',
     }
   ],
 

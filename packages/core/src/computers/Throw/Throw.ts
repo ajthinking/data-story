@@ -15,22 +15,20 @@ export const Throw: ComputerConfig = {
       name: 'message',
       label: 'message',
       help: 'What to throw',
-      inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-        evaluations: [
-          jsEvaluation,
-          jsonEvaluation,
-          hjsonEvaluation,
-        ],
-        casts: [
-          numberCast,
-          stringCast,
-        ],
-        value: 'Some error',
-      },
+      type: 'Stringable',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
+      evaluations: [
+        jsEvaluation,
+        jsonEvaluation,
+        hjsonEvaluation,
+      ],
+      casts: [
+        numberCast,
+        stringCast,
+      ],
+      value: 'Some error',
     }
   ],
 

@@ -20,14 +20,12 @@ export const ReplaceItem: ComputerConfig = {
       name: 'mode',
       label: 'Mode',
       help: '',
-      inputMode: {
-        type: 'Select',
-        value: 'MERGE',
-        options: [
-          { value: 'MERGE', label: 'MERGE' },
-          { value: 'REPLACE', label: 'REPLACE' },
-        ],
-      },
+      type: 'Select',
+      value: 'MERGE',
+      options: [
+        { value: 'MERGE', label: 'MERGE' },
+        { value: 'REPLACE', label: 'REPLACE' },
+      ],
     },
     json_({
       name: 'json',

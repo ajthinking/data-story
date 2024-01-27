@@ -12,16 +12,14 @@ export const Sleep: ComputerConfig = {
       name: 'duration',
       label: 'Duration',
       help: 'How many ms to sleep?', 
-      inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-        casts: [
-          {...numberCast, selected: true}
-        ],
-        value: String(100)
-      },
+      type: 'Stringable',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
+      casts: [
+        {...numberCast, selected: true}
+      ],
+      value: String(100)
     },    
   ],
 

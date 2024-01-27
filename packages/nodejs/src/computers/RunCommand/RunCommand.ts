@@ -30,15 +30,13 @@ export const RunCommand: ComputerConfig = {
       name: 'command',
       label: 'Command',
       help: 'Command to run',
-      inputMode: {
-        type: 'Stringable',
-        multiline: true,
-        canInterpolate: false,
-        interpolate: false,
-        evaluations: [],
-        casts: [],
-        value: 'say "Hello World"',
-      },
+      type: 'Stringable',
+      multiline: true,
+      canInterpolate: false,
+      interpolate: false,
+      evaluations: [],
+      casts: [],
+      value: 'say "Hello World"',
     }    
   ],
 

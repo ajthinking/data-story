@@ -11,16 +11,16 @@ const calculateRows = (content: string) => {
 export function StringableInput({
   name,
   form,
-  inputMode,
+  param,
 }: {
   form: UseFormReturn<{
     [x: string]: any;
   }, any>  
   name: string,
-  inputMode: Stringable
+  param: Stringable
 }) {
   // State to keep track of the number of rows
-  const [rows, setRows] = useState(calculateRows(String(inputMode.value)));
+  const [rows, setRows] = useState(calculateRows(String(param.value)));
 
   // Effect to update rows when the content changes
   useEffect(() => {
@@ -28,7 +28,6 @@ export function StringableInput({
       // console.log({
       //   msg: 'CHANGE!',
       //   name,
-      //   inputMode,
       //   value,
       //   formEvent
       // })
@@ -50,7 +49,7 @@ export function StringableInput({
 
   return (
     <div className="flex w-full text-gray-500">
-      {inputMode.multiline
+      {param.multiline
         ? <textarea
           className="text-xs p-2 w-full bg-gray-50"
           rows={rows}

@@ -23,31 +23,27 @@ export const Signal: ComputerConfig = {
       name: 'period',
       label: 'period',
       help: 'How many ms between each signal?', 
-      inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-        casts: [
-          {...numberCast, selected: true}
-        ],
-        value: String(50)
-      },
+      type: 'Stringable',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
+      casts: [
+        {...numberCast, selected: true}
+      ],
+      value: String(50)
     },
     {
       name: 'count',
       label: 'count',
       help: 'How many times to send the signal?',
-      inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-        casts: [
-          {...numberCast, selected: true}
-        ],
-        value: String(300)
-      },
+      type: 'Stringable',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
+      casts: [
+        {...numberCast, selected: true}
+      ],
+      value: String(300)
     },  
   ],
 

@@ -11,16 +11,14 @@ export const Await: ComputerConfig = {
       name: 'number_of_items',
       label: 'Number of Items',
       help: 'How many items to await?', 
-      inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-        casts: [
-          {...numberCast, selected: true}
-        ],
-        value: 'Infinity'
-      },
+      type: 'Stringable',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
+      casts: [
+        {...numberCast, selected: true}
+      ],
+      value: 'Infinity'
     },    
   ],
 
@@ -28,7 +26,7 @@ export const Await: ComputerConfig = {
   canRun({ input, params }) {
     const haveChunk = input.haveItemsAtInput(
       'input',
-      params.number_of_items.inputMode.value as number
+      params.number_of_items.value as number
     )
 
     const haveRemainder = input.haveAllItemsAtInput('input')

@@ -37,7 +37,7 @@ export function PortSelectionInput({
     form.setValue('outputs', JSON.stringify(node.data.outputs, null, 2))
   }
 
-  const allowCreate = (param.inputMode as PortSelection).allowCreate
+  const allowCreate = (param as PortSelection).allowCreate
 
   return (<div className="group flex flex-col bg-gray-50">
     <div className="flex justify-between">

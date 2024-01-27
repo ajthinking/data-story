@@ -18,7 +18,7 @@ const DataStoryCommentNodeComponent = ({ id, data }: {
 
   const contentParam = data.params.find((param) => param.name === 'content')!
 
-  const htmlContent = markdown.render(contentParam.inputMode.value as string);
+  const htmlContent = markdown.render(contentParam.value as string);
 
   return (
     (

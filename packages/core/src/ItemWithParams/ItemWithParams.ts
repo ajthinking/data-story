@@ -31,13 +31,13 @@ export class ItemWithParams {
         const param = rawParams.find(p => p.name === key);
         if (!param) throw new Error(`Param "${key}" does not exist`);
 
-        if(param.inputMode.type === 'Stringable') return prepareStringable(value, param);
+        if(param.type === 'Stringable') return prepareStringable(value, param);
 
         // TODO
-        // if(param.inputMode.type === 'Repeatable') return prepareRepeatable(value, param);
+        // if(param.type === 'Repeatable') return prepareRepeatable(value, param);
 
         // Default to the raw value
-        return param.inputMode.value;
+        return param.value;
       }
     });
   }
