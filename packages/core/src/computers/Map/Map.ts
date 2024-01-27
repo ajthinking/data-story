@@ -14,45 +14,39 @@ export const Map: ComputerConfig = {
       name: 'properties',
       label: 'Properties',
       help: 'The properties to create',
-      inputMode: {
-        type: 'Repeatable',
-        row: [
-          {
-            name: 'key',
-            label: 'Key',
-            help: 'The key to create',
-            inputMode: {
-              type: 'Stringable',
-              multiline: false,
-              canInterpolate: true,
-              interpolate: true,
-              interpolationsFromPort: ['input'],
-              value: '',
-            },
-          },
-          {
-            name: 'value',
-            label: 'Value',
-            help: 'The value to create',
-            inputMode: {
-              type: 'Stringable',
-              multiline: true,
-              canInterpolate: true,
-              interpolate: true,
-              evaluations: [
-                jsonEvaluation,
-                jsEvaluation,
-              ],
-              casts: [
-                numberCast,
-                stringCast,
-              ],              
-              value: '',
-            },
-          },          
-        ],
-        value: [],
-      },
+      type: 'Repeatable',
+      row: [
+        {
+          name: 'key',
+          label: 'Key',
+          help: 'The key to create',
+          type: 'Stringable',
+          multiline: false,
+          canInterpolate: true,
+          interpolate: true,
+          interpolationsFromPort: ['input'],
+          value: '',
+        },
+        {
+          name: 'value',
+          label: 'Value',
+          help: 'The value to create',
+          type: 'Stringable',
+          multiline: true,
+          canInterpolate: true,
+          interpolate: true,
+          evaluations: [
+            jsonEvaluation,
+            jsEvaluation,
+          ],
+          casts: [
+            numberCast,
+            stringCast,
+          ],              
+          value: '',
+        },          
+      ],
+      value: [],
     },
   ],
 

@@ -80,7 +80,7 @@ export class DiagramBuilder {
 
       if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
 
-      param.inputMode.value = value
+      param.value = value
     }
     
     if(this.aboveDirective) {

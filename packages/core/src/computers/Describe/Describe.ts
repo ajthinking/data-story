@@ -18,31 +18,27 @@ export const Describe: ComputerConfig = {
       name: 'path',
       label: 'Path',
       help: 'Dot notated path to desired description root. Leave empty to use the root of the collection.',
-      inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-        casts: [
-          {...stringCast, selected: true}
-        ],
-        value: ''
-      },
+      type: 'Stringable',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
+      casts: [
+        {...stringCast, selected: true}
+      ],
+      value: ''
     },
     {
       name: 'truncate_limit',
       label: 'Truncate limit',
       help: 'How many keys to display?', 
-      inputMode: {
-        type: 'Stringable',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-        casts: [
-          {...numberCast, selected: true}
-        ],
-        value: String(10)
-      },
+      type: 'Stringable',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
+      casts: [
+        {...numberCast, selected: true}
+      ],
+      value: String(10)
     },    
   ],
   

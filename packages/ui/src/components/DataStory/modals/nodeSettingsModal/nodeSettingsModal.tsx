@@ -37,7 +37,7 @@ export const NodeSettingsModalContent = () => {
     label: node?.data?.label,
     outputs: JSON.stringify(node?.data?.outputs, null, 2),
     params: node?.data?.params.reduce((acc, param: Param) => {
-      acc[param.name] = param.inputMode.value
+      acc[param.name] = param.value
       return acc
 
     }, {} as Record<string, ParamValue>)
@@ -66,7 +66,7 @@ export const NodeSettingsModalContent = () => {
             // Param fields
             for (const [key, value] of Object.entries(submitted.params)) {
               const param = newData.params.find((p) => p.name === key)!;
-              param.inputMode.value = value;
+              param.value = value;
             }
 
             n.data = newData;

@@ -9,20 +9,20 @@ import { DataStoryNode } from '../../Node/DataStoryNode';
 export function RepeatableInput({
   name,
   form,
-  mode,
+  param,
   node,
 }: {
   form: UseFormReturn<{
     [x: string]: any;
   }, any>  
   name: string,
-  mode: RepeatableMode<Param[]>
+  param: Repeatable<Param[]>
   node: DataStoryNode,
 }) {
   const defaultRows = () => {
-    if(mode.value.length === 0) return [structuredClone(mode.row)]
+    if(param.value.length === 0) return [structuredClone(param.row)]
     
-    return mode.value
+    return param.value
   }
 
   const [localRows, setLocalRows] = useState<any[]>(defaultRows());  
@@ -37,12 +37,12 @@ export function RepeatableInput({
 
     console.log(
       'param.row',
-      structuredClone(mode.row)
+      structuredClone(param.row)
     )
 
     setLocalRows([
       ...JSON.parse(JSON.stringify((localRows))),
-      JSON.parse(JSON.stringify((mode.row)))
+      JSON.parse(JSON.stringify((param.row)))
     ])    
   }
 
@@ -51,7 +51,7 @@ export function RepeatableInput({
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs uppercase bg-gray-50 text-gray-400">
           <tr>
-            {mode.row.map((column: any) => {
+            {param.row.map((column: any) => {
               return <th
                 key={column.name}
                 scope="col"
@@ -66,20 +66,20 @@ export function RepeatableInput({
               className="bg-white border-b dark:border-gray-700"
               key={i}
             >
-              {mode.row.map((column: Param) => {
+              {param.row.map((column: Param) => {
                 return (<td
                   key={column.name}
                   scope="row"
                   className="border font-medium whitespace-nowrap bg-gray-50 align-top"
                 >
-                  {column.inputMode.type === 'Stringable' && <StringableWithConfig
+                  {column.type === 'Stringable' && <StringableWithConfig
                     form={form}
                     param={column}
                     {...column}
                     name={`${name}.${i}.${column.name}`}
                     node={node}
                   />}
-                  {column.inputMode.type === 'PortSelection' && <PortSelectionInput
+                  {column.type === 'PortSelection' && <PortSelectionInput
                     form={form}
                     param={column}
                     {...column}

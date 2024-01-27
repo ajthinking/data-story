@@ -17,26 +17,22 @@ export const Filter: ComputerConfig = {
       name: 'port_map',
       label: 'Port Map',
       help: 'Where to map items',
-      inputMode: {
-        type: 'Repeatable',
-        row: [
-          str({
-            name: 'value',
-            value: 'id',
-          }),
-          {
-            name: 'port',
-            label: 'Port',
-            help: 'The port to map to',
-            inputMode: {
-              type: 'PortSelection',
-              value: '',
-              allowCreate: true,
-            },
-          }
-        ],
-        value: [],
-      },
+      type: 'Repeatable',
+      row: [
+        str({
+          name: 'value',
+          value: 'id',
+        }),
+        {
+          name: 'port',
+          label: 'Port',
+          help: 'The port to map to',
+          type: 'PortSelection',
+          value: '',
+          allowCreate: true,
+        }
+      ],
+      value: [],
     },
   ],
 

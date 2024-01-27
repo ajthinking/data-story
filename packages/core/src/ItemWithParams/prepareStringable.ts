@@ -10,15 +10,14 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   // **********************************************************************
   
   // Ensure param is Stringable
-  if(param.inputMode.type !== 'Stringable') throw new Error(`Param "${param.name}" must be Stringable`);
+  if(param.type !== 'Stringable') throw new Error(`Param "${param.name}" must be Stringable`);
   
-  const inputMode = param.inputMode;
-  let transformedValue: string | any = String(param.inputMode.value);
+  let transformedValue: string | any = String(param.value);
 
   // **********************************************************************
   // INTERPOLATE
   // **********************************************************************
-  if(inputMode.interpolate) {
+  if(param.interpolate) {
     /** Replace template strings with item properties
       * Example: { greeting: "Hi ${name}!"}
       * Becomes: { greeting: "Hi Bob!"}
@@ -47,7 +46,7 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   // **********************************************************************
   // EVALUATE
   // **********************************************************************
-  const evaluations = inputMode.evaluations || [];
+  const evaluations = param.evaluations || [];
   const selectedEvaluation = evaluations.find(e => e.selected);
 
   if(selectedEvaluation?.type === 'JSON') {
@@ -66,7 +65,7 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   // **********************************************************************
   // CAST
   // **********************************************************************
-  const casts = inputMode.casts || [];
+  const casts = param.casts || [];
   const selectedCast = casts.find(c => c.selected);
 
   if(selectedCast?.type === 'String') {

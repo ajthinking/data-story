@@ -88,7 +88,7 @@ export const getAll = (name: string) => {
   }
   
   const entityParam = config.params!.find((p) => p.name === 'entity')
-  entityParam!.inputMode.value = name.toLowerCase()
+  entityParam!.value = name.toLowerCase()
 
   return config
 }

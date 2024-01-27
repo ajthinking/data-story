@@ -18,15 +18,13 @@ export const ListFiles: ComputerConfig = {
       name: 'path',
       label: 'Path',
       help: 'Dir to list',
-      inputMode: {
-        type: 'Stringable',
-        multiline: true,
-        canInterpolate: false,
-        interpolate: false,
-        evaluations: [],
-        casts: [],
-        value: '/',
-      },
+      type: 'Stringable',
+      multiline: true,
+      canInterpolate: false,
+      interpolate: false,
+      evaluations: [],
+      casts: [],
+      value: '/',
     }    
   ],
 

@@ -88,7 +88,7 @@ export class ComputerTester {
       this.computer.run({
         input: this.inputDevice,
         output: this.outputDevice,
-        params: toLookup(this.computer.params, 'name', 'inputMode.value'),
+        params: toLookup(this.computer.params, 'name', 'value'),
         storage: new NullStorage(),
         hooks: this.hooksDevice,
         executorFactory: (diagram: any) => {
@@ -247,7 +247,7 @@ export class ComputerTester {
       const hasExplicitValue = this.explicitParams.hasOwnProperty(param.name)
 
       if(hasExplicitValue) {
-        param.inputMode.value = this.explicitParams[param.name]
+        param.value = this.explicitParams[param.name]
         continue
       }
     }

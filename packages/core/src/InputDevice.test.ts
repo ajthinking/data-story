@@ -212,13 +212,11 @@ describe('params', () => {
       name: 'greeting',
       label: 'Greeting',
       help: 'The greeting to use',
-      inputMode: {
-        type: 'Stringable',
-        value: 'Hello ${name}',
-        multiline: false,
-        canInterpolate: true,
-        interpolate: true,
-      } as Stringable,
+      type: 'Stringable',
+      value: 'Hello ${name}',
+      multiline: false,
+      canInterpolate: true,
+      interpolate: true,
     }]
 
     const input = new InputDevice(node, diagram, memory, params)

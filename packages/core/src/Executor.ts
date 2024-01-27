@@ -68,7 +68,7 @@ export class Executor implements ExecutorInterface {
         computer.run({
           input: inputDevice,
           output: outputDevice,
-          params: toLookup(node.params, 'name', 'inputMode.value'),
+          params: toLookup(node.params, 'name', 'value'),
           storage: this.storage,
           hooks: {
             register: (hook: Hook) => {

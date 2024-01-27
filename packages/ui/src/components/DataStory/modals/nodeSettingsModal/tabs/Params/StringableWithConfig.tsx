@@ -10,7 +10,7 @@ export function StringableWithConfig({
   name,
   node,
 }: {
-  param: Param
+  param: Stringable
   form: UseFormReturn<{
     [x: string]: any;
   }, any>,
@@ -21,11 +21,10 @@ export function StringableWithConfig({
     <StringableInput
       form={form}
       {...param}
-      inputMode={param.inputMode as Stringable}
+      param={param as Stringable}
       name={name ?? param.name}
     />
     <DropDown optionGroups={[
-      // inputModeOptions(),
       paramOptions(param, node),
       evaluationOptions(param),
       castOptions(param),
@@ -33,24 +32,8 @@ export function StringableWithConfig({
   </div>) 
 }
 
-// const inputModeOptions = (): OptionGroup => {
-//   return {
-//     label: 'Modes',
-//     options: [
-//       // For now lets assume that all params are stringable and only stringable
-//       {
-//         label: 'Stringable',
-//         value: 'Stringable',
-//         callback: (options) => {},
-//       }
-//     ]
-//   }
-// }
-
-const paramOptions = (param: Param, node: DataStoryNode): OptionGroup | undefined => {
-  const inputMode = param.inputMode as Stringable
-
-  const portNames = inputMode.interpolationsFromPort ?? []
+const paramOptions = (param: Stringable, node: DataStoryNode): OptionGroup | undefined => {
+  const portNames = param.interpolationsFromPort ?? []
 
   if(portNames.length > 1) throw new Error('Only one port is supported for now')
 
@@ -75,11 +58,9 @@ const paramOptions = (param: Param, node: DataStoryNode): OptionGroup | undefine
 }
 
 const evaluationOptions = (
-  param: Param
+  param: Stringable
 ): OptionGroup | undefined => {
-  const inputMode = param.inputMode as Stringable
-
-  const evaluations = inputMode.evaluations ?? []
+  const evaluations = param.evaluations ?? []
 
   if(evaluations.length === 0) return undefined
 
@@ -106,11 +87,9 @@ const evaluationOptions = (
 }
 
 export const castOptions = (
-  param: Param,
+  param: Stringable,
 ): OptionGroup => {
-  const inputMode = param.inputMode as Stringable
-
-  const castOptions = inputMode.casts ?? []
+  const castOptions = param.casts ?? []
 
   return {
     label: 'Cast',
