@@ -10,8 +10,8 @@ export const Await: ComputerConfig = {
     {
       name: 'number_of_items',
       label: 'Number of Items',
-      help: 'How many items to await?', 
-      type: 'Stringable',
+      help: 'How many items to await?',
+      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -19,7 +19,7 @@ export const Await: ComputerConfig = {
         {...numberCast, selected: true}
       ],
       value: 'Infinity'
-    },    
+    },
   ],
 
 
@@ -40,7 +40,7 @@ export const Await: ComputerConfig = {
 
       const pulledCount = incoming.length
       const chunkSize = params.number_of_items as number
-      
+
       output.push(incoming)
 
       if(pulledCount < chunkSize) break;

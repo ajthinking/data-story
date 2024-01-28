@@ -18,14 +18,14 @@ export const ListFiles: ComputerConfig = {
       name: 'path',
       label: 'Path',
       help: 'Dir to list',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: true,
       canInterpolate: false,
       interpolate: false,
       evaluations: [],
       casts: [],
       value: '/',
-    }    
+    }
   ],
 
   async *run({ input, output }) {
@@ -40,7 +40,7 @@ export const ListFiles: ComputerConfig = {
             type: entry.isDirectory() ? 'directory' : 'file',
             fullPath: nodePath.join(path, entry.name),
           };
-        });      
+        });
 
       output.push(entries)
 

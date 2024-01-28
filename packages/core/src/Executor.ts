@@ -82,15 +82,15 @@ export class Executor implements ExecutorInterface {
         }),
       )
     }
-  }  
+  }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {
     this.boot()
     this.memory.pushHistoryMessage('Starting execution 🚀')
 
     let pendingPromises: Promise<void>[] = []
-    let executionError: Error | undefined     
-    
+    let executionError: Error | undefined
+
     while(!this.isComplete() && !executionError) {
       // cleanup old promises that are done
       pendingPromises = await this.clearFinishedPromises(pendingPromises)
@@ -103,7 +103,7 @@ export class Executor implements ExecutorInterface {
         this.memory.setNodeStatus(node.id, 'BUSY')
 
         // Run
-        const runner = this.memory.getNodeRunner(node.id)!; 
+        const runner = this.memory.getNodeRunner(node.id)!;
         return runner.next()
           .then((result: IteratorResult<undefined, void>) => {
             if(result.done) {
@@ -126,7 +126,7 @@ export class Executor implements ExecutorInterface {
 
             // Not done, so node is available again!
             this.memory.setNodeStatus(node.id, 'AVAILABLE')
-          })        
+          })
           .catch((error: Error) => {
             console.log('Registering an execution error')
             this.memory.pushHistoryMessage(error.message || 'Error in node')
@@ -258,7 +258,7 @@ export class Executor implements ExecutorInterface {
   protected attemptToMarkNodeComplete(node: Node) {
     // Node must not be busy
     if(this.memory.getNodeStatus(node.id) === 'BUSY') return;
-    
+
     // Node must have no awaiting items at links
     const input = this.memory.getInputDevice(node.id)!
     if(input.haveItemsAtAnyInput()) return;
@@ -269,7 +269,7 @@ export class Executor implements ExecutorInterface {
     for(const ancestor of ancestors) {
       if(this.memory.getNodeStatus(ancestor.id) !== 'COMPLETE') return;
     }
-    
+
     // Passed all checks, so mark as complete
     this.memory.setNodeStatus(node.id, 'COMPLETE')
   }

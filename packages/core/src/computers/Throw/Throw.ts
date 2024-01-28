@@ -15,7 +15,7 @@ export const Throw: ComputerConfig = {
       name: 'message',
       label: 'message',
       help: 'What to throw',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,

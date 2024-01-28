@@ -21,7 +21,7 @@ export const Select = ({ register, label, id, options }: {
           value={option}
           className="text-gray-400"
         >{option}</option>)
-      })} 
+      })}
     </select>
   </div>)
 }

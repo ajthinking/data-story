@@ -1,4 +1,4 @@
-import { Param, Repeatable, Stringable } from '../Param';
+import { Param, RepeatableParam, StringableParam } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';

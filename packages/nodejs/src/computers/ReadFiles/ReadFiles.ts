@@ -20,7 +20,7 @@ export const ReadFiles: ComputerConfig = {
       name: 'include',
       label: 'Include',
       help: 'Glob pattern to include',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: true,
       canInterpolate: true,
       interpolate: true,
@@ -32,15 +32,15 @@ export const ReadFiles: ComputerConfig = {
       name: 'ignore',
       label: 'Ignore',
       help: 'Glob pattern to ignore',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: true,
       canInterpolate: true,
       interpolate: true,
       evaluations: [],
       casts: [],
       value: '**/node_modules/**',
-    },        
-  ],  
+    },
+  ],
 
   async *run({ input, output }) {
     const [ incoming ] = input.pull(1)

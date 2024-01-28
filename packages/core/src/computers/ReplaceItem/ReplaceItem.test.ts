@@ -46,7 +46,7 @@ it('merges items when mode is set to MERGE', () => {
         properties: {
           newProp: 'newPropValue',
         }
-      },      
+      },
       {
         properties: {
           existingProp: 'existingPropValue',

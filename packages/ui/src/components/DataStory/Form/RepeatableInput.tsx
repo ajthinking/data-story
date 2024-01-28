@@ -1,4 +1,4 @@
-import { Param, Repeatable as RepeatableMode, Repeatable } from '@data-story/core';
+import { Param, RepeatableParam } from '@data-story/core';
 import { useState } from 'react';
 import { UseFormRegister, UseFormReturn } from 'react-hook-form';
 import { StringableInput } from './StringableInput';
@@ -14,18 +14,18 @@ export function RepeatableInput({
 }: {
   form: UseFormReturn<{
     [x: string]: any;
-  }, any>  
+  }, any>
   name: string,
-  param: Repeatable<Param[]>
+  param: RepeatableParam<Param[]>
   node: DataStoryNode,
 }) {
   const defaultRows = () => {
     if(param.value.length === 0) return [structuredClone(param.row)]
-    
+
     return param.value
   }
 
-  const [localRows, setLocalRows] = useState<any[]>(defaultRows());  
+  const [localRows, setLocalRows] = useState<any[]>(defaultRows());
 
   const addRow = () => {
     console.log('Adding row!')
@@ -43,7 +43,7 @@ export function RepeatableInput({
     setLocalRows([
       ...JSON.parse(JSON.stringify((localRows))),
       JSON.parse(JSON.stringify((param.row)))
-    ])    
+    ])
   }
 
   return (
@@ -57,7 +57,7 @@ export function RepeatableInput({
                 scope="col"
                 className="px-6 py-3 border"
               >{column.label}</th>
-            })}            
+            })}
           </tr>
         </thead>
         <tbody>
@@ -72,20 +72,20 @@ export function RepeatableInput({
                   scope="row"
                   className="border font-medium whitespace-nowrap bg-gray-50 align-top"
                 >
-                  {column.type === 'Stringable' && <StringableWithConfig
+                  {column.type === 'StringableParam' && <StringableWithConfig
                     form={form}
                     param={column}
                     {...column}
                     name={`${name}.${i}.${column.name}`}
                     node={node}
                   />}
-                  {column.type === 'PortSelection' && <PortSelectionInput
+                  {column.type === 'PortSelectionParam' && <PortSelectionInput
                     form={form}
                     param={column}
                     {...column}
                     name={`${name}.${i}.${column.name}`}
                     node={node}
-                  />}                         
+                  />}
                 </td>)
               })}
             </tr>)

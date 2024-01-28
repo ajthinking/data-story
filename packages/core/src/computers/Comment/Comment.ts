@@ -10,14 +10,14 @@ export const Comment: ComputerConfig = {
       name: 'content',
       label: 'Content',
       help: 'Markdown content',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: true,
       canInterpolate: false,
       interpolate: false,
       evaluations: [],
       casts: [],
       value: '',
-    }    
+    }
   ],
 
   async *run({}) {},

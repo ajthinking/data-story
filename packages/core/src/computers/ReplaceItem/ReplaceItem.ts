@@ -20,7 +20,7 @@ export const ReplaceItem: ComputerConfig = {
       name: 'mode',
       label: 'Mode',
       help: '',
-      type: 'Select',
+      type: 'SelectParam',
       value: 'MERGE',
       options: [
         { value: 'MERGE', label: 'MERGE' },
@@ -38,7 +38,7 @@ export const ReplaceItem: ComputerConfig = {
       ]
     })
   ],
-  
+
   async *run({ input, output, params }) {
     while(true) {
       const incoming = input.pull()

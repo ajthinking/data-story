@@ -1,14 +1,14 @@
 import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { InputDevice } from './InputDevice'
-import { Param, Stringable } from './Param'
+import { Param, StringableParam } from './Param'
 import { Node } from './types/Node'
 
 describe('pull', () => {
   it('returns items at port named "input" wrapped as ItemWithParams', () => {
     const node: Node = {
       id: 'target',
-      type: 'node-type',  
+      type: 'node-type',
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
       params: []
@@ -24,7 +24,7 @@ describe('pull', () => {
     const memory = new ExecutionMemory({
       linkItems: new Map()
         .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])      
+        .set('link-2', [{i: 3}, {i: 4}])
     })
 
     const input = new InputDevice(node, diagram, memory, [])
@@ -43,7 +43,7 @@ describe('pull', () => {
     expect(() => {
       const node: Node = {
         id: 'target',
-        type: 'node-type',  
+        type: 'node-type',
         inputs: [{id: 'target-input-id', name: 'some-other-name', schema: {}}],
         outputs: [],
         params: []
@@ -60,7 +60,7 @@ describe('pull', () => {
   it('removes the items pulled from the links', () => {
     const node: Node = {
       id: 'target',
-      type: 'node-type',  
+      type: 'node-type',
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
       params: []
@@ -76,7 +76,7 @@ describe('pull', () => {
     const memory = new ExecutionMemory({
       linkItems: new Map()
         .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])      
+        .set('link-2', [{i: 3}, {i: 4}])
     })
 
     const input = new InputDevice(node, diagram, memory, [])
@@ -93,7 +93,7 @@ describe('pull', () => {
   it('may pull a specified number of items', () => {
     const node: Node = {
       id: 'target',
-      type: 'node-type',  
+      type: 'node-type',
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
       params: []
@@ -109,7 +109,7 @@ describe('pull', () => {
     const memory = new ExecutionMemory({
       linkItems: new Map()
         .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])      
+        .set('link-2', [{i: 3}, {i: 4}])
     })
 
     const input = new InputDevice(node, diagram, memory, [])
@@ -117,14 +117,14 @@ describe('pull', () => {
     expect(input.pull(1)).toMatchObject([{ value: {i: 1} }])
     expect(input.pull(2)).toMatchObject([{ value: {i: 2} }, { value: {i: 3} }])
     expect(input.pull(3)).toMatchObject([{ value: {i: 4} }])
-  })  
+  })
 })
 
 describe('pullFrom', () => {
   it('returns items at named port', () => {
     const node: Node = {
       id: 'target',
-      type: 'node-type',  
+      type: 'node-type',
       inputs: [{id: 'target-input-id', name: 'numbers', schema: {}}],
       outputs: [],
       params: []
@@ -140,7 +140,7 @@ describe('pullFrom', () => {
     const memory = new ExecutionMemory({
       linkItems: new Map()
         .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])      
+        .set('link-2', [{i: 3}, {i: 4}])
     })
 
     const input = new InputDevice(node, diagram, memory, [])
@@ -156,7 +156,7 @@ describe('pullFrom', () => {
   it('removes the items pulled from the links', () => {
     const node: Node = {
       id: 'target',
-      type: 'node-type',  
+      type: 'node-type',
       inputs: [{id: 'target-input-id', name: 'numbers', schema: {}}],
       outputs: [],
       params: []
@@ -172,7 +172,7 @@ describe('pullFrom', () => {
     const memory = new ExecutionMemory({
       linkItems: new Map()
         .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])      
+        .set('link-2', [{i: 3}, {i: 4}])
     })
 
     const input = new InputDevice(node, diagram, memory, [])
@@ -184,14 +184,14 @@ describe('pullFrom', () => {
 
     expect(atLink1).toMatchObject([])
     expect(atLink2).toMatchObject([])
-  })  
+  })
 })
 
 describe('params', () => {
   it('has getters for params returning interpolated values', () => {
     const node: Node = {
       id: 'target',
-      type: 'node-type',  
+      type: 'node-type',
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
       params: []
@@ -205,14 +205,14 @@ describe('params', () => {
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
-        .set('link-1', [{ name: 'Bob' }])      
+        .set('link-1', [{ name: 'Bob' }])
     })
 
     const params: Param[] = [{
       name: 'greeting',
       label: 'Greeting',
       help: 'The greeting to use',
-      type: 'Stringable',
+      type: 'StringableParam',
       value: 'Hello ${name}',
       multiline: false,
       canInterpolate: true,
