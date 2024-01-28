@@ -21,7 +21,7 @@ const Template: ComputerConfig = {
       label: 'Properties',
       help: 'Comma separated list of properties.',
       value: '',
-    }),     
+    }),
     num({
       name: 'limit',
       label: 'Limit',
@@ -52,7 +52,7 @@ export const batchUpdate = (name: string) => {
     label: `${name}.batchUpdate`,
     run,
   }
-  
+
   const entityParam = config.params!.find((p) => p.name === 'entity')
   entityParam!.value = name.toLowerCase()
 

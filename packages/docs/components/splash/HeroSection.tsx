@@ -4,7 +4,7 @@ import NodeDemo from '../demos/NodeDemo'
 export default () => {
   return (
     <div className="w-full flex justify-center my-8 sm:my-24 mb-48">
-      <div className="flex flex-col md:flex-row w-full max-w-6xl justify-around">     
+      <div className="flex flex-col md:flex-row w-full max-w-6xl justify-around">
         <section className="flex flex px-4 sm:px-6 lg:px-8">
           <div
             className="mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:pl-8 flex lg:flex-justify lg:flex flex-col lg:flex-row">
@@ -29,10 +29,10 @@ export default () => {
               </div>
             </div>
           </div>
-        </section>          
+        </section>
         <div className="flex flex-1 flex-initial w-full min-w-sm h-64 lg:mt-16 mr-8">
           <HeroFlow />
-        </div>        
+        </div>
       </div>
     </div>
   )

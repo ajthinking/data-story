@@ -30,14 +30,14 @@ export const RunCommand: ComputerConfig = {
       name: 'command',
       label: 'Command',
       help: 'Command to run',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: true,
       canInterpolate: false,
       interpolate: false,
       evaluations: [],
       casts: [],
       value: 'say "Hello World"',
-    }    
+    }
   ],
 
   async *run({ input, output, params }) {
@@ -66,7 +66,7 @@ export const RunCommand: ComputerConfig = {
         output.pushTo('error', [error])
         yield;
         continue;
-      }      
+      }
 
       throw new Error('Unknown exec result!')
     }

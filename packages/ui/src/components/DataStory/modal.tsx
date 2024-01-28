@@ -14,7 +14,7 @@ export function Modal({
   onPrimaryAction?: () => void;
 }) {
   useEscapeKey(() => setShowModal(false));
-  
+
   const modalRef = useRef<HTMLDivElement | null>(null);
 
   // Listen for click outside
@@ -65,4 +65,3 @@ export function Modal({
     <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
   </>;
 }
-  

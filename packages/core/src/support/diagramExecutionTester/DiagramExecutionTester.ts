@@ -19,7 +19,7 @@ export class DiagramExecutionTester {
 
   async ok() {
     const executor = new Executor(
-      this.diagram, 
+      this.diagram,
       // TODO: this should be injectable, not hardcoded take all
       new Map(Object.values(computerConfigs).map(config => {
         const computer = new ComputerFactory().get(config);
@@ -27,9 +27,9 @@ export class DiagramExecutionTester {
       })),
       await this.makeStorage()
     )
-    
+
     const execution = executor.execute()
-  
+
     const updates: ExecutionUpdate[] = []
     let succeeded: boolean;
     let errorMessage: string | undefined;
@@ -69,7 +69,7 @@ export class DiagramExecutionTester {
 
     return this
   }
-  
+
 
   protected async makeStorage() {
     const storage = new NullStorage()
@@ -89,10 +89,10 @@ export class DiagramExecutionTester {
 
   const diagram = new DiagramBuilder()
     .add(CreateJson)
-    .get()    
+    .get()
 
   whenRunning(diagram)
     .expectSuccess()
     .ok()
-    
+
 */

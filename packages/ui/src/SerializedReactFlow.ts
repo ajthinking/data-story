@@ -31,7 +31,7 @@ export type SerializedReactFlowNode = {
     outputs: {
       id: string,
       name: string,
-      schema: any,      
+      schema: any,
     }[],
     params: Param[],
   },

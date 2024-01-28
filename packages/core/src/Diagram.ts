@@ -22,7 +22,7 @@ export class Diagram {
     return this.nodes.find(node => {
       return node.inputs.find(input => input.id === portId)
     })
-  }  
+  }
 
   nodeWithOutputPortId(portId: PortId): Node | undefined {
     return this.nodes.find(node => {
@@ -32,13 +32,13 @@ export class Diagram {
 
   linksAtInput(node: Node, name: string): Link[] {
     const port = node.inputs.find(input => input.name === name)!
-    
+
     return this.linksConnectedToPortId(port.id)
   }
 
   linksAtOutput(node: Node, name: string): Link[] {
     const port = node.outputs.find(input => input.name === name)!
-    
+
     return this.linksConnectedToPortId(port.id)
   }
 

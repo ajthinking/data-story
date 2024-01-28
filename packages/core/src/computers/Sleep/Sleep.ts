@@ -11,8 +11,8 @@ export const Sleep: ComputerConfig = {
     {
       name: 'duration',
       label: 'Duration',
-      help: 'How many ms to sleep?', 
-      type: 'Stringable',
+      help: 'How many ms to sleep?',
+      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -20,7 +20,7 @@ export const Sleep: ComputerConfig = {
         {...numberCast, selected: true}
       ],
       value: String(100)
-    },    
+    },
   ],
 
   async *run({ input, output }) {

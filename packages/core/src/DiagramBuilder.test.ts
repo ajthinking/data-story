@@ -18,7 +18,7 @@ describe('add', () => {
       .add(Pass)
       .add(Ignore)
       .get()
-    
+
     const nodeIds = diagram.nodes.map(node => node.id)
     const nodeTypes = diagram.nodes.map(node => node.type)
     const nodeInputs = diagram.nodes.map(node => node.inputs)
@@ -57,7 +57,7 @@ describe('add', () => {
     const diagram = new DiagramBuilder()
       .add(Signal, { period: 99 })
       .get()
-    
+
     const periodParam = diagram
       .nodes[0]
       .params
@@ -91,7 +91,7 @@ describe('add', () => {
         }
       },
     ])
-  })  
+  })
 
   it('links nodes together if possible', () => {
     const diagram = new DiagramBuilder()

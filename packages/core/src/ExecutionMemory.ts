@@ -24,7 +24,7 @@ export class ExecutionMemory {
   inputDevices: Map<NodeId, InputDeviceInterface>
   outputDevices: Map<NodeId, OutputDeviceInterface>
   hooks: Hook[]
-  
+
   history: string[] = []
 
   constructor(values: MemoryValues = {}) {

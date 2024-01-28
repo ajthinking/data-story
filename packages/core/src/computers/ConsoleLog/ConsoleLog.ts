@@ -17,7 +17,7 @@ export const ConsoleLog: ComputerConfig = {
       name: 'message',
       label: 'message',
       help: 'What to log. Leave blank to log the whole item.',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -42,7 +42,7 @@ export const ConsoleLog: ComputerConfig = {
         hooks.register({
           type: 'CONSOLE_LOG',
           args: [
-            // If nothing passed log the whole item 
+            // If nothing passed log the whole item
             !rawParams.message
               ? item.value
               : item.params.message

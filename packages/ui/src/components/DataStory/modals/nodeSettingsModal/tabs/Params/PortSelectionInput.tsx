@@ -1,4 +1,4 @@
-import { Param, PortSelection } from '@data-story/core'
+import { Param, PortSelectionParam } from '@data-story/core'
 import { UseFormReturn } from 'react-hook-form';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
 import { useState } from 'react';
@@ -37,7 +37,7 @@ export function PortSelectionInput({
     form.setValue('outputs', JSON.stringify(node.data.outputs, null, 2))
   }
 
-  const allowCreate = (param as PortSelection).allowCreate
+  const allowCreate = (param as PortSelectionParam).allowCreate
 
   return (<div className="group flex flex-col bg-gray-50">
     <div className="flex justify-between">
@@ -69,10 +69,10 @@ export function PortSelectionInput({
         defaultValue={newPortSchema}
         onChange={(e) => setNewPortSchema(e.target.value)}
       />
-      <button 
+      <button
         className="bg-gray-50 px-2 py-1 border border-gray-300"
         onClick={onAddPort}
       >Save</button>
     </div>}
-  </div>) 
+  </div>)
 }

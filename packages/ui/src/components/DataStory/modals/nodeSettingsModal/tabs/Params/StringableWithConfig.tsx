@@ -1,4 +1,4 @@
-import { Param, Stringable } from '@data-story/core'
+import { Param, StringableParam } from '@data-story/core'
 import { StringableInput } from '../../../../Form/StringableInput'
 import { UseFormReturn } from 'react-hook-form';
 import { DropDown, Option, OptionGroup } from '../../../../../DropDown';
@@ -10,7 +10,7 @@ export function StringableWithConfig({
   name,
   node,
 }: {
-  param: Stringable
+  param: StringableParam
   form: UseFormReturn<{
     [x: string]: any;
   }, any>,
@@ -21,7 +21,7 @@ export function StringableWithConfig({
     <StringableInput
       form={form}
       {...param}
-      param={param as Stringable}
+      param={param as StringableParam}
       name={name ?? param.name}
     />
     <DropDown optionGroups={[
@@ -29,10 +29,10 @@ export function StringableWithConfig({
       evaluationOptions(param),
       castOptions(param),
     ].filter(Boolean) as OptionGroup[]} />
-  </div>) 
+  </div>)
 }
 
-const paramOptions = (param: Stringable, node: DataStoryNode): OptionGroup | undefined => {
+const paramOptions = (param: StringableParam, node: DataStoryNode): OptionGroup | undefined => {
   const portNames = param.interpolationsFromPort ?? []
 
   if(portNames.length > 1) throw new Error('Only one port is supported for now')
@@ -58,7 +58,7 @@ const paramOptions = (param: Stringable, node: DataStoryNode): OptionGroup | und
 }
 
 const evaluationOptions = (
-  param: Stringable
+  param: StringableParam
 ): OptionGroup | undefined => {
   const evaluations = param.evaluations ?? []
 
@@ -87,7 +87,7 @@ const evaluationOptions = (
 }
 
 export const castOptions = (
-  param: Stringable,
+  param: StringableParam,
 ): OptionGroup => {
   const castOptions = param.casts ?? []
 

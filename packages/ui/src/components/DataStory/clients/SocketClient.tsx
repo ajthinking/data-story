@@ -11,14 +11,14 @@ export class SocketClient implements ServerClient {
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    protected addPeekItems: (key: string, peek: any[]) => void,    
+    protected addPeekItems: (key: string, peek: any[]) => void,
     protected setNodes: (nodes: any) => void,
     protected setEdges: (edges: any) => void,
     // private setViewport: (viewport: any) => void,
   ) {}
 
   init() {
-    this.socket = new WebSocket('ws://localhost:3100')   
+    this.socket = new WebSocket('ws://localhost:3100')
 
     // Register on open
     this.socket.onopen = () => {
@@ -30,14 +30,14 @@ export class SocketClient implements ServerClient {
 
     // Register on error
     this.socket.onerror = (error) => {
-      console.log('WebSocket error: ', error); 
+      console.log('WebSocket error: ', error);
     };
 
     // Register on close
     this.socket.onclose = () => {
-      console.log('WebSocket closed.'); 
+      console.log('WebSocket closed.');
 
-      if (this.reconnectTries < this.maxReconnectTries) { 
+      if (this.reconnectTries < this.maxReconnectTries) {
         setTimeout(() => {
           console.log('Reconnecting...');
           this.reconnectTries++;
@@ -46,7 +46,7 @@ export class SocketClient implements ServerClient {
       } else {
         console.log('Max reconnect tries reached. Is the server running?');
       }
-    };    
+    };
 
     this.socket.onmessage = ((data) => {
       const parsed = JSON.parse(data.data)
@@ -91,8 +91,8 @@ export class SocketClient implements ServerClient {
         setTimeout(() => alert(parsed.message), 100)
 
         return
-      }   
-      
+      }
+
       if(parsed.type === 'OpenResponse') {
         const flow = parsed.flow;
 
@@ -104,7 +104,7 @@ export class SocketClient implements ServerClient {
       }
 
       throw('Unknown message type: ' + parsed.type)
-    }) 
+    })
   }
 
   run(diagram: Diagram) {
@@ -113,14 +113,14 @@ export class SocketClient implements ServerClient {
       diagram,
     }, null, 2)
 
-    this.socket!.send(message);    
+    this.socket!.send(message);
   }
 
   async save(name: string, diagram: Diagram) {
     const message = JSON.stringify({
       type: 'save',
       name,
-      diagram  
+      diagram
     })
 
     this.socket!.send(message);
@@ -132,5 +132,5 @@ export class SocketClient implements ServerClient {
     })
 
     this.socket!.send(message);
-  }  
+  }
 }

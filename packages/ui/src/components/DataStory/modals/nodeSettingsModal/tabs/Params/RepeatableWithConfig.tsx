@@ -23,8 +23,8 @@ export function RepeatableWithConfig({
           label: 'Modes',
           options: [
             {
-              label: 'Stringable',
-              value: 'Stringable',
+              label: 'StringableParam',
+              value: 'StringableParam',
               callback: () => {}
             }
           ]
@@ -36,6 +36,6 @@ export function RepeatableWithConfig({
       param={param as any}
       {...param}
       node={node}
-    />          
-  </div>) 
+    />
+  </div>)
 }

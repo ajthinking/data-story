@@ -33,19 +33,19 @@ const DataStoryNodeComponent = ({ id, data, selected }: {
             className="flex border border-gray-300 rounded px-2 py-1 bg-gray-50"
             key={input.id}
           >
-            <CustomHandle id={input.id} isConnectable={true} isInput={true} />           
+            <CustomHandle id={input.id} isConnectable={true} isInput={true} />
             <div className="ml-2 w-full text-gray-500">{input.name}</div>
           </div>))}
-        
+
           {data.outputs.map((output: any) => (<div
             className="flex pl-3 border border-gray-300 rounded px-2 py-1 bg-gray-50"
             key={output.id}
           >
             {data.inputs.length > 0 && <div className="w-2"></div>}
             <div className="w-full text-gray-500">{output.name}</div>
-            <CustomHandle id={output.id} isConnectable={true} isInput={false} />           
+            <CustomHandle id={output.id} isConnectable={true} isInput={false} />
           </div>))}
-        </div>     
+        </div>
       </div>
     )
   );

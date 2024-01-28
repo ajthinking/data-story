@@ -22,7 +22,7 @@ export function Params({
           {param.help && (<div className="mt-2 mb-2 text-xs text-slate-400">{param.help || 'no-help'}</div>)}
 
           {/* Horizontal layout */}
-          {param.type === 'Stringable' && <StringableWithConfig
+          {param.type === 'StringableParam' && <StringableWithConfig
             param={param}
             form={form}
             name={param.name}
@@ -30,27 +30,22 @@ export function Params({
           />}
 
           {/* Vertical layout */}
-          {param.type === 'Repeatable' && <RepeatableWithConfig
+          {param.type === 'RepeatableParam' && <RepeatableWithConfig
             param={param}
             form={form}
             node={node}
           />}
 
-          {param.type === 'Select' && <SelectInput
+          {param.type === 'SelectParam' && <SelectInput
             // param={param}
             name={param.name}
             form={form}
             param={param}
             // node={node}
-          />}    
-
-
-          {/* <h1 className="bg-red-500 text-white">{ selectedMode?.type ?? 'no-mode' }</h1> */}
-
+          />}
         </div>)
       })}
-    </div>    
+    </div>
     {node.data.params.length === 0 && <div className="text-xs text-gray-400">No parameters</div>}
   </div>;
 }
-  

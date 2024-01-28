@@ -24,7 +24,7 @@ export const Sample: ComputerConfig = {
       const port = i++ % sample_rate === 0
         ? 'sampled'
         : 'not_sampled'
-      
+
       output.pushTo(port, [item])
 
       yield;

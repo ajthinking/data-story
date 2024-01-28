@@ -10,7 +10,7 @@ export const AskChatGpt: ComputerConfig = {
       name: 'prompt',
       label: 'Prompt',
       help: 'Chat prompt',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: true,
       canInterpolate: true,
       interpolate: true,
@@ -46,7 +46,7 @@ export const AskChatGpt: ComputerConfig = {
         frequency_penalty: 0.0,
         presence_penalty: 0.0,
       });
-      
+
       output.pushTo('completions', completion.data.choices)
 
       yield;

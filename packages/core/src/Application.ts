@@ -23,7 +23,7 @@ export class Application {
       provider.boot(this);
     });
 
-    return this;    
+    return this;
   }
 
   addComputers(computers: Map<string, Computer> | ComputerConfig[]) {
@@ -48,6 +48,6 @@ export class Application {
   descriptions() {
     return Array.from(this.computers.values()).map(computer => {
       return NodeDescriptionFactory.fromComputer(computer);
-    });  
+    });
   }
 }

@@ -25,6 +25,7 @@ module.exports = {
     'import'
   ],
   'rules': {
+    'no-trailing-spaces': 'error',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     '@stylistic/indent': [

@@ -18,10 +18,10 @@ export interface ComputerConfig {
   tags?: string[]
 
   run: (args: RunArgs) => AsyncGenerator<NextResult, ReturnResult, NextArgument>
-  
+
   canRun?: (options: {
     isAvailable: () => boolean,
     input: InputDeviceInterface,
     params: Record<string, Param>
-  }) => boolean  
+  }) => boolean
 }

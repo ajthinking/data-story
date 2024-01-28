@@ -25,7 +25,7 @@ const config: ForgeConfig = {
         background: './assets/dmg-background.png',
         format: 'ULFO'
       }
-    }    
+    }
   ],
   plugins: [
     new AutoUnpackNativesPlugin({}),

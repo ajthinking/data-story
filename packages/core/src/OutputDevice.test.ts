@@ -14,7 +14,7 @@ describe('push', () => {
 
     memory.setLinkItems('Source.1.output--->Target.1.input', [{i: 1}])
     memory.setLinkItems('Source.1.output--->Target.2.input', [{i: 2}])
-    
+
     memory.setLinkCount('Source.1.output--->Target.1.input', 1)
     memory.setLinkCount('Source.1.output--->Target.2.input', 1)
 
@@ -52,9 +52,9 @@ describe('pushTo', () => {
 
     memory.setLinkItems('Source.1.strings--->Target.1.input', [{i: 'a'}])
     memory.setLinkItems('Source.1.strings--->Target.2.input', [{i: 'b'}])
-    
+
     memory.setLinkCount('Source.1.strings--->Target.1.input', 1)
-    memory.setLinkCount('Source.1.strings--->Target.2.input', 1)    
+    memory.setLinkCount('Source.1.strings--->Target.2.input', 1)
 
     const output = new OutputDevice(map, memory)
 

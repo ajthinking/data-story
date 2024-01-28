@@ -17,8 +17,8 @@ export default () => {
           </div>
           <div className="">
             <div className="font-bold tracking-wide text-2xl text-gray-50">24</div>
-          </div>                    
-        </section>        
+          </div>
+        </section>
       </div>
     </div>
   )

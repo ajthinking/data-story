@@ -25,8 +25,5 @@ export { coreNodeProvider } from './coreNodeProvider'
 export { ExecutionResult } from './ExecutionResult'
 export type { ExecutionFailure } from './types/ExecutionFailure'
 
-// Consider moving this to a separate package
-// export { when } from './support/computerTester/ComputerTester'
-
 export * as nodes from './computers'
 export * from './Param'

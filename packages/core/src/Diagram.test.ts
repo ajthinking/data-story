@@ -32,7 +32,7 @@ describe('nodeWithOutputPortId', () => {
 
     const node: Node = {
       id: 'node-id',
-      type: 'MyNode',  
+      type: 'MyNode',
       inputs: [],
       outputs: [output],
       params: []
@@ -40,14 +40,14 @@ describe('nodeWithOutputPortId', () => {
 
     const diagram = new Diagram([node], [])
     const result = diagram.nodeWithOutputPortId('output-port-id')
-    
+
     expect(result).toMatchObject(node)
   })
 
   it('returns undefined if it could not find a matching node', () => {
     const diagram = new Diagram([], [])
     const result = diagram.nodeWithOutputPortId('bad-id')
-    
+
     expect(result).toBe(undefined)
-  })  
+  })
 })

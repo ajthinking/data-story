@@ -9,7 +9,7 @@ export function InputSchemas({
   register: any
 }) {
 
-  return <div className="max-h-128 overflow-y-scroll relative pb-6 pt-4 px-6 flex-auto space-y-1 text-sm font-mono text-gray-800">    
+  return <div className="max-h-128 overflow-y-scroll relative pb-6 pt-4 px-6 flex-auto space-y-1 text-sm font-mono text-gray-800">
     <div
       className="flex flex-col"
     >
@@ -22,4 +22,3 @@ export function InputSchemas({
     </div>
   </div>;
 }
-  

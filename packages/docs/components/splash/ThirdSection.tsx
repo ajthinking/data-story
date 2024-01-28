@@ -1,7 +1,7 @@
 export default () => {
   return (
     <div className="w-full flex justify-center bg-gray-950">
-      <div className="flex flex-col md:flex-row w-full max-w-6xl justify-start">     
+      <div className="flex flex-col md:flex-row w-full max-w-6xl justify-start">
         <section className="flex flex px-4 sm:px-6 lg:px-8 my-8">
           <div
             className="mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:pl-8 flex flex-col lg:flex-row">
@@ -27,7 +27,7 @@ export default () => {
               </div>
             </div>
           </div>
-        </section>        
+        </section>
       </div>
     </div>
   )

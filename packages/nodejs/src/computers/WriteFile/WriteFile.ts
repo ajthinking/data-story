@@ -20,7 +20,7 @@ export const WriteFile: ComputerConfig = {
       help: 'File content',
       value: 'Hello world!',
     }),
-  ],  
+  ],
 
   async *run({ input, output }) {
     const [ incoming ] = input.pull(1)

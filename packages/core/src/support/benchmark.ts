@@ -7,7 +7,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
 
 (async () => {
   const itemCount = 1_000_000
-  
+
   const data: {id: number}[] = []
 
   for (let i = 0; i < itemCount; i++) {
@@ -29,7 +29,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
     .get()
 
   const executor = new Executor(
-    diagram, 
+    diagram,
     app.computers,
     new NullStorage()
   )

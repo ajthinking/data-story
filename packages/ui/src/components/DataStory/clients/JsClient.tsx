@@ -20,14 +20,14 @@ export class JsClient implements ServerClient {
   }
 
   run(diagram: Diagram) {
-    const storage = new NullStorage()    
-  
+    const storage = new NullStorage()
+
     const executor = new Executor(
       diagram,
       this.app.computers,
       storage
     )
-    
+
     const execution = executor.execute();
 
     // For each update run this function
@@ -44,13 +44,13 @@ export class JsClient implements ServerClient {
                 this.addPeekItems(nodeId, items)
               } else {
                 const userHook = this.app.hooks.get(hook.type)
-  
+
                 if(userHook) {
                   userHook(...hook.args)
                 }
               }
-            }          
-  
+            }
+
             // Then wait for the next one
             handleUpdates(iterator);
           } else {
@@ -62,7 +62,7 @@ export class JsClient implements ServerClient {
           console.log('Error', error)
         })
     }
-    
+
     // Start the updates
     handleUpdates(execution[Symbol.asyncIterator]());
   }

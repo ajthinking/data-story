@@ -14,7 +14,7 @@ describe('execute', () => {
     const diagram = new Diagram([], [])
     const computers = new Map<string, Computer>()
 
-    const storage = new NullStorage()    
+    const storage = new NullStorage()
 
     const executor = new Executor(diagram, computers, storage)
 
@@ -25,7 +25,7 @@ describe('execute', () => {
       type: 'ExecutionUpdate',
     })
     expect(update.done).toBe(false)
-    
+
     const result = await updates.next()
     expect(result.done).toBe(true)
   })
@@ -49,7 +49,7 @@ describe('execute', () => {
       },
     } as Computer)
 
-    const storage = new NullStorage()    
+    const storage = new NullStorage()
 
     const executor = new Executor(diagram, computers, storage)
 
@@ -63,7 +63,7 @@ describe('execute', () => {
     expect(update2.done).toBe(false)
 
     const update3 = await updates.next()
-    expect(update3.done).toBe(true)    
+    expect(update3.done).toBe(true)
   })
 
   it('can execute a diagram with non connected input node', async () => {
@@ -96,8 +96,8 @@ describe('execute', () => {
     expect(update.done).toBe(false)
 
     const result = await updates.next()
-    expect(result.done).toBe(true)    
-  })    
+    expect(result.done).toBe(true)
+  })
 
   it('can execute a diagram with a node outputting items', async () => {
     const node: Node = {
@@ -122,7 +122,7 @@ describe('execute', () => {
       },
     } as Computer)
 
-    const storage = new NullStorage()    
+    const storage = new NullStorage()
 
     const executor = new Executor(diagram, computers, storage)
 
@@ -135,11 +135,11 @@ describe('execute', () => {
     expect(update2.done).toBe(false)
 
     const result = await updates.next()
-    expect(result.done).toBe(true)        
+    expect(result.done).toBe(true)
   })
 
   it('can execute a diagram with item flowing between two nodes', async () => {
-    const create: Node = { 
+    const create: Node = {
       id: 'create-id',
       type: 'Create',
       inputs: [],
@@ -162,7 +162,7 @@ describe('execute', () => {
       outputs: [],
       params: []
     }
-    
+
     const link: Link = {
       id: 'link-id',
       sourcePortId: 'Create.1.output',
@@ -186,7 +186,7 @@ describe('execute', () => {
       name: 'Log',
       async *run({ input }: RunArgs) {
         // console.log ... or something
-        
+
         order.push('running log')
         const items = input.pull()
       },
@@ -202,7 +202,7 @@ describe('execute', () => {
       createExecution: async () => {},
       putExecutionItems: async (key: string, items: ItemValue[]) => {},
     }
-    
+
     const executor = new Executor(diagram, computers, storage)
 
     const updates = executor.execute()
@@ -220,7 +220,7 @@ describe('execute', () => {
     expect(order).toMatchObject(['running create', 'running log',])
 
     const result = await updates.next()
-    expect(result.done).toBe(true)    
+    expect(result.done).toBe(true)
   })
 
   it('can test diagram executions like this', async () => {
@@ -228,7 +228,7 @@ describe('execute', () => {
       .add(Signal, { period: 1, count: 10 })
       .add(Ignore)
       .get()
-  
+
     await whenRunning(diagram)
       .expectSuccess()
       .ok()
@@ -239,7 +239,7 @@ describe('execute', () => {
       .add(CreateJson)
       .add(Throw)
       .get()
-    
+
     await whenRunning(diagram)
       .expectFail()
       .ok()

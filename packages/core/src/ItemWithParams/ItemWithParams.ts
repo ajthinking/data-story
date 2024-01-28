@@ -7,7 +7,7 @@ import { prepareRepeatable } from './prepareRepeatable';
 export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWithParams => {
   // This does not always catch all cases
   if(item instanceof ItemWithParams) return true;
-  
+
   if(
     item !== null
     && typeof item === 'object'
@@ -31,10 +31,10 @@ export class ItemWithParams {
         const param = rawParams.find(p => p.name === key);
         if (!param) throw new Error(`Param "${key}" does not exist`);
 
-        if(param.type === 'Stringable') return prepareStringable(value, param);
+        if(param.type === 'StringableParam') return prepareStringable(value, param);
 
         // TODO
-        // if(param.type === 'Repeatable') return prepareRepeatable(value, param);
+        // if(param.type === 'RepeatableParam') return prepareRepeatable(value, param);
 
         // Default to the raw value
         return param.value;

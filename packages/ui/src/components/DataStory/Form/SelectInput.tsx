@@ -1,4 +1,4 @@
-import { Param, Select, get } from '@data-story/core';
+import { Param, SelectParam, get } from '@data-story/core';
 import { useEffect, useState } from 'react';
 import { UseFormRegister, UseFormReturn } from 'react-hook-form';
 
@@ -15,9 +15,9 @@ export function SelectInput({
 }: {
   form: UseFormReturn<{
     [x: string]: any;
-  }, any>  
+  }, any>
   name: string,
-  param: Select
+  param: SelectParam
 }) {
 
   return (
@@ -32,7 +32,7 @@ export function SelectInput({
           >{option.label}</option>
         })}
       </select>
-      
+
     </div>
   );
 }

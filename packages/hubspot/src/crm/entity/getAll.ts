@@ -21,7 +21,7 @@ const Template: ComputerConfig = {
       label: 'Properties',
       help: 'Comma separated list of properties.',
       value: '',
-    }),     
+    }),
     num({
       name: 'limit',
       label: 'Limit',
@@ -45,7 +45,7 @@ const Template: ComputerConfig = {
       .split(',')
       .map((p) => p.trim())
     let nextPage = null;
-    
+
     do {
       // Make the API call to get a page of results
       try {
@@ -58,9 +58,9 @@ const Template: ComputerConfig = {
         // Output the results
         taken += page.results.length
         output.pushTo('all', page.results);
-      
+
         // Check if there is a next page of results
-        nextPage = page.paging?.next;        
+        nextPage = page.paging?.next;
       } catch(e: any) {
         console.log(e)
         output.pushTo('errors', [{
@@ -86,7 +86,7 @@ export const getAll = (name: string) => {
     label: name,
     run,
   }
-  
+
   const entityParam = config.params!.find((p) => p.name === 'entity')
   entityParam!.value = name.toLowerCase()
 

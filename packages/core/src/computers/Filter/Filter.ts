@@ -17,7 +17,7 @@ export const Filter: ComputerConfig = {
       name: 'port_map',
       label: 'Port Map',
       help: 'Where to map items',
-      type: 'Repeatable',
+      type: 'RepeatableParam',
       row: [
         str({
           name: 'value',
@@ -27,7 +27,7 @@ export const Filter: ComputerConfig = {
           name: 'port',
           label: 'Port',
           help: 'The port to map to',
-          type: 'PortSelection',
+          type: 'PortSelectionParam',
           value: '',
           allowCreate: true,
         }

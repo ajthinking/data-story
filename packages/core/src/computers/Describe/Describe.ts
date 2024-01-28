@@ -18,7 +18,7 @@ export const Describe: ComputerConfig = {
       name: 'path',
       label: 'Path',
       help: 'Dot notated path to desired description root. Leave empty to use the root of the collection.',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -30,8 +30,8 @@ export const Describe: ComputerConfig = {
     {
       name: 'truncate_limit',
       label: 'Truncate limit',
-      help: 'How many keys to display?', 
-      type: 'Stringable',
+      help: 'How many keys to display?',
+      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -39,9 +39,9 @@ export const Describe: ComputerConfig = {
         {...numberCast, selected: true}
       ],
       value: String(10)
-    },    
+    },
   ],
-  
+
   canRun({ input }) {
     return input.haveAllItemsAtInput('input')
   },

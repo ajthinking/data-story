@@ -22,8 +22,8 @@ export const Signal: ComputerConfig = {
     {
       name: 'period',
       label: 'period',
-      help: 'How many ms between each signal?', 
-      type: 'Stringable',
+      help: 'How many ms between each signal?',
+      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -36,7 +36,7 @@ export const Signal: ComputerConfig = {
       name: 'count',
       label: 'count',
       help: 'How many times to send the signal?',
-      type: 'Stringable',
+      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -44,7 +44,7 @@ export const Signal: ComputerConfig = {
         {...numberCast, selected: true}
       ],
       value: String(300)
-    },  
+    },
   ],
 
   async *run({ output, params }) {

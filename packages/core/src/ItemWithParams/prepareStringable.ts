@@ -1,4 +1,4 @@
-import { Param, Stringable } from '../Param';
+import { Param, StringableParam } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
@@ -8,10 +8,10 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   // **********************************************************************
   // VALIDATE
   // **********************************************************************
-  
-  // Ensure param is Stringable
-  if(param.type !== 'Stringable') throw new Error(`Param "${param.name}" must be Stringable`);
-  
+
+  // Ensure param is StringableParam
+  if(param.type !== 'StringableParam') throw new Error(`Param "${param.name}" must be StringableParam`);
+
   let transformedValue: string | any = String(param.value);
 
   // **********************************************************************
@@ -31,7 +31,7 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
 
   // **********************************************************************
   // FUNCTIONS
-  // **********************************************************************  
+  // **********************************************************************
   // TODO option for this
   if(true) {
     /** Replaces function calls */

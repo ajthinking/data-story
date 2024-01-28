@@ -1,4 +1,4 @@
-import { Param, Stringable, get } from '@data-story/core';
+import { Param, StringableParam, get } from '@data-story/core';
 import { useEffect, useState } from 'react';
 import { UseFormRegister, UseFormReturn } from 'react-hook-form';
 
@@ -15,9 +15,9 @@ export function StringableInput({
 }: {
   form: UseFormReturn<{
     [x: string]: any;
-  }, any>  
+  }, any>
   name: string,
-  param: Stringable
+  param: StringableParam
 }) {
   // State to keep track of the number of rows
   const [rows, setRows] = useState(calculateRows(String(param.value)));

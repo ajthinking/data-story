@@ -3,7 +3,7 @@ import { UseFormRegister } from 'react-hook-form';
 export const Text = ({ register, label, id }: {
   register: UseFormRegister<Record<string, any>>
   label: string,
-  id: string      
+  id: string
 }) => {
   return (<div
     className="flex flex-col"

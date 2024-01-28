@@ -69,7 +69,7 @@ export class ComputerTester {
 
   constructor(computerConfig: ComputerConfig) {
     this.computer = new ComputerFactory().get(computerConfig)
-  }  
+  }
 
   /**
    * After all steps have been registered, call this method to perform them 💫
@@ -114,7 +114,7 @@ export class ComputerTester {
       await step.handle(this, ...args)
     }
   }
-  
+
   doRun(times: number = 1) {
     for(let i = 0; i < times; i++) {
       this.steps.push([doRun, []])
@@ -180,7 +180,7 @@ export class ComputerTester {
 
   protected makeDiagram(): Diagram {
     const nodeId = `${this.computer.name}.1`
-    // Create a new Node from the computer + params (TODO: this is a general need)    
+    // Create a new Node from the computer + params (TODO: this is a general need)
     const node: Node = {
       id: nodeId,
       type: this.computer.name,
@@ -210,7 +210,7 @@ export class ComputerTester {
       sourcePortId: `${nodeId}.${outputPort.name}`,
       targetPortId: 'dangling-target-port-id',
     }))
-    
+
     return new Diagram([node], [
       ...inputLinks,
       ...outputLinks,
@@ -277,12 +277,12 @@ export class ComputerTester {
       linkItems.set(link.id, [])
       linkCounts.set(link.id, 0)
     }
-    
+
     for(const node of this.diagram!.nodes) {
       // Set all nodes to available
       nodeStatuses.set(node.id, 'AVAILABLE')
     }
 
     return memory
-  }  
+  }
 }

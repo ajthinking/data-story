@@ -29,7 +29,7 @@ export const deriveFrom = (
   // template.label = options.label || template.label
 
   // if(!template.params) template.params = []
-    
+
   // template.params = { ...template.params }
 
   // for (const [paramName, paramValue] of Object.entries(options.params || {})) {

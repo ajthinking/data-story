@@ -5,7 +5,7 @@ it('returns an empty object when no items are passed', () => {
   const keyPath = 'id';
   const valuePath = 'name';
   const result = toLookup(items, keyPath, valuePath);
-  
+
   expect(result).toEqual({});
 });
 
@@ -18,7 +18,7 @@ it('returns an object with flat keys and values from items', () => {
   const keyPath = 'id';
   const valuePath = 'uppercase';
   const result = toLookup(items, keyPath, valuePath);
-  
+
   expect(result).toEqual({
     a: 'A',
     b: 'B',
@@ -35,7 +35,7 @@ it('returns an object with nested keys and values from items', () => {
   const keyPath = 'id';
   const valuePath = 'nested.uppercase';
   const result = toLookup(items, keyPath, valuePath);
-  
+
   expect(result).toEqual({
     a: 'A',
     b: 'B',
