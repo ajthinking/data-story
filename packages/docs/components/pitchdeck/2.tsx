@@ -13,7 +13,7 @@ export default () => {
   app.boot();
 
   // HubSpot Example
-  const diagram = new DiagramBuilder() 
+  const diagram = new DiagramBuilder()
     .addFake({
       label: 'Products',
       outputs: ['all', 'error']
@@ -41,9 +41,9 @@ export default () => {
 
       [prev](/pitchdeck/1) [next](/pitchdeck/2)
     `})
-    
+
     .jiggle()
-    
+
     .get()
 
   return (
@@ -54,6 +54,6 @@ export default () => {
         server={{ type: 'JS', app }}
         initDiagram={diagram}
       />
-    </div>   
+    </div>
   );
 };

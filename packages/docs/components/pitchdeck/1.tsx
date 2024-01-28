@@ -13,7 +13,7 @@ export default () => {
   app.boot();
 
   // HubSpot Example
-  const diagram = new DiagramBuilder() 
+  const diagram = new DiagramBuilder()
     .addFake({
       label: 'Lime.persons',
       outputs: ['persons', 'error']
@@ -37,7 +37,7 @@ export default () => {
     .addFake({
       label: 'saveLocalCopy',
       inputs: ['input']
-    })    
+    })
     .addFake({
       label: 'Owners',
       outputs: ['owners', 'error']
@@ -48,7 +48,7 @@ export default () => {
       Example: Lime to HubSpot contact migration
 
       [next](/pitchdeck/2)
-    `})    
+    `})
     .jiggle()
     .get()
 
@@ -60,6 +60,6 @@ export default () => {
         callback={(options: any) => setTimeout(options.run, 100)}
         initDiagram={diagram}
       />
-    </div>   
+    </div>
   );
 };

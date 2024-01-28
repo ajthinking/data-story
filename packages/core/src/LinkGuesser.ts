@@ -12,10 +12,10 @@ export class LinkGuesser {
   ): Link | null {
     const previousNode = this.diagram.nodes.at(-1)
     if(!previousNode) return null;
-  
+
     const firstOutput = previousNode.outputs.at(0)
     if(!firstOutput) return null;
-  
+
     const firstInput = node.inputs.at(0)
     if(!firstInput) return null;
 

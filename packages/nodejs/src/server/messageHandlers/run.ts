@@ -22,11 +22,11 @@ export const run: MessageHandler<RunMessage> = async (
   await storage.init()
 
   const executor = new Executor(
-    diagram, 
+    diagram,
     app.computers,
     storage
   )
-  
+
   const execution = executor.execute()
 
   try {
@@ -40,7 +40,7 @@ export const run: MessageHandler<RunMessage> = async (
           storage.currentExecutionId!
         )
       )
-    )    
+    )
   } catch(error: any) {
     if (ws.readyState === WebSocket.OPEN) {
       console.log('Sending ExecutionFailure to client')

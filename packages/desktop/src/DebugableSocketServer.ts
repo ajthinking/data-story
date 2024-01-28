@@ -21,14 +21,14 @@ const run = async (
   )
 
   const storage = new NullStorage()
-  await storage.init()  
+  await storage.init()
 
   const executor = new Executor(
-    diagram, 
+    diagram,
     app.computers,
     storage
   )
-  
+
   const execution = executor.execute()
 
   try {
@@ -42,7 +42,7 @@ const run = async (
           '0'
         )
       )
-    )    
+    )
   } catch(error: any) {
     if (ws.readyState === WebSocket.OPEN) {
       console.log('Sending ExecutionFailure to client')
@@ -67,7 +67,7 @@ const fileConsole = {
   log: (msg: string) => {
     const hour_minutes_seconds = new Date().toLocaleTimeString('sv-SE', { hour12: false })
     const file = '/Users/anders/Code/ajthinking/datastory-desktop/log.txt';
-    
+
     // append row in file
     fs.appendFile(file, `${hour_minutes_seconds}: ${msg}\n`, function (err: any) {
       if (err) throw err;
@@ -95,14 +95,14 @@ export class DebugableSocketServer {
       ws.on('message', (msg: string) => {
         this.logger.log(`Got message: ${msg.toString()}`);
         const parsed: { type: string } = JSON.parse(msg.toString())
-        
+
         if(parsed.type === 'describe') {
           const response = {
             type: 'DescribeResponse',
             availableNodes: this.app.descriptions(),
           }
-        
-          ws.send(JSON.stringify(response))          
+
+          ws.send(JSON.stringify(response))
         }
 
         if(parsed.type === 'run') run(ws, parsed, this.app, this.logger)

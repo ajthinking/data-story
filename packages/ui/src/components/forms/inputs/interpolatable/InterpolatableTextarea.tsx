@@ -38,7 +38,7 @@ export const InterPolatableTextArea = ({ form, label, rows, id, inputSchema }: {
         {Object.keys(inputSchema).map((key) => {
           return <option className="text-gray-400" key={key}>{key}</option>
         })}
-      </select> 
+      </select>
 
     </div>
   </div>)

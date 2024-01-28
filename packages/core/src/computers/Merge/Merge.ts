@@ -18,7 +18,7 @@ export const Merge: ComputerConfig = {
       label: 'Supplier Key',
       help: 'The supplier key to merge on',
       value: 'id'
-    }),    
+    }),
   ],
 
   canRun({ input, params }) {
@@ -44,7 +44,7 @@ export const Merge: ComputerConfig = {
       const matchingSupplier = suppliers.find(supplier => {
         const supplierValue = supplier.value[supplierKey]
         const requestorValue = requestor.value[requestorKey]
-        
+
         return supplierValue === requestorValue
       })
 

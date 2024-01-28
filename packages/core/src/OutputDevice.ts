@@ -32,7 +32,7 @@ export class OutputDevice implements OutputDeviceInterface {
 
     // When outputting we should not be in a params infused ItemWithParams
     const items = itemable.map(i => isItemWithParams(i) ? i.value : i)
-    
+
     for(const linkId of connectedLinks) {
       // Update items on link
       this.memory.pushLinkItems(linkId, items)
@@ -44,7 +44,7 @@ export class OutputDevice implements OutputDeviceInterface {
   }
 
   /**
-   * 
+   *
    * (Test) Utility to get items have been outputted through a port
    */
   itemsOutputtedThrough(name: PortName): ItemValue {

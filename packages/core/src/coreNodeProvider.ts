@@ -10,9 +10,9 @@ export const coreNodeProvider: ServiceProvider = {
       const computer = new ComputerFactory().get(config);
       return [computer.name, computer];
     }));
-    
+
     app.addComputers(computers);
   },
-  
+
   boot: (app: Application) => {}
 }

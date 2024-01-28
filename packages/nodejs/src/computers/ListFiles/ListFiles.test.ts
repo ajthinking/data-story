@@ -29,7 +29,7 @@ it('outputs objects when files and directories are found', async () => {
     {
       name: 'dir1',
       isDirectory: () => true,
-    },    
+    },
   ] as Dirent[])
 
   await when(ListFiles)

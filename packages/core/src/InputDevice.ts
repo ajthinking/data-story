@@ -30,7 +30,7 @@ export class InputDevice implements InputDeviceInterface {
   }
 
   /**
-   * Removes and return items at edges connected to input with name 
+   * Removes and return items at edges connected to input with name
    */
   pullFrom(name: string, count: number = Infinity): ItemWithParams[] {
     let remaining = count
@@ -102,5 +102,5 @@ export class InputDevice implements InputDeviceInterface {
    */
   setItemsAt(linkId: LinkId, items: ItemValue[]) {
     this.memory.setLinkItems(linkId, items)
-  }  
+  }
 }

@@ -37,7 +37,7 @@ const DataStoryPeekNodeComponent = ({ id, data, selected }: {
     } else if (!peeks[id] || peeks[id].length === 0) {
       setPeekIndex(0); // Reset to 0 if no peeks are available
     }
-  }, [peeks, id, peekIndex]); 
+  }, [peeks, id, peekIndex]);
 
   return (
     (
@@ -46,7 +46,7 @@ const DataStoryPeekNodeComponent = ({ id, data, selected }: {
       >
         <div className="absolute z-30">
           <div className="absolute">
-            
+
           </div>
           <div className="">
             <Handle
@@ -58,7 +58,7 @@ const DataStoryPeekNodeComponent = ({ id, data, selected }: {
               isConnectable={true}
             />
           </div>
-        </div>       
+        </div>
         {<div className="bg-gray-50 text-gray-600 font-mono text-xxxs">
           <div
             className="flex justify-end w-full py-0.5 border-b space-x-1 px-2"
@@ -66,7 +66,7 @@ const DataStoryPeekNodeComponent = ({ id, data, selected }: {
             <div
               className="hover:bg-gray-100 cursor-pointer"
               onClick={backward}
-            >‹</div>            
+            >‹</div>
             <div>
               {peek && `#${peekIndex + 1}`}
               {!peek && 'PEEK'}

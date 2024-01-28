@@ -3,13 +3,13 @@ import { ComputerConfig } from '../../types/ComputerConfig';
 import { json_ } from '../../Param';
 
 export const CreateJson: ComputerConfig = {
-  name: 'CreateJson',  
+  name: 'CreateJson',
   outputs: ['output'],
   params: [
     json_({
       name: 'json',
       value: JSON.stringify({ foo: 'bar' }, null, 2)
-    })    
+    })
   ],
 
   async *run({ output, params }) {

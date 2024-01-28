@@ -35,8 +35,8 @@ const DataStoryInputNodeComponent = ({ id, data, selected }: { id: string; data:
             id={id}
             isConnectable={true}
           />
-        </div>                    
-      </div>  
+        </div>
+      </div>
     </div>
   );
 };

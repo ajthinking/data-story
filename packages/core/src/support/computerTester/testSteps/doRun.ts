@@ -6,7 +6,7 @@ export const doRun: TestStep = {
   async handle(tester: ComputerTester) {
     try {
       await tester.runner!.next()
-      
+
       if(tester.expectedErrorMessage !== undefined) throw new Error(
         'Expected an error, but none was thrown'
       );

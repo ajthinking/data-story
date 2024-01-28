@@ -43,6 +43,6 @@ export default () => {
         hideToolbar={true}
         hideTabs={true}
       />
-    </div>   
+    </div>
   );
 };

@@ -15,7 +15,7 @@ export const JsonFileWrite: ComputerConfig = {
       help: 'File path',
     }),
   ],
-  
+
   canRun({ input }) {
     return input.haveAllItemsAtInput('input')
   },

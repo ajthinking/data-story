@@ -4,7 +4,7 @@ import { ComputerConfig } from '../../types/ComputerConfig';
 export const Input: ComputerConfig = {
   name: 'Input',
   outputs: ['output'],
-  
+
   canRun({ input, isAvailable }) {
     return isAvailable()
       && input.havePort('input') // Is this good?

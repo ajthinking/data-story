@@ -14,7 +14,7 @@ it('register one console log hook per item', async () => {
       {
         type: 'CONSOLE_LOG',
         args: [{ id: 2 }]
-      },     
+      },
     ])
     .ok()
 })
@@ -30,7 +30,7 @@ it('can register an interpolated console log message', async () => {
       {
         type: 'CONSOLE_LOG',
         args: ['Hello ajthinking!']
-      },     
+      },
     ])
     .ok()
 })

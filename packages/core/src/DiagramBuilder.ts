@@ -32,7 +32,7 @@ export class DiagramBuilder {
   below(directive: string) {
     this.belowDirective = directive
     return this;
-  }  
+  }
 
   on(directive: string) {
     return this.from(directive)
@@ -82,7 +82,7 @@ export class DiagramBuilder {
 
       param.value = value
     }
-    
+
     if(this.aboveDirective) {
       const aboveNode = this.diagram.nodes.find(node => node.id === this.aboveDirective)
 
@@ -109,7 +109,7 @@ export class DiagramBuilder {
 
 
     this.diagram.nodes.push(node)
-    
+
     this.linkToNewNode(node)
 
     this.previousNode = node
@@ -164,7 +164,7 @@ export class DiagramBuilder {
     label,
     inputs = [],
     outputs = [],
-  
+
   }: {
     label: string,
     inputs?: string[],

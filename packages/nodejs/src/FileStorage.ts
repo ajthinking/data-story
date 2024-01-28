@@ -23,7 +23,7 @@ export class FileStorage implements Storage {
     const folders = paths
       .filter(path => path.isDirectory())
       .map(path => path.name)
-    
+
     const ids = folders.map(folder => parseInt(folder))
 
     let maxId = Math.max(...ids)
@@ -42,7 +42,7 @@ export class FileStorage implements Storage {
   }
 
   /**
-   * Store items as pretty JSON 
+   * Store items as pretty JSON
    */
   async putExecutionItems(key: string, items: ItemValue): Promise<void> {
     // TODO fix this

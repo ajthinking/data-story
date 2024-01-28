@@ -25,7 +25,7 @@ it('outputs items at data by default when using POST', async () => {
 
   await when(Request)
     .hasParams({ method: 'POST' })
-    .getsInput([{}])    
+    .getsInput([{}])
     .doRun()
     .expectOutputs({
       items: [{i: 1}, {i: 2}, {i: 3}]

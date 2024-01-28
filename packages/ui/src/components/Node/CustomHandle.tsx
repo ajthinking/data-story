@@ -17,8 +17,8 @@ const CustomHandle = ({ id, isConnectable, isInput }: {
         style={{ opacity: 0, position: 'relative', height: 12, width: 12, top: 8, left: 0}}
         id={id}
         isConnectable={isConnectable}
-      />                                
-    </div>            
+      />
+    </div>
   );
 
   return (
@@ -31,8 +31,8 @@ const CustomHandle = ({ id, isConnectable, isInput }: {
         style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 8, right: 0}}
         id={id}
         isConnectable={isConnectable}
-      />                                
-    </div>            
+      />
+    </div>
   );
 };
 

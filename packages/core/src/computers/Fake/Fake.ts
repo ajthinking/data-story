@@ -11,7 +11,7 @@ export const Fake: ComputerConfig = {
     This is a Fake node, used to visualize an example.
     You may configure desired faked input and output ports on creation.
     Label can be set to any value.
-  `,  
+  `,
   params: [],
 
   canRun({ isAvailable }) {
@@ -35,7 +35,7 @@ export const Fake: ComputerConfig = {
 
         yield;
       }
-      
+
       if(!isCreatorNode) {
         node.inputs.forEach(inputPort => {
           try {
@@ -45,7 +45,7 @@ export const Fake: ComputerConfig = {
           }
         })
 
-        await sleep(50)        
+        await sleep(50)
 
         node.outputs.forEach(outputPort => {
           output.pushTo(outputPort.name, [{}])

@@ -11,7 +11,7 @@ export const Unique: ComputerConfig = {
   params: [
     str({
       name: 'property',
-      value: '',     
+      value: '',
     }),
   ],
 
@@ -22,7 +22,7 @@ export const Unique: ComputerConfig = {
   async *run({ input, output, params }) {
     const unique: ItemWithParams[] = []
     const duplicates: ItemWithParams[] = []
-    
+
     // The property that should be tested for uniqueness
     const property = params.property as string
 
@@ -49,7 +49,7 @@ export const Unique: ComputerConfig = {
       } else {
         duplicates.push(item);
       }
-    }    
+    }
 
     output.pushTo('unique', unique)
     output.pushTo('duplicates', duplicates)

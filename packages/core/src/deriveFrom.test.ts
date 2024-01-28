@@ -6,7 +6,7 @@ it.todo('returns a new config', async () => {
   //   name: 'IgnoreDerivation',
   //   params: {
   //     name: 'IgnoreDerivation',
-  //   }    
+  //   }
   // })
 
   // expect(config).toMatchObject({

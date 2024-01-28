@@ -15,15 +15,15 @@ export const Request: ComputerConfig = {
     str({
       name: 'method',
       value: 'GET',
-    }),    
+    }),
     json_({
       name: 'body',
       value: '{}',
     }),
     json_({
       name: 'config',
-      value: '{}',     
-    }),    
+      value: '{}',
+    }),
   ],
 
   async *run({ input, output, params }) {
@@ -35,17 +35,17 @@ export const Request: ComputerConfig = {
         body: any,
         config: any,
       }
-  
+
       if(method === 'GET') {
         const response = await axios.get(url, config)
         output.pushTo('items', await response.data)
       }
-  
+
       if(method === 'POST') {
         const response = await axios.post(url, body, config)
         output.pushTo('items', await response.data)
       }
-      
+
       yield;
     }
   },

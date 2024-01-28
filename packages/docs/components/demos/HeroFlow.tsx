@@ -50,7 +50,7 @@ export default () => {
       label: 'in Your App',
       color: '#FFBF00',
     })
-    .jiggle({x: 60, y: 25})    
+    .jiggle({x: 60, y: 25})
     .get()
 
   return (
@@ -62,6 +62,6 @@ export default () => {
         hideToolbar={true}
         hideTabs={true}
       />
-    </div>   
+    </div>
   );
 };
