@@ -5,8 +5,3 @@ Electron app for [datastory.dev](https://datastory.dev)
 ```
 npm run start
 ```
-
-dsdsfs
-
-
-hjkljkljh

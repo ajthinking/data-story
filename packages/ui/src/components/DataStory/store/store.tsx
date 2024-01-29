@@ -495,7 +495,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   calculateInputSchema: (node: DataStoryNode) => {
     const links = get().edges.filter(edge => edge.target === node.id)
-    const inputSchemas: Record<string, any> = {}
 
     links.forEach(link => {
       const sourceNode = get().nodes.find(node => node.id === link.source)
@@ -511,9 +510,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       inputPort.schema = outputSchema ?? {}
     })
 
-    // node.data.inputSchemas = inputSchemas
-
-    // get().updateNode(node)
+    get().updateNode(node)
   },
 }));
 
