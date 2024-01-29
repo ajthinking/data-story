@@ -33,9 +33,8 @@ export function StringableWithConfig({
 }
 
 const paramOptions = (param: StringableParam, node: DataStoryNode): OptionGroup | undefined => {
-  const portNames = param.interpolationsFromPort ?? []
-
-  if(portNames.length > 1) throw new Error('Only one port is supported for now')
+  const portNames = param.interpolationsFromPort
+    ?? node.data.inputs.map(port => port.name)
 
   const [ portName ] = portNames
 
@@ -52,7 +51,10 @@ const paramOptions = (param: StringableParam, node: DataStoryNode): OptionGroup 
     options: keys.map(key => ({
       label: key,
       value: key,
-      callback: () => {}
+      callback: ({ close }) => {
+        console.log('Clicked', key)
+        close()
+      }
     })),
   }
 }
