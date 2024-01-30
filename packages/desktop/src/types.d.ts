@@ -5,3 +5,8 @@ export interface LocalDiagram {
   version: string;
   diagram: Diagram;
 }
+
+export interface IpcResult {
+  data: string;
+  isSuccess: boolean;
+}

@@ -2,10 +2,12 @@ import { ControlButton } from 'reactflow';
 import React from 'react';
 import { SaveIcon, useDataStoryControls, OpenIcon } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
-import { LocalDiagram } from './types';
-import { tryParseJSON, getCoreVersion } from './common';
+import { IpcResult, LocalDiagram } from './types';
+import { tryParseJSON, getCoreVersion, errorToast, successToast } from './common';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const saveDiagram = (diagram: Diagram) => {
+const saveDiagram = async (diagram: Diagram) => {
 
   const diagramJSON = JSON.stringify({
     type: 'save',
@@ -13,19 +15,33 @@ const saveDiagram = (diagram: Diagram) => {
     diagram
   } as LocalDiagram, null, 2);
 
-  window.electron.saveDiagram( diagramJSON);
+  const result: IpcResult = await window.electron.saveDiagram(diagramJSON);
+  if (!result || result.isSuccess === false) {
+    errorToast('Could not save diagram');
+    console.warn('Could not save diagram', result);
+    return;
+  }
+  successToast('Diagram saved successfully!');
 };
+
 
 export const loadDiagram = async (): Promise<LocalDiagram> => {
   const initDiagram: LocalDiagram = {
     type: 'load',
     version: getCoreVersion(),
-    diagram: new Diagram([], [])
+    diagram: null
   }
 
-  const file = await window.electron.openFileDialog();
-  const { valid, result } = tryParseJSON(file);
+  const file: IpcResult = await window.electron.openFileDialog();
+  if(!file || file.isSuccess === false){
+    errorToast('Could not open file!');
+    console.warn('Could not open file', file);
+    return initDiagram;
+  }
+
+  const { valid, result } = tryParseJSON(file.data);
   if(!valid){
+    errorToast('Could not parse JSON!');
     console.warn('Could not parse JSON', result);
     return initDiagram;
   }
@@ -44,6 +60,7 @@ export const SaveComponent = () => {
 
     if(updateDiagram && diagramInfo.diagram){
       updateDiagram(diagramInfo.diagram);
+      successToast('Diagram loaded successfully!');
     }
   }
 
@@ -54,7 +71,7 @@ export const SaveComponent = () => {
         aria-label="Save"
         onClick={() => {
           const diagram = getDiagram();
-          saveDiagram(diagram);
+          saveDiagram(diagram)
         }}>
         <SaveIcon/>
       </ControlButton>
@@ -64,6 +81,7 @@ export const SaveComponent = () => {
         onClick={handleOpenFile}>
         <OpenIcon />
       </ControlButton>
+      <ToastContainer />
     </>
   );
 }

@@ -7,6 +7,7 @@ import fsAsync from 'fs/promises';
 import fs from 'fs';
 import os from 'os';
 import { hubspotProvider } from '@data-story/hubspot';
+import { IpcResult } from './types';
 
 // ************************************************************************************************
 // Electron app, window etc
@@ -23,7 +24,11 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-ipcMain.handle('save-diagram', async(event, jsonData: string) => {
+ipcMain.handle('save-diagram', async(event, jsonData: string): Promise<IpcResult> => {
+  const result: IpcResult = {
+    data: '',
+    isSuccess: false,
+  };
 
   try {
     // Show the save dialog
@@ -34,31 +39,41 @@ ipcMain.handle('save-diagram', async(event, jsonData: string) => {
         { name: 'JSON Files', extensions: ['json'] }
       ]
     });
+
     if (!file.canceled && file.filePath) {
       await fsAsync.writeFile(file.filePath, jsonData);
+      result.isSuccess = true;
     }
+
+    return result;
   } catch(err) {
-    console.error(err);
-    return err;
+    result.data = err;
+    return result;
   }
 });
-ipcMain.handle('open-diagram', async(): Promise<string> => {
+
+
+ipcMain.handle('open-diagram', async(): Promise<IpcResult> => {
+  const result: IpcResult = {
+    data: '{}',
+    isSuccess: false,
+  }
   try {
-    const result = await dialog.showOpenDialog({
+    const file = await dialog.showOpenDialog({
       properties: ['openFile'],
       filters: [
         { name: 'JSON', extensions: ['json'] }
       ]
     });
 
-    if (!result.canceled && result.filePaths.length > 0) {
-      const data = fsAsync.readFile(result.filePaths[0], 'utf8');
-      return data ? data : '{}';
+    if (!file.canceled && file.filePaths.length > 0) {
+      result.data = await fsAsync.readFile(file.filePaths[0], 'utf8');
+      result.isSuccess = true;
     }
-    return '{}';
+    return result;
   } catch(err) {
-    console.error(err);
-    return err;
+    result.data = err;
+    return result;
   }
 });
 
