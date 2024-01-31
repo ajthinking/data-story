@@ -92,12 +92,11 @@ export class SocketClient implements ServerClient {
         console.error('Execution failed: ', {
           history: parsed.history,
         })
+
         eventManager.emit({
           type: DataStoryEvents.RUN_ERROR,
           payload: parsed
         });
-
-        setTimeout(() => alert(parsed.message), 100)
 
         return
       }

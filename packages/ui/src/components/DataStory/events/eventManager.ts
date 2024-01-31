@@ -1,5 +1,6 @@
 import { asyncScheduler, observeOn, Subject } from 'rxjs';
 import { EventHandler, EventTypes } from './eventTypes';
+import { useEffect } from 'react';
 
 class EventManager {
   private subject: Subject<unknown>;
@@ -17,7 +18,7 @@ class EventManager {
   /**
    * subscribe event
    */
-  on(handler: ((value: EventTypes) => void)) {
+  on(handler: EventHandler) {
 
     return this.subject.pipe(
       observeOn(asyncScheduler)
@@ -29,3 +30,14 @@ class EventManager {
  * global singleton event manager
  */
 export const eventManager = new EventManager();
+
+/**
+ * use hook to subscribe event
+ * @param {EventHandler} handler
+ */
+export const useDataStoryEvent = (handler: EventHandler) => {
+  useEffect(() => {
+    const subscription = eventManager.on(handler);
+    return () => subscription.unsubscribe();
+  }, [handler]);
+}

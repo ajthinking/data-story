@@ -1,6 +1,6 @@
 import { ControlButton } from 'reactflow';
-import React, { useEffect } from 'react';
-import { SaveIcon, useDataStoryControls, OpenIcon, eventManager, DataStoryEvents } from '@data-story/ui';
+import React from 'react';
+import { SaveIcon, useDataStoryControls, OpenIcon, eventManager, DataStoryEvents, useDataStoryEvent } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
 import { IpcResult, LocalDiagram } from './types';
 import { tryParseJSON, getCoreVersion, errorToast, successToast } from './common';
@@ -67,13 +67,7 @@ const initToast = () => {
 export const SaveComponent = () => {
   const { getDiagram, updateDiagram } = useDataStoryControls()
 
-  useEffect(() => {
-    const subscription = initToast();
-    return () => {
-      subscription.unsubscribe();
-    }
-  }, []);
-
+  useDataStoryEvent(initToast);
   const handleOpenFile = async () => {
     const diagramInfo = await loadDiagram();
 
