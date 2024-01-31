@@ -3,6 +3,7 @@ import { StringableInput } from '../../../../Form/StringableInput'
 import { UseFormReturn } from 'react-hook-form';
 import { DropDown, Option, OptionGroup } from '../../../../../DropDown';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+import { useState } from 'react';
 
 export function StringableWithConfig({
   param,
@@ -17,22 +18,36 @@ export function StringableWithConfig({
   name?: string,
   node: DataStoryNode,
 }) {
+  const [cursorPosition, setCursorPosition] = useState(0);
+
+  const handleCursorPositionChange = (newPosition: number) => {
+    setCursorPosition(newPosition);
+  };
+
   return (<div className="group flex bg-gray-50">
     <StringableInput
       form={form}
       {...param}
       param={param as StringableParam}
       name={name ?? param.name}
+      onCursorPositionChange={handleCursorPositionChange}
     />
     <DropDown optionGroups={[
-      paramOptions(param, node),
+      paramOptions(param, node, form, cursorPosition),
       evaluationOptions(param),
       castOptions(param),
     ].filter(Boolean) as OptionGroup[]} />
   </div>)
 }
 
-const paramOptions = (param: StringableParam, node: DataStoryNode): OptionGroup | undefined => {
+const paramOptions = (
+  param: StringableParam,
+  node: DataStoryNode,
+  form: UseFormReturn<{
+    [x: string]: any;
+  }, any>,
+  cursorPosition: number,
+): OptionGroup | undefined => {
   const portNames = param.interpolationsFromPort
     ?? node.data.inputs.map(port => port.name)
 
@@ -52,7 +67,15 @@ const paramOptions = (param: StringableParam, node: DataStoryNode): OptionGroup 
       label: key,
       value: key,
       callback: ({ close }) => {
-        console.log('Clicked', key)
+        const currentValue = form.getValues(`params.${param.name}`);
+        // Update the form field by adding it to the cursor position
+        const interpolation = '${' + key + '}'
+        const part1 = currentValue.slice(0, cursorPosition)
+        const part2 = currentValue.slice(cursorPosition)
+        const newValue = part1 + interpolation + part2
+
+        form.setValue(`params.${param.name}`, newValue);
+
         close()
       }
     })),

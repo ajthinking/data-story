@@ -12,36 +12,38 @@ export function StringableInput({
   name,
   form,
   param,
+  onCursorPositionChange,
 }: {
   form: UseFormReturn<{
     [x: string]: any;
   }, any>
   name: string,
-  param: StringableParam
+  param: StringableParam,
+  onCursorPositionChange: (position: number) => void // Add this line
 }) {
-  // State to keep track of the number of rows
+  // State to keep track of the number of rows and cursor position
   const [rows, setRows] = useState(calculateRows(String(param.value)));
 
-  // Effect to update rows when the content changes
+  const handleCursorChange = (event: any) => {
+    // Get the current cursor position
+    const cursorPosition = event.target.selectionStart;
+    // Notify the parent component about the cursor position change
+    if (onCursorPositionChange) {
+      onCursorPositionChange(cursorPosition);
+    }
+  };
+
+  // Effect to listen for form changes - primarily for external updates
   useEffect(() => {
     const subscription = form.watch((value, formEvent) => {
-      // console.log({
-      //   msg: 'CHANGE!',
-      //   name,
-      //   value,
-      //   formEvent
-      // })
       if (formEvent.name === `params.${name}` && formEvent.type === 'change') {
         try {
           const fieldValue = get(value.params, name)
-
           const newRows = calculateRows(fieldValue);
           setRows(newRows);
         } catch (e) {
-          // TODO: Refactor to support Repeatables
+          // Handle error or TODO note
         }
-      } else {
-        // console.log('COuld not pick up change!')
       }
     });
     return () => subscription.unsubscribe();
@@ -54,6 +56,7 @@ export function StringableInput({
           className="text-xs p-2 w-full bg-gray-50"
           rows={rows}
           {...form.register(`params.${name}`)}
+          onSelect={handleCursorChange}
         />
         : <input
           className="text-xs p-2 w-full bg-gray-50"
