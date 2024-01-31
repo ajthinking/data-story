@@ -1,7 +1,7 @@
 import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
-import { Types } from '../events/eventTypes';
+import { DataStoryEvents } from '../events/eventTypes';
 
 export class JsClient implements ServerClient {
   constructor(
@@ -58,13 +58,13 @@ export class JsClient implements ServerClient {
           } else {
             console.log('Execution complete 💫');
             eventManager.emit({
-              type: Types.RUN_SUCCESS
+              type: DataStoryEvents.RUN_SUCCESS
             });
           }
         })
         .catch((error: any) => {
           eventManager.emit({
-            type: Types.RUN_ERROR,
+            type: DataStoryEvents.RUN_ERROR,
             payload: error
           });
           console.log('Error', error)

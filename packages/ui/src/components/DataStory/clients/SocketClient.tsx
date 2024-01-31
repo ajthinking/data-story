@@ -2,7 +2,7 @@ import { Diagram, NodeDescription } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { Hook } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
-import { Types } from '../events/eventTypes';
+import { DataStoryEvents } from '../events/eventTypes';
 
 export class SocketClient implements ServerClient {
   protected socket?: WebSocket;
@@ -83,7 +83,7 @@ export class SocketClient implements ServerClient {
       if(parsed.type === 'ExecutionResult') {
         console.log('Execution complete 💫')
         eventManager.emit({
-          type: Types.RUN_SUCCESS
+          type: DataStoryEvents.RUN_SUCCESS
         });
         return
       }
@@ -93,7 +93,7 @@ export class SocketClient implements ServerClient {
           history: parsed.history,
         })
         eventManager.emit({
-          type: Types.RUN_ERROR,
+          type: DataStoryEvents.RUN_ERROR,
           payload: parsed
         });
 
