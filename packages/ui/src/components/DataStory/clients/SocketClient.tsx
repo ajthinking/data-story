@@ -2,7 +2,7 @@ import { Diagram, NodeDescription } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { Hook } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
-import { DataStoryEvents } from '../events/eventTypes';
+import { DataStoryEvents } from '../events/dataStoryEventType';
 
 export class SocketClient implements ServerClient {
   protected socket?: WebSocket;

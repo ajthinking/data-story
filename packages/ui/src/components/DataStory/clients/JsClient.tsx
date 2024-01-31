@@ -1,7 +1,7 @@
 import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
-import { DataStoryEvents } from '../events/eventTypes';
+import { DataStoryEvents } from '../events/dataStoryEventType';
 
 export class JsClient implements ServerClient {
   constructor(

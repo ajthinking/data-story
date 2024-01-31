@@ -6,9 +6,9 @@ export enum DataStoryEvents {
   'SAVE_SUCCESS' = 'SAVE_SUCCESS',
 }
 
-export type EventTypes = {
+export type DataStoryEventType = {
   type: DataStoryEvents;
   payload?: any;
 }
 
-export type EventHandler = Partial<Observer<EventTypes>> | ((value: EventTypes) => void);
+export type EventHandler = Partial<Observer<DataStoryEventType>> | ((value: DataStoryEventType) => void);

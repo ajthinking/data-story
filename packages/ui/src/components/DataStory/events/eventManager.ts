@@ -1,5 +1,5 @@
 import { asyncScheduler, observeOn, Subject } from 'rxjs';
-import { EventHandler, EventTypes } from './eventTypes';
+import { EventHandler, DataStoryEventType } from './dataStoryEventType';
 import { useEffect } from 'react';
 
 class EventManager {
@@ -11,7 +11,7 @@ class EventManager {
   /**
    * emit event
    */
-  emit(event: EventTypes) {
+  emit(event: DataStoryEventType) {
     this.subject.next(event);
   }
 

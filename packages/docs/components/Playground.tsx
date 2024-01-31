@@ -1,7 +1,7 @@
 import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React from 'react';
 import { DataStory } from '@data-story/ui';
-import { loadDiagram, LocalStorageKey, SaveComponent } from './Save';
+import { loadDiagram, LocalStorageKey,  SaveComponent } from './Save';
 
 export default ({ mode }: {mode?: 'js' | 'node'}) => {
   const app = new Application()
