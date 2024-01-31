@@ -1,12 +1,13 @@
 import { Observer } from 'rxjs';
 
-export enum Types {
+export enum DataStoryEvents {
   'RUN_SUCCESS' = 'RUN_SUCCESS',
   'RUN_ERROR' = 'RUN_ERROR',
   'SAVE_SUCCESS' = 'SAVE_SUCCESS',
 }
+
 export type EventTypes = {
-  type: Types;
+  type: DataStoryEvents;
   payload?: any;
 }
 

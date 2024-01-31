@@ -298,6 +298,7 @@ __metadata:
     postcss-loader: "npm:^7.3.3"
     react-hook-form: "npm:^7.43.8"
     reactflow: "npm:^11.8.1"
+    rxjs: "npm:^7.8.1"
     style-loader: "npm:^3.3.3"
     tailwindcss: "npm:^3.2.7"
     ts-node: "npm:^10.9.1"
