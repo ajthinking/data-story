@@ -10,7 +10,7 @@ module.exports = {
   images: {
     unoptimized: true,
   },
-
+  experimental: { esmExternals: false },
   webpack: (config, context) => {
     const baseConfig = nextraConfig.webpack(config, context);
 

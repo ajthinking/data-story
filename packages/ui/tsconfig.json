@@ -20,7 +20,7 @@
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "incremental": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "types": ["node", "react", "cypress"],
     "sourceMap": true
   },

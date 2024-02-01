@@ -1,5 +1,7 @@
 import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@data-story/core';
 import { ServerClient } from './ServerClient';
+import { eventManager } from '../events/eventManager';
+import { DataStoryEvents } from '../events/dataStoryEventType';
 
 export class JsClient implements ServerClient {
   constructor(
@@ -54,11 +56,17 @@ export class JsClient implements ServerClient {
             // Then wait for the next one
             handleUpdates(iterator);
           } else {
-            console.log('Execution complete 💫')
+            console.log('Execution complete 💫');
+            eventManager.emit({
+              type: DataStoryEvents.RUN_SUCCESS
+            });
           }
         })
         .catch((error: any) => {
-          alert('There was an error! Review console!')
+          eventManager.emit({
+            type: DataStoryEvents.RUN_ERROR,
+            payload: error
+          });
           console.log('Error', error)
         })
     }

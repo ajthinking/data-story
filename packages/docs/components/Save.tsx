@@ -1,7 +1,30 @@
 import { ControlButton } from 'reactflow';
 import React from 'react';
-import { SaveIcon, useDataStoryControls } from '@data-story/ui';
+import { DataStoryEvents, DataStoryEventType, SaveIcon, useDataStoryControls, useDataStoryEvent } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
+import { Bounce, toast, ToastContainer, ToastOptions } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const toastConfig: ToastOptions = {
+  position: 'top-right',
+  style: { top: '100px' },
+  autoClose: 2000,
+  hideProgressBar: true,
+  closeOnClick: true,
+  pauseOnHover: false,
+  draggable: false,
+  theme: 'light',
+  transition: Bounce,
+}
+
+export function errorToast(content: string): void {
+  toast.error(content, toastConfig);
+}
+
+export function successToast(content: string): void {
+  toast.success(content, toastConfig);
+}
+
 
 export interface LocalDiagram {
   type: 'load' | 'save';
@@ -16,15 +39,32 @@ const getCoreVersion = () => {
 }
 const saveDiagram = (key: string, diagram: Diagram) => {
 
-  const diagramJSON = JSON.stringify({
-    type: 'save',
-    version: getCoreVersion(),
-    name: key,
-    diagram
-  } as LocalDiagram);
+  try {
+    const diagramJSON = JSON.stringify({
+      type: 'save',
+      version: getCoreVersion(),
+      name: key,
+      diagram
+    } as LocalDiagram);
 
-  localStorage?.setItem(key, diagramJSON);
+    localStorage?.setItem(key, diagramJSON);
+    successToast('Diagram saved successfully!');
+  } catch(e) {
+    errorToast('Could not save diagram!');
+    console.error(e);
+  }
 };
+
+const initToast = (event: DataStoryEventType) => {
+  if (event.type === DataStoryEvents.RUN_SUCCESS) {
+    successToast('Diagram executed successfully!');
+  }
+
+  if (event.type === DataStoryEvents.RUN_ERROR) {
+    errorToast('Diagram execution failed!');
+  }
+};
+
 
 export const loadDiagram = (key: string): LocalDiagram => {
   const initDiagram: LocalDiagram = {
@@ -50,17 +90,21 @@ export const loadDiagram = (key: string): LocalDiagram => {
 export const LocalStorageKey = 'data-story-diagram';
 
 export const SaveComponent = () => {
-  const { getDiagram } = useDataStoryControls()
+  const { getDiagram } = useDataStoryControls();
+  useDataStoryEvent(initToast);
+
   return (
-    <ControlButton
-      title="Save"
-      aria-label="Save"
-      onClick={() => {
-        const diagram = getDiagram();
-        saveDiagram(LocalStorageKey, diagram);
-        window.alert('Diagram saved!');
-      }}>
-      <SaveIcon />
-    </ControlButton>
+    <>
+      <ControlButton
+        title="Save"
+        aria-label="Save"
+        onClick={() => {
+          const diagram = getDiagram();
+          saveDiagram(LocalStorageKey, diagram);
+        }}>
+        <SaveIcon/>
+      </ControlButton>
+      <ToastContainer/>
+    </>
   );
 }

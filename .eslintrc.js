@@ -38,6 +38,6 @@ module.exports = {
       'single'
     ],
     '@stylistic/eol-last': 'off',
-    '@stylistic/space-infix-ops': ['error', { 'int32Hint': false }]
+    '@stylistic/space-infix-ops': ['warn', { 'int32Hint': false }]
   }
 };

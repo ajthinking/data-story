@@ -1,6 +1,8 @@
 import { Diagram, NodeDescription } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { Hook } from '@data-story/core';
+import { eventManager } from '../events/eventManager';
+import { DataStoryEvents } from '../events/dataStoryEventType';
 
 export class SocketClient implements ServerClient {
   protected socket?: WebSocket;
@@ -80,7 +82,9 @@ export class SocketClient implements ServerClient {
 
       if(parsed.type === 'ExecutionResult') {
         console.log('Execution complete 💫')
-
+        eventManager.emit({
+          type: DataStoryEvents.RUN_SUCCESS
+        });
         return
       }
 
@@ -88,7 +92,11 @@ export class SocketClient implements ServerClient {
         console.error('Execution failed: ', {
           history: parsed.history,
         })
-        setTimeout(() => alert(parsed.message), 100)
+
+        eventManager.emit({
+          type: DataStoryEvents.RUN_ERROR,
+          payload: parsed
+        });
 
         return
       }

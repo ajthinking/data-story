@@ -2,16 +2,16 @@
 // https://www.electronjs.org/docs/latest/tutorial/process-model#preload-scripts
 // preload.js
 import { contextBridge, ipcRenderer } from 'electron';
-import { LocalDiagram } from './types';
+import { IpcResult } from './types';
 
 
 contextBridge.exposeInMainWorld('electron', {
 
-  saveDiagram: (data: string): Promise<void> => {
+  saveDiagram: (data: string): Promise<IpcResult> => {
     return ipcRenderer.invoke('save-diagram', data);
   },
 
-  openFileDialog: (): Promise<LocalDiagram> => {
+  openFileDialog: (): Promise<IpcResult> => {
     return ipcRenderer.invoke('open-diagram');
   },
 
