@@ -1,5 +1,6 @@
 import React from 'react';
 import { DataStoryNode } from '../../../../Node/DataStoryNode';
+import { DataStoryOutputTable, OutputTable } from './dataStoryOutputTable';
 
 export function OutputSchemas({
   node,
@@ -20,6 +21,7 @@ export function OutputSchemas({
         className="w-full bg-white h-48 text-xs text-gray-400 px-2 py-1 border rounded border-blue-200"
         defaultValue={JSON.stringify(node.data.outputs, null, 2)}
       ></textarea>
+      <DataStoryOutputTable />
     </div>
   </div>;
 }
