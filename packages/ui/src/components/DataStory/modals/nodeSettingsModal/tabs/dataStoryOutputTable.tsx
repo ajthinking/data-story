@@ -1,63 +1,19 @@
 import React, { FC } from 'react';
 
 // import './index.css';
-import { ColumnDef, flexRender, getCoreRowModel, Row, useReactTable, } from '@tanstack/react-table';
-import { makeData, Person } from './makeData';
+import { ColumnDef, flexRender, getCoreRowModel, Row, useReactTable  } from '@tanstack/react-table';
+import { makeData, makeDataKeys, Person } from './makeData';
 
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-const defaultColumns: ColumnDef<Person>[] = [
-  {
-    header: 'Name',
-    footer: (props) => props.column.id,
-    columns: [
-      {
-        accessorKey: 'firstName',
-        cell: (info) => info.getValue(),
-        footer: (props) => props.column.id,
-      },
-      {
-        accessorFn: (row) => row.lastName,
-        id: 'lastName',
-        cell: (info) => info.getValue(),
-        header: () => <span>Last Name</span>,
-        footer: (props) => props.column.id,
-      },
-    ],
-  },
-  {
-    header: 'Info',
-    footer: (props) => props.column.id,
-    columns: [
-      {
-        accessorKey: 'age',
-        header: () => 'Age',
-        footer: (props) => props.column.id,
-      },
-      {
-        header: 'More Info',
-        columns: [
-          {
-            accessorKey: 'visits',
-            header: () => <span>Visits</span>,
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: 'status',
-            header: 'Status',
-            footer: (props) => props.column.id,
-          },
-          {
-            accessorKey: 'progress',
-            header: 'Profile Progress',
-            footer: (props) => props.column.id,
-          },
-        ],
-      },
-    ],
-  },
-];
+const defaultColumns : ColumnDef<Person>[] = makeDataKeys.map((key) => ({
+  accessorKey: key,
+  id: key,
+  cell: (info) => info.getValue(),
+}));
+
+console.log(defaultColumns, 'defaultColumns');
 
 const DraggableRow: FC<{
   row: Row<Person>;
@@ -83,6 +39,7 @@ const DraggableRow: FC<{
     >
       <td ref={dropRef}>
         <button ref={dragRef}>🟰</button>
+        <button>▶ </button>
       </td>
       {row.getVisibleCells().map((cell) => (
         <td key={cell.id}>
@@ -94,7 +51,6 @@ const DraggableRow: FC<{
 };
 
 export function OutputTable() {
-  console.log(11111, JSON.stringify(makeData(20)));
   const [columns] = React.useState(() => [...defaultColumns]);
   const [data, setData] = React.useState(() => makeData(20));
 
@@ -106,8 +62,6 @@ export function OutputTable() {
     );
     setData([...data]);
   };
-
-  const rerender = () => setData(() => makeData(20));
 
   const table = useReactTable({
     data,
@@ -121,13 +75,6 @@ export function OutputTable() {
 
   return (
     <div className="p-2">
-      <div className="h-4"/>
-      <div className="flex flex-wrap gap-2">
-        <button onClick={() => rerender()} className="border p-1">
-          Regenerate
-        </button>
-      </div>
-      <div className="h-4"/>
       <table>
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -151,22 +98,6 @@ export function OutputTable() {
             <DraggableRow key={row.id} row={row} reorderRow={reorderRow}/>
           ))}
         </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                      header.column.columnDef.footer,
-                      header.getContext()
-                    )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
       </table>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
