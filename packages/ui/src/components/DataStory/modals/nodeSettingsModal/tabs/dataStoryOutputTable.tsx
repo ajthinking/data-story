@@ -1,16 +1,26 @@
-import React, { FC } from 'react';
-
-// import './index.css';
-import { ColumnDef, flexRender, getCoreRowModel, Row, useReactTable  } from '@tanstack/react-table';
-import { makeData, makeDataKeys, Person } from './makeData';
-
+import React, { FC, useEffect, useState } from 'react';
+import { ColumnDef, flexRender, getCoreRowModel, Row, RowData, useReactTable } from '@tanstack/react-table';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { makeData, makeDataKeys, Person } from './makeData';
+// import './index.css';
 
-const defaultColumns : ColumnDef<Person>[] = makeDataKeys.map((key) => ({
+declare module '@tanstack/react-table' {
+  interface TableMeta<TData extends RowData> {
+    updateData: (rowIndex: number, columnId: string, value: unknown) => void;
+  }
+}
+/**
+ * todo:
+ * 1. edit cell
+ * 2. add display json block
+ * 3. use real data
+ */
+
+
+export const defaultColumns : ColumnDef<Person>[] = makeDataKeys.map((key) => ({
   accessorKey: key,
   id: key,
-  cell: (info) => info.getValue(),
 }));
 
 console.log(defaultColumns, 'defaultColumns');
@@ -50,6 +60,36 @@ const DraggableRow: FC<{
   );
 };
 
+// Give our default column cell renderer editing superpowers!
+const defaultColumn: Partial<ColumnDef<Person>> = {
+  cell: ({ getValue, row: { index }, column: { id }, table }) => {
+    const initialValue = getValue();
+    // We need to keep and update the state of the cell normally
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [value, setValue] = useState(initialValue);
+    console.log('init defaultColumn', value, initialValue, getValue(), index, id, table.options.meta?.updateData, table.options.meta?.updateData?.toString());
+
+    // When the input is blurred, we'll call our table meta's updateData function
+    const onBlur = () => {
+      table.options.meta?.updateData(index, id, value);
+    };
+
+    // If the initialValue is changed external, sync it up with our state
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+      setValue(initialValue);
+    }, [initialValue]);
+
+    return (
+      <input
+        value={value as string}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={onBlur}
+      />
+    );
+  },
+};
+
 export function OutputTable() {
   const [columns] = React.useState(() => [...defaultColumns]);
   const [data, setData] = React.useState(() => makeData(20));
@@ -66,8 +106,26 @@ export function OutputTable() {
   const table = useReactTable({
     data,
     columns,
+    defaultColumn,
     getCoreRowModel: getCoreRowModel(),
     getRowId: (row) => row.userId, //good to have guaranteed unique row ids/keys for rendering
+    // Provide our updateData function to our table meta
+    meta: {
+      updateData: (rowIndex, columnId, value) => {
+        // Skip page index reset until after next rerender
+        setData((old) =>
+          old.map((row, index) => {
+            if (index === rowIndex) {
+              return {
+                ...old[rowIndex]!,
+                [columnId]: value,
+              };
+            }
+            return row;
+          })
+        );
+      },
+    },
     debugTable: true,
     debugHeaders: true,
     debugColumns: true,
