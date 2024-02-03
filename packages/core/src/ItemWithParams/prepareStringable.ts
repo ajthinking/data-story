@@ -36,10 +36,18 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   if(true) {
     /** Replaces function calls */
     transformedValue = transformedValue.replace(/@(\w+)\((.*)\)/g, (_: string, fn: string, expression: string) => {
-      if(fn === 'evalMath') return String(evalMath(expression));
+      const args = expression.split(',').map(arg => arg.trim());
+
+      const functions: Record<string, Function> = {
+        evalMath: (expression: string) => evalMath(expression),
+      }
+
+      const match = functions[fn];
 
       // If we don't know the function, just return the expression
-      return expression
+      if(!match) return expression;
+
+      return match(...args);
     });
   }
 

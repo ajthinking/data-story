@@ -19,10 +19,12 @@ export const Request: ComputerConfig = {
     json_({
       name: 'body',
       value: '{}',
+      multiline: true,
     }),
     json_({
       name: 'config',
-      value: '{}',
+      value: JSON.stringify({ headers: {}}, null, 2),
+      multiline: true,
     }),
   ],
 
