@@ -1,4 +1,6 @@
 export { get } from './utils/get'
+export { stringifyError } from './utils/stringifyError'
+export { serializeError } from './utils/serializeError'
 export { multiline } from './utils/multiline'
 export { pascalToSentenceCase } from './utils/pascalToSentenceCase'
 export { flattenObjectOneLevel } from './utils/flattenObjectOneLevel'
