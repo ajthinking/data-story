@@ -40,6 +40,11 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
 
       const functions: Record<string, Function> = {
         evalMath: (expression: string) => evalMath(expression),
+        env: (expression: string) => {
+          if(typeof process === 'undefined') throw new Error('env() is not available in the browser');
+
+          return process.env[args[0]];
+        },
       }
 
       const match = functions[fn];
