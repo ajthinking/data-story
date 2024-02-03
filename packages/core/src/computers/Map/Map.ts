@@ -1,70 +1,58 @@
-import { numberCast } from '../../Param/casts/numberCast';
-import { stringCast } from '../../Param/casts/stringCast';
+
+import { json_ } from '../../Param';
 import { jsEvaluation } from '../../Param/evaluations/jsEvaluation';
 import { jsonEvaluation } from '../../Param/evaluations/jsonEvaluation';
+import { hjsonEvaluation } from '../../Param/evaluations/hjsonEvaluation';
 import { ComputerConfig } from '../../types/ComputerConfig';
+import { ItemValue } from '../../types/ItemValue';
+import { merge } from '../../utils/merge';
+import { multiline } from '../../utils/multiline';
 
 export const Map: ComputerConfig = {
   name: 'Map',
-  label: 'Map',
+  docs: multiline`
+  Replaces the item with a new value. Supported input are: HJSON, JSON and JS function
+  `,
   inputs: ['input'],
   outputs: ['output'],
   params: [
     {
-      name: 'properties',
-      label: 'Properties',
-      help: 'The properties to create',
-      type: 'RepeatableParam',
-      row: [
-        {
-          name: 'key',
-          label: 'Key',
-          help: 'The key to create',
-          type: 'StringableParam',
-          multiline: false,
-          canInterpolate: true,
-          interpolate: true,
-          interpolationsFromPort: ['input'],
-          value: '',
-        },
-        {
-          name: 'value',
-          label: 'Value',
-          help: 'The value to create',
-          type: 'StringableParam',
-          multiline: true,
-          canInterpolate: true,
-          interpolate: true,
-          evaluations: [
-            jsonEvaluation,
-            jsEvaluation,
-          ],
-          casts: [
-            numberCast,
-            stringCast,
-          ],
-          value: '',
-        },
+      name: 'mode',
+      label: 'Mode',
+      help: '',
+      type: 'SelectParam',
+      value: 'MERGE',
+      options: [
+        { value: 'MERGE', label: 'MERGE' },
+        { value: 'REPLACE', label: 'REPLACE' },
       ],
-      value: [],
     },
+    json_({
+      name: 'json',
+      value: '{\n\tfoo: bar\n}',
+      help: '',
+      multiline: true,
+      evaluations: [
+        { ...hjsonEvaluation, selected: true },
+        jsonEvaluation,
+        jsEvaluation,
+      ]
+    })
   ],
 
-  async *run({ input, output }) {
+  async *run({ input, output, params }) {
     while(true) {
-      const [ item ] = input.pull(1)
+      const incoming = input.pull()
 
-      const map = item.params.properties as any
+      const replacers = incoming.map(item => {
+        if(params.mode === 'REPLACE') return item.params.json as ItemValue;
 
-      const result = {
-        ...item.value,
-      }
+        if(params.mode === 'MERGE') return merge(item.value, item.params.json as Object);
 
-      for(const { key, value } of map) {
-        result[key] = value
-      }
+        throw new Error(`Unknown mode: ${params.mode}`)
+      })
 
-      output.push([result])
+      output.push(replacers)
 
       yield;
     }

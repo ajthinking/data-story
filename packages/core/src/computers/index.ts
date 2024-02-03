@@ -11,9 +11,9 @@ export { Filter } from './Filter';
 export { Ignore } from './Ignore'
 export { InstantThrow } from './InstantThrow';
 export { Input } from './Input';
-export { ReplaceItem } from './ReplaceItem'
-export { Log } from './Log';
 export { Map } from './Map'
+export { Log } from './Log';
+export { MapTable } from './MapTable'
 // export { Merge } from './Merge';
 export { Pass } from './Pass';
 export { Peek } from './Peek'
