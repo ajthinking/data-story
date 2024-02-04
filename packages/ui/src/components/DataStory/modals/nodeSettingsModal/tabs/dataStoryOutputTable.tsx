@@ -4,9 +4,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DataStoryNode } from '../../../../Node/DataStoryNode';
 import { Port } from '@data-story/core';
-import exports from 'webpack';
-import register = exports.util.serialization.register;
-// import './index.css';
+import { Controller, ControllerRenderProps, UseFormReturn } from 'react-hook-form';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -17,6 +15,7 @@ declare module '@tanstack/react-table' {
 export interface OutputSchemaProps {
   node: DataStoryNode;
   register: any;
+  form :  UseFormReturn<any>;
 }
 
 /**
@@ -33,8 +32,6 @@ export const defaultColumns: ColumnDef<Port>[] = ['id', 'name', 'schema'].map((k
   accessorKey: key,
   id: key,
 }));
-
-console.log(defaultColumns, 'defaultColumns');
 
 const DraggableRow: FC<{
   row: Row<Port>;
@@ -59,7 +56,11 @@ const DraggableRow: FC<{
   }
 
   function getTdText(cell: Cell<Port, unknown>): React.ReactNode | JSX.Element {
-    return flexRender(cell.column.columnDef.cell, cell.getContext());
+    const value =  flexRender(cell.column.columnDef.cell, cell.getContext());
+    // @ts-ignore
+    const cellValue = value?.props.getValue();
+
+    return typeof cellValue === 'object' ? JSON.stringify(cellValue, null, 2) : value;
   }
 
   return (
@@ -68,10 +69,10 @@ const DraggableRow: FC<{
         ref={previewRef} //previewRef could go here
         style={{ opacity: isDragging ? 0.5 : 1 }}
       >
-        <td ref={dropRef}>
-          <button ref={dragRef}>🟰</button>
+        <td ref={dropRef} className='w-28'>
+          <button className='px-2' ref={dragRef}>🟰</button>
           <button onClick={handleExpandCollapse}>
-            {expanded ? '🔽' : '🔼'}
+            {expanded ? '🔽' : '▶️'}
           </button>
         </td>
         {row.getVisibleCells().map((cell) => (
@@ -81,21 +82,25 @@ const DraggableRow: FC<{
             }
           </td>
         ))}
+        {/*// add delete and add buttons*/}
+        <td>
+          <button className='px-2'>➕</button>
+          <button >✖️</button>
+        </td>
       </tr>
       {expanded &&
         <tr>
           {/*// @ts-ignore*/}
-          <td colSpan="3">
-            <pre>
+          <td colSpan="5">
+            <pre className="bg-gray-100 text-gray-800 text-sm font-mono p-4 border border-gray-300 rounded-md overflow-auto">
               {JSON.stringify(row.original, null, 2)}
             </pre>
           </td>
         </tr>
-
       }
+
     </>
-  )
-  ;
+  );
 };
 
 // Give our default column cell renderer editing superpowers!
@@ -117,6 +122,7 @@ const defaultColumn: Partial<ColumnDef<Port>> = {
 
     return (
       <input
+        className='text-center w-full'
         value={value as string}
         onChange={(e) => {
           setValue(e.target.value)
@@ -127,13 +133,12 @@ const defaultColumn: Partial<ColumnDef<Port>> = {
   },
 };
 export function OutputTable(props: {
-  register: any;
-  outputs: Port[];
+  filed:  ControllerRenderProps<any, 'outputs'>;
+  outputs?: Port[];
 }) {
+  console.log(props.filed, 'props.onChange');
   const [columns] = React.useState(() => [...defaultColumns]);
-  const [data, setData] = React.useState(props.outputs);
-
-  console.log(props.outputs, 'props.node', props.register, 'props.register', data, 'data');
+  const [data, setData] = React.useState(formatOutputs(props.filed.value));
 
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
     data.splice(
@@ -142,7 +147,8 @@ export function OutputTable(props: {
       data.splice(draggedRowIndex, 1)[0] as Port
     );
     setData([...data]);
-    props.register('outputs', { value: data });
+
+    props.filed.onChange(JSON.stringify(data));
   };
 
   const table = useReactTable({
@@ -165,7 +171,7 @@ export function OutputTable(props: {
         });
 
         setData(updatedData);
-        props.register('outputs', { value: updatedData });
+        props.filed.onChange(JSON.stringify(updatedData));
       },
     },
     debugTable: true,
@@ -175,7 +181,7 @@ export function OutputTable(props: {
 
   return (
     <div className="p-2">
-      <table>
+      <table >
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -204,18 +210,23 @@ export function OutputTable(props: {
 }
 
 
-export const DataStoryOutputTable = (props: OutputSchemaProps) => {
+const formatOutputs = (outputs: string | object): Port[] => {
+  return typeof outputs === 'string' ? JSON.parse(outputs) : outputs;
+}
 
-  const newOutputs = props.node.data.outputs.map((output: Port) => {
-    return {
-      ...output,
-      schema: JSON.stringify(output.schema, null, 2)
-    }
-  }) as unknown as Port[];
+export const DataStoryOutputTable = (props: OutputSchemaProps) => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <OutputTable register={props.register} outputs={newOutputs} />
+      <Controller
+        control={props.form.control}
+        name="outputs"
+        render={({ field }) => (
+          <OutputTable filed={field} />
+        )}
+      />
+
+      {/*<OutputTable {...props.register('outputs')} outputs={newOutputs} />*/}
     </DndProvider>
   );
 }
