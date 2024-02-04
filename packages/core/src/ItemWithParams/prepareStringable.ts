@@ -45,6 +45,8 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
 
           return process.env[args[0]];
         },
+        number: (expression: string) => Number(expression),
+        string: (expression: string) => String(expression),
       }
 
       const match = functions[fn];

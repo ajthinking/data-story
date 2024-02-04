@@ -48,6 +48,12 @@ export class InputDevice implements InputDeviceInterface {
     return pulled.map(item => new ItemWithParams(item, this.params))
   }
 
+  pullNew(template: ItemValue = {}): ItemWithParams[] {
+    const item = structuredClone(template)
+
+    return [new ItemWithParams(item, this.params)]
+  }
+
   havePort(name: string): boolean {
     return this.node.inputs.some(input => input.name === name)
   }

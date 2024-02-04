@@ -145,7 +145,7 @@ export const json_ = ({
   name,
   label,
   help,
-  multiline,
+  multiline = true,
   canInterpolate,
   interpolate,
   evaluations,
@@ -171,6 +171,45 @@ export const json_ = ({
     evaluations: evaluations ?? [
       { ...jsonEvaluation, selected: true },
       hjsonEvaluation,
+    ],
+    casts: [
+      numberCast,
+      stringCast,
+    ],
+    value: value ?? 0,
+  }
+}
+
+export const hjson = ({
+  name,
+  label,
+  help,
+  multiline = true,
+  canInterpolate,
+  interpolate,
+  evaluations,
+  value,
+}: {
+  name: string,
+  label?: string,
+  help?: string,
+  multiline?: boolean,
+  canInterpolate?: boolean,
+  interpolate?: boolean,
+  evaluations?: Evaluation[],
+  value?: string,
+}): Param => {
+  return {
+    name,
+    type: 'StringableParam',
+    label: label ?? name,
+    help: help ?? '',
+    multiline: multiline ?? false,
+    canInterpolate: canInterpolate ?? true,
+    interpolate: interpolate ?? true,
+    evaluations: evaluations ?? [
+      { ...hjsonEvaluation, selected: true },
+      jsonEvaluation,
     ],
     casts: [
       numberCast,

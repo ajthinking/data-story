@@ -1,4 +1,6 @@
+import { ItemWithParams } from './ItemWithParams';
 import { InputDeviceInterface } from './types/InputDeviceInterface';
+import { ItemValue } from './types/ItemValue';
 
 /**
  * A specialized input device
@@ -16,6 +18,10 @@ export class NestedInputDevice implements InputDeviceInterface {
 
   pullFrom(name: string, count?: number) {
     return this.inputDevice.pullFrom(name, count)
+  }
+
+  pullNew(template: ItemValue = {}): ItemWithParams[] {
+    return this.inputDevice.pullNew(template)
   }
 
   havePort(name: string): boolean {
