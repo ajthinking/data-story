@@ -18,7 +18,7 @@ declare module '@tanstack/react-table' {
  */
 
 
-export const defaultColumns : ColumnDef<Person>[] = makeDataKeys.map((key) => ({
+export const defaultColumns: ColumnDef<Person>[] = makeDataKeys.map((key) => ({
   accessorKey: key,
   id: key,
 }));
@@ -41,23 +41,45 @@ const DraggableRow: FC<{
     item: () => row,
     type: 'row',
   });
+  const [expanded, setExpanded] = useState(false);
+  const handleExpandCollapse = () => {
+    console.log('expand/collapse');
+    setExpanded(!expanded);
+  }
+  console.log(row, 'row')
 
   return (
-    <tr
-      ref={previewRef} //previewRef could go here
-      style={{ opacity: isDragging ? 0.5 : 1 }}
-    >
-      <td ref={dropRef}>
-        <button ref={dragRef}>🟰</button>
-        <button>▶ </button>
-      </td>
-      {row.getVisibleCells().map((cell) => (
-        <td key={cell.id}>
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+    <>
+      <tr
+        ref={previewRef} //previewRef could go here
+        style={{ opacity: isDragging ? 0.5 : 1 }}
+      >
+        <td ref={dropRef}>
+          <button ref={dragRef}>🟰</button>
+          <button onClick={handleExpandCollapse}>
+            {expanded ? '🔽' : '🔼'}
+          </button>
         </td>
-      ))}
-    </tr>
-  );
+        {row.getVisibleCells().map((cell) => (
+          <td key={cell.id}>
+            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          </td>
+        ))}
+      </tr>
+      {expanded &&
+        <tr>
+          {/*// @ts-ignore*/}
+          <td colSpan="3">
+            <pre>
+              {JSON.stringify(row.original, null, 2)}
+            </pre>
+          </td>
+        </tr>
+
+      }
+    </>
+  )
+  ;
 };
 
 // Give our default column cell renderer editing superpowers!
@@ -67,7 +89,7 @@ const defaultColumn: Partial<ColumnDef<Person>> = {
     // We need to keep and update the state of the cell normally
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [value, setValue] = useState(initialValue);
-    console.log('init defaultColumn', value, initialValue, getValue(), index, id, table.options.meta?.updateData, table.options.meta?.updateData?.toString());
+    // console.log('init defaultColumn', value, initialValue, getValue(), index, id, table.options.meta?.updateData, table.options.meta?.updateData?.toString());
 
     // When the input is blurred, we'll call our table meta's updateData function
     const onBlur = () => {
@@ -157,7 +179,6 @@ export function OutputTable() {
           ))}
         </tbody>
       </table>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
 }

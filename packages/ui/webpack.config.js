@@ -1,7 +1,6 @@
 const path = require('path');
 const deps = require('./package.json').dependencies;
 
-console.log(Object.keys(deps), '1111111111111');
 const commonJSConfig = {
   devtool: 'source-map',
   mode: 'development',
