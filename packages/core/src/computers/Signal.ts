@@ -2,6 +2,8 @@ import { ComputerConfig } from '../types/ComputerConfig';
 import { sleep } from '../utils/sleep';
 import { numberCast } from '../Param/casts/numberCast';
 import { multiline } from '../utils/multiline';
+import { hjson, json_, num } from '../Param';
+import Hjson from '@data-story/hjson';
 
 export const Signal: ComputerConfig = {
   name: 'Signal',
@@ -45,9 +47,15 @@ export const Signal: ComputerConfig = {
       ],
       value: String(300)
     },
+    hjson({
+      name: 'expression',
+      label: 'Template expression',
+      help: 'Use this field to customize the signal. ${i} is available as a variable.',
+      value: Hjson.stringify({id: '${i}'}),
+    })
   ],
 
-  async *run({ output, params }) {
+  async *run({ input, output, params }) {
     const period = Number(params.period)
     const count = Number(params.count)
 
@@ -55,10 +63,12 @@ export const Signal: ComputerConfig = {
 
     while(i <= count) {
       await sleep(period)
-      output.push([{
-        id: i++
-      }])
 
+      const [ spawned ] = input.pullNew({ i })
+      const shaped = spawned.params.expression as Object
+      output.push([shaped])
+
+      i++;
       yield;
     }
   },
