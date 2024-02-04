@@ -1,8 +1,11 @@
 import React, { FC, useEffect, useState } from 'react';
-import { ColumnDef, flexRender, getCoreRowModel, Row, RowData, useReactTable } from '@tanstack/react-table';
+import { Cell, ColumnDef, flexRender, getCoreRowModel, Row, RowData, useReactTable } from '@tanstack/react-table';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { makeData, makeDataKeys, Person } from './makeData';
+import { DataStoryNode } from '../../../../Node/DataStoryNode';
+import { Port } from '@data-story/core';
+import exports from 'webpack';
+import register = exports.util.serialization.register;
 // import './index.css';
 
 declare module '@tanstack/react-table' {
@@ -10,15 +13,23 @@ declare module '@tanstack/react-table' {
     updateData: (rowIndex: number, columnId: string, value: unknown) => void;
   }
 }
+
+export interface OutputSchemaProps {
+  node: DataStoryNode;
+  register: any;
+}
+
 /**
  * todo:
- * 1. edit cell
- * 2. add display json block
+ * 1. edit cell - get
+ * 2. add display json block - get
  * 3. use real data
+ * 4. add styles
+ * 5. delete next.js webpack config
  */
 
 
-export const defaultColumns: ColumnDef<Person>[] = makeDataKeys.map((key) => ({
+export const defaultColumns: ColumnDef<Port>[] = ['id', 'name', 'schema'].map((key) => ({
   accessorKey: key,
   id: key,
 }));
@@ -26,12 +37,12 @@ export const defaultColumns: ColumnDef<Person>[] = makeDataKeys.map((key) => ({
 console.log(defaultColumns, 'defaultColumns');
 
 const DraggableRow: FC<{
-  row: Row<Person>;
+  row: Row<Port>;
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
 }> = ({ row, reorderRow }) => {
   const [, dropRef] = useDrop({
     accept: 'row',
-    drop: (draggedRow: Row<Person>) => reorderRow(draggedRow.index, row.index),
+    drop: (draggedRow: Row<Port>) => reorderRow(draggedRow.index, row.index),
   });
 
   const [{ isDragging }, dragRef, previewRef] = useDrag({
@@ -46,7 +57,10 @@ const DraggableRow: FC<{
     console.log('expand/collapse');
     setExpanded(!expanded);
   }
-  console.log(row, 'row')
+
+  function getTdText(cell: Cell<Port, unknown>): React.ReactNode | JSX.Element {
+    return flexRender(cell.column.columnDef.cell, cell.getContext());
+  }
 
   return (
     <>
@@ -62,7 +76,9 @@ const DraggableRow: FC<{
         </td>
         {row.getVisibleCells().map((cell) => (
           <td key={cell.id}>
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            {
+              getTdText(cell)
+            }
           </td>
         ))}
       </tr>
@@ -83,20 +99,17 @@ const DraggableRow: FC<{
 };
 
 // Give our default column cell renderer editing superpowers!
-const defaultColumn: Partial<ColumnDef<Person>> = {
+const defaultColumn: Partial<ColumnDef<Port>> = {
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
     const initialValue = getValue();
-    // We need to keep and update the state of the cell normally
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [value, setValue] = useState(initialValue);
-    // console.log('init defaultColumn', value, initialValue, getValue(), index, id, table.options.meta?.updateData, table.options.meta?.updateData?.toString());
 
     // When the input is blurred, we'll call our table meta's updateData function
     const onBlur = () => {
       table.options.meta?.updateData(index, id, value);
     };
 
-    // If the initialValue is changed external, sync it up with our state
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       setValue(initialValue);
@@ -105,24 +118,31 @@ const defaultColumn: Partial<ColumnDef<Person>> = {
     return (
       <input
         value={value as string}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {
+          setValue(e.target.value)
+        }}
         onBlur={onBlur}
       />
     );
   },
 };
-
-export function OutputTable() {
+export function OutputTable(props: {
+  register: any;
+  outputs: Port[];
+}) {
   const [columns] = React.useState(() => [...defaultColumns]);
-  const [data, setData] = React.useState(() => makeData(20));
+  const [data, setData] = React.useState(props.outputs);
+
+  console.log(props.outputs, 'props.node', props.register, 'props.register', data, 'data');
 
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
     data.splice(
       targetRowIndex,
       0,
-      data.splice(draggedRowIndex, 1)[0] as Person
+      data.splice(draggedRowIndex, 1)[0] as Port
     );
     setData([...data]);
+    props.register('outputs', { value: data });
   };
 
   const table = useReactTable({
@@ -130,22 +150,22 @@ export function OutputTable() {
     columns,
     defaultColumn,
     getCoreRowModel: getCoreRowModel(),
-    getRowId: (row) => row.userId, //good to have guaranteed unique row ids/keys for rendering
+    getRowId: (row) => row.id, //good to have guaranteed unique row ids/keys for rendering
     // Provide our updateData function to our table meta
     meta: {
       updateData: (rowIndex, columnId, value) => {
-        // Skip page index reset until after next rerender
-        setData((old) =>
-          old.map((row, index) => {
-            if (index === rowIndex) {
-              return {
-                ...old[rowIndex]!,
-                [columnId]: value,
-              };
-            }
-            return row;
-          })
-        );
+        const updatedData = data.map((row, index) => {
+          if (index === rowIndex) {
+            return {
+              ...row,
+              [columnId]: value,
+            };
+          }
+          return row;
+        });
+
+        setData(updatedData);
+        props.register('outputs', { value: updatedData });
       },
     },
     debugTable: true,
@@ -184,10 +204,18 @@ export function OutputTable() {
 }
 
 
-export const DataStoryOutputTable = () => {
+export const DataStoryOutputTable = (props: OutputSchemaProps) => {
+
+  const newOutputs = props.node.data.outputs.map((output: Port) => {
+    return {
+      ...output,
+      schema: JSON.stringify(output.schema, null, 2)
+    }
+  }) as unknown as Port[];
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <OutputTable/>
+      <OutputTable register={props.register} outputs={newOutputs} />
     </DndProvider>
   );
 }

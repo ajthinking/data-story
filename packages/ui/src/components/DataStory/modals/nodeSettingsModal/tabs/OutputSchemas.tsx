@@ -1,14 +1,12 @@
 import React from 'react';
 import { DataStoryNode } from '../../../../Node/DataStoryNode';
-import { DataStoryOutputTable, OutputTable } from './dataStoryOutputTable';
+import { DataStoryOutputTable, OutputSchemaProps, OutputTable } from './dataStoryOutputTable';
+
 
 export function OutputSchemas({
   node,
   register
-}: {
-  node: DataStoryNode,
-  register: any
-}) {
+}: OutputSchemaProps) {
 
   return <div className="max-h-128 overflow-y-scroll relative pb-6 pt-4 px-6 flex-auto space-y-1 text-sm font-mono text-gray-800">
     <div
@@ -21,7 +19,7 @@ export function OutputSchemas({
         className="w-full bg-white h-48 text-xs text-gray-400 px-2 py-1 border rounded border-blue-200"
         defaultValue={JSON.stringify(node.data.outputs, null, 2)}
       ></textarea>
-      <DataStoryOutputTable />
+      <DataStoryOutputTable node={node} register={register} />
     </div>
   </div>;
 }
