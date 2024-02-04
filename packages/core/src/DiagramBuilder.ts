@@ -5,7 +5,7 @@ import { Link } from './types/Link';
 import { PositionGuesser } from './PositionGuesser';
 import { Port, PortName } from './types/Port';
 import { ComputerConfig } from './types/ComputerConfig';
-import { Fake } from './computers/Fake/Fake';
+import { Fake } from './computers/Fake';
 
 export class DiagramBuilder {
   diagram: Diagram
