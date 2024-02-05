@@ -28,7 +28,7 @@ export interface OutputSchemaProps {
  */
 
 
-export const defaultColumns: ColumnDef<Port>[] = ['id', 'name', 'schema'].map((key) => ({
+export const defaultColumns: ColumnDef<Port>[] = ['name', 'schema'].map((key) => ({
   accessorKey: key,
   id: key,
 }));
@@ -69,7 +69,7 @@ const DraggableRow: FC<{
         ref={previewRef} //previewRef could go here
         style={{ opacity: isDragging ? 0.5 : 1 }}
       >
-        <td ref={dropRef} className='w-28'>
+        <td ref={dropRef} className='w-28 text-center'>
           <button className='px-2' ref={dragRef}>🟰</button>
           <button onClick={handleExpandCollapse}>
             {expanded ? '🔽' : '▶️'}
@@ -83,7 +83,7 @@ const DraggableRow: FC<{
           </td>
         ))}
         {/*// add delete and add buttons*/}
-        <td>
+        <td className='w-28 text-center'>
           <button className='px-2'>➕</button>
           <button >✖️</button>
         </td>
@@ -91,7 +91,7 @@ const DraggableRow: FC<{
       {expanded &&
         <tr>
           {/*// @ts-ignore*/}
-          <td colSpan="5">
+          <td colSpan="4">
             <pre className="bg-gray-100 text-gray-800 text-sm font-mono p-4 border border-gray-300 rounded-md overflow-auto">
               {JSON.stringify(row.original, null, 2)}
             </pre>
@@ -226,7 +226,6 @@ export const DataStoryOutputTable = (props: OutputSchemaProps) => {
         )}
       />
 
-      {/*<OutputTable {...props.register('outputs')} outputs={newOutputs} />*/}
     </DndProvider>
   );
 }
