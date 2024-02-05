@@ -51,16 +51,7 @@ const DraggableRow: FC<{
   });
   const [expanded, setExpanded] = useState(false);
   const handleExpandCollapse = () => {
-    console.log('expand/collapse');
     setExpanded(!expanded);
-  }
-
-  function getTdText(cell: Cell<Port, unknown>): React.ReactNode | JSX.Element {
-    const value =  flexRender(cell.column.columnDef.cell, cell.getContext());
-    // @ts-ignore
-    const cellValue = value?.props.getValue();
-
-    return typeof cellValue === 'object' ? JSON.stringify(cellValue, null, 2) : value;
   }
 
   return (
@@ -78,7 +69,7 @@ const DraggableRow: FC<{
         {row.getVisibleCells().map((cell) => (
           <td key={cell.id}>
             {
-              getTdText(cell)
+              flexRender(cell.column.columnDef.cell, cell.getContext())
             }
           </td>
         ))}
@@ -103,32 +94,33 @@ const DraggableRow: FC<{
   );
 };
 
+function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}){
+  const [value, setValue] = useState(initialValue);
+  console.log(value, 'value');
+
+  return (
+    <input
+      className='text-center w-full'
+      value={value as string}
+      onChange={(e) => {
+        setValue(e.target.value)
+      }}
+      onBlur={() => onBlur(value)}
+    />
+  );
+}
+
 // Give our default column cell renderer editing superpowers!
 const defaultColumn: Partial<ColumnDef<Port>> = {
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
     const initialValue = getValue();
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [value, setValue] = useState(initialValue);
-
     // When the input is blurred, we'll call our table meta's updateData function
-    const onBlur = () => {
+    const onBlur = (value: unknown) => {
       table.options.meta?.updateData(index, id, value);
     };
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-      setValue(initialValue);
-    }, [initialValue]);
-
     return (
-      <input
-        className='text-center w-full'
-        value={value as string}
-        onChange={(e) => {
-          setValue(e.target.value)
-        }}
-        onBlur={onBlur}
-      />
+      <PortEditCell initialValue={initialValue} onBlur={onBlur}/>
     );
   },
 };
