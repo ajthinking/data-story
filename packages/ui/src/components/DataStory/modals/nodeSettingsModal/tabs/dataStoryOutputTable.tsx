@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback,  useState } from 'react';
 import { Cell, ColumnDef, flexRender, getCoreRowModel, Row, RowData, useReactTable } from '@tanstack/react-table';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -25,7 +25,7 @@ export interface OutputSchemaProps {
  * 3. use real data - get
  * 4. add styles - get
  * 5. delete next.js webpack config
- * 6. add delete and add buttons feature
+ * 6. add delete and add buttons feature - get
  * 7. get PR to the data-story repo
  */
 
@@ -39,7 +39,8 @@ const DraggableRow: FC<{
   row: Row<Port>;
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
   deleteRow: (id: string) => void;
-}> = ({ row, reorderRow, deleteRow }) => {
+  addRow: (row: Port, index: number) => void;
+}> = ({ row, reorderRow, deleteRow, addRow }) => {
   const [, dropRef] = useDrop({
     accept: 'row',
     drop: (draggedRow: Row<Port>) => reorderRow(draggedRow.index, row.index),
@@ -52,12 +53,28 @@ const DraggableRow: FC<{
     item: () => row,
     type: 'row',
   });
+
   const [expanded, setExpanded] = useState(false);
-  const handleDeleteRow = () => deleteRow(row.id);
+  const handleDeleteRow = useCallback(
+    () => deleteRow(row.id),
+    [deleteRow, row.id]
+  );
+
+  const handleAddRow = useCallback( () => {
+    const id = row.id?.split('.')?.slice(0, 2)?.join('.');
+    const name = 'output-' + Math.random().toString(36).substring(2, 6);
+
+    const newRow = {
+      id: `${id}.${name}`,
+      name,
+      schema: {},
+    }
+
+    addRow(newRow, row.index + 1);
+  }, [addRow, row.id, row.index]);
   const handleExpandCollapse = () => {
     setExpanded(!expanded);
   }
-
 
   return (
     <>
@@ -80,7 +97,7 @@ const DraggableRow: FC<{
         ))}
         {/*// add delete and add buttons*/}
         <td className='w-28'>
-          <button className='px-2'>➕</button>
+          <button className='px-2' onClick={handleAddRow}>➕</button>
           <button onClick={handleDeleteRow} >✖️</button>
         </td>
       </tr>
@@ -202,11 +219,19 @@ export function OutputTable(props: {
     debugColumns: true,
   });
 
-  const deleteRow = (id: string) => {
+  const deleteRow = useCallback((id: string) => {
     const updatedData = data.filter((row) => row.id !== id);
     setData([...updatedData]);
     props.filed.onChange(JSON.stringify(updatedData));
-  }
+  }, [data, props.filed]);
+
+  const addRow = useCallback((row: Port, index: number) => {
+    const updatedData = [...data];
+    updatedData.splice(index, 0, row);
+    setData([...updatedData]);
+    props.filed.onChange(JSON.stringify(updatedData));
+  }, [data, props.filed]);
+
   return (
     <div className="p-2">
       <table >
@@ -229,7 +254,12 @@ export function OutputTable(props: {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <DraggableRow key={row.id} row={row} reorderRow={reorderRow} deleteRow={deleteRow}/>
+            <DraggableRow
+              key={row.id}
+              row={row}
+              reorderRow={reorderRow}
+              deleteRow={deleteRow}
+              addRow={addRow}/>
           ))}
         </tbody>
       </table>
