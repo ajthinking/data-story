@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Cell, ColumnDef, flexRender, getCoreRowModel, Row, RowData, useReactTable } from '@tanstack/react-table';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -22,9 +22,11 @@ export interface OutputSchemaProps {
  * todo:
  * 1. edit cell - get
  * 2. add display json block - get
- * 3. use real data
- * 4. add styles
+ * 3. use real data - get
+ * 4. add styles - get
  * 5. delete next.js webpack config
+ * 6. add delete and add buttons feature
+ * 7. get PR to the data-story repo
  */
 
 
@@ -36,7 +38,8 @@ export const defaultColumns: ColumnDef<Port>[] = ['name', 'schema'].map((key) =>
 const DraggableRow: FC<{
   row: Row<Port>;
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
-}> = ({ row, reorderRow }) => {
+  deleteRow: (id: string) => void;
+}> = ({ row, reorderRow, deleteRow }) => {
   const [, dropRef] = useDrop({
     accept: 'row',
     drop: (draggedRow: Row<Port>) => reorderRow(draggedRow.index, row.index),
@@ -50,9 +53,11 @@ const DraggableRow: FC<{
     type: 'row',
   });
   const [expanded, setExpanded] = useState(false);
+  const handleDeleteRow = () => deleteRow(row.id);
   const handleExpandCollapse = () => {
     setExpanded(!expanded);
   }
+
 
   return (
     <>
@@ -76,7 +81,7 @@ const DraggableRow: FC<{
         {/*// add delete and add buttons*/}
         <td className='w-28'>
           <button className='px-2'>➕</button>
-          <button >✖️</button>
+          <button onClick={handleDeleteRow} >✖️</button>
         </td>
       </tr>
       {expanded &&
@@ -96,7 +101,6 @@ const DraggableRow: FC<{
 
 function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}){
   const [value, setValue] = useState(initialValue);
-  console.log(value, 'value');
 
   return (
     <input
@@ -138,7 +142,6 @@ const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, on
 // Give our default column cell renderer editing superpowers!
 const defaultColumn: Partial<ColumnDef<Port>> = {
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
-    console.log(index, 'index', id, 'id', table, 'table');
     const initialValue = getValue();
     // When the input is blurred, we'll call our table meta's updateData function
     const onBlur = (value: unknown) => {
@@ -179,6 +182,7 @@ export function OutputTable(props: {
     // Provide our updateData function to our table meta
     meta: {
       updateData: (rowIndex, columnId, value) => {
+        console.log(rowIndex, columnId, value, 'rowIndex, columnId, value');
         const updatedData = data.map((row, index) => {
           if (index === rowIndex) {
             return {
@@ -198,6 +202,11 @@ export function OutputTable(props: {
     debugColumns: true,
   });
 
+  const deleteRow = (id: string) => {
+    const updatedData = data.filter((row) => row.id !== id);
+    setData([...updatedData]);
+    props.filed.onChange(JSON.stringify(updatedData));
+  }
   return (
     <div className="p-2">
       <table >
@@ -220,7 +229,7 @@ export function OutputTable(props: {
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <DraggableRow key={row.id} row={row} reorderRow={reorderRow}/>
+            <DraggableRow key={row.id} row={row} reorderRow={reorderRow} deleteRow={deleteRow}/>
           ))}
         </tbody>
       </table>
