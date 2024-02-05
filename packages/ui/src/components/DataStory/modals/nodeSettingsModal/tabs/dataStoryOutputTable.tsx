@@ -60,7 +60,7 @@ const DraggableRow: FC<{
         ref={previewRef} //previewRef could go here
         style={{ opacity: isDragging ? 0.5 : 1 }}
       >
-        <td ref={dropRef} className='w-28 text-center'>
+        <td ref={dropRef} className='w-28'>
           <button className='px-2' ref={dragRef}>🟰</button>
           <button onClick={handleExpandCollapse}>
             {expanded ? '🔽' : '▶️'}
@@ -74,7 +74,7 @@ const DraggableRow: FC<{
           </td>
         ))}
         {/*// add delete and add buttons*/}
-        <td className='w-28 text-center'>
+        <td className='w-28'>
           <button className='px-2'>➕</button>
           <button >✖️</button>
         </td>
@@ -100,7 +100,7 @@ function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: 
 
   return (
     <input
-      className='text-center w-full'
+      className='w-full'
       value={value as string}
       onChange={(e) => {
         setValue(e.target.value)
@@ -110,17 +110,45 @@ function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: 
   );
 }
 
+const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}) => {
+  const [value, setValue] = useState(JSON.stringify(initialValue, null, 2));
+
+  const onCustomBlur = () => {
+    try {
+      // todo: use user friendly JSON parser
+      const parsedValue = JSON.parse(value);
+      onBlur(parsedValue);
+    } catch (e) {
+      console.error('Error parsing JSON', e);
+    }
+  }
+
+  return (
+    <textarea
+      className='w-full'
+      value={ value as string}
+      onChange={(e) => {
+        setValue(e.target.value)
+      }}
+      onBlur={onCustomBlur}
+    />
+  );
+}
+
 // Give our default column cell renderer editing superpowers!
 const defaultColumn: Partial<ColumnDef<Port>> = {
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
+    console.log(index, 'index', id, 'id', table, 'table');
     const initialValue = getValue();
     // When the input is blurred, we'll call our table meta's updateData function
     const onBlur = (value: unknown) => {
       table.options.meta?.updateData(index, id, value);
     };
+    const isObject = typeof initialValue === 'object';
 
     return (
-      <PortEditCell initialValue={initialValue} onBlur={onBlur}/>
+      isObject ? <PortEditObjectCell initialValue={initialValue} onBlur={onBlur} />
+        : <PortEditCell initialValue={initialValue} onBlur={onBlur}/>
     );
   },
 };
@@ -128,7 +156,6 @@ export function OutputTable(props: {
   filed:  ControllerRenderProps<any, 'outputs'>;
   outputs?: Port[];
 }) {
-  console.log(props.filed, 'props.onChange');
   const [columns] = React.useState(() => [...defaultColumns]);
   const [data, setData] = React.useState(formatOutputs(props.filed.value));
 
@@ -179,7 +206,7 @@ export function OutputTable(props: {
             <tr key={headerGroup.id}>
               <th/>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan}>
+                <th key={header.id} colSpan={header.colSpan} className='text-left'>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
