@@ -33,14 +33,14 @@ export const reactFlowToDiagram = (flow: SerializedReactFlow): Diagram => {
       inputs: flowNode.data.inputs.map(input => {
         return {
           id: input.id,
-          name: input?.id?.split('.').pop()!,
+          name: input?.name,
           schema: input.schema,
         }
       }),
       outputs: flowNode.data.outputs.map(output => {
         return {
           id: output.id,
-          name: output?.id?.split('.').pop()!,
+          name: output?.name,
           schema: output.schema,
         }
       }),
