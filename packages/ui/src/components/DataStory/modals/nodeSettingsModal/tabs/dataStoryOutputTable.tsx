@@ -18,18 +18,6 @@ export interface OutputSchemaProps {
   form :  UseFormReturn<any>;
 }
 
-/**
- * todo:
- * 1. edit cell - get
- * 2. add display json block - get
- * 3. use real data - get
- * 4. add styles - get
- * 5. delete next.js webpack config
- * 6. add delete and add buttons feature - get
- * 7. get PR to the data-story repo
- */
-
-
 export const defaultColumns: ColumnDef<Port>[] = ['name', 'schema'].map((key) => ({
   accessorKey: key,
   id: key,
@@ -81,22 +69,22 @@ const DraggableRow: FC<{
       <tr
         ref={previewRef} //previewRef could go here
         style={{ opacity: isDragging ? 0.5 : 1 }}
+        className="bg-white p-4"
       >
-        <td ref={dropRef} className='w-28'>
+        <td ref={dropRef} >
           <button className='px-2' ref={dragRef}>🟰</button>
           <button onClick={handleExpandCollapse}>
             {expanded ? '🔽' : '▶️'}
           </button>
         </td>
         {row.getVisibleCells().map((cell) => (
-          <td key={cell.id}>
+          <td key={cell.id} >
             {
               flexRender(cell.column.columnDef.cell, cell.getContext())
             }
           </td>
         ))}
-        {/*// add delete and add buttons*/}
-        <td className='w-28'>
+        <td>
           <button className='px-2' onClick={handleAddRow}>➕</button>
           <button onClick={handleDeleteRow} >✖️</button>
         </td>
@@ -121,7 +109,8 @@ function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: 
 
   return (
     <input
-      className='w-full'
+      type="text"
+      className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block m-1 p-1 width-90"
       value={value as string}
       onChange={(e) => {
         setValue(e.target.value)
@@ -146,7 +135,9 @@ const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, on
 
   return (
     <textarea
-      className='w-full'
+      className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 width-90"
+      rows={2}
+      placeholder="Type here..."
       value={ value as string}
       onChange={(e) => {
         setValue(e.target.value)
@@ -234,13 +225,13 @@ export function OutputTable(props: {
 
   return (
     <div className="p-2">
-      <table >
-        <thead>
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400" >
+        <thead className="text-gray-700 uppercase dark:text-gray-400 p-6 w-full">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               <th/>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan} className='text-left'>
+                <th key={header.id} colSpan={header.colSpan} className='text-left p-2'>
                   {header.isPlaceholder
                     ? null
                     : flexRender(

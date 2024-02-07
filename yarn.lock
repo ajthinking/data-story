@@ -153,7 +153,7 @@ __metadata:
     "@electron-forge/maker-deb": "npm:^7.1.0"
     "@electron-forge/maker-dmg": "npm:^7.2.0"
     "@electron-forge/maker-rpm": "npm:^7.1.0"
-    "@electron-forge/maker-squirrel": "npm:^7.1.0"
+    "@electron-forge/maker-squirrel": "npm:^7.2.0"
     "@electron-forge/maker-zip": "npm:^7.1.0"
     "@electron-forge/plugin-auto-unpack-natives": "npm:^7.1.0"
     "@electron-forge/plugin-webpack": "npm:^7.1.0"
@@ -460,7 +460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@electron-forge/maker-squirrel@npm:^7.1.0":
+"@electron-forge/maker-squirrel@npm:^7.2.0":
   version: 7.2.0
   resolution: "@electron-forge/maker-squirrel@npm:7.2.0"
   dependencies:

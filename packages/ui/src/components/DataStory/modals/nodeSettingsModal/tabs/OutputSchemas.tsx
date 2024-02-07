@@ -14,12 +14,6 @@ export function OutputSchemas({
       className="flex flex-col"
     >
       <label className="mt-2 mb-1 text-xs text-gray-400">Output Schema</label>
-      {/*<textarea*/}
-      {/*  {...register('outputs')}*/}
-      {/*  placeholder={'[]'}*/}
-      {/*  className="w-full bg-white h-48 text-xs text-gray-400 px-2 py-1 border rounded border-blue-200"*/}
-      {/*  defaultValue={JSON.stringify(node.data.outputs, null, 2)}*/}
-      {/*></textarea>*/}
       <DataStoryOutputTable node={node} register={register} form={form} />
     </div>
   </div>;
