@@ -1,6 +1,6 @@
 import React from 'react';
-import { DataStoryNode } from '../../../../Node/DataStoryNode';
-import { DataStoryOutputTable, OutputSchemaProps, OutputTable } from './dataStoryOutputTable';
+import { DataStoryOutputTable} from './dataStoryOutputTable';
+import { OutputSchemaProps } from './common';
 
 
 export function OutputSchemas({

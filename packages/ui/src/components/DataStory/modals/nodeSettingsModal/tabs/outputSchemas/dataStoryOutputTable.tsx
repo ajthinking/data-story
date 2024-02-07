@@ -1,28 +1,69 @@
-import React, { FC, useCallback,  useState } from 'react';
-import { Cell, ColumnDef, flexRender, getCoreRowModel, Row, RowData, useReactTable } from '@tanstack/react-table';
+import React, { FC, useCallback, useState } from 'react';
+import { ColumnDef, flexRender, getCoreRowModel, Row, useReactTable } from '@tanstack/react-table';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DataStoryNode } from '../../../../Node/DataStoryNode';
 import { Port } from '@data-story/core';
-import { Controller, ControllerRenderProps, UseFormReturn } from 'react-hook-form';
+import { Controller, ControllerRenderProps } from 'react-hook-form';
+import { defaultColumns, formatOutputs, OutputSchemaProps } from './common';
+function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}){
+  const [value, setValue] = useState(initialValue);
 
-declare module '@tanstack/react-table' {
-  interface TableMeta<TData extends RowData> {
-    updateData: (rowIndex: number, columnId: string, value: unknown) => void;
+  return (
+    <input
+      type="text"
+      className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block m-1 p-1 width-90"
+      value={value as string}
+      onChange={(e) => {
+        setValue(e.target.value)
+      }}
+      onBlur={() => onBlur(value)}
+    />
+  );
+}
+
+const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}) => {
+  const [value, setValue] = useState(JSON.stringify(initialValue, null, 2));
+
+  const onCustomBlur = () => {
+    try {
+      // todo: use user friendly JSON parser
+      const parsedValue = JSON.parse(value);
+      onBlur(parsedValue);
+    } catch (e) {
+      console.error('Error parsing JSON', e);
+    }
   }
+
+  return (
+    <textarea
+      className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 width-90"
+      rows={2}
+      placeholder="Type here..."
+      value={ value as string}
+      onChange={(e) => {
+        setValue(e.target.value)
+      }}
+      onBlur={onCustomBlur}
+    />
+  );
 }
 
-export interface OutputSchemaProps {
-  node: DataStoryNode;
-  register: any;
-  form :  UseFormReturn<any>;
-}
+// Give our default column cell renderer editing superpowers!
+const defaultColumn: Partial<ColumnDef<Port>> = {
+  cell: ({ getValue, row: { index }, column: { id }, table }) => {
+    const initialValue = getValue();
+    // When the input is blurred, we'll call our table meta's updateData function
+    const onBlur = (value: unknown) => {
+      table.options.meta?.updateData(index, id, value);
+    };
+    const isObject = typeof initialValue === 'object';
 
-export const defaultColumns: ColumnDef<Port>[] = ['name', 'schema'].map((key) => ({
-  accessorKey: key,
-  id: key,
-}));
-
+    return (
+      isObject ? <PortEditObjectCell initialValue={initialValue} onBlur={onBlur} />
+        : <PortEditCell initialValue={initialValue} onBlur={onBlur}/>
+    );
+  },
+};
 const DraggableRow: FC<{
   row: Row<Port>;
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
@@ -104,65 +145,6 @@ const DraggableRow: FC<{
   );
 };
 
-function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}){
-  const [value, setValue] = useState(initialValue);
-
-  return (
-    <input
-      type="text"
-      className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block m-1 p-1 width-90"
-      value={value as string}
-      onChange={(e) => {
-        setValue(e.target.value)
-      }}
-      onBlur={() => onBlur(value)}
-    />
-  );
-}
-
-const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}) => {
-  const [value, setValue] = useState(JSON.stringify(initialValue, null, 2));
-
-  const onCustomBlur = () => {
-    try {
-      // todo: use user friendly JSON parser
-      const parsedValue = JSON.parse(value);
-      onBlur(parsedValue);
-    } catch (e) {
-      console.error('Error parsing JSON', e);
-    }
-  }
-
-  return (
-    <textarea
-      className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 width-90"
-      rows={2}
-      placeholder="Type here..."
-      value={ value as string}
-      onChange={(e) => {
-        setValue(e.target.value)
-      }}
-      onBlur={onCustomBlur}
-    />
-  );
-}
-
-// Give our default column cell renderer editing superpowers!
-const defaultColumn: Partial<ColumnDef<Port>> = {
-  cell: ({ getValue, row: { index }, column: { id }, table }) => {
-    const initialValue = getValue();
-    // When the input is blurred, we'll call our table meta's updateData function
-    const onBlur = (value: unknown) => {
-      table.options.meta?.updateData(index, id, value);
-    };
-    const isObject = typeof initialValue === 'object';
-
-    return (
-      isObject ? <PortEditObjectCell initialValue={initialValue} onBlur={onBlur} />
-        : <PortEditCell initialValue={initialValue} onBlur={onBlur}/>
-    );
-  },
-};
 export function OutputTable(props: {
   filed:  ControllerRenderProps<any, 'outputs'>;
   outputs?: Port[];
@@ -256,11 +238,6 @@ export function OutputTable(props: {
       </table>
     </div>
   );
-}
-
-
-const formatOutputs = (outputs: string | object): Port[] => {
-  return typeof outputs === 'string' ? JSON.parse(outputs) : outputs;
 }
 
 export const DataStoryOutputTable = (props: OutputSchemaProps) => {
