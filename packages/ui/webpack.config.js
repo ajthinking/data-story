@@ -1,14 +1,15 @@
 const path = require('path');
 const deps = require('./package.json').dependencies;
 
-const commonJSConfig = {
+const commonJSConfig = (env, options) => ({
   devtool: 'source-map',
   mode: 'development',
   entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
-    libraryTarget: 'commonjs2'
+    libraryTarget: 'commonjs2',
+    clean: !options.watch,
   },
   module: {
     rules: [
@@ -19,7 +20,7 @@ const commonJSConfig = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
+        use: [ 'style-loader', 'css-loader', 'postcss-loader' ]
       }
     ]
   },
@@ -32,9 +33,9 @@ const commonJSConfig = {
   resolve: {
     extensions: [ '.js', '.jsx', '.ts', '.tsx' ]
   }
-};
+});
 
-const esmConfig = {
+const esmConfig = (env, options) => ({
   devtool: 'source-map',
   entry: './src/index.ts',
   mode: 'development',
@@ -42,7 +43,7 @@ const esmConfig = {
     path: path.resolve('./dist'),
     filename: 'bundle.mjs',
     libraryTarget: 'module',
-    clean: true,
+    clean: !options.watch,
     library: {
       type: 'module',
     },
@@ -56,7 +57,7 @@ const esmConfig = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
+        use: [ 'style-loader', 'css-loader', 'postcss-loader' ]
       }
     ]
   },
@@ -73,6 +74,8 @@ const esmConfig = {
   experiments: {
     outputModule: true,
   },
-};
+});
 
-module.exports = [commonJSConfig, esmConfig];
+module.exports = function () {
+  return [ commonJSConfig(...arguments), esmConfig(...arguments) ];
+};
