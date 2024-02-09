@@ -6,13 +6,15 @@ import { Port } from '@data-story/core';
 import { Controller, ControllerRenderProps } from 'react-hook-form';
 import { defaultColumns, formatOutputs, OutputSchemaProps } from './common';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+import { CloseIcon } from '../../../../icons/closeIcon';
+import { DragIcon } from '../../../../icons/dragIcon';
 function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}){
   const [value, setValue] = useState(initialValue);
 
   return (
     <input
       type="text"
-      className="text-sm rounded-lg focus:ring-blue-500 block m-1 p-1 bg-gray-100 width-90"
+      className="text-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 block p-1 bg-gray-100 width-90"
       value={value as string}
       onChange={(e) => {
         setValue(e.target.value)
@@ -101,7 +103,9 @@ const DraggableRow: FC<{
         className="bg-white p-4"
       >
         <td ref={dropRef} onClick={handleExpandCollapse}>
-          <button className='px-2' ref={dragRef}>🟰</button>
+          <button className='px-2' ref={dragRef}>
+            <DragIcon />
+          </button>
         </td>
         {row.getVisibleCells().map((cell) => (
           <td key={cell.id} >
@@ -111,7 +115,9 @@ const DraggableRow: FC<{
           </td>
         ))}
         <td>
-          <button onClick={handleDeleteRow} >✖️</button>
+          <button onClick={handleDeleteRow} >
+            <CloseIcon />
+          </button>
         </td>
       </tr>
       {expanded &&
