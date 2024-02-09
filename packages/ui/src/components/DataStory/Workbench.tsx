@@ -1,6 +1,12 @@
 import { DataStoryControls } from './dataStoryControls';
-import { useId, useState } from 'react';
-import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider } from 'reactflow';
+import { useEffect, useId, useState } from 'react';
+import ReactFlow, {
+  Background,
+  BackgroundVariant,
+  ReactFlowInstance,
+  ReactFlowProvider,
+  useUpdateNodeInternals
+} from 'reactflow';
 import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
 import { RunModal } from './modals/runModal';
 import { AddNodeModal } from './modals/addNodeModal';
@@ -14,6 +20,7 @@ import { Diagram } from '@data-story/core';
 import { useHotkeys } from './useHotkeys';
 import DataStoryPeekNodeComponent from '../Node/DataStoryPeekNodeComponent';
 import { WorkbenchProps } from './types';
+import { DataStoryNode } from '../Node/DataStoryNode';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -100,6 +107,7 @@ export const Workbench = ({
           />
           <Background color='#E7E7E7' variant={BackgroundVariant.Lines} />
         </ReactFlow>
+        <UpdateNodeInternals nodes={nodes} />
       </ReactFlowProvider>
 
       {/* Modals */}
@@ -109,3 +117,13 @@ export const Workbench = ({
     </>
   );
 };
+
+export const UpdateNodeInternals = ({ nodes }: {
+  nodes: DataStoryNode[];
+}) => {
+  const updateNodeInternals = useUpdateNodeInternals();
+  useEffect(() => {
+    updateNodeInternals(nodes.map((node) => node.id));
+  }, [nodes, updateNodeInternals])
+  return null
+}
