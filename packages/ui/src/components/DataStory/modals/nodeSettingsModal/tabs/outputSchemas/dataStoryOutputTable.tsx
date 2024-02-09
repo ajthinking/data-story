@@ -5,6 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Port } from '@data-story/core';
 import { Controller, ControllerRenderProps } from 'react-hook-form';
 import { defaultColumns, formatOutputs, OutputSchemaProps } from './common';
+import { DataStoryNode } from '../../../../../Node/DataStoryNode';
 function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}){
   const [value, setValue] = useState(initialValue);
 
@@ -37,7 +38,7 @@ const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, on
   return (
     <textarea
       className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 width-90"
-      rows={2}
+      rows={1}
       placeholder="Type here..."
       value={ value as string}
       onChange={(e) => {
@@ -68,8 +69,7 @@ const DraggableRow: FC<{
   row: Row<Port>;
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
   deleteRow: (id: string) => void;
-  addRow: (row: Port, index: number) => void;
-}> = ({ row, reorderRow, deleteRow, addRow }) => {
+}> = ({ row, reorderRow, deleteRow }) => {
   const [, dropRef] = useDrop({
     accept: 'row',
     drop: (draggedRow: Row<Port>) => reorderRow(draggedRow.index, row.index),
@@ -89,18 +89,6 @@ const DraggableRow: FC<{
     [deleteRow, row.id]
   );
 
-  const handleAddRow = useCallback( () => {
-    const id = row.id?.split('.')?.slice(0, 2)?.join('.');
-    const name = 'output-' + Math.random().toString(36).substring(2, 6);
-
-    const newRow = {
-      id: `${id}.${name}`,
-      name,
-      schema: {},
-    }
-
-    addRow(newRow, row.index + 1);
-  }, [addRow, row.id, row.index]);
   const handleExpandCollapse = () => {
     setExpanded(!expanded);
   }
@@ -112,11 +100,8 @@ const DraggableRow: FC<{
         style={{ opacity: isDragging ? 0.5 : 1 }}
         className="bg-white p-4"
       >
-        <td ref={dropRef} >
+        <td ref={dropRef} onClick={handleExpandCollapse}>
           <button className='px-2' ref={dragRef}>🟰</button>
-          <button onClick={handleExpandCollapse}>
-            {expanded ? '🔽' : '▶️'}
-          </button>
         </td>
         {row.getVisibleCells().map((cell) => (
           <td key={cell.id} >
@@ -126,7 +111,6 @@ const DraggableRow: FC<{
           </td>
         ))}
         <td>
-          <button className='px-2' onClick={handleAddRow}>➕</button>
           <button onClick={handleDeleteRow} >✖️</button>
         </td>
       </tr>
@@ -147,6 +131,7 @@ const DraggableRow: FC<{
 
 export function OutputTable(props: {
   filed:  ControllerRenderProps<any, 'outputs'>;
+  node: DataStoryNode;
   outputs?: Port[];
 }) {
   const [columns] = React.useState(() => [...defaultColumns]);
@@ -198,16 +183,23 @@ export function OutputTable(props: {
     props.filed.onChange(JSON.stringify(updatedData));
   }, [data, props.filed]);
 
-  const addRow = useCallback((row: Port, index: number) => {
-    const updatedData = [...data];
-    updatedData.splice(index, 0, row);
-    setData([...updatedData]);
+  const handleAddRow = useCallback( () => {
+    const id = props.node.id;
+    const name = 'output' + Math.random().toString(36).substring(2, 6);
+    const newRow = {
+      id: `${id}.${name}`,
+      name,
+      schema: {},
+    }
+
+    const updatedData = [...data, newRow];
+    setData(updatedData);
     props.filed.onChange(JSON.stringify(updatedData));
-  }, [data, props.filed]);
+  }, [data, props.filed, props.node.id]);
 
   return (
     <div className="p-2">
-      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400" >
+      <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-gray-700 uppercase dark:text-gray-400 p-6 w-full">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -232,10 +224,13 @@ export function OutputTable(props: {
               row={row}
               reorderRow={reorderRow}
               deleteRow={deleteRow}
-              addRow={addRow}/>
+            />
           ))}
         </tbody>
       </table>
+      <button onClick={handleAddRow} id="addRowBtn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+        Add Row
+      </button>
     </div>
   );
 }
@@ -248,7 +243,7 @@ export const DataStoryOutputTable = (props: OutputSchemaProps) => {
         control={props.form.control}
         name="outputs"
         render={({ field }) => (
-          <OutputTable filed={field} />
+          <OutputTable filed={field} node={props.node} />
         )}
       />
 

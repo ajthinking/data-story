@@ -1,5 +1,4 @@
 import { DataStory } from '@data-story/ui';
-import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
 import { SaveComponent } from './save';
