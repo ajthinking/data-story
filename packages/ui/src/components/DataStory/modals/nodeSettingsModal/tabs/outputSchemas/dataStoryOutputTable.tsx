@@ -12,7 +12,7 @@ function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: 
   return (
     <input
       type="text"
-      className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block m-1 p-1 width-90"
+      className="text-sm rounded-lg focus:ring-blue-500 block m-1 p-1 bg-gray-100 width-90"
       value={value as string}
       onChange={(e) => {
         setValue(e.target.value)
@@ -37,7 +37,7 @@ const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, on
 
   return (
     <textarea
-      className="text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1 width-90"
+      className="text-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 block p-1 bg-gray-100 width-90"
       rows={1}
       placeholder="Type here..."
       value={ value as string}
@@ -228,7 +228,7 @@ export function OutputTable(props: {
           ))}
         </tbody>
       </table>
-      <button onClick={handleAddRow} id="addRowBtn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
+      <button onClick={handleAddRow} id="addRowBtn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mt-2">
         Add Row
       </button>
     </div>
