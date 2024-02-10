@@ -12,7 +12,7 @@ type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Docs';
 const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   Params,
   InputSchemas,
-  OutputSchemas,
+  OutputSchemas: OutputSchemas,
   Code,
   Docs,
 };

@@ -1,7 +1,7 @@
 import { Param, PortSelectionParam } from '@data-story/core'
-import { UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, useWatch } from 'react-hook-form';
 import { DataStoryNode } from '../../../../../Node/DataStoryNode';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export function PortSelectionInput({
   param,
@@ -19,6 +19,12 @@ export function PortSelectionInput({
   const [ addPortOpen, setAddPortOpen ] = useState(false)
   const [ newPortName, setNewPortName ] = useState('')
   const [ newPortSchema, setNewPortSchema ] = useState('{}')
+  const outputsDraft = useWatch({
+    control: form.control,
+    name: 'outputs',
+    exact: true,
+  });
+  const parsedOutputs = useMemo(() => JSON.parse(outputsDraft), [outputsDraft]);
 
   const onAddPort = () => {
     const newPort = {
@@ -46,7 +52,7 @@ export function PortSelectionInput({
         className="bg-gray-50 px-2 py-1"
         {...form.register(name!)}
       >
-        {node.data.outputs.map(output => (<option
+        {parsedOutputs.map(output => (<option
           key={output.name}
           value={output.name}
         >{output.name}</option>))}
