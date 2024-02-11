@@ -96,7 +96,6 @@ function getNodes(nodes: Node[]):  DataStoryNode[] {
         params: node.params,
         computer: node.type,
         label: (node?.label || node.type) as string,
-        color: node.color,
         inputs: node.inputs,
         outputs: node.outputs,
       },
@@ -218,7 +217,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         docs: nodeDescription.docs,
         // Ensure two nodes of same type don't share the same params object
         params: structuredClone(nodeDescription.params),
-        color: nodeDescription.color,
         label: nodeDescription.label ?? nodeDescription.name,
         inputs: nodeDescription.inputs.map((input: AbstractPort) => {
           return {
