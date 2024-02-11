@@ -13,12 +13,14 @@ export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
 export class Executor {
   public readonly memory: ExecutionMemory;
+  public readonly diagram: Diagram;
 
   constructor(
-    public readonly diagram: Diagram,
+    diagram: Diagram,
     public readonly computers: Map<string, Computer>,
     public readonly storage: Storage
   ) {
+    this.diagram = diagram.unfold()
     this.memory = ExecutionMemoryFactory.create(diagram, computers, storage)
   }
 
