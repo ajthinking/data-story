@@ -4,6 +4,7 @@ import { ComputerConfig } from '../types/ComputerConfig';
 export const Output: ComputerConfig = {
   name: 'Output',
   inputs: ['input'],
+  outputs: ['output'],
 
   async *run({ input, output }) {
     while(true) {

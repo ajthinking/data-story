@@ -35,7 +35,6 @@ export default () => {
     .from('Signal.1.output').below('Pass.1').add({
       ...Ignore,
       label: 'in Your App',
-      color: '#FFBF00',
     })
     .jiggle({x: 60, y: 25})
     .get()
@@ -48,7 +47,6 @@ export default () => {
     .from('Signal.1.output').below('Ignore.1').add({
       ...Ignore,
       label: 'in Your App',
-      color: '#FFBF00',
     })
     .jiggle({x: 60, y: 25})
     .get()

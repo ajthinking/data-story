@@ -54,7 +54,6 @@ export class DiagramBuilder {
     const node: Node = {
       id: nodeId,
       label: config.label,
-      color: config.color,
       type: computer.name,
       // The inputs have not yet been assigned ids, to it here
       inputs: (computer.inputs ?? []).map(input => {

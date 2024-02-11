@@ -3,6 +3,7 @@ import { ComputerConfig } from '../types/ComputerConfig';
 
 export const Input: ComputerConfig = {
   name: 'Input',
+  inputs: ['input'],
   outputs: ['output'],
 
   canRun({ input, isAvailable }) {

@@ -55,4 +55,32 @@ export class Diagram {
 
     return inputPortIds.map(portId => this.nodeWithInputPortId(portId)!)
   }
+
+  unfold(): Diagram {
+    const replacables = this.nodes.filter(node => node.type in this.nodeDefinitions)
+
+    for(const node of replacables) {
+      this.unfoldNode(node)
+    }
+
+    return this;
+  }
+
+  unfoldNode(node: Node): Diagram {
+    const index = this.nodes.indexOf(node)
+    const subDiagram = this.nodeDefinitions[node.type]
+    if(!subDiagram) throw new Error(`No subdiagram found for node type "${node.type}"`)
+
+    const [ replaced ] = this.nodes.splice(index, 1, ...subDiagram.nodes)
+    this.links = [...this.links, ...subDiagram.links]
+
+    for(const inputPort of replaced.inputs) {
+      const links = this.linksAtInput(replaced, inputPort.name)
+      for(const link of links) {
+        // TODO relink nodes
+      }
+    }
+
+    return this;
+  }
 }
