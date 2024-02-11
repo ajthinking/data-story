@@ -16,7 +16,7 @@ export class DiagramBuilder {
   belowDirective: NodeId | null = null
 
   constructor() {
-    this.diagram = new Diagram([], [])
+    this.diagram = new Diagram([], [], {})
   }
 
   from(directive: string) {
@@ -176,6 +176,11 @@ export class DiagramBuilder {
       inputs: inputs.map((name) => ({ name, schema: { type: 'object' } })),
       outputs: outputs.map((name) => ({ name, schema: { type: 'object' } })),
     })
+  }
+
+  register(subDiagrams: Record<string, Diagram>) {
+    this.diagram.nodeDefinitions = subDiagrams
+    return this
   }
 
   get() {

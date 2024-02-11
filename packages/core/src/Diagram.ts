@@ -12,6 +12,7 @@ export class Diagram {
   constructor(
     public nodes: Node[],
     public links: Link[],
+    public nodeDefinitions: Record<string, Diagram> = {}
   ) {}
 
   linksConnectedToPortId(id: PortId | undefined): Link[] {

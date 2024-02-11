@@ -19,7 +19,6 @@ export type RunArgs = {
   params: ParamsDevice,
   storage?: Storage,
   hooks: HooksDevice,
-  executorFactory?: (diagram: Diagram) => Executor,
   node: Node,
 }
 

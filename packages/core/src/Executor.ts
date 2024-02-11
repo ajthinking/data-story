@@ -1,91 +1,28 @@
-import { Node, NodeId } from './types/Node';
+import { Node } from './types/Node';
 import { Diagram } from './Diagram';
-import { PortLinkMap } from './types/PortLinkMap';
-import { OutputDevice } from './OutputDevice';
 import { Computer } from './types/Computer';;
-import { LinkId } from './types/Link';
 import { ExecutionUpdate } from './types/ExecutionUpdate';
 import { isFinished } from './utils/isFinished';
 import { Storage } from './types/Storage';
 import { ExecutionMemory } from './ExecutionMemory';
-import { ExecutorInterface } from './types/ExecutorInterface';
-import { InputDevice } from './InputDevice';
 import { mapToRecord } from './utils/mapToRecord';
-import { Hook } from './types/Hook';
-import { ItemValue } from './types/ItemValue';
-import { toLookup } from './utils/toLookup';
 import { arrayToRecord } from './utils/arrayToRecord';
+import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
-export class Executor implements ExecutorInterface {
-  memory: ExecutionMemory = new ExecutionMemory({
-    nodeStatuses: new Map<NodeId, NodeStatus>(),
-    nodeRunners: new Map<NodeId, AsyncGenerator<undefined, void, void>>(),
-    linkItems: new Map<LinkId, ItemValue[]>(),
-    linkCounts: new Map<LinkId, number>(),
-    inputDevices: new Map<NodeId, InputDevice>(),
-    outputDevices: new Map<NodeId, OutputDevice>(),
-  })
+export class Executor {
+  public readonly memory: ExecutionMemory;
 
   constructor(
-    public diagram: Diagram,
-    public computers: Map<string, Computer>,
-    public storage: Storage
-  ) {}
-
-  protected boot() {
-    // Configure the memory's initial state
-    for(const link of this.diagram.links) {
-      // Set all links to be empty
-      this.memory.setLinkItems(link.id, [])
-      this.memory.setLinkCount(link.id, 0)
-    }
-
-    for(const node of this.diagram.nodes) {
-      // Set all nodes to available
-      this.memory.setNodeStatus(node.id, 'AVAILABLE')
-
-      // Register input devices
-      // Potentially, if configured, reuse already present input device
-      // (e.g. if the node is a sub diagram)
-      const inputDevice = this.memory.inputDevices.get(node.id)
-        || this.makeInputDevice(node, this.memory)
-
-      // Register output devices
-      // Potentially, if configured, reuse already present output device
-      // (e.g. if the node is a sub diagram)
-      const outputDevice = this.memory.outputDevices.get(node.id)
-        || this.makeOutputDevice(node, this.memory)
-
-      this.memory.inputDevices.set(node.id, inputDevice)
-      this.memory.outputDevices.set(node.id, outputDevice)
-
-      // Initialize runner generators
-      const computer = this.computers.get(node.type)!
-      this.memory.setNodeRunner(
-        node.id,
-        computer.run({
-          input: inputDevice,
-          output: outputDevice,
-          params: toLookup(node.params, 'name', 'value'),
-          storage: this.storage,
-          hooks: {
-            register: (hook: Hook) => {
-              this.memory.pushHooks([hook])
-            }
-          },
-          executorFactory: (diagram: any) => {
-            return new Executor(diagram, this.computers, this.storage)
-          },
-          node,
-        }),
-      )
-    }
+    public readonly diagram: Diagram,
+    public readonly computers: Map<string, Computer>,
+    public readonly storage: Storage
+  ) {
+    this.memory = ExecutionMemoryFactory.create(diagram, computers, storage)
   }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {
-    this.boot()
     this.memory.pushHistoryMessage('Starting execution 🚀')
 
     let pendingPromises: Promise<void>[] = []
@@ -185,17 +122,6 @@ export class Executor implements ExecutorInterface {
     return true
   }
 
-  protected async clearFinishedPromises(promises: Promise<void>[]) {
-    const passed = []
-
-    for(const promise of promises) {
-      if(await isFinished(promise)) continue;
-      passed.push(promise)
-    }
-
-    return passed
-  }
-
   protected getRunnableNodes(): Node[] {
     return this.diagram.nodes.filter(node => {
       // If the computer implements a custom hook
@@ -212,7 +138,20 @@ export class Executor implements ExecutorInterface {
     })
   }
 
-  // TODO: this should be renamed to SHOULD_RUN_NODE_DEFAULT ?!
+  protected async clearFinishedPromises(promises: Promise<void>[]) {
+    const passed = []
+
+    for(const promise of promises) {
+      if(await isFinished(promise)) continue;
+      passed.push(promise)
+    }
+
+    return passed
+  }
+
+  /**
+   * Default heuristics for deciding if a node can run.
+   */
   protected canRunNodeDefault(node: Node) {
     // Get the nodes input device
     const input = this.memory.getInputDevice(node.id)!
@@ -230,26 +169,6 @@ export class Executor implements ExecutorInterface {
 
     // All passed
     return true
-  }
-
-  protected makeInputDevice(node: Node, memory: ExecutionMemory) {
-    return new InputDevice(
-      node,
-      this.diagram,
-      memory,
-      node.params,
-    )
-  }
-
-  protected makeOutputDevice(node: Node, memory: ExecutionMemory) {
-    let map: PortLinkMap = {}
-
-    for(const output of node.outputs) {
-      const connectedLinks = this.diagram.linksConnectedToPortId(output.id)
-      map[output.name] = connectedLinks.map(link => link.id);
-    }
-
-    return new OutputDevice(map, memory)
   }
 
   /**
