@@ -91,17 +91,6 @@ export class ComputerTester {
         params: toLookup(this.computer.params, 'name', 'value'),
         storage: new NullStorage(),
         hooks: this.hooksDevice,
-        executorFactory: (diagram: any) => {
-          return new Executor(
-            diagram,
-            // TODO: this should be injectable, not hardcoded take all
-            new Map(Object.values(computerConfigs).map(config => {
-              const computer = new ComputerFactory().get(config);
-              return [computer.name, computer];
-            })),
-            new NullStorage()
-          )
-        },
         node: this.node,
       })
     )
