@@ -8,7 +8,7 @@ export const getsInputs: TestStep = {
 
     for(const portName of portNames) {
       const port = tester.node!.inputs.find(p => p.name === portName)
-      const link = tester.diagram!.linksConnectedToPortId(port!.id)[0]
+      const link = tester.diagram!.linksAtInputPortId(port!.id)[0]
 
       tester.inputDevice!.setItemsAt(link.id, inputs[portName])
     }

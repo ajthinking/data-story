@@ -92,7 +92,7 @@ export class ExecutionMemoryFactory {
     let map: PortLinkMap = {}
 
     for(const output of node.outputs) {
-      const connectedLinks = this.diagram.linksConnectedToPortId(output.id)
+      const connectedLinks = this.diagram.linksAtOutputPortId(output.id)
       map[output.name] = connectedLinks.map(link => link.id);
     }
 

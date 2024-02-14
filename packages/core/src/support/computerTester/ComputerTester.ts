@@ -220,7 +220,7 @@ export class ComputerTester {
 
     for(const output of this.node!.outputs) {
       const connectedLinkIds = this.diagram!
-        .linksConnectedToPortId(output.id)
+        .linksAtOutputPortId(output.id)
         .map(link => link.id)
 
       map[output.name] = connectedLinkIds

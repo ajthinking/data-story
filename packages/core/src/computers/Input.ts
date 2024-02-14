@@ -3,22 +3,19 @@ import { ComputerConfig } from '../types/ComputerConfig';
 
 export const Input: ComputerConfig = {
   name: 'Input',
-  inputs: ['input'],
-  outputs: ['output'],
 
-  canRun({ input, isAvailable }) {
-    return isAvailable()
-      && input.havePort('input') // Is this good?
-      && input.haveItemsAtInput('input')
-  },
-
-  async *run({ input, output }) {
-    console.log(input)
-
+  async *run({ input, output}) {
     while(true) {
-      const incoming = input.pull()
-      output.push(incoming)
+      console.log('Running Input computer')
+      const [ portName, ...other ] = input.getPortNames()
 
+      if (!portName || other.length > 0) throw new Error('Input computer must have exactly one input port.')
+
+      const incoming = input.pullFrom(portName)
+
+      output.pushTo(portName, incoming)
+
+      console.log('Yielding...')
       yield;
     }
   },

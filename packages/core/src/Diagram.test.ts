@@ -1,26 +1,9 @@
 import { Diagram } from './Diagram';
+import { DiagramBuilder } from './DiagramBuilder';
+import { ConsoleLog, CreateJson, Input, Output, Pass } from './computers';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
 import { Port } from './types/Port';
-
-describe('linksConnectedToPortId', () => {
-  it('returns links connected to port', () => {
-    const port: Port = {
-      id: 'port-id',
-      name: 'My Port',
-      schema: {}
-    }
-    const link: Link = {
-      id: 'link-id',
-      sourcePortId: 'source-port-id',
-      targetPortId: 'port-id'
-    }
-
-    const diagram = new Diagram([], [link])
-    const result = diagram.linksConnectedToPortId(port.id)
-    expect(result).toMatchObject([link])
-  })
-})
 
 describe('nodeWithOutputPortId', () => {
   it('returns the node given a output port id', () => {
@@ -49,5 +32,119 @@ describe('nodeWithOutputPortId', () => {
     const result = diagram.nodeWithOutputPortId('bad-id')
 
     expect(result).toBe(undefined)
+  })
+})
+
+describe('unfold', () => {
+  it('can undfold an empty diagram', () => {
+    const subDiagram = new Diagram([], [])
+
+    const diagram = new Diagram([], [], { MyNode: subDiagram })
+
+    const result = diagram.unfold()
+
+    expect(result).toMatchObject(new Diagram([], [], { MyNode: subDiagram }))
+  })
+
+  it('can unfold a diagram with a single node', () => {
+    const normalNode: Node = {
+      id: 'derived-1',
+      type: 'normalNode',
+      inputs: [],
+      outputs: [],
+      params: []
+    }
+
+    const derivedNode = new Diagram([normalNode], [])
+
+    const node: Node = {
+      id: 'usage-id',
+      type: 'derivedNode',
+      inputs: [],
+      outputs: [],
+      params: []
+    }
+
+    const diagram = new Diagram([node], [], { derivedNode })
+
+    const result = diagram.unfold()
+
+    expect(result).toMatchObject(new Diagram([normalNode], [], { derivedNode }))
+  })
+
+  it('can unfold a linked diagram', () => {
+    // main: CreateJson -> X -> ConsoleLog
+    // x: Input -> Pass -> Output
+    // expected: CreateJson -> Input -> Pass -> Output -> ConsoleLog
+
+    const subDiagram = new DiagramBuilder()
+      .add(Input, {}, {
+        inputs: [{
+          name: 'input',
+          schema: {}
+        }],
+        outputs: [{
+          name: 'input',
+          schema: {}
+        }]
+      })
+      .add(Pass)
+      .add(Output, {}, {
+        inputs: [{
+          name: 'output',
+          schema: {}
+        }],
+        outputs: [{
+          name: 'output',
+          schema: {}
+        }]
+      })
+      .get()
+
+    const diagram = new DiagramBuilder()
+      .register({
+        X: subDiagram
+      })
+      .add(CreateJson)
+      .addSubNode('X')
+      .add(ConsoleLog)
+      .get()
+
+    const result = diagram.unfold()
+
+    expect(result.nodes).toMatchObject([
+      { type: 'CreateJson' },
+      // Note X is removed here
+      { type: 'ConsoleLog' },
+      // Note subDiagram nodes are appended
+      { type: 'Input' },
+      { type: 'Pass' },
+      { type: 'Output' },
+    ])
+
+    expect(result.links).toMatchObject([
+      // Note the original two links are preserved
+      {
+        'id': 'CreateJson.1.output--->X.1.input',
+        'sourcePortId': 'CreateJson.1.output',
+        'targetPortId': 'Input.1.input',
+      },
+      {
+        'id': 'X.1.output--->ConsoleLog.1.input',
+        'sourcePortId': 'Output.1.output',
+        'targetPortId': 'ConsoleLog.1.input',
+      },
+      // The new links are appended
+      {
+        'id': 'Input.1.input--->Pass.1.input',
+        'sourcePortId': 'Input.1.input',
+        'targetPortId': 'Pass.1.input',
+      },
+      {
+        'id': 'Pass.1.output--->Output.1.output',
+        'sourcePortId': 'Pass.1.output',
+        'targetPortId': 'Output.1.output',
+      }
+    ])
   })
 })
