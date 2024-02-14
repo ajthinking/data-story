@@ -39,6 +39,7 @@ export class InputDevice implements InputDeviceInterface {
 
     for(const link of links) {
       const batch = this.memory.pullLinkItems(link.id, remaining)
+
       pulled.push(...batch)
       remaining -= batch.length
       if(remaining === 0) break
@@ -54,6 +55,10 @@ export class InputDevice implements InputDeviceInterface {
     return [new ItemWithParams(item, this.params)]
   }
 
+  getPortNames(): string[] {
+    return this.node.inputs.map(input => input.name)
+  }
+
   havePort(name: string): boolean {
     return this.node.inputs.some(input => input.name === name)
   }
@@ -61,7 +66,7 @@ export class InputDevice implements InputDeviceInterface {
   haveItemsAtInput(name: string, minimum?: number): boolean {
     const port = this.node.inputs.find(input => input.name === name)!
 
-    const links = this.diagram.linksConnectedToPortId(port.id)
+    const links = this.diagram.linksAtInputPortId(port.id)
 
     const requiredItems = minimum || 1
 
@@ -74,7 +79,7 @@ export class InputDevice implements InputDeviceInterface {
 
   haveAllItemsAtInput(name: string): boolean {
     const port = this.node.inputs.find(input => input.name === name)!
-    const links = this.diagram.linksConnectedToPortId(port.id)
+    const links = this.diagram.linksAtInputPortId(port.id)
 
     for(const link of links) {
       const sourcePort = link.sourcePortId

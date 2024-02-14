@@ -2,12 +2,14 @@ import { Diagram } from './Diagram';
 import { Executor } from './Executor';
 import { Computer, RunArgs } from './types/Computer';
 import { DiagramBuilder } from './DiagramBuilder';
-import { CreateJson, Ignore, Signal, Throw } from './computers';;
+import { ConsoleLog, CreateJson, Ignore, Input, Output, Pass, Signal, Throw } from './computers';;
 import { NullStorage } from './NullStorage';
 import { whenRunning } from './support/diagramExecutionTester/DiagramExecutionTester';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
 import { ItemValue } from './types/ItemValue';
+import { Application } from './Application';
+import { coreNodeProvider } from './coreNodeProvider';
 
 describe('execute', () => {
   it('can execute an empty diagram and return an execution update', async () => {
@@ -244,4 +246,57 @@ describe('execute', () => {
       .expectFail()
       .ok()
   })
+})
+
+it('can execute a diagram containing sub diagrams', async () => {
+  const app = new Application();
+
+  app.register([
+    coreNodeProvider,
+  ]);
+
+  app.boot();
+
+  const subDiagram = new DiagramBuilder()
+    .add(Input, {}, {
+      inputs: [{
+        name: 'input',
+        schema: {},
+      }],
+      outputs: [{
+        name: 'input',
+        schema: {},
+      }]
+    })
+    .add(Pass)
+    .add(Output, {}, {
+      inputs: [{
+        name: 'output',
+        schema: {},
+      }],
+      outputs: [{
+        name: 'output',
+        schema: {},
+      }]
+    })
+    .get()
+
+  const diagram = new DiagramBuilder()
+    .register({
+      X: subDiagram
+    })
+    .add(Signal, { period: 1, count: 10 })
+    .addSubNode('X')
+    .add(ConsoleLog, { message: 'Hello It Roached!!!' })
+    .get()
+
+  const executor = new Executor(
+    diagram,
+    app.computers,
+    new NullStorage()
+  )
+
+  const execution = executor.execute()
+
+  for await(const update of execution) {}
 })

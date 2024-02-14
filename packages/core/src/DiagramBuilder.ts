@@ -3,7 +3,7 @@ import { Diagram } from './Diagram';
 import { Node, NodeId } from './types/Node';
 import { Link } from './types/Link';
 import { PositionGuesser } from './PositionGuesser';
-import { Port, PortName } from './types/Port';
+import { AbstractPort, Port, PortName } from './types/Port';
 import { ComputerConfig } from './types/ComputerConfig';
 import { Fake } from './computers/Fake';
 
@@ -43,9 +43,63 @@ export class DiagramBuilder {
     return this
   }
 
+  // TODO continue here...
+  addSubNode(name: string) {
+    if(!this.diagram.nodeDefinitions[name]) throw new Error(`Bad sub node: ${name}. Node not found`)
+
+    const subDiagram = this.diagram.nodeDefinitions[name]
+
+    const nodeId = `${name}.${this.getScopedId(name)}`
+
+    const node: Node = {
+      id: nodeId,
+      label: name,
+      type: name,
+      inputs: subDiagram.inputNodes().map(inputNode => {
+        const port = inputNode.inputs.at(0)!
+
+        return {
+          id: `${nodeId}.${port.name}`,
+          name: port.name,
+          schema: port.schema,
+        }
+      }),
+      outputs: subDiagram.outputNodes().map(outputNode => {
+        const port = outputNode.outputs.at(0)!
+
+        return {
+          id: `${nodeId}.${port.name}`,
+          name: port.name,
+          schema: port.schema,
+        }
+      }),
+      params: [],
+    }
+
+    node.position = new PositionGuesser(
+      this.diagram
+    ).guess(node)
+
+    this.diagram.nodes.push(node)
+
+    this.linkToNewNode(node)
+
+    this.previousNode = node
+
+    this.fromDirective = null
+
+    this.aboveDirective = null
+
+    return this
+  }
+
   add(
     config: ComputerConfig,
-    params: Record<string, any> = {}
+    params: Record<string, any> = {},
+    ports?: {
+      inputs?: AbstractPort[],
+      outputs?: AbstractPort[],
+    }
   ) {
     const computer = new ComputerFactory().get(config)
 
@@ -56,17 +110,17 @@ export class DiagramBuilder {
       label: config.label,
       type: computer.name,
       // The inputs have not yet been assigned ids, to it here
-      inputs: (computer.inputs ?? []).map(input => {
+      inputs: (ports?.inputs ?? computer.inputs ?? []).map(input => {
         return {
           ...input,
-          id: `${nodeId}.${input.name}`, name: input.name
+          id: `${nodeId}.${input.name}`,
         }
       }),
       // The outputs have not yet been assigned ids, to it here
-      outputs: (computer.outputs ?? []).map(output => {
+      outputs: (ports?.outputs ?? computer.outputs ?? []).map(output => {
         return {
           ...output,
-          id: `${nodeId}.${output.name}`, name: output.name
+          id: `${nodeId}.${output.name}`,
         }
       }),
       // default params

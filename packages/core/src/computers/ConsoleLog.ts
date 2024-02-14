@@ -35,6 +35,7 @@ export const ConsoleLog: ComputerConfig = {
   ],
 
   async *run({ input, hooks, params: rawParams }) {
+    console.log('ConsoleLog running')
     while(true) {
       const incoming = input.pull() as ItemWithParams[]
 
