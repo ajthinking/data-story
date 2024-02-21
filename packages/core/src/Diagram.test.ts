@@ -78,27 +78,9 @@ describe('unfold', () => {
     // expected: CreateJson -> Input -> Pass -> Output -> ConsoleLog
 
     const subDiagram = new DiagramBuilder()
-      .add(Input, {}, {
-        inputs: [{
-          name: 'input',
-          schema: {}
-        }],
-        outputs: [{
-          name: 'input',
-          schema: {}
-        }]
-      })
+      .add(Input, { port_name: 'x_input'})
       .add(Pass)
-      .add(Output, {}, {
-        inputs: [{
-          name: 'output',
-          schema: {}
-        }],
-        outputs: [{
-          name: 'output',
-          schema: {}
-        }]
-      })
+      .add(Output, { port_name: 'x_output' })
       .get()
 
     const diagram = new DiagramBuilder()
@@ -125,25 +107,25 @@ describe('unfold', () => {
     expect(result.links).toMatchObject([
       // Note the original two links are preserved
       {
-        'id': 'CreateJson.1.output--->X.1.input',
+        'id': 'CreateJson.1.output--->X.1.x_input',
         'sourcePortId': 'CreateJson.1.output',
         'targetPortId': 'Input.1.input',
       },
       {
-        'id': 'X.1.output--->ConsoleLog.1.input',
+        'id': 'X.1.x_output--->ConsoleLog.1.input',
         'sourcePortId': 'Output.1.output',
         'targetPortId': 'ConsoleLog.1.input',
       },
       // The new links are appended
       {
-        'id': 'Input.1.input--->Pass.1.input',
-        'sourcePortId': 'Input.1.input',
+        'id': 'Input.1.output--->Pass.1.input',
+        'sourcePortId': 'Input.1.output',
         'targetPortId': 'Pass.1.input',
       },
       {
-        'id': 'Pass.1.output--->Output.1.output',
+        'id': 'Pass.1.output--->Output.1.input',
         'sourcePortId': 'Pass.1.output',
-        'targetPortId': 'Output.1.output',
+        'targetPortId': 'Output.1.input',
       }
     ])
   })

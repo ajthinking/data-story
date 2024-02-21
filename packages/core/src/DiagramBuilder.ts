@@ -43,7 +43,6 @@ export class DiagramBuilder {
     return this
   }
 
-  // TODO continue here...
   addSubNode(name: string) {
     if(!this.diagram.nodeDefinitions[name]) throw new Error(`Bad sub node: ${name}. Node not found`)
 
@@ -56,21 +55,21 @@ export class DiagramBuilder {
       label: name,
       type: name,
       inputs: subDiagram.inputNodes().map(inputNode => {
-        const port = inputNode.inputs.at(0)!
+        const portName = inputNode.params[0]?.value as string
 
         return {
-          id: `${nodeId}.${port.name}`,
-          name: port.name,
-          schema: port.schema,
+          id: `${nodeId}.${portName}`,
+          name: portName,
+          schema: {}, // TODO?
         }
       }),
       outputs: subDiagram.outputNodes().map(outputNode => {
-        const port = outputNode.outputs.at(0)!
+        const portName = outputNode.params[0]?.value as string
 
         return {
-          id: `${nodeId}.${port.name}`,
-          name: port.name,
-          schema: port.schema,
+          id: `${nodeId}.${portName}`,
+          name: portName,
+          schema: {}, // TODO?
         }
       }),
       params: [],

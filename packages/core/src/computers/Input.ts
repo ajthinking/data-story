@@ -1,8 +1,18 @@
 
+import { str } from '../Param';
 import { ComputerConfig } from '../types/ComputerConfig';
 
 export const Input: ComputerConfig = {
   name: 'Input',
+  inputs: ['input'],
+  outputs: ['output'],
+  params: [
+    str({
+      name: 'port_name',
+      label: 'Port Name',
+      value: 'input',
+    })
+  ],
 
   async *run({ input, output}) {
     while(true) {

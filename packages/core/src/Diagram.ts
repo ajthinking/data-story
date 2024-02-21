@@ -99,15 +99,22 @@ export class Diagram {
       const links = this.linksAtInput(node, inputPort.name)
       for(const link of links) {
         const newTargetNode = subDiagram.nodes
-          .filter(node => node.type === 'Input')
           .find(node => {
-            return node.inputs.find(input => input.name === inputPort.name)
+            const isInputNode = node.type === 'Input'
+            if(!isInputNode) return false;
+
+            const portName = node.params[0]?.value
+            if(!portName) throw new Error(`No port name found for input node "${node.id}". The node was ${JSON.stringify(node)}`)
+
+            const matchesPortName = portName === inputPort.name
+
+            return matchesPortName
           })
 
         if(!newTargetNode) throw new Error(`No input node found for input port "${inputPort.name}" on the subdiagram of "${node.type}"`)
 
-        const newInputPort = newTargetNode.inputs.find(input => input.name === inputPort.name)
-        if(!newInputPort) throw new Error(`No input port found for input port "${inputPort.name}" on the subdiagram of "${node.type}"`)
+        const newInputPort = newTargetNode.inputs[0]
+        if(!newInputPort) throw new Error(`No input port found for input port "${inputPort.name}" on the subdiagram of "${node.type}". The node was ${JSON.stringify(node)}`)
 
         link.targetPortId = newInputPort.id
       }
@@ -118,14 +125,21 @@ export class Diagram {
       const links = this.linksAtOutput(node, outputPort.name)
       for(const link of links) {
         const newSourceNode = subDiagram.nodes
-          .filter(node => node.type === 'Output')
           .find(node => {
-            return node.outputs.find(output => output.name === outputPort.name)
+            const isOutputNode = node.type === 'Output'
+            if(!isOutputNode) return false;
+
+            const portName = node.params[0]?.value
+            if(!portName) throw new Error(`No port name found for output node "${node.id}. The node was ${JSON.stringify(node)}"`)
+
+            const matchesPortName = portName === outputPort.name
+
+            return matchesPortName
           })
 
         if(!newSourceNode) throw new Error(`No output node found for output port "${outputPort.name}" on the subdiagram of "${node.type}"`)
 
-        const newOutputPort = newSourceNode.outputs.find(output => output.name === outputPort.name)
+        const newOutputPort = newSourceNode.outputs[0]
         if(!newOutputPort) throw new Error(`No output port found for output port "${outputPort.name}" on the subdiagram of "${node.type}"`)
 
         link.sourcePortId = newOutputPort.id
