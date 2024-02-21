@@ -15,7 +15,8 @@ const DataStoryInputNodeComponent = ({ id, data, selected }: { id: string; data:
 
   // if(data.outputs.length !== 1) console.log('Warning: DataStoryInputNodeComponent has more than one output')
 
-  const outputPort = data.outputs[0]
+  // const outputPort = data.outputs[0]
+  const portName = data.params[0].value as string
 
   return (
     <div
@@ -28,7 +29,7 @@ const DataStoryInputNodeComponent = ({ id, data, selected }: { id: string; data:
         <div className={'rounded-l rounded-full py-1 text-xs font-bold font-mono tracking-wide border border-gray-400 rounded bg-green-700 text-gray-100 px-2' + (selected ? ' bg-green-800 shadow-xl' : '') }>
           <div className="w-24" />
           <div className="flex w-full whitespace-nowrap">
-            Input: items
+            Input: { portName }
           </div>
         </div>
         <div className="flex flex-col items-center justify-center">
