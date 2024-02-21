@@ -21,13 +21,14 @@ import { useHotkeys } from './useHotkeys';
 import DataStoryPeekNodeComponent from '../Node/DataStoryPeekNodeComponent';
 import { WorkbenchProps } from './types';
 import { DataStoryNode } from '../Node/DataStoryNode';
+import DataStoryOutputNodeComponent from '../Node/DataStoryOutputNodeComponent';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
   dataStoryCommentNodeComponent: DataStoryCommentNodeComponent,
   dataStoryInputNodeComponent: DataStoryInputNodeComponent,
   dataStoryPeekNodeComponent: DataStoryPeekNodeComponent,
-  // dataStoryOutputNodeComponent: DataStoryNodeComponent,
+  dataStoryOutputNodeComponent: DataStoryOutputNodeComponent,
 };
 
 

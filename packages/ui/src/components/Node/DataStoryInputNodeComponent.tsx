@@ -13,6 +13,10 @@ const DataStoryInputNodeComponent = ({ id, data, selected }: { id: string; data:
 
   const { setOpenNodeModalId } = useStore(selector, shallow);
 
+  // if(data.outputs.length !== 1) console.log('Warning: DataStoryInputNodeComponent has more than one output')
+
+  const outputPort = data.outputs[0]
+
   return (
     <div
       className={'text-xs' + (selected ? ' shadow-xl' : '')}
@@ -21,9 +25,11 @@ const DataStoryInputNodeComponent = ({ id, data, selected }: { id: string; data:
       }}
     >
       <div className="flex w-full items-right justify-end -mx-4">
-        <div className={'rounded-l rounded-full py-1 text-xs font-bold font-mono tracking-wide border border-gray-400 rounded bg-amber-400 text-gray-100 px-2' + (selected ? ' bg-blue-700 shadow-xl' : '') }>
+        <div className={'rounded-l rounded-full py-1 text-xs font-bold font-mono tracking-wide border border-gray-400 rounded bg-green-700 text-gray-100 px-2' + (selected ? ' bg-green-800 shadow-xl' : '') }>
           <div className="w-24" />
-          Demo Input
+          <div className="flex w-full whitespace-nowrap">
+            Input: items
+          </div>
         </div>
         <div className="flex flex-col items-center justify-center">
           <div className="absolute my-0.5 -ml-2"><PortIcon /></div>

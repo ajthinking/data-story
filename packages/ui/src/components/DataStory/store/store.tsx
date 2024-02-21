@@ -235,8 +235,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       type: {
         Comment: 'dataStoryCommentNodeComponent',
         Peek: 'dataStoryPeekNodeComponent',
-        //Input: 'dataStoryInputNodeComponent',
-        //Output: 'dataStoryOutputNodeComponent',
+        Input: 'dataStoryInputNodeComponent',
+        Output: 'dataStoryOutputNodeComponent',
       }[nodeDescription.name] ?? 'dataStoryNodeComponent',
     }
 
