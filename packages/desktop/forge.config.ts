@@ -24,14 +24,18 @@ const config: ForgeConfig = {
       config: {
         name: 'data-story-app',
         background: './assets/dmg-background.png',
-        format: 'ULFO'
+        authors: 'Anders Jürisoo',
+        setupExe: 'DataStoryInstaller.dmg',
       }
     },
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        name: 'data-story-app',
-        background: './assets/squirrel-background.png',
+        name: 'data-story-desktop',
+        authors: 'Anders Jürisoo',
+        exe: 'data-story-desktop.exe',
+        noMsi: true,
+        setupExe: 'DataStoryInstaller.exe',
       }
     }
   ],
