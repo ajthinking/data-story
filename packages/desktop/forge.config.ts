@@ -22,8 +22,16 @@ const config: ForgeConfig = {
     {
       name: '@electron-forge/maker-dmg',
       config: {
+        name: 'data-story-app',
         background: './assets/dmg-background.png',
         format: 'ULFO'
+      }
+    },
+    {
+      name: '@electron-forge/maker-squirrel',
+      config: {
+        name: 'data-story-app',
+        background: './assets/squirrel-background.png',
       }
     }
   ],
