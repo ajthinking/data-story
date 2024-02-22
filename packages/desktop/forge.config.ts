@@ -26,6 +26,7 @@ const config: ForgeConfig = {
         background: './assets/dmg-background.png',
         authors: 'Anders Jürisoo',
         setupExe: 'DataStoryInstaller.dmg',
+        setupIcon: './assets/icon.icns',
       }
     },
     {
@@ -36,6 +37,7 @@ const config: ForgeConfig = {
         exe: 'data-story-desktop.exe',
         noMsi: true,
         setupExe: 'DataStoryInstaller.exe',
+        setupIcon: './assets/icon.ico',
       }
     }
   ],
