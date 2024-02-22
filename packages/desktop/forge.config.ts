@@ -12,32 +12,44 @@ import { rendererConfig } from './webpack.renderer.config';
 const config: ForgeConfig = {
   packagerConfig: {
     asar: true,
+    icon: './assets/icon.icns',
   },
   rebuildConfig: {},
   makers: [
-    // new MakerSquirrel({}),
-    // new MakerZIP({}, ['darwin']),
-    // new MakerRpm({}),
-    // new MakerDeb({}),
     {
       name: '@electron-forge/maker-dmg',
       config: {
-        name: 'data-story-app',
-        background: './assets/dmg-background.png',
-        authors: 'Anders Jürisoo',
-        setupExe: 'DataStoryInstaller.dmg',
+        name: 'data-story-desktop',
+        background: './assets/icon.png',
         setupIcon: './assets/icon.icns',
+        icon: './assets/icon.icns',
       }
     },
     {
       name: '@electron-forge/maker-squirrel',
       config: {
         name: 'data-story-desktop',
-        authors: 'Anders Jürisoo',
-        exe: 'data-story-desktop.exe',
-        noMsi: true,
-        setupExe: 'DataStoryInstaller.exe',
-        setupIcon: './assets/icon.ico',
+        setupIcon: './assets/icon.ico'
+      }
+    },
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['win32'],
+      config: {
+        name: 'data-story-desktop',
+        setupIcon: './assets/icon.ico'
+      }
+    },
+  ],
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'Anders Jürisoo',
+          name: 'data-story-desktop'
+        },
+        prerelease: true
       }
     }
   ],
