@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
           exit 1 # Exit with a failure
-      
+
       - name: Check version
         id: check
         run: |
