@@ -1,9 +1,10 @@
 name: Build and Release Desktop
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: [ "Test CI" ]
+    branches: [ main ]
+    types: [ completed ]
 
 jobs:
   build-windows:
@@ -14,6 +15,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
+          
+      - name: Check Test CI status
+        if: >
+          github.event.workflow_run.conclusion == 'failure' ||
+          github.event.workflow_run.conclusion == 'cancelled'
+        run: |
+          echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
+          exit 1 # Exit with a failure
+      
+      - name: Check version
+        id: check
+        run: |
+          PACKAGE_VERSION=$(node -p -e "require('./packages/desktop/package.json').version")
+          echo "Version: $PACKAGE_VERSION"
+          HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/desktop/$PACKAGE_VERSION)
+          
+          if [ $HTTP_STATUS -eq 200 ]; then
+            echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
+            echo "VERSION_EXISTS=true" >> $GITHUB_ENV
+            else
+            echo "Version does not exist."
+            echo "VERSION_EXISTS=false" >> $GITHUB_ENV
+          fi
+      
       - name: Install Dependencies
         run: yarn
       - name: Build and Publish Windows Release
@@ -31,6 +56,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
+          
+      - name: Check Test CI status
+        if: >
+          github.event.workflow_run.conclusion == 'failure' ||
+          github.event.workflow_run.conclusion == 'cancelled'
+        run: |
+          echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
+          exit 1 # Exit with a failure
+      
+      - name: Check version
+        id: check
+        run: |
+          PACKAGE_VERSION=$(node -p -e "require('./packages/desktop/package.json').version")
+          echo "Version: $PACKAGE_VERSION"
+          HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/desktop/$PACKAGE_VERSION)
+          
+          if [ $HTTP_STATUS -eq 200 ]; then
+            echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
+            echo "VERSION_EXISTS=true" >> $GITHUB_ENV
+            else
+            echo "Version does not exist."
+            echo "VERSION_EXISTS=false" >> $GITHUB_ENV
+          fi
+          
       - name: Install Dependencies
         run: yarn
       - name: Build and Publish macOS Release
