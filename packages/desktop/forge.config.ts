@@ -44,8 +44,8 @@ const config: ForgeConfig = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: 'Anders Jürisoo',
-          name: 'data-story-desktop'
+          owner: 'stone-lyl',
+          name: 'data-story'
         },
         prerelease: true
       }
