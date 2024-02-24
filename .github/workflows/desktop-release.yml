@@ -30,18 +30,22 @@ jobs:
           $PACKAGE_VERSION = node -p -e "require('./packages/desktop/package.json').version"
           Write-Host "Version: $PACKAGE_VERSION"
           $URI = "https://registry.npmjs.org/@data-story/desktop/$PACKAGE_VERSION"
-          $Response = Invoke-WebRequest -Uri $URI -Method Head -ErrorAction SilentlyContinue
-          $HTTP_STATUS = $Response.StatusCode
-          
-          if ($HTTP_STATUS -eq 200) {
+          try {
+            $Response = Invoke-WebRequest -Uri $URI -Method Head
+            $HTTP_STATUS = $Response.StatusCode
             Write-Host "Version $PACKAGE_VERSION already exists. Exiting the action script."
-            echo "VERSION_EXISTS=true" >> $Env:GITHUB_ENV
+            echo "VERSION_EXISTS=true" | Out-File -FilePath $env:GITHUB_ENV -Append
+          } catch {
+            $HTTP_STATUS = $_.Exception.Response.StatusCode.Value__
+            if ($HTTP_STATUS -eq 404) {
+              Write-Host "Version does not exist."
+              echo "VERSION_EXISTS=false" | Out-File -FilePath $env:GITHUB_ENV -Append
+            } else {
+              Write-Host "HTTP request failed with status code: $HTTP_STATUS"
+              exit 1
+            }
           }
-          else {
-            Write-Host "Version does not exist."
-            echo "VERSION_EXISTS=false" >> $Env:GITHUB_ENV
-          }
-    
+          
       - name: Install Dependencies
         run: yarn
       - name: Build and Publish Windows Release
@@ -68,7 +72,6 @@ jobs:
           echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
           exit 1 # Exit with a failure
       
-      #      // todo: rewrite in powershell
       - name: Check version
         id: check
         run: |
