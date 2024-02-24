@@ -43,8 +43,9 @@ const config: ForgeConfig = {
     {
       name: '@electron-forge/publisher-github',
       config: {
+        // todo: change this to anders repo
         repository: {
-          owner: 'ajthinking',
+          owner: 'stone-lyl',
           name: 'data-story'
         },
         prerelease: true

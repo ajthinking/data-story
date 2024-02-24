@@ -47,8 +47,10 @@ jobs:
           }
           
       - name: Install Dependencies
+        if: ${{ env.VERSION_EXISTS == 'false' }}
         run: yarn
       - name: Build and Publish Windows Release
+        if: ${{ env.VERSION_EXISTS == 'false' }}
         run: |
           yarn build
           cd packages/desktop && yarn publish
@@ -88,8 +90,10 @@ jobs:
           fi
       
       - name: Install Dependencies
+        if: ${{ env.VERSION_EXISTS == 'false' }}
         run: yarn
       - name: Build and Publish macOS Release
+        if: ${{ env.VERSION_EXISTS == 'false' }}
         run: |
           yarn build
           cd packages/desktop && yarn publish
