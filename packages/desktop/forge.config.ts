@@ -44,7 +44,7 @@ const config: ForgeConfig = {
       name: '@electron-forge/publisher-github',
       config: {
         repository: {
-          owner: 'stone-lyl',
+          owner: 'ajthinking',
           name: 'data-story'
         },
         prerelease: true
