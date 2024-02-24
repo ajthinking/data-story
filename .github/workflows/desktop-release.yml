@@ -15,30 +15,33 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-          
+      
       - name: Check Test CI status
         if: >
           github.event.workflow_run.conclusion == 'failure' ||
           github.event.workflow_run.conclusion == 'cancelled'
         run: |
-          echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
+          Write-Host "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
           exit 1 # Exit with a failure
-
+      
       - name: Check version
         id: check
         run: |
-          PACKAGE_VERSION=$(node -p -e "require('./packages/desktop/package.json').version")
-          echo "Version: $PACKAGE_VERSION"
-          HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/desktop/$PACKAGE_VERSION)
+          $PACKAGE_VERSION = node -p -e "require('./packages/desktop/package.json').version"
+          Write-Host "Version: $PACKAGE_VERSION"
+          $URI = "https://registry.npmjs.org/@data-story/desktop/$PACKAGE_VERSION"
+          $Response = Invoke-WebRequest -Uri $URI -Method Head -ErrorAction SilentlyContinue
+          $HTTP_STATUS = $Response.StatusCode
           
-          if [ $HTTP_STATUS -eq 200 ]; then
-            echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
-            echo "VERSION_EXISTS=true" >> $GITHUB_ENV
-            else
-            echo "Version does not exist."
-            echo "VERSION_EXISTS=false" >> $GITHUB_ENV
-          fi
-      
+          if ($HTTP_STATUS -eq 200) {
+            Write-Host "Version $PACKAGE_VERSION already exists. Exiting the action script."
+            echo "VERSION_EXISTS=true" >> $Env:GITHUB_ENV
+          }
+          else {
+            Write-Host "Version does not exist."
+            echo "VERSION_EXISTS=false" >> $Env:GITHUB_ENV
+          }
+    
       - name: Install Dependencies
         run: yarn
       - name: Build and Publish Windows Release
@@ -56,7 +59,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
-          
+      
       - name: Check Test CI status
         if: >
           github.event.workflow_run.conclusion == 'failure' ||
@@ -65,6 +68,7 @@ jobs:
           echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
           exit 1 # Exit with a failure
       
+      #      // todo: rewrite in powershell
       - name: Check version
         id: check
         run: |
@@ -79,7 +83,7 @@ jobs:
             echo "Version does not exist."
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
-          
+      
       - name: Install Dependencies
         run: yarn
       - name: Build and Publish macOS Release
