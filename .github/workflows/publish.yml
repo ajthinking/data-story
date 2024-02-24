@@ -196,4 +196,3 @@ jobs:
           yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
           yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
           cd packages/nodejs && yarn npm publish --access public
-          
