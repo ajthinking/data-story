@@ -34,14 +34,23 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
 
   const matchingNodes = availableNodes
     .sort((a: NodeDescription, b: NodeDescription) => {
+    // Prioritize sorting by type if either is "Input" or "Output"
+      const typePriority = {Input: 1, Output: 2}; // Define priority for types
+      const aTypePriority = typePriority[a.name] || Number.MAX_SAFE_INTEGER; // Default to a very high number if not "Input" or "Output"
+      const bTypePriority = typePriority[b.name] || Number.MAX_SAFE_INTEGER; // Same here
+
+      if (aTypePriority < bTypePriority) return -1; // Move "Input" or "Output" to the front
+      if (aTypePriority > bTypePriority) return 1;
+
+      // If neither is "Input" or "Output", or if they are the same, then sort by category
       if ((a.category || '') < (b.category || '')) return -1;
       if ((a.category || '') > (b.category || '')) return 1;
+
       return 0;
     })
     .filter((nodeDescription: NodeDescription) => {
       return JSON.stringify(nodeDescription).toLowerCase().includes(search.toLowerCase());
     });
-
 
   return (
     <Modal setShowModal={setShowModal}>
