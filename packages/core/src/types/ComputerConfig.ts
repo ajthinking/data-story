@@ -10,7 +10,6 @@ export interface ComputerConfig {
   name?: string
   label?: string
   docs?: string
-  color?: string
   category?: string
   inputs?: (PortName  | AbstractPort)[]
   outputs?: (PortName | AbstractPort)[]
