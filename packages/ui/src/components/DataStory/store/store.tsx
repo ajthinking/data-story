@@ -21,8 +21,10 @@ import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig } from '../clients/ServerConfig';
-import { reactFlowNodeToDiagramNode, reactFlowToDiagram } from '../../../reactFlowToDiagram';
 import React, { useState } from 'react';
+import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
+import { DiagramFactory } from '../../../factories/DiagramFactory';
+import { NodeFactory } from '../../../factories/NodeFactory';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -81,47 +83,6 @@ export type StoreSchema = {
   setFlowName: (name: string) => void;
 };
 
-function getNodes(nodes: Node[]):  ReactFlowNode[] {
-  return nodes.map(node => {
-    return {
-      width: 128,
-      height: 52,
-      id: node.id,
-      position: {
-        x: node.position!.x,
-        y: node.position!.y
-      },
-      data: {
-        docs: node.docs,
-        params: node.params,
-        computer: node.type,
-        label: (node?.label || node.type) as string,
-        inputs: node.inputs,
-        outputs: node.outputs,
-      },
-      type: (() => {
-        if (node.type === 'Comment') return 'dataStoryCommentNodeComponent';
-        if (node.type === 'Input') return 'dataStoryInputNodeComponent';
-        if (node.type === 'Output') return 'dataStoryOutputNodeComponent';
-
-        return 'dataStoryNodeComponent'
-      })(),
-    }
-  });
-}
-
-function getEdges(diagram: Diagram): Edge[]{
-  return diagram.links.map(link => {
-    return {
-      sourceHandle: link.sourcePortId,
-      targetHandle: link.targetPortId,
-      source: diagram.nodes.find(node => node.outputs.find(output => output.id === link.sourcePortId) !== undefined)!.id,
-      target: diagram.nodes.find(node => node.inputs.find(input => input.id === link.targetPortId) !== undefined)!.id,
-      id: link.id,
-    }
-  });
-}
-
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
   // DEFAULTS
   serverConfig: { type: 'SOCKET', url: 'ws://localhost:3100' },
@@ -139,7 +100,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   toDiagram: () => {
     const reactFlowObject = get().rfInstance!.toObject()
 
-    return reactFlowToDiagram(reactFlowObject)
+    return DiagramFactory.fromReactFlowObject(reactFlowObject)
   },
   setServerConfig: (config: ServerConfig) => {
     set({ serverConfig: config })
@@ -242,7 +203,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       }[nodeDescription.name] ?? 'dataStoryNodeComponent',
     }
 
-    const node: Node = reactFlowNodeToDiagramNode(flowNode)
+    const node: Node = NodeFactory.fromReactFlowNode(flowNode)
 
     const link = new LinkGuesser(diagram).guess(node)
 
@@ -316,9 +277,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     if (options.initDiagram) {
       const diagram = options.initDiagram;
+      const reactFlowObject = ReactFlowFactory.fromDiagram(diagram)
 
-      get().setNodes(getNodes(diagram.nodes));
-      get().setEdges(getEdges(diagram));
+      get().setNodes(reactFlowObject.nodes);
+      get().setEdges(reactFlowObject.edges);
     }
 
     if (options.callback) {
@@ -333,9 +295,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     }
   },
   updateDiagram: (diagram: Diagram) => {
+    const reactFlowObject = ReactFlowFactory.fromDiagram(diagram)
 
-    get().setNodes(getNodes(diagram.nodes));
-    get().setEdges(getEdges(diagram));
+    get().setNodes(reactFlowObject.nodes);
+    get().setEdges(reactFlowObject.edges);
   },
   onRun: () => {
     set({ peeks: {} })
