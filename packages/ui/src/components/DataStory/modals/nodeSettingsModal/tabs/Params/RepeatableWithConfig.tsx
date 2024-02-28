@@ -3,7 +3,7 @@ import { StringableInput } from '../../../../Form/StringableInput'
 import { UseFormReturn } from 'react-hook-form';
 import { DropDown } from '../../../../../DropDown';
 import { RepeatableInput } from '../../../../Form/RepeatableInput';
-import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 
 export function RepeatableWithConfig({
   param,
@@ -14,7 +14,7 @@ export function RepeatableWithConfig({
   form: UseFormReturn<{
     [x: string]: any;
   }, any>,
-  node: DataStoryNode,
+  node: ReactFlowNode,
 }) {
   return (<div className="flex flex-col">
     <div className="flex flex-col w-full items-end mb-2">

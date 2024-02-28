@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Port } from '@data-story/core';
 import { Controller, ControllerRenderProps } from 'react-hook-form';
 import { defaultColumns, formatOutputs, OutputSchemaProps } from './common';
-import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { CloseIcon } from '../../../../icons/closeIcon';
 import { DragIcon } from '../../../../icons/dragIcon';
 function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}){
@@ -137,7 +137,7 @@ const DraggableRow: FC<{
 
 export function OutputTable(props: {
   filed:  ControllerRenderProps<any, 'outputs'>;
-  node: DataStoryNode;
+  node: ReactFlowNode;
   outputs?: Port[];
 }) {
   const [columns] = React.useState(() => [...defaultColumns]);

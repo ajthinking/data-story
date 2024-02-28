@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
-import { DataStoryNodeData } from './DataStoryNode';
+import { DataStoryNodeData } from './ReactFlowNode';
 import MarkdownIt from 'markdown-it';
 
 const markdown = new MarkdownIt();

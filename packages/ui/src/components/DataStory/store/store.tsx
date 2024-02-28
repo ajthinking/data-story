@@ -17,7 +17,7 @@ import {
 
 import { SocketClient } from '../clients/SocketClient';
 import { AbstractPort, Diagram, LinkGuesser, Node, NodeDescription, PositionGuesser } from '@data-story/core';
-import { DataStoryNode } from '../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig } from '../clients/ServerConfig';
@@ -34,13 +34,13 @@ export type StoreSchema = {
   setAvailableNodes: (nodes: NodeDescription[]) => void,
 
   /** The Nodes */
-  nodes: DataStoryNode[];
-  updateNode: (node: DataStoryNode) => void;
+  nodes: ReactFlowNode[];
+  updateNode: (node: ReactFlowNode) => void;
   refreshNodes: () => void;
-  addNode: (node: DataStoryNode) => void;
+  addNode: (node: ReactFlowNode) => void;
   addNodeFromDescription: (nodeDescription: NodeDescription) => void;
   onNodesChange: OnNodesChange;
-  setNodes: (nodes: DataStoryNode[]) => void;
+  setNodes: (nodes: ReactFlowNode[]) => void;
   traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;
   peeks: Record<string, any[]>;
   addPeekItems: (key: string, peekItems: any[]) => void;
@@ -51,7 +51,7 @@ export type StoreSchema = {
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
-  calculateInputSchema: (node: DataStoryNode) => void;
+  calculateInputSchema: (node: ReactFlowNode) => void;
 
   /** The Server and its config */
   serverConfig: ServerConfig;
@@ -81,7 +81,7 @@ export type StoreSchema = {
   setFlowName: (name: string) => void;
 };
 
-function getNodes(nodes: Node[]):  DataStoryNode[] {
+function getNodes(nodes: Node[]):  ReactFlowNode[] {
   return nodes.map(node => {
     return {
       width: 128,
@@ -178,7 +178,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       get().calculateInputSchema(targetNode)
     }
   },
-  addNode: (node: DataStoryNode) => {
+  addNode: (node: ReactFlowNode) => {
     set({
       nodes: [
         ...get().nodes.map(node => {
@@ -211,7 +211,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     const counter = scopedId(nodeDescription.name)
     const id = `${nodeDescription.name}.${counter}`;
 
-    const flowNode: DataStoryNode = {
+    const flowNode: ReactFlowNode = {
       id,
       position: new PositionGuesser(diagram).guess(nodeDescription),
       data: {
@@ -257,7 +257,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     if (connection) get().connect(connection);
   },
-  updateNode: (node: DataStoryNode) => {
+  updateNode: (node: ReactFlowNode) => {
 
     set({
       nodes: get().nodes.map(existingNode => {
@@ -269,7 +269,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       }),
     })
   },
-  setNodes: (nodes: DataStoryNode[]) => {
+  setNodes: (nodes: ReactFlowNode[]) => {
     set({
       nodes: [...nodes],
     })
@@ -428,7 +428,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
           }
 
           return closest
-        }, null as DataStoryNode | null)
+        }, null as ReactFlowNode | null)
 
         if (closestNode) {
           node.selected = false
@@ -446,7 +446,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
           }
 
           return closest
-        }, null as DataStoryNode | null)
+        }, null as ReactFlowNode | null)
 
         if (closestNode) {
           node.selected = false
@@ -464,7 +464,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
           }
 
           return closest
-        }, null as DataStoryNode | null)
+        }, null as ReactFlowNode | null)
 
         if (closestNode) {
           node.selected = false
@@ -482,7 +482,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
           }
 
           return closest
-        }, null as DataStoryNode | null)
+        }, null as ReactFlowNode | null)
 
         if (closestNode) {
           node.selected = false
@@ -493,7 +493,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       }
     }
   },
-  calculateInputSchema: (node: DataStoryNode) => {
+  calculateInputSchema: (node: ReactFlowNode) => {
     const links = get().edges.filter(edge => edge.target === node.id)
 
     links.forEach(link => {

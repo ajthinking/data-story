@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import CustomHandle from './CustomHandle';
-import { DataStoryNodeData } from './DataStoryNode';
+import { DataStoryNodeData } from './ReactFlowNode';
 
 const DataStoryNodeComponent = ({ id, data, selected }: {
   id: string,

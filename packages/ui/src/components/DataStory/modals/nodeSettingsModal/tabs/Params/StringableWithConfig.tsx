@@ -2,7 +2,7 @@ import { Param, StringableParam } from '@data-story/core'
 import { StringableInput } from '../../../../Form/StringableInput'
 import { UseFormReturn } from 'react-hook-form';
 import { DropDown, Option, OptionGroup } from '../../../../../DropDown';
-import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { useState } from 'react';
 
 export function StringableWithConfig({
@@ -16,7 +16,7 @@ export function StringableWithConfig({
     [x: string]: any;
   }, any>,
   name?: string,
-  node: DataStoryNode,
+  node: ReactFlowNode,
 }) {
   const [cursorPosition, setCursorPosition] = useState(0);
 
@@ -42,7 +42,7 @@ export function StringableWithConfig({
 
 const paramOptions = (
   param: StringableParam,
-  node: DataStoryNode,
+  node: ReactFlowNode,
   form: UseFormReturn<{
     [x: string]: any;
   }, any>,

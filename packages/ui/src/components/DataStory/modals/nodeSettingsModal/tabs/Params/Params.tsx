@@ -1,4 +1,4 @@
-import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { UseFormReturn } from 'react-hook-form';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
@@ -8,7 +8,7 @@ export function Params({
   node,
   form
 }: {
-  node: DataStoryNode,
+  node: ReactFlowNode,
   form: UseFormReturn<{
     [x: string]: any;
   }, any>

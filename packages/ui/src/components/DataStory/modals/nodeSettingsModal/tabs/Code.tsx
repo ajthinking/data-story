@@ -1,11 +1,11 @@
 import React from 'react';
-import { DataStoryNode } from '../../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../../Node/ReactFlowNode';
 
 export function Code({
   node,
   register
 }: {
-  node: DataStoryNode,
+  node: ReactFlowNode,
   register: any
 }) {
 

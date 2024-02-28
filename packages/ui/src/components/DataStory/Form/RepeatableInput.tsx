@@ -4,7 +4,7 @@ import { UseFormRegister, UseFormReturn } from 'react-hook-form';
 import { StringableInput } from './StringableInput';
 import { PortSelectionInput } from '../modals/nodeSettingsModal/tabs/Params/PortSelectionInput';
 import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
-import { DataStoryNode } from '../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../Node/ReactFlowNode';
 
 export function RepeatableInput({
   name,
@@ -17,7 +17,7 @@ export function RepeatableInput({
   }, any>
   name: string,
   param: RepeatableParam<Param[]>
-  node: DataStoryNode,
+  node: ReactFlowNode,
 }) {
   const defaultRows = () => {
     if(param.value.length === 0) return [structuredClone(param.row)]

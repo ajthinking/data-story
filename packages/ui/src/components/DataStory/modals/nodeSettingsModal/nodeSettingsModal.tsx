@@ -2,7 +2,7 @@ import { Params, InputSchemas, OutputSchemas, Code, Docs } from './tabs';
 import { shallow } from 'zustand/shallow';
 import { StoreSchema, useStore } from '../../store/store';
 import { useForm } from 'react-hook-form';
-import { DataStoryNode } from '../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../Node/ReactFlowNode';
 import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
@@ -31,7 +31,7 @@ export const NodeSettingsModalContent = () => {
 
   const { nodes, openNodeModalId, setOpenNodeModalId, setNodes } = useStore(selector, shallow);
 
-  const node = nodes.find((node: DataStoryNode) => node.id === openNodeModalId)!
+  const node = nodes.find((node: ReactFlowNode) => node.id === openNodeModalId)!
 
   const defaultValues = {
     label: node?.data?.label,
