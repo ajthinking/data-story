@@ -10,4 +10,4 @@ export type DataStoryNodeData = {
   outputs: Port[],
 }
 
-export type DataStoryNode = Node<DataStoryNodeData>;
+export type ReactFlowNode = Node<DataStoryNodeData>;

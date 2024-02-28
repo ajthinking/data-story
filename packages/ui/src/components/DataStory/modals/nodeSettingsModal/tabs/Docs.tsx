@@ -1,12 +1,12 @@
 import React from 'react';
-import { DataStoryNode } from '../../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../../Node/ReactFlowNode';
 import MarkdownIt from 'markdown-it';
 
 export function Docs({
   node,
   register
 }: {
-  node: DataStoryNode,
+  node: ReactFlowNode,
   register: any
 }) {
 

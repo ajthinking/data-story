@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { DataStoryNode } from '../Node/DataStoryNode';
+import { ReactFlowNode } from '../Node/ReactFlowNode';
 
 export function useHotkeys({
   nodes,
@@ -12,7 +12,7 @@ export function useHotkeys({
   traverseNodes,
   setShowAddNodeModal,
 }: {
-  nodes: DataStoryNode[],
+  nodes: ReactFlowNode[],
   openNodeModalId: string | null,
   setShowRunModal: (show: boolean) => void,
   setOpenNodeModalId: (id: string | null) => void,

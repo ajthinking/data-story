@@ -1,5 +1,5 @@
 import { ColumnDef, RowData } from '@tanstack/react-table';
-import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { UseFormReturn } from 'react-hook-form';
 import { Port } from '@data-story/core';
 
@@ -10,7 +10,7 @@ declare module '@tanstack/react-table' {
 }
 
 export interface OutputSchemaProps {
-  node: DataStoryNode;
+  node: ReactFlowNode;
   register: any;
   form :  UseFormReturn<any>;
 }

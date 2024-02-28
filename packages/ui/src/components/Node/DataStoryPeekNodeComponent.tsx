@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
-import { DataStoryNodeData } from './DataStoryNode';
+import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
 
 

@@ -1,6 +1,6 @@
 import { Param, PortSelectionParam } from '@data-story/core'
 import { UseFormReturn, useWatch } from 'react-hook-form';
-import { DataStoryNode } from '../../../../../Node/DataStoryNode';
+import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { useMemo, useState } from 'react';
 
 export function PortSelectionInput({
@@ -14,7 +14,7 @@ export function PortSelectionInput({
     [x: string]: any;
   }, any>,
   name?: string,
-  node: DataStoryNode,
+  node: ReactFlowNode,
 }) {
   const [ addPortOpen, setAddPortOpen ] = useState(false)
   const [ newPortName, setNewPortName ] = useState('')
