@@ -44,6 +44,12 @@ ipcMain.handle('save-diagram', async(event, jsonData: string): Promise<IpcResult
 
     if (!file.canceled && file.filePath) {
       await fsAsync.writeFile(file.filePath, jsonData);
+      // update the settings & title
+      const settings = readSettings();
+      settings.workspace = path.dirname(file.filePath);
+      writeSettings(settings);
+      mainWindow.setTitle(`Data Story - ${file.filePath}`);
+
       result.isSuccess = true;
     }
 
