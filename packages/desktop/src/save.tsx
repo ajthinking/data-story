@@ -31,7 +31,6 @@ const saveDiagram = async(diagram: Diagram) => {
   successToast('Diagram saved successfully!');
 };
 
-
 export const loadDiagram = async(): Promise<LocalDiagram> => {
   const initDiagram: LocalDiagram = {
     type: 'load',

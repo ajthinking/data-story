@@ -8,7 +8,6 @@ export type Node = {
   docs?: string
   type: string
   label?: string
-  color?: string
   inputs: Port[]
   outputs: Port[]
   params: Param[]
