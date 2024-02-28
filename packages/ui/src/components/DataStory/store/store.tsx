@@ -101,6 +101,8 @@ function getNodes(nodes: Node[]):  DataStoryNode[] {
       },
       type: (() => {
         if (node.type === 'Comment') return 'dataStoryCommentNodeComponent';
+        if (node.type === 'Input') return 'dataStoryInputNodeComponent';
+        if (node.type === 'Output') return 'dataStoryOutputNodeComponent';
 
         return 'dataStoryNodeComponent'
       })(),
