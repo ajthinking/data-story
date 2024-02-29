@@ -131,7 +131,7 @@ const DraggableRow: FC<{
         <tr>
           {/*// @ts-ignore*/}
           <td colSpan="4">
-            <pre className="bg-gray-50 text-gray-500 text-sm font-mono p-4 border-rounded border rounded-md overflow-auto">
+            <pre className="bg-gray-50 text-gray-500 text-sm p-4 border overflow-auto">
               {JSON.stringify(row.original, null, 2)}
             </pre>
           </td>
