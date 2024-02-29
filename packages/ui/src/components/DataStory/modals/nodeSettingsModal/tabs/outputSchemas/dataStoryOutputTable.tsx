@@ -107,7 +107,7 @@ const DraggableRow: FC<{
           onClick={handleExpandCollapse}
           className="border font-medium whitespace-nowrap bg-gray-50 align-top"
         >
-          <button className='px-2' ref={dragRef}>
+          <button className="p-2" ref={dragRef}>
             <DragIcon />
           </button>
         </td>
@@ -122,7 +122,7 @@ const DraggableRow: FC<{
           </td>
         ))}
         <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
-          <button onClick={handleDeleteRow} >
+          <button className="p-2" onClick={handleDeleteRow} >
             <CloseIcon />
           </button>
         </td>
@@ -131,7 +131,7 @@ const DraggableRow: FC<{
         <tr>
           {/*// @ts-ignore*/}
           <td colSpan="4">
-            <pre className="bg-gray-100 text-gray-800 text-sm font-mono p-4 border border-gray-300 rounded-md overflow-auto">
+            <pre className="bg-gray-50 text-gray-500 text-sm font-mono p-4 border-rounded border rounded-md overflow-auto">
               {JSON.stringify(row.original, null, 2)}
             </pre>
           </td>
