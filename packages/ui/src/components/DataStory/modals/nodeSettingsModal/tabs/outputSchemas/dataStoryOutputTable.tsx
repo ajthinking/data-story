@@ -14,7 +14,7 @@ function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: 
   return (
     <input
       type="text"
-      className="text-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 block p-1 bg-gray-100 width-90"
+      className="text-xs p-2 w-full bg-gray-50"
       value={value as string}
       onChange={(e) => {
         setValue(e.target.value)
@@ -39,7 +39,7 @@ const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, on
 
   return (
     <textarea
-      className="text-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 block p-1 bg-gray-100 width-90"
+      className="text-xs p-2 w-full bg-gray-50 h-16"
       rows={1}
       placeholder="Type here..."
       value={ value as string}
@@ -100,21 +100,28 @@ const DraggableRow: FC<{
       <tr
         ref={previewRef} //previewRef could go here
         style={{ opacity: isDragging ? 0.5 : 1 }}
-        className="bg-white p-4"
+        className="bg-white border-b dark:border-gray-700"
       >
-        <td ref={dropRef} onClick={handleExpandCollapse}>
+        <td
+          ref={dropRef}
+          onClick={handleExpandCollapse}
+          className="border font-medium whitespace-nowrap bg-gray-50 align-top"
+        >
           <button className='px-2' ref={dragRef}>
             <DragIcon />
           </button>
         </td>
         {row.getVisibleCells().map((cell) => (
-          <td key={cell.id} >
+          <td
+            key={cell.id}
+            className="border font-medium whitespace-nowrap bg-gray-50 align-top"
+          >
             {
               flexRender(cell.column.columnDef.cell, cell.getContext())
             }
           </td>
         ))}
-        <td>
+        <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
           <button onClick={handleDeleteRow} >
             <CloseIcon />
           </button>
@@ -204,14 +211,14 @@ export function OutputTable(props: {
   }, [data, props.filed, props.node.id]);
 
   return (
-    <div className="p-2">
+    <div className="flex flex-col text-xs w-full">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-gray-700 uppercase dark:text-gray-400 p-6 w-full">
+        <thead className="text-xs uppercase bg-gray-50 text-gray-400">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              <th/>
+              <th className='px-6 py-3 border'/>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan} className='text-left p-2'>
+                <th key={header.id} colSpan={header.colSpan} className='px-6 py-3 border'>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -220,6 +227,7 @@ export function OutputTable(props: {
                     )}
                 </th>
               ))}
+              <th className='px-6 py-3 border'/>
             </tr>
           ))}
         </thead>
@@ -234,9 +242,15 @@ export function OutputTable(props: {
           ))}
         </tbody>
       </table>
-      <button onClick={handleAddRow} id="addRowBtn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mt-2">
+      <div className="flex bg-gray-50 w-full">
+        <button
+          onClick={handleAddRow}
+          id="addRowBtn"
+          className="border w-full p-2 text-xs uppercase border-rounded text-gray-400"
+        >
         Add Row
-      </button>
+        </button>
+      </div>
     </div>
   );
 }
