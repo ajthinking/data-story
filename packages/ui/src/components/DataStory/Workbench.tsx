@@ -1,11 +1,10 @@
 import { DataStoryControls } from './dataStoryControls';
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
 import ReactFlow, {
   Background,
   BackgroundVariant,
   ReactFlowInstance,
   ReactFlowProvider,
-  useUpdateNodeInternals
 } from 'reactflow';
 import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
 import { RunModal } from './modals/runModal';
@@ -15,13 +14,11 @@ import { shallow } from 'zustand/shallow';
 import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal';
 import DataStoryCommentNodeComponent from '../Node/DataStoryCommentNodeComponent';
 import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
-import { ServerConfig } from './clients/ServerConfig';
-import { Diagram } from '@data-story/core';
 import { useHotkeys } from './useHotkeys';
 import DataStoryPeekNodeComponent from '../Node/DataStoryPeekNodeComponent';
 import { WorkbenchProps } from './types';
-import { ReactFlowNode } from '../Node/ReactFlowNode';
 import DataStoryOutputNodeComponent from '../Node/DataStoryOutputNodeComponent';
+import { useWhyDidYouUpdate } from 'ahooks';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -58,6 +55,7 @@ export const Workbench = ({
   const [showRunModal, setShowRunModal] = useState(false);
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
 
+  useWhyDidYouUpdate('Workbench', { connect, nodes, edges, onNodesChange, onEdgesChange, onInit, openNodeModalId, setOpenNodeModalId, traverseNodes});
   useHotkeys({
     nodes,
     openNodeModalId,
@@ -108,23 +106,13 @@ export const Workbench = ({
           />
           <Background color='#E7E7E7' variant={BackgroundVariant.Lines} />
         </ReactFlow>
-        <UpdateNodeInternals nodes={nodes} />
+        <NodeSettingsModal showModal={Boolean(openNodeModalId)} />
       </ReactFlowProvider>
 
       {/* Modals */}
       <RunModal showModal={showRunModal} setShowModal={setShowRunModal}/>
       <AddNodeModal showModal={showAddNodeModal} setShowModal={setShowAddNodeModal}/>
-      <NodeSettingsModal showModal={Boolean(openNodeModalId)} />
     </>
   );
 };
 
-export const UpdateNodeInternals = ({ nodes }: {
-  nodes: ReactFlowNode[];
-}) => {
-  const updateNodeInternals = useUpdateNodeInternals();
-  useEffect(() => {
-    updateNodeInternals(nodes.map((node) => node.id));
-  }, [nodes, updateNodeInternals])
-  return null
-}

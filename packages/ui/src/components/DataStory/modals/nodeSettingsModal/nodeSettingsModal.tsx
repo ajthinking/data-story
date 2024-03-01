@@ -6,6 +6,7 @@ import { ReactFlowNode } from '../../../Node/ReactFlowNode';
 import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
+import { useUpdateNodeInternals } from 'reactflow';
 
 type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Docs';
 
@@ -30,6 +31,7 @@ export const NodeSettingsModalContent = () => {
   });
 
   const { nodes, openNodeModalId, setOpenNodeModalId, setNodes } = useStore(selector, shallow);
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const node = nodes.find((node: ReactFlowNode) => node.id === openNodeModalId)!
 
@@ -72,6 +74,7 @@ export const NodeSettingsModalContent = () => {
             n.data = newData;
           }
 
+          updateNodeInternals(n.id);
           return n;
         })
       );
