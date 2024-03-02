@@ -18,7 +18,6 @@ import { useHotkeys } from './useHotkeys';
 import DataStoryPeekNodeComponent from '../Node/DataStoryPeekNodeComponent';
 import { WorkbenchProps } from './types';
 import DataStoryOutputNodeComponent from '../Node/DataStoryOutputNodeComponent';
-import { useWhyDidYouUpdate } from 'ahooks';
 
 const nodeTypes = {
   dataStoryNodeComponent: DataStoryNodeComponent,
@@ -55,7 +54,6 @@ export const Workbench = ({
   const [showRunModal, setShowRunModal] = useState(false);
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
 
-  useWhyDidYouUpdate('Workbench', { connect, nodes, edges, onNodesChange, onEdgesChange, onInit, openNodeModalId, setOpenNodeModalId, traverseNodes});
   useHotkeys({
     nodes,
     openNodeModalId,

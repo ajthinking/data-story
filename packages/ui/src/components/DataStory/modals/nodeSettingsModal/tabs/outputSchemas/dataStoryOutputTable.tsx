@@ -143,12 +143,12 @@ const DraggableRow: FC<{
 };
 
 export function OutputTable(props: {
-  filed:  ControllerRenderProps<any, 'outputs'>;
+  field:  ControllerRenderProps<any, 'outputs'>;
   node: ReactFlowNode;
   outputs?: Port[];
 }) {
   const [columns] = React.useState(() => [...defaultColumns]);
-  const [data, setData] = React.useState(formatOutputs(props.filed.value));
+  const [data, setData] = React.useState(formatOutputs(props.field.value));
 
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
     data.splice(
@@ -157,8 +157,9 @@ export function OutputTable(props: {
       data.splice(draggedRowIndex, 1)[0] as Port
     );
     setData([...data]);
+    console.log('output data', data);
 
-    props.filed.onChange(JSON.stringify(data));
+    props.field.onChange(JSON.stringify(data));
   };
 
   const table = useReactTable({
@@ -182,7 +183,7 @@ export function OutputTable(props: {
         });
 
         setData(updatedData);
-        props.filed.onChange(JSON.stringify(updatedData));
+        props.field.onChange(JSON.stringify(updatedData));
       },
     },
     debugTable: true,
@@ -193,8 +194,8 @@ export function OutputTable(props: {
   const deleteRow = useCallback((id: string) => {
     const updatedData = data.filter((row) => row.id !== id);
     setData([...updatedData]);
-    props.filed.onChange(JSON.stringify(updatedData));
-  }, [data, props.filed]);
+    props.field.onChange(JSON.stringify(updatedData));
+  }, [data, props.field]);
 
   const handleAddRow = useCallback( () => {
     const id = props.node.id;
@@ -207,8 +208,8 @@ export function OutputTable(props: {
 
     const updatedData = [...data, newRow];
     setData(updatedData);
-    props.filed.onChange(JSON.stringify(updatedData));
-  }, [data, props.filed, props.node.id]);
+    props.field.onChange(JSON.stringify(updatedData));
+  }, [data, props.field, props.node.id]);
 
   return (
     <div className="flex flex-col text-xs w-full">
@@ -263,7 +264,7 @@ export const DataStoryOutputTable = (props: OutputSchemaProps) => {
         control={props.form.control}
         name="outputs"
         render={({ field }) => (
-          <OutputTable filed={field} node={props.node} />
+          <OutputTable field={field} node={props.node} />
         )}
       />
 

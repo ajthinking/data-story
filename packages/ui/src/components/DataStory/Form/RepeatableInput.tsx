@@ -1,6 +1,6 @@
 import { Param, RepeatableParam } from '@data-story/core';
 import React, { useState } from 'react';
-import { Controller, UseFormRegister, UseFormReturn } from 'react-hook-form';
+import { Controller, ControllerRenderProps, UseFormRegister, UseFormReturn } from 'react-hook-form';
 import { StringableInput } from './StringableInput';
 import { PortSelectionInput } from '../modals/nodeSettingsModal/tabs/Params/PortSelectionInput';
 import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
@@ -16,7 +16,8 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   row: any,
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
 }) {
-  const { form, param, name,  node, row, rowIndex, reorderRow } = props;
+  const { form, param,  node, row, rowIndex, reorderRow } = props;
+  const name = param.name;
   const [, dropRef] = useDrop({
     accept: 'row',
     drop: (draggedRow: Row<unknown>) => reorderRow(draggedRow.index, rowIndex),
@@ -33,28 +34,28 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
         <DragIcon/>
       </button>
     </td>
-    {/*{*/}
-    {/*  row.map((column: Param, columnIndex: number) => (<td*/}
-    {/*    key={column.name}*/}
-    {/*    scope="row"*/}
-    {/*    className="border font-medium whitespace-nowrap bg-gray-50 align-top"*/}
-    {/*  >*/}
-    {/*    {column.type === 'StringableParam' && <StringableWithConfig*/}
-    {/*      form={form}*/}
-    {/*      param={column}*/}
-    {/*      {...column}*/}
-    {/*      name={`${name}.${columnIndex}.${column.name}`}*/}
-    {/*      node={node}*/}
-    {/*    />}*/}
-    {/*    {column.type === 'PortSelectionParam' && <PortSelectionInput*/}
-    {/*      form={form}*/}
-    {/*      param={column}*/}
-    {/*      {...column}*/}
-    {/*      name={`${name}.${columnIndex}.${column.name}`}*/}
-    {/*      node={node}*/}
-    {/*    />}*/}
-    {/*  </td>))*/}
-    {/*}*/}
+    {
+      row.map((column: Param, columnIndex: number) => (<td
+        key={column.name}
+        scope="row"
+        className="border font-medium whitespace-nowrap bg-gray-50 align-top"
+      >
+        {column.type === 'StringableParam' && <StringableWithConfig
+          form={form}
+          param={column}
+          {...column}
+          name={`${name}.${columnIndex}.${column.name}`}
+          node={node}
+        />}
+        {column.type === 'PortSelectionParam' && <PortSelectionInput
+          form={form}
+          param={column}
+          {...column}
+          name={`${name}.${columnIndex}.${column.name}`}
+          node={node}
+        />}
+      </td>))
+    }
     <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
       <button
         className="p-2"
@@ -70,24 +71,24 @@ interface RepeatableInputProps {
   form: UseFormReturn<{
     [x: string]: any;
   }, any>;
-  name: string;
   param: RepeatableParam<Param[]>;
   node: ReactFlowNode;
+
 }
 
 export function RepeatableInput1({
-  name,
   form,
   param,
   node,
-}: RepeatableInputProps) {
+  field
+}: RepeatableInputProps & {
+  field:  ControllerRenderProps<any, 'params'>;
+}) {
   const defaultRows = () => {
-    if (param.value.length === 0) return [structuredClone(param.row)]
-
-    return param.value
+    return [param.row]
   }
 
-
+  console.log(field, 'field');
   const [localRows, setLocalRows] = useState<any[]>(defaultRows());
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
     localRows.splice(
@@ -100,23 +101,15 @@ export function RepeatableInput1({
     // props.filed.onChange(JSON.stringify(localRows));
     console.log('localRows AFTER', localRows);
   };
+  console.log('localRows', localRows);
 
   const addRow = () => {
     console.log('Adding row!')
 
-    console.log(
-      'localRows BEFORE',
-      structuredClone(localRows)
-    )
-
-    console.log(
-      'param.row',
-      structuredClone(param.row)
-    )
 
     setLocalRows([
-      ...JSON.parse(JSON.stringify((localRows))),
-      JSON.parse(JSON.stringify((param.row)))
+      ...(localRows),
+      param.row
     ])
   }
 
@@ -138,7 +131,7 @@ export function RepeatableInput1({
         </thead>
         <tbody>
           {localRows.map((row, i) => {
-            return (<RepeatableDraggableRow reorderRow={reorderRow} row={row} rowIndex={i}  param={param} form={form} node={node} name={name} />
+            return (<RepeatableDraggableRow key={i} reorderRow={reorderRow} row={row} rowIndex={i}  param={param} form={form} node={node} />
             )
           })}
         </tbody>
@@ -154,11 +147,13 @@ export function RepeatableInput1({
 }
 
 export const RepeatableInput = (props: RepeatableInputProps) => {
+  console.log(props, 'props');
   return (
     <DndProvider backend={HTML5Backend}>
       <Controller
-        render={()=> (<RepeatableInput1 {...props} />)}
-        name={'RepeatableInput'}
+        render={({ field, fieldState, formState}) =>
+          (<RepeatableInput1 field={field} {...props} />)}
+        name={'params'}
         control={props.form.control} // todo: 这里随便写的
       />
     </DndProvider>
