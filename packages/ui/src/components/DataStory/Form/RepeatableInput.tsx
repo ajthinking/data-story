@@ -11,24 +11,22 @@ import { DndProvider, useDrop } from 'react-dnd';
 import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
-function RepeatableCol({
+function RepeatableCell({
   column,
   form,
   name,
-  columnIndex,
+  rowIndex,
   node,
-  paramRow
 }: {
-  column: any,
+  column: Param,
   form: UseFormReturn<{[p: string]: any}, any>,
   name: any,
   columnIndex: number,
+  rowIndex: number,
   node: ReactFlowNode,
-  paramRow: Param[],
 }) {
 
-  const paramCol = paramRow[columnIndex];
-  paramCol.value = column[paramCol.name];
+  const paramCol = column
 
   return <td
 
@@ -39,14 +37,14 @@ function RepeatableCol({
       form={form}
       param={paramCol}
       {...paramCol}
-      // name={`${name}.${columnIndex}.${paramCol.name}`}
+      name={`${name}.${rowIndex}.${paramCol.name}`}
       node={node}
     />}
     {paramCol.type === 'PortSelectionParam' && <PortSelectionInput
       form={form}
       param={paramCol}
       {...paramCol}
-      // name={`${name}.${columnIndex}.${paramCol.name}`}
+      name={`${name}.${rowIndex}.${paramCol.name}`}
       node={node}
     />}
   </td>;
@@ -77,9 +75,9 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
       </button>
     </td>
     {
-      row.map((column: any, columnIndex: number) => (<RepeatableCol key={`${paramRow[columnIndex].name}-${columnIndex}`}
-        column={column} form={form} name={name}
-        columnIndex={columnIndex} node={node} paramRow={paramRow} />))
+      param.row.map((column: Param, columnIndex: number) => (<RepeatableCell key={`${paramRow[columnIndex].name}-${columnIndex}`}
+        column={column} form={form} name={name} rowIndex={rowIndex}
+        columnIndex={columnIndex} node={node} />))
     }
     <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
       <button
@@ -101,7 +99,7 @@ interface RepeatableInputProps {
 
 }
 
-export function RepeatableInput1({
+export function RepeatableControl({
   form,
   param,
   node,
@@ -113,12 +111,10 @@ export function RepeatableInput1({
     return [param.row]
   }
 
-  const defaultRowData = (row: Param[]): {[p: string]: unknown}[] => {
-    return row.map((column: Param) => {
-      return {
-        [column.name]: column.value
-      }
-    });
+  const defaultRowData = (row: Param[]): unknown => {
+    return Object.fromEntries( row.map((column: Param) => {
+      return [column.name, column.value]
+    }));
   }
 
   const getDefaultData = () => {
@@ -203,9 +199,9 @@ export const RepeatableInput = (props: RepeatableInputProps) => {
     <DndProvider backend={HTML5Backend}>
       <Controller
         render={({ field, fieldState, formState}) =>
-          (<RepeatableInput1 field={field} {...props} />)}
+          (<RepeatableControl field={field} {...props} />)}
         name={'params'}
-        control={props.form.control} // todo: 这里随便写的
+        control={props.form.control}
       />
     </DndProvider>
   )
