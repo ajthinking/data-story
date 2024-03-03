@@ -9,4 +9,5 @@ export interface LocalDiagram {
 export interface IpcResult {
   data: string;
   isSuccess: boolean;
+  isCancelled?: boolean;
 }

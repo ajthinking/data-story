@@ -31,14 +31,16 @@ const saveDiagram = async(diagram: Diagram) => {
   successToast('Diagram saved successfully!');
 };
 
-export const loadDiagram = async(): Promise<LocalDiagram> => {
+export const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
   const initDiagram: LocalDiagram = {
     type: 'load',
     version: getCoreVersion(),
     diagram: null
   }
 
-  const file: IpcResult = await window.electron.openFileDialog();
+  const file: IpcResult = await window.electron.openDiagram();
+  if(file.isCancelled) return undefined;
+
   if (!file || file.isSuccess === false) {
     errorToast('Could not open file!');
     console.warn('Could not open file', file);
@@ -46,6 +48,7 @@ export const loadDiagram = async(): Promise<LocalDiagram> => {
   }
 
   const { valid, result } = tryParseJSON(file.data);
+
   if (!valid) {
     errorToast('Could not parse JSON!');
     console.warn('Could not parse JSON', result);
@@ -74,6 +77,7 @@ export const SaveComponent = () => {
   useDataStoryEvent(initToast);
   const handleOpenFile = async() => {
     const diagramInfo = await loadDiagram();
+    if(!diagramInfo) return;
 
     if (updateDiagram && diagramInfo.diagram) {
       updateDiagram(diagramInfo.diagram);

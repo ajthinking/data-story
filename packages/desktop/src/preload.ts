@@ -6,13 +6,14 @@ import { IpcResult } from './types';
 
 
 contextBridge.exposeInMainWorld('electron', {
-
   saveDiagram: (data: string): Promise<IpcResult> => {
     return ipcRenderer.invoke('saveDiagram', data);
   },
 
-  openFileDialog: (): Promise<IpcResult> => {
+  openDiagram: (): Promise<IpcResult> => {
     return ipcRenderer.invoke('openDiagram');
   },
 
+  sendPoke: (data: any) => ipcRenderer.send('pokeFromServer', data),
+  onPoke: (callback: any) => ipcRenderer.on('pokeFromServer', callback)
 });
