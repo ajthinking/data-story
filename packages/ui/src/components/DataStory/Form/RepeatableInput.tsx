@@ -11,6 +11,47 @@ import { DndProvider, useDrop } from 'react-dnd';
 import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+function RepeatableCol({
+  column,
+  form,
+  name,
+  columnIndex,
+  node,
+  paramRow
+}: {
+  column: any,
+  form: UseFormReturn<{[p: string]: any}, any>,
+  name: any,
+  columnIndex: number,
+  node: ReactFlowNode,
+  paramRow: Param[],
+}) {
+
+  const paramCol = paramRow[columnIndex];
+  paramCol.value = column[paramCol.name];
+
+  return <td
+
+    scope="row"
+    className="border font-medium whitespace-nowrap bg-gray-50 align-top"
+  >
+    {paramCol.type === 'StringableParam' && <StringableWithConfig
+      form={form}
+      param={paramCol}
+      {...paramCol}
+      // name={`${name}.${columnIndex}.${paramCol.name}`}
+      node={node}
+    />}
+    {paramCol.type === 'PortSelectionParam' && <PortSelectionInput
+      form={form}
+      param={paramCol}
+      {...paramCol}
+      // name={`${name}.${columnIndex}.${paramCol.name}`}
+      node={node}
+    />}
+  </td>;
+}
+
 function RepeatableDraggableRow(props: RepeatableInputProps & {
   rowIndex: number,
   row: any,
@@ -24,6 +65,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   });
   console.log(row, 'row');
   console.log(param.row, 'param.row');
+  const paramRow = param.row;
 
   return <tr className="bg-white border-b dark:border-gray-700">
     <td
@@ -35,26 +77,9 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
       </button>
     </td>
     {
-      row.map((column: Param, columnIndex: number) => (<td
-        key={column.name}
-        scope="row"
-        className="border font-medium whitespace-nowrap bg-gray-50 align-top"
-      >
-        {column.type === 'StringableParam' && <StringableWithConfig
-          form={form}
-          param={column}
-          {...column}
-          name={`${name}.${columnIndex}.${column.name}`}
-          node={node}
-        />}
-        {column.type === 'PortSelectionParam' && <PortSelectionInput
-          form={form}
-          param={column}
-          {...column}
-          name={`${name}.${columnIndex}.${column.name}`}
-          node={node}
-        />}
-      </td>))
+      row.map((column: any, columnIndex: number) => (<RepeatableCol key={`${paramRow[columnIndex].name}-${columnIndex}`}
+        column={column} form={form} name={name}
+        columnIndex={columnIndex} node={node} paramRow={paramRow} />))
     }
     <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
       <button
@@ -88,8 +113,26 @@ export function RepeatableInput1({
     return [param.row]
   }
 
-  console.log(field, 'field');
+  const defaultRowData = (row: Param[]): {[p: string]: unknown}[] => {
+    return row.map((column: Param) => {
+      return {
+        [column.name]: column.value
+      }
+    });
+  }
+
+  const getDefaultData = () => {
+    const inheritedData = field.value?.[param.name] as unknown as Array<unknown>;
+    // if inheritedData is not an array or array is empty, return default rows
+    if (!Array.isArray(inheritedData) || !inheritedData.length) {
+      return [defaultRowData(param.row)];
+    }
+    return inheritedData;
+  }
+
   const [localRows, setLocalRows] = useState<any[]>(defaultRows());
+  const [data, setData] = React.useState(getDefaultData());
+
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
     localRows.splice(
       targetRowIndex,
@@ -106,11 +149,19 @@ export function RepeatableInput1({
   const addRow = () => {
     console.log('Adding row!')
 
+    const newData = [
+      ...data,
+      defaultRowData(param.row)
+    ];
+    const newFieldValue = field.value;
+    newFieldValue[param.name] = newData;
 
-    setLocalRows([
-      ...(localRows),
-      param.row
-    ])
+    setData(newData);
+    field.onChange(newFieldValue);
+    // setLocalRows([
+    //   ...(localRows),
+    //   param.row
+    // ])
   }
 
   return (
@@ -130,7 +181,7 @@ export function RepeatableInput1({
           </tr>
         </thead>
         <tbody>
-          {localRows.map((row, i) => {
+          {data.map((row, i) => {
             return (<RepeatableDraggableRow key={i} reorderRow={reorderRow} row={row} rowIndex={i}  param={param} form={form} node={node} />
             )
           })}

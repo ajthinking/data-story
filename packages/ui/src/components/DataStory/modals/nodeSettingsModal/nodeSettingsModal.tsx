@@ -68,7 +68,7 @@ export const NodeSettingsModalContent = () => {
             // Param fields
             for (const [key, value] of Object.entries(submitted.params)) {
               const param = newData.params.find((p) => p.name === key)!;
-              param.value = value;
+              param?.value && (param.value = value);
             }
 
             n.data = newData;
