@@ -1,13 +1,13 @@
 import { Param, RepeatableParam } from '@data-story/core';
-import React, { useState } from 'react';
-import { Controller, ControllerRenderProps, UseFormRegister, UseFormReturn } from 'react-hook-form';
+import React, { useMemo, useState } from 'react';
+import { Controller, ControllerRenderProps, UseFormRegister, UseFormReturn, useWatch } from 'react-hook-form';
 import { StringableInput } from './StringableInput';
 import { PortSelectionInput } from '../modals/nodeSettingsModal/tabs/Params/PortSelectionInput';
 import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { DragIcon } from '../icons/dragIcon';
 import { CloseIcon } from '../icons/closeIcon';
-import { DndProvider, useDrop } from 'react-dnd';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -60,16 +60,26 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
     accept: 'row',
     drop: (draggedRow: Row<unknown>) => reorderRow(draggedRow.index, rowIndex),
   });
-  console.log(row, 'row');
-  console.log(param.row, 'param.row');
+
+  const [{ isDragging }, dragRef, previewRef] = useDrag({
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+    item: () => ({ index: rowIndex, ...row}),
+    type: 'row',
+  });
+
   const paramRow = param.row;
 
-  return <tr className="bg-white border-b dark:border-gray-700">
+  return <tr
+    ref={previewRef}
+    style={{ opacity: isDragging ? 0.5 : 1 }}
+    className="bg-white border-b dark:border-gray-700">
     <td
       ref={dropRef}
       className="border font-medium whitespace-nowrap bg-gray-50 align-top"
     >
-      <button className="p-2">
+      <button className="p-2" ref={dragRef}>
         <DragIcon/>
       </button>
     </td>
@@ -98,65 +108,70 @@ interface RepeatableInputProps {
 
 }
 
+const defaultRowData = (row: Param[]) => {
+  const id = Math.random().toString(36).substring(7);
+  const data = Object.fromEntries( row.map((column: Param) => {
+    return [column.name, column.value]
+  }));
+  return {
+    id,
+    ...data
+  }
+}
+
 export function RepeatableControl({
   form,
   param,
   node,
   field
 }: RepeatableInputProps & {
-  field:  ControllerRenderProps<any, 'params'>;
+  field:  ControllerRenderProps<any, `params.${string}`>;
 }) {
-  const defaultRows = () => {
-    return [param.row]
-  }
+  const formRepeatableValue = useWatch({
+    control: form.control,
+    name: `params.${param.name}`,
+    exact: true,
+  });
+  console.log('formParams', formRepeatableValue);
+  console.log('field', field);
 
-  const defaultRowData = (row: Param[]): unknown => {
-    return Object.fromEntries( row.map((column: Param) => {
-      return [column.name, column.value]
-    }));
-  }
-
-  const getDefaultData = () => {
-    const inheritedData = field.value?.[param.name] as unknown as Array<unknown>;
+  const tableData = useMemo((): Record<string, unknown>[] => {
+    const inheritedData = formRepeatableValue as unknown as Array<unknown>;
     // if inheritedData is not an array or array is empty, return default rows
     if (!Array.isArray(inheritedData) || !inheritedData.length) {
       return [defaultRowData(param.row)];
     }
     return inheritedData;
-  }
+  }, [formRepeatableValue, param.row]);
 
-  const [localRows, setLocalRows] = useState<any[]>(defaultRows());
-  const [data, setData] = React.useState(getDefaultData());
+  // const [tableData, setTableData] = React.useState(getDefaultData());
 
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
-    localRows.splice(
+    tableData.splice(
       targetRowIndex,
       0,
-      localRows.splice(draggedRowIndex, 1)[0]
+      tableData.splice(draggedRowIndex, 1)[0]
     );
-    setLocalRows([...localRows]);
+    // setTableData([...tableData]);
+    updateField([...tableData]);
 
-    // props.filed.onChange(JSON.stringify(localRows));
-    console.log('localRows AFTER', localRows);
+    console.log('localRows AFTER', tableData);
   };
-  console.log('localRows', localRows);
+  console.log('tableData', tableData);
+
+  function updateField(newData: unknown[]): void {
+
+    field.onChange(newData);
+  }
 
   const addRow = () => {
-    console.log('Adding row!')
-
+    console.log('addRow');
     const newData = [
-      ...data,
+      ...tableData,
       defaultRowData(param.row)
     ];
-    const newFieldValue = field.value;
-    newFieldValue[param.name] = newData;
-
-    setData(newData);
-    field.onChange(newFieldValue);
-    // setLocalRows([
-    //   ...(localRows),
-    //   param.row
-    // ])
+    updateField(newData);
+    // setTableData(newData);
   }
 
   return (
@@ -176,8 +191,8 @@ export function RepeatableControl({
           </tr>
         </thead>
         <tbody>
-          {data.map((row, i) => {
-            return (<RepeatableDraggableRow key={i} reorderRow={reorderRow} row={row} rowIndex={i}  param={param} form={form} node={node} />
+          {tableData.map((row, i) => {
+            return (<RepeatableDraggableRow key={`${i}-${row.id}`} reorderRow={reorderRow} row={row} rowIndex={i}  param={param} form={form} node={node} />
             )
           })}
         </tbody>
@@ -199,7 +214,7 @@ export const RepeatableInput = (props: RepeatableInputProps) => {
       <Controller
         render={({ field, fieldState, formState}) =>
           (<RepeatableControl field={field} {...props} />)}
-        name={'params'}
+        name={`params.${props.param.name}`}
         control={props.form.control}
       />
     </DndProvider>

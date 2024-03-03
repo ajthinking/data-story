@@ -171,7 +171,6 @@ export function OutputTable(props: {
     // Provide our updateData function to our table meta
     meta: {
       updateData: (rowIndex, columnId, value) => {
-        console.log(rowIndex, columnId, value, 'rowIndex, columnId, value');
         const updatedData = data.map((row, index) => {
           if (index === rowIndex) {
             return {
