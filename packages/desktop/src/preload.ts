@@ -8,11 +8,11 @@ import { IpcResult } from './types';
 contextBridge.exposeInMainWorld('electron', {
 
   saveDiagram: (data: string): Promise<IpcResult> => {
-    return ipcRenderer.invoke('save-diagram', data);
+    return ipcRenderer.invoke('saveDiagram', data);
   },
 
   openFileDialog: (): Promise<IpcResult> => {
-    return ipcRenderer.invoke('open-diagram');
+    return ipcRenderer.invoke('openDiagram');
   },
 
 });
