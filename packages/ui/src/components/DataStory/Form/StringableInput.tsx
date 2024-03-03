@@ -55,12 +55,12 @@ export function StringableInput({
         ? <textarea
           className="text-xs p-2 w-full bg-gray-50"
           rows={rows}
-          {...form.register(`params.${name}`)}
+          {...form.register(`${name}`)}
           onSelect={handleCursorChange}
         />
         : <input
           className="text-xs p-2 w-full bg-gray-50"
-          {...form.register(`params.${name}`)}
+          {...form.register(`${name}`)}
         />
       }
     </div>

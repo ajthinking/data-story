@@ -29,7 +29,6 @@ function RepeatableCell({
   const paramCol = column
 
   return <td
-
     scope="row"
     className="border font-medium whitespace-nowrap bg-gray-50 align-top"
   >
@@ -37,14 +36,14 @@ function RepeatableCell({
       form={form}
       param={paramCol}
       {...paramCol}
-      name={`${name}.${rowIndex}.${paramCol.name}`}
+      name={`params.${name}.${rowIndex}.${paramCol.name}`}
       node={node}
     />}
     {paramCol.type === 'PortSelectionParam' && <PortSelectionInput
       form={form}
       param={paramCol}
       {...paramCol}
-      name={`${name}.${rowIndex}.${paramCol.name}`}
+      name={`params.${name}.${rowIndex}.${paramCol.name}`}
       node={node}
     />}
   </td>;

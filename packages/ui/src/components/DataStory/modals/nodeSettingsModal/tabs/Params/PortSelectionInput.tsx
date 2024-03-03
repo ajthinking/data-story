@@ -27,14 +27,16 @@ export function PortSelectionInput({
   return (<div className="group flex flex-col bg-gray-50">
     <div className="flex justify-between">
       <select
-        key={'ports'}
+        key={'port'}
         className="bg-gray-50 px-2 py-1"
         {...form.register(name!)}
       >
-        {parsedOutputs.map(output => (<option
-          key={output.name}
-          value={output.name}
-        >{output.name}</option>))}
+        {parsedOutputs.map(output => (
+          <option
+            key={output.name}
+            value={output.name}
+          >{output.name}</option>
+        ))}
       </select>
     </div>
   </div>)
