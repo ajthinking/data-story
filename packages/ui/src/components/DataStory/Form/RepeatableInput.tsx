@@ -1,10 +1,9 @@
 import { Param, RepeatableParam } from '@data-story/core';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback } from 'react';
 import {
   useFieldArray,
   UseFormReturn,
 } from 'react-hook-form';
-import { StringableInput } from './StringableInput';
 import { PortSelectionInput } from '../modals/nodeSettingsModal/tabs/Params/PortSelectionInput';
 import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
@@ -15,41 +14,36 @@ import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 function RepeatableCell({
-  column,
+  paramColumn,
   form,
   name,
   rowIndex,
   node,
-  row
 }: {
-  column: Param,
+  paramColumn: Param,
   form: UseFormReturn<{[p: string]: any}, any>,
   name: any,
   columnIndex: number,
   rowIndex: number,
   node: ReactFlowNode,
-  row:any
 }) {
 
-  const paramCol = column
-
-  console.log('paramCol', paramCol, 'row', row, form, 'form');
   return <td
     scope="row"
     className="border font-medium whitespace-nowrap bg-gray-50 align-top"
   >
-    {paramCol.type === 'StringableParam' && <StringableWithConfig
+    {paramColumn.type === 'StringableParam' && <StringableWithConfig
       form={form}
-      param={paramCol}
-      {...paramCol}
-      name={`params.${name}.${rowIndex}.${paramCol.name}`}
+      param={paramColumn}
+      {...paramColumn}
+      name={`params.${name}.${rowIndex}.${paramColumn.name}`}
       node={node}
     />}
-    {paramCol.type === 'PortSelectionParam' && <PortSelectionInput
+    {paramColumn.type === 'PortSelectionParam' && <PortSelectionInput
       form={form}
-      param={paramCol}
-      {...paramCol}
-      name={`params.${name}.${rowIndex}.${paramCol.name}`}
+      param={paramColumn}
+      {...paramColumn}
+      name={`params.${name}.${rowIndex}.${paramColumn.name}`}
       node={node}
     />}
   </td>;
@@ -63,6 +57,8 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
 }) {
   const { form, param,  node, row, rowIndex, reorderRow, deleteRow } = props;
   const name = param.name;
+  const paramRow = param.row;
+
   const [, dropRef] = useDrop({
     accept: 'row',
     drop: (draggedRow: Row<unknown>) => reorderRow(draggedRow.index, rowIndex),
@@ -75,8 +71,6 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
     item: () => ({ index: rowIndex, ...row}),
     type: 'row',
   });
-
-  const paramRow = param.row;
 
   function handleDeleteRow() {
     deleteRow(rowIndex);
@@ -95,9 +89,14 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
       </button>
     </td>
     {
-      param.row.map((column: Param, columnIndex: number) => (<RepeatableCell key={`${paramRow[columnIndex].name}-${columnIndex}`}
-        column={column} form={form} name={name} rowIndex={rowIndex} row={row}
-        columnIndex={columnIndex} node={node} />))
+      param.row.map((column: Param, columnIndex: number) => (
+        <RepeatableCell
+          key={`${paramRow[columnIndex].name}-${columnIndex}`}
+          paramColumn={column} form={form}
+          name={name} rowIndex={rowIndex}
+          columnIndex={columnIndex} node={node}
+        />
+      ))
     }
     <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
       <button
@@ -116,7 +115,6 @@ interface RepeatableInputProps {
   }, any>;
   param: RepeatableParam<Param[]>;
   node: ReactFlowNode;
-
 }
 
 const defaultRowData = (row: Param[]) => {
@@ -141,12 +139,9 @@ export function RepeatableComponent({
     name: `params.${param.name}`,
   });
 
-  console.log(fields, 'fields');
-
   const addRow = useCallback(() => {
     append(defaultRowData(param.row));
   }, [append, param.row]);
-
 
   return (
     <div className="flex flex-col text-xs w-full">
