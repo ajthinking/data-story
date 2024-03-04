@@ -1,6 +1,9 @@
 import { Param, RepeatableParam } from '@data-story/core';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Controller, ControllerRenderProps, UseFormRegister, UseFormReturn, useWatch } from 'react-hook-form';
+import {
+  useFieldArray,
+  UseFormReturn,
+} from 'react-hook-form';
 import { StringableInput } from './StringableInput';
 import { PortSelectionInput } from '../modals/nodeSettingsModal/tabs/Params/PortSelectionInput';
 import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
@@ -127,59 +130,23 @@ const defaultRowData = (row: Param[]) => {
   }
 }
 
-export function RepeatableControl({
+export function RepeatableComponent({
   form,
   param,
   node,
-  field
 }: RepeatableInputProps & {
-  field:  ControllerRenderProps<any, `params.${string}`>;
 }) {
+  const { fields, append, remove, swap} = useFieldArray({
+    control: form.control,
+    name: `params.${param.name}`,
+  });
 
-  const tableData = useMemo((): Record<string, unknown>[] => {
-    const inheritedData = field.value as unknown as Array<unknown>;
-
-    if (!Array.isArray(inheritedData) || !inheritedData.length) {
-      return [defaultRowData(param.row)];
-    }
-
-    return inheritedData;
-  }, [field.value, param.row]);
-
-  // const [tableData, setTableData] = React.useState(getDefaultData());
-
-  const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
-
-    tableData.splice(
-      targetRowIndex,
-      0,
-      tableData.splice(draggedRowIndex, 1)[0]
-    );
-    // setTableData([...tableData]);
-    updateField([...tableData]);
-
-    console.log('localRows AFTER', tableData);
-  };
-  console.log('tableData', tableData);
-
-  const updateField = useCallback((newData: unknown[]): void => {
-    field.onChange(newData);
-  }, [field]);
+  console.log(fields, 'fields');
 
   const addRow = useCallback(() => {
-    console.log('addRow');
-    const newData = [
-      ...tableData,
-      defaultRowData(param.row)
-    ];
-    updateField(newData);
-    // setTableData(newData);
-  }, [param.row, tableData, updateField]);
+    append(defaultRowData(param.row));
+  }, [append, param.row]);
 
-  const deleteRow = useCallback((index: number) => {
-    const updatedData = tableData.filter((row, i) => i !== index);
-    updateField(updatedData);
-  }, [tableData, updateField]);
 
   return (
     <div className="flex flex-col text-xs w-full">
@@ -198,12 +165,12 @@ export function RepeatableControl({
           </tr>
         </thead>
         <tbody>
-          {tableData.map((row, i) => {
+          {fields.map((row, i) => {
             return (
               <RepeatableDraggableRow
                 key={`${i}-${row.id}`}
-                reorderRow={reorderRow}
-                deleteRow={deleteRow}
+                reorderRow={swap}
+                deleteRow={remove}
                 row={row} rowIndex={i}
                 param={param} form={form}
                 node={node}
@@ -223,15 +190,9 @@ export function RepeatableControl({
 }
 
 export const RepeatableInput = (props: RepeatableInputProps) => {
-  console.log(props, 'props');
   return (
     <DndProvider backend={HTML5Backend}>
-      <Controller
-        render={({ field, fieldState, formState}) =>
-          (<RepeatableControl field={field} {...props} />)}
-        name={`params.${props.param.name}`}
-        control={props.form.control}
-      />
+      <RepeatableComponent {...props} />
     </DndProvider>
   )
 }
