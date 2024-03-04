@@ -132,8 +132,7 @@ export function RepeatableComponent({
   form,
   param,
   node,
-}: RepeatableInputProps & {
-}) {
+}: RepeatableInputProps) {
   const { fields, append, remove, swap} = useFieldArray({
     control: form.control,
     name: `params.${param.name}`,

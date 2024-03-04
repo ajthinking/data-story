@@ -16,7 +16,7 @@ const DataStoryInputNodeComponent = ({ id, data, selected }: { id: string; data:
   // if(data.outputs.length !== 1) console.log('Warning: DataStoryInputNodeComponent has more than one output')
 
   // const outputPort = data.outputs[0]
-  const portName = data.params[0].value as string
+  const portName = (data?.params?.[0]?.value ?? '') as string
 
   return (
     <div
