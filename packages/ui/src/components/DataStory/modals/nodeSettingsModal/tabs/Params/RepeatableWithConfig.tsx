@@ -34,7 +34,6 @@ export function RepeatableWithConfig({
     <RepeatableInput
       form={form}
       param={param as any}
-      {...param}
       node={node}
     />
   </div>)

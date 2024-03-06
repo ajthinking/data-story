@@ -14,7 +14,7 @@ function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: 
   return (
     <input
       type="text"
-      className="text-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 block p-1 bg-gray-100 width-90"
+      className="text-xs p-2 w-full bg-gray-50"
       value={value as string}
       onChange={(e) => {
         setValue(e.target.value)
@@ -39,7 +39,7 @@ const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, on
 
   return (
     <textarea
-      className="text-sm rounded-lg focus:outline-none focus:ring focus:ring-blue-500 block p-1 bg-gray-100 width-90"
+      className="text-xs p-2 w-full bg-gray-50 h-16"
       rows={1}
       placeholder="Type here..."
       value={ value as string}
@@ -100,22 +100,29 @@ const DraggableRow: FC<{
       <tr
         ref={previewRef} //previewRef could go here
         style={{ opacity: isDragging ? 0.5 : 1 }}
-        className="bg-white p-4"
+        className="bg-white border-b dark:border-gray-700"
       >
-        <td ref={dropRef} onClick={handleExpandCollapse}>
-          <button className='px-2' ref={dragRef}>
+        <td
+          ref={dropRef}
+          onClick={handleExpandCollapse}
+          className="border font-medium whitespace-nowrap bg-gray-50 align-top"
+        >
+          <button className="p-2" ref={dragRef}>
             <DragIcon />
           </button>
         </td>
         {row.getVisibleCells().map((cell) => (
-          <td key={cell.id} >
+          <td
+            key={cell.id}
+            className="border font-medium whitespace-nowrap bg-gray-50 align-top"
+          >
             {
               flexRender(cell.column.columnDef.cell, cell.getContext())
             }
           </td>
         ))}
-        <td>
-          <button onClick={handleDeleteRow} >
+        <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
+          <button className="p-2" onClick={handleDeleteRow} >
             <CloseIcon />
           </button>
         </td>
@@ -124,7 +131,7 @@ const DraggableRow: FC<{
         <tr>
           {/*// @ts-ignore*/}
           <td colSpan="4">
-            <pre className="bg-gray-100 text-gray-800 text-sm font-mono p-4 border border-gray-300 rounded-md overflow-auto">
+            <pre className="bg-gray-50 text-gray-500 text-sm p-4 border overflow-auto">
               {JSON.stringify(row.original, null, 2)}
             </pre>
           </td>
@@ -136,12 +143,12 @@ const DraggableRow: FC<{
 };
 
 export function OutputTable(props: {
-  filed:  ControllerRenderProps<any, 'outputs'>;
+  field:  ControllerRenderProps<any, 'outputs'>;
   node: ReactFlowNode;
   outputs?: Port[];
 }) {
   const [columns] = React.useState(() => [...defaultColumns]);
-  const [data, setData] = React.useState(formatOutputs(props.filed.value));
+  const [data, setData] = React.useState(formatOutputs(props.field.value));
 
   const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
     data.splice(
@@ -150,8 +157,9 @@ export function OutputTable(props: {
       data.splice(draggedRowIndex, 1)[0] as Port
     );
     setData([...data]);
+    console.log('output data', data);
 
-    props.filed.onChange(JSON.stringify(data));
+    props.field.onChange(JSON.stringify(data));
   };
 
   const table = useReactTable({
@@ -163,7 +171,6 @@ export function OutputTable(props: {
     // Provide our updateData function to our table meta
     meta: {
       updateData: (rowIndex, columnId, value) => {
-        console.log(rowIndex, columnId, value, 'rowIndex, columnId, value');
         const updatedData = data.map((row, index) => {
           if (index === rowIndex) {
             return {
@@ -175,7 +182,7 @@ export function OutputTable(props: {
         });
 
         setData(updatedData);
-        props.filed.onChange(JSON.stringify(updatedData));
+        props.field.onChange(JSON.stringify(updatedData));
       },
     },
     debugTable: true,
@@ -186,8 +193,8 @@ export function OutputTable(props: {
   const deleteRow = useCallback((id: string) => {
     const updatedData = data.filter((row) => row.id !== id);
     setData([...updatedData]);
-    props.filed.onChange(JSON.stringify(updatedData));
-  }, [data, props.filed]);
+    props.field.onChange(JSON.stringify(updatedData));
+  }, [data, props.field]);
 
   const handleAddRow = useCallback( () => {
     const id = props.node.id;
@@ -200,18 +207,18 @@ export function OutputTable(props: {
 
     const updatedData = [...data, newRow];
     setData(updatedData);
-    props.filed.onChange(JSON.stringify(updatedData));
-  }, [data, props.filed, props.node.id]);
+    props.field.onChange(JSON.stringify(updatedData));
+  }, [data, props.field, props.node.id]);
 
   return (
-    <div className="p-2">
+    <div className="flex flex-col text-xs w-full">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead className="text-gray-700 uppercase dark:text-gray-400 p-6 w-full">
+        <thead className="text-xs uppercase bg-gray-50 text-gray-400">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              <th/>
+              <th className='px-6 py-3 border'/>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan} className='text-left p-2'>
+                <th key={header.id} colSpan={header.colSpan} className='px-6 py-3 border'>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -220,6 +227,7 @@ export function OutputTable(props: {
                     )}
                 </th>
               ))}
+              <th className='px-6 py-3 border'/>
             </tr>
           ))}
         </thead>
@@ -234,9 +242,15 @@ export function OutputTable(props: {
           ))}
         </tbody>
       </table>
-      <button onClick={handleAddRow} id="addRowBtn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mt-2">
+      <div className="flex bg-gray-50 w-full">
+        <button
+          onClick={handleAddRow}
+          id="addRowBtn"
+          className="border w-full p-2 text-xs uppercase border-rounded text-gray-400"
+        >
         Add Row
-      </button>
+        </button>
+      </div>
     </div>
   );
 }
@@ -249,7 +263,7 @@ export const DataStoryOutputTable = (props: OutputSchemaProps) => {
         control={props.form.control}
         name="outputs"
         render={({ field }) => (
-          <OutputTable filed={field} node={props.node} />
+          <OutputTable field={field} node={props.node} />
         )}
       />
 
