@@ -1,5 +1,7 @@
 import { ServerConfig } from './clients/ServerConfig';
-import { Diagram } from '@data-story/core';
+import { Diagram, Param, RepeatableParam } from '@data-story/core';
+import { UseFormReturn } from 'react-hook-form';
+import { ReactFlowNode } from '../Node/ReactFlowNode';
 
 export interface WorkbenchProps {
   server?: ServerConfig
@@ -11,4 +13,15 @@ export interface WorkbenchProps {
 
 export type DataStoryProps = WorkbenchProps & {
   hideTabs?: boolean
+}
+
+type FormCommonProps = {
+  form: UseFormReturn<{
+    [x: string]: any;
+  }, any>;
+  node: ReactFlowNode;
+  name?: string;
+}
+export type RepeatableProps = FormCommonProps & {
+  param: RepeatableParam<Param[]>;
 }

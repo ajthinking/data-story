@@ -1,4 +1,4 @@
-import { Param, RepeatableParam } from '@data-story/core';
+import { Param } from '@data-story/core';
 import React, { useCallback } from 'react';
 import {
   useFieldArray,
@@ -12,6 +12,7 @@ import { CloseIcon } from '../icons/closeIcon';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { RepeatableProps } from '../types';
 
 function RepeatableCell({
   paramColumn,
@@ -49,7 +50,7 @@ function RepeatableCell({
   </td>;
 }
 
-function RepeatableDraggableRow(props: RepeatableInputProps & {
+function RepeatableDraggableRow(props: RepeatableProps & {
   rowIndex: number,
   row: any,
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
@@ -109,13 +110,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   </tr>;
 }
 
-interface RepeatableInputProps {
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>;
-  param: RepeatableParam<Param[]>;
-  node: ReactFlowNode;
-}
+
 
 const defaultRowData = (row: Param[]) => {
   const id = Math.random().toString(36).substring(7);
@@ -132,7 +127,7 @@ export function RepeatableComponent({
   form,
   param,
   node,
-}: RepeatableInputProps) {
+}: RepeatableProps) {
   const { fields, append, remove, swap} = useFieldArray({
     control: form.control,
     name: `params.${param.name}`,
@@ -183,7 +178,7 @@ export function RepeatableComponent({
   );
 }
 
-export const RepeatableInput = (props: RepeatableInputProps) => {
+export const RepeatableInput = (props: RepeatableProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <RepeatableComponent {...props} />
