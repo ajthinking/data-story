@@ -25,7 +25,7 @@ export function Params({
           {param.type === 'StringableParam' && <StringableWithConfig
             param={param}
             form={form}
-            name={param.name}
+            name={`params.${param.name}`}
             node={node}
           />}
 
@@ -37,11 +37,9 @@ export function Params({
           />}
 
           {param.type === 'SelectParam' && <SelectInput
-            // param={param}
-            name={param.name}
+            name={`params.${param.name}`}
             form={form}
             param={param}
-            // node={node}
           />}
         </div>)
       })}
