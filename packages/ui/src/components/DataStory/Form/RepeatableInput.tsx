@@ -138,7 +138,7 @@ export function RepeatableComponent({
   }, [append, param.row]);
 
   return (
-    <div className="flex flex-col text-xs w-full">
+    <div data-cy='data-story-repeatable-input' className="flex flex-col text-xs w-full">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs uppercase bg-gray-50 text-gray-400">
           <tr>
