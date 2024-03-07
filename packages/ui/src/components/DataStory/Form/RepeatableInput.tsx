@@ -1,28 +1,23 @@
 import { Param } from '@data-story/core';
 import React, { useCallback } from 'react';
-import { useFieldArray, UseFormReturn, } from 'react-hook-form';
-import { ReactFlowNode } from '../../Node/ReactFlowNode';
+import { useFieldArray } from 'react-hook-form';
 import { DragIcon } from '../icons/dragIcon';
 import { CloseIcon } from '../icons/closeIcon';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { RepeatableProps } from '../types';
+import { FormComponentProps, RepeatableInputProps } from '../types';
 import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/ParamsComponentFactory';
 
 function RepeatableCell({
-  paramColumn,
+  param: paramColumn,
   form,
   name,
   rowIndex,
   node,
-}: {
-  paramColumn: Param,
-  form: UseFormReturn<{[p: string]: any}, any>,
-  name: any,
+}: FormComponentProps & {
   columnIndex: number,
   rowIndex: number,
-  node: ReactFlowNode,
 }) {
 
   const instance = new ParamsComponentFactory({
@@ -32,17 +27,16 @@ function RepeatableCell({
     name: `params.${name}.${rowIndex}.${paramColumn.name}`,
     node,
   });
-  const Component = instance.getComponent();
 
   return <td
     scope="row"
     className="border font-medium whitespace-nowrap bg-gray-50 align-top"
   >
-    {Component}
+    {instance.getComponent()}
   </td>;
 }
 
-function RepeatableDraggableRow(props: RepeatableProps & {
+function RepeatableDraggableRow(props: RepeatableInputProps & {
   rowIndex: number,
   row: any,
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
@@ -85,7 +79,7 @@ function RepeatableDraggableRow(props: RepeatableProps & {
       param.row.map((column: Param, columnIndex: number) => (
         <RepeatableCell
           key={`${paramRow[columnIndex].name}-${columnIndex}`}
-          paramColumn={column} form={form}
+          param={column} form={form}
           name={name} rowIndex={rowIndex}
           columnIndex={columnIndex} node={node}
         />
@@ -118,7 +112,7 @@ export function RepeatableComponent({
   form,
   param,
   node,
-}: RepeatableProps) {
+}: RepeatableInputProps) {
   const { fields, append, remove, swap } = useFieldArray({
     control: form.control,
     name: `params.${param.name}`,
@@ -170,7 +164,7 @@ export function RepeatableComponent({
   );
 }
 
-export const RepeatableInput = (props: RepeatableProps) => {
+export const RepeatableInput = (props: RepeatableInputProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
       <RepeatableComponent {...props} />

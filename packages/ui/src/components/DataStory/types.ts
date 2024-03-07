@@ -27,7 +27,7 @@ export type FormComponentProps = FormCommonProps & {
   param: Param;
 }
 
-export type RepeatableProps = FormCommonProps & {
+export type RepeatableInputProps = FormCommonProps & {
   param: RepeatableParam<Param[]>;
 }
 export interface FormComponent<TParams extends Param> {
