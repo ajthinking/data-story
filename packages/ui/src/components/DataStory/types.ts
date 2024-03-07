@@ -30,3 +30,7 @@ export type FormComponentProps = FormCommonProps & {
 export type RepeatableProps = FormCommonProps & {
   param: RepeatableParam<Param[]>;
 }
+export interface FormComponent<TParams extends Param> {
+  getComponent: (params: FormCommonProps & {param: TParams}) => React.ReactNode;
+  getType: () => string;
+}

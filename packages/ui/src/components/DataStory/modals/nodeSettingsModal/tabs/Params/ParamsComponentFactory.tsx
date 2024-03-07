@@ -1,41 +1,14 @@
-import { Param, RepeatableParam, StringableParam } from '@data-story/core';
-import { FormCommonProps, FormComponentProps } from '../../../../types';
-import { StringableWithConfig } from './StringableWithConfig';
-import { PortSelectionInput } from './PortSelectionInput';
-
-interface FormComponent<TParams extends Param> {
-  getComponent: (params: FormCommonProps & {param: TParams}) => React.ReactNode;
-  getType: () => string;
-}
-
-class StringableComponent implements FormComponent<Param> {
-  getComponent(params: FormComponentProps & {param: Param}) {
-    return (<StringableWithConfig {...params} param={params.param as StringableParam} />);
-  };
-  getType() {
-    return 'StringableParam';
-  }
-}
-
-class PortSelectionComponent implements FormComponent<Param> {
-  constructor() {
-  }
-
-  getComponent(params: FormComponentProps & {param: Param}) {
-    return (<PortSelectionInput {...params} />);
-  };
-
-  getType() {
-    return 'PortSelectionParam';
-  }
-}
+import { Param  } from '@data-story/core';
+import {  FormComponent, FormComponentProps } from '../../../../types';
+import { StringableComponent } from './StringableWithConfig';
+import { PortSelectionComponent } from './PortSelectionInput';
 
 export class ParamsComponentFactory implements FormComponent<Param>{
-  private evaluators: FormComponent<Param>[] = [
+  private availableComponents: FormComponent<Param>[] = [
     new StringableComponent(),
     new PortSelectionComponent()
   ]
-  private evaluator?: FormComponent<Param> = undefined;
+  private selectedComponent?: FormComponent<Param> = undefined;
   private type: string;
   private restParams: FormComponentProps;
 
@@ -46,16 +19,16 @@ export class ParamsComponentFactory implements FormComponent<Param>{
   }
 
   getComponent(){
-    this.evaluator = this.evaluators.find(e => e.getType() === this.type);
-    if (this.evaluator) {
-      return this.evaluator.getComponent(this.restParams);
+    this.selectedComponent = this.availableComponents.find(e => e.getType() === this.type);
+    if (this.selectedComponent) {
+      return this.selectedComponent.getComponent(this.restParams);
     } else {
-      throw new Error(`No evaluator found for ${this.type}`);
+      throw new Error(`No component found for ${this.type}`);
     }
   }
 
-  getEvaluator() {
-    return this.evaluator;
+  getSelectedComponent() {
+    return this.selectedComponent;
   }
 
   getType() {
