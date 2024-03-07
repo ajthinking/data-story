@@ -1,11 +1,6 @@
 import { Param } from '@data-story/core';
 import React, { useCallback } from 'react';
-import {
-  useFieldArray,
-  UseFormReturn,
-} from 'react-hook-form';
-import { PortSelectionInput } from '../modals/nodeSettingsModal/tabs/Params/PortSelectionInput';
-import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
+import { useFieldArray, UseFormReturn, } from 'react-hook-form';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { DragIcon } from '../icons/dragIcon';
 import { CloseIcon } from '../icons/closeIcon';
@@ -13,6 +8,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { RepeatableProps } from '../types';
+import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/ParamsComponentFactory';
 
 function RepeatableCell({
   paramColumn,
@@ -29,24 +25,20 @@ function RepeatableCell({
   node: ReactFlowNode,
 }) {
 
+  const instance = new ParamsComponentFactory({
+    type: paramColumn.type,
+    form,
+    param: paramColumn,
+    name: `params.${name}.${rowIndex}.${paramColumn.name}`,
+    node,
+  });
+  const Component = instance.getComponent();
+
   return <td
     scope="row"
     className="border font-medium whitespace-nowrap bg-gray-50 align-top"
   >
-    {paramColumn.type === 'StringableParam' && <StringableWithConfig
-      form={form}
-      param={paramColumn}
-      {...paramColumn}
-      name={`params.${name}.${rowIndex}.${paramColumn.name}`}
-      node={node}
-    />}
-    {paramColumn.type === 'PortSelectionParam' && <PortSelectionInput
-      form={form}
-      param={paramColumn}
-      {...paramColumn}
-      name={`params.${name}.${rowIndex}.${paramColumn.name}`}
-      node={node}
-    />}
+    {Component}
   </td>;
 }
 
@@ -56,7 +48,7 @@ function RepeatableDraggableRow(props: RepeatableProps & {
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
   deleteRow: (index: number) => void
 }) {
-  const { form, param,  node, row, rowIndex, reorderRow, deleteRow } = props;
+  const { form, param, node, row, rowIndex, reorderRow, deleteRow } = props;
   const name = param.name;
   const paramRow = param.row;
 
@@ -69,7 +61,7 @@ function RepeatableDraggableRow(props: RepeatableProps & {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    item: () => ({ index: rowIndex, ...row}),
+    item: () => ({ index: rowIndex, ...row }),
     type: 'row',
   });
 
@@ -111,10 +103,9 @@ function RepeatableDraggableRow(props: RepeatableProps & {
 }
 
 
-
 const defaultRowData = (row: Param[]) => {
   const id = Math.random().toString(36).substring(7);
-  const data = Object.fromEntries( row.map((column: Param) => {
+  const data = Object.fromEntries(row.map((column: Param) => {
     return [column.name, column.value]
   }));
   return {
@@ -128,7 +119,7 @@ export function RepeatableComponent({
   param,
   node,
 }: RepeatableProps) {
-  const { fields, append, remove, swap} = useFieldArray({
+  const { fields, append, remove, swap } = useFieldArray({
     control: form.control,
     name: `params.${param.name}`,
   });
@@ -172,7 +163,8 @@ export function RepeatableComponent({
       <div className="flex bg-gray-50 w-full">
         <button
           className="border w-full p-2 text-xs uppercase border-rounded text-gray-400"
-          onClick={addRow}>Add row</button>
+          onClick={addRow}>Add row
+        </button>
       </div>
     </div>
   );

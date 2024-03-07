@@ -15,13 +15,18 @@ export type DataStoryProps = WorkbenchProps & {
   hideTabs?: boolean
 }
 
-type FormCommonProps = {
+export type FormCommonProps = {
   form: UseFormReturn<{
     [x: string]: any;
   }, any>;
   node: ReactFlowNode;
   name?: string;
 }
+
+export type FormComponentProps = FormCommonProps & {
+  param: Param;
+}
+
 export type RepeatableProps = FormCommonProps & {
   param: RepeatableParam<Param[]>;
 }
