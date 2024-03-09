@@ -4,6 +4,7 @@ import { UseFormReturn } from 'react-hook-form';
 import { DropDown, Option, OptionGroup } from '../../../../../DropDown';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { useState } from 'react';
+import { FormComponent, FormComponentProps } from '../../../../types';
 
 export function StringableWithConfig({
   param,
@@ -135,5 +136,14 @@ export const castOptions = (
         })
       }
     })),
+  }
+}
+
+export class StringableComponent implements FormComponent<Param> {
+  getComponent(params: FormComponentProps & {param: Param}) {
+    return (<StringableWithConfig {...params} param={params.param as StringableParam} />);
+  };
+  getType() {
+    return 'StringableParam';
   }
 }

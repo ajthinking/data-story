@@ -1,51 +1,38 @@
-import { Param, RepeatableParam } from '@data-story/core';
+import { Param } from '@data-story/core';
 import React, { useCallback } from 'react';
-import {
-  useFieldArray,
-  UseFormReturn,
-} from 'react-hook-form';
-import { PortSelectionInput } from '../modals/nodeSettingsModal/tabs/Params/PortSelectionInput';
-import { StringableWithConfig } from '../modals/nodeSettingsModal/tabs/Params';
-import { ReactFlowNode } from '../../Node/ReactFlowNode';
+import { useFieldArray } from 'react-hook-form';
 import { DragIcon } from '../icons/dragIcon';
 import { CloseIcon } from '../icons/closeIcon';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { FormComponentProps, RepeatableInputProps } from '../types';
+import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/ParamsComponentFactory';
 
 function RepeatableCell({
-  paramColumn,
+  param: paramColumn,
   form,
   name,
   rowIndex,
   node,
-}: {
-  paramColumn: Param,
-  form: UseFormReturn<{[p: string]: any}, any>,
-  name: any,
+}: FormComponentProps & {
   columnIndex: number,
   rowIndex: number,
-  node: ReactFlowNode,
 }) {
+
+  const instance = new ParamsComponentFactory({
+    type: paramColumn.type,
+    form,
+    param: paramColumn,
+    name: `params.${name}.${rowIndex}.${paramColumn.name}`,
+    node,
+  });
 
   return <td
     scope="row"
     className="border font-medium whitespace-nowrap bg-gray-50 align-top"
   >
-    {paramColumn.type === 'StringableParam' && <StringableWithConfig
-      form={form}
-      param={paramColumn}
-      {...paramColumn}
-      name={`params.${name}.${rowIndex}.${paramColumn.name}`}
-      node={node}
-    />}
-    {paramColumn.type === 'PortSelectionParam' && <PortSelectionInput
-      form={form}
-      param={paramColumn}
-      {...paramColumn}
-      name={`params.${name}.${rowIndex}.${paramColumn.name}`}
-      node={node}
-    />}
+    {instance.getComponent()}
   </td>;
 }
 
@@ -55,7 +42,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
   deleteRow: (index: number) => void
 }) {
-  const { form, param,  node, row, rowIndex, reorderRow, deleteRow } = props;
+  const { form, param, node, row, rowIndex, reorderRow, deleteRow } = props;
   const name = param.name;
   const paramRow = param.row;
 
@@ -68,7 +55,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    item: () => ({ index: rowIndex, ...row}),
+    item: () => ({ index: rowIndex, ...row }),
     type: 'row',
   });
 
@@ -92,7 +79,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
       param.row.map((column: Param, columnIndex: number) => (
         <RepeatableCell
           key={`${paramRow[columnIndex].name}-${columnIndex}`}
-          paramColumn={column} form={form}
+          param={column} form={form}
           name={name} rowIndex={rowIndex}
           columnIndex={columnIndex} node={node}
         />
@@ -109,17 +96,10 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   </tr>;
 }
 
-interface RepeatableInputProps {
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>;
-  param: RepeatableParam<Param[]>;
-  node: ReactFlowNode;
-}
 
 const defaultRowData = (row: Param[]) => {
   const id = Math.random().toString(36).substring(7);
-  const data = Object.fromEntries( row.map((column: Param) => {
+  const data = Object.fromEntries(row.map((column: Param) => {
     return [column.name, column.value]
   }));
   return {
@@ -133,7 +113,7 @@ export function RepeatableComponent({
   param,
   node,
 }: RepeatableInputProps) {
-  const { fields, append, remove, swap} = useFieldArray({
+  const { fields, append, remove, swap } = useFieldArray({
     control: form.control,
     name: `params.${param.name}`,
   });
@@ -143,7 +123,7 @@ export function RepeatableComponent({
   }, [append, param.row]);
 
   return (
-    <div className="flex flex-col text-xs w-full">
+    <div data-cy='data-story-repeatable-input' className="flex flex-col text-xs w-full">
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs uppercase bg-gray-50 text-gray-400">
           <tr>
@@ -177,7 +157,8 @@ export function RepeatableComponent({
       <div className="flex bg-gray-50 w-full">
         <button
           className="border w-full p-2 text-xs uppercase border-rounded text-gray-400"
-          onClick={addRow}>Add row</button>
+          onClick={addRow}>Add row
+        </button>
       </div>
     </div>
   );

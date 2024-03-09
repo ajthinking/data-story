@@ -1,7 +1,8 @@
 import { Param, PortSelectionParam } from '@data-story/core'
 import { UseFormReturn, useWatch } from 'react-hook-form';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import { FormComponent, FormComponentProps } from '../../../../types';
 
 export function PortSelectionInput({
   param,
@@ -40,4 +41,15 @@ export function PortSelectionInput({
       </select>
     </div>
   </div>)
+}
+
+
+export class PortSelectionComponent implements FormComponent<Param> {
+  getComponent(params: FormComponentProps & {param: Param}) {
+    return (<PortSelectionInput {...params} />);
+  };
+
+  getType() {
+    return 'PortSelectionParam';
+  }
 }
