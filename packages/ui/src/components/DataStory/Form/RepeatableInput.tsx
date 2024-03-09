@@ -20,19 +20,19 @@ function RepeatableCell({
   rowIndex: number,
 }) {
 
-  const instance = new ParamsComponentFactory({
-    type: paramColumn.type,
-    form,
-    param: paramColumn,
-    name: `params.${name}.${rowIndex}.${paramColumn.name}`,
-    node,
-  });
-
   return <td
     scope="row"
     className="border font-medium whitespace-nowrap bg-gray-50 align-top"
   >
-    {instance.getComponent()}
+    {
+      ParamsComponentFactory.defaultInstance.getComponent({
+        param: paramColumn,
+        form,
+        name: `params.${name}.${rowIndex}.${paramColumn.name}`,
+        node,
+        type: paramColumn.type,
+      })
+    }
   </td>;
 }
 
