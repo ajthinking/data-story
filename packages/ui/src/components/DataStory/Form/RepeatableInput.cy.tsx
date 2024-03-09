@@ -82,8 +82,16 @@ describe('<RepeatableInput />', () => {
     cy.dataCy('data-story-repeatable-row').should('have.length', 2);
     cy.dataCy('data-story-repeatable-row').first().contains('id444');
 
-    // exchange first and second row
-    globalSwap(1, 0);
+    const firstDragRow = cy.dataCy('data-story-repeatable-drag-row').first();
+    const secondDragRow = cy.dataCy('data-story-repeatable-drag-row').last();
+
+    firstDragRow
+      .trigger('dragstart', { which: 1, force: true });
+
+    secondDragRow
+      .trigger('dragenter')
+      .trigger('dragover')
+      .trigger('drop')
 
     cy.dataCy('data-story-repeatable-row').first().contains('id333');
   })
