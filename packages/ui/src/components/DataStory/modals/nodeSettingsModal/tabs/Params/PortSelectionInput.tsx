@@ -29,7 +29,7 @@ export function PortSelectionInput({
       >
         {parsedOutputs.map(output => (
           <option
-            key={output.name}
+            key={ output?.id ?? output.name}
             value={output.name}
           >{output.name}</option>
         ))}
