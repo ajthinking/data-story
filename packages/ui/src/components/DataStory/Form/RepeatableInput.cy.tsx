@@ -7,7 +7,6 @@ import { RepeatableInputProps } from '../types';
 import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/ParamsComponentFactory';
 import { defaultValues, mockNode, mockParam } from './mocks';
 
-let globalSwap: (draggedRowIndex: number, targetRowIndex: number) => void;
 const RepeatableInputWithForm = () => {
   const mockForm = useForm({
     defaultValues
@@ -30,13 +29,6 @@ const RepeatableInputWithForm = () => {
       getType: () => 'PortSelectionParam'
     }
   ];
-
-  const { swap } = useFieldArray({
-    control: mockForm.control,
-    name: `params.${mockParam.name}`,
-  });
-
-  globalSwap = swap;
 
   return (<DataStoryProvider>
     <ReactFlowProvider>

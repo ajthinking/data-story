@@ -1,6 +1,5 @@
-import { Param, PortSelectionParam } from '@data-story/core'
-import { UseFormReturn, useWatch } from 'react-hook-form';
-import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
+import { Param } from '@data-story/core'
+import { useWatch } from 'react-hook-form';
 import { useMemo } from 'react';
 import { FormComponent, FormComponentProps } from '../../../../types';
 
@@ -9,14 +8,7 @@ export function PortSelectionInput({
   form,
   name,
   node,
-}: {
-  param: Param
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>,
-  name?: string,
-  node: ReactFlowNode,
-}) {
+}: FormComponentProps) {
 
   const outputsDraft = useWatch({
     control: form.control,
@@ -25,7 +17,10 @@ export function PortSelectionInput({
   });
   const parsedOutputs = useMemo(() => JSON.parse(outputsDraft), [outputsDraft]);
 
-  return (<div className="group flex flex-col bg-gray-50">
+  return (<div
+    data-cy={'data-story-port-selection-input'}
+    className="group flex flex-col bg-gray-50"
+  >
     <div className="flex justify-between">
       <select
         key={'port'}
