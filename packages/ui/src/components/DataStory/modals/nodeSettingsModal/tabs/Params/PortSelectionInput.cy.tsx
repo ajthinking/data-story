@@ -1,6 +1,5 @@
 import { PortSelectionInput } from './PortSelectionInput';
 import { useForm } from 'react-hook-form';
-import { mount } from 'cypress/react';
 import { FormComponentProps } from '../../../../types';
 
 const TestedPortSelectionInput = (props: {onForm: (f: FormComponentProps['form']) => any}) => {
@@ -28,7 +27,7 @@ const TestedPortSelectionInput = (props: {onForm: (f: FormComponentProps['form']
 }
 
 const mountPortSelectionInput = (formRef: {val: null | FormComponentProps['form']} = { val: null }) => {
-  mount(<TestedPortSelectionInput onForm={(f) => formRef.val = f}/>);
+  cy.mount(<TestedPortSelectionInput onForm={(f) => formRef.val = f}/>);
 }
 describe('PortSelectionInput', () => {
   let formRef = { val: null };
