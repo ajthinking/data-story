@@ -3,7 +3,15 @@ import { ItemValue } from '../types/ItemValue';
 import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
 import Hjson from '@data-story/hjson';
+import { ParamsValueEvaluator } from '../types/ItemWithParams';
 
+export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
+  evaluate(itemValue: ItemValue, param: StringableParam) {
+    return prepareStringable(itemValue, param);
+  }
+  type = 'StringableParam' as const;
+  canEvaluate = (param: Param): param is StringableParam => param.type === this.type;
+}
 export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   // **********************************************************************
   // VALIDATE
