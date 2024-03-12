@@ -20,19 +20,19 @@ function RepeatableCell({
   rowIndex: number,
 }) {
 
-  const instance = new ParamsComponentFactory({
-    type: paramColumn.type,
-    form,
-    param: paramColumn,
-    name: `params.${name}.${rowIndex}.${paramColumn.name}`,
-    node,
-  });
-
   return <td
     scope="row"
     className="border font-medium whitespace-nowrap bg-gray-50 align-top"
   >
-    {instance.getComponent()}
+    {
+      ParamsComponentFactory.defaultInstance.getComponent({
+        param: paramColumn,
+        form,
+        name: `params.${name}.${rowIndex}.${paramColumn.name}`,
+        node,
+        type: paramColumn.type,
+      })
+    }
   </td>;
 }
 
@@ -44,7 +44,6 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
 }) {
   const { form, param, node, row, rowIndex, reorderRow, deleteRow } = props;
   const name = param.name;
-  const paramRow = param.row;
 
   const [, dropRef] = useDrop({
     accept: 'row',
@@ -64,6 +63,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   }
 
   return <tr
+    data-cy='data-story-repeatable-row'
     ref={previewRef}
     style={{ opacity: isDragging ? 0.5 : 1 }}
     className="bg-white border-b dark:border-gray-700">
@@ -71,14 +71,17 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
       ref={dropRef}
       className="border font-medium whitespace-nowrap bg-gray-50 align-top"
     >
-      <button className="p-2" ref={dragRef}>
+      <button
+        data-cy='data-story-repeatable-drag-row'
+        className="p-2"
+        ref={dragRef}>
         <DragIcon/>
       </button>
     </td>
     {
       param.row.map((column: Param, columnIndex: number) => (
         <RepeatableCell
-          key={`${paramRow[columnIndex].name}-${columnIndex}`}
+          key={`${param.row[columnIndex].name}-${columnIndex}`}
           param={column} form={form}
           name={name} rowIndex={rowIndex}
           columnIndex={columnIndex} node={node}
@@ -88,6 +91,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
     <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
       <button
         className="p-2"
+        data-cy='data-story-repeatable-delete-row'
         onClick={handleDeleteRow}
       >
         <CloseIcon/>
@@ -156,6 +160,7 @@ export function RepeatableComponent({
 
       <div className="flex bg-gray-50 w-full">
         <button
+          data-cy={'data-story-repeatable-add-row'}
           className="border w-full p-2 text-xs uppercase border-rounded text-gray-400"
           onClick={addRow}>Add row
         </button>

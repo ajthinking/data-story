@@ -42,9 +42,6 @@
       "cache": true
     },
     "lint": {},
-    "ci:e2e": {
-      "cache": true
-    },
     "test": {
       "cache": true,
       "dependsOn": ["build"]
