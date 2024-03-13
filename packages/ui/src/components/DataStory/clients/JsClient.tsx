@@ -4,15 +4,37 @@ import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
 export class JsClient implements ServerClient {
+  private setAvailableNodes: (nodes: NodeDescription[]) => void;
+  private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
+  private addPeekItems: (key: string, peek: any[]) => void;
+  private setNodes: (nodes: any) => void;
+  private setEdges: (edges: any) => void;
+  private app: Application;
+
+  // Constructor rewritten to use named parameters
   constructor(
-    private setAvailableNodes: (nodes: NodeDescription[]) => void,
-    private updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    private addPeekItems: (key: string, peek: any[]) => void,
-    private setNodes: (nodes: any) => void,
-    private setEdges: (edges: any) => void,
-    // private setViewport: (viewport: any) => void,
-    private app: Application,
+    {
+      setAvailableNodes,
+      updateEdgeCounts,
+      addPeekItems,
+      setNodes,
+      setEdges,
+      app,
+    }: {
+      setAvailableNodes: (nodes: NodeDescription[]) => void,
+      updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+      addPeekItems: (key: string, peek: any[]) => void,
+      setNodes: (nodes: any) => void,
+      setEdges: (edges: any) => void,
+      app: Application,
+    }
   ) {
+    this.setAvailableNodes = setAvailableNodes;
+    this.updateEdgeCounts = updateEdgeCounts;
+    this.addPeekItems = addPeekItems;
+    this.setNodes = setNodes;
+    this.setEdges = setEdges;
+    this.app = app;
   }
 
   init () {

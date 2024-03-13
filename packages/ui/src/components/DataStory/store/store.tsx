@@ -95,7 +95,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   openNodeModalId: null,
   peeks: {},
 
-
   // METHODS
   toDiagram: () => {
     const reactFlowObject = get().rfInstance!.toObject()
@@ -219,7 +218,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     if (connection) get().connect(connection);
   },
   updateNode: (node: ReactFlowNode) => {
-
     set({
       nodes: get().nodes.map(existingNode => {
         if (existingNode.id === node.id) {
@@ -307,16 +305,18 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     )
   },
   onInitServer: (serverConfig: ServerConfig) => {
+    console.log('onInitServer')
+
     if (serverConfig.type === 'JS') {
-      const server = new JsClient(
-        get().setAvailableNodes,
-        get().updateEdgeCounts,
-        get().addPeekItems,
-        (nodes) => set({ nodes }),
-        (edges) => set({ edges }),
+      const server = new JsClient({
+        setAvailableNodes: get().setAvailableNodes,
+        updateEdgeCounts: get().updateEdgeCounts,
+        addPeekItems: get().addPeekItems,
+        setNodes: (nodes) => set({ nodes }),
+        setEdges: (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
-        serverConfig.app
-      )
+        app: serverConfig.app
+      })
 
       set({ server })
       server.init()
