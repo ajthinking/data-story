@@ -58,7 +58,9 @@ export class ExecutionMemoryFactory {
       memory.outputDevices.set(node.id, outputDevice)
 
       // Initialize runner generators
-      const computer = instance.computers.get(node.type)!
+      const computer = instance.computers.get(node.type)
+      if(!computer) throw new Error(`Computer "${node.type}" not found`)
+
       memory.setNodeRunner(
         node.id,
         computer.run({
