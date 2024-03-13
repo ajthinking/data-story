@@ -84,7 +84,7 @@ describe('unfold', () => {
       .get()
 
     const diagram = new DiagramBuilder()
-      .register({
+      .registerLocalNodeDefinitions({
         X: subDiagram
       })
       .add(CreateJson)

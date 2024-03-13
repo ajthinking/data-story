@@ -44,9 +44,9 @@ export class DiagramBuilder {
   }
 
   addSubNode(name: string) {
-    if(!this.diagram.nodeDefinitions[name]) throw new Error(`Bad sub node: ${name}. Node not found`)
+    if(!this.diagram.localNodeDefinitions[name]) throw new Error(`Bad sub node: ${name}. Node not found`)
 
-    const subDiagram = this.diagram.nodeDefinitions[name]
+    const subDiagram = this.diagram.localNodeDefinitions[name]
 
     const nodeId = `${name}.${this.getScopedId(name)}`
 
@@ -230,8 +230,8 @@ export class DiagramBuilder {
     })
   }
 
-  register(subDiagrams: Record<string, Diagram>) {
-    this.diagram.nodeDefinitions = subDiagrams
+  registerLocalNodeDefinitions(definitions: Record<string, Diagram>) {
+    this.diagram.localNodeDefinitions = definitions
     return this
   }
 

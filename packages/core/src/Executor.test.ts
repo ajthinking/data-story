@@ -282,7 +282,7 @@ it('can execute a diagram containing sub diagrams', async () => {
     .get()
 
   const diagram = new DiagramBuilder()
-    .register({
+    .registerLocalNodeDefinitions({
       X: subDiagram
     })
     .add(Signal, { period: 1, count: 10 })
