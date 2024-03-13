@@ -4,7 +4,7 @@ import { StringableParamEvaluator } from './prepareStringable';
 import { ParamsValueEvaluator } from '../types/ItemWithParams';
 import { RepeatableParamEvaluator } from './prepareRepeatable';
 
-class ParamEvaluator implements ParamsValueEvaluator<any>{
+export class ParamEvaluator implements ParamsValueEvaluator<any>{
   private evaluators: ParamsValueEvaluator<Param>[] = [
     new StringableParamEvaluator(),
     new RepeatableParamEvaluator(this),
