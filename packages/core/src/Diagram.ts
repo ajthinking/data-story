@@ -3,7 +3,7 @@ import { Link } from './types/Link'
 import { Node } from './types/Node'
 
 export class Diagram {
-  viewport = {
+  viewport: { x: number, y: number, zoom: number } = {
     x: 0,
     y: 0,
     zoom: 1
@@ -12,7 +12,7 @@ export class Diagram {
   constructor(
     public nodes: Node[],
     public links: Link[],
-    public nodeDefinitions: Record<string, Diagram> = {}
+    public localNodeDefinitions: Record<string, Diagram> = {}
   ) {}
 
   linksAtInputPortId(id: PortId | undefined): Link[] {
@@ -69,10 +69,10 @@ export class Diagram {
   }
 
   unfold(): Diagram {
-    const replacables = this.nodes.filter(node => node.type in this.nodeDefinitions)
+    const replacables = this.nodes.filter(node => node.type in this.localNodeDefinitions)
 
     for(const type of new Set(replacables.map(node => node.type))) {
-      const subDiagram = this.nodeDefinitions[type]
+      const subDiagram = this.localNodeDefinitions[type]
       if(!subDiagram) throw new Error(`No subdiagram found for node type "${type}"`)
 
       this.nodes.push(...subDiagram.nodes)
@@ -91,7 +91,7 @@ export class Diagram {
     if(index === -1) throw new Error('Node not found in diagram')
     this.nodes.splice(index, 1)
 
-    const subDiagram = this.nodeDefinitions[node.type]
+    const subDiagram = this.localNodeDefinitions[node.type]
     if(!subDiagram) throw new Error(`No subdiagram found for node type "${node.type}"`)
 
     // Rewire incoming links
