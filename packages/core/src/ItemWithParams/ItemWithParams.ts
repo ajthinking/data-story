@@ -1,6 +1,6 @@
 import { ItemValue } from '../types/ItemValue';
 import { Param, ParamValue } from '../Param';
-import { ParamEvaluator } from './ParamsValueEvaluator';
+import { ParamEvaluator } from './ParamEvaluator';
 
 export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWithParams => {
   // This does not always catch all cases
