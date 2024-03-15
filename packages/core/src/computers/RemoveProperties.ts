@@ -26,7 +26,7 @@ export const RemoveProperties: ComputerConfig = {
 
   async* run({ input, output, params }) {
 
-    const item = input.pull()[0];
+    const items = input.pull();
     const param = (params.remove_properties ?? [{}]) as {
       id: string,
       port: string,
@@ -34,9 +34,12 @@ export const RemoveProperties: ComputerConfig = {
     }[];
 
     const properties = param.map(p => p.property);
-    const newItem = new ItemWithParams({ ...item.value }, []);
-    properties.forEach(p => delete newItem.value[p]);
-    output.pushTo('output', [newItem]);
+    const result = items.map((item) => {
+      const newItem = new ItemWithParams({ ...item.value }, []);
+      properties.forEach(p => delete newItem.value[p]);
+      return newItem;
+    });
 
+    output.pushTo('output', result);
   },
 };
