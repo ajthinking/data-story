@@ -1,8 +1,6 @@
 import { ItemValue } from '../types/ItemValue';
 import { Param, ParamValue } from '../Param';
-import { evalMath } from '../utils/evalMath';
-import { prepareStringable } from './prepareStringable';
-import { prepareRepeatable } from './prepareRepeatable';
+import { ParamEvaluator } from './ParamEvaluator';
 
 export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWithParams => {
   // This does not always catch all cases
@@ -11,6 +9,7 @@ export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWi
   if(
     item !== null
     && typeof item === 'object'
+    // @ts-ignore
     && 'type' in item && item.type === 'ItemWithParams'
     && 'value' in item
     && 'params' in item
@@ -31,13 +30,13 @@ export class ItemWithParams {
         const param = rawParams.find(p => p.name === key);
         if (!param) throw new Error(`Param "${key}" does not exist`);
 
-        if(param.type === 'StringableParam') return prepareStringable(value, param);
-
-        // TODO
-        // if(param.type === 'RepeatableParam') return prepareRepeatable(value, param);
-
-        // Default to the raw value
-        return param.value;
+        try {
+          const paramEvaluatorInstance = new ParamEvaluator();
+          return paramEvaluatorInstance.evaluate(value, param);
+        } catch (error) {
+          console.error('error', error);
+          return param.value;
+        }
       }
     });
   }
