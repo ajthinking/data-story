@@ -1,39 +1,42 @@
-
 import { ComputerConfig } from '../types/ComputerConfig';
 import { str } from '../Param';
+import { ItemWithParams } from '../ItemWithParams';
 
 export const RemoveProperties: ComputerConfig = {
   name: 'RemoveProperties',
   label: 'RemoveProperties',
   inputs: ['input'],
-  outputs: ['unfiltered'],
+  outputs: ['output'],
   params: [
     {
       name: 'remove_properties',
       label: 'Remove Properties',
-      help: 'remove output json the selected properties',
+      help: 'The list of keys will be deleted in the output json',
       type: 'RepeatableParam',
       row: [
         str({
           name: 'property',
           label: 'Property',
           value: 'id',
-        }),
-        {
-          name: 'port',
-          label: 'Port',
-          help: 'The port to map to',
-          type: 'PortSelectionParam',
-          value: '',
-          allowCreate: true,
-        }
+        })
       ],
       value: [],
     },
   ],
 
-  async *run({ input, output, params }) {
-    console.log('RemoveProperties - run');
-    console.log(params, 'RemoveProperties - params', input, 'RemoveProperties - input', output, 'RemoveProperties - output');
+  async* run({ input, output, params }) {
+
+    const item = input.pull()[0];
+    const param = (params.remove_properties ?? []) as unknown as {
+      id: string,
+      port: string,
+      property: string,
+    }[];
+
+    const properties = param.map(p => p.property);
+    const newItem = new ItemWithParams({ ...item.value }, []);
+    properties.forEach(p => delete newItem.value[p]);
+    output.pushTo('output', [newItem]);
+
   },
 };
