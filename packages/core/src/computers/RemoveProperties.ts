@@ -28,8 +28,6 @@ export const RemoveProperties: ComputerConfig = {
 
     const items = input.pull();
     const param = (params.remove_properties ?? []) as unknown as {
-      id: string,
-      port: string,
       property: string,
     }[];
 
