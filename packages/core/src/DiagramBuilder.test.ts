@@ -1,4 +1,4 @@
-import { Ignore, CreateJson, Pass, Signal } from './computers';
+import { Ignore, Create, Pass, Signal } from './computers';
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
 
@@ -13,7 +13,7 @@ describe('get', () => {
 describe('add', () => {
   it('adds a node to the diagram and ensures unique ids', () => {
     const diagram = new DiagramBuilder()
-      .add(CreateJson)
+      .add(Create)
       .add(Pass)
       .add(Pass)
       .add(Ignore)
@@ -25,14 +25,14 @@ describe('add', () => {
     const nodeOutputs = diagram.nodes.map(node => node.outputs)
 
     expect(nodeIds).toMatchObject([
-      'CreateJson.1',
+      'Create.1',
       'Pass.1',
       'Pass.2',
       'Ignore.1'
     ])
 
     expect(nodeTypes).toMatchObject([
-      'CreateJson',
+      'Create',
       'Pass',
       'Pass',
       'Ignore'
@@ -46,7 +46,7 @@ describe('add', () => {
     ])
 
     expect(nodeOutputs).toMatchObject([
-      [{id: 'CreateJson.1.output', name: 'output'}],
+      [{id: 'Create.1.output', name: 'output'}],
       [{id: 'Pass.1.output', name: 'output'}],
       [{id: 'Pass.2.output', name: 'output'}],
       []
@@ -95,14 +95,14 @@ describe('add', () => {
 
   it('links nodes together if possible', () => {
     const diagram = new DiagramBuilder()
-      .add(CreateJson)
+      .add(Create)
       .add(Pass)
       .get()
 
     expect(diagram.links).toMatchObject([
       {
-        id: 'CreateJson.1.output--->Pass.1.input',
-        sourcePortId: 'CreateJson.1.output',
+        id: 'Create.1.output--->Pass.1.input',
+        sourcePortId: 'Create.1.output',
         targetPortId: 'Pass.1.input'
       }
     ])
@@ -110,8 +110,8 @@ describe('add', () => {
 
   it('does not link nodes together if not possible', () => {
     const diagram = new DiagramBuilder()
-      .add(CreateJson)
-      .add(CreateJson)
+      .add(Create)
+      .add(Create)
       .get()
 
     expect(diagram.links).toMatchObject([])
@@ -121,14 +121,14 @@ describe('add', () => {
 describe('on', () => {
   it('can link to a previous node port', () => {
     const diagram = new DiagramBuilder()
-      .add(CreateJson)
+      .add(Create)
       .add(Pass)
-      .from('CreateJson.1.output').add(Ignore)
+      .from('Create.1.output').add(Ignore)
       .get();
 
     expect(diagram.links).toMatchObject([
-      { id: 'CreateJson.1.output--->Pass.1.input' },
-      { id: 'CreateJson.1.output--->Ignore.1.input' },
+      { id: 'Create.1.output--->Pass.1.input' },
+      { id: 'Create.1.output--->Ignore.1.input' },
     ])
   })
 })

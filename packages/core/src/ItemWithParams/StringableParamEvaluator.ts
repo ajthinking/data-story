@@ -89,6 +89,15 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
     transformedValue = fn(itemValue);
   }
 
+  if (selectedEvaluation?.type === 'JS_EXPRESSION') {
+    try {
+      transformedValue = eval(transformedValue);
+    } catch(error) {
+      console.log(`Failed to evaluate JS expression: ${transformedValue}`)
+      throw error
+    }
+  }
+
   // **********************************************************************
   // CAST
   // **********************************************************************
