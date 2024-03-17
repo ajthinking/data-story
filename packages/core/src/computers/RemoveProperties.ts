@@ -27,7 +27,7 @@ export const RemoveProperties: ComputerConfig = {
   async* run({ input, output, params }) {
 
     const items = input.pull();
-    const param = (params.remove_properties ?? [{}]) as {
+    const param = (params.remove_properties ?? []) as unknown as {
       id: string,
       port: string,
       property: string,

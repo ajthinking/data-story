@@ -21,7 +21,7 @@ export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWi
 export class ItemWithParams {
   type = 'ItemWithParams' as const
   value: ItemValue;
-  params: Record<string, ParamValue>;
+  params: Record<string, unknown>;
 
   constructor(value: ItemValue, rawParams: Param[]) {
     this.value = value;

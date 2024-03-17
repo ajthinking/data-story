@@ -1,5 +1,7 @@
+import { Param } from '../Param';
+
 type ParamId = string
 
 export type ParamsDevice = {
-  [key: ParamId]: unknown,
-}
+  [key: ParamId]: Param['value'],
+};
