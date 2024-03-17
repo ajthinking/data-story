@@ -2,6 +2,7 @@ import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
+import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
 import { Computer } from './types/Computer'
 import { Hook } from './types/Hook'
@@ -66,7 +67,7 @@ export class ExecutionMemoryFactory {
         computer.run({
           input: inputDevice,
           output: outputDevice,
-          params: toLookup(node.params, 'name', 'value'),
+          params: instance.makeParamsDevice(node, memory),
           storage: instance.storage,
           hooks: {
             register: (hook: Hook) => {
@@ -99,5 +100,23 @@ export class ExecutionMemoryFactory {
     }
 
     return new OutputDevice(map, memory)
+  }
+
+  protected makeParamsDevice(node: Node, memory: ExecutionMemory) {
+    return new Proxy({}, {
+      get: (_, key: string) => {
+        const param = node.params.find(p => p.name === key);
+        if (!param) throw new Error(`Param "${key}" does not exist`);
+
+        try {
+          const emptyItem = {}
+          const evaluator = new ParamEvaluator();
+          return evaluator.evaluate(emptyItem, param);
+        } catch (error) {
+          console.error('error', error);
+          return param.value;
+        }
+      }
+    })
   }
 }

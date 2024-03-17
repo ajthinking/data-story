@@ -2,7 +2,7 @@ import { Diagram } from './Diagram';
 import { Executor } from './Executor';
 import { Computer, RunArgs } from './types/Computer';
 import { DiagramBuilder } from './DiagramBuilder';
-import { ConsoleLog, CreateJson, Ignore, Input, Output, Pass, Signal, Throw } from './computers';;
+import { ConsoleLog, Create, Ignore, Input, Output, Pass, Signal, Throw } from './computers';;
 import { NullStorage } from './NullStorage';
 import { whenRunning } from './support/diagramExecutionTester/DiagramExecutionTester';
 import { Link } from './types/Link';
@@ -238,7 +238,7 @@ describe('execute', () => {
 
   it.todo('can test failed diagram executions like this', async () => {
     const diagram = new DiagramBuilder()
-      .add(CreateJson)
+      .add(Create)
       .add(Throw)
       .get()
 

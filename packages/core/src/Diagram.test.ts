@@ -1,6 +1,6 @@
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
-import { ConsoleLog, CreateJson, Input, Output, Pass } from './computers';
+import { ConsoleLog, Create, Input, Output, Pass } from './computers';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
 import { Port } from './types/Port';
@@ -73,9 +73,9 @@ describe('unfold', () => {
   })
 
   it('can unfold a linked diagram', () => {
-    // main: CreateJson -> X -> ConsoleLog
+    // main: Create -> X -> ConsoleLog
     // x: Input -> Pass -> Output
-    // expected: CreateJson -> Input -> Pass -> Output -> ConsoleLog
+    // expected: Create -> Input -> Pass -> Output -> ConsoleLog
 
     const subDiagram = new DiagramBuilder()
       .add(Input, { port_name: 'x_input'})
@@ -87,7 +87,7 @@ describe('unfold', () => {
       .registerLocalNodeDefinitions({
         X: subDiagram
       })
-      .add(CreateJson)
+      .add(Create)
       .addSubNode('X')
       .add(ConsoleLog)
       .get()
@@ -95,7 +95,7 @@ describe('unfold', () => {
     const result = diagram.unfold()
 
     expect(result.nodes).toMatchObject([
-      { type: 'CreateJson' },
+      { type: 'Create' },
       // Note X is removed here
       { type: 'ConsoleLog' },
       // Note subDiagram nodes are appended
@@ -107,8 +107,8 @@ describe('unfold', () => {
     expect(result.links).toMatchObject([
       // Note the original two links are preserved
       {
-        'id': 'CreateJson.1.output--->X.1.x_input',
-        'sourcePortId': 'CreateJson.1.output',
+        'id': 'Create.1.output--->X.1.x_input',
+        'sourcePortId': 'Create.1.output',
         'targetPortId': 'Input.1.input',
       },
       {

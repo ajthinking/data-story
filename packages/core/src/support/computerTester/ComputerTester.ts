@@ -29,6 +29,7 @@ import { LinkId } from '../../types/Link';
 import { Hook } from '../../types/Hook';
 import { Param } from '../../Param';
 import { toLookup } from '../../utils/toLookup';
+import { ParamEvaluator } from '../../ItemWithParams/ParamEvaluator';
 
 export const when = (computerConfig: ComputerConfig) => {
   return new ComputerTester(computerConfig)
@@ -88,7 +89,21 @@ export class ComputerTester {
       this.computer.run({
         input: this.inputDevice,
         output: this.outputDevice,
-        params: toLookup(this.computer.params, 'name', 'value'),
+        params: new Proxy({}, {
+          get: (_, key: string) => {
+            const param = this.computer.params.find(p => p.name === key);
+            if (!param) throw new Error(`Param "${key}" does not exist`);
+
+            try {
+              const emptyItem = {}
+              const evaluator = new ParamEvaluator();
+              return evaluator.evaluate(emptyItem, param);
+            } catch (error) {
+              console.error('error', error);
+              return param.value;
+            }
+          }
+        }),
         storage: new NullStorage(),
         hooks: this.hooksDevice,
         node: this.node,

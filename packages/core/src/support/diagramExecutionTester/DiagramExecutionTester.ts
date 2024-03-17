@@ -83,12 +83,12 @@ export class DiagramExecutionTester {
 // What could an API look like?
 /*
   const badDiagram = new DiagramBuilder()
-    .add(CreateJson)
+    .add(Create)
     .add(Throw, { message: 'Im gonna wreck it!' })
     .get()
 
   const diagram = new DiagramBuilder()
-    .add(CreateJson)
+    .add(Create)
     .get()
 
   whenRunning(diagram)
