@@ -1,4 +1,4 @@
-import { Param, RepeatableParam } from '../Param';
+import { Param, ParamValue, RepeatableParam } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 
@@ -10,9 +10,17 @@ export class RepeatableParamEvaluator implements ParamsValueEvaluator<Repeatable
   }
 
   evaluate(itemValue: ItemValue, param: RepeatableParam<any>) {
-    return Object.fromEntries(param.row.map((row: {name: string}) => {
-      return [row.name, this.evaluator.evaluate(itemValue, row)] as const;
-    }));
+    return param.value.map((formVal: Record<string, unknown> ) => {
+      const result = Object.fromEntries(param.row.map((row: Param) => {
+        const rowParam = {...row, value: formVal[row.name] as ParamValue};
+        return [row.name, this.evaluator.evaluate(itemValue, rowParam)] as const;
+      }));
+
+      return {
+        ...formVal,
+        ...result
+      };
+    });
   }
 
   canEvaluate(param: Param): param is RepeatableParam<any> {

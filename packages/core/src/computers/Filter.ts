@@ -38,7 +38,6 @@ export const Filter: ComputerConfig = {
 
   async *run({ input, output, params }) {
     while(true) {
-      console.log(params.port_map)
 
       const [ item ] = input.pull(1)
 
@@ -46,12 +45,6 @@ export const Filter: ComputerConfig = {
         const portMap = params.port_map as any
         const property = params.property as string
         const value = item.value[property]
-
-        console.log({
-          portMap,
-          property,
-          value,
-        })
 
         const mapping = portMap.find((mapping: any) => mapping.value == value)
 

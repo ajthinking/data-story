@@ -29,3 +29,4 @@ export { Sample } from './Sample';
 export { Unique } from './Unique'
 export { Await } from './Await'
 export { Merge } from './Merge'
+export { RemoveProperties } from './RemoveProperties';

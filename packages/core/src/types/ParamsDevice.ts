@@ -4,4 +4,4 @@ type ParamId = string
 
 export type ParamsDevice = {
   [key: ParamId]: Param['value'],
-}
+};
