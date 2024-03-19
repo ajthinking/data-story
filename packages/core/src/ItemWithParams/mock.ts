@@ -11,7 +11,6 @@ export const removePropertyData = {
   ],
   'value': [
     {
-      'id': '-1v8rxp',
       'property': 'foo-1'
     }
   ]
@@ -31,14 +30,20 @@ export const mockRepeatableData = {
   ],
   value: [
     {
-      id: 'tclcp',
-      value: '22',
-      port: 'unfiltered'
+      value: 'value-11',
+      remove_properties: [
+        {
+          'property': 'property-11'
+        }
+      ]
     },
     {
-      id: 't0p45',
-      value: 'id',
-      port: 'outputzdbj'
+      value: 'value-22',
+      remove_properties: [
+        {
+          'property': 'property-22'
+        }
+      ]
     }
   ]
 }
@@ -60,12 +65,10 @@ export const mockPortMapData = {
   ],
   'value': [
     {
-      'id': 'tclcp',
       'value': '22',
       'port': 'unfiltered'
     },
     {
-      'id': 't0p45',
       'value': 'id',
       'port': 'outputzdbj'
     }
