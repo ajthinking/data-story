@@ -30,6 +30,7 @@ import { Hook } from '../../types/Hook';
 import { Param } from '../../Param';
 import { toLookup } from '../../utils/toLookup';
 import { ParamEvaluator } from '../../ItemWithParams/ParamEvaluator';
+import { merge } from '../../utils/merge';
 
 export const when = (computerConfig: ComputerConfig) => {
   return new ComputerTester(computerConfig)
@@ -52,7 +53,8 @@ type TestStepArgs = any[]
 export class ComputerTester {
   diagram: Diagram | null = null
   node: Node | null = null
-  explicitParams: ExplicitParamValues = {}
+  explicitParamValues: ExplicitParamValues = {}
+  explicitParams: Partial<Param>[] = []
   steps: [TestStep, TestStepArgs][] = []
   inputs: {
     [key: string]: ItemValue[]
@@ -131,8 +133,14 @@ export class ComputerTester {
     return this; // this is already true
   }
 
+  hasParam(param: Partial<Param>) {
+    this.explicitParams.push(param)
+
+    return this;
+  }
+
   hasParams(params: ExplicitParamValues) {
-    this.explicitParams = params
+    this.explicitParamValues = params
 
     return this
   }
@@ -247,11 +255,18 @@ export class ComputerTester {
   protected makeParams(): Param[] {
     const params = this.computer.params || []
 
-    for(const param of params) {
-      const hasExplicitValue = this.explicitParams.hasOwnProperty(param.name)
+    for(let param of params) {
+      const explicitParam = this.explicitParams.find(p => p.name === param.name)
+
+      if(explicitParam) {
+        param = merge(param, explicitParam) as Param
+        continue;
+      }
+
+      const hasExplicitValue = this.explicitParamValues.hasOwnProperty(param.name)
 
       if(hasExplicitValue) {
-        param.value = this.explicitParams[param.name]
+        param.value = this.explicitParamValues[param.name]
         continue
       }
     }
