@@ -36,7 +36,3 @@ export function errorToast(content: string): void {
 export function successToast(content: string): void {
   toast.success(content, toastConfig);
 }
-
-
-
-

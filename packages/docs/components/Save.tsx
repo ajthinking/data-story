@@ -25,7 +25,6 @@ export function successToast(content: string): void {
   toast.success(content, toastConfig);
 }
 
-
 export interface LocalDiagram {
   type: 'load' | 'save';
   version: string;
@@ -38,7 +37,6 @@ const getCoreVersion = () => {
   return version;
 }
 const saveDiagram = (key: string, diagram: Diagram) => {
-
   try {
     const diagramJSON = JSON.stringify({
       type: 'save',
@@ -64,7 +62,6 @@ const initToast = (event: DataStoryEventType) => {
     errorToast('Diagram execution failed!');
   }
 };
-
 
 export const loadDiagram = (key: string): LocalDiagram => {
   const initDiagram: LocalDiagram = {

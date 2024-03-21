@@ -9,7 +9,6 @@ export interface RunModalContentProps {
 }
 
 export const RunModalContent = (props: RunModalContentProps) => {
-
   const {setShowModal}: RunModalContentProps = props;
 
   const runButtonReference = useRef<HTMLButtonElement>(null);
@@ -68,7 +67,6 @@ export const RunModal = ({ showModal, setShowModal }: {
   showModal: boolean,
   setShowModal: (show: boolean) => void
 }) => {
-
   if(!showModal) return null;
 
   return (<RunModalContent setShowModal={setShowModal} />)

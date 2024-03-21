@@ -19,7 +19,6 @@ class EventManager {
    * subscribe event
    */
   on(handler: EventHandler) {
-
     return this.subject.pipe(
       observeOn(asyncScheduler)
     ).subscribe(handler as unknown as ((value: unknown) => void));

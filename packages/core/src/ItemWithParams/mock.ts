@@ -1,4 +1,3 @@
-
 export const removePropertyData = {
   'name': 'remove_properties',
   'type': 'RepeatableParam',

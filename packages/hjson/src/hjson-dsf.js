@@ -1,5 +1,4 @@
 function loadDsf(col, type) {
-
   if (Object.prototype.toString.apply(col) !== '[object Array]') {
     if (col) throw new Error('dsf option must contain an array!');
     else return nopDsf;
@@ -49,7 +48,6 @@ function nopDsf(/*value*/) {
 function isInvalidDsfChar(c) {
   return c === '{' || c === '}' || c === '[' || c === ']' || c === ',';
 }
-
 
 function math(/*opt*/) {
   return {

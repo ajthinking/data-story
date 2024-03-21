@@ -23,7 +23,6 @@ export const AskChatGpt: ComputerConfig = {
   category: 'API',
 
   async *run({ input, output }) {
-
     if(!process.env.OPEN_AI_SECRET) throw Error('OPEN_AI_SECRET env not set')
 
     const openai = new OpenAIApi(

@@ -85,7 +85,6 @@ describe('pull', () => {
     const atLink1 = memory.getLinkItems('link-1')
     const atLink2 = memory.getLinkItems('link-2')
 
-
     expect(atLink1).toMatchObject([])
     expect(atLink2).toMatchObject([])
   })
@@ -180,7 +179,6 @@ describe('pullFrom', () => {
 
     const atLink1 = memory.getLinkItems('link-1')
     const atLink2 = memory.getLinkItems('link-2')
-
 
     expect(atLink1).toMatchObject([])
     expect(atLink2).toMatchObject([])

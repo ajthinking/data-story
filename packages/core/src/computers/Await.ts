@@ -1,4 +1,3 @@
-
 import { ComputerConfig } from '../types/ComputerConfig';
 import { numberCast } from '../Param/casts/numberCast';
 
@@ -21,7 +20,6 @@ export const Await: ComputerConfig = {
       value: 'Infinity'
     },
   ],
-
 
   canRun({ input, params }) {
     const haveChunk = input.haveItemsAtInput(

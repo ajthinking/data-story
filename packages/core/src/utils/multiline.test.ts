@@ -1,6 +1,5 @@
 import { multiline } from './multiline';
 
-
 it('removes first line when it is empty', () => {
   const result = multiline`
     content

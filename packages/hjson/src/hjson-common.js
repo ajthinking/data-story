@@ -1,5 +1,4 @@
 function tryParseNumber(text, stopAtNext) {
-
   // try to parse a number
 
   var number, string = '', leadingZeros = 0, testLeading = true;

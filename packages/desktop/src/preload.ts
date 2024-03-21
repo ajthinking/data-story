@@ -4,7 +4,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { IpcResult } from './types';
 
-
 contextBridge.exposeInMainWorld('electron', {
   saveDiagram: (data: string): Promise<IpcResult> => {
     return ipcRenderer.invoke('saveDiagram', data);

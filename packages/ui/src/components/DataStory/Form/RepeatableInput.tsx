@@ -19,7 +19,6 @@ function RepeatableCell({
   columnIndex: number,
   rowIndex: number,
 }) {
-
   return <td
     scope="row"
     className="border font-medium whitespace-nowrap bg-gray-50 align-top"
@@ -99,7 +98,6 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
     </td>
   </tr>;
 }
-
 
 const defaultRowData = (row: Param[]) => {
   const id = Math.random().toString(36).substring(7);

@@ -15,7 +15,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const saveDiagram = async(diagram: Diagram) => {
-
   const diagramJSON = JSON.stringify({
     type: 'save',
     version: getCoreVersion(),
@@ -69,7 +68,6 @@ const initToast = (event: DataStoryEventType) => {
     errorToast('Diagram execution failed!');
   }
 };
-
 
 export const SaveComponent = () => {
   const { getDiagram, updateDiagram } = useDataStoryControls()

@@ -16,7 +16,6 @@ function getEl(name: 'run-modal' | 'run-modal-server' | 'run-modal-button') {
 }
 
 describe('<RunModal />', () => {
-
   it('renders', () => {
     mountRunModal();
 
@@ -25,7 +24,6 @@ describe('<RunModal />', () => {
   });
 
   it('render type is JS', () => {
-
     cy.stub(store, 'createStore').returns(() => {
       return {
         serverConfig: { type: 'JS' },
@@ -38,7 +36,6 @@ describe('<RunModal />', () => {
   });
 
   it('click run button', () => {
-
     cy.stub(store, 'createStore').returns(() => {
       return {
         serverConfig: { type: 'JS' },
@@ -53,4 +50,3 @@ describe('<RunModal />', () => {
     cy.get('@onRun').should('have.been.calledOnce');
   });
 })
-
