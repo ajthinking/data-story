@@ -1,25 +1,22 @@
 import { Param, RepeatableParam } from '../Param';
-import { beforeEach, describe, expect, SpyInstance } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { ParamEvaluator } from './ParamEvaluator';
 import { RepeatableParamEvaluator } from './RepeatableParamEvaluator';
 import { mockPortMapData, mockRepeatableData, removePropertyData } from './mock';
 
-
-describe('RepeatableParamEvaluator', () => {
-  let spy: SpyInstance;
-  let evaluator: RepeatableParamEvaluator;
-
-  beforeEach(() => {
-    const paramEvaluator = new ParamEvaluator();
-    spy = vi.spyOn(paramEvaluator, 'evaluate');
-    evaluator = new RepeatableParamEvaluator(paramEvaluator);
-  });
+describe('canEvaluate', () => {
+  const paramEvaluator = new ParamEvaluator();
+  const evaluator = new RepeatableParamEvaluator(paramEvaluator);
 
   it('should be able to evaluate RepeatableParam', () => {
-
     expect(evaluator instanceof RepeatableParamEvaluator).toBe(true);
     expect(evaluator.canEvaluate({ type: 'RepeatableParam' } as unknown as Param)).toBe(true);
   });
+});
+
+describe('evaluate', () => {
+  const paramEvaluator = new ParamEvaluator();
+  const evaluator = new RepeatableParamEvaluator(paramEvaluator);
 
   it('should test evaluate method performs when param.row length is 0', () => {
     const result = evaluator.evaluate({}, {
@@ -32,7 +29,7 @@ describe('RepeatableParamEvaluator', () => {
     expect(result).toEqual([]);
   });
 
-  it('should test RepeatableParam contain the StringableParam type ', () => {
+  it('should test RepeatableParam contain the StringableParam type', () => {
     const result = evaluator.evaluate({}, removePropertyData as unknown as RepeatableParam<any>);
 
     expect(result).toEqual(removePropertyData.value);
@@ -42,7 +39,6 @@ describe('RepeatableParamEvaluator', () => {
     const result = evaluator.evaluate({}, mockPortMapData as unknown as RepeatableParam<any>);
 
     expect(result).toEqual(mockPortMapData.value);
-
   });
 
   it('should test RepeatableParam contain the RepeatableParam type', () => {
@@ -51,23 +47,97 @@ describe('RepeatableParamEvaluator', () => {
     expect(result).toEqual(mockRepeatableData.value);
   });
 
-  describe('call evaluator recursively', () => {
-    beforeEach(() => {
-      evaluator.evaluate({}, mockRepeatableData as unknown as RepeatableParam<any>);
-    });
+  it('recursive called count', () => {
+    const spy = vi.spyOn(paramEvaluator, 'evaluate');
+    evaluator.evaluate({}, mockRepeatableData as unknown as RepeatableParam<any>);
 
-    it('recursive called count', () => {
+    /**
+     * count = 6 = (1                +  1                +  1                             ) * 2
+     *             ([StringableParam] + [RepeatableParam] + [inner nested StringableParam]) * 2[repeatable value]
+     */
+    expect(spy).toHaveBeenCalledTimes(6);
+    spy.mockRestore();
+  });
 
-      /**
-       * count = 6 = (1                +  1                +  1                             ) * 2
-       *             ([StringableParam] + [RepeatableParam] + [inner nested StringableParam]) * 2[repeatable value]
-       */
-      expect(spy).toHaveBeenCalledTimes(6);
-    });
+  it('recursive called with correct params', () => {
+    const spy = vi.spyOn(paramEvaluator, 'evaluate');
+    evaluator.evaluate({}, mockRepeatableData as unknown as RepeatableParam<any>);
+    const calls = spy.mock.calls;
 
-    it('recursive called with correct params', () => {
-      const calls = spy.mock.calls;
-      expect(calls).toMatchSnapshot();
-    });
-  })
+    expect(calls).toMatchInlineSnapshot(`
+      [
+        [
+          {},
+          {
+            "name": "value",
+            "type": "StringableParam",
+            "value": "value-11",
+          },
+        ],
+        [
+          {},
+          {
+            "name": "remove_properties",
+            "row": [
+              {
+                "name": "property",
+                "type": "StringableParam",
+                "value": "id",
+              },
+            ],
+            "type": "RepeatableParam",
+            "value": [
+              {
+                "property": "property-11",
+              },
+            ],
+          },
+        ],
+        [
+          {},
+          {
+            "name": "property",
+            "type": "StringableParam",
+            "value": "property-11",
+          },
+        ],
+        [
+          {},
+          {
+            "name": "value",
+            "type": "StringableParam",
+            "value": "value-22",
+          },
+        ],
+        [
+          {},
+          {
+            "name": "remove_properties",
+            "row": [
+              {
+                "name": "property",
+                "type": "StringableParam",
+                "value": "id",
+              },
+            ],
+            "type": "RepeatableParam",
+            "value": [
+              {
+                "property": "property-22",
+              },
+            ],
+          },
+        ],
+        [
+          {},
+          {
+            "name": "property",
+            "type": "StringableParam",
+            "value": "property-22",
+          },
+        ],
+      ]
+    `);
+    spy.mockRestore();
+  });
 });
