@@ -1,4 +1,3 @@
-
 import { ComputerConfig } from '../types/ComputerConfig';
 
 export const Pass: ComputerConfig = {

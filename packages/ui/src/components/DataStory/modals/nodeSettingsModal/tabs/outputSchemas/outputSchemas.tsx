@@ -2,13 +2,11 @@ import React from 'react';
 import { DataStoryOutputTable} from './dataStoryOutputTable';
 import { OutputSchemaProps } from './common';
 
-
 export function OutputSchemas({
   node,
   register,
   form,
 }: OutputSchemaProps) {
-
   return <div className="max-h-128 overflow-y-scroll relative pb-6 pt-4 px-6 flex-auto space-y-1 text-sm text-gray-800">
     <div
       className="flex flex-col"

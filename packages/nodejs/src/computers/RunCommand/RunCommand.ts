@@ -1,4 +1,3 @@
-
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
 import { ComputerConfig } from '@data-story/core';

@@ -159,7 +159,6 @@ export class DiagramBuilder {
       ).guess(node)
     }
 
-
     this.diagram.nodes.push(node)
 
     this.linkToNewNode(node)
@@ -187,7 +186,6 @@ export class DiagramBuilder {
   }
 
   jiggle(jitter = {x: 50, y: 25 }) {
-
     for(const node of this.diagram.nodes) {
       node.position!.x += (0.5 - Math.random()) * jitter.x
       node.position!.y += (0.5 - Math.random()) * jitter.y

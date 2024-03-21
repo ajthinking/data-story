@@ -42,18 +42,15 @@ function mountRepeatableInput() {
 }
 
 describe('<RepeatableInput />', () => {
-
   beforeEach(() => {
     mountRepeatableInput();
   });
 
   it('renders', () => {
-
     cy.dataCy('data-story-repeatable-input').should('exist');
   });
 
   it('add new row', () => {
-
     cy.dataCy('data-story-repeatable-add-row').should('exist');
     cy.dataCy('data-story-repeatable-row').should('have.length', 2);
     cy.dataCy('data-story-repeatable-add-row').click();
@@ -61,15 +58,12 @@ describe('<RepeatableInput />', () => {
   });
 
   it('delete row', () => {
-
     cy.dataCy('data-story-repeatable-delete-row').should('exist');
     cy.dataCy('data-story-repeatable-row').should('have.length', 2);
     cy.dataCy('data-story-repeatable-delete-row').first().click();
     cy.dataCy('data-story-repeatable-row').should('have.length', 1);
-
   })
   it('reorder row', () => {
-
     cy.dataCy('data-story-repeatable-drag-row').should('exist');
     cy.dataCy('data-story-repeatable-row').should('have.length', 2);
     cy.dataCy('data-story-repeatable-row').first().contains('id444');

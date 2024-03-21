@@ -2,7 +2,6 @@ import common from './hjson-common.js';
 import dsf from './hjson-dsf.js';
 
 export default function(source, opt) {
-
   var text;
   var at;   // The index of the current character
   var ch;   // The current character

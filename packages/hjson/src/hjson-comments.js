@@ -9,7 +9,6 @@ function makeComment(b, a, x) {
 }
 
 function extractComments(value, root) {
-
   if (value === null || typeof value !== 'object') return;
   var comments = common.getComment(value);
   if (comments) common.removeComment(value);
@@ -98,13 +97,11 @@ function droppedComment(path, c) {
 }
 
 function dropAll(comments, dropped, path) {
-
   if (!comments) return;
 
   var i, length; // loop
 
   if (comments.a) {
-
     for (i = 0, length = comments.a.length; i < length; i++) {
       var kpath = path.slice().concat([i]);
       var c = comments.a[i];
@@ -114,7 +111,6 @@ function dropAll(comments, dropped, path) {
       }
     }
   } else if (comments.o) {
-
     comments.o.forEach(function(key) {
       var kpath = path.slice().concat([key]);
       var c = comments.s[key];
@@ -130,7 +126,6 @@ function dropAll(comments, dropped, path) {
 }
 
 function merge(comments, value, dropped, path) {
-
   if (!comments) return;
   if (value === null || typeof value !== 'object') {
     dropAll(comments, dropped, path);

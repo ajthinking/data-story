@@ -9,7 +9,6 @@ export function Docs({
   node: ReactFlowNode,
   register: any
 }) {
-
   const defaultDocs = 'No docs found for this node.'
   const htmlContent = new MarkdownIt().render(node.data.docs || defaultDocs);
 

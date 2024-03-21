@@ -1,4 +1,3 @@
-
 import { ComputerConfig } from '../types/ComputerConfig';
 import { json_ } from '../Param';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';

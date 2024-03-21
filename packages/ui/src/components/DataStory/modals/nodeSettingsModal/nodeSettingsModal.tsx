@@ -19,7 +19,6 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
 };
 
 export const NodeSettingsModalContent = () => {
-
   const [tab, setTab] = useState<TabKey>('Params')
 
   const selector = (state: StoreSchema) => ({
@@ -41,7 +40,6 @@ export const NodeSettingsModalContent = () => {
     params: node?.data?.params.reduce((acc, param: Param) => {
       acc[param.name] = param.value
       return acc
-
     }, {} as Record<string, ParamValue>)
   }
 
@@ -141,7 +139,6 @@ export const NodeSettingsModalContent = () => {
 }
 
 export const NodeSettingsModal = ({ showModal }: { showModal: boolean}) => {
-
   if(!showModal) return null;
 
   return (<NodeSettingsModalContent/>);

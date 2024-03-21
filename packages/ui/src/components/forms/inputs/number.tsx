@@ -17,5 +17,3 @@ export const Number = ({ register, label, id }: {
     ></input>
   </div>)
 }
-
-

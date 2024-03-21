@@ -1,4 +1,3 @@
-
 import { str } from '../Param';
 import { ComputerConfig } from '../types/ComputerConfig';
 
@@ -38,7 +37,6 @@ export const Filter: ComputerConfig = {
 
   async *run({ input, output, params }) {
     while(true) {
-
       const [ item ] = input.pull(1)
 
       const portName = (() => {

@@ -4,7 +4,6 @@ import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
 
-
 const DataStoryPeekNodeComponent = ({ id, data, selected }: {
   id: string,
   data: DataStoryNodeData,

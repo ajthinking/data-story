@@ -9,7 +9,6 @@ import os from 'os';
 import { hubspotProvider } from '@data-story/hubspot';
 import { IpcResult } from './types';
 
-
 // ************************************************************************************************
 // Electron app, window etc
 // ************************************************************************************************
@@ -107,7 +106,6 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-
 ipcMain.handle('saveDiagram', async(event, jsonData: string): Promise<IpcResult> => {
   const result: IpcResult = {
     data: '',
@@ -197,7 +195,6 @@ app.on('activate', () => {
   }
 });
 
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
@@ -245,7 +242,6 @@ function writeSettings(settings: Record<string, any>) {
     console.error('Error writing settings file:', err);
   }
 }
-
 
 function loadEnvs(workspacePath: string) {
   const envPath = path.join(workspacePath, '.env');

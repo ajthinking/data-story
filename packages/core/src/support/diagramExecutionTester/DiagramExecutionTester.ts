@@ -70,7 +70,6 @@ export class DiagramExecutionTester {
     return this
   }
 
-
   protected async makeStorage() {
     const storage = new NullStorage()
     await storage.init()

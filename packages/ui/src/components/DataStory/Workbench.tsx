@@ -27,7 +27,6 @@ const nodeTypes = {
   dataStoryOutputNodeComponent: DataStoryOutputNodeComponent,
 };
 
-
 export const Workbench = ({
   server,
   initDiagram,
@@ -113,4 +112,3 @@ export const Workbench = ({
     </>
   );
 };
-

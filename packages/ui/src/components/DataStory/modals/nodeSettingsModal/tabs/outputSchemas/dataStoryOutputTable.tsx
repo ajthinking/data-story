@@ -256,7 +256,6 @@ export function OutputTable(props: {
 }
 
 export const DataStoryOutputTable = (props: OutputSchemaProps) => {
-
   return (
     <DndProvider backend={HTML5Backend}>
       <Controller
@@ -270,4 +269,3 @@ export const DataStoryOutputTable = (props: OutputSchemaProps) => {
     </DndProvider>
   );
 }
-

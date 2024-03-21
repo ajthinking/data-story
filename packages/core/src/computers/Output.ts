@@ -1,4 +1,3 @@
-
 import { str } from '../Param';
 import { ComputerConfig } from '../types/ComputerConfig';
 

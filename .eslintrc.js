@@ -25,6 +25,8 @@ module.exports = {
     'import'
   ],
   'rules': {
+    'no-multiple-empty-lines': ['error', { 'max': 1, 'maxEOF': 0, 'maxBOF': 0 }],
+    'padded-blocks': ['error', { 'blocks': 'never' }],
     'no-trailing-spaces': 'error',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',

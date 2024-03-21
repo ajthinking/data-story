@@ -2,7 +2,6 @@ import common from './hjson-common.js';
 import dsf from './hjson-dsf.js';
 
 export default function(data, opt) {
-
   var plainToken = {
     obj:  [ '{', '}' ],
     arr:  [ '[', ']' ],
@@ -139,7 +138,6 @@ export default function(data, opt) {
       needsQuotes.test(string) ||
       common.tryParseNumber(string, true) !== undefined ||
       startsWithKeyword.test(string)) {
-
       // If the string contains no control characters, no quote characters, and no
       // backslash characters, then we can safely slap some quotes around it.
       // Otherwise we first check if the string can be expressed in multiline
@@ -380,7 +378,6 @@ export default function(data, opt) {
         return res;
     }
   }
-
 
   runDsf = dsf.loadDsf(dsfDef, 'stringify');
 

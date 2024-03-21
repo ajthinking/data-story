@@ -34,7 +34,6 @@ export default () => {
     })
     .linkByLabel('OpenAI-GPT.costs', 'Log.input')
 
-
     .above('Fake.1').add(Comment, { content: multiline`
       ### OpenAI APIs without code 💡
       Example: Improve SEO with GPT-X

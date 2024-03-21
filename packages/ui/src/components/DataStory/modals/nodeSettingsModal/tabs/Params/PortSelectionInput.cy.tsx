@@ -37,20 +37,16 @@ describe('PortSelectionInput', () => {
   });
 
   it('renders', () => {
-
     cy.dataCy('data-story-port-selection-input').should('exist');
   });
 
   it('options are correct', () => {
-
     cy.get('option').should('have.length', 2);
     cy.get('option').eq(0).should('have.text', 'output1');
     cy.get('option').eq(1).should('have.text', 'output2');
-
   });
 
   it('selects the correct option', () => {
-
     cy.get('select').select('output2');
     cy.get('select').should('have.value', 'output2');
     cy.dataCy('data-story-port-selection-input').then(() => {
@@ -61,7 +57,6 @@ describe('PortSelectionInput', () => {
   });
 
   it('changes options when form.outputs changes', () => {
-
     cy.dataCy('data-story-port-selection-input').then(() => {
       // @ts-ignore
       formRef.val!.setValue('outputs', JSON.stringify([
@@ -79,7 +74,6 @@ describe('PortSelectionInput', () => {
   });
 
   it('PortSelected value is not in options', () => {
-
     cy.dataCy('data-story-port-selection-input').then(() => {
       // @ts-ignore
       const PortSelectedVal = formRef.val!.getValues('PortSelected');
@@ -118,5 +112,4 @@ describe('PortSelectionInput', () => {
     cy.get('option').eq(0).should('have.text', 'output3');
     cy.get('option').eq(1).should('have.text', 'output3');
   });
-
 })

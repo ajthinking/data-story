@@ -11,7 +11,6 @@ export interface AddNodeModalContentProps {
 }
 
 export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
-
   const {setShowModal}: AddNodeModalContentProps = props;
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
@@ -103,7 +102,6 @@ export const AddNodeModal = ({ showModal, setShowModal }: {
   showModal: boolean,
   setShowModal: (show: boolean) => void
 }) => {
-
   if(!showModal) return null;
 
   return (<AddNodeModalContentProps setShowModal={setShowModal}/>)

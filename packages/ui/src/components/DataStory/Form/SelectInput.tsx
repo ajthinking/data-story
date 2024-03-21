@@ -19,7 +19,6 @@ export function SelectInput({
   name: string,
   param: SelectParam
 }) {
-
   return (
     <div className="flex w-full text-gray-500 w-full">
       <select className="bg-gray-50 text-xs px-2 py-2 w-full"
