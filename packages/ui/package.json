@@ -46,6 +46,7 @@
     "clsx": "^2.0.0",
     "concurrently": "^8.2.1",
     "markdown-it": "^13.0.2",
+    "nanoid": "^5.0.6",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "reactflow": "^11.8.1",
