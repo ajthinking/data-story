@@ -1,0 +1,1 @@
+export { createDataStoryId } from './createDataStoryId';
