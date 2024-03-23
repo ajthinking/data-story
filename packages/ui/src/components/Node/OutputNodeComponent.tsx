@@ -6,15 +6,12 @@ import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
 import { PortIcon } from '../DataStory/icons/portIcon';
 
-const DataStoryOutputNodeComponent = ({ id, data, selected }: { id: string; data: DataStoryNodeData; selected: boolean }) => {
+const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataStoryNodeData; selected: boolean }) => {
   const selector = (state: StoreSchema) => ({
     setOpenNodeModalId: state.setOpenNodeModalId,
   });
 
   const { setOpenNodeModalId } = useStore(selector, shallow);
-
-  // Adjustments for output specifics could be implemented here
-  // For example, if(data.inputs.length !== 1) console.log('Warning: DataStoryOutputNodeComponent has more than one input')
 
   const inputPort = data.inputs[0] // Assuming 'data.inputs' exists and follows a similar structure to 'data.outputs'
 
@@ -48,4 +45,4 @@ const DataStoryOutputNodeComponent = ({ id, data, selected }: { id: string; data
   );
 };
 
-export default memo(DataStoryOutputNodeComponent);
+export default memo(OutputNodeComponent);

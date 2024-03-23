@@ -1,4 +1,4 @@
-import { DataStory, DataStoryNodeComponent } from '@data-story/ui'
+import { DataStory } from '@data-story/ui'
 import { Application, DiagramBuilder, nodes, coreNodeProvider } from '@data-story/core';
 
 export default ({ nodeName }: { nodeName: string}) => {

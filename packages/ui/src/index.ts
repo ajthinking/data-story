@@ -6,4 +6,4 @@ export { useDataStoryControls } from './components/DataStory/dataStoryControls';
 export { eventManager, useDataStoryEvent } from './components/DataStory/events/eventManager'
 export { DataStoryEvents, type DataStoryEventType } from './components/DataStory/events/dataStoryEventType'
 
-export { default as DataStoryNodeComponent } from './components/Node/DataStoryNodeComponent';
+export { default as NodeComponent } from './components/Node/NodeComponent';

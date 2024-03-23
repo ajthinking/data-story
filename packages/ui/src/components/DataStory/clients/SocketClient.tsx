@@ -9,15 +9,34 @@ export class SocketClient implements ServerClient {
   protected maxReconnectTries = 100;
   protected reconnectTimeout = 1000;
   protected reconnectTries = 0;
+  protected itemStorage = new Map<string, any[]>();
 
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    protected addPeekItems: (key: string, peek: any[]) => void,
     protected setNodes: (nodes: any) => void,
     protected setEdges: (edges: any) => void,
     // private setViewport: (viewport: any) => void,
   ) {}
+
+  items = () => {
+    return {
+      getItems: async ({
+        atNodeId,
+        limit = 10,
+        offset = 0,
+      }: {
+        atNodeId: string,
+        limit?: number,
+        offset?: number,
+
+      }) => {
+        const items: any[] = this.itemStorage.get(atNodeId) || [];
+
+        return items.slice(offset, offset + limit);
+      }
+    }
+  }
 
   init() {
     this.socket = new WebSocket('ws://localhost:3100')
@@ -65,9 +84,12 @@ export class SocketClient implements ServerClient {
         for(const hook of parsed.hooks as Hook[]) {
           if(hook.type === 'CONSOLE_LOG') {
             console.log(...hook.args)
-          } else if(hook.type === 'PEEK') {
+          } else if(hook.type === 'TABLE') {
             const [ nodeId, items ] = hook.args
-            this.addPeekItems(nodeId, items)
+            this.itemStorage.set(
+              nodeId,
+              (this.itemStorage.get(nodeId) || []).concat(items)
+            )
           } else if(hook.type === 'UPDATES') {
             const providedCallback = (...data: any) => {
               console.log('THIS IS THE UPDATE HOOK!')

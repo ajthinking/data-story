@@ -44,8 +44,6 @@ export type StoreSchema = {
   onNodesChange: OnNodesChange;
   setNodes: (nodes: ReactFlowNode[]) => void;
   traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;
-  peeks: Record<string, any[]>;
-  addPeekItems: (key: string, peekItems: any[]) => void;
 
   /** The Edges */
   edges: Edge[];
@@ -93,7 +91,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   server: null,
   availableNodes: [],
   openNodeModalId: null,
-  peeks: {},
 
   // METHODS
   toDiagram: () => {
@@ -195,11 +192,11 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       },
       selected: true,
       type: {
-        Comment: 'dataStoryCommentNodeComponent',
-        Peek: 'dataStoryPeekNodeComponent',
-        Input: 'dataStoryInputNodeComponent',
-        Output: 'dataStoryOutputNodeComponent',
-      }[nodeDescription.name] ?? 'dataStoryNodeComponent',
+        Comment: 'commentNodeComponent',
+        Input: 'inputNodeComponent',
+        Output: 'outputNodeComponent',
+        Table: 'tableNodeComponent',
+      }[nodeDescription.name] ?? 'nodeComponent',
     }
 
     const node: Node = NodeFactory.fromReactFlowNode(flowNode)
@@ -231,20 +228,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setNodes: (nodes: ReactFlowNode[]) => {
     set({
       nodes: [...nodes],
-    })
-  },
-  addPeekItems: (key: string, peekItems: any[]) => {
-    const all = get().peeks
-    const existingAtKey = all[key] ?? []
-
-    set({
-      peeks: {
-        ...all,
-        [key]: [
-          ...existingAtKey,
-          ...peekItems
-        ],
-      },
     })
   },
   refreshNodes: () => {
@@ -299,7 +282,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     get().setEdges(reactFlowObject.edges);
   },
   onRun: () => {
-    set({ peeks: {} })
     get().server!.run(
       get().toDiagram()
     )
@@ -311,7 +293,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
-        addPeekItems: get().addPeekItems,
         setNodes: (nodes) => set({ nodes }),
         setEdges: (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
@@ -326,7 +307,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
-        get().addPeekItems,
         (nodes) => set({ nodes }),
         (edges) => set({ edges }),
         // (viewport) => set({ viewport }),

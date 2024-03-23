@@ -102,7 +102,7 @@ export const mockNode = {
       }
     ]
   },
-  'type': 'dataStoryNodeComponent',
+  'type': 'nodeComponent',
 } as unknown as ReactFlowNode;
 export const defaultValues = {
   label: 'Filter',

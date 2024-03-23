@@ -6,25 +6,25 @@ import ReactFlow, {
   ReactFlowInstance,
   ReactFlowProvider,
 } from 'reactflow';
-import DataStoryNodeComponent from '../Node/DataStoryNodeComponent';
+import NodeComponent from '../Node/NodeComponent';
 import { RunModal } from './modals/runModal';
 import { AddNodeModal } from './modals/addNodeModal';
 import { StoreSchema, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
 import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal';
-import DataStoryCommentNodeComponent from '../Node/DataStoryCommentNodeComponent';
-import DataStoryInputNodeComponent from '../Node/DataStoryInputNodeComponent';
+import CommentNodeComponent from '../Node/CommentNodeComponent';
+import InputNodeComponent from '../Node/InputNodeComponent';
 import { useHotkeys } from './useHotkeys';
-import DataStoryPeekNodeComponent from '../Node/DataStoryPeekNodeComponent';
+import TableNodeComponent from '../Node/TableNodeComponent';
 import { WorkbenchProps } from './types';
-import DataStoryOutputNodeComponent from '../Node/DataStoryOutputNodeComponent';
+import OutputNodeComponent from '../Node/OutputNodeComponent';
 
 const nodeTypes = {
-  dataStoryNodeComponent: DataStoryNodeComponent,
-  dataStoryCommentNodeComponent: DataStoryCommentNodeComponent,
-  dataStoryInputNodeComponent: DataStoryInputNodeComponent,
-  dataStoryPeekNodeComponent: DataStoryPeekNodeComponent,
-  dataStoryOutputNodeComponent: DataStoryOutputNodeComponent,
+  commentNodeComponent: CommentNodeComponent,
+  nodeComponent: NodeComponent,
+  inputNodeComponent: InputNodeComponent,
+  outputNodeComponent: OutputNodeComponent,
+  tableNodeComponent: TableNodeComponent,
 };
 
 export const Workbench = ({
