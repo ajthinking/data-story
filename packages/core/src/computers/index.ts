@@ -16,15 +16,12 @@ export { Log } from './Log';
 export { MapTable } from './MapTable'
 // export { Merge } from './Merge';
 export { Pass } from './Pass';
-export { Peek } from './Peek'
 export { Request } from './Request'
-// export { RandomInt } from './RandomInt';
-// export { RunDiagram } from './RunDiagram';
 export { Signal } from './Signal'
 export { Sleep } from './Sleep'
+export { Table } from './Table'
 export { Throw } from './Throw';
 export { Output } from './Output';
-// export { Updates } from './Updates'
 export { Sample } from './Sample';
 export { Unique } from './Unique'
 export { Await } from './Await'

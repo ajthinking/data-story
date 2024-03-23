@@ -4,7 +4,7 @@ import { shallow } from 'zustand/shallow';
 import CustomHandle from './CustomHandle';
 import { DataStoryNodeData } from './ReactFlowNode';
 
-const DataStoryNodeComponent = ({ id, data, selected }: {
+const NodeComponent = ({ id, data, selected }: {
   id: string,
   data: DataStoryNodeData
   selected: boolean
@@ -51,4 +51,4 @@ const DataStoryNodeComponent = ({ id, data, selected }: {
   );
 };
 
-export default memo(DataStoryNodeComponent)
+export default memo(NodeComponent)

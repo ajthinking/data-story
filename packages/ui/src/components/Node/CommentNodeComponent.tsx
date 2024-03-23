@@ -6,7 +6,7 @@ import MarkdownIt from 'markdown-it';
 
 const markdown = new MarkdownIt();
 
-const DataStoryCommentNodeComponent = ({ id, data }: {
+const CommentNodeComponent = ({ id, data }: {
   id: string,
   data: DataStoryNodeData
 }) => {
@@ -31,4 +31,4 @@ const DataStoryCommentNodeComponent = ({ id, data }: {
   );
 };
 
-export default memo(DataStoryCommentNodeComponent)
+export default memo(CommentNodeComponent)

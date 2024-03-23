@@ -3,6 +3,9 @@ module.exports = {
   content: ['./src/components/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      borderWidth: {
+        0.5: '0.5px',
+      },
       fontSize: {
         xxs: '.5rem',
         xxxs: '.25rem',

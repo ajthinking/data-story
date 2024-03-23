@@ -2,28 +2,28 @@ import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
+import { ItemsApi } from './ItemsApi';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
   private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  private addPeekItems: (key: string, peek: any[]) => void;
   private setNodes: (nodes: any) => void;
   private setEdges: (edges: any) => void;
   private app: Application;
+  private executor: Executor | undefined
+  private itemStorage = new Map<string, any[]>();
 
   // Constructor rewritten to use named parameters
   constructor(
     {
       setAvailableNodes,
       updateEdgeCounts,
-      addPeekItems,
       setNodes,
       setEdges,
       app,
     }: {
       setAvailableNodes: (nodes: NodeDescription[]) => void,
       updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-      addPeekItems: (key: string, peek: any[]) => void,
       setNodes: (nodes: any) => void,
       setEdges: (edges: any) => void,
       app: Application,
@@ -31,10 +31,28 @@ export class JsClient implements ServerClient {
   ) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
-    this.addPeekItems = addPeekItems;
     this.setNodes = setNodes;
     this.setEdges = setEdges;
     this.app = app;
+  }
+
+  itemsApi = () => {
+    return {
+      getItems: async ({
+        atNodeId,
+        limit = 10,
+        offset = 0,
+      }: {
+        atNodeId: string,
+        limit?: number,
+        offset?: number,
+
+      }) => {
+        const items: any[] = this.itemStorage.get(atNodeId) || [];
+
+        return items.slice(offset, offset + limit);
+      }
+    }
   }
 
   init () {
@@ -44,15 +62,16 @@ export class JsClient implements ServerClient {
   }
 
   run(diagram: Diagram) {
-    const storage = new NullStorage()
+    this.itemStorage.clear()
+    const storage = new NullStorage() // Purpose of this???
 
-    const executor = new Executor(
+    this.executor = new Executor(
       diagram,
       this.app.computers,
       storage
     )
 
-    const execution = executor.execute();
+    const execution = this.executor.execute();
 
     // For each update run this function
     const handleUpdates = (iterator: AsyncIterator<any>) => {
@@ -63,9 +82,12 @@ export class JsClient implements ServerClient {
             for(const hook of update.hooks) {
               if(hook.type === 'CONSOLE_LOG') {
                 console.log(...hook.args)
-              } else if(hook.type === 'PEEK') {
+              } else if(hook.type === 'TABLE') {
                 const [ nodeId, items ] = hook.args
-                this.addPeekItems(nodeId, items)
+                this.itemStorage.set(
+                  nodeId,
+                  (this.itemStorage.get(nodeId) || []).concat(items)
+                )
               } else {
                 const userHook = this.app.hooks.get(hook.type)
 
@@ -99,5 +121,4 @@ export class JsClient implements ServerClient {
 
   async save(name: string, diagram: Diagram) {
   }
-
 }

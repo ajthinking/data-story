@@ -22,11 +22,12 @@ export const ReactFlowFactory = {
             outputs: node.outputs,
           },
           type: (() => {
-            if (node.type === 'Comment') return 'dataStoryCommentNodeComponent';
-            if (node.type === 'Input') return 'dataStoryInputNodeComponent';
-            if (node.type === 'Output') return 'dataStoryOutputNodeComponent';
+            if (node.type === 'Comment') return 'commentNodeComponent';
+            if (node.type === 'Input') return 'inputNodeComponent';
+            if (node.type === 'Output') return 'outputNodeComponent';
+            if (node.type === 'Table') return 'tableNodeComponent';
 
-            return 'dataStoryNodeComponent'
+            return 'nodeComponent'
           })(),
         }
       }),

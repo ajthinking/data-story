@@ -1,4 +1,5 @@
 import { ComputerConfig } from '../types/ComputerConfig';
+import { multiline } from '../utils/multiline';
 
 export const Comment: ComputerConfig = {
   name: 'Comment',
@@ -15,7 +16,10 @@ export const Comment: ComputerConfig = {
       interpolate: false,
       evaluations: [],
       casts: [],
-      value: '',
+      value: multiline`
+        ### Comment
+        paragraph
+      `,
     }
   ],
 

@@ -1,7 +1,7 @@
 import { ComputerConfig } from '../types/ComputerConfig';
 
-export const Peek: ComputerConfig = {
-  name: 'Peek',
+export const Table: ComputerConfig = {
+  name: 'Table',
   inputs: ['input'],
 
   async *run({ input, hooks, params: rawParams, node }) {
@@ -9,7 +9,7 @@ export const Peek: ComputerConfig = {
       const incoming = input.pull()
 
       hooks.register({
-        type: 'PEEK',
+        type: 'TABLE',
         args: [ node.id, incoming.map(i => i.value) ]
       })
 
