@@ -19,7 +19,7 @@ export class SocketClient implements ServerClient {
     // private setViewport: (viewport: any) => void,
   ) {}
 
-  items = () => {
+  itemsApi = () => {
     return {
       getItems: async ({
         atNodeId,
@@ -138,6 +138,8 @@ export class SocketClient implements ServerClient {
   }
 
   run(diagram: Diagram) {
+    this.itemStorage.clear()
+
     const message = JSON.stringify({
       type: 'run',
       diagram,

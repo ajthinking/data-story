@@ -25,7 +25,7 @@ const TableNodeComponent = ({ id, data }: {
   const onLoadMore = async () => {
     const limit = 10
 
-    const itemsApi = server!.items
+    const itemsApi = server!.itemsApi
     if (!itemsApi) return;
     const fetchedItems = await itemsApi()?.getItems({
       atNodeId: id,

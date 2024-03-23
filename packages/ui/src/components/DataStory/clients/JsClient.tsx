@@ -36,7 +36,7 @@ export class JsClient implements ServerClient {
     this.app = app;
   }
 
-  items = () => {
+  itemsApi = () => {
     return {
       getItems: async ({
         atNodeId,
