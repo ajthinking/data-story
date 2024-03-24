@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { describe, run, save } from './messageHandlers'
+import { describe, run } from './messageHandlers'
 import { MessageHandler } from './MessageHandler';
 import { Application } from '@data-story/core';
 
@@ -12,7 +12,6 @@ export const onMessage = async (
 
   const handlers: Record<string, MessageHandler<any>> = {
     describe,
-    save,
     run,
   }
 

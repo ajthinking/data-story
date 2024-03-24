@@ -48,7 +48,9 @@ export class JsClient implements ServerClient {
         offset?: number,
 
       }) => {
-        const items: any[] = this.itemStorage.get(atNodeId) || [];
+        if(!this.executor) return []
+
+        const items = this.executor.storage.items.get(atNodeId) || [];
 
         return items.slice(offset, offset + limit);
       }
@@ -82,12 +84,6 @@ export class JsClient implements ServerClient {
             for(const hook of update.hooks) {
               if(hook.type === 'CONSOLE_LOG') {
                 console.log(...hook.args)
-              } else if(hook.type === 'TABLE') {
-                const [ nodeId, items ] = hook.args
-                this.itemStorage.set(
-                  nodeId,
-                  (this.itemStorage.get(nodeId) || []).concat(items)
-                )
               } else {
                 const userHook = this.app.hooks.get(hook.type)
 
