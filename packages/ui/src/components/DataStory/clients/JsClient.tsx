@@ -7,32 +7,20 @@ import { ItemsApi } from './ItemsApi';
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
   private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  private setNodes: (nodes: any) => void;
-  private setEdges: (edges: any) => void;
   private app: Application;
   private executor: Executor | undefined
-  private itemStorage = new Map<string, any[]>();
 
-  // Constructor rewritten to use named parameters
-  constructor(
-    {
-      setAvailableNodes,
-      updateEdgeCounts,
-      setNodes,
-      setEdges,
-      app,
-    }: {
-      setAvailableNodes: (nodes: NodeDescription[]) => void,
-      updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-      setNodes: (nodes: any) => void,
-      setEdges: (edges: any) => void,
-      app: Application,
-    }
-  ) {
+  constructor({
+    setAvailableNodes,
+    updateEdgeCounts,
+    app,
+  }: {
+    setAvailableNodes: (nodes: NodeDescription[]) => void,
+    updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+    app: Application,
+  }) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
-    this.setNodes = setNodes;
-    this.setEdges = setEdges;
     this.app = app;
   }
 
@@ -64,8 +52,11 @@ export class JsClient implements ServerClient {
   }
 
   run(diagram: Diagram) {
-    this.itemStorage.clear()
-    const storage = new NullStorage() // Purpose of this???
+    eventManager.emit({
+      type: DataStoryEvents.RUN_START
+    });
+
+    const storage = new NullStorage()
 
     this.executor = new Executor(
       diagram,

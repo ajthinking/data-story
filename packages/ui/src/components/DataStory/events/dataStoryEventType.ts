@@ -1,6 +1,7 @@
 import { Observer } from 'rxjs';
 
 export enum DataStoryEvents {
+  'RUN_START' = 'RUN_START',
   'RUN_SUCCESS' = 'RUN_SUCCESS',
   'RUN_ERROR' = 'RUN_ERROR',
   'SAVE_SUCCESS' = 'SAVE_SUCCESS',

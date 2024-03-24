@@ -33,8 +33,6 @@ describe('JsClient', () => {
     client = new JsClient({
       setAvailableNodes: setAvailableNodesMock,
       updateEdgeCounts: updateEdgeCountsMock,
-      setNodes: vi.fn(), // setNodes
-      setEdges: vi.fn(), // setEdges
       app: appMock
     });
     consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
