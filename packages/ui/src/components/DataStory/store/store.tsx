@@ -16,7 +16,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { AbstractPort, Diagram, LinkGuesser, Node, NodeDescription, PositionGuesser } from '@data-story/core';
+import { AbstractPort, Diagram, LinkGuesser, Node, NodeDescription, PositionGuesser, createDataStoryId } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -25,7 +25,6 @@ import React, { useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
-import { createDataStoryId } from '../../utils';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -120,9 +119,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   connect: (connection: Connection) => {
-    const fromHandleId = connection.sourceHandle;
-    const toHandleId = connection.targetHandle;
-
     set({
       edges: addEdge({
         ...connection,
