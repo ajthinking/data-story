@@ -76,7 +76,7 @@ const TableNodeComponent = ({ id, data }: {
   return (
     (
       <div
-        className="shadow-xl bg-gray-50 rounded border border-gray-300 overflow-scroll"
+        className="shadow-xl bg-gray-50 border rounded border-gray-300"
       >
         <div className="absolute z-30">
           <div className="absolute">
@@ -93,13 +93,13 @@ const TableNodeComponent = ({ id, data }: {
             />
           </div>
         </div>
-        <div className="bg-gray-50 text-gray-600 bg-gray-100 font-mono text-xxxs max-h-24">
-          <div className="max-h-24 overflow-scroll nowheel">
-            <table className="min-w-full table-auto">
+        <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs max-h-24">
+          <div className="max-h-24 overflow-auto nowheel scrollbar rounded-sm">
+            <table className="table-auto rounded-sm">
               <thead>
                 <tr className="bg-gray-200 space-x-8">
                   {headers.map(header => (<th
-                    className="whitespace-nowrap bg-gray-200 text-ellipsis text-left px-1 border-r-0.5 border-gray-300 sticky top-0 z-10"
+                    className="whitespace-nowrap bg-gray-200 text-ellipsis text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
                     key={header}
                   >
                     {header}
@@ -108,7 +108,7 @@ const TableNodeComponent = ({ id, data }: {
               </thead>
               <tbody>
                 {rows.map((row, rowindex) => (<tr
-                  className="odd:bg-gray-100"
+                  className="odd:bg-gray-50"
                   key={rowindex}
                 >
                   {row.map((cell, cellIndex) => (<td
