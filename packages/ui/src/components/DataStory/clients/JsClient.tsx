@@ -9,9 +9,7 @@ export class JsClient implements ServerClient {
   private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   private app: Application;
   private executor: Executor | undefined
-  private itemStorage = new Map<string, any[]>();
 
-  // Constructor rewritten to use named parameters
   constructor(
     {
       setAvailableNodes,
@@ -56,7 +54,6 @@ export class JsClient implements ServerClient {
   }
 
   run(diagram: Diagram) {
-    this.itemStorage.clear()
     const storage = new NullStorage() // Purpose of this???
 
     this.executor = new Executor(
