@@ -56,7 +56,6 @@ export const Signal: ComputerConfig = {
   ],
 
   async *run({ input, output, params }) {
-    console.log('Signal running')
     const period = Number(params.period)
     const count = Number(params.count)
 
