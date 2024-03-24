@@ -7,8 +7,6 @@ import { ItemsApi } from './ItemsApi';
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
   private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  private setNodes: (nodes: any) => void;
-  private setEdges: (edges: any) => void;
   private app: Application;
   private executor: Executor | undefined
   private itemStorage = new Map<string, any[]>();
@@ -18,21 +16,15 @@ export class JsClient implements ServerClient {
     {
       setAvailableNodes,
       updateEdgeCounts,
-      setNodes,
-      setEdges,
       app,
     }: {
       setAvailableNodes: (nodes: NodeDescription[]) => void,
       updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-      setNodes: (nodes: any) => void,
-      setEdges: (edges: any) => void,
       app: Application,
     }
   ) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
-    this.setNodes = setNodes;
-    this.setEdges = setEdges;
     this.app = app;
   }
 

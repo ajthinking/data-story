@@ -293,8 +293,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
-        setNodes: (nodes) => set({ nodes }),
-        setEdges: (edges) => set({ edges }),
         // (viewport) => set({ viewport }),
         app: serverConfig.app
       })
