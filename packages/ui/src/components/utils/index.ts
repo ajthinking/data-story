@@ -1,1 +1,0 @@
-export { createDataStoryId } from './createDataStoryId';
