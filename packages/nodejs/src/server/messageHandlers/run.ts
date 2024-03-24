@@ -19,7 +19,6 @@ export const run: MessageHandler<RunMessage> = async (
   )
 
   const storage = new NullStorage()
-  await storage.init()
 
   const executor = new Executor(
     diagram,
@@ -36,9 +35,7 @@ export const run: MessageHandler<RunMessage> = async (
 
     ws.send(
       JSON.stringify(
-        new ExecutionResult(
-          storage.currentExecutionId!
-        )
+        new ExecutionResult()
       )
     )
   } catch(error: any) {

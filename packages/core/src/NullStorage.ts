@@ -1,10 +1,8 @@
 import { ItemValue } from './types/ItemValue';
+import { LinkId } from './types/Link';
+import { NodeId } from './types/Node';
 import { Storage } from './types/Storage';
 
 export class NullStorage implements Storage {
-  currentExecutionId = '1'
-
-  async init() {}
-  async createExecution() {}
-  async putExecutionItems(key: string, items: ItemValue) {}
+  items = new Map<NodeId | LinkId, ItemValue[]>();
 }

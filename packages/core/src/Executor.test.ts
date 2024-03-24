@@ -198,12 +198,7 @@ describe('execute', () => {
       .set(createComputer.name, createComputer)
       .set(logComputer.name, logComputer)
 
-    const storage = {
-      currentExecutionId: '1',
-      init: async () => {},
-      createExecution: async () => {},
-      putExecutionItems: async (key: string, items: ItemValue[]) => {},
-    }
+    const storage = {}
 
     const executor = new Executor(diagram, computers, storage)
 

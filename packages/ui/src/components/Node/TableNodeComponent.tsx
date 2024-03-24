@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
@@ -12,7 +12,10 @@ const TableNodeComponent = ({ id, data }: {
   data: DataStoryNodeData,
   selected: boolean
 }) => {
-  const [items, setItems] = React.useState([]) as any
+  const [items, setItems] = useState([]) as any
+  const [loading, setLoading] = useState(false);
+  const [offset, setOffset] = useState(0)
+  const loaderRef = useRef(null);
 
   const selector = (state: StoreSchema) => ({
     server: state.server,
@@ -20,19 +23,47 @@ const TableNodeComponent = ({ id, data }: {
 
   const { server } = useStore(selector, shallow);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      // Check if the observed entry is intersecting (visible)
+      if (entries[0].isIntersecting && !loading) {
+        onLoadMore();
+      }
+    }, {threshold: 0});
+
+    // Observe the loader div
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    // Cleanup observer on component unmount
+    return () => {
+      if (loaderRef.current) observer.disconnect();
+    };
+  }, [loading, offset]); // Empty dependency array ensures this effect runs only once on mount
+
   const input = data.inputs[0]
 
   const onLoadMore = async () => {
-    const limit = 10
+    if(loading) return;
+    setLoading(true);
+    const limit = 100
 
     const itemsApi = server!.itemsApi
     if (!itemsApi) return;
+
     const fetchedItems = await itemsApi()?.getItems({
       atNodeId: id,
       limit,
-      offset: items.length
+      offset,
     })
-    setItems(items.concat(fetchedItems))
+
+    if (fetchedItems && fetchedItems.length > 0) {
+      setItems(prevItems => [...prevItems, ...fetchedItems]);
+      setOffset(prevOffset => prevOffset + fetchedItems.length)
+    }
+
+    setLoading(false);
   }
 
   let { headers, rows } = new ItemCollection(items).toTable()
@@ -45,7 +76,7 @@ const TableNodeComponent = ({ id, data }: {
   return (
     (
       <div
-        className="shadow-xl bg-gray-50 rounded border border-gray-300 overflow-hidden"
+        className="shadow-xl bg-gray-50 rounded border border-gray-300 overflow-scroll"
       >
         <div className="absolute z-30">
           <div className="absolute">
@@ -62,39 +93,46 @@ const TableNodeComponent = ({ id, data }: {
             />
           </div>
         </div>
-        <div className="flex bg-gray-50 text-gray-600 bg-gray-100 font-mono text-xxxs max-h-32 overflow-auto">
-          <table className="min-w-full table-auto">
-            <thead>
-              <tr className="bg-gray-200 space-x-8">
-                {headers.map(header => (<th
-                  className="whitespace-nowrap bg-gray-200 overflow-hidden text-ellipsis text-left px-1 border-r-0.5 border-gray-300 sticky top-0 z-10"
-                  key={header}
+        <div className="bg-gray-50 text-gray-600 bg-gray-100 font-mono text-xxxs max-h-24">
+          <div className="max-h-24 overflow-scroll nowheel">
+            <table className="min-w-full table-auto">
+              <thead>
+                <tr className="bg-gray-200 space-x-8">
+                  {headers.map(header => (<th
+                    className="whitespace-nowrap bg-gray-200 text-ellipsis text-left px-1 border-r-0.5 border-gray-300 sticky top-0 z-10"
+                    key={header}
+                  >
+                    {header}
+                  </th>))}
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row, rowindex) => (<tr
+                  className="odd:bg-gray-100"
+                  key={rowindex}
                 >
-                  {header}
-                </th>))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, rowindex) => (<tr
-                className="odd:bg-gray-100"
-                key={rowindex}
-              >
-                {row.map((cell, cellIndex) => (<td
-                  className="whitespace-nowrap overflow-hidden text-ellipsis px-1"
-                  key={cellIndex}
-                >{cell}</td>))}
-              </tr>))}
-              <tr className="bg-gray-100 hover:bg-gray-200">
-                <td
-                  colSpan={6}
-                  className="text-center"
-                  onClick={onLoadMore}
-                >
-                  Load more ...
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                  {row.map((cell, cellIndex) => (<td
+                    className="whitespace-nowrap text-ellipsis px-1"
+                    key={cellIndex}
+                  >{cell}</td>))}
+                </tr>))}
+                {items.length === 0 && <tr className="bg-gray-100 hover:bg-gray-200">
+                  <td
+                    colSpan={6}
+                    className="text-center"
+                    onClick={onLoadMore}
+                  >
+                  Load initial data...
+                  </td>
+                </tr>}
+              </tbody>
+            </table>
+            <div
+              ref={loaderRef}
+              className="loading-spinner h-0.5"
+            >
+            </div>
+          </div>
         </div>
       </div>
     )

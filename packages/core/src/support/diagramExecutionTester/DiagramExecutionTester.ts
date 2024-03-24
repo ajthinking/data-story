@@ -72,8 +72,6 @@ export class DiagramExecutionTester {
 
   protected async makeStorage() {
     const storage = new NullStorage()
-    await storage.init()
-    await storage.createExecution()
 
     return storage
   }

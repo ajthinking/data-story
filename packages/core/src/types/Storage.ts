@@ -1,9 +1,8 @@
 import { ItemValue } from './ItemValue'
+import { LinkId } from './Link';
+import { NodeId } from './Node';
 
 export interface Storage {
-  currentExecutionId: string | null
-
-  init(): Promise<void>
-  createExecution(): Promise<void>
-  putExecutionItems(key: string, items: ItemValue): Promise<void>
+  items: Map<NodeId | LinkId, ItemValue>;
+  [key: string]: any;
 }
