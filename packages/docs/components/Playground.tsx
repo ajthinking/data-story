@@ -19,7 +19,6 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
         server={mode === 'node'
           ? { type: 'SOCKET', url: 'ws://localhost:3100' }
           : { type: 'JS', app }}
-        callback={(options: any) => setTimeout(options.run, 10)}
       />
     </div>
   );
