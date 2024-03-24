@@ -10,17 +10,15 @@ export class JsClient implements ServerClient {
   private app: Application;
   private executor: Executor | undefined
 
-  constructor(
-    {
-      setAvailableNodes,
-      updateEdgeCounts,
-      app,
-    }: {
-      setAvailableNodes: (nodes: NodeDescription[]) => void,
-      updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-      app: Application,
-    }
-  ) {
+  constructor({
+    setAvailableNodes,
+    updateEdgeCounts,
+    app,
+  }: {
+    setAvailableNodes: (nodes: NodeDescription[]) => void,
+    updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+    app: Application,
+  }) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;
@@ -54,7 +52,11 @@ export class JsClient implements ServerClient {
   }
 
   run(diagram: Diagram) {
-    const storage = new NullStorage() // Purpose of this???
+    eventManager.emit({
+      type: DataStoryEvents.RUN_START
+    });
+
+    const storage = new NullStorage()
 
     this.executor = new Executor(
       diagram,

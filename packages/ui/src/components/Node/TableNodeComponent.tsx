@@ -6,6 +6,8 @@ import { Handle, Position } from 'reactflow';
 import { ConfigIcon } from '../DataStory/icons/configIcon';
 import { RunIcon } from '../DataStory/icons/runIcon';
 import { ItemCollection } from './ItemCollection';
+import { DataStoryEventType, DataStoryEvents } from '../DataStory/events/dataStoryEventType';
+import { useDataStoryEvent } from '../DataStory/events/eventManager';
 
 const TableNodeComponent = ({ id, data }: {
   id: string,
@@ -27,7 +29,7 @@ const TableNodeComponent = ({ id, data }: {
     const observer = new IntersectionObserver(entries => {
       // Check if the observed entry is intersecting (visible)
       if (entries[0].isIntersecting && !loading) {
-        onLoadMore();
+        loadTableData();
       }
     }, {threshold: 0});
 
@@ -44,7 +46,18 @@ const TableNodeComponent = ({ id, data }: {
 
   const input = data.inputs[0]
 
-  const onLoadMore = async () => {
+  useDataStoryEvent((event: DataStoryEventType) => {
+    if (event.type === DataStoryEvents.RUN_START) {
+      setItems([])
+      setOffset(0)
+    }
+
+    if (event.type === DataStoryEvents.RUN_SUCCESS) {
+      loadTableData();
+    }
+  });
+
+  const loadTableData = async () => {
     if(loading) return;
     setLoading(true);
     const limit = 100
@@ -120,7 +133,7 @@ const TableNodeComponent = ({ id, data }: {
                   <td
                     colSpan={6}
                     className="text-center"
-                    onClick={onLoadMore}
+                    onClick={loadTableData}
                   >
                   Load initial data...
                   </td>
