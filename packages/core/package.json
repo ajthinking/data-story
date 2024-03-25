@@ -51,7 +51,8 @@
   "dependencies": {
     "@data-story/hjson": "workspace:*",
     "axios": "^1.3.4",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "nanoid": "3"
   },
   "devDependencies": {
     "@types/node": "18.14.2",
