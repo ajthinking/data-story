@@ -1,6 +1,6 @@
 import { Node } from './types/Node';
 import { Diagram } from './Diagram';
-import { Computer } from './types/Computer';;
+import { Computer } from './types/Computer';
 import { ExecutionUpdate } from './types/ExecutionUpdate';
 import { isFinished } from './utils/isFinished';
 import { Storage } from './types/Storage';
