@@ -101,7 +101,6 @@ describe('add', () => {
 
     expect(diagram.links).toMatchObject([
       {
-        id: 'Create.1.output--->Pass.1.input',
         sourcePortId: 'Create.1.output',
         targetPortId: 'Pass.1.input'
       }
@@ -127,8 +126,14 @@ describe('on', () => {
       .get();
 
     expect(diagram.links).toMatchObject([
-      { id: 'Create.1.output--->Pass.1.input' },
-      { id: 'Create.1.output--->Ignore.1.input' },
+      {
+        sourcePortId: 'Create.1.output',
+        targetPortId: 'Pass.1.input'
+      },
+      {
+        sourcePortId: 'Create.1.output',
+        targetPortId: 'Ignore.1.input'
+      }
     ])
   })
 })

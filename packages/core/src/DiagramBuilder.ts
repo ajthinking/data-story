@@ -6,6 +6,7 @@ import { PositionGuesser } from './PositionGuesser';
 import { AbstractPort, Port, PortName } from './types/Port';
 import { ComputerConfig } from './types/ComputerConfig';
 import { Fake } from './computers/Fake';
+import { createDataStoryId } from './utils/createDataStoryId';
 
 export class DiagramBuilder {
   diagram: Diagram
@@ -48,7 +49,7 @@ export class DiagramBuilder {
 
     const subDiagram = this.diagram.localNodeDefinitions[name]
 
-    const nodeId = `${name}.${this.getScopedId(name)}`
+    const nodeId = `${name}.${createDataStoryId()}`
 
     const node: Node = {
       id: nodeId,
@@ -175,7 +176,7 @@ export class DiagramBuilder {
 
   link(from: string, to: string) {
     const link: Link = {
-      id: `${from}--->${to}`,
+      id: createDataStoryId(),
       sourcePortId: from,
       targetPortId: to,
     }
@@ -258,7 +259,7 @@ export class DiagramBuilder {
     if(!originPort || !newNodePort) return
 
     const link: Link = {
-      id: `${originPort.id}--->${newNodePort.id}`,
+      id: createDataStoryId(),
       sourcePortId: originPort.id!,
       targetPortId: newNodePort.id!,
     }
