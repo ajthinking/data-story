@@ -6,8 +6,8 @@ export class ItemCollection {
   constructor(public items: ItemValue[]) {
   }
 
-  private serializeContacts(data: unknown[]): string {
-    return JSON.stringify(data).replace(/\n/g, '');
+  private serializeArrayContent(arrayContent: unknown[]): string {
+    return JSON.stringify(arrayContent).replace(/\n/g, '');
   }
 
   public toTable() {
@@ -52,7 +52,7 @@ export class ItemCollection {
       const currentType = typeof current;
 
       if (currentType === 'object' && Array.isArray(current)) {
-        return this.serializeContacts(current);
+        return this.serializeArrayContent(current);
       }
 
       if (currentType === 'object' && current !== null) {
