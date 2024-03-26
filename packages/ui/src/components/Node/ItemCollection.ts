@@ -6,14 +6,18 @@ export class ItemCollection {
   constructor(public items: ItemValue[]) {
   }
 
-  toTable() {
+  private serializeContacts(data: unknown[]): string {
+    return JSON.stringify(data).replace(/\n/g, '');
+  }
+
+  public toTable() {
     const headers: Set<string> = new Set();
     const rows: (string | undefined)[][] = [];
 
     /**
      * @description recursively build headers
      */
-    function buildHeaders(entry: {[key: string]: JSONValue}, prefix: string = '') {
+    const buildHeaders = (entry: {[key: string]: JSONValue}, prefix: string = '') => {
       Object.entries(entry).forEach(([key, value]) => {
         const newKey = prefix ? `${prefix}.${key}` : key;
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
@@ -22,7 +26,7 @@ export class ItemCollection {
           headers.add(newKey);
         }
       });
-    }
+    };
 
     /**
      * @description recursive data to build headers
@@ -36,7 +40,7 @@ export class ItemCollection {
     /**
      * @description get value by header's path
      */
-    function getValueByPath(object: any, path: string[]): string | undefined {
+    const getValueByPath = (object: ItemValue, path: string[]): string | undefined => {
       let current: any = object;
       for(let i = 0; i < path.length; i++) {
         if (current[path[i]] === undefined) {
@@ -44,7 +48,13 @@ export class ItemCollection {
         }
         current = current[path[i]];
       }
+
       const currentType = typeof current;
+
+      if (currentType === 'object' && Array.isArray(current)) {
+        return this.serializeContacts(current);
+      }
+
       if (currentType === 'object' && current !== null) {
         return undefined;
       }
@@ -69,4 +79,5 @@ export class ItemCollection {
       rows
     };
   }
+
 }
