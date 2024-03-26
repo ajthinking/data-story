@@ -7,6 +7,7 @@ export const NodeFactory = {
       id: flowNode.id,
       type: flowNode.data.computer,
       docs: flowNode.data.docs,
+      label: flowNode.data.label,
       inputs: flowNode.data.inputs.map(input => {
         return {
           id: input.id,
