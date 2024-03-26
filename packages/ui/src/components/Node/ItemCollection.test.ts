@@ -1,8 +1,38 @@
 import { describe, it, expect } from 'vitest';
-import { extractHeadersAndContent } from './ItemCollection';
+import { ItemCollection } from './ItemCollection';
+import { nested } from './itemExamples/nested';
 
 describe('extractHeadersAndContent', () => {
   it('should correctly extract headers and content from nested JSON data', () => {
+    const { headers, rows } = new ItemCollection([nested]).toTable();
+
+    expect(headers).toMatchInlineSnapshot(`
+      [
+        "objectId",
+        "properties.firstname",
+        "properties.lastname",
+        "properties.email",
+        "createdAt",
+        "updatedAt",
+        "associations.contacts",
+      ]
+    `);
+    expect(rows).toMatchInlineSnapshot(`
+      [
+        [
+          "123456789",
+          "John",
+          "Doe",
+          "",
+          "2021-01-01T00:00:00.000Z",
+          "2021-01-01T00:00:00.000Z",
+          undefined,
+        ],
+      ]
+    `);
+  });
+
+  it('should correctly extract headers and content from 3 nested JSON data', () => {
     const jsonData = [
       {
         'foo1': 'bar1',
@@ -36,15 +66,15 @@ describe('extractHeadersAndContent', () => {
       ['bar1', 'bar2', undefined, 'bar1', 'bar2', 'bar1', 'bar2', 'bar3'],
     ];
 
-    const { headers, content } = extractHeadersAndContent(jsonData);
+    const { headers, rows } = new ItemCollection(jsonData).toTable();
 
     expect(headers).toEqual(expectedHeaders);
-    expect(content).toEqual(expectedContent);
+    expect(rows).toEqual(expectedContent);
   });
 
   it('should handle empty array input', () => {
-    const { headers, content } = extractHeadersAndContent([]);
+    const { headers, rows } =  new ItemCollection([]).toTable();
     expect(headers).toEqual([]);
-    expect(content).toEqual([]);
+    expect(rows).toEqual([]);
   });
 });
