@@ -1,26 +1,72 @@
 import { ItemValue } from '@data-story/core/*'
 
+type JSONValue = string | number | boolean | {[key: string]: JSONValue} | JSONValue[];
+
 export class ItemCollection {
-  constructor(public items: ItemValue[]) {}
+  constructor(public items: ItemValue[]) {
+  }
 
   toTable() {
-    let headers: string[] = []
-    let rows: ItemValue[] = []
+    const headers: Set<string> = new Set();
+    const rows: (string | undefined)[][] = [];
 
-    // Extract headers and remove duplicates
-    headers = Array.from(new Set(this.items
-      .map((item) => Object.keys(item))
-      .flat()));
+    /**
+     * @description recursively build headers
+     */
+    function buildHeaders(entry: {[key: string]: JSONValue}, prefix: string = '') {
+      Object.entries(entry).forEach(([key, value]) => {
+        const newKey = prefix ? `${prefix}.${key}` : key;
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          buildHeaders(value as {[key: string]: JSONValue}, newKey);
+        } else {
+          headers.add(newKey);
+        }
+      });
+    }
 
-    // Extract rows
-    rows = this.items.map((item) => {
-      const row: ItemValue[] = []
-      headers.forEach((header) => {
-        row.push(item[header])
-      })
-      return row
-    })
+    /**
+     * @description recursive data to build headers
+     */
+    this.items.forEach(item => {
+      if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
+        buildHeaders(item);
+      }
+    });
 
-    return { headers, rows }
+    /**
+     * @description get value by header's path
+     */
+    function getValueByPath(object: any, path: string[]): string | undefined {
+      let current: any = object;
+      for(let i = 0; i < path.length; i++) {
+        if (current[path[i]] === undefined) {
+          return undefined;
+        }
+        current = current[path[i]];
+      }
+      const currentType = typeof current;
+      if (currentType === 'object' && current !== null) {
+        return undefined;
+      }
+
+      return typeof current === 'string' ? current : JSON.stringify(current);
+    }
+
+    /**
+     * @description build rows
+     */
+    this.items.forEach(item => {
+      const row: (string | undefined)[] = [];
+      headers.forEach(header => {
+        const value = getValueByPath(item, header.split('.'));
+        row.push(value);
+      });
+      rows.push(row);
+    });
+
+    return {
+      headers: Array.from(headers),
+      rows
+    };
   }
 }
