@@ -191,6 +191,7 @@ export class ComputerTester {
   }
 
   protected makeDiagram(): Diagram {
+    // To make testing easier,replacing the dynamic id with a fixed value of 1
     const nodeId = `${this.computer.name}.1`
     // Create a new Node from the computer + params (TODO: this is a general need)
     const node: Node = {

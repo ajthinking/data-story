@@ -16,7 +16,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { AbstractPort, Diagram, LinkGuesser, Node, NodeDescription, PositionGuesser } from '@data-story/core';
+import { AbstractPort, Diagram, LinkGuesser, Node, NodeDescription, PositionGuesser, createDataStoryId } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -119,13 +119,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   connect: (connection: Connection) => {
-    const fromHandleId = connection.sourceHandle;
-    const toHandleId = connection.targetHandle;
-
     set({
       edges: addEdge({
         ...connection,
-        id: `${fromHandleId}--->${toHandleId}`,
+        id: createDataStoryId(),
       }, get().edges),
     });
 
@@ -154,19 +151,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   addNodeFromDescription: (nodeDescription: NodeDescription) => {
     const diagram = get().toDiagram()
 
-    const scopedId = (name: string) => {
-      const max = diagram.nodes
-        .filter((node) => node.type === name)
-        .map((node) => node.id)
-        .map((id) => id.split('.')[1])
-        .map((id) => parseInt(id))
-        .reduce((max, id) => Math.max(max, id), 0)
-
-      return max + 1
-    }
-
-    const counter = scopedId(nodeDescription.name)
-    const id = `${nodeDescription.name}.${counter}`;
+    const scopedId = createDataStoryId();
+    const id = `${nodeDescription.name}.${scopedId}`;
 
     const flowNode: ReactFlowNode = {
       id,

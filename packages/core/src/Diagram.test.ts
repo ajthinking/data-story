@@ -103,30 +103,35 @@ describe('unfold', () => {
       { type: 'Pass' },
       { type: 'Output' },
     ])
+    const linksForSnapshot = result.links.map(link => ({
+      ...link,
+      // replace id with a fixed value
+      id: 'REPLACED_ID',
+    }));
 
-    expect(result.links).toMatchObject([
-      // Note the original two links are preserved
-      {
-        'id': 'Create.1.output--->X.1.x_input',
-        'sourcePortId': 'Create.1.output',
-        'targetPortId': 'Input.1.input',
-      },
-      {
-        'id': 'X.1.x_output--->ConsoleLog.1.input',
-        'sourcePortId': 'Output.1.output',
-        'targetPortId': 'ConsoleLog.1.input',
-      },
-      // The new links are appended
-      {
-        'id': 'Input.1.output--->Pass.1.input',
-        'sourcePortId': 'Input.1.output',
-        'targetPortId': 'Pass.1.input',
-      },
-      {
-        'id': 'Pass.1.output--->Output.1.input',
-        'sourcePortId': 'Pass.1.output',
-        'targetPortId': 'Output.1.input',
-      }
-    ])
+    expect(linksForSnapshot).toMatchInlineSnapshot(`
+      [
+        {
+          "id": "REPLACED_ID",
+          "sourcePortId": "Create.1.output",
+          "targetPortId": "Input.1.input",
+        },
+        {
+          "id": "REPLACED_ID",
+          "sourcePortId": "Output.1.output",
+          "targetPortId": "ConsoleLog.1.input",
+        },
+        {
+          "id": "REPLACED_ID",
+          "sourcePortId": "Input.1.output",
+          "targetPortId": "Pass.1.input",
+        },
+        {
+          "id": "REPLACED_ID",
+          "sourcePortId": "Pass.1.output",
+          "targetPortId": "Output.1.input",
+        },
+      ]
+    `);
   })
 })
