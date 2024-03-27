@@ -32,14 +32,15 @@ function TableNodeCell(props: {content?: string}): JSX.Element{
 
   const Tooltip = () => {
     return (
-      <div ref={tooltipRef} className="absolute top-5 left-5 z-50 bg-white shadow-lg p-2 rounded-md">
+      <pre ref={tooltipRef} className="absolute top-5 left-5 z-50 bg-white shadow-lg p-2 rounded-md">
         {content}
-      </div>
+      </pre>
     );
   }
 
   return(
     <div
+      className="relative"
       onClick={() => setShowTooltip(!showTooltip)}
       ref={cellRef}>
       <span>
