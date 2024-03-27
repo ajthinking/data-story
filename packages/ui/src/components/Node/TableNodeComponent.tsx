@@ -9,6 +9,27 @@ import { ItemCollection } from './ItemCollection';
 import { DataStoryEventType, DataStoryEvents } from '../DataStory/events/dataStoryEventType';
 import { useDataStoryEvent } from '../DataStory/events/eventManager';
 
+function TableNodeCell(props: {content?: string}) {
+  const { content = '' } = props;
+  const getDetailContent = (content: string)  => {
+    // content length less than 12rem, font-size: .25rem
+    const isShowDetailCell = content.length * 0.25 < 12;
+
+    /**
+     * 有两个方案：
+     * 1. font-size: .25rem, max-w-48: 12rem. 计算 content 的长度，如果超过 12rem，就不显示
+     * 2. 重新定义每个cell: content = content.length > 100 ? content.slice(0, 100) + '...' : content;
+     * 方案 2 更好，因为更方便显示 modal
+     */
+  };
+
+  return <span
+    onClick={() => getDetailContent(content)}
+  >
+    {content.length > 20 ? content.slice(0, 20) + '...' : content}
+  </span>;
+}
+
 const TableNodeComponent = ({ id, data }: {
   id: string,
   data: DataStoryNodeData,
@@ -112,10 +133,10 @@ const TableNodeComponent = ({ id, data }: {
               <thead>
                 <tr className="bg-gray-200 space-x-8">
                   {headers.map(header => (<th
-                    className="max-w-48 overflow-hidden whitespace-nowrap text-ellipsis bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
+                    className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
                     key={header}
                   >
-                    {header}
+                    <TableNodeCell content={header}/>
                   </th>))}
                 </tr>
               </thead>
@@ -125,9 +146,11 @@ const TableNodeComponent = ({ id, data }: {
                   key={rowindex}
                 >
                   {row.map((cell, cellIndex) => (<td
-                    className="max-w-48 overflow-hidden whitespace-nowrap text-ellipsis px-1"
+                    className="whitespace-nowrap px-1"
                     key={cellIndex}
-                  >{cell}</td>))}
+                  >
+                    <TableNodeCell content={cell}/>
+                  </td>))}
                 </tr>))}
                 {items.length === 0 && <tr className="bg-gray-100 hover:bg-gray-200">
                   <td
