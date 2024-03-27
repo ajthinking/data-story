@@ -112,7 +112,7 @@ const TableNodeComponent = ({ id, data }: {
               <thead>
                 <tr className="bg-gray-200 space-x-8">
                   {headers.map(header => (<th
-                    className="whitespace-nowrap bg-gray-200 text-ellipsis text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
+                    className="max-w-48 overflow-hidden whitespace-nowrap text-ellipsis bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
                     key={header}
                   >
                     {header}
@@ -125,7 +125,7 @@ const TableNodeComponent = ({ id, data }: {
                   key={rowindex}
                 >
                   {row.map((cell, cellIndex) => (<td
-                    className="whitespace-nowrap text-ellipsis px-1"
+                    className="max-w-48 overflow-hidden whitespace-nowrap text-ellipsis px-1"
                     key={cellIndex}
                   >{cell}</td>))}
                 </tr>))}
