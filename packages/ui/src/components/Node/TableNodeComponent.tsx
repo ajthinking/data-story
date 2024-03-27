@@ -3,31 +3,53 @@ import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
-import { ConfigIcon } from '../DataStory/icons/configIcon';
-import { RunIcon } from '../DataStory/icons/runIcon';
 import { ItemCollection } from './ItemCollection';
-import { DataStoryEventType, DataStoryEvents } from '../DataStory/events/dataStoryEventType';
+import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
 import { useDataStoryEvent } from '../DataStory/events/eventManager';
 
-function TableNodeCell(props: {content?: string}) {
+function TableNodeCell(props: {content?: string}): JSX.Element{
   const { content = '' } = props;
-  const getDetailContent = (content: string)  => {
-    // content length less than 12rem, font-size: .25rem
-    const isShowDetailCell = content.length * 0.25 < 12;
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipRef = useRef(null);
+  const cellRef = useRef(null);
 
-    /**
-     * 有两个方案：
-     * 1. font-size: .25rem, max-w-48: 12rem. 计算 content 的长度，如果超过 12rem，就不显示
-     * 2. 重新定义每个cell: content = content.length > 100 ? content.slice(0, 100) + '...' : content;
-     * 方案 2 更好，因为更方便显示 modal
-     */
-  };
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      // @ts-ignore
+      if (showTooltip && cellRef.current && !cellRef.current?.contains(event.target as Node) && !tooltipRef.current?.contains(event.target as Node)) {
+        setShowTooltip(false);
+      }
+    }
 
-  return <span
-    onClick={() => getDetailContent(content)}
-  >
-    {content.length > 20 ? content.slice(0, 20) + '...' : content}
-  </span>;
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    }
+  }, [showTooltip]);
+  const showCellContent = () => {
+    return content.length > 20 ? content.slice(0, 20) + '...' : content;
+  }
+
+  const Tooltip = () => {
+    return (
+      <div ref={tooltipRef} className="absolute top-5 left-5 z-50 bg-white shadow-lg p-2 rounded-md">
+        {content}
+      </div>
+    );
+  }
+
+  return(
+    <div
+      onClick={() => setShowTooltip(!showTooltip)}
+      ref={cellRef}>
+      <span>
+        {showCellContent()}
+      </span>
+      {
+        showTooltip && Tooltip()
+      }
+    </div>
+  );
 }
 
 const TableNodeComponent = ({ id, data }: {
@@ -52,7 +74,7 @@ const TableNodeComponent = ({ id, data }: {
       if (entries[0].isIntersecting && !loading) {
         loadTableData();
       }
-    }, {threshold: 0});
+    }, { threshold: 0 });
 
     // Observe the loader div
     if (loaderRef.current) {
@@ -78,8 +100,8 @@ const TableNodeComponent = ({ id, data }: {
     }
   });
 
-  const loadTableData = async () => {
-    if(loading) return;
+  const loadTableData = async() => {
+    if (loading) return;
     setLoading(true);
     const limit = 100
 
@@ -102,7 +124,7 @@ const TableNodeComponent = ({ id, data }: {
 
   let { headers, rows } = new ItemCollection(items).toTable()
 
-  if(items.length === 0) {
+  if (items.length === 0) {
     headers = ['Awaiting data']
     rows = []
   }
@@ -121,14 +143,22 @@ const TableNodeComponent = ({ id, data }: {
               className="relative"
               type="target"
               position={Position.Left}
-              style={{ opacity: 0, backgroundColor: 'red', position: 'relative', height: 1, width: 1, top: 0, right: 0}}
+              style={{
+                opacity: 0,
+                backgroundColor: 'red',
+                position: 'relative',
+                height: 1,
+                width: 1,
+                top: 0,
+                right: 0
+              }}
               id={input.id}
               isConnectable={true}
             />
           </div>
         </div>
         <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs max-h-24">
-          <div className="max-h-24 overflow-auto nowheel scrollbar rounded-sm">
+          <div className="max-h-24 nowheel scrollbar rounded-sm">
             <table className="table-auto rounded-sm">
               <thead>
                 <tr className="bg-gray-200 space-x-8">
