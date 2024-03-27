@@ -6,11 +6,7 @@ export class ItemCollection {
   constructor(public items: ItemValue[]) {
   }
 
-  private serializeArrayContent(arrayContent: unknown[]): string {
-    return JSON.stringify(arrayContent).replace(/\n/g, '');
-  }
-
-  public toTable() {
+  toTable() {
     const headers: Set<string> = new Set();
     const rows: (string | undefined)[][] = [];
 
@@ -80,4 +76,7 @@ export class ItemCollection {
     };
   }
 
+  private serializeArrayContent(arrayContent: unknown[]): string {
+    return JSON.stringify(arrayContent).replace(/\n/g, '');
+  }
 }
