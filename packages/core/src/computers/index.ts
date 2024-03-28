@@ -6,6 +6,7 @@ export { Create } from './Create'
 export { Describe } from './Describe'
 // export { Dump } from './Dump';
 // export { Eval } from './Eval';
+export { Clone } from './Clone'
 export { Fake } from './Fake'
 export { Filter } from './Filter';
 export { Ignore } from './Ignore'
