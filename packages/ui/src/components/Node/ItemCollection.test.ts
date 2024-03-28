@@ -17,20 +17,8 @@ describe('toTable', () => {
     ];
 
     const { headers, rows } = new ItemCollection(mockData).toTable();
-    expect(headers).toMatchInlineSnapshot(`
-      [
-        "foo",
-        "baz",
-      ]
-    `);
-    expect(rows).toMatchInlineSnapshot(`
-      [
-        [
-          "bar",
-          "[{\\"foo\\":\\"bar\\",\\"baz\\":\\"qux\\"}]",
-        ],
-      ]
-    `);
+    expect(headers).toEqual(['foo', 'baz']);
+    expect(rows).toEqual([['bar', '[{"foo":"bar","baz":"qux"}]']]);
   });
 
   it('should correctly extract headers and rows from 3 nested Object', () => {
@@ -76,30 +64,30 @@ describe('toTable', () => {
   it('should correctly extract headers and rows from nested JSON data', () => {
     const { headers, rows } = new ItemCollection([nested]).toTable();
 
-    expect(headers).toMatchInlineSnapshot(`
+    expect(headers).toEqual(
       [
-        "objectId",
-        "properties.firstname",
-        "properties.lastname",
-        "properties.email",
-        "createdAt",
-        "updatedAt",
-        "associations.contacts",
+        'objectId',
+        'properties.firstname',
+        'properties.lastname',
+        'properties.email',
+        'createdAt',
+        'updatedAt',
+        'associations.contacts',
       ]
-    `);
-    expect(rows).toMatchInlineSnapshot(`
+    );
+    expect(rows).toEqual(
       [
         [
-          "123456789",
-          "John",
-          "Doe",
-          "",
-          "2021-01-01T00:00:00.000Z",
-          "2021-01-01T00:00:00.000Z",
-          "[{\\"id\\":\\"123456789\\",\\"type\\":\\"CONTACT_TO_COMPANY\\"}]",
+          '123456789',
+          'John',
+          'Doe',
+          '',
+          '2021-01-01T00:00:00.000Z',
+          '2021-01-01T00:00:00.000Z',
+          '[{"id":"123456789","type":"CONTACT_TO_COMPANY"}]',
         ],
       ]
-    `);
+    );
   });
 
   it('should handle empty array input', () => {
