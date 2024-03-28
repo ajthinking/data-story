@@ -123,7 +123,7 @@ export const num = ({
   canInterpolate?: boolean,
   interpolate?: boolean,
   evaluations?: Evaluation[],
-  value?: string,
+  value?: string | number,
 }): Param => {
   return {
     name,
