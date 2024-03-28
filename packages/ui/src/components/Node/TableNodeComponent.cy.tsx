@@ -96,7 +96,7 @@ describe('test TableNodeComponent for table', () => {
   })
 })
 
-describe('TableNodeComponent - tooltip test', () => {
+describe('test TableNodeComponent for tooltip', () => {
   function mockGetItems(items): void {
     cy.stub(store, 'createStore').returns(() => {
       return {
@@ -117,12 +117,38 @@ describe('TableNodeComponent - tooltip test', () => {
         }
       }
     });
-  };
+  }
 
   it('render tooltip with normal data', () => {
     mockGetItems(normal);
     mountTableNodeComponent();
 
-    cy.dataCy('data-story-table-th').eq(1).trigger('click');
+    cy.dataCy('data-story-table-th').eq(1).click();
+    cy.dataCy('data-story-table-tooltip').should('have.text', 'property_b');
+  });
+
+  it('render tooltip with oversize data', () => {
+    mockGetItems(oversize);
+    mountTableNodeComponent();
+
+    // test long key on tooltip
+    const longKey = Object.keys(oversize)[3];
+    cy.dataCy('data-story-table-th').eq(3).click();
+    cy.dataCy('data-story-table-tooltip').should('have.text', longKey);
+
+    // test long value on tooltip
+    const longValue = oversize['long_property'];
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').click();
+    cy.dataCy('data-story-table-tooltip').should('have.text', longValue);
+  });
+
+  it('render tooltip with line break data', () => {
+    mockGetItems(nested);
+    mountTableNodeComponent();
+
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(8)').click();
+    cy.dataCy('data-story-table-tooltip').should('have.text', `122 Main St
+Suite 100
+ Anytown`);
   });
 });
