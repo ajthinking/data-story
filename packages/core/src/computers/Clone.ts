@@ -1,24 +1,17 @@
 import { ComputerConfig } from '../types/ComputerConfig';
 import { numberCast } from '../Param/casts/numberCast';
+import { num } from '../Param';
 
 export const Clone: ComputerConfig = {
   name: 'Clone',
   inputs: ['input'],
   outputs: ['original', 'clones'],
   params: [
-    {
+    num({
       name: 'count',
-      label: 'count',
       help: 'How many clones to make?',
-      type: 'StringableParam',
-      multiline: false,
-      canInterpolate: true,
-      interpolate: true,
-      casts: [
-        {...numberCast, selected: true}
-      ],
-      value: String(10)
-    },
+      value: 10,
+    }),
   ],
 
   async *run({ input, output, params }) {

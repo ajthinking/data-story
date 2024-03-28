@@ -21,32 +21,16 @@ export const Signal: ComputerConfig = {
   }],
 
   params: [
-    {
+    num({
       name: 'period',
-      label: 'period',
       help: 'How many ms between each signal?',
-      type: 'StringableParam',
-      multiline: false,
-      canInterpolate: true,
-      interpolate: true,
-      casts: [
-        {...numberCast, selected: true}
-      ],
-      value: String(50)
-    },
-    {
+      value: 50,
+    }),
+    num({
       name: 'count',
-      label: 'count',
       help: 'How many times to send the signal?',
-      type: 'StringableParam',
-      multiline: false,
-      canInterpolate: true,
-      interpolate: true,
-      casts: [
-        {...numberCast, selected: true}
-      ],
-      value: String(300)
-    },
+      value: 300,
+    }),
     hjson({
       name: 'expression',
       label: 'Template expression',
