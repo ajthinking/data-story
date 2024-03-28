@@ -1,8 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { ItemCollection } from './ItemCollection';
 import { nested } from './itemExamples/nested';
+import { normal } from './itemExamples/normal';
 
 describe('toTable', () => {
+  it('should correctly extract headers and rows from normal data', () => {
+    const { headers, rows } = new ItemCollection([normal]).toTable();
+    expect(headers).toEqual(['property_a', 'property_b', 'property_c', 'property_d', 'property_e', 'property_f', 'property_g', 'property_h', 'property_i']);
+    expect(rows).toEqual([['10000', '20000', '30000', '40000', '50000', '60000', '70000', '80000', '90000']]);
+  });
+
   it ('should correctly extract headers and rows from nested array', () => {
     const mockData = [
       {
@@ -89,6 +96,17 @@ describe('toTable', () => {
       ]
     );
   });
+
+  // it('should correctly extract headers and rows from nested JSON data with multiple contacts', () => {
+  //   const invalidDataTypes = {
+  //     stringInsteadOfNumber: 'This should be a number',
+  //     nullValue: null,
+  //     undefinedValue: undefined,
+  //     objectInsteadOfString: {
+  //       nestedObject: 'Nested value'
+  //     }
+  //   };
+  // });
 
   it('should handle empty array input', () => {
     const { headers, rows } =  new ItemCollection([]).toTable();
