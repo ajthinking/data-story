@@ -12,5 +12,11 @@ export const nested = {
       id: '123456789',
       type: 'CONTACT_TO_COMPANY',
     }],
+  },
+  address: {
+    street: '122 Main St\nSuite 100\n Anytown',
+    city: 'Anytown',
+    state: 'Anystate',
+    zipcode: '12344'
   }
 }

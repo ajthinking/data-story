@@ -85,6 +85,7 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
   const Tooltip = () => {
     return (
       <pre
+        data-cy={'data-story-table-tooltip'}
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
@@ -222,7 +223,9 @@ const TableNodeComponent = ({ id, data }: {
           </div>
         </div>
         <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs max-h-24">
-          <div className="max-h-24 nowheel overflow-auto scrollbar rounded-sm">
+          <div
+            data-cy={'data-story-table'}
+            className="max-h-24 nowheel overflow-auto scrollbar rounded-sm">
             <table ref={tableRef} className="table-auto rounded-sm">
               <thead>
                 <tr className="bg-gray-200 space-x-8">
@@ -234,6 +237,7 @@ const TableNodeComponent = ({ id, data }: {
                   }
                   {
                     headers.map(header => (<th
+                      data-cy={'data-story-table-th'}
                       className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
                       key={header}
                     >
@@ -244,6 +248,7 @@ const TableNodeComponent = ({ id, data }: {
               </thead>
               <tbody>
                 {rows.map((row, rowindex) => (<tr
+                  data-cy={'data-story-table-row'}
                   className="odd:bg-gray-50"
                   key={rowindex}
                 >
