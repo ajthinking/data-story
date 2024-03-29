@@ -17,6 +17,19 @@ import {
   useRole
 } from '@floating-ui/react';
 
+const formatCellContent = (content: string) => {
+  return content.length > 20 ? content.slice(0, 20) + '...' : content;
+}
+
+const formatTooltipContent = (content: string) => {
+  try {
+    JSON.parse(content);
+    return JSON.stringify(JSON.parse(content), null, 2);
+  } catch (e) {
+    return content;
+  }
+}
+
 function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableElement>, content?: string}): JSX.Element {
   const { content = '', getTableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
@@ -64,10 +77,6 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
     click,
     role
   ]);
-  const showCellContent = () => {
-    return content.length > 20 ? content.slice(0, 20) + '...' : content;
-  }
-
   const Tooltip = () => {
     return (
       <pre
@@ -76,7 +85,7 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
         {...getFloatingProps()}
         className="overflow-visible z-50 bg-white shadow-lg p-2 rounded-md"
       >
-        {content}
+        {formatTooltipContent(content)}
       </pre>
     );
   }
@@ -87,7 +96,7 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
       <span
         ref={refs.setReference} {...getReferenceProps()}
       >
-        {showCellContent()}
+        {formatCellContent(content)}
       </span>
       <FloatingPortal root={getTableRef()}>
         {
