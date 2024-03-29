@@ -17,20 +17,21 @@ import {
   useRole
 } from '@floating-ui/react';
 
-const formatCellContent = (content: string) => {
-  return content.length > 20 ? content.slice(0, 20) + '...' : content;
+const formatCellContent = (content: unknown) => {
+  let result = formatTooltipContent(content) as string;
+  return result.length > 20 ? result.slice(0, 20) + '...' : result;
 }
 
-const formatTooltipContent = (content: string) => {
+const formatTooltipContent = (content: unknown) => {
   try {
-    JSON.parse(content);
-    return JSON.stringify(JSON.parse(content), null, 2);
+    JSON.parse(content as string);
+    return JSON.stringify(JSON.parse(content as string), null, 2);
   } catch (e) {
     return content;
   }
 }
 
-function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableElement>, content?: string}): JSX.Element {
+function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
   const { content = '', getTableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
   const tooltipRef = useRef<HTMLPreElement>(null);
@@ -85,7 +86,7 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
         {...getFloatingProps()}
         className="overflow-visible z-50 bg-white shadow-lg p-2 rounded-md"
       >
-        {formatTooltipContent(content)}
+        {formatTooltipContent(content) as string}
       </pre>
     );
   }
