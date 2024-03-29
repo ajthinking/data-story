@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@data-story/core": "workspace:*",
+    "@floating-ui/react": "^0.26.10",
     "@tanstack/react-table": "^8.11.7",
     "ahooks": "^3.7.10",
     "clsx": "^2.0.0",

@@ -1,4 +1,4 @@
-import React, { memo, RefObject, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
@@ -6,11 +6,20 @@ import { Handle, Position } from 'reactflow';
 import { ItemCollection } from './ItemCollection';
 import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
 import { useDataStoryEvent } from '../DataStory/events/eventManager';
+import {
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset,
+  shift, useClick,
+  useFloating,
+  useInteractions,
+  useRole
+} from '@floating-ui/react';
 
-function TableNodeCell(props: {  getTableRefCurrent: () => HTMLTableElement | null, content?: string}): JSX.Element {
-  const { content = '', getTableRefCurrent } = props;
+function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableElement>, content?: string}): JSX.Element {
+  const { content = '', getTableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
   const tooltipRef = useRef<HTMLPreElement>(null);
   const cellRef = useRef<HTMLDivElement>(null);
 
@@ -31,36 +40,41 @@ function TableNodeCell(props: {  getTableRefCurrent: () => HTMLTableElement | nu
       document.removeEventListener('click', handleOutsideClick);
     }
   }, [showTooltip]);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: showTooltip,
+    onOpenChange: setShowTooltip,
+    placement: 'bottom',
+    // Make sure the tooltip stays on the screen
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(5),
+      flip({
+        fallbackAxisSideDirection: 'start'
+      }),
+      shift()
+    ]
+  });
+
+  const click = useClick(context);
+  const role = useRole(context, { role: 'tooltip' });
+
+  // Merge all the interactions into prop getters
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    role
+  ]);
   const showCellContent = () => {
     return content.length > 20 ? content.slice(0, 20) + '...' : content;
   }
-  const toggleTooltip = () => {
-    const tableRefCurrent = getTableRefCurrent();
-    if (cellRef.current && tableRefCurrent) {
-      console.log(cellRef);
-      const cellRect = cellRef.current.getBoundingClientRect();
-      const tableRect = tableRefCurrent?.getBoundingClientRect() ?? {
-        top: 0,
-        left: 0
-      };
-      console.log('table', tableRect.top, tableRect.left)
-      console.log('cell', cellRect.width, cellRect.top, cellRect.left, window.scrollY, window.scrollX)
-      const translateX = 20; // 根据实际情况调整
-      const translateY = 20; // 根据实际情况调整
-      setTooltipPosition({
-        top: cellRect.top - tableRect.top +  translateY,
-        left: cellRect.left - tableRect.left + translateX + cellRect.width
-      });
-    }
-    setShowTooltip(!showTooltip);
-  };
 
   const Tooltip = () => {
     return (
       <pre
-        ref={tooltipRef}
-        className="overflow-visible fixed z-50 bg-white shadow-lg p-2 rounded-md"
-        style={{ top: `${tooltipPosition.top}px`, left: `${tooltipPosition.left}px` }}
+        ref={refs.setFloating}
+        style={floatingStyles}
+        {...getFloatingProps()}
+        className="overflow-visible z-50 bg-white shadow-lg p-2 rounded-md"
       >
         {content}
       </pre>
@@ -69,15 +83,17 @@ function TableNodeCell(props: {  getTableRefCurrent: () => HTMLTableElement | nu
 
   return (
     <div
-      className="relative"
-      onClick={toggleTooltip}
       ref={cellRef}>
-      <span>
+      <span
+        ref={refs.setReference} {...getReferenceProps()}
+      >
         {showCellContent()}
       </span>
-      {
-        showTooltip && Tooltip()
-      }
+      <FloatingPortal root={getTableRef()}>
+        {
+          showTooltip && getTableRef() && Tooltip()
+        }
+      </FloatingPortal>
     </div>
   );
 }
@@ -118,8 +134,8 @@ const TableNodeComponent = ({ id, data }: {
     };
   }, [loading, offset]); // Empty dependency array ensures this effect runs only once on mount
 
-  const getTableRefCurrent = () => {
-    return tableRef.current;
+  const getTableRef = () => {
+    return tableRef;
   }
   const input = data.inputs[0]
 
@@ -200,7 +216,7 @@ const TableNodeComponent = ({ id, data }: {
                     className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
                     key={header}
                   >
-                    <TableNodeCell getTableRefCurrent={getTableRefCurrent} content={header}/>
+                    <TableNodeCell getTableRef={getTableRef} content={header}/>
                   </th>))}
                 </tr>
               </thead>
@@ -213,7 +229,7 @@ const TableNodeComponent = ({ id, data }: {
                     className="whitespace-nowrap px-1"
                     key={cellIndex}
                   >
-                    <TableNodeCell getTableRefCurrent={getTableRefCurrent} content={cell}/>
+                    <TableNodeCell getTableRef={getTableRef} content={cell}/>
 
                   </td>))}
                 </tr>))}
