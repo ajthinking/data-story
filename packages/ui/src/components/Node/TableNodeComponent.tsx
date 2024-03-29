@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, RefObject, useEffect, useRef, useState } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
@@ -7,16 +7,21 @@ import { ItemCollection } from './ItemCollection';
 import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
 import { useDataStoryEvent } from '../DataStory/events/eventManager';
 
-function TableNodeCell(props: {content?: string}): JSX.Element{
-  const { content = '' } = props;
+function TableNodeCell(props: {  getTableRefCurrent: () => HTMLTableElement | null, content?: string}): JSX.Element {
+  const { content = '', getTableRefCurrent } = props;
   const [showTooltip, setShowTooltip] = useState(false);
-  const tooltipRef = useRef(null);
-  const cellRef = useRef(null);
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const tooltipRef = useRef<HTMLPreElement>(null);
+  const cellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      // @ts-ignore
-      if (showTooltip && cellRef.current && !cellRef.current?.contains(event.target as Node) && !tooltipRef.current?.contains(event.target as Node)) {
+      if (
+        showTooltip &&
+        cellRef.current &&
+        !cellRef.current?.contains(event.target as Node) &&
+        !tooltipRef.current?.contains(event.target as Node)
+      ) {
         setShowTooltip(false);
       }
     }
@@ -29,19 +34,43 @@ function TableNodeCell(props: {content?: string}): JSX.Element{
   const showCellContent = () => {
     return content.length > 20 ? content.slice(0, 20) + '...' : content;
   }
+  const toggleTooltip = () => {
+    const tableRefCurrent = getTableRefCurrent();
+    if (cellRef.current && tableRefCurrent) {
+      console.log(cellRef);
+      const cellRect = cellRef.current.getBoundingClientRect();
+      const tableRect = tableRefCurrent?.getBoundingClientRect() ?? {
+        top: 0,
+        left: 0
+      };
+      console.log('table', tableRect.top, tableRect.left)
+      console.log('cell', cellRect.width, cellRect.top, cellRect.left, window.scrollY, window.scrollX)
+      const translateX = 20; // 根据实际情况调整
+      const translateY = 20; // 根据实际情况调整
+      setTooltipPosition({
+        top: cellRect.top - tableRect.top +  translateY,
+        left: cellRect.left - tableRect.left + translateX + cellRect.width
+      });
+    }
+    setShowTooltip(!showTooltip);
+  };
 
   const Tooltip = () => {
     return (
-      <pre ref={tooltipRef} className="absolute top-5 left-5 z-50 bg-white shadow-lg p-2 rounded-md">
+      <pre
+        ref={tooltipRef}
+        className="overflow-visible fixed z-50 bg-white shadow-lg p-2 rounded-md"
+        style={{ top: `${tooltipPosition.top}px`, left: `${tooltipPosition.left}px` }}
+      >
         {content}
       </pre>
     );
   }
 
-  return(
+  return (
     <div
       className="relative"
-      onClick={() => setShowTooltip(!showTooltip)}
+      onClick={toggleTooltip}
       ref={cellRef}>
       <span>
         {showCellContent()}
@@ -62,6 +91,7 @@ const TableNodeComponent = ({ id, data }: {
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0)
   const loaderRef = useRef(null);
+  const tableRef = useRef<HTMLTableElement>(null);
 
   const selector = (state: StoreSchema) => ({
     server: state.server,
@@ -88,6 +118,9 @@ const TableNodeComponent = ({ id, data }: {
     };
   }, [loading, offset]); // Empty dependency array ensures this effect runs only once on mount
 
+  const getTableRefCurrent = () => {
+    return tableRef.current;
+  }
   const input = data.inputs[0]
 
   useDataStoryEvent((event: DataStoryEventType) => {
@@ -160,14 +193,14 @@ const TableNodeComponent = ({ id, data }: {
         </div>
         <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs max-h-24">
           <div className="max-h-24 nowheel overflow-auto scrollbar rounded-sm">
-            <table className="table-auto rounded-sm">
+            <table ref={tableRef} className="table-auto rounded-sm">
               <thead>
                 <tr className="bg-gray-200 space-x-8">
                   {headers.map(header => (<th
                     className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
                     key={header}
                   >
-                    <TableNodeCell content={header}/>
+                    <TableNodeCell getTableRefCurrent={getTableRefCurrent} content={header}/>
                   </th>))}
                 </tr>
               </thead>
@@ -180,7 +213,8 @@ const TableNodeComponent = ({ id, data }: {
                     className="whitespace-nowrap px-1"
                     key={cellIndex}
                   >
-                    <TableNodeCell content={cell}/>
+                    <TableNodeCell getTableRefCurrent={getTableRefCurrent} content={cell}/>
+
                   </td>))}
                 </tr>))}
                 {items.length === 0 && <tr className="bg-gray-100 hover:bg-gray-200">
