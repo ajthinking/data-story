@@ -159,7 +159,7 @@ const TableNodeComponent = ({ id, data }: {
           </div>
         </div>
         <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs max-h-24">
-          <div className="max-h-24 nowheel scrollbar rounded-sm">
+          <div className="max-h-24 nowheel overflow-auto scrollbar rounded-sm">
             <table className="table-auto rounded-sm">
               <thead>
                 <tr className="bg-gray-200 space-x-8">
