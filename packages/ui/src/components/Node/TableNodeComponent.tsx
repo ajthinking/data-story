@@ -91,7 +91,7 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
       </span>
       <FloatingPortal root={getTableRef()}>
         {
-          showTooltip && getTableRef() && Tooltip()
+          showTooltip && Tooltip()
         }
       </FloatingPortal>
     </div>
@@ -175,7 +175,7 @@ const TableNodeComponent = ({ id, data }: {
   let { headers, rows } = new ItemCollection(items).toTable()
 
   if (items.length === 0) {
-    headers = ['Awaiting data']
+    headers = []
     rows = []
   }
 
@@ -212,12 +212,20 @@ const TableNodeComponent = ({ id, data }: {
             <table ref={tableRef} className="table-auto rounded-sm">
               <thead>
                 <tr className="bg-gray-200 space-x-8">
-                  {headers.map(header => (<th
-                    className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
-                    key={header}
-                  >
-                    <TableNodeCell getTableRef={getTableRef} content={header}/>
-                  </th>))}
+                  {
+                    headers.length === 0 &&
+                    <th className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
+                      Awaiting data
+                    </th>
+                  }
+                  {
+                    headers.map(header => (<th
+                      className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
+                      key={header}
+                    >
+                      <TableNodeCell getTableRef={getTableRef} content={header}/>
+                    </th>))
+                  }
                 </tr>
               </thead>
               <tbody>
