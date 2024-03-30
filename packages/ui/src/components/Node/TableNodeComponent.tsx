@@ -34,20 +34,24 @@ const formatTooltipContent = (content: unknown) => {
 function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
   const { content = '', getTableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
-  const tooltipRef = useRef<HTMLPreElement>(null);
   const cellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
+      console.log(event, 'event');
       if (
         showTooltip &&
         cellRef.current &&
         !cellRef.current?.contains(event.target as Node) &&
-        !tooltipRef.current?.contains(event.target as Node)
+        !refs.floating.current?.contains(event.target as Node)
       ) {
         setShowTooltip(false);
       }
     }
+
+    refs.floating.current?.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
 
     document.addEventListener('click', handleOutsideClick);
     return () => {
