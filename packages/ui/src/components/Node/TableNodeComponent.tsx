@@ -48,7 +48,7 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
       }
     }
 
-    refs.floating.current?.addEventListener('click', (event) => {
+    refs.floating.current?.addEventListener('mousedown', (event) => {
       event.stopPropagation();
     });
 
@@ -88,7 +88,7 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="overflow-visible z-50 bg-white shadow-lg p-2 rounded-md"
+        className="select-text overflow-visible z-50 bg-white shadow-lg p-2 rounded-md"
       >
         {formatTooltipContent(content) as string}
       </pre>
