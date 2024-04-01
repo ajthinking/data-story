@@ -2,11 +2,7 @@ import TableNodeComponent from './TableNodeComponent';
 import * as store from '../DataStory/store/store';
 import { DataStoryProvider } from '../DataStory/store/store';
 import { ReactFlowProvider } from 'reactflow';
-import { normal } from './itemExamples/normal';
-import { nested } from './itemExamples/nested';
-import { oversize } from './itemExamples/oversize';
-import { createLargeRows } from './itemExamples/createLargeRows';
-import { createLargeColsFn } from './itemExamples/createLargeColsFn';
+import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 
 const data = {
   'params': [],
