@@ -89,10 +89,19 @@ describe('test TableNodeComponent for tooltip', () => {
     mockGetItems([nested]);
     mountTableNodeComponent();
 
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(8)').click();
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(10)').click();
     cy.dataCy('data-story-table-tooltip').should('have.text', `122 Main St
 Suite 100
  Anytown`);
+  });
+
+  it('render tooltip with formatted data', () => {
+    mockGetItems([nested]);
+    mountTableNodeComponent();
+    let jsonString = '[\n  {\n    "id": "123456789",\n    "type": "CONTACT_TO_COMPANY"\n  }\n]';
+
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(7)').click();
+    cy.dataCy('data-story-table-tooltip').should('have.text', jsonString);
   });
 });
 
@@ -143,8 +152,18 @@ describe('test TableNodeComponent for table', () => {
     mockGetItems([nested]);
     mountTableNodeComponent();
 
-    cy.dataCy('data-story-table-th').eq(7).should('have.text', 'address.street');
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(8)').should('have.text', '122 Main St\nSuite 10...');
+    cy.dataCy('data-story-table-th').eq(9).should('have.text', 'address.street');
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(10)').should('have.text', '122 Main St\nSuite 10...');
+  });
+
+  it('render component with boolean data', () => {
+    mockGetItems([nested]);
+    mountTableNodeComponent();
+
+    cy.dataCy('data-story-table-th').eq(7).should('have.text', 'booleanFalse');
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(8)').should('have.text', 'false');
+    cy.dataCy('data-story-table-th').eq(8).should('have.text', 'booleanTrue');
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(9)').should('have.text', 'true');
   });
 
   it('render component with 1000 columns data', () => {
@@ -194,7 +213,7 @@ describe('test TableNodeComponent for table', () => {
     mockGetItems(thousandRows);
     mountTableNodeComponent();
 
-    // 等待 10ms，等待数据加载完成
+    // wait 10ms for data to load
     cy.wait(10);
 
     const start = performance.now();

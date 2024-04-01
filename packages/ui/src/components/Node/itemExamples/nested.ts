@@ -13,6 +13,8 @@ export const nested = {
       type: 'CONTACT_TO_COMPANY',
     }],
   },
+  booleanFalse: false,
+  booleanTrue: true,
   address: {
     street: '122 Main St\nSuite 100\n Anytown',
     city: 'Anytown',
