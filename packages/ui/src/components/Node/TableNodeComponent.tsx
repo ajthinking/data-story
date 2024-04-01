@@ -3,11 +3,110 @@ import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
-import { ConfigIcon } from '../DataStory/icons/configIcon';
-import { RunIcon } from '../DataStory/icons/runIcon';
 import { ItemCollection } from './ItemCollection';
-import { DataStoryEventType, DataStoryEvents } from '../DataStory/events/dataStoryEventType';
+import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
 import { useDataStoryEvent } from '../DataStory/events/eventManager';
+import {
+  autoUpdate,
+  flip,
+  FloatingPortal,
+  offset,
+  shift, useClick,
+  useFloating,
+  useInteractions,
+  useRole
+} from '@floating-ui/react';
+
+const formatCellContent = (content: unknown) => {
+  let result = formatTooltipContent(content) as string;
+  return result.length > 20 ? result.slice(0, 20) + '...' : result;
+}
+
+const formatTooltipContent = (content: unknown) => {
+  try {
+    JSON.parse(content as string);
+    return JSON.stringify(JSON.parse(content as string), null, 2);
+  } catch (e) {
+    return content;
+  }
+}
+
+function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
+  const { content = '', getTableRef } = props;
+  const [showTooltip, setShowTooltip] = useState(false);
+  const tooltipRef = useRef<HTMLPreElement>(null);
+  const cellRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (event: MouseEvent) => {
+      if (
+        showTooltip &&
+        cellRef.current &&
+        !cellRef.current?.contains(event.target as Node) &&
+        !tooltipRef.current?.contains(event.target as Node)
+      ) {
+        setShowTooltip(false);
+      }
+    }
+
+    document.addEventListener('click', handleOutsideClick);
+    return () => {
+      document.removeEventListener('click', handleOutsideClick);
+    }
+  }, [showTooltip]);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: showTooltip,
+    onOpenChange: setShowTooltip,
+    placement: 'bottom',
+    // Make sure the tooltip stays on the screen
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(5),
+      flip({
+        fallbackAxisSideDirection: 'start'
+      }),
+      shift()
+    ]
+  });
+
+  const click = useClick(context);
+  const role = useRole(context, { role: 'tooltip' });
+
+  // Merge all the interactions into prop getters
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    click,
+    role
+  ]);
+  const Tooltip = () => {
+    return (
+      <pre
+        ref={refs.setFloating}
+        style={floatingStyles}
+        {...getFloatingProps()}
+        className="overflow-visible z-50 bg-white shadow-lg p-2 rounded-md"
+      >
+        {formatTooltipContent(content) as string}
+      </pre>
+    );
+  }
+
+  return (
+    <div
+      ref={cellRef}>
+      <span
+        ref={refs.setReference} {...getReferenceProps()}
+      >
+        {formatCellContent(content)}
+      </span>
+      <FloatingPortal root={getTableRef()}>
+        {
+          showTooltip && Tooltip()
+        }
+      </FloatingPortal>
+    </div>
+  );
+}
 
 const TableNodeComponent = ({ id, data }: {
   id: string,
@@ -18,6 +117,7 @@ const TableNodeComponent = ({ id, data }: {
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0)
   const loaderRef = useRef(null);
+  const tableRef = useRef<HTMLTableElement>(null);
 
   const selector = (state: StoreSchema) => ({
     server: state.server,
@@ -31,7 +131,7 @@ const TableNodeComponent = ({ id, data }: {
       if (entries[0].isIntersecting && !loading) {
         loadTableData();
       }
-    }, {threshold: 0});
+    }, { threshold: 0 });
 
     // Observe the loader div
     if (loaderRef.current) {
@@ -44,6 +144,9 @@ const TableNodeComponent = ({ id, data }: {
     };
   }, [loading, offset]); // Empty dependency array ensures this effect runs only once on mount
 
+  const getTableRef = () => {
+    return tableRef;
+  }
   const input = data.inputs[0]
 
   useDataStoryEvent((event: DataStoryEventType) => {
@@ -57,8 +160,8 @@ const TableNodeComponent = ({ id, data }: {
     }
   });
 
-  const loadTableData = async () => {
-    if(loading) return;
+  const loadTableData = async() => {
+    if (loading) return;
     setLoading(true);
     const limit = 100
 
@@ -81,8 +184,8 @@ const TableNodeComponent = ({ id, data }: {
 
   let { headers, rows } = new ItemCollection(items).toTable()
 
-  if(items.length === 0) {
-    headers = ['Awaiting data']
+  if (items.length === 0) {
+    headers = []
     rows = []
   }
 
@@ -100,23 +203,39 @@ const TableNodeComponent = ({ id, data }: {
               className="relative"
               type="target"
               position={Position.Left}
-              style={{ opacity: 0, backgroundColor: 'red', position: 'relative', height: 1, width: 1, top: 0, right: 0}}
+              style={{
+                opacity: 0,
+                backgroundColor: 'red',
+                position: 'relative',
+                height: 1,
+                width: 1,
+                top: 0,
+                right: 0
+              }}
               id={input.id}
               isConnectable={true}
             />
           </div>
         </div>
         <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs max-h-24">
-          <div className="max-h-24 overflow-auto nowheel scrollbar rounded-sm">
-            <table className="table-auto rounded-sm">
+          <div className="max-h-24 nowheel overflow-auto scrollbar rounded-sm">
+            <table ref={tableRef} className="table-auto rounded-sm">
               <thead>
                 <tr className="bg-gray-200 space-x-8">
-                  {headers.map(header => (<th
-                    className="whitespace-nowrap bg-gray-200 text-ellipsis text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
-                    key={header}
-                  >
-                    {header}
-                  </th>))}
+                  {
+                    headers.length === 0 &&
+                    <th className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
+                      Awaiting data
+                    </th>
+                  }
+                  {
+                    headers.map(header => (<th
+                      className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
+                      key={header}
+                    >
+                      <TableNodeCell getTableRef={getTableRef} content={header}/>
+                    </th>))
+                  }
                 </tr>
               </thead>
               <tbody>
@@ -125,9 +244,12 @@ const TableNodeComponent = ({ id, data }: {
                   key={rowindex}
                 >
                   {row.map((cell, cellIndex) => (<td
-                    className="whitespace-nowrap text-ellipsis px-1"
+                    className="whitespace-nowrap px-1"
                     key={cellIndex}
-                  >{cell}</td>))}
+                  >
+                    <TableNodeCell getTableRef={getTableRef} content={cell}/>
+
+                  </td>))}
                 </tr>))}
                 {items.length === 0 && <tr className="bg-gray-100 hover:bg-gray-200">
                   <td
