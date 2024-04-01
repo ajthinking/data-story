@@ -76,6 +76,9 @@ describe('test TableNodeComponent for tooltip', () => {
     cy.dataCy('data-story-table-th').eq(3).click();
     cy.dataCy('data-story-table-tooltip').should('have.text', longKey);
 
+    // click on the table to close the tooltip
+    cy.dataCy('data-story-table').click();
+
     // test long value on tooltip
     const longValue = oversize['long_property'];
     cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').click();
@@ -98,15 +101,15 @@ describe('test TableNodeComponent for table', () => {
     mockGetItems([]);
     mountTableNodeComponent();
 
-    cy.dataCy('data-story-table-node').should('exist');
+    cy.dataCy('data-story-table').should('exist');
   });
 
   it('render component with empty data', () => {
     mockGetItems([]);
     mountTableNodeComponent();
 
-    cy.dataCy('data-story-table-th').should('have.length', 1);
-    cy.dataCy('data-story-table-th').should('have.text', 'Awaiting data');
+    cy.get('th').should('have.length', 1);
+    cy.get('th').should('have.text', 'Awaiting data');
   });
 
   it('render component with data', () => {
