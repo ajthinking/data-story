@@ -80,6 +80,12 @@ describe('toTable', () => {
         'createdAt',
         'updatedAt',
         'associations.contacts',
+        'booleanFalse',
+        'booleanTrue',
+        'address.street',
+        'address.city',
+        'address.state',
+        'address.zipcode',
       ]
     );
     expect(rows).toEqual(
@@ -92,6 +98,14 @@ describe('toTable', () => {
           '2021-01-01T00:00:00.000Z',
           '2021-01-01T00:00:00.000Z',
           '[{"id":"123456789","type":"CONTACT_TO_COMPANY"}]',
+          'false',
+          'true',
+          `122 Main St
+Suite 100
+ Anytown`,
+          'Anytown',
+          'Anystate',
+          '12344',
         ],
       ]
     );
