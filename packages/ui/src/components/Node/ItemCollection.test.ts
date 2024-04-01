@@ -1,8 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import { ItemCollection } from './ItemCollection';
 import { nested } from './itemExamples/nested';
+import { normal } from './itemExamples/normal';
 
 describe('toTable', () => {
+  it('should correctly extract headers and rows from normal data', () => {
+    const { headers, rows } = new ItemCollection([normal]).toTable();
+    expect(headers).toEqual(['property_a', 'property_b', 'property_c', 'property_d', 'property_e', 'property_f', 'property_g', 'property_h', 'property_i']);
+    expect(rows).toEqual([['10000', '20000', '30000', '40000', '50000', '60000', '70000', '80000', '90000']]);
+  });
+
   it ('should correctly extract headers and rows from nested array', () => {
     const mockData = [
       {
@@ -73,6 +80,12 @@ describe('toTable', () => {
         'createdAt',
         'updatedAt',
         'associations.contacts',
+        'booleanFalse',
+        'booleanTrue',
+        'address.street',
+        'address.city',
+        'address.state',
+        'address.zipcode',
       ]
     );
     expect(rows).toEqual(
@@ -85,6 +98,14 @@ describe('toTable', () => {
           '2021-01-01T00:00:00.000Z',
           '2021-01-01T00:00:00.000Z',
           '[{"id":"123456789","type":"CONTACT_TO_COMPANY"}]',
+          'false',
+          'true',
+          `122 Main St
+Suite 100
+ Anytown`,
+          'Anytown',
+          'Anystate',
+          '12344',
         ],
       ]
     );
