@@ -40,7 +40,11 @@ export class OutputDevice implements OutputDeviceInterface {
 
     for(const linkId of connectedLinks) {
       // Update items on link
-      this.memory.pushLinkItems(linkId, items)
+      this.memory.pushLinkItems(
+        linkId,
+        // Clone items to ensure induvidual mutation per branch
+        structuredClone(items)
+      )
 
       // Update link counts
       const count = this.memory.getLinkCount(linkId)!
