@@ -38,7 +38,6 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
-      console.log(event, 'event');
       if (
         showTooltip &&
         cellRef.current &&

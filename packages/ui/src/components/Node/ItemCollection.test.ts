@@ -97,17 +97,6 @@ describe('toTable', () => {
     );
   });
 
-  // it('should correctly extract headers and rows from nested JSON data with multiple contacts', () => {
-  //   const invalidDataTypes = {
-  //     stringInsteadOfNumber: 'This should be a number',
-  //     nullValue: null,
-  //     undefinedValue: undefined,
-  //     objectInsteadOfString: {
-  //       nestedObject: 'Nested value'
-  //     }
-  //   };
-  // });
-
   it('should handle empty array input', () => {
     const { headers, rows } =  new ItemCollection([]).toTable();
     expect(headers).toEqual([]);
