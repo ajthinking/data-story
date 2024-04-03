@@ -1,6 +1,7 @@
 import { Diagram } from './Diagram';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
+import { createDataStoryId } from './utils/createDataStoryId';
 
 export class LinkGuesser {
   constructor(
@@ -20,9 +21,9 @@ export class LinkGuesser {
     if(!firstInput) return null;
 
     return {
-      id: `${firstOutput.id}--->${firstInput.id}`,
-      sourcePortId: firstOutput.id!,
-      targetPortId: firstInput.id!,
+      id: createDataStoryId(),
+      sourcePortId: firstOutput.id,
+      targetPortId: firstInput.id,
     }
   }
 }

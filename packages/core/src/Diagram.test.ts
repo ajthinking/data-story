@@ -5,6 +5,23 @@ import { Link } from './types/Link';
 import { Node } from './types/Node';
 import { Port } from './types/Port';
 
+describe('add', () => {
+  it('adds a node to the diagram', () => {
+    const diagram = new Diagram()
+    const node: Node = {
+      id: 'node-id',
+      type: 'MyNode',
+      inputs: [],
+      outputs: [],
+      params: []
+    }
+
+    expect(diagram.nodes).toEqual([])
+    diagram.add(node)
+    expect(diagram.nodes).toEqual([node])
+  })
+})
+
 describe('nodeWithOutputPortId', () => {
   it('returns the node given a output port id', () => {
     const output: Port = {

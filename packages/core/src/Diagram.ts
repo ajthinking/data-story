@@ -30,6 +30,22 @@ export class Diagram {
     ]
   }
 
+  add(node: Node) {
+    this.nodes.push(node)
+
+    return this
+  }
+
+  connect(link: Link) {
+    this.links.push(link)
+
+    for(const callback of this.onConnect) {
+      callback(link, this)
+    }
+
+    return this
+  }
+
   linksAtInputPortId(id: PortId | undefined): Link[] {
     return this.links.filter(link => link.targetPortId === id)
   }
@@ -162,15 +178,5 @@ export class Diagram {
     }
 
     return this;
-  }
-
-  connect(link: Link) {
-    this.links.push(link)
-
-    for(const callback of this.onConnect) {
-      callback(link, this)
-    }
-
-    return this
   }
 }

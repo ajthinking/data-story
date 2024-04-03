@@ -15,7 +15,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { AbstractPort, Diagram, Link, LinkGuesser, Node, NodeDescription, PositionGuesser, createDataStoryId } from '@data-story/core';
+import { AbstractPort, Diagram, LinkGuesser, Node, NodeDescription, PositionGuesser, createDataStoryId } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -42,6 +42,7 @@ export type StoreSchema = {
   addNodeFromDescription: (nodeDescription: NodeDescription) => void;
   onNodesChange: OnNodesChange;
   setNodes: (nodes: ReactFlowNode[]) => void;
+  selectNode: (nodeId: string) => void;
   traverseNodes: (direction: Direction) => void;
 
   /** The Edges */
@@ -114,15 +115,12 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     // Operate via the diagram!
     const diagram = get().toDiagram()
 
-    // Connection to Link
-    const link: Link = {
+    // Add the link to the diagram
+    diagram.connect({
       id: createDataStoryId(),
       sourcePortId: connection.sourceHandle,
       targetPortId: connection.targetHandle,
-    }
-
-    // Add the link to the diagram
-    diagram.connect(link)
+    })
 
     // Update the diagram
     get().updateDiagram(diagram)
@@ -146,56 +144,30 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   addNodeFromDescription: (nodeDescription: NodeDescription) => {
     const diagram = get().toDiagram()
 
-    const scopedId = createDataStoryId();
-    const id = `${nodeDescription.name}.${scopedId}`;
-
-    const flowNode: ReactFlowNode = {
-      id,
-      position: new PositionGuesser(diagram).guess(nodeDescription),
-      data: {
-        computer: nodeDescription.name,
-        docs: nodeDescription.docs,
-        // Ensure two nodes of same type don't share the same params object
-        params: structuredClone(nodeDescription.params),
-        label: nodeDescription.label ?? nodeDescription.name,
-        inputs: nodeDescription.inputs.map((input: AbstractPort) => {
-          return {
-            id: `${id}.${input.name}`,
-            ...input
-          }
-        }),
-        outputs: nodeDescription.outputs.map((output: AbstractPort) => {
-          return {
-            id: `${id}.${output.name}`,
-            ...output
-          }
-        }),
-      },
-      selected: true,
-      type: {
-        Comment: 'commentNodeComponent',
-        Input: 'inputNodeComponent',
-        Output: 'outputNodeComponent',
-        Table: 'tableNodeComponent',
-      }[nodeDescription.name] ?? 'nodeComponent',
-    }
-
-    const node: Node = NodeFactory.fromReactFlowNode(flowNode)
+    const node: Node = NodeFactory.fromNodeDescription(
+      nodeDescription,
+      diagram
+    )
 
     const link = new LinkGuesser(diagram).guess(node)
+    diagram.add(node)
+    if(link) diagram.connect(link)
 
-    const connection = link ? {
-      source: diagram.nodeWithOutputPortId(link.sourcePortId)!.id,
-      target: id,
-      sourceHandle: link.sourcePortId,
-      targetHandle: link.targetPortId,
-    } : null;
+    get().updateDiagram(diagram)
 
-    get().addNode(flowNode);
+    get().selectNode(node.id)
 
-    if (connection) {
-      get().connect(connection);
-    }
+    setTimeout(() => {
+      get().rfInstance?.fitView();
+    }, 1);
+  },
+  selectNode(nodeId: string) {
+    set({
+      nodes: get().nodes.map(node => {
+        node.selected = node.id === nodeId
+        return node
+      })
+    })
   },
   updateNode: (node: ReactFlowNode) => {
     set({
