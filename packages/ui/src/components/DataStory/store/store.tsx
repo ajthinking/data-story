@@ -2,7 +2,6 @@ import { StoreApi, UseBoundStore } from 'zustand';
 import { createWithEqualityFn } from 'zustand/traditional'
 
 import {
-  addEdge,
   applyEdgeChanges,
   applyNodeChanges,
   Connection,
@@ -25,6 +24,7 @@ import React, { useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
+import { getNodesWithNewSelection } from '../getNodesWithNewSelection';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -50,11 +50,9 @@ export type StoreSchema = {
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
-  calculateInputSchema: (node: ReactFlowNode) => void;
 
   /** The Server and its config */
   serverConfig: ServerConfig;
-  setServerConfig: (config: ServerConfig) => void;
   server: null | ServerClient;
   onInitServer: (server: ServerConfig) => void;
 
@@ -99,11 +97,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       edges,
     })
   },
-  setServerConfig: (config: ServerConfig) => {
-    set({ serverConfig: config })
-
-    console.log('TODO: We should reconnect to the server now...')
-  },
   onNodesChange: (changes: NodeChange[]) => {
     set({
       nodes: applyNodeChanges(changes, get().nodes),
@@ -120,7 +113,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     // Operate via the diagram!
     const diagram = get().toDiagram()
-    console.log({ diagramInConnect: diagram })
 
     // Connection to Link
     const link: Link = {
@@ -130,14 +122,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     }
 
     // Add the link to the diagram
-    console.log('Reached 1')
     diagram.connect(link)
-    console.log('Reached 2')
 
     // Update the diagram
-    console.log({ diagram })
     get().updateDiagram(diagram)
-    console.log('Reached 3')
   },
   addNode: (node: ReactFlowNode) => {
     set({
@@ -150,9 +138,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         node
       ],
     })
-
-    console.log('Adding node in addNode')
-    console.log('After', get().nodes)
 
     setTimeout(() => {
       get().rfInstance?.fitView();
@@ -206,17 +191,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       targetHandle: link.targetPortId,
     } : null;
 
-    console.log('Adding node...')
     get().addNode(flowNode);
-    console.log('Added node!')
 
     if (connection) {
-      console.log('About to call connect!')
-      console.log({ diagramInAddNode: diagram, refreshedDiagram: get().toDiagram()})
       get().connect(connection);
-      console.log('Called connect!')
-    } else {
-      console.log('No connection found!')
     }
   },
   updateNode: (node: ReactFlowNode) => {
@@ -279,8 +257,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     )
   },
   onInitServer: (serverConfig: ServerConfig) => {
-    console.log('onInitServer')
-
     if (serverConfig.type === 'JS') {
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
@@ -306,140 +282,27 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ availableNodes })
   },
   updateEdgeCounts: (edgeCounts: Record<string, number>) => {
-    for(const [id, count] of Object.entries(edgeCounts)) {
-      const edge = get().edges.find(edge => edge.id === id)
-      if (edge) edge.label = count
-    }
+    const updatedEdges = get().edges.map(edge => ({
+      ...edge,
+      ...(edgeCounts[edge.id] !== undefined && {
+        label: edgeCounts[edge.id],
+        labelBgStyle: { opacity: 0.6 },
+      }),
+    }));
 
-    const newEdges = get().edges.map((edge: Edge) => {
-      Object.entries(edgeCounts).forEach(([id, count]) => {
-        if (edge.id === id) {
-          edge.label = count
-          edge.labelBgStyle = {
-            opacity: 0.6,
-          }
-        }
-      })
-
-      return edge
-    })
-
-    get().setEdges(newEdges);
+    get().setEdges(updatedEdges);
   },
   setOpenNodeModalId: (id: string | null) => {
     set({ openNodeModalId: id })
   },
   traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => {
-    const selectedNodes = get().nodes.filter(node => node.selected)
+    const updatedNodes = getNodesWithNewSelection(
+      direction,
+      get().nodes,
+    )
 
-    // If multiple nodes are selected we cant navigate
-    if (selectedNodes.length > 1) return
-
-    // If no nodes are selected, select the first node
-    if (selectedNodes.length === 0 && get().nodes.length > 0) {
-      const firstNode = get().nodes.at(0)!
-      firstNode.selected = true
-      get().updateNode(firstNode)
-      return
-    }
-
-    // // If one node is selected, navigate
-    if (selectedNodes.length === 1 && get().nodes.length > 0) {
-      const node = selectedNodes.at(0)!
-      const otherNodes = get().nodes.filter(otherNode => otherNode.id !== node.id)
-
-      // Find the closest node in the direction
-      if (direction === 'up') {
-        const closestNode = otherNodes.reduce((closest, otherNode) => {
-          if (otherNode.position.y < node.position.y) {
-            if (closest === null) return otherNode
-            if (otherNode.position.y > closest.position.y) return otherNode
-          }
-
-          return closest
-        }, null as ReactFlowNode | null)
-
-        if (closestNode) {
-          node.selected = false
-          get().updateNode(node)
-          closestNode.selected = true
-          get().updateNode(closestNode)
-        }
-      }
-
-      if (direction === 'down') {
-        const closestNode = otherNodes.reduce((closest, otherNode) => {
-          if (otherNode.position.y > node.position.y) {
-            if (closest === null) return otherNode
-            if (otherNode.position.y < closest.position.y) return otherNode
-          }
-
-          return closest
-        }, null as ReactFlowNode | null)
-
-        if (closestNode) {
-          node.selected = false
-          get().updateNode(node)
-          closestNode.selected = true
-          get().updateNode(closestNode)
-        }
-      }
-
-      if (direction === 'left') {
-        const closestNode = otherNodes.reduce((closest, otherNode) => {
-          if (otherNode.position.x < node.position.x) {
-            if (closest === null) return otherNode
-            if (otherNode.position.x > closest.position.x) return otherNode
-          }
-
-          return closest
-        }, null as ReactFlowNode | null)
-
-        if (closestNode) {
-          node.selected = false
-          get().updateNode(node)
-          closestNode.selected = true
-          get().updateNode(closestNode)
-        }
-      }
-
-      if (direction === 'right') {
-        const closestNode = otherNodes.reduce((closest, otherNode) => {
-          if (otherNode.position.x > node.position.x) {
-            if (closest === null) return otherNode
-            if (otherNode.position.x < closest.position.x) return otherNode
-          }
-
-          return closest
-        }, null as ReactFlowNode | null)
-
-        if (closestNode) {
-          node.selected = false
-          get().updateNode(node)
-          closestNode.selected = true
-          get().updateNode(closestNode)
-        }
-      }
-    }
-  },
-  calculateInputSchema: (node: ReactFlowNode) => {
-    const links = get().edges.filter(edge => edge.target === node.id)
-
-    links.forEach(link => {
-      const sourceNode = get().nodes.find(node => node.id === link.source)
-      if (!sourceNode) return
-
-      const sourcePortName = sourceNode.data.outputs.find(output => output.id === link.sourceHandle)?.name
-      const targetPortName = node.data.inputs.find(input => input.id === link.targetHandle)?.name
-      if (!sourcePortName || !targetPortName) return;
-
-      const outputSchema = sourceNode.data.outputs.find(output => output.id === link.sourceHandle)?.schema
-
-      const inputPort = node.data.inputs.find(input => input.id === link.targetHandle)!
-      inputPort.schema = outputSchema ?? {}
-    })
-
-    get().updateNode(node)
+    // As this is an UI only operation, we don't need to update the diagram
+    set({ nodes: [...updatedNodes] })
   },
 }));
 
