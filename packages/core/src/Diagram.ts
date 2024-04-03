@@ -1,6 +1,9 @@
 import { PortId } from './types/PortId'
 import { Link } from './types/Link'
 import { Node } from './types/Node'
+import { syncPortSchemas } from './syncPortSchemas'
+
+export type OnConnectCallbacks = (link: Link, diagram: Diagram) => void
 
 export class Diagram {
   nodes: Node[]
@@ -11,15 +14,20 @@ export class Diagram {
     y: 0,
     zoom: 1
   }
+  onConnect: OnConnectCallbacks[]
 
   constructor(options?: {
     nodes?: Node[],
     links?: Link[],
-    localNodeDefinitions?: Record<string, Diagram>
+    localNodeDefinitions?: Record<string, Diagram>,
+    onConnect?: OnConnectCallbacks[],
   }) {
     this.nodes = options?.nodes || []
     this.links = options?.links || []
     this.localNodeDefinitions = options?.localNodeDefinitions || {}
+    this.onConnect = options?.onConnect || [
+      syncPortSchemas,
+    ]
   }
 
   linksAtInputPortId(id: PortId | undefined): Link[] {
@@ -154,5 +162,15 @@ export class Diagram {
     }
 
     return this;
+  }
+
+  connect(link: Link) {
+    this.links.push(link)
+
+    for(const callback of this.onConnect) {
+      callback(link, this)
+    }
+
+    return this
   }
 }

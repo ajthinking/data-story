@@ -6,7 +6,6 @@ import { StoreSchema, useStore } from '../store/store';
 import clsx from 'clsx';
 
 export interface AddNodeModalContentProps {
-
   setShowModal: (show: boolean) => void
 }
 

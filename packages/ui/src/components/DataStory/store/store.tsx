@@ -16,7 +16,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { AbstractPort, Diagram, LinkGuesser, Node, NodeDescription, PositionGuesser, createDataStoryId } from '@data-story/core';
+import { AbstractPort, Diagram, Link, LinkGuesser, Node, NodeDescription, PositionGuesser, createDataStoryId } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -89,8 +89,15 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   // METHODS
   toDiagram: () => {
     const reactFlowObject = get().rfInstance!.toObject()
+    const viewport = reactFlowObject.viewport
 
-    return DiagramFactory.fromReactFlowObject(reactFlowObject)
+    const { nodes, edges } = get()
+
+    return DiagramFactory.fromReactFlowObject({
+      viewport,
+      nodes,
+      edges,
+    })
   },
   setServerConfig: (config: ServerConfig) => {
     set({ serverConfig: config })
@@ -108,18 +115,29 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   connect: (connection: Connection) => {
-    set({
-      edges: addEdge({
-        ...connection,
-        id: createDataStoryId(),
-      }, get().edges),
-    });
+    // Assume we have a full connection
+    if(!connection.sourceHandle || !connection.targetHandle) return
 
-    // Calculate input schema for the target node
-    const targetNode = get().nodes.find(node => node.id === connection.target)
-    if (targetNode) {
-      get().calculateInputSchema(targetNode)
+    // Operate via the diagram!
+    const diagram = get().toDiagram()
+    console.log({ diagramInConnect: diagram })
+
+    // Connection to Link
+    const link: Link = {
+      id: createDataStoryId(),
+      sourcePortId: connection.sourceHandle,
+      targetPortId: connection.targetHandle,
     }
+
+    // Add the link to the diagram
+    console.log('Reached 1')
+    diagram.connect(link)
+    console.log('Reached 2')
+
+    // Update the diagram
+    console.log({ diagram })
+    get().updateDiagram(diagram)
+    console.log('Reached 3')
   },
   addNode: (node: ReactFlowNode) => {
     set({
@@ -132,6 +150,9 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         node
       ],
     })
+
+    console.log('Adding node in addNode')
+    console.log('After', get().nodes)
 
     setTimeout(() => {
       get().rfInstance?.fitView();
@@ -185,9 +206,18 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       targetHandle: link.targetPortId,
     } : null;
 
+    console.log('Adding node...')
     get().addNode(flowNode);
+    console.log('Added node!')
 
-    if (connection) get().connect(connection);
+    if (connection) {
+      console.log('About to call connect!')
+      console.log({ diagramInAddNode: diagram, refreshedDiagram: get().toDiagram()})
+      get().connect(connection);
+      console.log('Called connect!')
+    } else {
+      console.log('No connection found!')
+    }
   },
   updateNode: (node: ReactFlowNode) => {
     set({
