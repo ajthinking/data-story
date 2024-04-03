@@ -147,3 +147,42 @@ describe('unfold', () => {
     `);
   })
 })
+
+describe('connect', () => {
+  it('adds a link', () => {
+    const diagram = new Diagram()
+
+    const link: Link = {
+      id: 'fake-link-id',
+      sourcePortId: 'fake-port-id-1',
+      targetPortId: 'fake-port-id-2',
+    }
+
+    expect(diagram.links).toEqual([])
+    diagram.connect(link)
+    expect(diagram.links).toEqual([link])
+  })
+
+  it('calls provided onConnect handlers', () => {
+    const callback1 = vi.fn()
+    const callback2 = vi.fn()
+
+    const diagram = new Diagram({
+      onConnect: [
+        callback1,
+        callback2,
+      ]
+    })
+
+    const link: Link = {
+      id: 'fake-link-id',
+      sourcePortId: 'fake-port-id-1',
+      targetPortId: 'fake-port-id-2',
+    }
+
+    diagram.connect(link)
+
+    expect(callback1).toHaveBeenCalledWith(link, diagram)
+    expect(callback2).toHaveBeenCalledWith(link, diagram)
+  })
+})
