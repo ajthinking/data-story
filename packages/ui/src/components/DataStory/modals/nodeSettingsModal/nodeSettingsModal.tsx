@@ -25,7 +25,6 @@ export const NodeSettingsModalContent = () => {
     nodes: state.nodes,
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
-    refreshNodes: state.refreshNodes,
     setNodes: state.setNodes,
   });
 

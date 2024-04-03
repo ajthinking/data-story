@@ -38,7 +38,6 @@ export type StoreSchema = {
   /** The Nodes */
   nodes: ReactFlowNode[];
   updateNode: (node: ReactFlowNode) => void;
-  refreshNodes: () => void;
   addNode: (node: ReactFlowNode) => void;
   addNodeFromDescription: (nodeDescription: NodeDescription) => void;
   onNodesChange: OnNodesChange;
@@ -204,13 +203,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setNodes: (nodes: ReactFlowNode[]) => {
     set({
       nodes: [...nodes],
-    })
-  },
-  refreshNodes: () => {
-    console.log(get().nodes)
-
-    set({
-      nodes: [...get().nodes],
     })
   },
   setEdges(edges: Edge[]) {
