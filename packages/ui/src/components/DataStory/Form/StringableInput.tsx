@@ -53,13 +53,13 @@ export function StringableInput({
     <div className="flex w-full text-gray-500">
       {param.multiline
         ? <textarea
-          className="text-xs p-2 w-full bg-gray-50"
+          className="text-xs p-2 w-full bg-gray-50 font-mono"
           rows={rows}
           {...form.register(`${name}`)}
           onSelect={handleCursorChange}
         />
         : <input
-          className="text-xs p-2 w-full bg-gray-50"
+          className="text-xs p-2 w-full bg-gray-50 font-mono"
           {...form.register(`${name}`)}
         />
       }
