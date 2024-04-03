@@ -1,6 +1,6 @@
 import { ReactFlowNode } from '../Node/ReactFlowNode'
 
-type Direction = 'up' | 'down' | 'left' | 'right'
+export type Direction = 'up' | 'down' | 'left' | 'right'
 
 export const getNodesWithNewSelection = (
   direction: Direction,

@@ -24,7 +24,7 @@ import React, { useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
-import { getNodesWithNewSelection } from '../getNodesWithNewSelection';
+import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -42,7 +42,7 @@ export type StoreSchema = {
   addNodeFromDescription: (nodeDescription: NodeDescription) => void;
   onNodesChange: OnNodesChange;
   setNodes: (nodes: ReactFlowNode[]) => void;
-  traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void;
+  traverseNodes: (direction: Direction) => void;
 
   /** The Edges */
   edges: Edge[];
@@ -295,14 +295,16 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setOpenNodeModalId: (id: string | null) => {
     set({ openNodeModalId: id })
   },
-  traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => {
-    const updatedNodes = getNodesWithNewSelection(
-      direction,
-      get().nodes,
-    )
-
-    // As this is an UI only operation, we don't need to update the diagram
-    set({ nodes: [...updatedNodes] })
+  traverseNodes: (direction: Direction) => {
+    // This is an UI only operation
+    set({
+      nodes: [
+        ...getNodesWithNewSelection(
+          direction,
+          get().nodes,
+        )
+      ]
+    });
   },
 }));
 
