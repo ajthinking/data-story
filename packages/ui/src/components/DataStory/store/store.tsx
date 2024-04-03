@@ -2,7 +2,6 @@ import { StoreApi, UseBoundStore } from 'zustand';
 import { createWithEqualityFn } from 'zustand/traditional'
 
 import {
-  addEdge,
   applyEdgeChanges,
   applyNodeChanges,
   Connection,
@@ -54,7 +53,6 @@ export type StoreSchema = {
 
   /** The Server and its config */
   serverConfig: ServerConfig;
-  setServerConfig: (config: ServerConfig) => void;
   server: null | ServerClient;
   onInitServer: (server: ServerConfig) => void;
 
@@ -99,11 +97,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       edges,
     })
   },
-  setServerConfig: (config: ServerConfig) => {
-    set({ serverConfig: config })
-
-    console.log('TODO: We should reconnect to the server now...')
-  },
   onNodesChange: (changes: NodeChange[]) => {
     set({
       nodes: applyNodeChanges(changes, get().nodes),
@@ -130,14 +123,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     }
 
     // Add the link to the diagram
-    console.log('Reached 1')
     diagram.connect(link)
-    console.log('Reached 2')
 
     // Update the diagram
-    console.log({ diagram })
     get().updateDiagram(diagram)
-    console.log('Reached 3')
   },
   addNode: (node: ReactFlowNode) => {
     set({
@@ -150,9 +139,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         node
       ],
     })
-
-    console.log('Adding node in addNode')
-    console.log('After', get().nodes)
 
     setTimeout(() => {
       get().rfInstance?.fitView();
@@ -343,7 +329,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       return
     }
 
-    // // If one node is selected, navigate
+    // If one node is selected, navigate
     if (selectedNodes.length === 1 && get().nodes.length > 0) {
       const node = selectedNodes.at(0)!
       const otherNodes = get().nodes.filter(otherNode => otherNode.id !== node.id)
