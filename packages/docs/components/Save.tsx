@@ -78,7 +78,11 @@ export const loadDiagram = (key: string): LocalDiagram => {
   const json = localStorage?.getItem(key);
   const { name, diagram } = JSON.parse(json);
 
-  initDiagram.diagram = new Diagram(diagram.nodes, diagram.links);
+  initDiagram.diagram = new Diagram({
+    nodes: diagram.nodes,
+    links: diagram.links
+  });
+
   initDiagram.name = name;
 
   return initDiagram;

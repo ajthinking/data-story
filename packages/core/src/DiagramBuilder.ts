@@ -17,7 +17,7 @@ export class DiagramBuilder {
   belowDirective: NodeId | null = null
 
   constructor() {
-    this.diagram = new Diagram([], [], {})
+    this.diagram = new Diagram()
   }
 
   from(directive: string) {

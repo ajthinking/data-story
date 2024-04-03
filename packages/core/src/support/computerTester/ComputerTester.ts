@@ -224,10 +224,13 @@ export class ComputerTester {
       targetPortId: 'dangling-target-port-id',
     }))
 
-    return new Diagram([node], [
-      ...inputLinks,
-      ...outputLinks,
-    ])
+    return new Diagram({
+      nodes: [node],
+      links: [
+        ...inputLinks,
+        ...outputLinks,
+      ]
+    })
   }
 
   protected makeInputDevice() {

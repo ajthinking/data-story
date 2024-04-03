@@ -13,7 +13,7 @@ import { coreNodeProvider } from './coreNodeProvider';
 
 describe('execute', () => {
   it('can execute an empty diagram and return an execution update', async () => {
-    const diagram = new Diagram([], [])
+    const diagram = new Diagram()
     const computers = new Map<string, Computer>()
 
     const storage = new NullStorage()
@@ -41,7 +41,9 @@ describe('execute', () => {
       params: []
     }
 
-    const diagram = new Diagram([node], [])
+    const diagram = new Diagram({
+      nodes: [node]
+    })
 
     let proof = 'dummy-should-change-this'
 
@@ -81,7 +83,9 @@ describe('execute', () => {
       params: []
     }
 
-    const diagram = new Diagram([node], [])
+    const diagram = new Diagram({
+      nodes: [node]
+    })
 
     const computers = new Map<string, Computer>().set('Accepter', {
       async *run({ output }) {
@@ -116,7 +120,9 @@ describe('execute', () => {
       params: []
     }
 
-    const diagram = new Diagram([node], [])
+    const diagram = new Diagram({
+      nodes: [node]
+    })
 
     const computers = new Map<string, Computer>().set('Spawner', {
       async *run({ output }) {
@@ -171,7 +177,10 @@ describe('execute', () => {
       targetPortId: 'Log.1.input'
     }
 
-    const diagram = new Diagram([create, log], [link])
+    const diagram = new Diagram({
+      nodes: [create, log],
+      links: [link]
+    })
 
     // track order of execution
     const order: string[] = []
@@ -198,7 +207,7 @@ describe('execute', () => {
       .set(createComputer.name, createComputer)
       .set(logComputer.name, logComputer)
 
-    const storage = {}
+    const storage = new NullStorage()
 
     const executor = new Executor(diagram, computers, storage)
 

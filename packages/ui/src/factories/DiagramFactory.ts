@@ -14,6 +14,6 @@ export const DiagramFactory = {
       }
     })
 
-    return new Diagram(nodes, links)
+    return new Diagram({ nodes, links })
   }
 }

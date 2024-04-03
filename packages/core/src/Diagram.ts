@@ -3,17 +3,24 @@ import { Link } from './types/Link'
 import { Node } from './types/Node'
 
 export class Diagram {
+  nodes: Node[]
+  links: Link[]
+  localNodeDefinitions: Record<string, Diagram>
   viewport: { x: number, y: number, zoom: number } = {
     x: 0,
     y: 0,
     zoom: 1
   }
 
-  constructor(
-    public nodes: Node[],
-    public links: Link[],
-    public localNodeDefinitions: Record<string, Diagram> = {}
-  ) {}
+  constructor(options?: {
+    nodes?: Node[],
+    links?: Link[],
+    localNodeDefinitions?: Record<string, Diagram>
+  }) {
+    this.nodes = options?.nodes || []
+    this.links = options?.links || []
+    this.localNodeDefinitions = options?.localNodeDefinitions || {}
+  }
 
   linksAtInputPortId(id: PortId | undefined): Link[] {
     return this.links.filter(link => link.targetPortId === id)

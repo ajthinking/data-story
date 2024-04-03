@@ -21,14 +21,14 @@ describe('nodeWithOutputPortId', () => {
       params: []
     }
 
-    const diagram = new Diagram([node], [])
+    const diagram = new Diagram({ nodes: [node]})
     const result = diagram.nodeWithOutputPortId('output-port-id')
 
     expect(result).toMatchObject(node)
   })
 
   it('returns undefined if it could not find a matching node', () => {
-    const diagram = new Diagram([], [])
+    const diagram = new Diagram()
     const result = diagram.nodeWithOutputPortId('bad-id')
 
     expect(result).toBe(undefined)
@@ -37,13 +37,19 @@ describe('nodeWithOutputPortId', () => {
 
 describe('unfold', () => {
   it('can undfold an empty diagram', () => {
-    const subDiagram = new Diagram([], [])
+    const subDiagram = new Diagram()
 
-    const diagram = new Diagram([], [], { MyNode: subDiagram })
+    const diagram = new Diagram({
+      localNodeDefinitions: {
+        MyNode: subDiagram }
+    })
 
     const result = diagram.unfold()
 
-    expect(result).toMatchObject(new Diagram([], [], { MyNode: subDiagram }))
+    expect(result).toMatchObject(new Diagram({
+      localNodeDefinitions: {
+        MyNode: subDiagram }
+    }))
   })
 
   it('can unfold a diagram with a single node', () => {
@@ -55,7 +61,7 @@ describe('unfold', () => {
       params: []
     }
 
-    const derivedNode = new Diagram([normalNode], [])
+    const derivedNode = new Diagram({ nodes: [normalNode]})
 
     const node: Node = {
       id: 'usage-id',
@@ -65,11 +71,17 @@ describe('unfold', () => {
       params: []
     }
 
-    const diagram = new Diagram([node], [], { derivedNode })
+    const diagram = new Diagram({
+      nodes: [normalNode],
+      localNodeDefinitions: { derivedNode }
+    })
 
     const result = diagram.unfold()
 
-    expect(result).toMatchObject(new Diagram([normalNode], [], { derivedNode }))
+    expect(result).toMatchObject(new Diagram({
+      nodes: [normalNode],
+      localNodeDefinitions: { derivedNode }
+    }))
   })
 
   it('can unfold a linked diagram', () => {

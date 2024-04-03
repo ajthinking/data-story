@@ -54,8 +54,11 @@ export const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
     return initDiagram;
   }
 
-  const diagram = result.diagram ?? new Diagram([], []);
-  initDiagram.diagram = new Diagram(diagram.nodes, diagram.links);
+  const diagram = result.diagram ?? new Diagram();
+  initDiagram.diagram = new Diagram({
+    nodes: diagram.nodes,
+    links: diagram.links
+  });
   return initDiagram;
 }
 

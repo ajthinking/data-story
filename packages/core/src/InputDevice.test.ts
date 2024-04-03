@@ -19,7 +19,10 @@ describe('pull', () => {
       { id: 'link-2', sourcePortId: 'dangling-2', targetPortId: 'target-input-id' },
     ]
 
-    const diagram = new Diagram([node], links)
+    const diagram = new Diagram({
+      nodes: [node],
+      links
+    })
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
@@ -49,7 +52,9 @@ describe('pull', () => {
         params: []
       }
 
-      const diagram = new Diagram([node], [])
+      const diagram = new Diagram({
+        nodes: [node],
+      })
 
       const memory = new ExecutionMemory()
 
@@ -71,7 +76,10 @@ describe('pull', () => {
       { id: 'link-2', sourcePortId: 'dangling-2', targetPortId: 'target-input-id' },
     ]
 
-    const diagram = new Diagram([node], links)
+    const diagram = new Diagram({
+      nodes: [node],
+      links
+    })
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
@@ -103,7 +111,10 @@ describe('pull', () => {
       { id: 'link-2', sourcePortId: 'dangling-2', targetPortId: 'target-input-id' },
     ]
 
-    const diagram = new Diagram([node], links)
+    const diagram = new Diagram({
+      nodes: [node],
+      links
+    })
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
@@ -134,7 +145,10 @@ describe('pullFrom', () => {
       { id: 'link-2', sourcePortId: 'dangling-2', targetPortId: 'target-input-id' },
     ]
 
-    const diagram = new Diagram([node], links)
+    const diagram = new Diagram({
+      nodes: [node],
+      links
+    })
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
@@ -166,7 +180,10 @@ describe('pullFrom', () => {
       { id: 'link-2', sourcePortId: 'dangling-2', targetPortId: 'target-input-id' },
     ]
 
-    const diagram = new Diagram([node], links)
+    const diagram = new Diagram({
+      nodes: [node],
+      links
+    })
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
@@ -199,7 +216,10 @@ describe('params', () => {
       { id: 'link-1', sourcePortId: 'dangling-1', targetPortId: 'target-input-id' },
     ]
 
-    const diagram = new Diagram([node], links)
+    const diagram = new Diagram({
+      nodes: [node],
+      links
+    })
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
