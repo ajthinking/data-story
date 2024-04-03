@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
+import { Direction } from './getNodesWithNewSelection';
 
 export function useHotkeys({
   nodes,
@@ -19,7 +20,7 @@ export function useHotkeys({
   showConfigModal: boolean,
   showRunModal: boolean,
   showAddNodeModal: boolean,
-  traverseNodes: (direction: 'up' | 'down' | 'left' | 'right') => void,
+  traverseNodes: (direction: Direction) => void,
   setShowAddNodeModal: (show: boolean) => void,
 
 }) {
