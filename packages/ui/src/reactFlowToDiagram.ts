@@ -57,5 +57,5 @@ export const reactFlowToDiagram = (flow: SerializedReactFlow): Diagram => {
     }
   })
 
-  return new Diagram(nodes, links)
+  return new Diagram({ nodes, links })
 }

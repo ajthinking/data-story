@@ -49,7 +49,7 @@ describe('JsClient', () => {
   });
 
   it('should execute diagram and handle updates on run', async() => {
-    const diagramMock = new Diagram([], []);
+    const diagramMock = new Diagram();
 
     // Mock the Executor class with the required arguments
     const executorMock = {
@@ -87,7 +87,7 @@ describe('JsClient', () => {
   });
 
   it('should not throw when save is called', async() => {
-    const diagram = new Diagram([], []);
+    const diagram = new Diagram();
 
     await expect(client.save('test', diagram)).resolves.not.toThrow();
   });

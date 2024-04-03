@@ -13,10 +13,10 @@ export const run: MessageHandler<RunMessage> = async (
   // )
 
   // TODO: Implement deserialize method
-  const diagram = new Diagram(
-    data.diagram.nodes,
-    data.diagram.links,
-  )
+  const diagram = new Diagram({
+    nodes: data.diagram.nodes,
+    links: data.diagram.links,
+  })
 
   const storage = new NullStorage()
 
