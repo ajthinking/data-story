@@ -14,9 +14,6 @@ export class SocketClient implements ServerClient {
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    protected setNodes: (nodes: any) => void,
-    protected setEdges: (edges: any) => void,
-    // private setViewport: (viewport: any) => void,
   ) {}
 
   itemsApi = () => {
@@ -121,16 +118,6 @@ export class SocketClient implements ServerClient {
         });
 
         return
-      }
-
-      if(parsed.type === 'OpenResponse') {
-        const flow = parsed.flow;
-
-        // const { x = 0, y = 0, zoom = 1 } = flow.viewport;
-        this.setNodes(flow.nodes || []);
-        this.setEdges(flow.edges || []);
-
-        return;
       }
 
       throw('Unknown message type: ' + parsed.type)
