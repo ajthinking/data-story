@@ -75,16 +75,11 @@ export type StoreSchema = {
   /** Modals */
   openNodeModalId: string | null;
   setOpenNodeModalId: (id: string | null) => void;
-
-  /** Not used/implemented at the moment */
-  flowName: string;
-  setFlowName: (name: string) => void;
 };
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
   // DEFAULTS
   serverConfig: { type: 'SOCKET', url: 'ws://localhost:3100' },
-  flowName: 'untitled',
   rfInstance: undefined,
   nodes: [],
   edges: [],
@@ -102,11 +97,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ serverConfig: config })
 
     console.log('TODO: We should reconnect to the server now...')
-  },
-  setFlowName: (name: string) => {
-    set({
-      flowName: name,
-    });
   },
   onNodesChange: (changes: NodeChange[]) => {
     set({
