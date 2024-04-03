@@ -224,13 +224,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ rfInstance: options.rfInstance })
     get().onInitServer(get().serverConfig)
 
-    if (options.initDiagram) {
-      const diagram = options.initDiagram;
-      const reactFlowObject = ReactFlowFactory.fromDiagram(diagram)
-
-      get().setNodes(reactFlowObject.nodes);
-      get().setEdges(reactFlowObject.edges);
-    }
+    if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
     if (options.callback) {
       const run = () => {
@@ -261,7 +255,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
-        // (viewport) => set({ viewport }),
         app: serverConfig.app
       })
 
@@ -273,9 +266,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
-        (nodes) => set({ nodes }),
-        (edges) => set({ edges }),
-        // (viewport) => set({ viewport }),
       )
 
       set({ server })

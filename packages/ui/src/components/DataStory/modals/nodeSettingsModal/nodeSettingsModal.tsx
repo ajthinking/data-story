@@ -25,10 +25,11 @@ export const NodeSettingsModalContent = () => {
     nodes: state.nodes,
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
-    setNodes: state.setNodes,
+    // setNodes: state.setNodes,
+    updateNode: state.updateNode,
   });
 
-  const { nodes, openNodeModalId, setOpenNodeModalId, setNodes } = useStore(selector, shallow);
+  const { nodes, openNodeModalId, setOpenNodeModalId, updateNode } = useStore(selector, shallow);
   const updateNodeInternals = useUpdateNodeInternals();
 
   const node = nodes.find((node: ReactFlowNode) => node.id === openNodeModalId)!
@@ -54,27 +55,24 @@ export const NodeSettingsModalContent = () => {
       outputs: string,
       params: Record<string, ParamValue>
     }) => {
-      setNodes(
-        nodes.map((n) => {
-          if (n.id === node.id) {
-            // Root level fields
-            const newData = { ...n.data };
-            newData.label = submitted.label;
-            newData.outputs = JSON.parse(submitted.outputs);
+      // Root level fields
+      const newData = { ...node.data };
+      newData.label = submitted.label;
+      newData.outputs = JSON.parse(submitted.outputs);
 
-            // Param fields
-            for (const [key, value] of Object.entries(submitted.params)) {
-              const param = newData.params.find((p) => p.name === key)!;
-              if(param.hasOwnProperty('value')) param.value = value;
-            }
+      // Param fields
+      for (const [key, value] of Object.entries(submitted.params)) {
+        const param = newData.params.find((p) => p.name === key)!;
+        if(param.hasOwnProperty('value')) param.value = value;
+      }
 
-            n.data = newData;
-          }
+      updateNode({
+        ...node,
+        data: newData
+      });
 
-          updateNodeInternals(n.id);
-          return n;
-        })
-      );
+      // Ensure ports are updated
+      updateNodeInternals(node.id);
     })()
 
     close()
