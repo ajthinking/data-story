@@ -52,7 +52,7 @@ export class SocketClient implements ServerClient {
           })
         });
 
-        const items = await promise as any[];
+        const items = await promise as Record<string, unknown>[];
         return items.slice(offset, offset + limit);
       }
     }
