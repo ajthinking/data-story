@@ -19,8 +19,6 @@ export const onMessage = async (
 
   if (parsed.type === 'getItems') {
     const items = storage.items.get(parsed.atNodeId)
-    console.log('storage1111ss', storage.items);
-    console.log('items', items);
     ws.send(JSON.stringify({
       type: 'UpdateStorage',
       items,

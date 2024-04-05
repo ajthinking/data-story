@@ -279,6 +279,12 @@ const TableNodeComponent = ({ id, data }: {
               >
               </div>)
             }
+            {
+              ( isLoadedData && headers.length === 0 && rows.length === 0 )
+              && ( <div className="text-center text-gray-500 p-2">
+                No data
+              </div> )
+            }
           </div>
         </div>
       </div>

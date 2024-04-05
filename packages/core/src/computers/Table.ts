@@ -8,7 +8,6 @@ export const Table: ComputerConfig = {
     while(true) {
       const incoming = input.pull()
 
-      // console.log('incoming', incoming);
       storage!.items.set(
         node.id,
         incoming.map(i => i.value)
