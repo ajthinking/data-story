@@ -9,7 +9,6 @@ export class SocketClient implements ServerClient {
   protected maxReconnectTries = 100;
   protected reconnectTimeout = 1000;
   protected reconnectTries = 0;
-  protected itemStorage = new Map<string, any[]>();
 
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
@@ -42,14 +41,8 @@ export class SocketClient implements ServerClient {
               if(parsed.type === 'UpdateStorage') {
                 const { nodeId, items } = parsed
 
-                this.itemStorage.set(
-                  nodeId,
-                  items
-                )
-                console.log('Updating storage: ', parsed)
                 if (nodeId === atNodeId) {
-                  const currentItems: any[] = this.itemStorage.get(atNodeId) || [];
-                  resolve(currentItems);
+                  resolve(items);
                 }
               }
             } catch(e) {
@@ -58,8 +51,8 @@ export class SocketClient implements ServerClient {
             }
           })
         });
+
         const items = await promise as any[];
-        console.log('items', items);
         return items.slice(offset, offset + limit);
       }
     }
@@ -144,14 +137,14 @@ export class SocketClient implements ServerClient {
         return
       }
 
-      console.log('Unknown message type: ', parsed.type);
-      // throw('Unknown message type: ' + parsed.type)
+      if (parsed.type === 'UpdateStorage') {
+        return;
+      }
+      throw('Unknown message type: ' + parsed.type)
     })
   }
 
   run(diagram: Diagram) {
-    this.itemStorage.clear()
-
     const message = JSON.stringify({
       type: 'run',
       diagram,
