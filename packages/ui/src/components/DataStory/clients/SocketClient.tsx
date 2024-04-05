@@ -28,8 +28,38 @@ export class SocketClient implements ServerClient {
         offset?: number,
 
       }) => {
-        const items: any[] = this.itemStorage.get(atNodeId) || [];
+        const promise = new Promise((resolve, reject) => {
+          const data = JSON.stringify({
+            type: 'getItems',
+            atNodeId,
+          });
+          this.socket!.send(data);
 
+          this.socket?.addEventListener('message', (event) => {
+            try {
+              const parsed = JSON.parse(event.data)
+
+              if(parsed.type === 'UpdateStorage') {
+                const { nodeId, items } = parsed
+
+                this.itemStorage.set(
+                  nodeId,
+                  items
+                )
+                console.log('Updating storage: ', parsed)
+                if (nodeId === atNodeId) {
+                  const currentItems: any[] = this.itemStorage.get(atNodeId) || [];
+                  resolve(currentItems);
+                }
+              }
+            } catch(e) {
+              console.error('Error parsing message', e)
+              reject(e);
+            }
+          })
+        });
+        const items = await promise as any[];
+        console.log('items', items);
         return items.slice(offset, offset + limit);
       }
     }
@@ -66,8 +96,8 @@ export class SocketClient implements ServerClient {
       }
     };
 
-    this.socket.onmessage = ((data) => {
-      const parsed = JSON.parse(data.data)
+    this.socket.onmessage = ((event) => {
+      const parsed = JSON.parse(event.data)
 
       if (parsed.type === 'DescribeResponse') {
         this.setAvailableNodes(parsed.availableNodes)
@@ -81,12 +111,6 @@ export class SocketClient implements ServerClient {
         for(const hook of parsed.hooks as Hook[]) {
           if(hook.type === 'CONSOLE_LOG') {
             console.log(...hook.args)
-          } else if(hook.type === 'TABLE') {
-            const [ nodeId, items ] = hook.args
-            this.itemStorage.set(
-              nodeId,
-              (this.itemStorage.get(nodeId) || []).concat(items)
-            )
           } else if(hook.type === 'UPDATES') {
             const providedCallback = (...data: any) => {
               console.log('THIS IS THE UPDATE HOOK!')
@@ -120,7 +144,8 @@ export class SocketClient implements ServerClient {
         return
       }
 
-      throw('Unknown message type: ' + parsed.type)
+      console.log('Unknown message type: ', parsed.type);
+      // throw('Unknown message type: ' + parsed.type)
     })
   }
 
