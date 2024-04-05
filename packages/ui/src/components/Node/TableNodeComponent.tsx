@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
@@ -122,6 +122,7 @@ const TableNodeComponent = ({ id, data }: {
   const [offset, setOffset] = useState(0)
   const loaderRef = useRef(null);
   const tableRef = useRef<HTMLTableElement>(null);
+  const [isLoadedData, setIsLoadedData] = useState(false);
 
   const selector = (state: StoreSchema) => ({
     server: state.server,
@@ -132,7 +133,7 @@ const TableNodeComponent = ({ id, data }: {
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {
       // Check if the observed entry is intersecting (visible)
-      if (entries[0].isIntersecting && !loading) {
+      if (entries[0].isIntersecting) {
         loadTableData();
       }
     }, { threshold: 0 });
@@ -146,7 +147,7 @@ const TableNodeComponent = ({ id, data }: {
     return () => {
       if (loaderRef.current) observer.disconnect();
     };
-  }, [loading, offset]); // Empty dependency array ensures this effect runs only once on mount
+  }, [offset]); // Empty dependency array ensures this effect runs only once on mount
 
   const getTableRef = () => {
     return tableRef;
@@ -164,7 +165,7 @@ const TableNodeComponent = ({ id, data }: {
     }
   });
 
-  const loadTableData = async() => {
+  const loadTableData = useCallback( async() => {
     if (loading) return;
     setLoading(true);
     const limit = 100
@@ -183,8 +184,9 @@ const TableNodeComponent = ({ id, data }: {
       setOffset(prevOffset => prevOffset + fetchedItems.length)
     }
 
+    setIsLoadedData(true);
     setLoading(false);
-  }
+  }, [id, loading, offset, server]);
 
   let { headers, rows } = new ItemCollection(items).toTable()
 
@@ -229,7 +231,7 @@ const TableNodeComponent = ({ id, data }: {
               <thead>
                 <tr className="bg-gray-200 space-x-8">
                   {
-                    headers.length === 0 &&
+                    !isLoadedData &&
                     <th className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
                       Awaiting data
                     </th>
@@ -259,7 +261,7 @@ const TableNodeComponent = ({ id, data }: {
 
                   </td>))}
                 </tr>))}
-                {items.length === 0 && <tr className="bg-gray-100 hover:bg-gray-200">
+                { !isLoadedData && <tr className="bg-gray-100 hover:bg-gray-200">
                   <td
                     colSpan={6}
                     className="text-center"
@@ -270,11 +272,13 @@ const TableNodeComponent = ({ id, data }: {
                 </tr>}
               </tbody>
             </table>
-            <div
-              ref={loaderRef}
-              className="loading-spinner h-0.5"
-            >
-            </div>
+            {
+              isLoadedData && (<div
+                ref={loaderRef}
+                className="loading-spinner h-0.5"
+              >
+              </div>)
+            }
           </div>
         </div>
       </div>
