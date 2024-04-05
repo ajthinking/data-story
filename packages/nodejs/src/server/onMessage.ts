@@ -1,22 +1,34 @@
 import WebSocket from 'ws';
 import { describe, run } from './messageHandlers'
 import { MessageHandler } from './MessageHandler';
-import { Application } from '@data-story/core';
+import { Application, NullStorage } from '@data-story/core';
 
+const storage = new NullStorage()
 export const onMessage = async (
   ws: WebSocket,
   message: string,
   app: Application,
 ) => {
-  const parsed: { type: string } = JSON.parse(message.toString())
+  const parsed: { type: string } & Record<string, any> = JSON.parse(message.toString())
+  console.log('parsed', parsed.type);
 
   const handlers: Record<string, MessageHandler<any>> = {
     describe,
     run,
   }
 
-  const handler = handlers[parsed.type];
-  if(!handler) throw('Unknown message type: ' + parsed.type)
-
-  await handler(ws, parsed, app)
+  if (parsed.type === 'getItems') {
+    const items = storage.items.get(parsed.atNodeId)
+    console.log('storage1111ss', storage.items);
+    console.log('items', items);
+    ws.send(JSON.stringify({
+      type: 'UpdateStorage',
+      items,
+      nodeId: parsed?.atNodeId,
+    }));
+  } else {
+    const handler = handlers[parsed.type];
+    if(!handler) throw('Unknown message type: ' + parsed.type)
+    await handler(ws, parsed, app, storage)
+  }
 }

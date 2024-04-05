@@ -6,7 +6,8 @@ import { Application, Diagram, Executor, ExecutionResult, ExecutionFailure, Null
 export const run: MessageHandler<RunMessage> = async (
   ws: WebSocket,
   data: RunMessage,
-  app: Application
+  app: Application,
+  storage: NullStorage
 ) => {
   // const diagram = DiagramFactory.fromReactFlow(
   //   data.reactFlow
@@ -17,8 +18,6 @@ export const run: MessageHandler<RunMessage> = async (
     nodes: data.diagram.nodes,
     links: data.diagram.links,
   })
-
-  const storage = new NullStorage()
 
   const executor = new Executor(
     diagram,
