@@ -2,7 +2,6 @@ import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
-import { ItemsApi } from './ItemsApi';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;

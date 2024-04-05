@@ -8,17 +8,11 @@ export const Table: ComputerConfig = {
     while(true) {
       const incoming = input.pull()
 
+      // console.log('incoming', incoming);
       storage!.items.set(
         node.id,
-        (storage!.items.get(node.id) || [])
-          .concat(incoming.map(i => i.value))
+        incoming.map(i => i.value)
       )
-
-      // Old solution kept so Socket server can work
-      hooks.register({
-        type: 'TABLE',
-        args: [ node.id, incoming.map(i => i.value) ]
-      })
 
       yield;
     }
