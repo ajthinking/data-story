@@ -1,5 +1,4 @@
 import { DataStoryProvider } from '../store/store';
-import React from 'react';
 import { ReactFlowProvider } from 'reactflow';
 import { RepeatableInput } from './RepeatableInput';
 import { useForm } from 'react-hook-form';

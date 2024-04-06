@@ -14,7 +14,7 @@ function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: 
   return (
     <input
       type="text"
-      className="text-xs p-2 w-full bg-gray-50"
+      className="text-xs p-2 w-full bg-gray-50 font-mono"
       value={value as string}
       onChange={(e) => {
         setValue(e.target.value)
@@ -39,7 +39,7 @@ const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, on
 
   return (
     <textarea
-      className="text-xs p-2 w-full bg-gray-50 h-16"
+      className="text-xs p-2 w-full bg-gray-50 h-16 font-mono"
       rows={1}
       placeholder="Type here..."
       value={ value as string}

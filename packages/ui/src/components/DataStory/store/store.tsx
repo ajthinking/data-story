@@ -1,5 +1,5 @@
 import { StoreApi, UseBoundStore } from 'zustand';
-import { createWithEqualityFn } from 'zustand/traditional'
+import { createWithEqualityFn } from 'zustand/traditional';
 
 import {
   applyEdgeChanges,
@@ -15,7 +15,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { AbstractPort, Diagram, LinkGuesser, Node, NodeDescription, PositionGuesser, createDataStoryId } from '@data-story/core';
+import { Diagram, LinkGuesser, Node, NodeDescription, createDataStoryId } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -25,6 +25,7 @@ import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
+import { DataStoryCallback } from '../types';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -55,14 +56,14 @@ export type StoreSchema = {
   /** The Server and its config */
   serverConfig: ServerConfig;
   server: null | ServerClient;
-  onInitServer: (server: ServerConfig) => void;
+  initServer: (server: ServerConfig) => void;
 
   /** When DataStory component initializes */
   onInit: (options: {
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
     initDiagram?: Diagram,
-    callback?: (server: any) => void,
+    callback?: DataStoryCallback,
   }) => void;
 
   updateDiagram: (diagram: Diagram) => void;
@@ -192,7 +193,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     rfInstance: ReactFlowInstance,
     server?: ServerConfig,
     initDiagram?: Diagram,
-    callback?: (options: {run: () => void}) => void
+    callback?: DataStoryCallback,
   }) => {
     set({
       serverConfig: options.server || {
@@ -202,7 +203,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     })
 
     set({ rfInstance: options.rfInstance })
-    get().onInitServer(get().serverConfig)
+    get().initServer(get().serverConfig)
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
@@ -228,7 +229,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       get().toDiagram()
     )
   },
-  onInitServer: (serverConfig: ServerConfig) => {
+  initServer: (serverConfig: ServerConfig) => {
     if (serverConfig.type === 'JS') {
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
