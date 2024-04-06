@@ -58,7 +58,6 @@ export default () => {
         initDiagram={isSmallScreen ? smallDiagram : bigDiagram}
         callback={(options) => setTimeout(options.run, 100)}
         hideToolbar={true}
-        hideTabs={true}
       />
     </div>
   );
