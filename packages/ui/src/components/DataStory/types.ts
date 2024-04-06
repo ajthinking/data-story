@@ -5,16 +5,12 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
-export interface WorkbenchProps {
+export type DataStoryProps = {
   server?: ServerConfig
   initDiagram?: Diagram
   callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
-}
-
-export type DataStoryProps = WorkbenchProps & {
-  hideTabs?: boolean
 }
 
 export type FormCommonProps = {

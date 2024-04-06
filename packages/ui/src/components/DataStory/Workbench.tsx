@@ -16,7 +16,7 @@ import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
 import { useHotkeys } from './useHotkeys';
 import TableNodeComponent from '../Node/TableNodeComponent';
-import { WorkbenchProps } from './types';
+import { DataStoryProps } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 
 const nodeTypes = {
@@ -33,7 +33,7 @@ export const Workbench = ({
   callback,
   hideToolbar = false,
   slotComponent,
-}: WorkbenchProps) => {
+}: DataStoryProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     edges: state.edges,
@@ -90,9 +90,6 @@ export const Workbench = ({
           fitView={true}
           fitViewOptions = {{
             padding: 0.25,
-            // minZoom: 0.3,
-            // maxZoom: 2,
-            // duration: 5,
           }}
         >
           <DataStoryControls
