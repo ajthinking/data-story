@@ -1,6 +1,6 @@
-import { Param, StringableParam, get } from '@data-story/core';
+import { StringableParam, get } from '@data-story/core';
 import { useEffect, useState } from 'react';
-import { UseFormRegister, UseFormReturn } from 'react-hook-form';
+import { UseFormReturn } from 'react-hook-form';
 
 // Function to calculate the number of rows based on content
 const calculateRows = (content: string) => {

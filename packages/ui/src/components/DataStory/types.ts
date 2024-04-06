@@ -3,10 +3,12 @@ import { Diagram, Param, RepeatableParam } from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 
+export type DataStoryCallback = (options: {run: () => void}) => void;
+
 export interface WorkbenchProps {
   server?: ServerConfig
   initDiagram?: Diagram
-  callback?: (options: any) => void
+  callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
 }

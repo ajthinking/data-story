@@ -57,7 +57,7 @@ export default () => {
       <DataStory
         // server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
         server={{ type: 'JS', app }}
-        callback={(options: any) => setTimeout(options.run, 100)}
+        callback={(options) => setTimeout(options.run, 100)}
         initDiagram={diagram}
       />
     </div>

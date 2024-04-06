@@ -1,6 +1,5 @@
-import { Param, SelectParam, get } from '@data-story/core';
-import { useEffect, useState } from 'react';
-import { UseFormRegister, UseFormReturn } from 'react-hook-form';
+import { SelectParam } from '@data-story/core';
+import { UseFormReturn } from 'react-hook-form';
 
 export function SelectInput({
   param,
