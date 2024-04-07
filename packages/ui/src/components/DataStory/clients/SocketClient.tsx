@@ -3,29 +3,20 @@ import { ServerClient } from './ServerClient';
 import { Hook } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
-import { delayWhen, Observable, retryWhen, Subject, takeUntil, timer } from 'rxjs';
+import { delayWhen, Observable, retry, retryWhen, Subject, takeUntil, timer } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 export class SocketClient implements ServerClient {
-  protected socket?: WebSocket;
   protected socket$?: WebSocketSubject<any>;
-  protected disconnect$ = new Subject<void>();
-
   protected maxReconnectTries = 100;
   protected reconnectTimeout = 1000;
   protected reconnectTries = 0;
 
-  /**
-   * todo: 1. 检查是否有误 运行内容是否正确
-   * 2. 运行失败
-   *
-   */
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
   ) {
-    // @ts-ignore
-    this.socket$ = new webSocket({
+    this.socket$ = webSocket({
       url: 'ws://localhost:3100',
       openObserver: {
         next: () => {
@@ -63,10 +54,11 @@ export class SocketClient implements ServerClient {
 
       }) => {
         const promise = new Promise((resolve, reject) => {
-          // const msgId = createDataStoryId();
+          const msgId = createDataStoryId();
           this.socketSendMsg({
             type: 'getItems',
             atNodeId,
+            id: msgId,
           });
 
           this.socket$?.pipe()
@@ -76,11 +68,12 @@ export class SocketClient implements ServerClient {
                 console.log('sendMsg', {
                   type: 'getItems',
                   atNodeId,
+                  id: msgId,
                 })
                 if (data.type === 'UpdateStorage') {
                   const { nodeId, items, id } = data
 
-                  if (nodeId === atNodeId) {
+                  if (nodeId === atNodeId && id === msgId) {
                     resolve(items);
                   }
                 }
@@ -98,52 +91,12 @@ export class SocketClient implements ServerClient {
   }
 
   init() {
-    // 把 this.socket 封装成 一个 rxjs 的 observable
-
     this.socket$!.pipe(
-      takeUntil(this.disconnect$),
-      retryWhen(errors =>
-        errors.pipe(
-          delayWhen(() => timer(this.reconnectTimeout)),
-          takeUntil(this.disconnect$)
-        )
-      )
+      retry({count: this.maxReconnectTries, delay: this.reconnectTimeout})
     ).subscribe({
       next: (message) => this.handleMessage(message),
       error: (err) => console.log('WebSocket error: ', err),
     });
-
-    // this.socket = new WebSocket('ws://localhost:3110')
-    //
-    // // Register on open
-    // this.socket.onopen = () => {
-    //   console.log('Connected to server: localhost:3110');
-    //
-    //   // Ask the server to describe capabilites
-    //   this.describe()
-    // };
-    //
-    // // Register on error
-    // this.socket.onerror = (error) => {
-    //   console.log('WebSocket error: ', error);
-    // };
-    //
-    // // Register on close
-    // this.socket.onclose = () => {
-    //   console.log('WebSocket closed.');
-    //
-    //   if (this.reconnectTries < this.maxReconnectTries) {
-    //     setTimeout(() => {
-    //       console.log('Reconnecting...');
-    //       this.reconnectTries++;
-    //       this.init();
-    //     }, this.reconnectTimeout);
-    //   } else {
-    //     console.log('Max reconnect tries reached. Is the server running?');
-    //   }
-    // };
-    //
-    // this.socket.onmessage = this.handleMessage;
   }
 
   private handleMessage(data: Record<string, any>) {

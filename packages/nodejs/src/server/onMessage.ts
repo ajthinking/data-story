@@ -11,7 +11,8 @@ export const onMessage = async (
   message: string,
   app: Application,
 ) => {
-  const parsed: { type: string } & Record<string, any> = JSON.parse(message.toString())
+  const parsed: { type: string } & Record<string, any> = JSON.parse(message);
+  // console.log(parsed);
 
   const handlers: Record<string, MessageHandler<any>> = {
     describe,
@@ -20,6 +21,6 @@ export const onMessage = async (
   }
 
   const handler = handlers[parsed.type];
-  if(!handler) throw('Unknown message type: ' + parsed.type)
+  if(!handler) throw('Unknown message type (server): ' + parsed.type)
   await handler(ws, parsed, app, storage)
 }
