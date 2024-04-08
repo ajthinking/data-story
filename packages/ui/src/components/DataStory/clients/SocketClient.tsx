@@ -1,82 +1,37 @@
-import { createDataStoryId, Diagram, NodeDescription } from '@data-story/core';
+import { createDataStoryId, Diagram, Hook, NodeDescription } from '@data-story/core';
 import { ServerClient } from './ServerClient';
-import { Hook } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
-import { retry } from 'rxjs';
+import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { TableItems } from './ItemsApi';
 
 /**
  * todo:
  * 1. 检查 public, protected, private order - done
- * 2. this.socket$ 在 constructor 中是否正确 wrong place - done
+ * 2. this.socket$ 在 constructor 中是否正确 right place - done
  * 3. 问涛涛我的重构是否正确
- * 4. 解决用户的问题 about signal
- * 5. 解决用户的问题 link count
+ *  3.1 有两个 retry, 需要校验
+ * 4. 解决用户的问题 about signal - done
+ * 5. 解决用户的问题 link count - done
  * 6. solved test case failed
+ * 7. feat: add the 'Run Start' event - done
+ * 8. 突然感觉 no data vs awaiting data 不能区分了
+ * 9. 多次请求 getItems 会有问题
+ * 10. 后端分页
  */
 
 export class SocketClient implements ServerClient {
-  protected socket$?: WebSocketSubject<any>;
+  protected socket$: WebSocketSubject<any>;
+  protected wsObservable: Observable<any>;
   protected maxReconnectTries = 100;
-  protected reconnectTimeout = 1000;
+  protected reconnectTimeoutMs = 1000;
   protected reconnectTries = 0;
 
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-  ) {}
-
-  itemsApi = () => {
-    return {
-      getItems: async ({
-        atNodeId,
-        limit = 10,
-        offset = 0,
-      }: {
-        atNodeId: string,
-        limit?: number,
-        offset?: number,
-
-      }) => {
-        const promise = new Promise((resolve, reject) => {
-          const msgId = createDataStoryId();
-          this.socketSendMsg({
-            type: 'getItems',
-            atNodeId,
-            id: msgId,
-          });
-
-          this.socket$?.pipe()
-            .subscribe({
-              next: (data: Record<string, any>) => {
-                console.log('Data', data);
-                console.log('sendMsg', {
-                  type: 'getItems',
-                  atNodeId,
-                  id: msgId,
-                })
-                if (data.type === 'UpdateStorage') {
-                  const { nodeId, items, id } = data
-
-                  if (nodeId === atNodeId && id === msgId) {
-                    resolve(items ?? []);
-                  }
-                }
-              },
-              error: (err) => {
-                console.error('WebSocket error: ', err)
-              }
-            })
-        });
-
-        const items = await promise as Record<string, unknown>[];
-        return items.slice(offset, offset + limit);
-      }
-    }
-  }
-
-  init() {
+  ) {
     this.socket$ = webSocket({
       url: 'ws://localhost:3100',
       openObserver: {
@@ -88,23 +43,36 @@ export class SocketClient implements ServerClient {
       closeObserver: {
         next: () => {
           console.log('WebSocket closed.');
-          if (this.reconnectTries < this.maxReconnectTries) {
-            setTimeout(() => {
-              console.log('Reconnecting...');
-              this.reconnectTries++;
-              this.init();
-            }, this.reconnectTimeout);
-          } else {
-            console.log('Max reconnect tries reached. Is the server running?');
-          }
         }
       }
     });
 
-    this.socket$!.pipe(
-      retry({count: this.maxReconnectTries, delay: this.reconnectTimeout})
-    ).subscribe({
+    this.wsObservable = this.socket$.pipe(
+      retry({ count: this.maxReconnectTries, delay: this.reconnectTimeoutMs }),
+    )
+  }
+
+  itemsApi = () => {
+    return {
+      getItems: ({
+        atNodeId,
+        limit = 10,
+        offset = 0,
+      }: TableItems) => {
+        const msgId = createDataStoryId();
+        this.socketSendMsg({
+          type: 'getItems',
+          atNodeId,
+          id: msgId,
+        });
+      }
+    }
+  }
+
+  init() {
+    this.wsObservable.subscribe({
       next: (message) => this.handleMessage(message),
+      // Called if at any point WebSocket API signals some kind of error
       error: (err) => console.log('WebSocket error: ', err),
     });
   }
@@ -138,6 +106,7 @@ export class SocketClient implements ServerClient {
 
     this.socketSendMsg(message);
   }
+
   private handleMessage(data: Record<string, any>) {
     if (!data) {
       return;
@@ -194,7 +163,7 @@ export class SocketClient implements ServerClient {
     throw ('Unknown message type (client): ' + data.type)
   }
 
-  private socketSendMsg(message: Record<string,unknown>) {
+  private socketSendMsg(message: Record<string, unknown>) {
     this.socket$!.next(message);
   }
 
