@@ -10,7 +10,7 @@ export const Table: ComputerConfig = {
 
       storage!.items.set(
         node.id,
-        incoming.map(i => i.value)
+        (storage?.items.get(node.id) || []).concat(incoming.map(i => i.value))
       )
 
       yield;
