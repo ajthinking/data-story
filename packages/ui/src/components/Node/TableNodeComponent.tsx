@@ -122,7 +122,7 @@ const TableNodeComponent = ({ id, data }: {
   const [offset, setOffset] = useState(0)
   const loaderRef = useRef(null);
   const tableRef = useRef<HTMLTableElement>(null);
-  const [isLoadedData, setIsLoadedData] = useState(false);
+  const [isExecuteRun, setIsExecuteRun] = useState(false);
 
   const selector = (state: StoreSchema) => ({
     server: state.server,
@@ -157,11 +157,13 @@ const TableNodeComponent = ({ id, data }: {
   useDataStoryEvent((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {
       setItems([])
-      setOffset(0)
+      setOffset(0);
+      setIsExecuteRun(false);
     }
 
     if (event.type === DataStoryEvents.RUN_SUCCESS) {
       loadTableData();
+      setIsExecuteRun(true);
     }
   });
 
@@ -184,7 +186,6 @@ const TableNodeComponent = ({ id, data }: {
       setOffset(prevOffset => prevOffset + fetchedItems.length)
     }
 
-    setIsLoadedData(true);
     setLoading(false);
   }, [id, loading, offset, server]);
 
@@ -231,7 +232,7 @@ const TableNodeComponent = ({ id, data }: {
               <thead>
                 <tr className="bg-gray-200 space-x-8">
                   {
-                    !isLoadedData &&
+                    !isExecuteRun &&
                     <th className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
                       Awaiting data
                     </th>
@@ -261,7 +262,7 @@ const TableNodeComponent = ({ id, data }: {
 
                   </td>))}
                 </tr>))}
-                { !isLoadedData && <tr className="bg-gray-100 hover:bg-gray-200">
+                { !isExecuteRun && <tr className="bg-gray-100 hover:bg-gray-200">
                   <td
                     colSpan={6}
                     className="text-center"
@@ -273,14 +274,14 @@ const TableNodeComponent = ({ id, data }: {
               </tbody>
             </table>
             {
-              isLoadedData && (<div
+              isExecuteRun && (<div
                 ref={loaderRef}
                 className="loading-spinner h-0.5"
               >
               </div>)
             }
             {
-              ( isLoadedData && headers.length === 0 && rows.length === 0 )
+              ( isExecuteRun && headers.length === 0 && rows.length === 0 )
               && ( <div className="text-center text-gray-500 p-2">
                 No data
               </div> )
