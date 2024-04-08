@@ -60,7 +60,7 @@ export class SocketClient implements ServerClient {
                   const { nodeId, items, id } = data
 
                   if (nodeId === atNodeId && id === msgId) {
-                    resolve(items);
+                    resolve(items ?? []);
                   }
                 }
               },
@@ -116,6 +116,9 @@ export class SocketClient implements ServerClient {
     };
 
     this.socketSendMsg(message);
+    eventManager.emit({
+      type: DataStoryEvents.RUN_START
+    });
   }
 
   async save(name: string, diagram: Diagram) {

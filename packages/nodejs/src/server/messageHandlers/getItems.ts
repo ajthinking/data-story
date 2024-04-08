@@ -9,7 +9,7 @@ export const getItems:  MessageHandler<GetItemsMessage> = async (
   app: Application,
   storage: NullStorage
 )  => {
-  const items = storage.items.get(parsed.atNodeId)
+  const items = storage.items.get(parsed.atNodeId) ?? [];
 
   ws.send(JSON.stringify({
     type: 'UpdateStorage',
