@@ -17,8 +17,8 @@ import { TableItems } from './ItemsApi';
  * 6. solved test case failed
  * 7. feat: add the 'Run Start' event - done
  * 8. 突然感觉 no data vs awaiting data 不能区分了
- * 9. 多次请求 getItems 会有问题
- * 10. 后端分页
+ * 9. 多次请求 getItems 会有问题 - done
+ * 10. 后端分页 - done
  */
 
 export class SocketClient implements ServerClient {
@@ -63,13 +63,15 @@ export class SocketClient implements ServerClient {
           type: 'getItems',
           atNodeId,
           id: msgId,
+          limit,
+          offset,
         });
 
         return firstValueFrom(this.wsObservable.pipe(
           filter(it => it.type === 'UpdateStorage' && it.id === msgId),
           map(it => {
-            console.log('getItems', it.items.slice(offset, offset + limit));
-            return it.items.slice(offset, offset + limit);
+            console.log('getItems', it.items);
+            return it.items;
           }),
           // handle timeout and retry
           timeout(10000),
