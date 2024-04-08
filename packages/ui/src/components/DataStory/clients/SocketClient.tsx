@@ -3,8 +3,18 @@ import { ServerClient } from './ServerClient';
 import { Hook } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
-import { delayWhen, Observable, retry, retryWhen, Subject, takeUntil, timer } from 'rxjs';
+import { retry } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+
+/**
+ * todo:
+ * 1. 检查 public, protected, private order - done
+ * 2. this.socket$ 在 constructor 中是否正确 wrong place - done
+ * 3. 问涛涛我的重构是否正确
+ * 4. 解决用户的问题 about signal
+ * 5. 解决用户的问题 link count
+ * 6. solved test case failed
+ */
 
 export class SocketClient implements ServerClient {
   protected socket$?: WebSocketSubject<any>;
@@ -15,31 +25,7 @@ export class SocketClient implements ServerClient {
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-  ) {
-    this.socket$ = webSocket({
-      url: 'ws://localhost:3100',
-      openObserver: {
-        next: () => {
-          console.log('Connected to server: localhost:3100');
-          this.describe()
-        }
-      },
-      closeObserver: {
-        next: () => {
-          console.log('WebSocket closed.');
-          if (this.reconnectTries < this.maxReconnectTries) {
-            setTimeout(() => {
-              console.log('Reconnecting...');
-              this.reconnectTries++;
-              this.init();
-            }, this.reconnectTimeout);
-          } else {
-            console.log('Max reconnect tries reached. Is the server running?');
-          }
-        }
-      }
-    });
-  }
+  ) {}
 
   itemsApi = () => {
     return {
@@ -91,6 +77,30 @@ export class SocketClient implements ServerClient {
   }
 
   init() {
+    this.socket$ = webSocket({
+      url: 'ws://localhost:3100',
+      openObserver: {
+        next: () => {
+          console.log('Connected to server: localhost:3100');
+          this.describe()
+        }
+      },
+      closeObserver: {
+        next: () => {
+          console.log('WebSocket closed.');
+          if (this.reconnectTries < this.maxReconnectTries) {
+            setTimeout(() => {
+              console.log('Reconnecting...');
+              this.reconnectTries++;
+              this.init();
+            }, this.reconnectTimeout);
+          } else {
+            console.log('Max reconnect tries reached. Is the server running?');
+          }
+        }
+      }
+    });
+
     this.socket$!.pipe(
       retry({count: this.maxReconnectTries, delay: this.reconnectTimeout})
     ).subscribe({
@@ -99,6 +109,32 @@ export class SocketClient implements ServerClient {
     });
   }
 
+  run(diagram: Diagram) {
+    const message = {
+      type: 'run',
+      diagram,
+    };
+
+    this.socketSendMsg(message);
+  }
+
+  async save(name: string, diagram: Diagram) {
+    const message = {
+      type: 'save',
+      name,
+      diagram
+    }
+
+    this.socketSendMsg(message);
+  }
+
+  protected describe() {
+    const message = {
+      type: 'describe',
+    }
+
+    this.socketSendMsg(message);
+  }
   private handleMessage(data: Record<string, any>) {
     if (!data) {
       return;
@@ -159,30 +195,4 @@ export class SocketClient implements ServerClient {
     this.socket$!.next(message);
   }
 
-  run(diagram: Diagram) {
-    const message = {
-      type: 'run',
-      diagram,
-    };
-
-    this.socketSendMsg(message);
-  }
-
-  async save(name: string, diagram: Diagram) {
-    const message = {
-      type: 'save',
-      name,
-      diagram
-    }
-
-    this.socketSendMsg(message);
-  }
-
-  protected describe() {
-    const message = {
-      type: 'describe',
-    }
-
-    this.socketSendMsg(message);
-  }
 }

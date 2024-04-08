@@ -15,5 +15,6 @@ export const getItems:  MessageHandler<GetItemsMessage> = async (
     type: 'UpdateStorage',
     items,
     nodeId: parsed?.atNodeId,
+    id: parsed?.id,
   }));
 };
