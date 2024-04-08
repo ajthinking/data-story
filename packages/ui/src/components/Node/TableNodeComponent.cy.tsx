@@ -3,6 +3,8 @@ import * as store from '../DataStory/store/store';
 import { DataStoryProvider } from '../DataStory/store/store';
 import { ReactFlowProvider } from 'reactflow';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
+import { eventManager } from '../DataStory/events/eventManager';
+import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
 
 const data = {
   'params': [],
@@ -26,7 +28,16 @@ const mountTableNodeComponent = () => {
         <TableNodeComponent id={id} data={data} selected={false}/>
       </ReactFlowProvider>
     </DataStoryProvider>
-  );
+  )
+
+  cy.dataCy('data-story-table')
+    .then(() => {
+      cy.wait(10).then(() => {
+        eventManager.emit({
+          type: DataStoryEvents.RUN_SUCCESS
+        });
+      })
+    })
 }
 
 let testPerformanceLimit = 20;

@@ -6,21 +6,6 @@ import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } f
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { TableItems } from './ItemsApi';
 
-/**
- * todo:
- * 1. 检查 public, protected, private order - done
- * 2. this.socket$ 在 constructor 中是否正确 right place - done
- * 3. 问涛涛我的重构是否正确
- *  3.1 有两个 retry, 需要校验 - done
- * 4. 解决用户的问题 about signal - done
- * 5. 解决用户的问题 link count - done
- * 6. solved test case failed
- * 7. feat: add the 'Run Start' event - done
- * 8. 突然感觉 no data vs awaiting data 不能区分了
- * 9. 多次请求 getItems 会有问题 - done
- * 10. 后端分页 - done
- */
-
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
   protected wsObservable: Observable<any>;
