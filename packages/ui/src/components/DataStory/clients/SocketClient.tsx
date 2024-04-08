@@ -65,6 +65,17 @@ export class SocketClient implements ServerClient {
           atNodeId,
           id: msgId,
         });
+
+        return firstValueFrom(this.wsObservable.pipe(
+          filter(it => it.type === 'UpdateStorage' && it.id === msgId),
+          map(it => it.items.slice(offset, offset + limit)),
+          timeout(1000),
+          retry({ count: 3, delay: 1000 }),
+          catchError((err) => {
+            console.error('Error in getItems', err);
+            throw err;
+          })
+        ))
       }
     }
   }
