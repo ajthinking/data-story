@@ -11,7 +11,7 @@ import { TableItems } from './ItemsApi';
  * 1. 检查 public, protected, private order - done
  * 2. this.socket$ 在 constructor 中是否正确 right place - done
  * 3. 问涛涛我的重构是否正确
- *  3.1 有两个 retry, 需要校验
+ *  3.1 有两个 retry, 需要校验 - done
  * 4. 解决用户的问题 about signal - done
  * 5. 解决用户的问题 link count - done
  * 6. solved test case failed
@@ -26,7 +26,6 @@ export class SocketClient implements ServerClient {
   protected wsObservable: Observable<any>;
   protected maxReconnectTries = 100;
   protected reconnectTimeoutMs = 1000;
-  protected reconnectTries = 0;
 
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
@@ -68,9 +67,13 @@ export class SocketClient implements ServerClient {
 
         return firstValueFrom(this.wsObservable.pipe(
           filter(it => it.type === 'UpdateStorage' && it.id === msgId),
-          map(it => it.items.slice(offset, offset + limit)),
-          timeout(1000),
-          retry({ count: 3, delay: 1000 }),
+          map(it => {
+            console.log('getItems', it.items.slice(offset, offset + limit));
+            return it.items.slice(offset, offset + limit);
+          }),
+          // handle timeout and retry
+          timeout(10000),
+          retry({ count: 3, delay: 10000 }),
           catchError((err) => {
             console.error('Error in getItems', err);
             throw err;
