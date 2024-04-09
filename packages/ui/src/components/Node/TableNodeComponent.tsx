@@ -154,21 +154,22 @@ const TableNodeComponent = ({ id, data }: {
   }
   const input = data.inputs[0]
 
-  useDataStoryEvent((event: DataStoryEventType) => {
+  const dataStoryEvent = useCallback((event: DataStoryEventType) => {
+    console.log(event, 'table component event')
     if (event.type === DataStoryEvents.RUN_START) {
       setItems([])
       setOffset(0);
-      setIsExecuteRun(false);
     }
 
     if (event.type === DataStoryEvents.RUN_SUCCESS) {
       loadTableData();
-      setIsExecuteRun(true);
     }
-  });
+  }, [])
+  useDataStoryEvent(dataStoryEvent);
 
   const loadTableData = useCallback( async() => {
     if (loading) return;
+    setIsExecuteRun(false);
     setLoading(true);
     const limit = 100
 
@@ -181,13 +182,15 @@ const TableNodeComponent = ({ id, data }: {
       offset,
     })
 
+    console.log(fetchedItems, 'fetchedItems', items, 'items');
     if (fetchedItems && fetchedItems.length > 0) {
       setItems(prevItems => [...prevItems, ...fetchedItems]);
       setOffset(prevOffset => prevOffset + fetchedItems.length)
     }
 
     setLoading(false);
-  }, [id, loading, offset, server]);
+    setIsExecuteRun(true);
+  }, [id, items, loading, offset, server]);
 
   let { headers, rows } = new ItemCollection(items).toTable()
 
@@ -266,7 +269,6 @@ const TableNodeComponent = ({ id, data }: {
                   <td
                     colSpan={6}
                     className="text-center"
-                    onClick={loadTableData}
                   >
                   Load initial data...
                   </td>
