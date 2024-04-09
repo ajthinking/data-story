@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
@@ -11,11 +11,13 @@ import {
   flip,
   FloatingPortal,
   offset,
-  shift, useClick,
+  shift,
+  useClick,
   useFloating,
   useInteractions,
   useRole
 } from '@floating-ui/react';
+import { useIntersectionObserver } from './UseIntersectionObserver';
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
@@ -26,12 +28,12 @@ const formatTooltipContent = (content: unknown) => {
   try {
     JSON.parse(content as string);
     return JSON.stringify(JSON.parse(content as string), null, 2);
-  } catch (e) {
+  } catch(e) {
     return content;
   }
 }
 
-function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
+function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
   const { content = '', getTableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
   const cellRef = useRef<HTMLDivElement>(null);
@@ -130,48 +132,14 @@ const TableNodeComponent = ({ id, data }: {
 
   const { server } = useStore(selector, shallow);
 
-  useLayoutEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      // Check if the observed entry is intersecting (visible)
-      if (entries[0].isIntersecting) {
-        loadTableData();
-      }
-    }, { threshold: 0 });
-
-    console.log(loaderRef.current, 'loaderRef');
-    console.log(observer.observe, 'observer.observe');
-    // Observe the loader div
-    if (loaderRef.current) {
-      observer.disconnect();
-      observer.observe(loaderRef.current);
-    }
-
-    // Cleanup observer on component unmount
-    return () => {
-      if (loaderRef.current) observer.disconnect();
-    };
-  }, [offset]); // Empty dependency array ensures this effect runs only once on mount
-
   const getTableRef = () => {
     return tableRef;
   }
   const input = data.inputs[0]
 
-  const dataStoryEvent = useCallback((event: DataStoryEventType) => {
-    console.log(event, 'table component event')
-    if (event.type === DataStoryEvents.RUN_START) {
-      setItems([])
-      setOffset(0);
-    }
-
-    if (event.type === DataStoryEvents.RUN_SUCCESS) {
-      loadTableData();
-    }
-  }, [])
-  useDataStoryEvent(dataStoryEvent);
-
-  const loadTableData = useCallback( async() => {
-    if (loading && total === offset) return;
+  const loadTableData = useCallback(async() => {
+    console.log(total, 'total', offset, 'offset');
+    if (loading || total === offset) return;
     setIsExecuteRun(false);
     setLoading(true);
     const limit = 10
@@ -179,7 +147,7 @@ const TableNodeComponent = ({ id, data }: {
     const itemsApi = server!.itemsApi
     if (!itemsApi) return;
 
-    const {items: fetchedItems, total: fetchedTotal} = await itemsApi()?.getItems({
+    const { items: fetchedItems, total: fetchedTotal } = await itemsApi()?.getItems({
       atNodeId: id,
       limit,
       offset,
@@ -196,6 +164,21 @@ const TableNodeComponent = ({ id, data }: {
     setTotal(fetchedTotal);
   }, [id, items, loading, offset, server, total]);
 
+  const dataStoryEvent = useCallback((event: DataStoryEventType) => {
+    console.log(event, 'table component event')
+    if (event.type === DataStoryEvents.RUN_START) {
+      setItems([])
+      setOffset(0);
+    }
+
+    if (event.type === DataStoryEvents.RUN_SUCCESS) {
+      loadTableData();
+    }
+  }, []);
+
+  // todo: callback ref
+  useDataStoryEvent(dataStoryEvent);
+  useIntersectionObserver(loaderRef.current!, loadTableData);
   let { headers, rows } = new ItemCollection(items).toTable()
 
   if (items.length === 0) {
@@ -240,9 +223,10 @@ const TableNodeComponent = ({ id, data }: {
                 <tr className="bg-gray-200 space-x-8">
                   {
                     !isExecuteRun &&
-                    <th className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
-                      Awaiting data
-                    </th>
+                  <th
+                    className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
+                    Awaiting data
+                  </th>
                   }
                   {
                     headers.map(header => (<th
@@ -269,7 +253,7 @@ const TableNodeComponent = ({ id, data }: {
 
                   </td>))}
                 </tr>))}
-                { !isExecuteRun && <tr className="bg-gray-100 hover:bg-gray-200">
+                {!isExecuteRun && <tr className="bg-gray-100 hover:bg-gray-200">
                   <td
                     colSpan={6}
                     className="text-center"
@@ -282,16 +266,16 @@ const TableNodeComponent = ({ id, data }: {
             {
               (<div
                 ref={loaderRef}
-                style={{display: isExecuteRun ? 'block' : 'none'}}
+                style={{ display: isExecuteRun ? 'block' : 'none' }}
                 className="loading-spinner h-0.5"
               >
               </div>)
             }
             {
-              ( isExecuteRun && headers.length === 0 && rows.length === 0 )
-              && ( <div className="text-center text-gray-500 p-2">
+              (isExecuteRun && headers.length === 0 && rows.length === 0)
+              && (<div className="text-center text-gray-500 p-2">
                 No data
-              </div> )
+              </div>)
             }
           </div>
         </div>
