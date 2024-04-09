@@ -5,5 +5,8 @@ export interface TableItems {
 }
 
 export interface ItemsApi {
-  getItems: (options: TableItems) => Promise<any[]>;
+  getItems: (options: TableItems) => Promise<{
+    items: {}[],
+    total: number,
+  }>;
 }

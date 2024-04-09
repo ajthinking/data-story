@@ -17,5 +17,6 @@ export const getItems:  MessageHandler<GetItemsMessage> = async (
     items: items.slice(offset, limit + offset),
     nodeId: atNodeId,
     id: id,
+    total: items.length,
   }));
 };

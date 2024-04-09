@@ -56,11 +56,14 @@ export class SocketClient implements ServerClient {
           filter(it => it.type === 'UpdateStorage' && it.id === msgId),
           map(it => {
             console.log('getItems', it.items);
-            return it.items;
+            return {
+              items: it.items,
+              total: it.total,
+            };
           }),
           // handle timeout and retry
-          timeout(10000),
-          retry({ count: 3, delay: 10000 }),
+          timeout(100000),
+          retry({ count: 3, delay: this.reconnectTimeoutMs }),
           catchError((err) => {
             console.error('Error in getItems', err);
             throw err;

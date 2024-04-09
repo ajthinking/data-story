@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
@@ -123,14 +123,14 @@ const TableNodeComponent = ({ id, data }: {
   const loaderRef = useRef(null);
   const tableRef = useRef<HTMLTableElement>(null);
   const [isExecuteRun, setIsExecuteRun] = useState(false);
-
+  const [total, setTotal] = useState(0);
   const selector = (state: StoreSchema) => ({
     server: state.server,
   });
 
   const { server } = useStore(selector, shallow);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const observer = new IntersectionObserver(entries => {
       // Check if the observed entry is intersecting (visible)
       if (entries[0].isIntersecting) {
@@ -138,8 +138,11 @@ const TableNodeComponent = ({ id, data }: {
       }
     }, { threshold: 0 });
 
+    console.log(loaderRef.current, 'loaderRef');
+    console.log(observer.observe, 'observer.observe');
     // Observe the loader div
     if (loaderRef.current) {
+      observer.disconnect();
       observer.observe(loaderRef.current);
     }
 
@@ -168,15 +171,15 @@ const TableNodeComponent = ({ id, data }: {
   useDataStoryEvent(dataStoryEvent);
 
   const loadTableData = useCallback( async() => {
-    if (loading) return;
+    if (loading && total === offset) return;
     setIsExecuteRun(false);
     setLoading(true);
-    const limit = 100
+    const limit = 10
 
     const itemsApi = server!.itemsApi
     if (!itemsApi) return;
 
-    const fetchedItems = await itemsApi()?.getItems({
+    const {items: fetchedItems, total: fetchedTotal} = await itemsApi()?.getItems({
       atNodeId: id,
       limit,
       offset,
@@ -190,7 +193,8 @@ const TableNodeComponent = ({ id, data }: {
 
     setLoading(false);
     setIsExecuteRun(true);
-  }, [id, items, loading, offset, server]);
+    setTotal(fetchedTotal);
+  }, [id, items, loading, offset, server, total]);
 
   let { headers, rows } = new ItemCollection(items).toTable()
 
@@ -276,8 +280,9 @@ const TableNodeComponent = ({ id, data }: {
               </tbody>
             </table>
             {
-              isExecuteRun && (<div
+              (<div
                 ref={loaderRef}
+                style={{display: isExecuteRun ? 'block' : 'none'}}
                 className="loading-spinner h-0.5"
               >
               </div>)

@@ -4,4 +4,5 @@ export type GetItemsMessage = {
   id: string,
   offset?: number,
   limit?: number,
+  total?: number,
 }
