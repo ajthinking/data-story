@@ -138,10 +138,10 @@ const TableNodeComponent = ({ id, data }: {
   const input = data.inputs[0]
 
   const loadTableData = useCallback(async() => {
-    if (loading || total === offset) return;
+    if (loading || (total === offset && offset !== 0)) return;
     setIsExecuteRun(false);
     setLoading(true);
-    const limit = 10
+    const limit = 100
 
     const itemsApi = server!.itemsApi
     if (!itemsApi) return;
