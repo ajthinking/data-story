@@ -33,7 +33,7 @@ export const NodeFactory = {
   ): Node {
     const id = `${nodeDescription.name}.${createDataStoryId()}`;
 
-    return {
+    return structuredClone({
       id,
       type: nodeDescription.name,
       docs: nodeDescription.docs,
@@ -54,6 +54,6 @@ export const NodeFactory = {
       }),
       params: nodeDescription.params || [],
       position: new PositionGuesser(diagram).guess(nodeDescription),
-    }
+    })
   }
 }
