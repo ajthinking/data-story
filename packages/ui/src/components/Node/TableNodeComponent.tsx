@@ -124,7 +124,7 @@ const TableNodeComponent = ({ id, data }: {
   const [offset, setOffset] = useState(0)
   const loaderRef = useRef(null);
   const tableRef = useRef<HTMLTableElement>(null);
-  const [isExecuteRun, setIsExecuteRun] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
   const [total, setTotal] = useState(0);
   const selector = (state: StoreSchema) => ({
     server: state.server,
@@ -139,7 +139,6 @@ const TableNodeComponent = ({ id, data }: {
 
   const loadTableData = useCallback(async() => {
     if (loading || (total === offset && offset !== 0)) return;
-    setIsExecuteRun(false);
     setLoading(true);
     const limit = 100
 
@@ -158,7 +157,6 @@ const TableNodeComponent = ({ id, data }: {
     }
 
     setLoading(false);
-    setIsExecuteRun(true);
     setTotal(fetchedTotal);
   }, [id, loading, offset, server, total]);
 
@@ -166,10 +164,12 @@ const TableNodeComponent = ({ id, data }: {
     if (event.type === DataStoryEvents.RUN_START) {
       setItems([])
       setOffset(0);
+      setIsRunning(false);
     }
 
     if (event.type === DataStoryEvents.RUN_SUCCESS) {
       loadTableData();
+      setIsRunning(true);
     }
   }, []);
 
@@ -218,7 +218,7 @@ const TableNodeComponent = ({ id, data }: {
               <thead>
                 <tr className="bg-gray-200 space-x-8">
                   {
-                    !isExecuteRun &&
+                    !isRunning &&
                   <th
                     className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
                     Awaiting data
@@ -249,7 +249,7 @@ const TableNodeComponent = ({ id, data }: {
 
                   </td>))}
                 </tr>))}
-                {!isExecuteRun && <tr className="bg-gray-100 hover:bg-gray-200">
+                {!isRunning && <tr className="bg-gray-100 hover:bg-gray-200">
                   <td
                     colSpan={6}
                     className="text-center"
@@ -262,13 +262,13 @@ const TableNodeComponent = ({ id, data }: {
             {
               (<div
                 ref={loaderRef}
-                style={{ display: isExecuteRun ? 'block' : 'none' }}
+                style={{ display: isRunning ? 'block' : 'none' }}
                 className="loading-spinner h-0.5"
               >
               </div>)
             }
             {
-              (isExecuteRun && headers.length === 0 && rows.length === 0)
+              (isRunning && headers.length === 0 && rows.length === 0)
               && (<div className="text-center text-gray-500 p-2">
                 No data
               </div>)

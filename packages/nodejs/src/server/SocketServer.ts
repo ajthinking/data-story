@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import { onMessage } from './onMessage';
-import { Application } from '@data-story/core';
+import { Application, NullStorage } from '@data-story/core';
 
 interface SocketServerOptions {
   app: Application;
@@ -21,7 +21,8 @@ export class SocketServer {
     this.wsServer = new WebSocket.Server({ port: this.port });
 
     this.wsServer.on('connection', (ws) => {
-      ws.on('message', (msg: string) => onMessage(ws, msg, this.app));
+      const storage = new NullStorage();
+      ws.on('message', (msg: string) => onMessage(ws, msg, this.app, storage));
 
       ws.on('close', () => {
         console.log('Client disconnected 😢');

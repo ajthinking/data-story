@@ -4,12 +4,11 @@ import { MessageHandler } from './MessageHandler';
 import { Application, NullStorage } from '@data-story/core';
 import { getItems } from './messageHandlers/getItems';
 
-const storage = new NullStorage()
-
 export const onMessage = async (
   ws: WebSocket,
   message: string,
   app: Application,
+  storage: NullStorage
 ) => {
   const parsed: { type: string } & Record<string, any> = JSON.parse(message);
   // console.log(parsed);
