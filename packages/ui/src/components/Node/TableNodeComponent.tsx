@@ -138,7 +138,6 @@ const TableNodeComponent = ({ id, data }: {
   const input = data.inputs[0]
 
   const loadTableData = useCallback(async() => {
-    console.log(total, 'total', offset, 'offset');
     if (loading || total === offset) return;
     setIsExecuteRun(false);
     setLoading(true);
@@ -153,7 +152,6 @@ const TableNodeComponent = ({ id, data }: {
       offset,
     })
 
-    console.log(fetchedItems, 'fetchedItems', items, 'items');
     if (fetchedItems && fetchedItems.length > 0) {
       setItems(prevItems => [...prevItems, ...fetchedItems]);
       setOffset(prevOffset => prevOffset + fetchedItems.length)
@@ -162,7 +160,7 @@ const TableNodeComponent = ({ id, data }: {
     setLoading(false);
     setIsExecuteRun(true);
     setTotal(fetchedTotal);
-  }, [id, items, loading, offset, server, total]);
+  }, [id, loading, offset, server, total]);
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     console.log(event, 'table component event')
@@ -176,7 +174,6 @@ const TableNodeComponent = ({ id, data }: {
     }
   }, []);
 
-  // todo: callback ref
   useDataStoryEvent(dataStoryEvent);
   useIntersectionObserver(loaderRef.current!, loadTableData);
   let { headers, rows } = new ItemCollection(items).toTable()
