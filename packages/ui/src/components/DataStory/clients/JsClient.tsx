@@ -2,6 +2,7 @@ import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
+import { TableItems } from './ItemsApi';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
@@ -29,20 +30,18 @@ export class JsClient implements ServerClient {
         atNodeId,
         limit = 10,
         offset = 0,
-      }: {
-        atNodeId: string,
-        limit?: number,
-        offset?: number,
-
-      }) => {
-        if(!this.executor) return []
+      }: TableItems) => {
+        if(!this.executor) return { items: [], total: 0 };
 
         const items = this.executor.storage.items.get(atNodeId) || [];
 
-        return items.slice(offset, offset + limit);
+        return {
+          items: items.slice(offset, offset + limit),
+          total: items.length,
+        };
       }
     }
-  }
+  };
 
   init () {
     this.setAvailableNodes(this.app.descriptions())
