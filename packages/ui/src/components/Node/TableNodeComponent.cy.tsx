@@ -53,7 +53,10 @@ const mockGetItems = (items: unknown[]): void => {
             limit = testPerformanceLimit,
             offset = 0
           }) => {
-            return items.slice(offset, offset + testPerformanceLimit)
+            return {
+              items: items.slice(offset, offset + testPerformanceLimit),
+              total: items.length
+            };
           }
 
           return {
@@ -134,7 +137,7 @@ describe('test TableNodeComponent for table', () => {
 
     const headerLength = Object.keys(normal).length;
 
-    cy.dataCy('data-story-table-th').should('have.length',headerLength);
+    cy.dataCy('data-story-table-th').should('have.length', headerLength);
     cy.dataCy('data-story-table-row').should('have.length', 1);
   });
 

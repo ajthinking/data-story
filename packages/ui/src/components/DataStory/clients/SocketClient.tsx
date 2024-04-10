@@ -55,7 +55,6 @@ export class SocketClient implements ServerClient {
         return firstValueFrom(this.wsObservable.pipe(
           filter(it => it.type === 'UpdateStorage' && it.id === msgId),
           map(it => {
-            console.log('getItems', it.items);
             return {
               items: it.items,
               total: it.total,

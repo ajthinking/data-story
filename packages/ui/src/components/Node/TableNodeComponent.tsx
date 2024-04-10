@@ -163,7 +163,6 @@ const TableNodeComponent = ({ id, data }: {
   }, [id, loading, offset, server, total]);
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
-    console.log(event, 'table component event')
     if (event.type === DataStoryEvents.RUN_START) {
       setItems([])
       setOffset(0);
