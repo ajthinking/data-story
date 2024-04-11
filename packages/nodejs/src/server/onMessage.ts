@@ -1,17 +1,16 @@
 import WebSocket from 'ws';
 import { describe, run } from './messageHandlers'
 import { MessageHandler } from './MessageHandler';
-import { Application, NullStorage } from '@data-story/core';
+import { Application, InMemoryStorage } from '@data-story/core';
 import { getItems } from './messageHandlers/getItems';
 
 export const onMessage = async (
   ws: WebSocket,
   message: string,
   app: Application,
-  storage: NullStorage
+  storage: InMemoryStorage
 ) => {
   const parsed: { type: string } & Record<string, any> = JSON.parse(message);
-  // console.log(parsed);
 
   const handlers: Record<string, MessageHandler<any>> = {
     describe,

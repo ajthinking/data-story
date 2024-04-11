@@ -1,8 +1,8 @@
-import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@data-story/core';
+import { Application, Diagram, Executor, NodeDescription, InMemoryStorage, } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
-import { TableItems } from './ItemsApi';
+import { ItemsOptions } from './ItemsApi';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
@@ -30,7 +30,7 @@ export class JsClient implements ServerClient {
         atNodeId,
         limit = 10,
         offset = 0,
-      }: TableItems) => {
+      }: ItemsOptions) => {
         if(!this.executor) return { items: [], total: 0 };
 
         const items = this.executor.storage.items.get(atNodeId) || [];
@@ -54,7 +54,7 @@ export class JsClient implements ServerClient {
       type: DataStoryEvents.RUN_START
     });
 
-    const storage = new NullStorage()
+    const storage = new InMemoryStorage()
 
     this.executor = new Executor(
       diagram,

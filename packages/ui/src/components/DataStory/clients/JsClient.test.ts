@@ -10,7 +10,7 @@ vi.mock('@data-story/core', () => {
       execute: vi.fn(),
     })),
     Diagram: vi.fn(),
-    NullStorage: vi.fn(),
+    InMemoryStorage: vi.fn(),
   };
 });
 

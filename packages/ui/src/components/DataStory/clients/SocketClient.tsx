@@ -4,7 +4,7 @@ import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { TableItems } from './ItemsApi';
+import { ItemsOptions, ItemsResponse } from './ItemsApi';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
@@ -42,7 +42,7 @@ export class SocketClient implements ServerClient {
         atNodeId,
         limit = 10,
         offset = 0,
-      }: TableItems) => {
+      }: ItemsOptions) => {
         const msgId = createDataStoryId();
         this.socketSendMsg({
           type: 'getItems',
@@ -58,7 +58,7 @@ export class SocketClient implements ServerClient {
             return {
               items: it.items,
               total: it.total,
-            };
+            } as ItemsResponse;
           }),
           // handle timeout and retry
           timeout(100000),

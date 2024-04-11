@@ -1,8 +1,8 @@
 import { ItemValue } from './types/ItemValue';
-import { LinkId } from './types/Link';
-import { NodeId } from './types/Node';
 import { Storage } from './types/Storage';
+import { NodeId } from './types/Node';
+import { LinkId } from './types/Link';
 
-export class NullStorage implements Storage {
+export class InMemoryStorage implements Storage {
   items = new Map<NodeId | LinkId, ItemValue[]>();
 }

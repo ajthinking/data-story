@@ -1,13 +1,13 @@
 import WebSocket from 'ws';
-import { Application, NullStorage } from '@data-story/core';
+import { Application, InMemoryStorage } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
-import { GetItemsMessage } from '../messages/getItemsMessage';
+import { GetItemsMessage } from '../messages/GetItemsMessage';
 
 export const getItems:  MessageHandler<GetItemsMessage> = async (
   ws: WebSocket,
   parsed: GetItemsMessage,
   app: Application,
-  storage: NullStorage
+  storage: InMemoryStorage
 )  => {
   const {offset = 0, limit = 10, atNodeId, id} = parsed;
   const items = storage.items.get(atNodeId) ?? [];

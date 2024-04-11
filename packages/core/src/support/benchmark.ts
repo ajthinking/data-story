@@ -1,7 +1,7 @@
 import { Application } from '../Application';
 import { DiagramBuilder } from '../DiagramBuilder';
 import { Executor } from '../Executor';
-import { NullStorage } from '../NullStorage';
+import { InMemoryStorage } from '../InMemoryStorage';
 import { Create, Ignore, MapTable } from '../computers';
 import { coreNodeProvider } from '../coreNodeProvider';
 
@@ -31,7 +31,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
   const executor = new Executor(
     diagram,
     app.computers,
-    new NullStorage()
+    new InMemoryStorage()
   )
 
   const startTime = Date.now()

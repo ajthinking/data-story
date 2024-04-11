@@ -3,7 +3,7 @@ import { Diagram } from '../../Diagram';
 import { ExecutionUpdate } from '../../types/ExecutionUpdate';
 import { Executor } from '../../Executor';
 
-import { NullStorage } from '../../NullStorage';
+import { InMemoryStorage } from '../../InMemoryStorage';
 import * as computerConfigs from '../../computers'
 import { ComputerFactory } from '../../ComputerFactory';
 
@@ -71,9 +71,7 @@ export class DiagramExecutionTester {
   }
 
   protected async makeStorage() {
-    const storage = new NullStorage()
-
-    return storage
+    return new InMemoryStorage()
   }
 }
 
