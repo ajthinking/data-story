@@ -53,11 +53,11 @@ export class SocketClient implements ServerClient {
         });
 
         return firstValueFrom(this.wsObservable.pipe(
-          filter(it => it.type === 'UpdateStorage' && it.id === msgId),
-          map(it => {
+          filter(message => message.type === 'UpdateStorage' && message.id === msgId),
+          map(message => {
             return {
-              items: it.items,
-              total: it.total,
+              items: message.items,
+              total: message.total,
             } as ItemsResponse;
           }),
           // handle timeout and retry

@@ -33,7 +33,7 @@ export class JsClient implements ServerClient {
       }: ItemsOptions) => {
         if(!this.executor) return { items: [], total: 0 };
 
-        const items = this.executor.storage.items.get(atNodeId) || [];
+        const items = this.executor.storage.itemsMap.get(atNodeId) || [];
 
         return {
           items: items.slice(offset, offset + limit),

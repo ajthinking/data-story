@@ -10,7 +10,7 @@ export const getItems:  MessageHandler<GetItemsMessage> = async (
   storage: InMemoryStorage
 )  => {
   const {offset = 0, limit = 10, atNodeId, id} = parsed;
-  const items = storage.items.get(atNodeId) ?? [];
+  const items = storage.itemsMap.get(atNodeId) ?? [];
 
   ws.send(JSON.stringify({
     type: 'UpdateStorage',

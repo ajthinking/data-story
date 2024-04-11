@@ -4,13 +4,13 @@ export const Table: ComputerConfig = {
   name: 'Table',
   inputs: ['input'],
 
-  async *run({ input, hooks, params: rawParams, node, storage }) {
+  async* run({ input, hooks, params: rawParams, node, storage }) {
     while(true) {
       const incoming = input.pull()
 
-      storage!.items.set(
+      storage!.itemsMap.set(
         node.id,
-        (storage?.items.get(node.id) || []).concat(incoming.map(i => i.value))
+        (storage!.itemsMap.get(node.id) || []).concat(incoming.map(i => i.value))
       )
 
       yield;

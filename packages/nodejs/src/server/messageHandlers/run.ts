@@ -13,7 +13,7 @@ export const run: MessageHandler<RunMessage> = async (
   //   data.reactFlow
   // )
 
-  storage.items.clear();
+  storage.itemsMap.clear();
   // TODO: Implement deserialize method
   const diagram = new Diagram({
     nodes: data.diagram.nodes,

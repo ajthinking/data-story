@@ -145,8 +145,8 @@ ipcMain.handle('openDiagram', open);
 const createWindow = (): void => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
+    height: 1600,
+    width: 1800,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -171,7 +171,7 @@ const createWindow = (): void => {
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   const settings = readSettings();
   writeSettings(settings);
