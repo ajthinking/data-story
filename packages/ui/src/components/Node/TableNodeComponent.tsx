@@ -38,6 +38,21 @@ function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableEleme
   const [showTooltip, setShowTooltip] = useState(false);
   const cellRef = useRef<HTMLDivElement>(null);
 
+  const { refs, floatingStyles, context } = useFloating({
+    open: showTooltip,
+    onOpenChange: setShowTooltip,
+    placement: 'bottom',
+    // Make sure the tooltip stays on the screen
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(5),
+      flip({
+        fallbackAxisSideDirection: 'start'
+      }),
+      shift()
+    ]
+  });
+
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (
@@ -59,21 +74,6 @@ function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableEleme
       document.removeEventListener('click', handleOutsideClick);
     }
   }, [showTooltip]);
-
-  const { refs, floatingStyles, context } = useFloating({
-    open: showTooltip,
-    onOpenChange: setShowTooltip,
-    placement: 'bottom',
-    // Make sure the tooltip stays on the screen
-    whileElementsMounted: autoUpdate,
-    middleware: [
-      offset(5),
-      flip({
-        fallbackAxisSideDirection: 'start'
-      }),
-      shift()
-    ]
-  });
 
   const click = useClick(context);
   const role = useRole(context, { role: 'tooltip' });
@@ -122,7 +122,6 @@ const TableNodeComponent = ({ id, data }: {
   const [items, setItems] = useState([]) as any
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0)
-  const loaderRef = useRef(null);
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [total, setTotal] = useState(0);
@@ -174,7 +173,7 @@ const TableNodeComponent = ({ id, data }: {
   }, []);
 
   useDataStoryEvent(dataStoryEvent);
-  useIntersectionObserver(loaderRef.current!, loadTableData);
+  const loaderRef = useIntersectionObserver(loadTableData);
   let { headers, rows } = new ItemCollection(items).toTable()
 
   if (items.length === 0) {

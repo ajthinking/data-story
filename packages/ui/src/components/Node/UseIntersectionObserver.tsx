@@ -1,5 +1,5 @@
 import { useCreation, useLatest } from 'ahooks';
-import { concatMap, EMPTY, Observable, share } from 'rxjs';
+import { BehaviorSubject, concatMap, distinctUntilChanged, filter, Observable, share, switchMap } from 'rxjs';
 import { useEffect } from 'react';
 
 function observeIntersection(element: HTMLElement) {
@@ -16,18 +16,33 @@ function observeIntersection(element: HTMLElement) {
   })
 }
 
-export function useIntersectionObserver(element: HTMLElement | undefined, callback: () => Promise<void>) {
+export function useIntersectionObserver(callback: () => Promise<void>) {
   const callbackRef = useLatest(callback);
+  const [loaderChanged$, updateElement] = useCreation(() => {
+    const subject = new BehaviorSubject<HTMLElement | null>(null);
+
+    function updateElement(newElement: HTMLElement | null) {
+      if (newElement) {
+        subject.next(newElement);
+      }
+    }
+
+    return [subject, updateElement];
+  }, [])
   // make sure the observer is created only once
   const loadMore$ = useCreation(() => {
-    if (element) {
-      return observeIntersection(element).pipe(share(), concatMap(() => callbackRef.current()));
-    }
-    return EMPTY;
-  }, [element]);
+    return loaderChanged$.pipe(
+      filter(it=>!!it),
+      distinctUntilChanged(),
+      switchMap((el) => observeIntersection(el!)),
+      share(),
+      concatMap(() => callbackRef.current())
+    );
+  }, [loaderChanged$]);
 
   useEffect(() => {
     const sub = loadMore$.subscribe();
     return () => sub.unsubscribe();
   }, [loadMore$]);
+  return updateElement;
 }
