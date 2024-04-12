@@ -1,6 +1,7 @@
 import { asyncScheduler, observeOn, Subject } from 'rxjs';
 import { EventHandler, DataStoryEventType } from './dataStoryEventType';
 import { useEffect } from 'react';
+import { useLatest } from 'ahooks';
 
 class EventManager {
   private subject: Subject<unknown>;
@@ -35,8 +36,10 @@ export const eventManager = new EventManager();
  * @param {EventHandler} handler
  */
 export const useDataStoryEvent = (handler: EventHandler) => {
+  const handlerRef = useLatest(handler);
+
   useEffect(() => {
-    const subscription = eventManager.on(handler);
+    const subscription = eventManager.on(handlerRef.current);
     return () => subscription.unsubscribe();
-  }, [handler]);
+  }, [handler, handlerRef]);
 }

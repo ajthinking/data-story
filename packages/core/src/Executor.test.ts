@@ -3,7 +3,7 @@ import { Executor } from './Executor';
 import { Computer, RunArgs } from './types/Computer';
 import { DiagramBuilder } from './DiagramBuilder';
 import { ConsoleLog, Create, Ignore, Input, Output, Pass, Signal, Throw } from './computers';;
-import { NullStorage } from './NullStorage';
+import { InMemoryStorage } from './InMemoryStorage';
 import { whenRunning } from './support/diagramExecutionTester/DiagramExecutionTester';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
@@ -16,7 +16,7 @@ describe('execute', () => {
     const diagram = new Diagram()
     const computers = new Map<string, Computer>()
 
-    const storage = new NullStorage()
+    const storage = new InMemoryStorage()
 
     const executor = new Executor(diagram, computers, storage)
 
@@ -53,7 +53,7 @@ describe('execute', () => {
       },
     } as Computer)
 
-    const storage = new NullStorage()
+    const storage = new InMemoryStorage()
 
     const executor = new Executor(diagram, computers, storage)
 
@@ -93,7 +93,7 @@ describe('execute', () => {
       },
     } as Computer)
 
-    const storage = new NullStorage()
+    const storage = new InMemoryStorage()
 
     const executor = new Executor(diagram, computers, storage)
 
@@ -130,7 +130,7 @@ describe('execute', () => {
       },
     } as Computer)
 
-    const storage = new NullStorage()
+    const storage = new InMemoryStorage()
 
     const executor = new Executor(diagram, computers, storage)
 
@@ -207,7 +207,7 @@ describe('execute', () => {
       .set(createComputer.name, createComputer)
       .set(logComputer.name, logComputer)
 
-    const storage = new NullStorage()
+    const storage = new InMemoryStorage()
 
     const executor = new Executor(diagram, computers, storage)
 
@@ -297,7 +297,7 @@ it('can execute a diagram containing sub diagrams', async () => {
   const executor = new Executor(
     diagram,
     app.computers,
-    new NullStorage()
+    new InMemoryStorage()
   )
 
   const execution = executor.execute()

@@ -20,7 +20,7 @@ import {
 
 import { expectDone } from './testSteps/expectDone';
 import { ExecutionMemory } from '../../ExecutionMemory';
-import { NullStorage } from '../../NullStorage';
+import { InMemoryStorage } from '../../InMemoryStorage';
 import { InputDeviceInterface } from '../../types/InputDeviceInterface';
 import { InputDevice } from '../../InputDevice';
 import { ComputerConfig } from '../../types/ComputerConfig';
@@ -106,7 +106,7 @@ export class ComputerTester {
             }
           }
         }),
-        storage: new NullStorage(),
+        storage: new InMemoryStorage(),
         hooks: this.hooksDevice,
         node: this.node,
       })

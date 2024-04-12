@@ -1,8 +1,8 @@
-import { Application, Diagram, Executor, NodeDescription, NullStorage, } from '@data-story/core';
+import { Application, Diagram, Executor, NodeDescription, InMemoryStorage, } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
-import { ItemsApi } from './ItemsApi';
+import { ItemsOptions } from './ItemsApi';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
@@ -30,20 +30,18 @@ export class JsClient implements ServerClient {
         atNodeId,
         limit = 10,
         offset = 0,
-      }: {
-        atNodeId: string,
-        limit?: number,
-        offset?: number,
+      }: ItemsOptions) => {
+        if(!this.executor) return { items: [], total: 0 };
 
-      }) => {
-        if(!this.executor) return []
+        const items = this.executor.storage.itemsMap.get(atNodeId) || [];
 
-        const items = this.executor.storage.items.get(atNodeId) || [];
-
-        return items.slice(offset, offset + limit);
+        return {
+          items: items.slice(offset, offset + limit),
+          total: items.length,
+        };
       }
     }
-  }
+  };
 
   init () {
     this.setAvailableNodes(this.app.descriptions())
@@ -56,7 +54,7 @@ export class JsClient implements ServerClient {
       type: DataStoryEvents.RUN_START
     });
 
-    const storage = new NullStorage()
+    const storage = new InMemoryStorage()
 
     this.executor = new Executor(
       diagram,

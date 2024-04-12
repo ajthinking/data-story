@@ -3,6 +3,8 @@ import * as store from '../DataStory/store/store';
 import { DataStoryProvider } from '../DataStory/store/store';
 import { ReactFlowProvider } from 'reactflow';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
+import { eventManager } from '../DataStory/events/eventManager';
+import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
 
 const data = {
   'params': [],
@@ -26,7 +28,16 @@ const mountTableNodeComponent = () => {
         <TableNodeComponent id={id} data={data} selected={false}/>
       </ReactFlowProvider>
     </DataStoryProvider>
-  );
+  )
+
+  cy.dataCy('data-story-table')
+    .then(() => {
+      cy.wait(10).then(() => {
+        eventManager.emit({
+          type: DataStoryEvents.RUN_SUCCESS
+        });
+      })
+    })
 }
 
 let testPerformanceLimit = 20;
@@ -42,7 +53,10 @@ const mockGetItems = (items: unknown[]): void => {
             limit = testPerformanceLimit,
             offset = 0
           }) => {
-            return items.slice(offset, offset + testPerformanceLimit)
+            return {
+              items: items.slice(offset, offset + testPerformanceLimit),
+              total: items.length
+            };
           }
 
           return {
@@ -123,7 +137,7 @@ describe('test TableNodeComponent for table', () => {
 
     const headerLength = Object.keys(normal).length;
 
-    cy.dataCy('data-story-table-th').should('have.length',headerLength);
+    cy.dataCy('data-story-table-th').should('have.length', headerLength);
     cy.dataCy('data-story-table-row').should('have.length', 1);
   });
 

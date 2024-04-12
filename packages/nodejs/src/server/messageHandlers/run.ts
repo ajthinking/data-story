@@ -1,24 +1,24 @@
 import WebSocket from 'ws';
 import { RunMessage } from '../messages/RunMessage';
 import { MessageHandler } from '../MessageHandler';
-import { Application, Diagram, Executor, ExecutionResult, ExecutionFailure, NullStorage } from '@data-story/core';
+import { Application, Diagram, Executor, ExecutionResult, ExecutionFailure, InMemoryStorage } from '@data-story/core';
 
 export const run: MessageHandler<RunMessage> = async (
   ws: WebSocket,
   data: RunMessage,
-  app: Application
+  app: Application,
+  storage: InMemoryStorage
 ) => {
   // const diagram = DiagramFactory.fromReactFlow(
   //   data.reactFlow
   // )
 
+  storage.itemsMap.clear();
   // TODO: Implement deserialize method
   const diagram = new Diagram({
     nodes: data.diagram.nodes,
     links: data.diagram.links,
   })
-
-  const storage = new NullStorage()
 
   const executor = new Executor(
     diagram,

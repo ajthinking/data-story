@@ -3,5 +3,5 @@ import { LinkId } from './Link';
 import { NodeId } from './Node';
 
 export interface Storage {
-  items: Map<NodeId | LinkId, ItemValue>;
+  itemsMap: Map<NodeId | LinkId, ItemValue>;
 }

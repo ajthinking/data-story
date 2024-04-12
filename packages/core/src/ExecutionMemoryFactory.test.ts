@@ -1,6 +1,6 @@
 import { DiagramBuilder } from './DiagramBuilder'
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
-import { NullStorage } from './NullStorage';
+import { InMemoryStorage } from './InMemoryStorage';
 import { ConsoleLog, Create } from './computers'
 
 describe('create', () => {
@@ -14,7 +14,7 @@ describe('create', () => {
       .set('Create', Create)
       .set('ConsoleLog', ConsoleLog);
 
-    const storage = new NullStorage();
+    const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
       diagram,
@@ -38,7 +38,7 @@ describe('create', () => {
       .set('Create', Create)
       .set('ConsoleLog', ConsoleLog);
 
-    const storage = new NullStorage();
+    const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
       diagram,
@@ -61,7 +61,7 @@ describe('create', () => {
       .set('Create', Create)
       .set('ConsoleLog', ConsoleLog);
 
-    const storage = new NullStorage();
+    const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
       diagram,
@@ -88,7 +88,7 @@ describe('create', () => {
       .set('Create', Create)
       .set('ConsoleLog', ConsoleLog);
 
-    const storage = new NullStorage();
+    const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
       diagram,

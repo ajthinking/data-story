@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
@@ -11,11 +11,13 @@ import {
   flip,
   FloatingPortal,
   offset,
-  shift, useClick,
+  shift,
+  useClick,
   useFloating,
   useInteractions,
   useRole
 } from '@floating-ui/react';
+import { useIntersectionObserver } from './UseIntersectionObserver';
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
@@ -26,15 +28,30 @@ const formatTooltipContent = (content: unknown) => {
   try {
     JSON.parse(content as string);
     return JSON.stringify(JSON.parse(content as string), null, 2);
-  } catch (e) {
+  } catch(e) {
     return content;
   }
 }
 
-function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
+function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
   const { content = '', getTableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
   const cellRef = useRef<HTMLDivElement>(null);
+
+  const { refs, floatingStyles, context } = useFloating({
+    open: showTooltip,
+    onOpenChange: setShowTooltip,
+    placement: 'bottom',
+    // Make sure the tooltip stays on the screen
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(5),
+      flip({
+        fallbackAxisSideDirection: 'start'
+      }),
+      shift()
+    ]
+  });
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -57,21 +74,6 @@ function TableNodeCell(props: {  getTableRef: () => React.RefObject<HTMLTableEle
       document.removeEventListener('click', handleOutsideClick);
     }
   }, [showTooltip]);
-
-  const { refs, floatingStyles, context } = useFloating({
-    open: showTooltip,
-    onOpenChange: setShowTooltip,
-    placement: 'bottom',
-    // Make sure the tooltip stays on the screen
-    whileElementsMounted: autoUpdate,
-    middleware: [
-      offset(5),
-      flip({
-        fallbackAxisSideDirection: 'start'
-      }),
-      shift()
-    ]
-  });
 
   const click = useClick(context);
   const role = useRole(context, { role: 'tooltip' });
@@ -120,59 +122,29 @@ const TableNodeComponent = ({ id, data }: {
   const [items, setItems] = useState([]) as any
   const [loading, setLoading] = useState(false);
   const [offset, setOffset] = useState(0)
-  const loaderRef = useRef(null);
   const tableRef = useRef<HTMLTableElement>(null);
-
+  const [isDataFetched, setIsDataFetched] = useState(false);
+  const [total, setTotal] = useState(0);
   const selector = (state: StoreSchema) => ({
     server: state.server,
   });
 
   const { server } = useStore(selector, shallow);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      // Check if the observed entry is intersecting (visible)
-      if (entries[0].isIntersecting && !loading) {
-        loadTableData();
-      }
-    }, { threshold: 0 });
-
-    // Observe the loader div
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
-    // Cleanup observer on component unmount
-    return () => {
-      if (loaderRef.current) observer.disconnect();
-    };
-  }, [loading, offset]); // Empty dependency array ensures this effect runs only once on mount
-
   const getTableRef = () => {
     return tableRef;
   }
   const input = data.inputs[0]
 
-  useDataStoryEvent((event: DataStoryEventType) => {
-    if (event.type === DataStoryEvents.RUN_START) {
-      setItems([])
-      setOffset(0)
-    }
-
-    if (event.type === DataStoryEvents.RUN_SUCCESS) {
-      loadTableData();
-    }
-  });
-
-  const loadTableData = async() => {
-    if (loading) return;
+  const loadTableData = useCallback(async() => {
+    if (loading || (total === offset && offset !== 0)) return;
     setLoading(true);
     const limit = 100
 
     const itemsApi = server!.itemsApi
     if (!itemsApi) return;
 
-    const fetchedItems = await itemsApi()?.getItems({
+    const { items: fetchedItems, total: fetchedTotal } = await itemsApi()?.getItems({
       atNodeId: id,
       limit,
       offset,
@@ -184,8 +156,24 @@ const TableNodeComponent = ({ id, data }: {
     }
 
     setLoading(false);
-  }
+    setTotal(fetchedTotal);
+  }, [id, loading, offset, server, total]);
 
+  const dataStoryEvent = useCallback((event: DataStoryEventType) => {
+    if (event.type === DataStoryEvents.RUN_START) {
+      setItems([])
+      setOffset(0);
+      setIsDataFetched(false);
+    }
+
+    if (event.type === DataStoryEvents.RUN_SUCCESS) {
+      loadTableData();
+      setIsDataFetched(true);
+    }
+  }, []);
+
+  useDataStoryEvent(dataStoryEvent);
+  const loaderRef = useIntersectionObserver(loadTableData);
   let { headers, rows } = new ItemCollection(items).toTable()
 
   if (items.length === 0) {
@@ -229,10 +217,11 @@ const TableNodeComponent = ({ id, data }: {
               <thead>
                 <tr className="bg-gray-200 space-x-8">
                   {
-                    headers.length === 0 &&
-                    <th className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
-                      Awaiting data
-                    </th>
+                    !isDataFetched &&
+                  <th
+                    className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
+                    Awaiting data
+                  </th>
                   }
                   {
                     headers.map(header => (<th
@@ -259,22 +248,30 @@ const TableNodeComponent = ({ id, data }: {
 
                   </td>))}
                 </tr>))}
-                {items.length === 0 && <tr className="bg-gray-100 hover:bg-gray-200">
+                {!isDataFetched && <tr className="bg-gray-100 hover:bg-gray-200">
                   <td
                     colSpan={6}
                     className="text-center"
-                    onClick={loadTableData}
                   >
                   Load initial data...
                   </td>
                 </tr>}
               </tbody>
             </table>
-            <div
-              ref={loaderRef}
-              className="loading-spinner h-0.5"
-            >
-            </div>
+            {
+              (<div
+                ref={loaderRef}
+                style={{ display: isDataFetched ? 'block' : 'none' }}
+                className="loading-spinner h-0.5"
+              >
+              </div>)
+            }
+            {
+              (isDataFetched && headers.length === 0 && rows.length === 0)
+              && (<div className="text-center text-gray-500 p-2">
+                No data
+              </div>)
+            }
           </div>
         </div>
       </div>
