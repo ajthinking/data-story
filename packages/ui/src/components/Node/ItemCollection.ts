@@ -1,4 +1,4 @@
-import { ItemValue } from '@data-story/core/*'
+import { ItemValue } from '@data-story/core'
 
 type JSONValue = string | number | boolean | {[key: string]: JSONValue} | JSONValue[];
 

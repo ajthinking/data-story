@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { ItemCollection } from './ItemCollection';
 import { nested, normal, threeTierNested } from './mock';
+import { multiline } from '@data-story/core';
 
 describe('toTable', () => {
   it('should correctly extract headers and rows from normal data', () => {
@@ -73,9 +74,10 @@ describe('toTable', () => {
           '[{"id":"123456789","type":"CONTACT_TO_COMPANY"}]',
           'false',
           'true',
-          `122 Main St
-Suite 100
- Anytown`,
+          multiline`
+            122 Main St
+            Suite 100
+            Anytown`,
           'Anytown',
           'Anystate',
           '12344',
