@@ -47,7 +47,7 @@ export const nested = {
   booleanFalse: false,
   booleanTrue: true,
   address: {
-    street: '122 Main St\nSuite 100\n Anytown',
+    street: '122 Main St\nSuite 100\nAnytown',
     city: 'Anytown',
     state: 'Anystate',
     zipcode: '12344'

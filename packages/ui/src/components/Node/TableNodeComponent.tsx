@@ -19,9 +19,11 @@ import {
 } from '@floating-ui/react';
 import { useIntersectionObserver } from './UseIntersectionObserver';
 
+const TRUNCATE_CELL_LENGTH = 50;
+
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
-  return result.length > 20 ? result.slice(0, 20) + '...' : result;
+  return result.length > TRUNCATE_CELL_LENGTH ? result.slice(0, TRUNCATE_CELL_LENGTH) + '...' : result;
 }
 
 const formatTooltipContent = (content: unknown) => {

@@ -5,6 +5,7 @@ import { ReactFlowProvider } from 'reactflow';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
 import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
+import { multiline } from '@data-story/core';
 
 const data = {
   'params': [],
@@ -100,9 +101,11 @@ describe('test TableNodeComponent for tooltip', () => {
     mountTableNodeComponent();
 
     cy.get('[data-cy="data-story-table-row"] > :nth-child(10)').click();
-    cy.dataCy('data-story-table-tooltip').should('have.text', `122 Main St
-Suite 100
- Anytown`);
+    cy.dataCy('data-story-table-tooltip').should('have.text', multiline`
+      122 Main St
+      Suite 100
+      Anytown`
+    );
   });
 
   it('render tooltip with formatted data', () => {
@@ -154,8 +157,8 @@ describe('test TableNodeComponent for table', () => {
     mockGetItems([oversize]);
     mountTableNodeComponent();
 
-    cy.dataCy('data-story-table-th').eq(3).should('have.text', 'long_long_long_long_...');
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').should('have.text', 'long_long_long_long_...');
+    cy.dataCy('data-story-table-th').eq(3).should('have.text', 'long_long_long_long_long_long_long_long_long_long_...');
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').should('have.text', 'long_long_long_long_long_long_long_long_long_long_...');
   });
 
   it('render component with line break data', () => {
@@ -163,7 +166,7 @@ describe('test TableNodeComponent for table', () => {
     mountTableNodeComponent();
 
     cy.dataCy('data-story-table-th').eq(9).should('have.text', 'address.street');
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(10)').should('have.text', '122 Main St\nSuite 10...');
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(10)').should('have.text', '122 Main St\nSuite 100\nAnytown');
   });
 
   it('render component with boolean data', () => {
