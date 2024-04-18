@@ -1,7 +1,3 @@
-/**
- * DataStoryWindow Class:
- * Handles the logic between browserWindow and workspace.
- */
 import { Application, coreNodeProvider } from '@data-story/core';
 import { nodeJsProvider, SocketServer } from '@data-story/nodejs';
 import { hubspotProvider } from '@data-story/hubspot';

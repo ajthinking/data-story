@@ -11,3 +11,8 @@ export interface IpcResult {
   isSuccess: boolean;
   isCancelled?: boolean;
 }
+
+export interface MainWindowActions {
+  setTitle: (title: string) => void;
+  webContentsSend: (channel: string, data: any) => void;
+}
