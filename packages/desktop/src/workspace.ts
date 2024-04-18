@@ -2,8 +2,10 @@
  * Workspace Class: Primarily responsible for reading dotenv from the directory,
  * and handling the read/write diagrams and read/write settings.
  */
-
 import path from 'path';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as dotenv from 'dotenv';
 
 // ************************************************************************************************
 // DataStory Settings

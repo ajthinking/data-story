@@ -8,19 +8,22 @@ import { hubspotProvider } from '@data-story/hubspot';
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
-const dataStory = new Application();
 
-dataStory.register([
-  coreNodeProvider,
-  nodeJsProvider,
-  hubspotProvider,
-]);
+export const initDataStoryServer = () => {
+  const dataStory = new Application();
 
-dataStory.boot();
+  dataStory.register([
+    coreNodeProvider,
+    nodeJsProvider,
+    hubspotProvider,
+  ]);
 
-const server = new SocketServer({
-  app: dataStory,
-  port: 3100
-})
+  dataStory.boot();
 
-server.start();
+  const server = new SocketServer({
+    app: dataStory,
+    port: 3100
+  })
+
+  server.start();
+}
