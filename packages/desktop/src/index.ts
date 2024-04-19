@@ -60,7 +60,7 @@ class DataStoryWindow {
       webPreferences: {
         nodeIntegration: false,
         contextIsolation: true,
-        preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY, // 确保这个变量在类的上下文中是可访问的
+        preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       },
     });
 

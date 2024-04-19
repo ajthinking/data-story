@@ -1,6 +1,6 @@
 /**
  * Workspace Class: Primarily responsible for reading dotenv from the directory,
- * and handling the read/write diagrams and read/write settings.
+ * and handling the read/write diagrams and read/write settings .
  */
 import path from 'path';
 import * as fs from 'fs';

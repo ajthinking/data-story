@@ -1,7 +1,6 @@
 /**
- * DataStoryBridge link: Centralizes communication methods between the node and web side,
- * such as through preload.ts.
- * The specific methods and structure design will be adjusted according to needs.
+ * primarily handle the communication between the `main process` and the `render process`.
+ * handle some native operations in `electron`, such as `dialog`.
  */
 import { IpcHandlerOptions, OpenedDiagramResult } from '../types';
 import { dialog, ipcMain } from 'electron';
