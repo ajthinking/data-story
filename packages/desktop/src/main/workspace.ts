@@ -6,8 +6,7 @@ import path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as dotenv from 'dotenv';
-import { OpenedDiagramResult, MainWindowActions } from '../types';
-import { app, dialog } from 'electron';
+import {  MainWindowActions } from '../types';
 import fsAsync from 'fs/promises';
 // ************************************************************************************************
 // DataStory Settings
@@ -17,82 +16,31 @@ export class Workspace {
   settingsFileName = '.data-story.json';
   envPath = '.env';
 
-  constructor(protected filePath: string) {
+  constructor(public filePath: string) {
   }
 
   getDirectoryPath = (): string => {
     return path.dirname(this.filePath);
   }
 
-  openDiagram = async(mainWindow: MainWindowActions): Promise<OpenedDiagramResult> => {
-    const result: OpenedDiagramResult = {
-      data: '{}',
-      isSuccess: false,
+  openDiagram = async(mainWindow: MainWindowActions, filePath: string): Promise<string> => {
+    this.filePath = filePath;
+    const data = await fsAsync.readFile(filePath, 'utf8');
+
+    if (mainWindow) {
+      this.initSettingsAndEnv(mainWindow);
+    } else {
+      throw new Error('Main window not found, cannot register open changes');
     }
-
-    try {
-      const file = await dialog.showOpenDialog({
-        properties: ['openFile'],
-        filters: [
-          { name: 'JSON', extensions: ['json'] }
-        ]
-      });
-
-      if (file.canceled) {
-        mainWindow.webContentsSend('pokeFromServer', { content: 'hahahah' });
-        return { isCancelled: true, data: '', isSuccess: true }
-      }
-
-      if (!file.canceled && file.filePaths.length > 0) {
-        this.filePath = file.filePaths[0];
-        console.log('filePaths[0]:', file.filePaths[0]);
-        console.log('filePath:', file.filePaths);
-        result.data = await fsAsync.readFile(file.filePaths[0], 'utf8');
-        result.isSuccess = true;
-
-        if (mainWindow) {
-          this.initSettingsAndEnv(mainWindow);
-        } else {
-          console.error('Main window not found, cannot register open changes');
-        }
-      }
-      return result;
-    } catch(err) {
-      result.data = err;
-      return result;
-    }
+    return data;
   }
 
-  saveDiagram = async(jsonData: string, mainWindow: MainWindowActions): Promise<OpenedDiagramResult> => {
-    const result: OpenedDiagramResult = {
-      data: '',
-      isSuccess: false,
-    };
-
-    try {
-      // Show the save dialog
-      const file = await dialog.showSaveDialog({
-        title: 'Save your Diagram JSON',
-        defaultPath: path.join(app.getPath('documents'), 'diagram.json'),
-        filters: [
-          { name: 'JSON Files', extensions: ['json'] }
-        ]
-      });
-
-      if (!file.canceled && file.filePath) {
-        await fsAsync.writeFile(file.filePath, jsonData);
-        // update the settings & title
-        this.updateSettings();
-        mainWindow.setTitle(`Data Story - ${file.filePath}`);
-
-        result.isSuccess = true;
-      }
-
-      return result;
-    } catch(err) {
-      result.data = err;
-      return result;
-    }
+  saveDiagram = async(jsonData: string, mainWindow: MainWindowActions, filePath: string): Promise<void> => {
+    await fsAsync.writeFile(filePath, jsonData);
+    this.filePath = filePath;
+    // update the settings & title
+    this.updateSettings();
+    mainWindow.setTitle(`Data Story - ${filePath}`);
   }
 
   updateSettings = () => {
@@ -141,6 +89,12 @@ export class Workspace {
       console.log('.env file not found in workspace:', this.getDirectoryPath());
     }
   }
+
+  // todo: implement this method
+  protected unloadEnvs() {
+    const envPath = path.join(this.getDirectoryPath(), '.env');
+  }
+
 }
 
 const defaultDiagramName = 'diagram.json';
@@ -154,8 +108,8 @@ export class DefaultWorkspace extends Workspace {
     super(defaultPath);
   }
 
-  openDiagram = async(mainWindow: MainWindowActions): Promise<OpenedDiagramResult> => {
+  openDiagram = async(mainWindow: MainWindowActions,filePath: string): Promise<string> => {
     this.initSettingsAndEnv(mainWindow);
-    return { data: '{}', isSuccess: true };
+    return '{}';
   }
 }

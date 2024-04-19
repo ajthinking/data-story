@@ -6,7 +6,7 @@ import { app, BrowserWindow } from 'electron';
 import { DefaultWorkspace, Workspace } from './main/workspace';
 import { initDataStoryServer } from './main/initDataStoryServer';
 import { registerIpcHandlers } from './main/ipcHandle';
-import { DataStoryWindow } from './types';
+import { DataStoryWindowContext } from './types';
 import path from 'path';
 import * as os from 'os';
 
@@ -21,7 +21,7 @@ if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
-const createWindow = (): DataStoryWindow => {
+const createWindow = (): DataStoryWindowContext => {
   let mainWindow: BrowserWindow;
 
   // Create the browser window.
@@ -59,8 +59,13 @@ const createWindow = (): DataStoryWindow => {
     webContentsSend: (channel: string, data: any) => mainWindow.webContents.send(channel, data),
   }
 
+  /**
+   * Designed for easy expansion and to maintain logical consistency:
+   * 1. Double-click the `data-story` icon to launch the desktop app
+   * 2.Opening the desktop app via the context menu (still under development)
+   */
   const workspace = new DefaultWorkspace();
-  workspace.openDiagram(mainWindowActions);
+  workspace.openDiagram(mainWindowActions, '');
 
   return {
     mainWindowActions,
