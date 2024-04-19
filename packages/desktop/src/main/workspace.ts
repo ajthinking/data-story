@@ -8,9 +8,6 @@ import * as os from 'os';
 import * as dotenv from 'dotenv';
 import {  MainWindowActions } from '../types';
 import fsAsync from 'fs/promises';
-// ************************************************************************************************
-// DataStory Settings
-// ************************************************************************************************
 
 export class Workspace {
   settingsFileName = '.data-story.json';
@@ -27,6 +24,9 @@ export class Workspace {
     this.filePath = filePath;
     const data = await fsAsync.readFile(filePath, 'utf8');
 
+    console.log(mainWindow, 'mainWindow');
+    console.log(filePath, 'filePath');
+    console.log(data, 'data');
     if (mainWindow) {
       this.initSettingsAndEnv(mainWindow);
     } else {
@@ -80,8 +80,9 @@ export class Workspace {
     }
   }
 
+  // Note: Each call to `loadEnv` appends new environment variables to `env`.
   protected loadEnvs() {
-    const envPath = path.join(this.getDirectoryPath(), '.env');
+    const envPath = path.join(this.getDirectoryPath(), this.envPath);
     if (fs.existsSync(envPath)) {
       dotenv.config({ path: envPath });
       console.log('Environment variables loaded from:', envPath);
@@ -89,12 +90,6 @@ export class Workspace {
       console.log('.env file not found in workspace:', this.getDirectoryPath());
     }
   }
-
-  // todo: implement this method
-  protected unloadEnvs() {
-    const envPath = path.join(this.getDirectoryPath(), '.env');
-  }
-
 }
 
 const defaultDiagramName = 'diagram.json';
@@ -108,8 +103,9 @@ export class DefaultWorkspace extends Workspace {
     super(defaultPath);
   }
 
-  openDiagram = async(mainWindow: MainWindowActions,filePath: string): Promise<string> => {
-    this.initSettingsAndEnv(mainWindow);
-    return '{}';
+  initSettingsAndEnv(mainWindow: MainWindowActions): void {
+    super.initSettingsAndEnv(mainWindow);
+    mainWindow.setTitle('Data Story - Untitled');
   }
+
 }

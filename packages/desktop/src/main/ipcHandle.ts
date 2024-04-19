@@ -8,7 +8,7 @@ import { dialog, ipcMain } from 'electron';
 
 export const registerIpcHandlers = (options: IpcHandlerOptions) => {
   const mainWindowActions = options.getMainWindowActions();
-  const workspace = options.getWorkspace();
+  const getCurrentWorkspace = () => options.getWorkspace();
 
   const save = async (jsonData: string): Promise<OpenedDiagramResult> => {
     const result: OpenedDiagramResult = {
@@ -19,14 +19,14 @@ export const registerIpcHandlers = (options: IpcHandlerOptions) => {
     try {
       const file = await dialog.showSaveDialog({
         title: 'Save your Diagram JSON',
-        defaultPath: workspace.filePath,
+        defaultPath: getCurrentWorkspace().filePath,
         filters: [
           { name: 'JSON Files', extensions: ['json'] }
         ]
       });
 
       if (!file.canceled && file.filePath) {
-        await workspace.saveDiagram(jsonData, mainWindowActions, file.filePath);
+        await getCurrentWorkspace().saveDiagram(jsonData, mainWindowActions, file.filePath);
         result.data = jsonData;
         result.isSuccess = true;
       }
@@ -55,7 +55,9 @@ export const registerIpcHandlers = (options: IpcHandlerOptions) => {
         mainWindowActions.webContentsSend('pokeFromServer', { content: 'hahahah' });
         return { isCancelled: true, data: '', isSuccess: true }
       } else if (!file.canceled && file.filePaths.length > 0) {
-        result.data = await workspace.openDiagram(mainWindowActions, file.filePaths[0]);
+        options.switchWorkspace(file.filePaths[0]);
+
+        result.data = await getCurrentWorkspace().openDiagram(mainWindowActions, file.filePaths[0]);
         result.isSuccess = true;
       }
       return result;
