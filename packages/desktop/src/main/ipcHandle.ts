@@ -5,10 +5,12 @@
  */
 import { IpcHandlerOptions, OpenedDiagramResult } from '../types';
 import { dialog, ipcMain } from 'electron';
+import { Workspace } from './workspace';
 
 export const registerIpcHandlers = (options: IpcHandlerOptions) => {
-  const mainWindowActions = options.getMainWindowActions();
-  const getCurrentWorkspace = () => options.getWorkspace();
+  const {getMainWindowActions, getWorkspace, switchWorkspace} = options;
+  const mainWindowActions = getMainWindowActions();
+  const getCurrentWorkspace = (): Workspace => getWorkspace();
 
   const save = async (jsonData: string): Promise<OpenedDiagramResult> => {
     const result: OpenedDiagramResult = {
@@ -55,7 +57,7 @@ export const registerIpcHandlers = (options: IpcHandlerOptions) => {
         mainWindowActions.webContentsSend('pokeFromServer', { content: 'hahahah' });
         return { isCancelled: true, data: '', isSuccess: true }
       } else if (!file.canceled && file.filePaths.length > 0) {
-        options.switchWorkspace(file.filePaths[0]);
+        switchWorkspace(file.filePaths[0]);
 
         result.data = await getCurrentWorkspace().openDiagram(mainWindowActions, file.filePaths[0]);
         result.isSuccess = true;

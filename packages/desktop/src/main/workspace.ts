@@ -24,9 +24,6 @@ export class Workspace {
     this.filePath = filePath;
     const data = await fsAsync.readFile(filePath, 'utf8');
 
-    console.log(mainWindow, 'mainWindow');
-    console.log(filePath, 'filePath');
-    console.log(data, 'data');
     if (mainWindow) {
       this.initSettingsAndEnv(mainWindow);
     } else {

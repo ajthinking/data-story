@@ -35,8 +35,8 @@ class DataStoryWindow {
 
   public getMainWindowActions(): MainWindowActions {
     return {
-      setTitle: this.mainWindow.setTitle,
-      webContentsSend: this.mainWindow.webContents.send,
+      setTitle: (title) => this.mainWindow.setTitle(title),
+      webContentsSend: (channel, data) => this.mainWindow.webContents.send(channel, data),
     };
   }
 
@@ -92,9 +92,9 @@ function startDesktopWindow(): void {
   const dataStoryWindow = new DataStoryWindow();
 
   registerIpcHandlers({
-    getMainWindowActions: dataStoryWindow.getMainWindowActions,
-    getWorkspace: dataStoryWindow.getWorkspace,
-    switchWorkspace: dataStoryWindow.switchWorkspace,
+    getMainWindowActions: () => dataStoryWindow.getMainWindowActions(),
+    getWorkspace:() => dataStoryWindow.getWorkspace(),
+    switchWorkspace:(filePath: string) => dataStoryWindow.switchWorkspace(filePath)
   });
 }
 
