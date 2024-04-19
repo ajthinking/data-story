@@ -8,11 +8,11 @@ import { dialog, ipcMain } from 'electron';
 import { Workspace } from './workspace';
 
 export const registerIpcHandlers = (options: IpcHandlerOptions) => {
-  const {getMainWindowActions, getWorkspace, switchWorkspace} = options;
+  const { getMainWindowActions, getWorkspace, switchWorkspace, initWorkspace } = options;
   const mainWindowActions = getMainWindowActions();
   const getCurrentWorkspace = (): Workspace => getWorkspace();
 
-  const save = async (jsonData: string): Promise<OpenedDiagramResult> => {
+  const save = async(jsonData: string): Promise<OpenedDiagramResult> => {
     const result: OpenedDiagramResult = {
       data: '',
       isSuccess: false,
@@ -69,9 +69,15 @@ export const registerIpcHandlers = (options: IpcHandlerOptions) => {
     }
   };
 
+  const refreshDesktop = (): void => {
+    initWorkspace();
+  }
+
   ipcMain.handle('saveDiagram', async(event, jsonData: string): Promise<OpenedDiagramResult> => {
     return await save(jsonData);
   });
 
   ipcMain.handle('openDiagram', open);
+
+  ipcMain.handle('refreshDesktop', refreshDesktop);
 }

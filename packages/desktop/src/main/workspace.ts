@@ -6,7 +6,7 @@ import path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as dotenv from 'dotenv';
-import {  MainWindowActions } from '../types';
+import { MainWindowActions } from '../types';
 import fsAsync from 'fs/promises';
 
 export class Workspace {

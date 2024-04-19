@@ -1,5 +1,5 @@
 import { ControlButton } from 'reactflow';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   DataStoryEvents,
   DataStoryEventType,
@@ -30,7 +30,7 @@ const saveDiagram = async(diagram: Diagram) => {
   successToast('Diagram saved successfully!');
 };
 
-export const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
+const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
   const initDiagram: LocalDiagram = {
     type: 'load',
     version: getCoreVersion(),
@@ -62,6 +62,10 @@ export const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
   return initDiagram;
 }
 
+const refreshDesktop = async (): Promise<void> => {
+  await window.electron.refreshDesktop();
+};
+
 const initToast = (event: DataStoryEventType) => {
   if (event.type === DataStoryEvents.RUN_SUCCESS) {
     successToast('Diagram executed successfully!');
@@ -73,9 +77,15 @@ const initToast = (event: DataStoryEventType) => {
 };
 
 export const SaveComponent = () => {
-  const { getDiagram, updateDiagram } = useDataStoryControls()
+  const { getDiagram, updateDiagram } = useDataStoryControls();
+
+  useEffect(() => {
+    // Refresh desktop on load
+    refreshDesktop();
+  }, []);
 
   useDataStoryEvent(initToast);
+
   const handleOpenFile = async() => {
     const diagramInfo = await loadDiagram();
     if(!diagramInfo) return;

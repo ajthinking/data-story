@@ -13,6 +13,10 @@ contextBridge.exposeInMainWorld('electron', {
     return ipcRenderer.invoke('openDiagram');
   },
 
+  refreshDesktop: (): Promise<void> => {
+    return ipcRenderer.invoke('refreshDesktop');
+  },
+
   sendPoke: (data: any) => ipcRenderer.send('pokeFromServer', data),
   onPoke: (callback: any) => ipcRenderer.on('pokeFromServer', callback)
 });

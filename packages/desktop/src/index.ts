@@ -21,16 +21,10 @@ if (require('electron-squirrel-startup')) {
 
 class DataStoryWindow {
   private mainWindow: BrowserWindow;
-  private workspace: Workspace; // 假设Workspace是已经定义好的类
+  private workspace: Workspace;
 
   constructor() {
     this.createWindow();
-  }
-
-  public switchWorkspace(filePath: string): void {
-    // Assuming Workspace is a defined class that takes a filePath in its constructor
-    this.workspace = new Workspace(filePath);
-    this.workspace.initSettingsAndEnv(this.getMainWindowActions());
   }
 
   public getMainWindowActions(): MainWindowActions {
@@ -42,6 +36,20 @@ class DataStoryWindow {
 
   public getWorkspace(): Workspace {
     return this.workspace;
+  }
+
+  public switchWorkspace(filePath: string): void {
+    // Assuming Workspace is a defined class that takes a filePath in its constructor
+    this.workspace = new Workspace(filePath);
+    this.workspace.initSettingsAndEnv(this.getMainWindowActions());
+  }
+
+  public initWorkspace(): void {
+    const mainWindowActions = this.getMainWindowActions()
+
+    // Assuming DefaultWorkspace is a defined class
+    this.workspace = new DefaultWorkspace();
+    this.workspace.initSettingsAndEnv(mainWindowActions);
   }
 
   private createWindow(): void {
@@ -78,23 +86,16 @@ class DataStoryWindow {
     // Initialize workspace with mainWindow actions
     this.initWorkspace();
   }
-
-  private initWorkspace(): void {
-    const mainWindowActions = this.getMainWindowActions()
-
-    // Assuming DefaultWorkspace is a defined class
-    this.workspace = new DefaultWorkspace();
-    this.workspace.initSettingsAndEnv(mainWindowActions);
-  }
 }
 
 function startDesktopWindow(): void {
   const dataStoryWindow = new DataStoryWindow();
 
   registerIpcHandlers({
-    getMainWindowActions: () => dataStoryWindow.getMainWindowActions(),
-    getWorkspace:() => dataStoryWindow.getWorkspace(),
-    switchWorkspace:(filePath: string) => dataStoryWindow.switchWorkspace(filePath)
+    getMainWindowActions: dataStoryWindow.getMainWindowActions.bind(dataStoryWindow),
+    getWorkspace: dataStoryWindow.getWorkspace.bind(dataStoryWindow),
+    switchWorkspace: dataStoryWindow.switchWorkspace.bind(dataStoryWindow),
+    initWorkspace: dataStoryWindow.initWorkspace.bind(dataStoryWindow),
   });
 }
 

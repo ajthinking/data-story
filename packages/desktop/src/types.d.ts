@@ -18,13 +18,9 @@ export interface MainWindowActions {
   webContentsSend: (channel: string, data: any) => void;
 }
 
-export interface DataStoryWindowContext {
-  mainWindowActions: MainWindowActions;
-  workspace: Workspace
-}
-
 export interface IpcHandlerOptions {
   getMainWindowActions: () =>  MainWindowActions;
   getWorkspace: () => Workspace;
-  switchWorkspace?: (filePath: string) => void
+  switchWorkspace: (filePath?: string) => void;
+  initWorkspace: () => void;
 }
