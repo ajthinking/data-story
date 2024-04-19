@@ -22,3 +22,8 @@ export interface DataStoryWindowContext {
   mainWindowActions: MainWindowActions;
   workspace: Workspace
 }
+
+export interface IpcHandlerOptions {
+  getMainWindowActions: () =>  MainWindowActions;
+  getWorkspace: () => Workspace;
+}

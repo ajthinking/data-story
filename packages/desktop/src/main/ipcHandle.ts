@@ -3,11 +3,12 @@
  * such as through preload.ts.
  * The specific methods and structure design will be adjusted according to needs.
  */
-import { DataStoryWindowContext, OpenedDiagramResult } from '../types';
+import { IpcHandlerOptions, OpenedDiagramResult } from '../types';
 import { dialog, ipcMain } from 'electron';
 
-export const registerIpcHandlers = (options: DataStoryWindowContext) => {
-  const { mainWindowActions, workspace } = options;
+export const registerIpcHandlers = (options: IpcHandlerOptions) => {
+  const mainWindowActions = options.getMainWindowActions();
+  const workspace = options.getWorkspace();
 
   const save = async (jsonData: string): Promise<OpenedDiagramResult> => {
     const result: OpenedDiagramResult = {
