@@ -9,7 +9,7 @@ import {
   useDataStoryEvent
 } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
-import { IpcResult, LocalDiagram } from './types';
+import { OpenedDiagramResult, LocalDiagram } from './types';
 import { errorToast, getCoreVersion, successToast, tryParseJSON } from './common';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,7 +21,7 @@ const saveDiagram = async(diagram: Diagram) => {
     diagram
   } as LocalDiagram, null, 2);
 
-  const result: IpcResult = await window.electron.saveDiagram(diagramJSON);
+  const result: OpenedDiagramResult = await window.electron.saveDiagram(diagramJSON);
   if (!result || result.isSuccess === false) {
     errorToast('Could not save diagram');
     console.warn('Could not save diagram', result);
@@ -37,7 +37,7 @@ export const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
     diagram: null
   }
 
-  const file: IpcResult = await window.electron.openDiagram();
+  const file: OpenedDiagramResult = await window.electron.openDiagram();
   if(file.isCancelled) return undefined;
 
   if (!file || file.isSuccess === false) {

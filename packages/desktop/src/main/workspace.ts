@@ -6,22 +6,30 @@ import path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as dotenv from 'dotenv';
-import { IpcResult, MainWindowActions } from '../types';
-import { app, dialog, ipcMain } from 'electron';
+import { OpenedDiagramResult, MainWindowActions } from '../types';
+import { app, dialog } from 'electron';
 import fsAsync from 'fs/promises';
 // ************************************************************************************************
 // DataStory Settings
 // ************************************************************************************************
 
-const settingsFilePath = path.join(os.homedir(), '.data-story.json');
-
 export class Workspace {
+  settingsFileName = '.data-story.json';
+  envPath = '.env';
 
-  openDiagram = async(mainWindow: MainWindowActions): Promise<IpcResult> => {
-    const result: IpcResult = {
+  constructor(protected filePath: string) {
+  }
+
+  getDirectoryPath = (): string => {
+    return path.dirname(this.filePath);
+  }
+
+  openDiagram = async(mainWindow: MainWindowActions): Promise<OpenedDiagramResult> => {
+    const result: OpenedDiagramResult = {
       data: '{}',
       isSuccess: false,
     }
+
     try {
       const file = await dialog.showOpenDialog({
         properties: ['openFile'],
@@ -36,17 +44,14 @@ export class Workspace {
       }
 
       if (!file.canceled && file.filePaths.length > 0) {
+        this.filePath = file.filePaths[0];
+        console.log('filePaths[0]:', file.filePaths[0]);
+        console.log('filePath:', file.filePaths);
         result.data = await fsAsync.readFile(file.filePaths[0], 'utf8');
         result.isSuccess = true;
 
         if (mainWindow) {
-          const workspace = file.filePaths[0]; // Or extract a more specific workspace name from the filePath
-          mainWindow.setTitle(`Data Story - ${workspace}`);
-
-          // Persisting the workspace setting
-          const settings = this.readSettings(); // Assuming this function synchronously returns the settings object
-          settings.workspace = workspace; // Update the workspace setting
-          this.writeSettings(settings); // Assuming this function takes the settings object and saves it
+          this.initSettingsAndEnv(mainWindow);
         } else {
           console.error('Main window not found, cannot register open changes');
         }
@@ -58,8 +63,8 @@ export class Workspace {
     }
   }
 
-  saveDiagram = async(jsonData: string,mainWindow: MainWindowActions ): Promise<IpcResult> => {
-    const result: IpcResult = {
+  saveDiagram = async(jsonData: string, mainWindow: MainWindowActions): Promise<OpenedDiagramResult> => {
+    const result: OpenedDiagramResult = {
       data: '',
       isSuccess: false,
     };
@@ -77,9 +82,7 @@ export class Workspace {
       if (!file.canceled && file.filePath) {
         await fsAsync.writeFile(file.filePath, jsonData);
         // update the settings & title
-        const settings = this.readSettings();
-        settings.workspace = path.dirname(file.filePath);
-        this.writeSettings(settings);
+        this.updateSettings();
         mainWindow.setTitle(`Data Story - ${file.filePath}`);
 
         result.isSuccess = true;
@@ -91,7 +94,22 @@ export class Workspace {
       return result;
     }
   }
-  readSettings() {
+
+  updateSettings = () => {
+    const settingsFilePath = path.join(this.getDirectoryPath(), this.settingsFileName);
+    const settings = this.readSettings(settingsFilePath);
+    settings.workspace = this.getDirectoryPath();
+    this.writeSettings(settings, settingsFilePath);
+    return settings;
+  }
+
+  initSettingsAndEnv(mainWindow: MainWindowActions) {
+    this.updateSettings();
+    this.loadEnvs();
+    mainWindow.setTitle(`Data Story - ${this.filePath}`);
+  }
+
+  protected readSettings(settingsFilePath: string) {
     try {
       if (fs.existsSync(settingsFilePath)) {
         const rawSettings = fs.readFileSync(settingsFilePath).toString();
@@ -104,7 +122,7 @@ export class Workspace {
     return {}; // Default settings or empty object
   }
 
-  writeSettings(settings: Record<string, any>) {
+  protected writeSettings(settings: Record<string, any>, settingsFilePath: string) {
     try {
       const settingsString = JSON.stringify(settings, null, 2); // Pretty print
       fs.writeFileSync(settingsFilePath, settingsString);
@@ -114,15 +132,30 @@ export class Workspace {
     }
   }
 
-  loadEnvs(workspacePath: string) {
-    const envPath = path.join(workspacePath, '.env');
+  protected loadEnvs() {
+    const envPath = path.join(this.getDirectoryPath(), '.env');
     if (fs.existsSync(envPath)) {
       dotenv.config({ path: envPath });
       console.log('Environment variables loaded from:', envPath);
     } else {
-      console.log('.env file not found in workspace:', workspacePath);
+      console.log('.env file not found in workspace:', this.getDirectoryPath());
     }
   }
 }
 
-export const workspace = new Workspace();
+const defaultDiagramName = 'diagram.json';
+const defaultPath = path.join(os.homedir(), defaultDiagramName);
+
+/**
+ * DefaultWorkspace Class: Extends Workspace and provides default path for the workspace
+ */
+export class DefaultWorkspace extends Workspace {
+  constructor() {
+    super(defaultPath);
+  }
+
+  openDiagram = async(mainWindow: MainWindowActions): Promise<OpenedDiagramResult> => {
+    this.initSettingsAndEnv(mainWindow);
+    return { data: '{}', isSuccess: true };
+  }
+}
