@@ -4,7 +4,7 @@ import { numberCast } from '../Param/casts/numberCast';
 export const Await: ComputerConfig = {
   name: 'Await',
   inputs: ['input'],
-  outputs: ['output'],
+  outputs: ['output', 'no_items'],
   params: [
     {
       name: 'number_of_items',
@@ -33,13 +33,20 @@ export const Await: ComputerConfig = {
   },
 
   async *run({ input, output, params }) {
+    let hasPulledAny = false
+
     while(true) {
       const incoming = input.pull()
 
       const pulledCount = incoming.length
+      if(pulledCount > 0) hasPulledAny = true
       const chunkSize = params.number_of_items as number
 
       output.push(incoming)
+
+      if(pulledCount === 0) output.pushTo('no_items', [{
+        message: 'No items available to await node.'
+      }])
 
       if(pulledCount < chunkSize) break;
 
