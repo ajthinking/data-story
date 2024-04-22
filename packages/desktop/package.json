@@ -5,11 +5,11 @@
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
-    "dev:desktop": "electron-forge start",
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
+    "dev:desktop": "PORT=3100 electron-forge start",
+    "start": "PORT=3100 electron-forge start",
+    "package": "PORT=3200 electron-forge package",
+    "make": "PORT=3200 electron-forge make",
+    "publish": "PORT=3200 electron-forge publish",
     "lint": "eslint --ext .ts,.tsx ."
   },
   "keywords": [],
