@@ -4,10 +4,10 @@ import React, { useEffect } from 'react';
 import { SaveComponent } from './save';
 // eslint-disable-next-line import/no-unresolved
 import '@data-story/ui/data-story.css';
-import { ServerRequest } from './const';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+const ServerRequest = `ws://localhost:${window.electron.port}`;
 
 export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
   useEffect(() => {
