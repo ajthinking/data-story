@@ -1,2 +1,2 @@
-export const ServerPort = 3300;
-export const ServerRequest = 'ws://localhost:3300';
+export const ServerPort = 3100;
+export const ServerRequest = 'ws://localhost:3100';

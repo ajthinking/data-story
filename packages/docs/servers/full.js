@@ -6,6 +6,8 @@ import { hubspotProvider } from '@data-story/hubspot';
 import { openAiProvider } from '@data-story/openai';
 
 import dotenv from 'dotenv';
+import { ServerPort } from '../const';
+
 dotenv.config({ path: '.env.local' });
 
 const app = new Application();
@@ -22,7 +24,7 @@ app.boot();
 
 const server = new SocketServer({
   app,
-  port: 3100
+  port: ServerPort
 })
 
 server.start()

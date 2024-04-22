@@ -2,6 +2,7 @@ import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React from 'react';
 import { DataStory } from '@data-story/ui';
 import { loadDiagram, LocalStorageKey,  SaveComponent } from './Save';
+import { ServerRequest } from '../const';
 
 export default ({ mode }: {mode?: 'js' | 'node'}) => {
   const app = new Application()
@@ -17,7 +18,7 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
         slotComponent={<SaveComponent/>}
         initDiagram={initDiagram}
         server={mode === 'node'
-          ? { type: 'SOCKET', url: 'ws://localhost:3100' }
+          ? { type: 'SOCKET', url: ServerRequest }
           : { type: 'JS', app }}
       />
     </div>
