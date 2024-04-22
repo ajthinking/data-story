@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { SaveComponent } from './save';
 // eslint-disable-next-line import/no-unresolved
 import '@data-story/ui/data-story.css';
+import { ServerRequest } from './const';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -24,7 +25,7 @@ export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
         slotComponent={<SaveComponent  />}
         server={{
           type: 'SOCKET',
-          url: 'ws://localhost:3300',
+          url: ServerRequest,
         }}
       />
     </div>
