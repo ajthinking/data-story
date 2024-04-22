@@ -24,7 +24,7 @@ export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
         slotComponent={<SaveComponent  />}
         server={{
           type: 'SOCKET',
-          url: 'http://localhost:3100',
+          url: 'ws://localhost:3300',
         }}
       />
     </div>

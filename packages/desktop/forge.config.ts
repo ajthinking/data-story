@@ -68,7 +68,7 @@ const config: ForgeConfig = {
         ],
       },
       //  https://github.com/electron/forge/blob/main/packages/plugin/webpack/src/WebpackPlugin.ts#L77
-      port: 3030,
+      port: 3050,
     }),
   ],
 };
