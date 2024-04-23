@@ -3,7 +3,7 @@ name: Build and Release Desktop
 on:
   workflow_run:
     workflows: [ "Test CI" ]
-    branches: [ main, feat-available-port ]
+    branches: [ main ]
     types: [ completed ]
 
 jobs:
