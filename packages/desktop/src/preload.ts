@@ -6,7 +6,7 @@ import { OpenedDiagramResult } from './types';
 
 contextBridge.exposeInMainWorld('electron', {
   // expose port to the renderer process
-  port: process.env.PORT,
+  port: process.env.PORT || 3100,
 
   saveDiagram: (data: string): Promise<OpenedDiagramResult> => {
     return ipcRenderer.invoke('saveDiagram', data);

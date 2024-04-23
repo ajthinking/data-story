@@ -4,7 +4,7 @@
  */
 import { app, BrowserWindow } from 'electron';
 import { DefaultWorkspace, Workspace } from './main/workspace';
-import { initDataStoryServer } from './main/initDataStoryServer';
+import { initDataStoryServer, ServerPort } from './main/initDataStoryServer';
 import { registerIpcHandlers } from './main/ipcHandle';
 import { MainWindowActions } from './types';
 
@@ -18,6 +18,8 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
+
+const ServerRequest = `ws://localhost:${ServerPort}`;
 
 class DataStoryWindow {
   private mainWindow: BrowserWindow;
@@ -63,8 +65,6 @@ class DataStoryWindow {
         preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       },
     });
-
-    const ServerRequest = `ws://localhost:${process.env.PORT}`;
 
     // Modify the Content Security Policy
     this.mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
