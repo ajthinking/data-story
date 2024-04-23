@@ -1,5 +1,5 @@
 import { ControlButton } from 'reactflow';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   DataStoryEvents,
   DataStoryEventType,
@@ -9,7 +9,7 @@ import {
   useDataStoryEvent
 } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
-import { IpcResult, LocalDiagram } from './types';
+import { OpenedDiagramResult, LocalDiagram } from './types';
 import { errorToast, getCoreVersion, successToast, tryParseJSON } from './common';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -21,7 +21,7 @@ const saveDiagram = async(diagram: Diagram) => {
     diagram
   } as LocalDiagram, null, 2);
 
-  const result: IpcResult = await window.electron.saveDiagram(diagramJSON);
+  const result: OpenedDiagramResult = await window.electron.saveDiagram(diagramJSON);
   if (!result || result.isSuccess === false) {
     errorToast('Could not save diagram');
     console.warn('Could not save diagram', result);
@@ -30,14 +30,14 @@ const saveDiagram = async(diagram: Diagram) => {
   successToast('Diagram saved successfully!');
 };
 
-export const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
+const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
   const initDiagram: LocalDiagram = {
     type: 'load',
     version: getCoreVersion(),
     diagram: null
   }
 
-  const file: IpcResult = await window.electron.openDiagram();
+  const file: OpenedDiagramResult = await window.electron.openDiagram();
   if(file.isCancelled) return undefined;
 
   if (!file || file.isSuccess === false) {
@@ -62,6 +62,10 @@ export const loadDiagram = async(): Promise<LocalDiagram | undefined> => {
   return initDiagram;
 }
 
+const refreshDesktop = async (): Promise<void> => {
+  await window.electron.refreshDesktop();
+};
+
 const initToast = (event: DataStoryEventType) => {
   if (event.type === DataStoryEvents.RUN_SUCCESS) {
     successToast('Diagram executed successfully!');
@@ -73,9 +77,15 @@ const initToast = (event: DataStoryEventType) => {
 };
 
 export const SaveComponent = () => {
-  const { getDiagram, updateDiagram } = useDataStoryControls()
+  const { getDiagram, updateDiagram } = useDataStoryControls();
+
+  useEffect(() => {
+    // Refresh desktop on load
+    refreshDesktop();
+  }, []);
 
   useDataStoryEvent(initToast);
+
   const handleOpenFile = async() => {
     const diagramInfo = await loadDiagram();
     if(!diagramInfo) return;

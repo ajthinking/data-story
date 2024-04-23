@@ -1,4 +1,5 @@
 import { Diagram } from '@data-story/core';
+import { Workspace } from './main/workspace';
 
 export interface LocalDiagram {
   type: 'load' | 'save';
@@ -6,8 +7,20 @@ export interface LocalDiagram {
   diagram: Diagram;
 }
 
-export interface IpcResult {
+export interface OpenedDiagramResult {
   data: string;
   isSuccess: boolean;
   isCancelled?: boolean;
+}
+
+export interface MainWindowActions {
+  setTitle: (title: string) => void;
+  webContentsSend: (channel: string, data: any) => void;
+}
+
+export interface IpcHandlerOptions {
+  getMainWindowActions: () =>  MainWindowActions;
+  getWorkspace: () => Workspace;
+  switchWorkspace: (filePath?: string) => void;
+  initWorkspace: () => void;
 }
