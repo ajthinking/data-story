@@ -48,7 +48,6 @@ export default () => {
   return (
     <div className="w-full" style={{ height: '100vh' }}>
       <DataStory
-        // server={{ type: 'SOCKET', url: 'ws://localhost:3100' }}
         callback={(options) => setTimeout(options.run, 100)}
         server={{ type: 'JS', app }}
         initDiagram={diagram}

@@ -1,12 +1,12 @@
 {
   "productName": "data-story/desktop",
   "name": "@data-story/desktop",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "My Electron application description",
   "main": ".webpack/main",
   "scripts": {
-    "dev:desktop": "electron-forge start",
-    "start": "electron-forge start",
+    "dev:desktop": "cross-env PORT=3200 electron-forge start",
+    "start": "cross-env PORT=3200 electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -31,6 +31,7 @@
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.17",
     "@vercel/webpack-asset-relocator-loader": "1.7.3",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.0.0",
     "electron": "27.1.0",
     "fork-ts-checker-webpack-plugin": "^7.2.13",

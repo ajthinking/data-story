@@ -24,6 +24,11 @@ module.exports = {
       baseConfig.ignoreWarnings = [/Failed to parse source map/];
     }
 
+    baseConfig.devServer = {
+      ...baseConfig.devServer,
+      port: 'auto',
+    }
+
     return baseConfig;
   },
 };

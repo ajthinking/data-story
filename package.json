@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo dev --parallel",
     "dev:desktop": "turbo dev:desktop --parallel",
-    "kill": "kill-port 3000 3100",
+    "kill": "kill-port 3000 3300",
     "build": "turbo build",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
     "lint": "eslint .",
@@ -25,7 +25,7 @@
     "release-ui": "yarn workspace @data-story/ui run release",
     "release-nodejs": "yarn workspace @data-story/nodejs run release",
     "ci:test": "turbo test --filter=@data-story/core --filter=@data-story/ui --filter=@data-story/docs && yarn cy:component && yarn ci:e2e",
-    "ci:e2e": "start-server-and-test 'yarn dev' 3000 'cy:e2e' ",
+    "ci:e2e": "start-server-and-test 'yarn dev -- --port 3009' 3009 'cy:e2e' ",
     "cy:e2e": "cypress run --e2e",
     "cy:component": "cypress run --component",
     "cy:open": "cypress open"

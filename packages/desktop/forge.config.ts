@@ -1,7 +1,6 @@
 import type { ForgeConfig } from '@electron-forge/shared-types';
 import { AutoUnpackNativesPlugin } from '@electron-forge/plugin-auto-unpack-natives';
 import { WebpackPlugin } from '@electron-forge/plugin-webpack';
-
 import { mainConfig } from './webpack.main.config';
 import { rendererConfig } from './webpack.renderer.config';
 
@@ -68,6 +67,8 @@ const config: ForgeConfig = {
           },
         ],
       },
+      //  https://github.com/electron/forge/blob/main/packages/plugin/webpack/src/WebpackPlugin.ts#L77
+      port: 3050,
     }),
   ],
 };
