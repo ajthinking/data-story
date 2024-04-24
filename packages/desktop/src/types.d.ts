@@ -22,5 +22,5 @@ export interface IpcHandlerOptions {
   getMainWindowActions: () =>  MainWindowActions;
   getWorkspace: () => Workspace;
   switchWorkspace: (filePath?: string) => void;
-  initWorkspace: () => void;
+  refreshWindow: () => Promise<string>;
 }
