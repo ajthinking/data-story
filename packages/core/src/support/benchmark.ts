@@ -2,7 +2,7 @@ import { Application } from '../Application';
 import { DiagramBuilder } from '../DiagramBuilder';
 import { Executor } from '../Executor';
 import { InMemoryStorage } from '../InMemoryStorage';
-import { Create, Ignore, MapTable } from '../computers';
+import { Create, Ignore, CreateProperties } from '../computers';
 import { coreNodeProvider } from '../coreNodeProvider';
 
 (async () => {
@@ -24,7 +24,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
 
   const diagram = new DiagramBuilder()
     .add(Create, {json: JSON.stringify(data)})
-    .add(MapTable)
+    .add(CreateProperties)
     .add(Ignore)
     .get()
 

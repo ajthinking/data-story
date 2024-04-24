@@ -14,7 +14,7 @@ export { InstantThrow } from './InstantThrow';
 export { Input } from './Input';
 export { Map } from './Map'
 export { Log } from './Log';
-export { MapTable } from './MapTable'
+export { CreateProperties } from './CreateProperties'
 // export { Merge } from './Merge';
 export { Pass } from './Pass';
 export { Request } from './Request'
