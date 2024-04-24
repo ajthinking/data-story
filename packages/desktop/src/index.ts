@@ -46,15 +46,12 @@ class DataStoryWindow {
     this.workspace.initSettingsAndEnv(this.getMainWindowActions());
   }
 
-  public reloadWindow(): void {
-    console.log('Reloading window', this.workspace);
+  public async refreshWindow ()  {
     if(this.workspace instanceof DefaultWorkspace) {
-      console.log('entering initWorkspace')
-      // this.initWorkspace();
-    } else {
-      console.log('entering switchWorkspace')
-      this.workspace.openDiagram(this.getMainWindowActions(), this.workspace.filePath);
+      return JSON.stringify('');
     }
+
+    return await this.workspace.openDiagram(this.getMainWindowActions(), this.workspace.filePath);
   }
 
   public initWorkspace(): void {
@@ -106,7 +103,7 @@ function startDesktopWindow(): void {
     getMainWindowActions: dataStoryWindow.getMainWindowActions.bind(dataStoryWindow),
     getWorkspace: dataStoryWindow.getWorkspace.bind(dataStoryWindow),
     switchWorkspace: dataStoryWindow.switchWorkspace.bind(dataStoryWindow),
-    initWorkspace: dataStoryWindow.reloadWindow.bind(dataStoryWindow),
+    refreshWindow: dataStoryWindow.refreshWindow.bind(dataStoryWindow),
   });
 }
 
