@@ -1,5 +1,5 @@
 import { when } from '../support/computerTester/ComputerTester';
-import { MapTable } from './MapTable';
+import { CreateProperties } from './CreateProperties';
 
 // TODO
 

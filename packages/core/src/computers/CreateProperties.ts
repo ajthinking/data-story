@@ -4,9 +4,9 @@ import { jsEvaluation } from '../Param/evaluations/jsEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { ComputerConfig } from '../types/ComputerConfig';
 
-export const MapTable: ComputerConfig = {
-  name: 'MapTable',
-  label: 'MapTable',
+export const CreateProperties: ComputerConfig = {
+  name: 'CreateProperties',
+  label: 'CreateProperties',
   inputs: ['input'],
   outputs: ['output'],
   params: [

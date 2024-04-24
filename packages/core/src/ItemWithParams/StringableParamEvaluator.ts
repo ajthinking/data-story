@@ -104,11 +104,11 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   const casts = param.casts || [];
   const selectedCast = casts.find(c => c.selected);
 
-  if (selectedCast?.type === 'String') {
+  if (selectedCast?.type === 'stringCast') {
     transformedValue = String(transformedValue);
   }
 
-  if (selectedCast?.type === 'Number') {
+  if (selectedCast?.type === 'numberCast') {
     transformedValue = Number(transformedValue);
   }
 
