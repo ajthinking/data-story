@@ -19,7 +19,7 @@ import { Diagram, LinkGuesser, Node, NodeDescription, createDataStoryId } from '
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
-import { ServerConfig } from '../clients/ServerConfig';
+import { ServerConfig, WebSocketServerConfig } from '../clients/ServerConfig';
 import React, { useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
@@ -245,6 +245,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
+        serverConfig as WebSocketServerConfig
       )
 
       set({ server })

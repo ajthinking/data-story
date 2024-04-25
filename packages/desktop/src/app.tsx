@@ -7,6 +7,7 @@ import '@data-story/ui/data-story.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+const ServerRequest = `ws://localhost:${window.electron.port}`;
 
 export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
   useEffect(() => {
@@ -24,7 +25,7 @@ export const App = ({ mode }: {mode?: 'js' | 'node'}) => {
         slotComponent={<SaveComponent  />}
         server={{
           type: 'SOCKET',
-          url: 'http://localhost:3100',
+          url: ServerRequest,
         }}
       />
     </div>

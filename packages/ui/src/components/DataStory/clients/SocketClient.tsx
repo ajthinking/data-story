@@ -5,6 +5,7 @@ import { DataStoryEvents } from '../events/dataStoryEventType';
 import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
+import { WebSocketServerConfig } from './ServerConfig';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
@@ -15,12 +16,13 @@ export class SocketClient implements ServerClient {
   constructor(
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+    protected serverConfig: WebSocketServerConfig,
   ) {
     this.socket$ = webSocket({
-      url: 'ws://localhost:3100',
+      url: serverConfig.url,
       openObserver: {
         next: () => {
-          console.log('Connected to server: localhost:3100');
+          console.log(`Connected to server: ${serverConfig.url}`);
           this.describe()
         }
       },
