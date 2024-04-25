@@ -30,6 +30,7 @@ export const registerIpcHandlers = (options: IpcHandlerOptions) => {
         await getCurrentWorkspace().saveDiagram(jsonData, mainWindowActions, file.filePath);
         result.data = jsonData;
         result.isSuccess = true;
+        switchWorkspace(file.filePath);
       }
       return result;
     } catch(err) {
