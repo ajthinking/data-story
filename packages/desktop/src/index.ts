@@ -46,12 +46,18 @@ class DataStoryWindow {
     this.workspace.initSettingsAndEnv(this.getMainWindowActions());
   }
 
-  public initWorkspace(): void {
-    const mainWindowActions = this.getMainWindowActions()
+  public async refreshWindow ()  {
+    if(this.workspace instanceof DefaultWorkspace) {
+      return JSON.stringify('');
+    }
 
+    return await this.workspace.openDiagram(this.getMainWindowActions(), this.workspace.filePath);
+  }
+
+  public initWorkspace(): void {
     // Assuming DefaultWorkspace is a defined class
     this.workspace = new DefaultWorkspace();
-    this.workspace.initSettingsAndEnv(mainWindowActions);
+    this.workspace.initSettingsAndEnv(this.getMainWindowActions());
   }
 
   private createWindow(): void {
@@ -97,7 +103,7 @@ function startDesktopWindow(): void {
     getMainWindowActions: dataStoryWindow.getMainWindowActions.bind(dataStoryWindow),
     getWorkspace: dataStoryWindow.getWorkspace.bind(dataStoryWindow),
     switchWorkspace: dataStoryWindow.switchWorkspace.bind(dataStoryWindow),
-    initWorkspace: dataStoryWindow.initWorkspace.bind(dataStoryWindow),
+    refreshWindow: dataStoryWindow.refreshWindow.bind(dataStoryWindow),
   });
 }
 

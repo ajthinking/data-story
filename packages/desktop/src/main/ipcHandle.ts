@@ -7,7 +7,7 @@ import { dialog, ipcMain } from 'electron';
 import { Workspace } from './workspace';
 
 export const registerIpcHandlers = (options: IpcHandlerOptions) => {
-  const { getMainWindowActions, getWorkspace, switchWorkspace, initWorkspace } = options;
+  const { getMainWindowActions, getWorkspace, switchWorkspace, refreshWindow } = options;
   const mainWindowActions = getMainWindowActions();
   const getCurrentWorkspace = (): Workspace => getWorkspace();
 
@@ -30,6 +30,7 @@ export const registerIpcHandlers = (options: IpcHandlerOptions) => {
         await getCurrentWorkspace().saveDiagram(jsonData, mainWindowActions, file.filePath);
         result.data = jsonData;
         result.isSuccess = true;
+        switchWorkspace(file.filePath);
       }
       return result;
     } catch(err) {
@@ -68,8 +69,10 @@ export const registerIpcHandlers = (options: IpcHandlerOptions) => {
     }
   };
 
-  const refreshDesktop = (): void => {
-    initWorkspace();
+  const refreshDesktop = async (): Promise<OpenedDiagramResult>  => {
+    const data = await refreshWindow();
+
+    return { data, isSuccess: true };
   }
 
   ipcMain.handle('saveDiagram', async(event, jsonData: string): Promise<OpenedDiagramResult> => {
