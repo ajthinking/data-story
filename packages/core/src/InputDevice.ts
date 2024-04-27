@@ -16,7 +16,7 @@ export class InputDevice implements InputDeviceInterface {
     private node: Node,
     // The node topology
     private diagram: Diagram,
-    // The current execution state
+    // Reference to the current execution state
     private memory: ExecutionMemory,
   ) {}
 
@@ -44,13 +44,13 @@ export class InputDevice implements InputDeviceInterface {
     }
 
     // Enhance ItemValue to ItemWithParams
-    return pulled.map(item => new ItemWithParams(item, this.node.params))
+    return pulled.map(item => new ItemWithParams(item, this.node.params, this.diagram.params))
   }
 
   pullNew(template: ItemValue = {}): ItemWithParams[] {
     const item = structuredClone(template)
 
-    return [new ItemWithParams(item, this.node.params)]
+    return [new ItemWithParams(item, this.node.params, this.diagram.params)]
   }
 
   getPortNames(): string[] {

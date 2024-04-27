@@ -8,15 +8,15 @@ import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
   type = 'StringableParam' as const;
 
-  evaluate(itemValue: ItemValue, param: StringableParam) {
-    return prepareStringable(itemValue, param);
+  evaluate(itemValue: ItemValue, param: StringableParam, globalParams: Param[]) {
+    return prepareStringable(itemValue, param, globalParams);
   }
 
   canEvaluate(param: Param): param is StringableParam {
     return param.type === this.type;
   }
 }
-export const prepareStringable = (itemValue: ItemValue, param: Param) => {
+export const prepareStringable = (itemValue: ItemValue, param: Param, globalParams: Param[]) => {
   // **********************************************************************
   // VALIDATE
   // **********************************************************************
@@ -27,7 +27,18 @@ export const prepareStringable = (itemValue: ItemValue, param: Param) => {
   let transformedValue: string | any = String(param.value);
 
   // **********************************************************************
-  // INTERPOLATE
+  // INTERPOLATE GLOBAL PARAMS
+  // **********************************************************************
+  if (param.interpolate) {
+    // Find any @{PARAM_NAME} and replace with the value of the global param
+    const GLOBAL_PARAM_PATTERN = /@\{(\w+)\}/g;
+    transformedValue = transformedValue.replace(GLOBAL_PARAM_PATTERN, (_: string, name: string) => {
+      return globalParams.find(p => p.name === name)?.value;
+    });
+  }
+
+  // **********************************************************************
+  // INTERPOLATE ITEM PROPERTIES
   // **********************************************************************
   if (param.interpolate) {
     /** Replace template strings with item properties

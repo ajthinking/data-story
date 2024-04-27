@@ -23,7 +23,11 @@ export class ItemWithParams {
   value: ItemValue;
   params: Record<string, ParamValue>;
 
-  constructor(value: ItemValue, rawParams: Param[]) {
+  constructor(
+    value: ItemValue,
+    rawParams: Param[],
+    globalParams: Param[],
+  ) {
     this.value = value;
     this.params = new Proxy({}, {
       get: (_, key: string) => {
@@ -32,7 +36,7 @@ export class ItemWithParams {
 
         try {
           const paramEvaluatorInstance = new ParamEvaluator();
-          return paramEvaluatorInstance.evaluate(value, param);
+          return paramEvaluatorInstance.evaluate(value, param, globalParams);
         } catch (error) {
           console.error('error', error);
           return param.value;

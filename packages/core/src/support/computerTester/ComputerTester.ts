@@ -99,7 +99,7 @@ export class ComputerTester {
             try {
               const emptyItem = {}
               const evaluator = new ParamEvaluator();
-              return evaluator.evaluate(emptyItem, param);
+              return evaluator.evaluate(emptyItem, param, this.diagram!.params);
             } catch (error) {
               console.error('error', error);
               return param.value;

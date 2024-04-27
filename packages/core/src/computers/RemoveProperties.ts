@@ -32,7 +32,7 @@ export const RemoveProperties: ComputerConfig = {
 
     const properties = param.map(p => p.property);
     const result = items.map((item) => {
-      const newItem = new ItemWithParams({ ...item.value }, []);
+      const [ newItem ] = input.pullNew({ ...item.value });
       properties.forEach(p => delete newItem.value[p]);
       return newItem;
     });
