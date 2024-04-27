@@ -15,7 +15,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { Diagram, LinkGuesser, Node, NodeDescription, createDataStoryId } from '@data-story/core';
+import { Diagram, LinkGuesser, Node, NodeDescription, Param, createDataStoryId } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -53,6 +53,9 @@ export type StoreSchema = {
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
 
+  /** Global Params */
+  params: Param[],
+
   /** The Server and its config */
   serverConfig: ServerConfig;
   server: null | ServerClient;
@@ -82,6 +85,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   rfInstance: undefined,
   nodes: [],
   edges: [],
+  params: [],
   server: null,
   availableNodes: [],
   openNodeModalId: null,
@@ -91,12 +95,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     const reactFlowObject = get().rfInstance!.toObject()
     const viewport = reactFlowObject.viewport
 
-    const { nodes, edges } = get()
+    const { nodes, edges, params } = get()
 
     return DiagramFactory.fromReactFlowObject({
       viewport,
       nodes,
       edges,
+      params,
     })
   },
   onNodesChange: (changes: NodeChange[]) => {
@@ -223,6 +228,9 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     get().setNodes(reactFlowObject.nodes);
     get().setEdges(reactFlowObject.edges);
+    set({
+      params: diagram.params
+    });
   },
   onRun: () => {
     get().server!.run(
