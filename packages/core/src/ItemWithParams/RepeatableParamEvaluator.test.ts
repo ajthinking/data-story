@@ -19,37 +19,57 @@ describe('evaluate', () => {
   const evaluator = new RepeatableParamEvaluator(paramEvaluator);
 
   it('should test evaluate method performs when param.row length is 0', () => {
-    const result = evaluator.evaluate({}, {
-      'name': 'remove_properties',
-      'type': 'RepeatableParam',
-      'row': [],
-      'value': []
-    } as unknown as RepeatableParam<any>);
+    const result = evaluator.evaluate(
+      {},
+      {
+        'name': 'remove_properties',
+        'type': 'RepeatableParam',
+        'row': [],
+        'value': []
+      } as unknown as RepeatableParam<any>,
+      []
+    );
 
     expect(result).toEqual([]);
   });
 
   it('should test RepeatableParam contain the StringableParam type', () => {
-    const result = evaluator.evaluate({}, removePropertyData as unknown as RepeatableParam<any>);
+    const result = evaluator.evaluate(
+      {},
+      removePropertyData as unknown as RepeatableParam<any>,
+      []
+    );
 
     expect(result).toEqual(removePropertyData.value);
   });
 
   it('should test RepeatableParam contain the PortSelectionParam type', () => {
-    const result = evaluator.evaluate({}, mockPortMapData as unknown as RepeatableParam<any>);
+    const result = evaluator.evaluate(
+      {},
+      mockPortMapData as unknown as RepeatableParam<any>,
+      []
+    );
 
     expect(result).toEqual(mockPortMapData.value);
   });
 
   it('should test RepeatableParam contain the RepeatableParam type', () => {
-    const result = evaluator.evaluate({}, mockRepeatableData as unknown as RepeatableParam<any>);
+    const result = evaluator.evaluate(
+      {},
+      mockRepeatableData as unknown as RepeatableParam<any>,
+      []
+    );
 
     expect(result).toEqual(mockRepeatableData.value);
   });
 
   it('recursive called count', () => {
     const spy = vi.spyOn(paramEvaluator, 'evaluate');
-    evaluator.evaluate({}, mockRepeatableData as unknown as RepeatableParam<any>);
+    evaluator.evaluate(
+      {},
+      mockRepeatableData as unknown as RepeatableParam<any>,
+      []
+    );
 
     /**
      * count = 6 = (1                +  1                +  1                             ) * 2
@@ -61,7 +81,11 @@ describe('evaluate', () => {
 
   it('recursive called with correct params', () => {
     const spy = vi.spyOn(paramEvaluator, 'evaluate');
-    evaluator.evaluate({}, mockRepeatableData as unknown as RepeatableParam<any>);
+    evaluator.evaluate(
+      {},
+      mockRepeatableData as unknown as RepeatableParam<any>,
+      []
+    );
     const calls = spy.mock.calls;
 
     expect(calls).toMatchInlineSnapshot(`
@@ -73,6 +97,7 @@ describe('evaluate', () => {
             "type": "StringableParam",
             "value": "value-11",
           },
+          [],
         ],
         [
           {},
@@ -92,6 +117,7 @@ describe('evaluate', () => {
               },
             ],
           },
+          [],
         ],
         [
           {},
@@ -100,6 +126,7 @@ describe('evaluate', () => {
             "type": "StringableParam",
             "value": "property-11",
           },
+          [],
         ],
         [
           {},
@@ -108,6 +135,7 @@ describe('evaluate', () => {
             "type": "StringableParam",
             "value": "value-22",
           },
+          [],
         ],
         [
           {},
@@ -127,6 +155,7 @@ describe('evaluate', () => {
               },
             ],
           },
+          [],
         ],
         [
           {},
@@ -135,6 +164,7 @@ describe('evaluate', () => {
             "type": "StringableParam",
             "value": "property-22",
           },
+          [],
         ],
       ]
     `);
