@@ -10,6 +10,7 @@ import {
 
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 
+// This component is just a place to sketch
 export default () => {
   const app = new Application();
 
