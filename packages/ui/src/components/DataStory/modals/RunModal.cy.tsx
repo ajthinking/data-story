@@ -1,5 +1,5 @@
 import React from 'react'
-import { RunModal } from './runModal'
+import { RunModal } from './runModal/runModal'
 import { DataStoryProvider } from '../store/store';
 import * as store from '../store/store';
 
