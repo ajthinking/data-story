@@ -86,8 +86,7 @@ export class ExecutionMemoryFactory {
     return new InputDevice(
       node,
       this.diagram,
-      memory,
-      node.params,
+      memory
     )
   }
 

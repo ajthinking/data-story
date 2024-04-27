@@ -237,8 +237,7 @@ export class ComputerTester {
     return new InputDevice(
       this.node!,
       this.diagram!,
-      this.memory!,
-      this.makeParams() || [],
+      this.memory!
     )
   }
 
