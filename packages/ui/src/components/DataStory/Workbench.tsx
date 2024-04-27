@@ -7,7 +7,7 @@ import ReactFlow, {
   ReactFlowProvider,
 } from 'reactflow';
 import NodeComponent from '../Node/NodeComponent';
-import { RunModal } from './modals/runModal';
+import { RunModal } from './modals/runModal/runModal';
 import { AddNodeModal } from './modals/addNodeModal';
 import { StoreSchema, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';

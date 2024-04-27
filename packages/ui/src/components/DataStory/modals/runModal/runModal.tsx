@@ -1,8 +1,12 @@
 import { shallow } from 'zustand/shallow';
-import { Modal } from '../modal'
-import { StoreSchema, useStore } from '../store/store';
+import { Modal } from '../../modal'
+import { StoreSchema, useStore } from '../../store/store';
 import { useEffect, useRef } from 'react';
 import clsx from 'clsx';
+import { Params } from '../nodeSettingsModal/tabs';
+import { Node, Param, ParamValue, Port } from '@data-story/core';
+import { ReactFlowNode } from '../../../Node/ReactFlowNode';
+import { useForm } from 'react-hook-form';
 
 export interface RunModalContentProps {
   setShowModal: (show: boolean) => void
@@ -19,10 +23,30 @@ export const RunModalContent = (props: RunModalContentProps) => {
 
   const selector = (state: StoreSchema) => ({
     onRun: state.onRun,
+    params: state.params,
     serverConfig: state.serverConfig,
   });
 
-  const { onRun, serverConfig } = useStore(selector, shallow);
+  const { onRun, serverConfig, params } = useStore(selector, shallow);
+
+  // Hack to reuse Params component
+  const nullNode = {
+    data: {
+      params,
+      inputs: [] as Port[],
+    }
+  } as ReactFlowNode;
+
+  const defaultValues = {
+    params: params.reduce((acc, param: Param) => {
+      acc[param.name] = param.value as any
+      return acc
+    }, {})
+  }
+
+  const form = useForm<{ [x: string]: any }>({
+    defaultValues,
+  });
 
   return (<Modal
     title={'Run'}
@@ -42,6 +66,12 @@ export const RunModalContent = (props: RunModalContentProps) => {
           return 'Unknown';
         })()
       }</span></div>
+      <div className='flex flex-col space-y-2 text-xs mb-4 text-gray-500'>
+        <Params
+          form={form}
+          node={{ ...nullNode, }}
+        />
+      </div>
       <div className='flex w-full justify-center items-center space-x-2'>
         <button
           ref={runButtonReference}
@@ -63,6 +93,7 @@ export const RunModalContent = (props: RunModalContentProps) => {
     </div>
   </Modal>)
 }
+
 export const RunModal = ({ showModal, setShowModal }: {
   showModal: boolean,
   setShowModal: (show: boolean) => void

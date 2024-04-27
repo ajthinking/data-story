@@ -5,10 +5,12 @@ import {
   coreNodeProvider,
   nodes,
   multiline,
+  str,
 } from '@data-story/core';
 
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 
+// This component is just a place to sketch
 export default () => {
   const app = new Application();
 
@@ -16,20 +18,19 @@ export default () => {
 
   app.boot();
 
-  const { Input, Output, Signal, Map, ConsoleLog } = nodes;
-
-  const CoolStamper = new DiagramBuilder()
-    .add(Input)
-    .add(Map, { json: { is_cool: true }})
-    .add(Output)
-    .get()
+  const { Signal, Table } = nodes;
 
   const diagram = new DiagramBuilder()
-    .registerLocalNodeDefinitions({ CoolStamper })
-    .add(Signal)
-    .addSubNode('CoolStamper')
-    .add(ConsoleLog)
+    .add(Signal, { count: '@{SIGNAL_COUNT_GLOBAL_PARAM}' })
+    .add(Table)
     .get()
+
+  diagram.params = [
+    str({
+      name: 'SIGNAL_COUNT_GLOBAL_PARAM',
+      value: '5'
+    })
+  ]
 
   return (
     <div className="w-full h-1/2">

@@ -2,12 +2,14 @@ import { PortId } from './types/PortId'
 import { Link } from './types/Link'
 import { Node } from './types/Node'
 import { syncPortSchemas } from './syncPortSchemas'
+import { Param } from './Param'
 
 export type OnConnectCallbacks = (link: Link, diagram: Diagram) => void
 
 export class Diagram {
   nodes: Node[]
   links: Link[]
+  params: Param[]
   localNodeDefinitions: Record<string, Diagram>
   viewport: { x: number, y: number, zoom: number } = {
     x: 0,
@@ -19,11 +21,13 @@ export class Diagram {
   constructor(options?: {
     nodes?: Node[],
     links?: Link[],
+    params?: Param[],
     localNodeDefinitions?: Record<string, Diagram>,
     onConnect?: OnConnectCallbacks[],
   }) {
     this.nodes = options?.nodes || []
     this.links = options?.links || []
+    this.params = options?.params || []
     this.localNodeDefinitions = options?.localNodeDefinitions || {}
     this.onConnect = options?.onConnect || [
       syncPortSchemas,

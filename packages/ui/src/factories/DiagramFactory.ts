@@ -1,9 +1,13 @@
-import { Diagram, Link } from '@data-story/core'
+import { Diagram, Link, Param } from '@data-story/core'
 import { ReactFlowJsonObject } from 'reactflow'
 import { NodeFactory } from './NodeFactory'
 
+export type ReactFlowJsonObjectWithParams = ReactFlowJsonObject & {
+  params: Param[]
+}
+
 export const DiagramFactory = {
-  fromReactFlowObject(flow: ReactFlowJsonObject): Diagram {
+  fromReactFlowObject(flow: ReactFlowJsonObjectWithParams): Diagram {
     const nodes = flow.nodes.map(NodeFactory.fromReactFlowNode)
 
     const links: Link[] = flow.edges.map(edge => {
@@ -14,6 +18,8 @@ export const DiagramFactory = {
       }
     })
 
-    return new Diagram({ nodes, links })
+    const params = flow.params
+
+    return new Diagram({ nodes, links, params })
   }
 }
