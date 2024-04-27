@@ -55,6 +55,7 @@ export type StoreSchema = {
 
   /** Global Params */
   params: Param[],
+  setParams: (params: Param[]) => void;
 
   /** The Server and its config */
   serverConfig: ServerConfig;
@@ -262,6 +263,9 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   setAvailableNodes: (availableNodes: NodeDescription[]) => {
     set({ availableNodes })
+  },
+  setParams: (params: Param[]) => {
+    set({ params })
   },
   updateEdgeCounts: (edgeCounts: Record<string, number>) => {
     const updatedEdges = get().edges.map(edge => ({

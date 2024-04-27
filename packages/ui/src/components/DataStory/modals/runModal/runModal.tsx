@@ -24,10 +24,11 @@ export const RunModalContent = (props: RunModalContentProps) => {
   const selector = (state: StoreSchema) => ({
     onRun: state.onRun,
     params: state.params,
+    setParams: state.setParams,
     serverConfig: state.serverConfig,
   });
 
-  const { onRun, serverConfig, params } = useStore(selector, shallow);
+  const { onRun, serverConfig, params, setParams } = useStore(selector, shallow);
 
   // Hack to reuse Params component
   const nullNode = {
@@ -47,6 +48,23 @@ export const RunModalContent = (props: RunModalContentProps) => {
   const form = useForm<{ [x: string]: any }>({
     defaultValues,
   });
+
+  const handleRun = () => {
+    form.handleSubmit(submitted => {
+      const newParams = params.map(param => {
+        if (!submitted.params.hasOwnProperty(param.name)) return param;
+
+        return {
+          ...param,
+          value: submitted.params[param.name]
+        };
+      });
+
+      setParams(newParams);
+      onRun();
+      setShowModal(false);
+    })();
+  };
 
   return (<Modal
     title={'Run'}
@@ -82,10 +100,7 @@ export const RunModalContent = (props: RunModalContentProps) => {
             'font-mono text-xs text-gray-50 uppercase',
             'rounded'
           )}
-          onClick={() => {
-            onRun()
-            setShowModal(false)
-          }}
+          onClick={handleRun}
         >
           Run
         </button>
