@@ -209,7 +209,16 @@ describe('params', () => {
       type: 'node-type',
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
-      params: []
+      params: [{
+        name: 'greeting',
+        label: 'Greeting',
+        help: 'The greeting to use',
+        type: 'StringableParam',
+        value: 'Hello ${name}',
+        multiline: false,
+        canInterpolate: true,
+        interpolate: true,
+      }]
     }
 
     const links = [
@@ -225,17 +234,6 @@ describe('params', () => {
       linkItems: new Map()
         .set('link-1', [{ name: 'Bob' }])
     })
-
-    const params: Param[] = [{
-      name: 'greeting',
-      label: 'Greeting',
-      help: 'The greeting to use',
-      type: 'StringableParam',
-      value: 'Hello ${name}',
-      multiline: false,
-      canInterpolate: true,
-      interpolate: true,
-    }]
 
     const input = new InputDevice(node, diagram, memory)
 

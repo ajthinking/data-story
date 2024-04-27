@@ -235,7 +235,10 @@ export class ComputerTester {
 
   protected makeInputDevice() {
     return new InputDevice(
-      this.node!,
+      {
+        ...this.node!,
+        params: this.makeParams()
+      },
       this.diagram!,
       this.memory!
     )
