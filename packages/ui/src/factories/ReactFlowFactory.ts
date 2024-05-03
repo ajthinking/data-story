@@ -38,6 +38,8 @@ export const ReactFlowFactory = {
           source: diagram.nodes.find(node => node.outputs.find(output => output.id === link.sourcePortId) !== undefined)!.id,
           target: diagram.nodes.find(node => node.inputs.find(input => input.id === link.targetPortId) !== undefined)!.id,
           id: link.id,
+          label: link?.label,
+          labelBgStyle: link?.labelBgStyle,
         }
       }),
       viewport: diagram.viewport,
