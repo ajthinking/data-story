@@ -16788,11 +16788,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A~4.5.4#optional!builtin<compat/typescript>":
   version: 4.5.5
-  resolution: "typescript@patch:typescript@npm%3A4.5.5#optional!builtin<compat/typescript>::version=4.5.5&hash=bcec9a"
+  resolution: "typescript@patch:typescript@npm%3A4.5.5#optional!builtin<compat/typescript>::version=4.5.5&hash=f1b8ea"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/3875b1a307d4e01bcdb7537ba708b4c937dd6c89ef230391e9957983b642b0cd58f3355098fb717b7c97753f56d9cde0d3f817e5367d5b5c20f357be961b3c71
+  checksum: 10/dddcdd55dab8823f6ab618d74b6b09f8c010e4fe3ae28904c3c17f176e186773ad7b99410176bf0a2ec4ea07e0edec9ccf11fe05e0ca6e7958bf05ee7ce487f6
   languageName: node
   linkType: hard
 
