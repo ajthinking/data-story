@@ -4,7 +4,7 @@ import * as computerConfigs from './computers'
 export const hubspotProvider: ServiceProvider = {
   register: (app: Application) => {
     const configs = Object.values(computerConfigs as {[key: string]: ComputerConfig})
-    app.addComputers(configs);
+    app.addComputerConfigs(configs);
   },
 
   boot: (app: Application) => {}

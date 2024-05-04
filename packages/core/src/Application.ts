@@ -26,17 +26,17 @@ export class Application {
     return this;
   }
 
-  addComputers(computers: Map<string, Computer> | ComputerConfig[]) {
-    if(computers instanceof Map) {
-      this.computers = new Map([...this.computers, ...computers]);
-    } else {
-      const newComputers = new Map(computers.map(config => {
-        const computer = new ComputerFactory().get(config);
-        return [computer.name, computer];
-      }));
+  addComputerConfigs(computerConfigs: ComputerConfig[]) {
+    const newComputers = new Map(computerConfigs.map(config => {
+      const computer = new ComputerFactory().get(config);
+      return [computer.name, computer];
+    }));
 
-      this.computers = new Map([...this.computers, ...newComputers]);
-    }
+    this.computers = new Map([...this.computers, ...newComputers]);
+  }
+
+  addComputers(computers: Map<string, Computer>) {
+    this.computers = new Map([...this.computers, ...computers]);
   }
 
   addHooks(hooks: Record<string, Function>) {
