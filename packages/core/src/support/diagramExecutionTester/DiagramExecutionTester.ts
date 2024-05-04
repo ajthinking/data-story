@@ -6,6 +6,7 @@ import { Executor } from '../../Executor';
 import { InMemoryStorage } from '../../InMemoryStorage';
 import * as computerConfigs from '../../computers'
 import { ComputerFactory } from '../../ComputerFactory';
+import { Computer } from '../../types/Computer';
 
 export const whenRunning = (diagram: Diagram) => {
   return new DiagramExecutionTester(diagram)
@@ -18,13 +19,17 @@ export class DiagramExecutionTester {
   constructor(public diagram: Diagram) {}
 
   async ok() {
+    let computers: Record<string, Computer> = {}
+
+    for(const config of Object.values(computerConfigs)) {
+      const computer = new ComputerFactory().get(config)
+      computers[computer.name] = computer
+    }
+
     const executor = new Executor(
       this.diagram,
       // TODO: this should be injectable, not hardcoded take all
-      new Map(Object.values(computerConfigs).map(config => {
-        const computer = new ComputerFactory().get(config);
-        return [computer.name, computer];
-      })),
+      computers,
       await this.makeStorage()
     )
 

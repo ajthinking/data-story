@@ -15,11 +15,11 @@ import { toLookup } from './utils/toLookup'
 export class ExecutionMemoryFactory {
   constructor(
     public diagram: Diagram,
-    public computers: Map<string, Computer>,
+    public computers: Record<string, Computer>,
     public storage: Storage
   ) {}
 
-  static create(diagram: Diagram, computers: Map<string, Computer>, storage: Storage) {
+  static create(diagram: Diagram, computers: Record<string, Computer>, storage: Storage) {
     const instance = new this(diagram, computers, storage)
 
     // Create a new memory
@@ -59,7 +59,7 @@ export class ExecutionMemoryFactory {
       memory.outputDevices.set(node.id, outputDevice)
 
       // Initialize runner generators
-      const computer = instance.computers.get(node.type)
+      const computer = instance.computers[node.type]
       if(!computer) throw new Error(`Computer "${node.type}" not found`)
 
       memory.setNodeRunner(
