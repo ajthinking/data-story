@@ -17,7 +17,7 @@ export class Executor {
 
   constructor(
     diagram: Diagram,
-    public readonly computers: Map<string, Computer>,
+    public readonly computers: Record<string, Computer>,
     public readonly storage: Storage
   ) {
     this.diagram = diagram.unfold()
@@ -127,7 +127,7 @@ export class Executor {
   protected getRunnableNodes(): Node[] {
     return this.diagram.nodes.filter(node => {
       // If the computer implements a custom hook
-      const computer = this.computers.get(node.type)!
+      const computer = this.computers[node.type]
       const hook = computer.canRun
       if(hook) return hook({
         isAvailable: () => this.memory.getNodeStatus(node.id) === 'AVAILABLE',

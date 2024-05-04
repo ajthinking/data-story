@@ -1,3 +1,4 @@
+import { ComputerFactory } from './ComputerFactory';
 import { DiagramBuilder } from './DiagramBuilder'
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { InMemoryStorage } from './InMemoryStorage';
@@ -10,9 +11,10 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
-    const computers = new Map()
-      .set('Create', Create)
-      .set('ConsoleLog', ConsoleLog);
+    const computers = {
+      Create: new ComputerFactory().get(Create),
+      ConsoleLog: new ComputerFactory().get(ConsoleLog),
+    }
 
     const storage = new InMemoryStorage();
 
@@ -34,9 +36,10 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
-    const computers = new Map()
-      .set('Create', Create)
-      .set('ConsoleLog', ConsoleLog);
+    const computers = {
+      Create: new ComputerFactory().get(Create),
+      ConsoleLog: new ComputerFactory().get(ConsoleLog),
+    }
 
     const storage = new InMemoryStorage();
 
@@ -57,9 +60,10 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
-    const computers = new Map()
-      .set('Create', Create)
-      .set('ConsoleLog', ConsoleLog);
+    const computers = {
+      Create: new ComputerFactory().get(Create),
+      ConsoleLog: new ComputerFactory().get(ConsoleLog),
+    }
 
     const storage = new InMemoryStorage();
 
@@ -84,9 +88,10 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
-    const computers = new Map()
-      .set('Create', Create)
-      .set('ConsoleLog', ConsoleLog);
+    const computers = {
+      Create: new ComputerFactory().get(Create),
+      ConsoleLog: new ComputerFactory().get(ConsoleLog),
+    }
 
     const storage = new InMemoryStorage();
 

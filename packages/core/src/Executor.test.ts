@@ -14,7 +14,7 @@ import { coreNodeProvider } from './coreNodeProvider';
 describe('execute', () => {
   it('can execute an empty diagram and return an execution update', async () => {
     const diagram = new Diagram()
-    const computers = new Map<string, Computer>()
+    const computers: Record<string, Computer> = {}
 
     const storage = new InMemoryStorage()
 
@@ -47,11 +47,13 @@ describe('execute', () => {
 
     let proof = 'dummy-should-change-this'
 
-    const computers = new Map<string, Computer>().set('Dummy', {
-      async *run({}) {
-        proof = 'dummy-rocks'
-      },
-    } as Computer)
+    const computers: Record<string, Computer> = {
+      Dummy: {
+        async *run({}) {
+          proof = 'dummy-rocks'
+        },
+      } as Computer
+    }
 
     const storage = new InMemoryStorage()
 
@@ -87,11 +89,13 @@ describe('execute', () => {
       nodes: [node]
     })
 
-    const computers = new Map<string, Computer>().set('Accepter', {
-      async *run({ output }) {
-        // do nothing
-      },
-    } as Computer)
+    const computers: Record<string, Computer> = {
+      Accepter: {
+        async *run({}) {
+          // Do nothing
+        },
+      } as Computer
+    }
 
     const storage = new InMemoryStorage()
 
@@ -124,11 +128,13 @@ describe('execute', () => {
       nodes: [node]
     })
 
-    const computers = new Map<string, Computer>().set('Spawner', {
-      async *run({ output }) {
-        output.push([{ type: 'Zergling' }])
-      },
-    } as Computer)
+    const computers: Record<string, Computer> = {
+      Spawner: {
+        async *run({ output }) {
+          output.push([{ type: 'Zergling' }])
+        },
+      } as Computer
+    }
 
     const storage = new InMemoryStorage()
 
@@ -203,9 +209,10 @@ describe('execute', () => {
       },
     } as Computer
 
-    const computers = new Map<string, Computer>()
-      .set(createComputer.name, createComputer)
-      .set(logComputer.name, logComputer)
+    const computers: Record<string, Computer> = {
+      Create: createComputer,
+      Log: logComputer,
+    }
 
     const storage = new InMemoryStorage()
 

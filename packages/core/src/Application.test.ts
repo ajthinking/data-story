@@ -69,18 +69,6 @@ describe('boot', () => {
   })
 })
 
-describe('addComputers', () => {
-  it('adds computers to the application', () => {
-    const app = new Application()
-
-    const computers = new Map<string, Computer>()
-
-    app.addComputers(computers)
-
-    expect(app.computers).toStrictEqual(computers)
-  })
-})
-
 describe('addComputerConfigs', () => {
   it('adds computers to the application via a config object', () => {
     const app = new Application()
@@ -91,7 +79,7 @@ describe('addComputerConfigs', () => {
 
     app.addComputerConfigs([config])
 
-    expect(app.computers.get('Signal')).toMatchObject(
+    expect(app.computers.Signal).toMatchObject(
       new ComputerFactory().get(config)
     )
   })
@@ -117,15 +105,7 @@ describe('descriptions', () => {
   it('returns descriptions of all computers', () => {
     const app = new Application()
 
-    const computer1 = new ComputerFactory().get(
-      Signal
-    )
-
-    app.addComputers(
-      new Map([
-        [computer1.name, computer1],
-      ])
-    )
+    app.addComputerConfigs([ Signal ])
 
     expect(app.descriptions()).toMatchObject([
       { name: 'Signal' }

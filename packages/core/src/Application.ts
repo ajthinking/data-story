@@ -6,7 +6,7 @@ import { ServiceProvider } from './types/ServiceProvider';
 
 export class Application {
   providers: ServiceProvider[] = [];
-  computers = new Map<string, Computer>();
+  computers: Record<string, Computer> = {};
   hooks = new Map<string, Function>();
 
   register(provider: ServiceProvider | ServiceProvider[]) {
@@ -27,16 +27,10 @@ export class Application {
   }
 
   addComputerConfigs(computerConfigs: ComputerConfig[]) {
-    const newComputers = new Map(computerConfigs.map(config => {
+    for (const config of computerConfigs) {
       const computer = new ComputerFactory().get(config);
-      return [computer.name, computer];
-    }));
-
-    this.computers = new Map([...this.computers, ...newComputers]);
-  }
-
-  addComputers(computers: Map<string, Computer>) {
-    this.computers = new Map([...this.computers, ...computers]);
+      this.computers[computer.name] = computer;
+    }
   }
 
   addHooks(hooks: Record<string, Function>) {
@@ -46,7 +40,7 @@ export class Application {
   }
 
   descriptions() {
-    return Array.from(this.computers.values()).map(computer => {
+    return Object.values(this.computers).map(computer => {
       return NodeDescriptionFactory.fromComputer(computer);
     });
   }
