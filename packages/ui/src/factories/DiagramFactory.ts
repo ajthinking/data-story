@@ -14,7 +14,9 @@ export const DiagramFactory = {
       return {
         id: edge.id,
         sourcePortId: edge.sourceHandle!,
-        targetPortId: edge.targetHandle!
+        targetPortId: edge.targetHandle!,
+        label: edge.label,
+        labelBgStyle: edge.labelBgStyle,
       }
     })
 

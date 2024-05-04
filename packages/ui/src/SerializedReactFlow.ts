@@ -1,4 +1,5 @@
 import { Param } from '@data-story/core'
+import type { CSSProperties, ReactNode } from 'react';
 
 export type SerializedReactFlow = {
   nodes: SerializedReactFlowNode[],
@@ -49,4 +50,6 @@ export type SerializedReactFlowEdge = {
   target: string,
   sourceHandle?: string | null,
   targetHandle?: string | null,
+  label?: string | ReactNode;
+  labelBgStyle?: CSSProperties;
 }
