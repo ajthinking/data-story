@@ -7,6 +7,7 @@ import { InMemoryStorage } from '../../InMemoryStorage';
 import * as computerConfigs from '../../computers'
 import { ComputerFactory } from '../../ComputerFactory';
 import { Computer } from '../../types/Computer';
+import { ExecutorFactory } from '../../ExecutorFactory';
 
 export const whenRunning = (diagram: Diagram) => {
   return new DiagramExecutionTester(diagram)
@@ -26,7 +27,7 @@ export class DiagramExecutionTester {
       computers[computer.name] = computer
     }
 
-    const executor = new Executor(
+    const executor = ExecutorFactory.create(
       this.diagram,
       // TODO: this should be injectable, not hardcoded take all
       computers,

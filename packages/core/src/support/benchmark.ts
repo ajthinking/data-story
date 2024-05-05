@@ -1,6 +1,7 @@
 import { Application } from '../Application';
 import { DiagramBuilder } from '../DiagramBuilder';
 import { Executor } from '../Executor';
+import { ExecutorFactory } from '../ExecutorFactory';
 import { InMemoryStorage } from '../InMemoryStorage';
 import { Create, Ignore, CreateProperties } from '../computers';
 import { coreNodeProvider } from '../coreNodeProvider';
@@ -28,7 +29,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
     .add(Ignore)
     .get()
 
-  const executor = new Executor(
+  const executor = ExecutorFactory.create(
     diagram,
     app.computers,
     new InMemoryStorage()

@@ -4,11 +4,17 @@ import { Application, Diagram, Executor, NodeDescription } from '@data-story/cor
 
 vi.mock('@data-story/core', () => {
   const originalModule = vi.importActual('@data-story/core');
+
+  const executor = vi.fn(() => ({
+    execute: vi.fn(),
+  }))
+
   return {
     ...originalModule,
-    Executor: vi.fn(() => ({
-      execute: vi.fn(),
-    })),
+    ExecutorFactory: {
+      create: executor,
+    },
+    Executor: executor,
     Diagram: vi.fn(),
     InMemoryStorage: vi.fn(),
   };

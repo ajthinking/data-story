@@ -1,4 +1,4 @@
-import { Application, Diagram, Executor, NodeDescription, InMemoryStorage, } from '@data-story/core';
+import { Application, Diagram, Executor, NodeDescription, InMemoryStorage, ExecutorFactory, } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -56,7 +56,7 @@ export class JsClient implements ServerClient {
 
     const storage = new InMemoryStorage()
 
-    this.executor = new Executor(
+    this.executor = ExecutorFactory.create(
       diagram,
       this.app.computers,
       storage

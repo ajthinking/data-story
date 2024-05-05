@@ -10,6 +10,7 @@ import { Node } from './types/Node';
 import { ItemValue } from './types/ItemValue';
 import { Application } from './Application';
 import { coreNodeProvider } from './coreNodeProvider';
+import { ExecutorFactory } from './ExecutorFactory';
 
 describe('execute', () => {
   it('can execute an empty diagram and return an execution update', async () => {
@@ -18,7 +19,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = new Executor(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, computers, storage)
 
     const updates = executor.execute()
 
@@ -57,7 +58,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = new Executor(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, computers, storage)
 
     const updates = executor.execute()
     const update1 = await updates.next()
@@ -99,7 +100,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = new Executor(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, computers, storage)
 
     const updates = executor.execute()
     const update = await updates.next()
@@ -138,7 +139,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = new Executor(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, computers, storage)
 
     const updates = executor.execute()
 
@@ -216,7 +217,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = new Executor(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, computers, storage)
 
     const updates = executor.execute()
 
@@ -301,7 +302,7 @@ it('can execute a diagram containing sub diagrams', async () => {
     .add(ConsoleLog, { message: 'Hello It Roached!!!' })
     .get()
 
-  const executor = new Executor(
+  const executor = ExecutorFactory.create(
     diagram,
     app.computers,
     new InMemoryStorage()
