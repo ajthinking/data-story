@@ -6,6 +6,7 @@ import {
   nodes,
   multiline,
   str,
+  UnfoldedDiagramFactory,
 } from '@data-story/core';
 
 import useWindowDimensions from '../../hooks/useWindowDimensions';
@@ -25,9 +26,10 @@ export default () => {
         value: 'This is a default value',
       }),
     ])
-    .add(nodes.Input)
+    .add(nodes.Input, { port_name: 'incoming'})
+    .add(nodes.Input, { port_name: 'ignored'})
     .add(nodes.Map, { json: '{\n\tadded: yes\n}'})
-    .add(nodes.Output)
+    .add(nodes.Output, { port_name: 'outgoing'})
     .get()
 
   app.addNestedNode('NestedNode', nestedNode);
@@ -42,7 +44,9 @@ export default () => {
     <div className="w-full h-1/2">
       <DataStory
         server={{ type: 'JS', app }}
-        initDiagram={diagram}
+        initDiagram={
+          diagram
+        }
       />
     </div>
   );

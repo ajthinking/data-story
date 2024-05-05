@@ -23,16 +23,26 @@ export const NodeDescriptionFactory = {
       category: undefined,
       inputs: diagram.nodes
         .filter(node => node.type === 'Input')
-        .map(node => ({
-          name: 'input',
-          schema: {}
-        })),
+        .map(node => {
+          const portName = node.params
+            .find(param => param.name === 'port_name')!.value as string
+
+          return {
+            name: portName,
+            schema: {}
+          }
+        }),
       outputs: diagram.nodes
         .filter(node => node.type === 'Output')
-        .map(node => ({
-          name: 'output',
-          schema: {}
-        })),
+        .map(node => {
+          const portName = node.params
+            .find(param => param.name === 'port_name')!.value as string
+
+          return {
+            name: portName,
+            schema: {}
+          }
+        }),
       params: diagram.params,
       tags: [], // TODO
     }
