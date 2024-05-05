@@ -8,6 +8,7 @@ import * as computerConfigs from '../../computers'
 import { ComputerFactory } from '../../ComputerFactory';
 import { Computer } from '../../types/Computer';
 import { ExecutorFactory } from '../../ExecutorFactory';
+import { Registry } from '../../Registry';
 
 export const whenRunning = (diagram: Diagram) => {
   return new DiagramExecutionTester(diagram)
@@ -30,7 +31,7 @@ export class DiagramExecutionTester {
     const executor = ExecutorFactory.create(
       this.diagram,
       // TODO: this should be injectable, not hardcoded take all
-      computers,
+      new Registry(computers, {}),
       await this.makeStorage()
     )
 

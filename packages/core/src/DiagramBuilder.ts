@@ -7,6 +7,7 @@ import { AbstractPort, Port, PortName } from './types/Port';
 import { ComputerConfig } from './types/ComputerConfig';
 import { Fake } from './computers/Fake';
 import { createDataStoryId } from './utils/createDataStoryId';
+import { Param } from './Param';
 
 export class DiagramBuilder {
   diagram: Diagram
@@ -41,55 +42,6 @@ export class DiagramBuilder {
 
   to(directive: string) {
     this.toDirective = directive
-    return this
-  }
-
-  addSubNode(name: string) {
-    if(!this.diagram.localNodeDefinitions[name]) throw new Error(`Bad sub node: ${name}. Node not found`)
-
-    const subDiagram = this.diagram.localNodeDefinitions[name]
-
-    const nodeId = `${name}.${createDataStoryId()}`
-
-    const node: Node = {
-      id: nodeId,
-      label: name,
-      type: name,
-      inputs: subDiagram.inputNodes().map(inputNode => {
-        const portName = inputNode.params[0]?.value as string
-
-        return {
-          id: `${nodeId}.${portName}`,
-          name: portName,
-          schema: {}, // TODO?
-        }
-      }),
-      outputs: subDiagram.outputNodes().map(outputNode => {
-        const portName = outputNode.params[0]?.value as string
-
-        return {
-          id: `${nodeId}.${portName}`,
-          name: portName,
-          schema: {}, // TODO?
-        }
-      }),
-      params: [],
-    }
-
-    node.position = new PositionGuesser(
-      this.diagram
-    ).guess(node)
-
-    this.diagram.nodes.push(node)
-
-    this.linkToNewNode(node)
-
-    this.previousNode = node
-
-    this.fromDirective = null
-
-    this.aboveDirective = null
-
     return this
   }
 
@@ -229,8 +181,9 @@ export class DiagramBuilder {
     })
   }
 
-  registerLocalNodeDefinitions(definitions: Record<string, Diagram>) {
-    this.diagram.localNodeDefinitions = definitions
+  withParams(params: Param[]) {
+    this.diagram.params = params
+
     return this
   }
 

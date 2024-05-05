@@ -22,7 +22,7 @@ export const run: MessageHandler<RunMessage> = async (
 
   const executor = ExecutorFactory.create(
     diagram,
-    app.computers,
+    app.registry,
     storage
   )
 

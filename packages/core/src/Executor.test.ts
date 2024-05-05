@@ -11,15 +11,16 @@ import { ItemValue } from './types/ItemValue';
 import { Application } from './Application';
 import { coreNodeProvider } from './coreNodeProvider';
 import { ExecutorFactory } from './ExecutorFactory';
+import { Registry } from './Registry';
 
 describe('execute', () => {
   it('can execute an empty diagram and return an execution update', async () => {
     const diagram = new Diagram()
-    const computers: Record<string, Computer> = {}
+    const registry = new Registry({}, {})
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, registry, storage)
 
     const updates = executor.execute()
 
@@ -48,17 +49,17 @@ describe('execute', () => {
 
     let proof = 'dummy-should-change-this'
 
-    const computers: Record<string, Computer> = {
+    const registry = new Registry({
       Dummy: {
         async *run({}) {
           proof = 'dummy-rocks'
         },
       } as Computer
-    }
+    }, {})
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, registry, storage)
 
     const updates = executor.execute()
     const update1 = await updates.next()
@@ -90,17 +91,17 @@ describe('execute', () => {
       nodes: [node]
     })
 
-    const computers: Record<string, Computer> = {
+    const registry = new Registry({
       Accepter: {
         async *run({}) {
           // Do nothing
         },
       } as Computer
-    }
+    }, {})
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, registry, storage)
 
     const updates = executor.execute()
     const update = await updates.next()
@@ -129,17 +130,17 @@ describe('execute', () => {
       nodes: [node]
     })
 
-    const computers: Record<string, Computer> = {
+    const registry = new Registry({
       Spawner: {
         async *run({ output }) {
           output.push([{ type: 'Zergling' }])
         },
       } as Computer
-    }
+    }, {})
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, registry, storage)
 
     const updates = executor.execute()
 
@@ -210,14 +211,14 @@ describe('execute', () => {
       },
     } as Computer
 
-    const computers: Record<string, Computer> = {
+    const registry = new Registry({
       Create: createComputer,
       Log: logComputer,
-    }
+    }, {})
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, computers, storage)
+    const executor = ExecutorFactory.create(diagram, registry, storage)
 
     const updates = executor.execute()
 
@@ -258,57 +259,4 @@ describe('execute', () => {
       .expectFail()
       .ok()
   })
-})
-
-it('can execute a diagram containing sub diagrams', async () => {
-  const app = new Application();
-
-  app.register([
-    coreNodeProvider,
-  ]);
-
-  app.boot();
-
-  const subDiagram = new DiagramBuilder()
-    .add(Input, {}, {
-      inputs: [{
-        name: 'input',
-        schema: {},
-      }],
-      outputs: [{
-        name: 'input',
-        schema: {},
-      }]
-    })
-    .add(Pass)
-    .add(Output, {}, {
-      inputs: [{
-        name: 'output',
-        schema: {},
-      }],
-      outputs: [{
-        name: 'output',
-        schema: {},
-      }]
-    })
-    .get()
-
-  const diagram = new DiagramBuilder()
-    .registerLocalNodeDefinitions({
-      X: subDiagram
-    })
-    .add(Signal, { period: 1, count: 10 })
-    .addSubNode('X')
-    .add(ConsoleLog, { message: 'Hello It Roached!!!' })
-    .get()
-
-  const executor = ExecutorFactory.create(
-    diagram,
-    app.computers,
-    new InMemoryStorage()
-  )
-
-  const execution = executor.execute()
-
-  for await(const update of execution) {}
 })

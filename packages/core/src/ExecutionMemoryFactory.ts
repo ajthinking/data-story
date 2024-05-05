@@ -4,6 +4,7 @@ import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
+import { Registry } from './Registry'
 import { Computer } from './types/Computer'
 import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
@@ -15,12 +16,12 @@ import { toLookup } from './utils/toLookup'
 export class ExecutionMemoryFactory {
   constructor(
     public diagram: Diagram,
-    public computers: Record<string, Computer>,
+    public registry: Registry,
     public storage: Storage
   ) {}
 
-  static create(diagram: Diagram, computers: Record<string, Computer>, storage: Storage) {
-    const instance = new this(diagram, computers, storage)
+  static create(diagram: Diagram, registry: Registry, storage: Storage) {
+    const instance = new this(diagram, registry, storage)
 
     // Create a new memory
     const memory = new ExecutionMemory({
@@ -59,7 +60,7 @@ export class ExecutionMemoryFactory {
       memory.outputDevices.set(node.id, outputDevice)
 
       // Initialize runner generators
-      const computer = instance.computers[node.type]
+      const computer = instance.registry.computers[node.type]
       if(!computer) throw new Error(`Computer "${node.type}" not found`)
 
       memory.setNodeRunner(

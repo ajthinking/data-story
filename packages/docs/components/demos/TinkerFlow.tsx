@@ -12,25 +12,31 @@ import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 // This component is just a place to sketch
 export default () => {
-  const app = new Application();
+  const { Create, Table, Input, Map, Output } = nodes;
 
+  const app = new Application();
   app.register(coreNodeProvider);
+
+  // Make a nested node
+  const nestedNode = new DiagramBuilder()
+    .withParams([
+      str({
+        name: 'message_to_add',
+        value: 'This is a default value',
+      }),
+    ])
+    .add(nodes.Input)
+    .add(nodes.Map, { json: '{\n\tadded: yes\n}'})
+    .add(nodes.Output)
+    .get()
+
+  app.addNestedNode('NestedNode', nestedNode);
 
   app.boot();
 
-  const { Signal, Table } = nodes;
-
   const diagram = new DiagramBuilder()
-    .add(Signal, { count: '@{SIGNAL_COUNT_GLOBAL_PARAM}' })
-    .add(Table)
+    .add(Create)
     .get()
-
-  diagram.params = [
-    str({
-      name: 'SIGNAL_COUNT_GLOBAL_PARAM',
-      value: '5'
-    })
-  ]
 
   return (
     <div className="w-full h-1/2">

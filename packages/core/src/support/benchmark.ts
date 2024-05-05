@@ -31,7 +31,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
 
   const executor = ExecutorFactory.create(
     diagram,
-    app.computers,
+    app.registry,
     new InMemoryStorage()
   )
 
