@@ -9,6 +9,7 @@ import { mapToRecord } from './utils/mapToRecord';
 import { arrayToRecord } from './utils/arrayToRecord';
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
+import { Registry } from './Registry';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
@@ -17,10 +18,10 @@ export class Executor {
 
   constructor(
     public diagram: Diagram,
-    public readonly computers: Record<string, Computer>,
+    public readonly registry: Registry,
     public readonly storage: Storage
   ) {
-    this.memory = ExecutionMemoryFactory.create(diagram, computers, storage)
+    this.memory = ExecutionMemoryFactory.create(diagram, registry, storage)
   }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {
@@ -126,7 +127,7 @@ export class Executor {
   protected getRunnableNodes(): Node[] {
     return this.diagram.nodes.filter(node => {
       // If the computer implements a custom hook
-      const computer = this.computers[node.type]
+      const computer = this.registry.computers[node.type]
       const hook = computer.canRun
       if(hook) return hook({
         isAvailable: () => this.memory.getNodeStatus(node.id) === 'AVAILABLE',

@@ -79,13 +79,13 @@ describe('addComputerConfigs', () => {
 
     app.addComputerConfigs([config])
 
-    expect(app.computers.Signal).toMatchObject(
+    expect(app.registry.computers.Signal).toMatchObject(
       new ComputerFactory().get(config)
     )
   })
 })
 
-describe('descriptions', () => {
+describe('descriptions', ()  => {
   it('returns descriptions of all computers', () => {
     const app = new Application()
 

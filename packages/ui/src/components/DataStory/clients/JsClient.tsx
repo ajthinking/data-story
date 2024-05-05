@@ -58,7 +58,7 @@ export class JsClient implements ServerClient {
 
     this.executor = ExecutorFactory.create(
       diagram,
-      this.app.computers,
+      this.app.registry,
       storage
     )
 

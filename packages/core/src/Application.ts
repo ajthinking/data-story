@@ -2,14 +2,13 @@ import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
-import { Computer } from './types/Computer';
 import { ComputerConfig } from './types/ComputerConfig';
 import { ServiceProvider } from './types/ServiceProvider';
 
 export class Application {
   providers: ServiceProvider[] = [];
-  computers: Record<string, Computer> = {};
-  nestedNodes: Record<string, Diagram> = {};
+  registry = new Registry({}, {});
+  hooks = new Map<string, Function>();
 
   register(provider: ServiceProvider | ServiceProvider[]) {
     this.providers.push(
@@ -31,20 +30,20 @@ export class Application {
   addComputerConfigs(computerConfigs: ComputerConfig[]) {
     for (const config of computerConfigs) {
       const computer = new ComputerFactory().get(config);
-      this.computers[computer.name] = computer;
+      this.registry.computers[computer.name] = computer;
     }
   }
 
   addNestedNode(name: string, diagram: Diagram) {
-    this.nestedNodes[name] = diagram;
+    this.registry.nestedNodes[name] = diagram;
   }
 
   descriptions() {
-    const fromComputers = Object.values(this.computers).map(computer => {
+    const fromComputers = Object.values(this.registry.computers).map(computer => {
       return NodeDescriptionFactory.fromComputer(computer);
     });
 
-    const fromNestedNodes = Object.entries(this.nestedNodes).map(([name, diagram]) => {
+    const fromNestedNodes = Object.entries(this.registry.nestedNodes).map(([name, diagram]) => {
       return NodeDescriptionFactory.fromDiagram(name, diagram);
     });
 
