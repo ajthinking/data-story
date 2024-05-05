@@ -2,6 +2,7 @@ import { ComputerFactory } from './ComputerFactory';
 import { DiagramBuilder } from './DiagramBuilder'
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { InMemoryStorage } from './InMemoryStorage';
+import { Registry } from './Registry';
 import { ConsoleLog, Create } from './computers'
 
 describe('create', () => {
@@ -11,16 +12,16 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
-    const computers = {
+    const registry = new Registry({
       Create: new ComputerFactory().get(Create),
       ConsoleLog: new ComputerFactory().get(ConsoleLog),
-    }
+    }, {})
 
     const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
       diagram,
-      computers,
+      registry,
       storage,
     );
 
@@ -36,16 +37,16 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
-    const computers = {
+    const registry = new Registry({
       Create: new ComputerFactory().get(Create),
       ConsoleLog: new ComputerFactory().get(ConsoleLog),
-    }
+    }, {})
 
     const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
       diagram,
-      computers,
+      registry,
       storage,
     );
 
@@ -60,16 +61,16 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
-    const computers = {
+    const registry = new Registry({
       Create: new ComputerFactory().get(Create),
       ConsoleLog: new ComputerFactory().get(ConsoleLog),
-    }
+    }, {})
 
     const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
       diagram,
-      computers,
+      registry,
       storage,
     );
 
@@ -88,16 +89,16 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
-    const computers = {
+    const registry = new Registry({
       Create: new ComputerFactory().get(Create),
       ConsoleLog: new ComputerFactory().get(ConsoleLog),
-    }
+    }, {})
 
     const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
       diagram,
-      computers,
+      registry,
       storage,
     );
 
