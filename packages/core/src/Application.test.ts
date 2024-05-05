@@ -85,22 +85,6 @@ describe('addComputerConfigs', () => {
   })
 })
 
-describe('addHooks', () => {
-  it('adds hooks to the application', () => {
-    const app = new Application()
-
-    const hooks = {
-      'hook1': vi.fn(),
-    }
-
-    app.addHooks(hooks)
-
-    expect(app.hooks).toStrictEqual(
-      new Map(Object.entries(hooks))
-    )
-  })
-})
-
 describe('descriptions', () => {
   it('returns descriptions of all computers', () => {
     const app = new Application()

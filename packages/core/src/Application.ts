@@ -1,6 +1,7 @@
 import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
+import { Registry } from './Registry';
 import { Computer } from './types/Computer';
 import { ComputerConfig } from './types/ComputerConfig';
 import { ServiceProvider } from './types/ServiceProvider';
@@ -9,7 +10,6 @@ export class Application {
   providers: ServiceProvider[] = [];
   computers: Record<string, Computer> = {};
   nestedNodes: Record<string, Diagram> = {};
-  hooks = new Map<string, Function>();
 
   register(provider: ServiceProvider | ServiceProvider[]) {
     this.providers.push(
@@ -37,12 +37,6 @@ export class Application {
 
   addNestedNode(name: string, diagram: Diagram) {
     this.nestedNodes[name] = diagram;
-  }
-
-  addHooks(hooks: Record<string, Function>) {
-    this.hooks = new Map<string, Function>(
-      [...this.hooks, ...Object.entries(hooks)]
-    );
   }
 
   descriptions() {
