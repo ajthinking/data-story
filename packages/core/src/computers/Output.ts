@@ -15,15 +15,13 @@ export const Output: ComputerConfig = {
 
   async *run({ input, output}) {
     while(true) {
-      console.log('Running Output computer')
-
       const [ portName, ...other ] = output.getPortNames()
       if (!portName || other.length > 0) throw new Error('Output computer must have exactly one output port.')
 
-      const incoming = input.pullFrom(portName)
+      const incoming = input.pull()
+
       output.pushTo(portName, incoming)
 
-      console.log('Yielding...')
       yield;
     }
   },

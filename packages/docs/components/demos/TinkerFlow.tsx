@@ -26,7 +26,7 @@ export default () => {
       }),
     ])
     .add(nodes.Input)
-    .add(nodes.Map)
+    .add(nodes.Map, { json: '{\n\tadded: yes\n}'})
     .add(nodes.Output)
     .get()
 
