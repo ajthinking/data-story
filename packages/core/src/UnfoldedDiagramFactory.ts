@@ -1,16 +1,17 @@
 import { Diagram } from './Diagram'
+import { NestedNodes } from './Registry'
 import { UnfoldedDiagram } from './UnfoldedDiagram'
 import { Node } from './types/Node'
 
 export class UnfoldedDiagramFactory {
   constructor(
     public diagram: Diagram,
-    public nestedNodes: Record<string, Diagram>
+    public nestedNodes: NestedNodes
   ) {}
 
   static create(
     diagram: Diagram,
-    nestedNodes: Record<string, Diagram>
+    nestedNodes: NestedNodes
   ): UnfoldedDiagram {
     const instance = new this(diagram, nestedNodes)
     instance.unfold()

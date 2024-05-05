@@ -8,7 +8,7 @@ import * as computerConfigs from '../../computers'
 import { ComputerFactory } from '../../ComputerFactory';
 import { Computer } from '../../types/Computer';
 import { ExecutorFactory } from '../../ExecutorFactory';
-import { Registry } from '../../Registry';
+import { ComputerRecord, Registry } from '../../Registry';
 
 export const whenRunning = (diagram: Diagram) => {
   return new DiagramExecutionTester(diagram)
@@ -21,7 +21,7 @@ export class DiagramExecutionTester {
   constructor(public diagram: Diagram) {}
 
   async ok() {
-    let computers: Record<string, Computer> = {}
+    let computers: ComputerRecord = {}
 
     for(const config of Object.values(computerConfigs)) {
       const computer = new ComputerFactory().get(config)
