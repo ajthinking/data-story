@@ -8,19 +8,18 @@ import { ExecutionMemory } from './ExecutionMemory';
 import { mapToRecord } from './utils/mapToRecord';
 import { arrayToRecord } from './utils/arrayToRecord';
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
+import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
 export class Executor {
   public readonly memory: ExecutionMemory;
-  public readonly diagram: Diagram;
 
   constructor(
-    diagram: Diagram,
+    public diagram: Diagram,
     public readonly computers: Record<string, Computer>,
     public readonly storage: Storage
   ) {
-    this.diagram = diagram.unfold()
     this.memory = ExecutionMemoryFactory.create(diagram, computers, storage)
   }
 
