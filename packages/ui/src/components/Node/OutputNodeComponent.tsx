@@ -13,7 +13,7 @@ const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataSto
 
   const { setOpenNodeModalId } = useStore(selector, shallow);
 
-  const inputPort = data.inputs[0] // Assuming 'data.inputs' exists and follows a similar structure to 'data.outputs'
+  const portName = (data?.params?.[0]?.value ?? '') as string
 
   return (
     <div
@@ -37,7 +37,7 @@ const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataSto
         <div className={'rounded-r rounded-full py-1 text-xs font-bold font-mono tracking-wide border border-gray-400 rounded bg-green-700 text-gray-100 px-2' + (selected ? ' bg-green-800 shadow-xl' : '')}>
           <div className="w-24" />
           <div className="flex w-full whitespace-nowrap">
-            Output: items
+            Output: { portName }
           </div>
         </div>
       </div>
