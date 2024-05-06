@@ -1,19 +1,17 @@
 import { ItemValue } from './types/ItemValue';
-
-type InputObserver = {nodeId: string, portId?: string};
+import { InputObserver } from './types/InputObserver';
+import { NotifyObserversCallback } from './types/NotifyObserversCallback';
 
 export class InputObserverController {
   private inputObservers: InputObserver[];
-  private sendMsg: (items: ItemValue[]) => void;
+  private notifyObservers: NotifyObserversCallback;
 
   /**
    * Constructs an instance of InputObserverController.
    */
-  constructor(
-    inputObservers: {nodeId: string, portId?: string}[],
-    sendMsg: (items: ItemValue[]) => void) {
+  constructor(inputObservers: InputObserver[], notifyObservers:NotifyObserversCallback) {
     this.inputObservers = inputObservers;
-    this.sendMsg = sendMsg;
+    this.notifyObservers = notifyObservers;
   }
 
   /**
@@ -31,7 +29,7 @@ export class InputObserverController {
    */
   reportItems(inputObserver: InputObserver, items: ItemValue[]): void {
     if (this.isReport(inputObserver)) {
-      this.sendMsg(items);
+      this.notifyObservers(inputObserver, items);
     }
   }
 }

@@ -6,7 +6,10 @@ import {
   NodeDescription,
   InMemoryStorage,
   InputObserverController,
-  ItemValue
+  type ItemValue,
+  type InputObserver,
+  // @ts-ignore
+  type NotifyObserversCallback,
 } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
@@ -69,8 +72,12 @@ export class JsClient implements ServerClient {
     });
 
     const storage = new InMemoryStorage();
-    const sendMsg = (items: ItemValue[]) => {
+    const sendMsg: NotifyObserversCallback = ( InputObserver: InputObserver, items: ItemValue[]) => {
       console.log('sendMsg', items);
+      this.reportLinkItems?.watchDataChange(
+        InputObserver,
+        items
+      )
     }
 
     const outputController = new InputObserverController(

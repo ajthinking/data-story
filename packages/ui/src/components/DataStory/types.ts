@@ -1,5 +1,6 @@
 import { ServerConfig } from './clients/ServerConfig';
-import { Diagram, ItemValue, Param, RepeatableParam } from '@data-story/core';
+// @ts-ignore
+import { Diagram, ItemValue, Param, RepeatableParam, type InputObserver, type NotifyObserversCallback } from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import type { ReactFlowInstance } from 'reactflow';
@@ -7,8 +8,8 @@ import type { ReactFlowInstance } from 'reactflow';
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
 export type ReportLinkItems = {
-  inputObservers: {nodeId: string, portId?: string}[],
-  watchDataChange: (linkId: string, items: ItemValue[]) => void,
+  inputObservers: InputObserver[],
+  watchDataChange: NotifyObserversCallback,
 }
 
 export type DataStoryProps = {
