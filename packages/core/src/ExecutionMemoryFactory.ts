@@ -5,22 +5,28 @@ import { InputDevice } from './InputDevice'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
 import { Registry } from './Registry'
-import { Computer } from './types/Computer'
 import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
 import { Node, NodeId } from './types/Node'
 import { Storage } from './types/Storage'
-import { toLookup } from './utils/toLookup'
+import { OutputController } from './OutputController';
 
 export class ExecutionMemoryFactory {
   constructor(
     public diagram: Diagram,
     public registry: Registry,
-    public storage: Storage
-  ) {}
+    public storage: Storage,
+    public outputController?: OutputController,
+  ) {
+  }
 
-  static create(diagram: Diagram, registry: Registry, storage: Storage) {
+  static create(
+    diagram: Diagram,
+    registry: Registry,
+    storage: Storage,
+    outputController?: OutputController
+  ) {
     const instance = new this(diagram, registry, storage)
 
     // Create a new memory
@@ -61,7 +67,7 @@ export class ExecutionMemoryFactory {
 
       // Initialize runner generators
       const computer = instance.registry.computers[node.type]
-      if(!computer) throw new Error(`Computer "${node.type}" not found`)
+      if (!computer) throw new Error(`Computer "${node.type}" not found`)
 
       memory.setNodeRunner(
         node.id,
@@ -87,7 +93,8 @@ export class ExecutionMemoryFactory {
     return new InputDevice(
       node,
       this.diagram,
-      memory
+      memory,
+      this.outputController,
     )
   }
 
@@ -112,7 +119,7 @@ export class ExecutionMemoryFactory {
           const emptyItem = {}
           const evaluator = new ParamEvaluator();
           return evaluator.evaluate(emptyItem, param, this.diagram.params);
-        } catch (error) {
+        } catch(error) {
           console.error('error', error);
           return param.value;
         }
@@ -120,3 +127,4 @@ export class ExecutionMemoryFactory {
     })
   }
 }
+

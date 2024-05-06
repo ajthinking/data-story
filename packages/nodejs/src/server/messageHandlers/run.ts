@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import { RunMessage } from '../messages/RunMessage';
 import { MessageHandler } from '../MessageHandler';
-import { Application, Diagram, Executor, ExecutorFactory, ExecutionResult, ExecutionFailure, InMemoryStorage } from '@data-story/core';
+import { OutputController, ExecutorFactory, Application, Diagram, Executor, ExecutionResult, ExecutionFailure, InMemoryStorage } from '@data-story/core';
 
 export const run: MessageHandler<RunMessage> = async (
   ws: WebSocket,
@@ -20,10 +20,16 @@ export const run: MessageHandler<RunMessage> = async (
     links: data.diagram.links,
   })
 
+  const outputController = new OutputController(
+    data.observeInputPort,
+    ws.send.bind(ws)
+  );
+
   const executor = ExecutorFactory.create(
     diagram,
     app.registry,
-    storage
+    storage,
+    outputController
   )
 
   const execution = executor.execute()

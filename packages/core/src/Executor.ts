@@ -10,6 +10,7 @@ import { arrayToRecord } from './utils/arrayToRecord';
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
 import { Registry } from './Registry';
+import { OutputController } from './OutputController';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
@@ -19,9 +20,10 @@ export class Executor {
   constructor(
     public diagram: Diagram,
     public readonly registry: Registry,
-    public readonly storage: Storage
+    public readonly storage: Storage,
+    protected readonly outputController?: OutputController,
   ) {
-    this.memory = ExecutionMemoryFactory.create(diagram, registry, storage)
+    this.memory = ExecutionMemoryFactory.create(diagram, registry, storage, outputController)
   }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {

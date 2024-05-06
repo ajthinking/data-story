@@ -1,13 +1,15 @@
-import type { ItemValue } from '@data-story/core';
+import { ItemValue } from './types/ItemValue';
 
 export class OutputController {
-  private linkIds: string[];
+  private linkIds: {nodeId: string, portId?: string}[];
   private sendMsg: (items: ItemValue[]) => void;
 
   /**
    * Constructs an instance of OutputController.
    */
-  constructor(linkIds: string[], sendMsg: (items: ItemValue[]) => void) {
+  constructor(
+    linkIds: {nodeId: string, portId?: string}[],
+    sendMsg: (items: ItemValue[]) => void) {
     this.linkIds = linkIds;
     this.sendMsg = sendMsg;
   }
@@ -16,7 +18,7 @@ export class OutputController {
    * Determines if a report should be sent for a given link ID.
    */
   isReport = (linkId: string): boolean => {
-    return this.linkIds.includes(linkId);
+    return this.linkIds.includes(({nodeId: linkId}));
   }
 
   /**

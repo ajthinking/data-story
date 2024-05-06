@@ -1,4 +1,13 @@
-import { Application, Diagram, Executor, NodeDescription, InMemoryStorage, ExecutorFactory, } from '@data-story/core';
+import {
+  Application,
+  Diagram,
+  ExecutorFactory,
+  Executor,
+  NodeDescription,
+  InMemoryStorage,
+  OutputController,
+  ItemValue
+} from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -10,11 +19,13 @@ export class JsClient implements ServerClient {
   private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   private app: Application;
   private executor: Executor | undefined
+  private reportLinkItems?: ReportLinkItems;
 
   constructor({
     setAvailableNodes,
     updateEdgeCounts,
     app,
+    reportLinkItems
   }: {
     setAvailableNodes: (nodes: NodeDescription[]) => void,
     updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
@@ -24,6 +35,7 @@ export class JsClient implements ServerClient {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;
+    this.reportLinkItems = reportLinkItems;
   }
 
   itemsApi = () => {
@@ -56,12 +68,21 @@ export class JsClient implements ServerClient {
       type: DataStoryEvents.RUN_START
     });
 
-    const storage = new InMemoryStorage()
+    const storage = new InMemoryStorage();
+    const sendMsg = (items: ItemValue[]) => {
+      console.log('sendMsg', items);
+    }
 
-    this.executor = ExecutorFactory.create(
+    const outputController = new OutputController(
+      this.reportLinkItems?.linkIds || [],
+      sendMsg
+    );
+
+    this.executor = new Executor(
       diagram,
       this.app.registry,
-      storage
+      storage,
+      outputController
     )
 
     const execution = this.executor.execute();
