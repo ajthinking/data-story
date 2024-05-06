@@ -6,6 +6,7 @@ import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } f
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
 import { WebSocketServerConfig } from './ServerConfig';
+import { ReportLinkItems } from '../types';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
@@ -17,6 +18,7 @@ export class SocketClient implements ServerClient {
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
     protected serverConfig: WebSocketServerConfig,
+    protected reportLinkItems?: ReportLinkItems,
   ) {
     this.socket$ = webSocket({
       url: serverConfig.url,
@@ -86,6 +88,7 @@ export class SocketClient implements ServerClient {
     const message = {
       type: 'run',
       diagram,
+      observeInputPort: this?.reportLinkItems?.linkIds || [],
     };
 
     this.socketSendMsg(message);

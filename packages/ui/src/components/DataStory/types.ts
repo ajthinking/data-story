@@ -7,7 +7,7 @@ import type { ReactFlowInstance } from 'reactflow';
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
 export type ReportLinkItems = {
-  linkIds: string[],
+  linkIds: {nodeId: string, portId?: string}[],
   watchDataChange: (linkId: string, items: ItemValue[]) => void,
 }
 

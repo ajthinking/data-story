@@ -245,7 +245,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
-        serverConfig as WebSocketServerConfig
+        serverConfig as WebSocketServerConfig,
+        reportLinkItems,
       )
 
       set({ server })

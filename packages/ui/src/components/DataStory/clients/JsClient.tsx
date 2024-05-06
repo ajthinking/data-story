@@ -35,7 +35,6 @@ export class JsClient implements ServerClient {
       }: ItemsOptions) => {
         if(!this.executor) return { items: [], total: 0 };
 
-        // @ts-ignore
         const items = this.executor.storage.itemsMap.get(atNodeId) || [];
 
         return {
