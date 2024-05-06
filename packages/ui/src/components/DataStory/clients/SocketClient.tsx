@@ -88,7 +88,7 @@ export class SocketClient implements ServerClient {
     const message = {
       type: 'run',
       diagram,
-      observeInputPort: this?.reportLinkItems?.inputObservers || [],
+      InputObserver: this?.reportLinkItems?.inputObservers || [],
     };
 
     this.socketSendMsg(message);
@@ -165,9 +165,19 @@ export class SocketClient implements ServerClient {
       return
     }
 
-    if (data.type === 'UpdateStorage') {
+    if(data.type === 'NotifyObservers') {
+      this.reportLinkItems?.watchDataChange(
+        data.InputObserver,
+        data.items
+      );
+
       return;
     }
+
+    if (data.type === 'UpdateStorage' ) {
+      return;
+    }
+
     throw ('Unknown message type (client): ' + data.type)
   }
 

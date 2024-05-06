@@ -32,15 +32,14 @@ export const run: MessageHandler<RunMessage> = async (
   })
 
   const sendMsg: NotifyObserversCallback = (InputObserver, items) => {
-    console.log('NotifyObserversCallback', InputObserver, items);
     ws.send(JSON.stringify({
-      type: 'notify',
+      type: 'NotifyObservers',
       InputObserver,
       items
     }))
   }
 
-  const outputController = new InputObserverController(
+  const inputObserverController = new InputObserverController(
     data.InputObserver,
     sendMsg
   );
@@ -49,7 +48,7 @@ export const run: MessageHandler<RunMessage> = async (
     diagram,
     app.registry,
     storage,
-    outputController
+    inputObserverController
   )
 
   const execution = executor.execute()

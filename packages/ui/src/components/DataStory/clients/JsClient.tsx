@@ -78,7 +78,7 @@ export class JsClient implements ServerClient {
       )
     }
 
-    const outputController = new InputObserverController(
+    const inputObserverController = new InputObserverController(
       this.reportLinkItems?.inputObservers || [],
       sendMsg
     );
@@ -87,7 +87,7 @@ export class JsClient implements ServerClient {
       diagram,
       this.app.registry,
       storage,
-      outputController
+      inputObserverController
     )
 
     const execution = this.executor.execute();
