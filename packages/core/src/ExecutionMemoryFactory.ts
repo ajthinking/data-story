@@ -10,22 +10,21 @@ import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
 import { Node, NodeId } from './types/Node'
 import { Storage } from './types/Storage'
-import { OutputController } from './OutputController';
+import { InputObserverController } from './InputObserverController';
 
 export class ExecutionMemoryFactory {
   constructor(
     public diagram: Diagram,
     public registry: Registry,
     public storage: Storage,
-    public outputController?: OutputController,
-  ) {
-  }
+    public outputController?: InputObserverController,
+  ) {}
 
   static create(
     diagram: Diagram,
     registry: Registry,
     storage: Storage,
-    outputController?: OutputController
+    outputController?: InputObserverController
   ) {
     const instance = new this(diagram, registry, storage)
 

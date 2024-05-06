@@ -5,7 +5,7 @@ import {
   Executor,
   NodeDescription,
   InMemoryStorage,
-  OutputController,
+  InputObserverController,
   ItemValue
 } from '@data-story/core';
 import { ServerClient } from './ServerClient';
@@ -73,8 +73,8 @@ export class JsClient implements ServerClient {
       console.log('sendMsg', items);
     }
 
-    const outputController = new OutputController(
-      this.reportLinkItems?.linkIds || [],
+    const outputController = new InputObserverController(
+      this.reportLinkItems?.inputObservers || [],
       sendMsg
     );
 

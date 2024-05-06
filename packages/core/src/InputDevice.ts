@@ -1,12 +1,12 @@
 import { LinkId } from './types/Link'
 import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams } from './ItemWithParams'
-import { Param } from './Param'
 import { Diagram } from './Diagram'
 import { Node } from './types/Node'
 import { InputDeviceInterface } from './types/InputDeviceInterface'
 import { ItemValue } from './types/ItemValue'
 import { PortName } from './types/Port'
+import { InputObserverController } from './InputObserverController';
 
 export type PortLinkMap = Record<PortName, LinkId[]>
 
@@ -18,6 +18,7 @@ export class InputDevice implements InputDeviceInterface {
     private diagram: Diagram,
     // Reference to the current execution state
     private memory: ExecutionMemory,
+    protected readonly outputController?: InputObserverController,
   ) {}
 
   /**
@@ -43,8 +44,13 @@ export class InputDevice implements InputDeviceInterface {
       if(remaining === 0) break
     }
 
+    this.outputController?.reportItems({
+      nodeId: this.node.id,
+      portId: name
+    }, pulled);
+
     // Enhance ItemValue to ItemWithParams
-    return pulled.map(item => new ItemWithParams(item, this.node.params, this.diagram.params))
+    return pulled.map(item => new ItemWithParams(item, this.node.params, this.diagram.params));
   }
 
   pullNew(template: ItemValue = {}): ItemWithParams[] {
