@@ -24,9 +24,9 @@ export class ExecutionMemoryFactory {
     diagram: Diagram,
     registry: Registry,
     storage: Storage,
-    outputController?: InputObserverController
+    inputObserverController?: InputObserverController
   ) {
-    const instance = new this(diagram, registry, storage)
+    const instance = new this(diagram, registry, storage, inputObserverController)
 
     // Create a new memory
     const memory = new ExecutionMemory({
@@ -126,4 +126,3 @@ export class ExecutionMemoryFactory {
     })
   }
 }
-

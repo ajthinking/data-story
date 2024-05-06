@@ -11,10 +11,10 @@ export const ExecutorFactory = {
     diagram: Diagram,
     registry: Registry,
     storage: Storage,
-    outputController?: InputObserverController,
+    inputObserverController?: InputObserverController,
   ) {
     const unfolded = UnfoldedDiagramFactory.create(diagram, registry.nestedNodes)
 
-    return new Executor(unfolded.diagram, registry, storage);
+    return new Executor(unfolded.diagram, registry, storage, inputObserverController);
   }
 }

@@ -31,7 +31,7 @@ export const run: MessageHandler<RunMessage> = async (
     links: data.diagram.links,
   })
 
-  const cb: NotifyObserversCallback = (InputObserver, items) => {
+  const sendMsg: NotifyObserversCallback = (InputObserver, items) => {
     console.log('NotifyObserversCallback', InputObserver, items);
     ws.send(JSON.stringify({
       type: 'notify',
@@ -42,7 +42,7 @@ export const run: MessageHandler<RunMessage> = async (
 
   const outputController = new InputObserverController(
     data.InputObserver,
-    cb
+    sendMsg
   );
 
   const executor = ExecutorFactory.create(
@@ -58,7 +58,7 @@ export const run: MessageHandler<RunMessage> = async (
     for await(const update of execution) {
       ws.send(JSON.stringify(update))
     }
-
+    console.log(new ExecutionResult(), 'ExecutionResult')
     ws.send(
       JSON.stringify(
         new ExecutionResult()

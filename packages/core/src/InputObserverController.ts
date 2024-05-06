@@ -9,7 +9,7 @@ export class InputObserverController {
   /**
    * Constructs an instance of InputObserverController.
    */
-  constructor(inputObservers: InputObserver[], notifyObservers:NotifyObserversCallback) {
+  constructor(inputObservers: InputObserver[] = [], notifyObservers:NotifyObserversCallback) {
     this.inputObservers = inputObservers;
     this.notifyObservers = notifyObservers;
   }
