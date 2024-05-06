@@ -14,7 +14,8 @@ Configure the `DataStory` component by setting `reportLinkItems` to monitor chan
 
 ## attributes
 
-```mdx
+```ts
+// when the portId is not set, monitor all input ports of the node
 inputObservers: Array<{ nodeId: string, portId?: string }>
 watchDataChange: (InputObserver: InputObserver, items: ItemValue[]) => void
 ```

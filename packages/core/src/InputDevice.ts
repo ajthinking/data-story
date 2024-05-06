@@ -18,7 +18,7 @@ export class InputDevice implements InputDeviceInterface {
     private diagram: Diagram,
     // Reference to the current execution state
     private memory: ExecutionMemory,
-    protected readonly outputController?: InputObserverController,
+    protected readonly inputObserverController?: InputObserverController,
   ) {}
 
   /**
@@ -44,7 +44,7 @@ export class InputDevice implements InputDeviceInterface {
       if(remaining === 0) break
     }
 
-    this.outputController?.reportItems({
+    this.inputObserverController?.reportItems({
       nodeId: this.node.id,
       portId: name
     }, pulled);

@@ -19,8 +19,12 @@ export class InputObserverController {
    */
   isReport = (inputObserver: InputObserver): boolean => {
     return this.inputObservers.some(
-      ({ nodeId, portId = 'input' }) =>
-        (nodeId === inputObserver.nodeId) && (portId === inputObserver.portId)
+      ({ nodeId, portId }) => {
+        if (portId === undefined) {
+          return nodeId === inputObserver.nodeId;
+        }
+        return (nodeId === inputObserver.nodeId) && (portId === inputObserver?.portId)
+      }
     );
   }
 
