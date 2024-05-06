@@ -1,6 +1,5 @@
 import { ServerConfig } from './clients/ServerConfig';
-// @ts-ignore
-import { Diagram, ItemValue, Param, RepeatableParam, type InputObserver, type NotifyObserversCallback } from '@data-story/core';
+import { Diagram, Param, RepeatableParam, type InputObserver, type NotifyObserversCallback } from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import type { ReactFlowInstance } from 'reactflow';

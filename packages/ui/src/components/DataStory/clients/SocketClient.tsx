@@ -88,7 +88,7 @@ export class SocketClient implements ServerClient {
     const message = {
       type: 'run',
       diagram,
-      observeInputPort: this?.reportLinkItems?.linkIds || [],
+      observeInputPort: this?.reportLinkItems?.inputObservers || [],
     };
 
     this.socketSendMsg(message);
