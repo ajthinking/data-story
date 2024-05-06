@@ -8,7 +8,6 @@ import {
   InputObserverController,
   type ItemValue,
   type InputObserver,
-  // @ts-ignore
   type NotifyObserversCallback,
 } from '@data-story/core';
 import { ServerClient } from './ServerClient';
@@ -73,7 +72,6 @@ export class JsClient implements ServerClient {
 
     const storage = new InMemoryStorage();
     const sendMsg: NotifyObserversCallback = ( InputObserver: InputObserver, items: ItemValue[]) => {
-      console.log('sendMsg', items);
       this.reportLinkItems?.watchDataChange(
         InputObserver,
         items

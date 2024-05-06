@@ -1,0 +1,31 @@
+# ReportLinkItems
+
+Configure the `DataStory` component by setting `reportLinkItems` to monitor changes in the data of the node
+
+```tsx
+<DataStory reportLinkItems ={ {
+  inputObservers: [{ nodeId: 'Table.7vMJu0muge', portId: 'input'}],
+  watchDataChange: (InputObserver, items) => {
+    // open the devtool console to see the data change
+    console.log('watchDataChange', InputObserver, items);
+  },
+}}/>
+```
+
+## attributes
+
+```mdx
+inputObservers: Array<{ nodeId: string, portId?: string }>
+watchDataChange: (InputObserver: InputObserver, items: ItemValue[]) => void
+```
+
+## Demo
+
+import DataStoryDemo from '../../components/demos/DataStoryDemo';
+
+<DataStoryDemo reportLinkItems ={ {
+  inputObservers: [{ nodeId: 'Table.7vMJu0muge', portId: 'input'}],
+  watchDataChange: (InputObserver, items) => {
+    console.log('watchDataChange', InputObserver, items);
+  },
+}}/>
