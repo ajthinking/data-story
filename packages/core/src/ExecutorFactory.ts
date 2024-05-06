@@ -4,12 +4,14 @@ import { Registry } from './Registry';
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
 import { Computer } from './types/Computer';
 import { Storage } from './types/Storage';
+import { InputObserverController } from './InputObserverController';
 
 export const ExecutorFactory = {
   create(
     diagram: Diagram,
     registry: Registry,
-    storage: Storage
+    storage: Storage,
+    outputController?: InputObserverController,
   ) {
     const unfolded = UnfoldedDiagramFactory.create(diagram, registry.nestedNodes)
 
