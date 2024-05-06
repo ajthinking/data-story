@@ -1,9 +1,15 @@
 import { ServerConfig } from './clients/ServerConfig';
-import { Diagram, Param, RepeatableParam } from '@data-story/core';
+import { Diagram, ItemValue, Param, RepeatableParam } from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
+import type { ReactFlowInstance } from 'reactflow';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
+
+export type ReportLinkItems = {
+  linkIds: string[],
+  watchDataChange: (linkId: string, items: ItemValue[]) => void,
+}
 
 export type DataStoryProps = {
   server?: ServerConfig
@@ -11,7 +17,18 @@ export type DataStoryProps = {
   callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
+  reportLinkItems?: ReportLinkItems;
 }
+
+export type StoreInitOptions = {
+  rfInstance: ReactFlowInstance,
+  server?: ServerConfig,
+  initDiagram?: Diagram,
+  callback?: DataStoryCallback,
+  reportLinkItems?: ReportLinkItems,
+}
+
+export type StoreInitServer = (serverConfig: ServerConfig, reportLinkItems?: ReportLinkItems)  => void;
 
 export type FormCommonProps = {
   form: UseFormReturn<{

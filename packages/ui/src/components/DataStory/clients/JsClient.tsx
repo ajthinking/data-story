@@ -3,6 +3,7 @@ import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { ItemsOptions } from './ItemsApi';
+import { ReportLinkItems } from '../types';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
@@ -18,6 +19,7 @@ export class JsClient implements ServerClient {
     setAvailableNodes: (nodes: NodeDescription[]) => void,
     updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
     app: Application,
+    reportLinkItems?: ReportLinkItems,
   }) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
@@ -33,6 +35,7 @@ export class JsClient implements ServerClient {
       }: ItemsOptions) => {
         if(!this.executor) return { items: [], total: 0 };
 
+        // @ts-ignore
         const items = this.executor.storage.itemsMap.get(atNodeId) || [];
 
         return {
