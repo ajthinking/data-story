@@ -17,6 +17,7 @@ vi.mock('@data-story/core', () => {
     Executor: executor,
     Diagram: vi.fn(),
     InMemoryStorage: vi.fn(),
+    InputObserverController: vi.fn(),
   };
 });
 
