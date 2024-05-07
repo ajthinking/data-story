@@ -4,6 +4,7 @@ Configure the `DataStory` component by setting `reportLinkItems` to monitor chan
 
 ```tsx
 <DataStory reportLinkItems ={ {
+  // when the portId is not set, monitor all input ports of the node
   inputObservers: [{ nodeId: 'Table.7vMJu0muge', portId: 'input'}],
   watchDataChange: (InputObserver, items) => {
     // open the devtool console to see the data change
@@ -15,7 +16,6 @@ Configure the `DataStory` component by setting `reportLinkItems` to monitor chan
 ## attributes
 
 ```ts
-// when the portId is not set, monitor all input ports of the node
 inputObservers: Array<{ nodeId: string, portId?: string }>
 watchDataChange: (InputObserver: InputObserver, items: ItemValue[]) => void
 ```
