@@ -2,7 +2,7 @@ import { ComputerConfig } from '../types/ComputerConfig';
 import { json_ } from '../Param';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
-import { jsEvaluation } from '../Param/evaluations/jsEvaluation';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
 
 export const Create: ComputerConfig = {
@@ -14,9 +14,9 @@ export const Create: ComputerConfig = {
       help: 'You may use json, hson js function or expression',
       value: JSON.stringify({ foo: 'bar' }, null, 2),
       evaluations: [
-        { ...jsonEvaluation, selected: true },
-        hjsonEvaluation,
-        jsEvaluation,
+        { ...hjsonEvaluation, selected: true },
+        jsonEvaluation,
+        jsFunctionEvaluation,
         jsExpressionEvaluation,
       ]
     })

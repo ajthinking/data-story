@@ -1,5 +1,5 @@
 import { json_ } from '../Param';
-import { jsEvaluation } from '../Param/evaluations/jsEvaluation';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { ComputerConfig } from '../types/ComputerConfig';
@@ -34,7 +34,7 @@ export const Map: ComputerConfig = {
       evaluations: [
         { ...hjsonEvaluation, selected: true },
         jsonEvaluation,
-        jsEvaluation,
+        jsFunctionEvaluation,
       ]
     })
   ],

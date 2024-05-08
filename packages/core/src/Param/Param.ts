@@ -5,7 +5,7 @@ import { Evaluation } from './Evaluation'
 import { numberCast } from './casts/numberCast'
 import { stringCast } from './casts/stringCast'
 import { hjsonEvaluation } from './evaluations/hjsonEvaluation'
-import { jsEvaluation } from './evaluations/jsEvaluation'
+import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
 
 export type StringableParam = {

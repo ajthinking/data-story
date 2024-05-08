@@ -1,5 +1,5 @@
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
-import { jsEvaluation } from '../Param/evaluations/jsEvaluation';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation'
 import { when } from '../support/computerTester/ComputerTester';
 import { multiline } from '../utils/multiline';
@@ -42,7 +42,7 @@ it('can parse js function', async () => {
       name: 'data',
       value: '() => ({ sum: 1 + 1 })',
       evaluations: [
-        { ...jsEvaluation, selected: true }
+        { ...jsFunctionEvaluation, selected: true }
       ]
     })
     .doRun()
@@ -67,13 +67,11 @@ it('can parse js expression', async () => {
     .ok()
 })
 
-it('cannot directly parse js objects starting with bracket', async () => {
+it('can directly parse js objects starting with bracket', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
       value: multiline`
-      // JS eval thinks this is a block followed by a labeled statment
-      // Probably not what you would expect but that is how eval works
       {
         label: 'statement'
       }`,
@@ -82,8 +80,8 @@ it('cannot directly parse js objects starting with bracket', async () => {
       ]
     })
     .doRun()
-    // TODO this should throw an error.
-    // We only allow object items.
-    .expectOutput([ 'statement' ])
+    .expectOutput([ {
+      label: 'statement'
+    }])
     .ok()
 })
