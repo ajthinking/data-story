@@ -30,9 +30,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
     .get()
 
   const executor = ExecutorFactory.create(
-    diagram,
-    app.registry,
-    new InMemoryStorage()
+    { diagram: diagram, registry: app.registry, storage: new InMemoryStorage() }
   )
 
   const startTime = Date.now()

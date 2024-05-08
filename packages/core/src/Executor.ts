@@ -1,29 +1,23 @@
 import { Node } from './types/Node';
-import { Diagram } from './Diagram';
-import { Computer } from './types/Computer';
 import { ExecutionUpdate } from './types/ExecutionUpdate';
 import { isFinished } from './utils/isFinished';
-import { Storage } from './types/Storage';
 import { ExecutionMemory } from './ExecutionMemory';
 import { mapToRecord } from './utils/mapToRecord';
 import { arrayToRecord } from './utils/arrayToRecord';
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
-import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
-import { Registry } from './Registry';
-import { InputObserverController } from './InputObserverController';
+import { ExecutionMemoryFactoryParams } from './types/ExecutionFactoryParams';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
 export class Executor {
   public readonly memory: ExecutionMemory;
+  public diagram: ExecutionMemoryFactoryParams['diagram'];
+  public registry: ExecutionMemoryFactoryParams['registry'];
 
-  constructor(
-    public diagram: Diagram,
-    public readonly registry: Registry,
-    public readonly storage: Storage,
-    protected readonly outputController?: InputObserverController,
-  ) {
-    this.memory = ExecutionMemoryFactory.create(diagram, registry, storage, outputController)
+  constructor(params: ExecutionMemoryFactoryParams) {
+    this.diagram = params.diagram
+    this.registry = params.registry
+    this.memory = ExecutionMemoryFactory.create(params);
   }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {

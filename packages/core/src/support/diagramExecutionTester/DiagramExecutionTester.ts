@@ -28,12 +28,11 @@ export class DiagramExecutionTester {
       computers[computer.name] = computer
     }
 
-    const executor = ExecutorFactory.create(
-      this.diagram,
-      // TODO: this should be injectable, not hardcoded take all
-      new Registry(computers, {}),
-      await this.makeStorage()
-    )
+    const executor = ExecutorFactory.create({
+      diagram: this.diagram,
+      registry: new Registry(computers, {}),
+      storage: await this.makeStorage()
+    })
 
     const execution = executor.execute()
 

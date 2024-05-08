@@ -1,32 +1,31 @@
-import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
-import { Registry } from './Registry'
 import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
 import { Node, NodeId } from './types/Node'
-import { Storage } from './types/Storage'
-import { InputObserverController } from './InputObserverController';
+import { ExecutionMemoryFactoryParams } from './types/ExecutionFactoryParams';
 
 export class ExecutionMemoryFactory {
-  constructor(
-    public diagram: Diagram,
-    public registry: Registry,
-    public storage: Storage,
-    public outputController?: InputObserverController,
-  ) {}
+  public diagram: ExecutionMemoryFactoryParams['diagram'];
+  public registry: ExecutionMemoryFactoryParams['registry'];
+  public storage: ExecutionMemoryFactoryParams['storage'];
+  public inputObserverController: ExecutionMemoryFactoryParams['inputObserverController'];
+
+  constructor(params: ExecutionMemoryFactoryParams) {
+    this.diagram = params.diagram
+    this.registry = params.registry
+    this.storage = params.storage
+    this.inputObserverController = params.inputObserverController
+  }
 
   static create(
-    diagram: Diagram,
-    registry: Registry,
-    storage: Storage,
-    inputObserverController?: InputObserverController
+    { diagram, registry, storage, inputObserverController }: ExecutionMemoryFactoryParams
   ) {
-    const instance = new this(diagram, registry, storage, inputObserverController)
+    const instance = new this({ diagram, registry, storage, inputObserverController })
 
     // Create a new memory
     const memory = new ExecutionMemory({
@@ -93,7 +92,7 @@ export class ExecutionMemoryFactory {
       node,
       this.diagram,
       memory,
-      this.outputController,
+      this.inputObserverController,
     )
   }
 
