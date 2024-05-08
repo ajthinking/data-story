@@ -13,8 +13,8 @@ describe('create', () => {
       .get();
 
     const registry = new Registry({
-      Create: new ComputerFactory().get(Create),
-      ConsoleLog: new ComputerFactory().get(ConsoleLog),
+      Create: new ComputerFactory().fromComputerConfig(Create),
+      ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
     }, {})
 
     const storage = new InMemoryStorage();
@@ -38,8 +38,8 @@ describe('create', () => {
       .get();
 
     const registry = new Registry({
-      Create: new ComputerFactory().get(Create),
-      ConsoleLog: new ComputerFactory().get(ConsoleLog),
+      Create: new ComputerFactory().fromComputerConfig(Create),
+      ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
     }, {})
 
     const storage = new InMemoryStorage();
@@ -62,8 +62,8 @@ describe('create', () => {
       .get();
 
     const registry = new Registry({
-      Create: new ComputerFactory().get(Create),
-      ConsoleLog: new ComputerFactory().get(ConsoleLog),
+      Create: new ComputerFactory().fromComputerConfig(Create),
+      ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
     }, {})
 
     const storage = new InMemoryStorage();
@@ -90,8 +90,8 @@ describe('create', () => {
       .get();
 
     const registry = new Registry({
-      Create: new ComputerFactory().get(Create),
-      ConsoleLog: new ComputerFactory().get(ConsoleLog),
+      Create: new ComputerFactory().fromComputerConfig(Create),
+      ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
     }, {})
 
     const storage = new InMemoryStorage();

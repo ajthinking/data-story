@@ -12,7 +12,7 @@ describe('fromComputer', () => {
       }],
     } as ComputerConfig
 
-    const computer = new ComputerFactory().get(config)
+    const computer = new ComputerFactory().fromComputerConfig(config)
 
     const nodeDescription = NodeDescriptionFactory.fromComputer(computer)
 
