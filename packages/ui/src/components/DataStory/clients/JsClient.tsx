@@ -1,8 +1,8 @@
 import {
   Application,
   Diagram,
-  ExecutorFactory,
   Executor,
+  ExecutorFactory,
   NodeDescription,
   InMemoryStorage,
   InputObserverController,
@@ -83,7 +83,7 @@ export class JsClient implements ServerClient {
       sendMsg
     );
 
-    this.executor = new Executor(
+    this.executor = ExecutorFactory.create(
       diagram,
       this.app.registry,
       storage,
