@@ -31,16 +31,16 @@ export const run: MessageHandler<RunMessage> = async (
     links: data.diagram.links,
   })
 
-  const sendMsg: NotifyObserversCallback = (InputObserver, items) => {
+  const sendMsg: NotifyObserversCallback = (inputObserver, items) => {
     ws.send(JSON.stringify({
       type: 'NotifyObservers',
-      InputObserver,
+      inputObserver,
       items
     }))
   }
 
   const inputObserverController = new InputObserverController(
-    data.InputObserver,
+    data.inputObserver,
     sendMsg
   );
 

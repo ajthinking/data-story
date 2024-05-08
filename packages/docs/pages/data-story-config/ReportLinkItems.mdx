@@ -6,9 +6,9 @@ Configure the `DataStory` component by setting `reportLinkItems` to monitor chan
 <DataStory reportLinkItems ={ {
   // when the portId is not set, monitor all input ports of the node
   inputObservers: [{ nodeId: 'Table.7vMJu0muge', portId: 'input'}],
-  watchDataChange: (InputObserver, items) => {
+  watchDataChange: (inputObserver, items) => {
     // open the devtool console to see the data change
-    console.log('watchDataChange', InputObserver, items);
+    console.log('watchDataChange', inputObserver, items);
   },
 }}/>
 ```
@@ -17,7 +17,7 @@ Configure the `DataStory` component by setting `reportLinkItems` to monitor chan
 
 ```ts
 inputObservers: Array<{ nodeId: string, portId?: string }>
-watchDataChange: (InputObserver: InputObserver, items: ItemValue[]) => void
+watchDataChange: (inputObserver: InputObserver, items: ItemValue[]) => void
 ```
 
 ## Demo
@@ -26,7 +26,7 @@ import DataStoryDemo from '../../components/demos/DataStoryDemo';
 
 <DataStoryDemo reportLinkItems ={ {
   inputObservers: [{ nodeId: 'Table.7vMJu0muge', portId: 'input'}],
-  watchDataChange: (InputObserver, items) => {
-    console.log('watchDataChange', InputObserver, items);
+  watchDataChange: (inputObserver, items) => {
+    console.log('watchDataChange', inputObserver, items);
   },
 }}/>

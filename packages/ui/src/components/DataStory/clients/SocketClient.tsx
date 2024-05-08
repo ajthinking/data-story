@@ -88,7 +88,7 @@ export class SocketClient implements ServerClient {
     const message = {
       type: 'run',
       diagram,
-      InputObserver: this?.reportLinkItems?.inputObservers || [],
+      inputObserver: this?.reportLinkItems?.inputObservers || [],
     };
 
     this.socketSendMsg(message);
@@ -167,7 +167,7 @@ export class SocketClient implements ServerClient {
 
     if(data.type === 'NotifyObservers') {
       this.reportLinkItems?.watchDataChange(
-        data.InputObserver,
+        data.inputObserver,
         data.items
       );
 

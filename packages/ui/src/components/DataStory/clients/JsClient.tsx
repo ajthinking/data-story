@@ -71,9 +71,9 @@ export class JsClient implements ServerClient {
     });
 
     const storage = new InMemoryStorage();
-    const sendMsg: NotifyObserversCallback = ( InputObserver: InputObserver, items: ItemValue[]) => {
+    const sendMsg: NotifyObserversCallback = ( inputObserver: InputObserver, items: ItemValue[]) => {
       this.reportLinkItems?.watchDataChange(
-        InputObserver,
+        inputObserver,
         items
       )
     }
