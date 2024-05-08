@@ -4,6 +4,10 @@ import { numberCast } from '../Param/casts/numberCast';
 import { multiline } from '../utils/multiline';
 import { hjson, json_, num } from '../Param';
 import Hjson from '@data-story/hjson';
+import { jsEvaluation } from '../Param/evaluations/jsEvaluation';
+import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
+import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
+import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 
 export const Signal: ComputerConfig = {
   name: 'Signal',
@@ -36,6 +40,12 @@ export const Signal: ComputerConfig = {
       label: 'Template expression',
       help: 'Use this field to customize the signal. ${i} is available as a variable.',
       value: Hjson.stringify({id: '${i}'}),
+      evaluations: [
+        { ...hjsonEvaluation, selected: true },
+        jsonEvaluation,
+        jsEvaluation,
+        jsExpressionEvaluation,
+      ]
     })
   ],
 
