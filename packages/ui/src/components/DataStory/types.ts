@@ -6,7 +6,7 @@ import type { ReactFlowInstance } from 'reactflow';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
-export type ReportLinkItems = {
+export type DataStoryObservers = {
   inputObservers: InputObserver[],
   watchDataChange: NotifyObserversCallback,
 }
@@ -17,7 +17,7 @@ export type DataStoryProps = {
   callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
-  reportLinkItems?: ReportLinkItems;
+  observers?: DataStoryObservers;
 }
 
 export type StoreInitOptions = {
@@ -25,10 +25,10 @@ export type StoreInitOptions = {
   server?: ServerConfig,
   initDiagram?: Diagram,
   callback?: DataStoryCallback,
-  reportLinkItems?: ReportLinkItems,
+  observers?: DataStoryObservers,
 }
 
-export type StoreInitServer = (serverConfig: ServerConfig, reportLinkItems?: ReportLinkItems)  => void;
+export type StoreInitServer = (serverConfig: ServerConfig, observers?: DataStoryObservers)  => void;
 
 export type FormCommonProps = {
   form: UseFormReturn<{

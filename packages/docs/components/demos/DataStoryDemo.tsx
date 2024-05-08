@@ -1,12 +1,12 @@
 import { Application, coreNodeProvider, Diagram, DiagramBuilder, nodes } from '@data-story/core';
 import React from 'react';
-import { DataStory, type ReportLinkItems } from '@data-story/ui';
+import { DataStory, type DataStoryObservers } from '@data-story/ui';
 import { ServerRequest } from '../../const';
 
-export default ({ mode, reportLinkItems }:
+export default ({ mode, observers }:
 {
   mode?: 'js' | 'node',
-  reportLinkItems?: ReportLinkItems
+  observers?: DataStoryObservers
 }) => {
   const app = new Application()
     .register(coreNodeProvider)
@@ -22,7 +22,7 @@ export default ({ mode, reportLinkItems }:
     <div className="w-full" style={{ height: '36vh' }}>
       <DataStory
         initDiagram={diagram}
-        reportLinkItems={reportLinkItems}
+        observers={observers}
         server={mode === 'node'
           ? { type: 'SOCKET', url: ServerRequest }
           : { type: 'JS', app }}

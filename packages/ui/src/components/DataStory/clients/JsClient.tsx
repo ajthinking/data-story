@@ -14,30 +14,30 @@ import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { ItemsOptions } from './ItemsApi';
-import { ReportLinkItems } from '../types';
+import { DataStoryObservers } from '../types';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
   private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   private app: Application;
   private executor: Executor | undefined
-  private reportLinkItems?: ReportLinkItems;
+  private observers?: DataStoryObservers;
 
   constructor({
     setAvailableNodes,
     updateEdgeCounts,
     app,
-    reportLinkItems
+    observers
   }: {
     setAvailableNodes: (nodes: NodeDescription[]) => void,
     updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
     app: Application,
-    reportLinkItems?: ReportLinkItems,
+    observers?: DataStoryObservers,
   }) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;
-    this.reportLinkItems = reportLinkItems;
+    this.observers = observers;
   }
 
   itemsApi = () => {
@@ -72,14 +72,14 @@ export class JsClient implements ServerClient {
 
     const storage = new InMemoryStorage();
     const sendMsg: NotifyObserversCallback = ( inputObserver: InputObserver, items: ItemValue[]) => {
-      this.reportLinkItems?.watchDataChange(
+      this.observers?.watchDataChange(
         inputObserver,
         items
       )
     }
 
     const inputObserverController = new InputObserverController(
-      this.reportLinkItems?.inputObservers || [],
+      this.observers?.inputObservers || [],
       sendMsg
     );
 

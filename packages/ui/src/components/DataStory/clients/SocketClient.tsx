@@ -6,7 +6,7 @@ import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } f
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
 import { WebSocketServerConfig } from './ServerConfig';
-import { ReportLinkItems } from '../types';
+import { DataStoryObservers } from '../types';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
@@ -18,7 +18,7 @@ export class SocketClient implements ServerClient {
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
     protected serverConfig: WebSocketServerConfig,
-    protected reportLinkItems?: ReportLinkItems,
+    protected observers?: DataStoryObservers,
   ) {
     this.socket$ = webSocket({
       url: serverConfig.url,
@@ -88,7 +88,7 @@ export class SocketClient implements ServerClient {
     const message = {
       type: 'run',
       diagram,
-      inputObserver: this?.reportLinkItems?.inputObservers || [],
+      inputObserver: this?.observers?.inputObservers || [],
     };
 
     this.socketSendMsg(message);
@@ -166,7 +166,7 @@ export class SocketClient implements ServerClient {
     }
 
     if(data.type === 'NotifyObservers') {
-      this.reportLinkItems?.watchDataChange(
+      this.observers?.watchDataChange(
         data.inputObserver,
         data.items
       );

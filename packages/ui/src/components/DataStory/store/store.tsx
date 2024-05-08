@@ -25,7 +25,7 @@ import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
-import { DataStoryCallback, ReportLinkItems, StoreInitOptions, StoreInitServer } from '../types';
+import { DataStoryObservers, StoreInitOptions, StoreInitServer } from '../types';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -190,6 +190,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setEdges(edges: Edge[]) {
     set({ edges })
   },
+
   onInit: (options: StoreInitOptions) => {
     set({
       serverConfig: options.server || {
@@ -199,7 +200,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     })
 
     set({ rfInstance: options.rfInstance })
-    get().initServer(get().serverConfig, options.reportLinkItems)
+    get().initServer(get().serverConfig, options.observers)
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
@@ -228,13 +229,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       get().toDiagram()
     )
   },
-  initServer: (serverConfig: ServerConfig, reportLinkItems?: ReportLinkItems) => {
+  initServer: (serverConfig: ServerConfig, observers?: DataStoryObservers) => {
     if (serverConfig.type === 'JS') {
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
         app: serverConfig.app,
-        reportLinkItems,
+        observers,
       })
 
       set({ server })
@@ -246,7 +247,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         get().setAvailableNodes,
         get().updateEdgeCounts,
         serverConfig as WebSocketServerConfig,
-        reportLinkItems,
+        observers,
       )
 
       set({ server })
