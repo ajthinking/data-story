@@ -14,6 +14,7 @@ const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStor
   const { setOpenNodeModalId } = useStore(selector, shallow);
 
   const portName = (data?.params?.[0]?.value ?? '') as string
+  const outputPort = data.outputs[0]
 
   return (
     <div
@@ -36,7 +37,7 @@ const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStor
             type="source"
             position={Position.Right}
             style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 6, right: 6}}
-            id={id}
+            id={outputPort.id}
             isConnectable={true}
           />
         </div>
