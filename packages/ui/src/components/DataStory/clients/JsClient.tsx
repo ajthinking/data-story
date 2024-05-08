@@ -83,12 +83,11 @@ export class JsClient implements ServerClient {
       sendMsg
     );
 
-    this.executor = ExecutorFactory.create(
+    this.executor = ExecutorFactory.create({
       diagram,
-      this.app.registry,
+      registry: this.app.registry,
       storage,
-      inputObserverController
-    )
+      inputObserverController })
 
     const execution = this.executor.execute();
 

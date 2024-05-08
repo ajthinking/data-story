@@ -44,12 +44,12 @@ export const run: MessageHandler<RunMessage> = async (
     sendMsg
   );
 
-  const executor = ExecutorFactory.create(
+  const executor = ExecutorFactory.create({
     diagram,
-    app.registry,
+    registry: app.registry,
     storage,
     inputObserverController
-  )
+  });
 
   const execution = executor.execute()
 

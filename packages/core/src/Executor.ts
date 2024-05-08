@@ -13,10 +13,12 @@ export class Executor {
   public readonly memory: ExecutionMemory;
   public diagram: ExecutionMemoryFactoryParams['diagram'];
   public registry: ExecutionMemoryFactoryParams['registry'];
+  public storage: ExecutionMemoryFactoryParams['storage'];
 
   constructor(params: ExecutionMemoryFactoryParams) {
     this.diagram = params.diagram
     this.registry = params.registry
+    this.storage = params.storage
     this.memory = ExecutionMemoryFactory.create(params);
   }
 
