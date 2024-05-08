@@ -2,7 +2,7 @@ import { ItemWithParams } from '../ItemWithParams/ItemWithParams';
 import { numberCast } from '../Param/casts/numberCast';
 import { stringCast } from '../Param/casts/stringCast';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
-import { jsEvaluation } from '../Param/evaluations/jsEvaluation';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { ComputerConfig } from '../types/ComputerConfig';
 
@@ -21,7 +21,7 @@ export const ConsoleLog: ComputerConfig = {
       canInterpolate: true,
       interpolate: true,
       evaluations: [
-        jsEvaluation,
+        jsFunctionEvaluation,
         jsonEvaluation,
         hjsonEvaluation,
       ],

@@ -1,5 +1,5 @@
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
-import { jsEvaluation } from '../Param/evaluations/jsEvaluation';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation'
 import { when } from '../support/computerTester/ComputerTester';
 import { multiline } from '../utils/multiline';
@@ -42,7 +42,7 @@ it('can parse js function', async () => {
       name: 'data',
       value: '() => ({ sum: 1 + 1 })',
       evaluations: [
-        { ...jsEvaluation, selected: true }
+        { ...jsFunctionEvaluation, selected: true }
       ]
     })
     .doRun()

@@ -4,7 +4,7 @@ import { numberCast } from '../Param/casts/numberCast';
 import { multiline } from '../utils/multiline';
 import { hjson, json_, num } from '../Param';
 import Hjson from '@data-story/hjson';
-import { jsEvaluation } from '../Param/evaluations/jsEvaluation';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
@@ -43,7 +43,7 @@ export const Signal: ComputerConfig = {
       evaluations: [
         { ...hjsonEvaluation, selected: true },
         jsonEvaluation,
-        jsEvaluation,
+        jsFunctionEvaluation,
         jsExpressionEvaluation,
       ]
     })

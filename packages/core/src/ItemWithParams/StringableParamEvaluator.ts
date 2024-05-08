@@ -9,9 +9,9 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
   type = 'StringableParam' as const;
 
   evaluate(itemValue: ItemValue, param: StringableParam, globalParams: Param[]) {
-  // **********************************************************************
-  // VALIDATE
-  // **********************************************************************
+    // **********************************************************************
+    // VALIDATE
+    // **********************************************************************
 
     // Ensure param is StringableParam
     if (param.type !== 'StringableParam') throw new Error(`Param "${param.name}" must be StringableParam`);
@@ -87,7 +87,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
       transformedValue = Hjson.parse(transformedValue);
     }
 
-    if (selectedEvaluation?.type === 'JS') {
+    if (selectedEvaluation?.type === 'JS_FUNCTION') {
       const fn = eval(transformedValue);
       transformedValue = fn(itemValue);
     }
