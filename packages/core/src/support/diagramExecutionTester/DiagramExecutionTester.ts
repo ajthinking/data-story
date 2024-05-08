@@ -24,7 +24,7 @@ export class DiagramExecutionTester {
     let computers: ComputerRecord = {}
 
     for(const config of Object.values(computerConfigs)) {
-      const computer = new ComputerFactory().get(config)
+      const computer = new ComputerFactory().fromComputerConfig(config)
       computers[computer.name] = computer
     }
 
