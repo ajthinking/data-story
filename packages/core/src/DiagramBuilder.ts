@@ -53,13 +53,15 @@ export class DiagramBuilder {
       outputs?: AbstractPort[],
     }
   ) {
-    const computer = new ComputerFactory().get(config)
+    // The computer config might be partial
+    // so we are resolving it to a full computer
+    const computer = new ComputerFactory().fromComputerConfig(config)
 
     const nodeId = `${computer.name}.${this.getScopedId(computer.name)}`
 
     const node: Node = {
       id: nodeId,
-      label: config.label,
+      label: computer.label,
       type: computer.name,
       // The inputs have not yet been assigned ids, to it here
       inputs: (ports?.inputs ?? computer.inputs ?? []).map(input => {
@@ -77,6 +79,84 @@ export class DiagramBuilder {
       }),
       // default params
       params: computer.params,
+    }
+
+    // set explicit params
+    for(const [key, value] of Object.entries(params)) {
+      const param = node.params.find(param => param.name === key)
+
+      if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
+
+      param.value = value
+    }
+
+    if(this.aboveDirective) {
+      const aboveNode = this.diagram.nodes.find(node => node.id === this.aboveDirective)
+
+      if(!aboveNode) throw new Error(`Bad above directive: ${this.aboveDirective}. Node not found`)
+
+      node.position = {
+        x: aboveNode.position!.x,
+        y: aboveNode.position!.y - 200,
+      }
+    } else if(this.belowDirective) {
+      const belowNode = this.diagram.nodes.find(node => node.id === this.belowDirective)
+
+      if(!belowNode) throw new Error(`Bad below directive: ${this.belowDirective}. Node not found`)
+
+      node.position = {
+        x: belowNode.position!.x,
+        y: belowNode.position!.y + 100,
+      }
+    } else {
+      node.position = new PositionGuesser(
+        this.diagram
+      ).guess(node)
+    }
+
+    this.diagram.nodes.push(node)
+
+    this.linkToNewNode(node)
+
+    this.previousNode = node
+
+    this.fromDirective = null
+
+    this.aboveDirective = null
+    this.belowDirective = null
+
+    return this
+  }
+
+  addNestedNode(name: string, diagram: Diagram, params: Record<string, any> = {}) {
+    const nodeId = `${name}.${this.getScopedId(name)}`
+
+    const node: Node = {
+      id: nodeId,
+      label: name,
+      type: name,
+      // The inputs have not yet been assigned ids, to it here
+      inputs: diagram.inputNodes().map(inputNode => {
+        const inputName = inputNode.params.find(param => param.name === 'port_name')!.value as string
+
+        return {
+          name: inputName,
+          id: `${nodeId}.${inputName}`,
+          schema: {},
+        }
+      }),
+      // The outputs have not yet been assigned ids, to it here
+      outputs: diagram.outputNodes().map(outputNode => {
+        const outputName = outputNode.params.find(param => param.name === 'port_name')!.value as string
+
+        return {
+          name: outputName,
+          id: `${nodeId}.${outputName}`,
+          schema: {},
+        }
+      }),
+      // default params
+      params: diagram.params,
     }
 
     // set explicit params

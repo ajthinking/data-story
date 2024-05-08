@@ -29,7 +29,7 @@ export class Application {
 
   addComputerConfigs(computerConfigs: ComputerConfig[]) {
     for (const config of computerConfigs) {
-      const computer = new ComputerFactory().get(config);
+      const computer = new ComputerFactory().fromComputerConfig(config);
       this.registry.computers[computer.name] = computer;
     }
   }

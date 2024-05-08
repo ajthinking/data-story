@@ -80,7 +80,7 @@ describe('addComputerConfigs', () => {
     app.addComputerConfigs([config])
 
     expect(app.registry.computers.Signal).toMatchObject(
-      new ComputerFactory().get(config)
+      new ComputerFactory().fromComputerConfig(config)
     )
   })
 })

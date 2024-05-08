@@ -1,6 +1,7 @@
 import { ComputerConfig } from './types/ComputerConfig';
 import { AbstractPort, PortName } from './types/Port';
 import { Computer } from './types/Computer';
+import { Diagram } from './Diagram';
 
 /**
  * Ensure all inputs/outputs are Port
@@ -16,7 +17,7 @@ export class ComputerFactory {
     public computerConfigs: ComputerConfig[] = [],
   ) {}
 
-  get(config: ComputerConfig): Computer {
+  fromComputerConfig(config: ComputerConfig): Computer {
     return {
       // Properties
       ...structuredClone({
