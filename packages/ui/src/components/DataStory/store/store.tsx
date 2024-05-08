@@ -25,7 +25,7 @@ import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
-import { DataStoryCallback } from '../types';
+import { DataStoryObservers, StoreInitOptions, StoreInitServer } from '../types';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -60,15 +60,10 @@ export type StoreSchema = {
   /** The Server and its config */
   serverConfig: ServerConfig;
   server: null | ServerClient;
-  initServer: (server: ServerConfig) => void;
+  initServer: StoreInitServer;
 
   /** When DataStory component initializes */
-  onInit: (options: {
-    rfInstance: ReactFlowInstance,
-    server?: ServerConfig,
-    initDiagram?: Diagram,
-    callback?: DataStoryCallback,
-  }) => void;
+  onInit: (options: StoreInitOptions) => void;
 
   updateDiagram: (diagram: Diagram) => void;
 
@@ -195,12 +190,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setEdges(edges: Edge[]) {
     set({ edges })
   },
-  onInit: (options: {
-    rfInstance: ReactFlowInstance,
-    server?: ServerConfig,
-    initDiagram?: Diagram,
-    callback?: DataStoryCallback,
-  }) => {
+
+  onInit: (options: StoreInitOptions) => {
     set({
       serverConfig: options.server || {
         type: 'SOCKET',
@@ -209,7 +200,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     })
 
     set({ rfInstance: options.rfInstance })
-    get().initServer(get().serverConfig)
+    get().initServer(get().serverConfig, options.observers)
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
@@ -238,12 +229,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       get().toDiagram()
     )
   },
-  initServer: (serverConfig: ServerConfig) => {
+  initServer: (serverConfig: ServerConfig, observers?: DataStoryObservers) => {
     if (serverConfig.type === 'JS') {
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
-        app: serverConfig.app
+        app: serverConfig.app,
+        observers,
       })
 
       set({ server })
@@ -254,7 +246,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const server = new SocketClient(
         get().setAvailableNodes,
         get().updateEdgeCounts,
-        serverConfig as WebSocketServerConfig
+        serverConfig as WebSocketServerConfig,
+        observers,
       )
 
       set({ server })

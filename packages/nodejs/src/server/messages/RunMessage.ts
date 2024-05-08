@@ -1,6 +1,7 @@
-import { Diagram } from '@data-story/core'
+import { Diagram, type InputObserver } from '@data-story/core'
 
 export type RunMessage = {
   type: 'run'
-  diagram: Diagram
+  diagram: Diagram,
+  inputObserver: InputObserver[],
 }

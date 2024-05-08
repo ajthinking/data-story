@@ -33,6 +33,7 @@ export const Workbench = ({
   callback,
   hideToolbar = false,
   slotComponent,
+  observers,
 }: DataStoryProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -82,7 +83,8 @@ export const Workbench = ({
               rfInstance,
               server,
               initDiagram,
-              callback
+              callback,
+              observers: observers,
             });
           }}
           minZoom={0.25}

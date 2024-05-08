@@ -1,27 +1,31 @@
-import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
-import { Registry } from './Registry'
-import { Computer } from './types/Computer'
 import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
 import { Node, NodeId } from './types/Node'
-import { Storage } from './types/Storage'
-import { toLookup } from './utils/toLookup'
+import { ExecutionMemoryFactoryParams } from './types/ExecutionFactoryParams';
 
 export class ExecutionMemoryFactory {
-  constructor(
-    public diagram: Diagram,
-    public registry: Registry,
-    public storage: Storage
-  ) {}
+  public diagram: ExecutionMemoryFactoryParams['diagram'];
+  public registry: ExecutionMemoryFactoryParams['registry'];
+  public storage: ExecutionMemoryFactoryParams['storage'];
+  public inputObserverController: ExecutionMemoryFactoryParams['inputObserverController'];
 
-  static create(diagram: Diagram, registry: Registry, storage: Storage) {
-    const instance = new this(diagram, registry, storage)
+  constructor(params: ExecutionMemoryFactoryParams) {
+    this.diagram = params.diagram
+    this.registry = params.registry
+    this.storage = params.storage
+    this.inputObserverController = params.inputObserverController
+  }
+
+  static create(
+    { diagram, registry, storage, inputObserverController }: ExecutionMemoryFactoryParams
+  ) {
+    const instance = new this({ diagram, registry, storage, inputObserverController })
 
     // Create a new memory
     const memory = new ExecutionMemory({
@@ -61,7 +65,7 @@ export class ExecutionMemoryFactory {
 
       // Initialize runner generators
       const computer = instance.registry.computers[node.type]
-      if(!computer) throw new Error(`Computer "${node.type}" not found`)
+      if (!computer) throw new Error(`Computer "${node.type}" not found`)
 
       memory.setNodeRunner(
         node.id,
@@ -87,7 +91,8 @@ export class ExecutionMemoryFactory {
     return new InputDevice(
       node,
       this.diagram,
-      memory
+      memory,
+      this.inputObserverController,
     )
   }
 
@@ -112,7 +117,7 @@ export class ExecutionMemoryFactory {
           const emptyItem = {}
           const evaluator = new ParamEvaluator();
           return evaluator.evaluate(emptyItem, param, this.diagram.params);
-        } catch (error) {
+        } catch(error) {
           console.error('error', error);
           return param.value;
         }

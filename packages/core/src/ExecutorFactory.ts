@@ -1,18 +1,21 @@
-import { Diagram } from './Diagram';
 import { Executor } from './Executor';
-import { Registry } from './Registry';
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
-import { Computer } from './types/Computer';
-import { Storage } from './types/Storage';
+import { ExecutionMemoryFactoryParams } from './types/ExecutionFactoryParams';
 
 export const ExecutorFactory = {
-  create(
-    diagram: Diagram,
-    registry: Registry,
-    storage: Storage
-  ) {
+  create({
+    diagram,
+    registry,
+    storage,
+    inputObserverController
+  }:ExecutionMemoryFactoryParams) {
     const unfolded = UnfoldedDiagramFactory.create(diagram, registry.nestedNodes)
 
-    return new Executor(unfolded.diagram, registry, storage);
+    return new Executor({
+      diagram: unfolded.diagram,
+      registry,
+      storage,
+      inputObserverController
+    });
   }
 }

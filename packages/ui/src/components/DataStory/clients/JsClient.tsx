@@ -1,27 +1,43 @@
-import { Application, Diagram, Executor, NodeDescription, InMemoryStorage, ExecutorFactory, } from '@data-story/core';
+import {
+  Application,
+  Diagram,
+  Executor,
+  ExecutorFactory,
+  NodeDescription,
+  InMemoryStorage,
+  InputObserverController,
+  type ItemValue,
+  type InputObserver,
+  type NotifyObserversCallback,
+} from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { ItemsOptions } from './ItemsApi';
+import { DataStoryObservers } from '../types';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: (nodes: NodeDescription[]) => void;
   private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
   private app: Application;
   private executor: Executor | undefined
+  private observers?: DataStoryObservers;
 
   constructor({
     setAvailableNodes,
     updateEdgeCounts,
     app,
+    observers
   }: {
     setAvailableNodes: (nodes: NodeDescription[]) => void,
     updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
     app: Application,
+    observers?: DataStoryObservers,
   }) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;
+    this.observers = observers;
   }
 
   itemsApi = () => {
@@ -54,13 +70,24 @@ export class JsClient implements ServerClient {
       type: DataStoryEvents.RUN_START
     });
 
-    const storage = new InMemoryStorage()
+    const storage = new InMemoryStorage();
+    const sendMsg: NotifyObserversCallback = ( inputObserver: InputObserver, items: ItemValue[]) => {
+      this.observers?.watchDataChange(
+        inputObserver,
+        items
+      )
+    }
 
-    this.executor = ExecutorFactory.create(
+    const inputObserverController = new InputObserverController(
+      this.observers?.inputObservers || [],
+      sendMsg
+    );
+
+    this.executor = ExecutorFactory.create({
       diagram,
-      this.app.registry,
-      storage
-    )
+      registry: this.app.registry,
+      storage,
+      inputObserverController })
 
     const execution = this.executor.execute();
 

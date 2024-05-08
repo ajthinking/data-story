@@ -20,7 +20,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, registry, storage)
+    const executor = ExecutorFactory.create({ diagram, registry, storage })
 
     const updates = executor.execute()
 
@@ -59,7 +59,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, registry, storage)
+    const executor = ExecutorFactory.create({ diagram, registry, storage })
 
     const updates = executor.execute()
     const update1 = await updates.next()
@@ -101,7 +101,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, registry, storage)
+    const executor = ExecutorFactory.create({ diagram, registry, storage })
 
     const updates = executor.execute()
     const update = await updates.next()
@@ -140,7 +140,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, registry, storage)
+    const executor = ExecutorFactory.create({ diagram, registry, storage })
 
     const updates = executor.execute()
 
@@ -218,7 +218,7 @@ describe('execute', () => {
 
     const storage = new InMemoryStorage()
 
-    const executor = ExecutorFactory.create(diagram, registry, storage)
+    const executor = ExecutorFactory.create({ diagram, registry, storage })
 
     const updates = executor.execute()
 

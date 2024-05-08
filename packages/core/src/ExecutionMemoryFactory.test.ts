@@ -20,9 +20,7 @@ describe('create', () => {
     const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
-      diagram,
-      registry,
-      storage,
+      { diagram, registry, storage },
     );
 
     const [ link ] = diagram.links
@@ -45,9 +43,7 @@ describe('create', () => {
     const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
-      diagram,
-      registry,
-      storage,
+      { diagram, registry, storage },
     );
 
     const [ firstNode, secondNode ] = diagram.nodes;
@@ -69,9 +65,7 @@ describe('create', () => {
     const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
-      diagram,
-      registry,
-      storage,
+      { diagram, registry, storage },
     );
 
     const [ firstNode, secondNode ] = diagram.nodes;
@@ -97,9 +91,7 @@ describe('create', () => {
     const storage = new InMemoryStorage();
 
     const memory = ExecutionMemoryFactory.create(
-      diagram,
-      registry,
-      storage,
+      { diagram, registry, storage },
     );
 
     const [ firstNode, secondNode ] = diagram.nodes;

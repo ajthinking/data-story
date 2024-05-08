@@ -1,9 +1,15 @@
 import { ServerConfig } from './clients/ServerConfig';
-import { Diagram, Param, RepeatableParam } from '@data-story/core';
+import { Diagram, Param, RepeatableParam, type InputObserver, type NotifyObserversCallback } from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
+import type { ReactFlowInstance } from 'reactflow';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
+
+export type DataStoryObservers = {
+  inputObservers: InputObserver[],
+  watchDataChange: NotifyObserversCallback,
+}
 
 export type DataStoryProps = {
   server?: ServerConfig
@@ -11,7 +17,18 @@ export type DataStoryProps = {
   callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
+  observers?: DataStoryObservers;
 }
+
+export type StoreInitOptions = {
+  rfInstance: ReactFlowInstance,
+  server?: ServerConfig,
+  initDiagram?: Diagram,
+  callback?: DataStoryCallback,
+  observers?: DataStoryObservers,
+}
+
+export type StoreInitServer = (serverConfig: ServerConfig, observers?: DataStoryObservers)  => void;
 
 export type FormCommonProps = {
   form: UseFormReturn<{

@@ -26,7 +26,11 @@ export type { ComputerConfig } from './types/ComputerConfig'
 export type { ItemValue } from './types/ItemValue'
 export { coreNodeProvider } from './coreNodeProvider'
 export { ExecutionResult } from './ExecutionResult'
+export { InputObserverController } from './InputObserverController'
 export type { ExecutionFailure } from './types/ExecutionFailure'
 export { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
+export type { InputObserver } from './types/InputObserver';
+export type { NotifyObserversCallback } from './types/NotifyObserversCallback';
+
 export * as nodes from './computers'
 export * from './Param'

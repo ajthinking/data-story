@@ -6,6 +6,7 @@ import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } f
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
 import { WebSocketServerConfig } from './ServerConfig';
+import { DataStoryObservers } from '../types';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
@@ -17,6 +18,7 @@ export class SocketClient implements ServerClient {
     protected setAvailableNodes: (nodes: NodeDescription[]) => void,
     protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
     protected serverConfig: WebSocketServerConfig,
+    protected observers?: DataStoryObservers,
   ) {
     this.socket$ = webSocket({
       url: serverConfig.url,
@@ -86,6 +88,7 @@ export class SocketClient implements ServerClient {
     const message = {
       type: 'run',
       diagram,
+      inputObserver: this?.observers?.inputObservers || [],
     };
 
     this.socketSendMsg(message);
@@ -162,9 +165,19 @@ export class SocketClient implements ServerClient {
       return
     }
 
-    if (data.type === 'UpdateStorage') {
+    if(data.type === 'NotifyObservers') {
+      this.observers?.watchDataChange(
+        data.inputObserver,
+        data.items
+      );
+
       return;
     }
+
+    if (data.type === 'UpdateStorage' ) {
+      return;
+    }
+
     throw ('Unknown message type (client): ' + data.type)
   }
 
