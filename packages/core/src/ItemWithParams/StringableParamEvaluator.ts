@@ -102,7 +102,9 @@ export const prepareStringable = (itemValue: ItemValue, param: Param, globalPara
 
   if (selectedEvaluation?.type === 'JS_EXPRESSION') {
     try {
-      transformedValue = eval(transformedValue);
+      // Wrap with parentheses to ensure brackets are not interpreted as a block
+      const nonBlockExpression = `(${transformedValue})`;
+      transformedValue = eval(nonBlockExpression);
     } catch(error) {
       console.log(`Failed to evaluate JS expression: ${transformedValue}`)
       throw error
