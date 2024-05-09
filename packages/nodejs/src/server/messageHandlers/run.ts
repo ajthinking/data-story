@@ -2,7 +2,7 @@ import WebSocket from 'ws';
 import { RunMessage } from '../messages/RunMessage';
 import { MessageHandler } from '../MessageHandler';
 import {
-  type NotifyObserversCallback,
+  type ReportCallback,
   InputObserverController,
   ExecutorFactory,
   Application,
@@ -31,16 +31,16 @@ export const run: MessageHandler<RunMessage> = async (
     links: data.diagram.links,
   })
 
-  const sendMsg: NotifyObserversCallback = (inputObserver, items) => {
+  const sendMsg: ReportCallback = (inputObservers, items) => {
     ws.send(JSON.stringify({
       type: 'NotifyObservers',
-      inputObserver,
+      inputObservers,
       items
     }))
   }
 
   const inputObserverController = new InputObserverController(
-    data.inputObserver,
+    data.inputObservers,
     sendMsg
   );
 

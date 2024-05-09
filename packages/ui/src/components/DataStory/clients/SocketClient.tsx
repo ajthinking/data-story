@@ -91,7 +91,7 @@ export class SocketClient implements ServerClient {
     const message = {
       type: 'run',
       diagram,
-      inputObserver: observers?.inputObservers || [],
+      inputObservers: observers?.inputObservers || [],
     };
 
     this.socketSendMsg(message);
@@ -103,7 +103,7 @@ export class SocketClient implements ServerClient {
       filter(data => data.type === 'NotifyObservers')
     ).forEach((data) => {
       observers?.watchDataChange(
-        data.inputObserver,
+        data.inputObservers,
         data.items
       );
     });
