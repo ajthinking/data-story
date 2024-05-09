@@ -38,13 +38,6 @@
   "getting-started": "Getting Started",  
   "customize": "Customize",
   "contributing": "Contributing",
-  "core-nodes": {
-    "title": "Core Nodes"
-  },
-  "nodejs-nodes": {
-    "title": "NodeJS Nodes"
-  },
-
   "playground": {
     "title": "Playground",
     "display": "hidden",
@@ -60,15 +53,7 @@
     "theme": {
       "layout": "raw"
     }    
-  },  
-  "pitchdeck": {
-    "title": "Playground",
-    "display": "hidden",
-    "type": "page",
-    "theme": {
-      "layout": "raw"
-    }    
-  },  
+  },
   "downloads": {
     "title": "Downloads",
     "display": "hidden",

@@ -31,6 +31,21 @@ export class Diagram {
     ]
   }
 
+  clone() {
+    // Constructable state
+    const cloned = new Diagram({
+      nodes: structuredClone(this.nodes),
+      links: structuredClone(this.links),
+      params: structuredClone(this.params),
+      onConnect: [...this.onConnect],
+    });
+
+    // Other state
+    cloned.viewport = { ...this.viewport };
+
+    return cloned;
+  }
+
   add(node: Node) {
     this.nodes.push(node)
 

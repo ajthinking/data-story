@@ -1,0 +1,32 @@
+# Observers
+
+Configure the `DataStory` component by setting `observers` to monitor changes in the data of the node
+
+```tsx
+<DataStory observers ={ {
+  // when the portId is not set, monitor all input ports of the node
+  inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
+  watchDataChange: (inputObserver, items) => {
+    // open the devtool console to see the data change
+    console.log('watchDataChange', inputObserver, items);
+  },
+}}/>
+```
+
+## attributes
+
+```ts
+inputObservers: Array<{ nodeId: string, portId?: string }>
+watchDataChange: (inputObserver: InputObserver, items: ItemValue[]) => void
+```
+
+## Demo
+
+import ObserversDemo from '../components/demos/ObserversDemo';
+
+<ObserversDemo observers ={ {
+  inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
+  watchDataChange: (inputObserver, items) => {
+    console.log('watchDataChange', inputObserver, items);
+  },
+}}/>

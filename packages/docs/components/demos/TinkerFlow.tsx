@@ -39,14 +39,31 @@ export default () => {
     .add(ConsoleLog)
     .get()
 
-  const unfolded = new UnfoldedDiagramFactory(diagram, {
+  const nestedNodes = {
     'NestedNode': nestedNode,
-  }).unfold();
+  }
 
-  // console.log(JSON.stringify(unfolded.diagram))
+  const unfolded = new UnfoldedDiagramFactory(
+    diagram.clone(), // TODO, unfolding should not mutate the diagram
+    nestedNodes
+  ).unfold();
 
   return (
     <div className="w-full h-1/2">
+      <h3 className="text-2xl font-bold">Main Flow</h3>
+      <p className="text-lg">Note the custom node *NestedNode*</p>
+      <DataStory
+        server={{ type: 'JS', app }}
+        initDiagram={diagram}
+      />
+      <h3 className="text-2xl font-bold">Sub Flow</h3>
+      <p className="text-lg">The green nodes here corresponds to the ports of NestedNode</p>
+      <DataStory
+        server={{ type: 'JS', app }}
+        initDiagram={nestedNode}
+      />
+      <h3 className="text-2xl font-bold">Unfolded Main Flow</h3>
+      <p className="text-lg">When executing the diagram, it will first be unfolded like this. Since this is a backend/headless operation we wont bother with layout.</p>
       <DataStory
         server={{ type: 'JS', app }}
         initDiagram={
