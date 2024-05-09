@@ -153,9 +153,10 @@ const TableNodeComponent = ({ id, data }: {
 
     const tableObserver : DataStoryObservers = {
       inputObservers: [{ nodeId: id, portId: 'input' }],
-      onDataChange: (inputObserver, items) => {
+      onDataChange: (items, inputObserver) => {
         console.log('onDataChange', inputObserver, items);
-        // todo: the observer maybe unmounted
+        // setItems(prevItems => [...prevItems, ...items]);
+        // setIsDataFetched(true);
         if(!observerMap?.get(observerId.current)) {
           console.error('observer unmounted');
           return;
@@ -202,14 +203,14 @@ const TableNodeComponent = ({ id, data }: {
       setIsDataFetched(false);
     }
 
-    if (event.type === DataStoryEvents.RUN_SUCCESS) {
-      loadTableData();
-      setIsDataFetched(true);
-    }
+    // if (event.type === DataStoryEvents.RUN_SUCCESS) {
+    //   loadTableData();
+    // }
   }, []);
 
   useDataStoryEvent(dataStoryEvent);
-  const loaderRef = useIntersectionObserver(loadTableData);
+  // todo: 这里应该也自动加载数据了
+  // const loaderRef = useIntersectionObserver(loadTableData);
   let { headers, rows } = new ItemCollection(items).toTable()
 
   if (items.length === 0) {
@@ -296,7 +297,7 @@ const TableNodeComponent = ({ id, data }: {
             </table>
             {
               (<div
-                ref={loaderRef}
+                // ref={loaderRef}
                 style={{ display: isDataFetched ? 'block' : 'none' }}
                 className="loading-spinner h-0.5"
               >
