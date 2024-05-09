@@ -1,1 +1,3 @@
-export type InputObserver = {nodeId: string, portId?: string};
+import { InputObserveConfig } from './InputObserveConfig';
+
+export type InputObserver = InputObserveConfig & {observerId: string};
