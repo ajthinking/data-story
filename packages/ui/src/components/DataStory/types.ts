@@ -5,6 +5,7 @@ import {
   RepeatableParam,
   type InputObserver,
   type NotifyObserversCallback,
+  type ReportCallback,
   Application, NodeDescription
 } from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
@@ -15,8 +16,14 @@ export type DataStoryCallback = (options: {run: () => void}) => void;
 
 export type DataStoryObservers = {
   inputObservers: InputObserver[],
+  watchDataChange: ReportCallback,
+}
+
+export type TypeNameTodo =  {
+  inputObservers: InputObserver[],
   watchDataChange: NotifyObserversCallback,
 }
+
 type ClientOptions = {
   setAvailableNodes: (nodes: NodeDescription[]) => void,
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void,

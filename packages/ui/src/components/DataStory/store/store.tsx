@@ -15,7 +15,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
+import { createDataStoryId, Diagram, InputObserver, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -25,7 +25,7 @@ import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
-import { DataStoryObservers, StoreInitOptions, StoreInitServer } from '../types';
+import { DataStoryObservers, StoreInitOptions, StoreInitServer, TypeNameTodo } from '../types';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -74,9 +74,9 @@ export type StoreSchema = {
   openNodeModalId: string | null;
   setOpenNodeModalId: (id: string | null) => void;
 
-  /** observers are used to monitor data changes in the node */
-  observers?: DataStoryObservers;
-  setObservers: (observers?: DataStoryObservers) => void;
+  /** observerMap are used to monitor data changes in the node */
+  observerMap: Map<string, TypeNameTodo>;
+  setObservers: (key: string, observers?: TypeNameTodo) => void;
 };
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -89,6 +89,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   server: null,
   availableNodes: [],
   openNodeModalId: null,
+  observerMap: new Map(),
 
   // METHODS
   toDiagram: () => {
@@ -213,7 +214,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         get().server?.run(
           // TODO it seems this does not await setNodes/setEdges?
           get().toDiagram(),
-          get().observers,
         )
       }
 
@@ -230,9 +230,31 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   onRun: () => {
+    const newInputObservers: InputObserver[] = Array.from(get().observerMap.entries()).map(([key, observer]) => {
+      return observer.inputObservers.map((inputObserver) => {
+        return {
+          ...inputObserver,
+          observerId: key,
+        }
+      });
+    }).flat();
+
+    const observers: DataStoryObservers = {
+      inputObservers: newInputObservers,
+      watchDataChange: (inputObservers, items) => {
+        const observerMap = get().observerMap;
+        inputObservers.forEach((inputObserver) => {
+          const observer = observerMap.get(inputObserver!.observerId);
+          if (observer) {
+            observer.watchDataChange(inputObserver, items);
+          }
+        });
+      }
+    };
+
     get().server!.run(
       get().toDiagram(),
-      get().observers,
+      observers,
     )
   },
   initServer: (serverConfig: ServerConfig) => {
@@ -290,10 +312,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
 
-  setObservers(observers?: DataStoryObservers) {
-    if (!observers) return;
-    set({ observers })
-  }
+  setObservers(observerId: string, observers?: TypeNameTodo) {
+    this.observerMap.set(observerId, observers || {} as TypeNameTodo);
+  },
+
 }));
 
 export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);
