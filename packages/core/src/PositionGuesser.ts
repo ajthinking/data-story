@@ -22,8 +22,10 @@ export class PositionGuesser {
     const maxY = this.diagram.nodes.map((node) => node.position!.y).reduce((max, y) => Math.max(max, y), 0)
 
     const isStarterNode = node.inputs.length === 0;
+    const type = (node as Node).type ?? (node as NodeDescription).name;
+    const isInputNode = type === 'Input';
 
-    if(isStarterNode) {
+    if(isStarterNode || isInputNode) {
       return { x: startX, y: maxY === 0 ? startY : maxY + spaceY }
     }
 
