@@ -5,7 +5,7 @@ import { DataStoryEvents } from '../events/dataStoryEventType';
 import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
-import { DataStoryObservers, SocketClientOptions } from '../types';
+import { ServerClientObservationConfig, SocketClientOptions } from '../types';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
@@ -87,7 +87,7 @@ export class SocketClient implements ServerClient {
     });
   }
 
-  run(diagram: Diagram, observers?: DataStoryObservers) {
+  run(diagram: Diagram, observers?: ServerClientObservationConfig) {
     const message = {
       type: 'run',
       diagram,
@@ -102,9 +102,9 @@ export class SocketClient implements ServerClient {
     this.wsObservable.pipe(
       filter(data => data.type === 'NotifyObservers')
     ).forEach((data) => {
-      observers?.watchDataChange(
+      observers?.onDataChange(
+        data.items,
         data.inputObservers,
-        data.items
       );
     });
   }

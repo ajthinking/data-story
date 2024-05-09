@@ -12,7 +12,7 @@ import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { ItemsOptions } from './ItemsApi';
-import type { DataStoryObservers, JSClientOptions } from '../types';
+import type { ServerClientObservationConfig, JSClientOptions } from '../types';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: JSClientOptions['setAvailableNodes'];
@@ -55,16 +55,16 @@ export class JsClient implements ServerClient {
     console.log('Connected to server: JS')
   }
 
-  run(diagram: Diagram, observers?: DataStoryObservers) {
+  run(diagram: Diagram, observers?: ServerClientObservationConfig) {
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
 
     const storage = new InMemoryStorage();
-    const sendMsg: NotifyObserversCallback = ( inputObserver: InputObserver, items: ItemValue[]) => {
-      observers?.watchDataChange(
-        inputObserver,
-        items
+    const sendMsg = (items: ItemValue[], inputObservers: InputObserver[]) => {
+      observers?.onDataChange(
+        items,
+        inputObservers
       )
     }
 

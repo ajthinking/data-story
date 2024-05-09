@@ -15,7 +15,16 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { createDataStoryId, Diagram, InputObserver, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
+import {
+  createDataStoryId,
+  Diagram, InputObserveConfig,
+  InputObserver,
+  LinkGuesser,
+  Node,
+  NodeDescription,
+  NotifyObserversCallback,
+  Param
+} from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -25,7 +34,7 @@ import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
-import { DataStoryObservers, StoreInitOptions, StoreInitServer, TypeNameTodo } from '../types';
+import { ServerClientObservationConfig, StoreInitOptions, StoreInitServer, DataStoryObservers } from '../types';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -75,8 +84,11 @@ export type StoreSchema = {
   setOpenNodeModalId: (id: string | null) => void;
 
   /** observerMap are used to monitor data changes in the node */
-  observerMap: Map<string, TypeNameTodo>;
-  setObservers: (key: string, observers?: TypeNameTodo) => void;
+  observerMap: Map<string, {
+    inputObservers: Array<InputObserveConfig & {observerId?: string}>,
+    onDataChange: NotifyObserversCallback,
+  }>;
+  setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -239,14 +251,14 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       });
     }).flat();
 
-    const observers: DataStoryObservers = {
+    const observers: ServerClientObservationConfig = {
       inputObservers: newInputObservers,
-      watchDataChange: (inputObservers, items) => {
+      onDataChange: (items, inputObservers) => {
         const observerMap = get().observerMap;
         inputObservers.forEach((inputObserver) => {
           const observer = observerMap.get(inputObserver!.observerId);
           if (observer) {
-            observer.watchDataChange(inputObserver, items);
+            observer.onDataChange(items, inputObserver);
           }
         });
       }
@@ -312,8 +324,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
 
-  setObservers(observerId: string, observers?: TypeNameTodo) {
-    get().observerMap.set(observerId, observers || {} as TypeNameTodo);
+  setObservers(observerId: string, observers?: DataStoryObservers) {
+    get().observerMap.set(observerId, (observers || {}) as DataStoryObservers);
   },
 
 }));

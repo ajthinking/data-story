@@ -19,7 +19,7 @@ import {
 } from '@floating-ui/react';
 import { useIntersectionObserver } from './UseIntersectionObserver';
 import { useMount, useUnmount } from 'ahooks';
-import { DataStoryObservers, TypeNameTodo } from '../DataStory/types';
+import { ServerClientObservationConfig, DataStoryObservers } from '../DataStory/types';
 import { createDataStoryId } from '@data-story/core';
 
 const TRUNCATE_CELL_LENGTH = 50;
@@ -151,10 +151,10 @@ const TableNodeComponent = ({ id, data }: {
       return;
     }
 
-    const tableObserver : TypeNameTodo = {
+    const tableObserver : DataStoryObservers = {
       inputObservers: [{ nodeId: id, portId: 'input' }],
-      watchDataChange: (inputObserver, items) => {
-        console.log('watchDataChange', inputObserver, items);
+      onDataChange: (inputObserver, items) => {
+        console.log('onDataChange', inputObserver, items);
         // todo: the observer maybe unmounted
         if(!observerMap?.get(observerId.current)) {
           console.error('observer unmounted');

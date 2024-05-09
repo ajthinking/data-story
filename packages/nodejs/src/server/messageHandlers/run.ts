@@ -2,19 +2,17 @@ import WebSocket from 'ws';
 import { RunMessage } from '../messages/RunMessage';
 import { MessageHandler } from '../MessageHandler';
 import {
-  type ReportCallback,
-  InputObserverController,
-  ExecutorFactory,
   Application,
   Diagram,
-  Executor,
-  ExecutionResult,
   ExecutionFailure,
+  ExecutionResult,
+  ExecutorFactory,
   InMemoryStorage,
-  InputObserver
+  InputObserverController,
+  type ReportCallback
 } from '@data-story/core';
 
-export const run: MessageHandler<RunMessage> = async (
+export const run: MessageHandler<RunMessage> = async(
   ws: WebSocket,
   data: RunMessage,
   app: Application,
@@ -31,7 +29,7 @@ export const run: MessageHandler<RunMessage> = async (
     links: data.diagram.links,
   })
 
-  const sendMsg: ReportCallback = (inputObservers, items) => {
+  const sendMsg: ReportCallback = (items, inputObservers) => {
     ws.send(JSON.stringify({
       type: 'NotifyObservers',
       inputObservers,

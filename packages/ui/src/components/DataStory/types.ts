@@ -15,14 +15,14 @@ import type { ReactFlowInstance } from 'reactflow';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
-export type DataStoryObservers = {
+export type ServerClientObservationConfig = {
   inputObservers: InputObserver[],
-  watchDataChange: ReportCallback,
+  onDataChange: ReportCallback,
 }
 
-export type TypeNameTodo = {
+export type DataStoryObservers = {
   inputObservers: Array<InputObserveConfig & {observerId?: string}>,
-  watchDataChange: NotifyObserversCallback,
+  onDataChange: NotifyObserversCallback,
 }
 
 type ClientOptions = {
@@ -44,7 +44,7 @@ export type DataStoryProps = {
   callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
-  observers?: TypeNameTodo;
+  observers?: DataStoryObservers;
 }
 
 export type StoreInitOptions = {
@@ -54,7 +54,7 @@ export type StoreInitOptions = {
   callback?: DataStoryCallback,
 }
 
-export type StoreInitServer = (serverConfig: ServerConfig, observers?: DataStoryObservers)  => void;
+export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig)  => void;
 
 export type FormCommonProps = {
   form: UseFormReturn<{

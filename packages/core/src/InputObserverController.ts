@@ -11,7 +11,8 @@ export class InputObserverController {
   constructor(
     private inputObservers: InputObserver[] = [],
     private notifyObservers: ReportCallback
-  ) {}
+  ) {
+  }
 
   /**
    * Determines if a report should be sent for a given inputObserver ( nodeId and portId )
@@ -33,7 +34,7 @@ export class InputObserverController {
   reportItems(inputObserver: InputObserveConfig, items: ItemValue[]): void {
     const inputObservers = this.isReport(inputObserver);
     if (inputObservers.length > 0) {
-      this.notifyObservers(inputObservers, items);
+      this.notifyObservers(items, inputObservers);
     }
   }
 }
