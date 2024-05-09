@@ -66,7 +66,7 @@ export const Workbench = ({
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
 
   useEffect(() => {
-    setObservers(observers);
+    setObservers('workbench', observers);
     console.log('observers change?', observers)
   }, [observers, setObservers]);
 

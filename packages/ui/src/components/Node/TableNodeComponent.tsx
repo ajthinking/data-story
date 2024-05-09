@@ -18,7 +18,9 @@ import {
   useRole
 } from '@floating-ui/react';
 import { useIntersectionObserver } from './UseIntersectionObserver';
-import { useMount } from 'ahooks';
+import { useMount, useUnmount } from 'ahooks';
+import { DataStoryObservers } from '../DataStory/types';
+import { createDataStoryId } from '@data-story/core';
 
 const TRUNCATE_CELL_LENGTH = 50;
 
@@ -130,27 +132,46 @@ const TableNodeComponent = ({ id, data }: {
   const [total, setTotal] = useState(0);
   const selector = (state: StoreSchema) => ({
     server: state.server,
-    observers: state.observers,
+    observerMap: state.observerMap,
     setObservers: state.setObservers,
   });
 
-  const { server, observers, setObservers } = useStore(selector, shallow);
+  const { server, observerMap, setObservers } = useStore(selector, shallow);
 
   const getTableRef = () => {
     return tableRef;
   }
   const input = data.inputs[0];
 
+  const observerId = useRef(createDataStoryId());
   // Add the node to the inputObservers when the node is mounted
   useMount(() => {
-    const isNodeInInputObservers = observers?.inputObservers?.some(observer => observer.nodeId === id);
-    if (!isNodeInInputObservers && observers?.watchDataChange) {
-      setObservers({
-        inputObservers: [...(observers?.inputObservers || []), { nodeId: id }],
-        watchDataChange: observers?.watchDataChange,
-      });
+    const observer = observerMap?.get(observerId.current);
+    if (observer) {
+      console.error('observers already exist');
+      return;
     }
+
+    const tableObserver : DataStoryObservers = {
+      inputObservers: [{ nodeId: id, portId: 'input' }],
+      watchDataChange: (inputObserver, items) => {
+        console.log('watchDataChange', inputObserver, items);
+        // todo: the observer maybe unmounted
+        if(!observer) {
+          console.error('observer unmounted');
+          return;
+        }
+      }
+    }
+
+    setObservers(observerId.current, tableObserver);
   });
+
+  useUnmount(() => {
+    if (observerMap && !observerMap?.get(observerId.current)) {
+      observerMap.delete(observerId.current);
+    }
+  })
 
   const loadTableData = useCallback(async() => {
     if (loading || (total === offset && offset !== 0)) return;
