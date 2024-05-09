@@ -15,7 +15,7 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { Diagram, LinkGuesser, Node, NodeDescription, Param, createDataStoryId } from '@data-story/core';
+import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -73,6 +73,10 @@ export type StoreSchema = {
   /** Modals */
   openNodeModalId: string | null;
   setOpenNodeModalId: (id: string | null) => void;
+
+  /** observers are used to monitor data changes in the node */
+  observers?: DataStoryObservers;
+  setObservers: (observers?: DataStoryObservers) => void;
 };
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -112,7 +116,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   connect: (connection: Connection) => {
     // Assume we have a full connection
-    if(!connection.sourceHandle || !connection.targetHandle) return
+    if (!connection.sourceHandle || !connection.targetHandle) return
 
     // Operate via the diagram!
     const diagram = get().toDiagram()
@@ -153,7 +157,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     const link = new LinkGuesser(diagram).guess(node)
     diagram.add(node)
-    if(link) diagram.connect(link)
+    if (link) diagram.connect(link)
 
     get().updateDiagram(diagram)
 
@@ -200,7 +204,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     })
 
     set({ rfInstance: options.rfInstance })
-    get().initServer(get().serverConfig, options.observers)
+    get().initServer(get().serverConfig)
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
@@ -208,7 +212,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const run = () => {
         get().server?.run(
           // TODO it seems this does not await setNodes/setEdges?
-          get().toDiagram()
+          get().toDiagram(),
+          get().observers,
         )
       }
 
@@ -226,16 +231,16 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   onRun: () => {
     get().server!.run(
-      get().toDiagram()
+      get().toDiagram(),
+      get().observers,
     )
   },
-  initServer: (serverConfig: ServerConfig, observers?: DataStoryObservers) => {
+  initServer: (serverConfig: ServerConfig) => {
     if (serverConfig.type === 'JS') {
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
         app: serverConfig.app,
-        observers,
       })
 
       set({ server })
@@ -243,12 +248,11 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     }
 
     if (serverConfig.type === 'SOCKET') {
-      const server = new SocketClient(
-        get().setAvailableNodes,
-        get().updateEdgeCounts,
-        serverConfig as WebSocketServerConfig,
-        observers,
-      )
+      const server = new SocketClient({
+        setAvailableNodes: get().setAvailableNodes,
+        updateEdgeCounts: get().updateEdgeCounts,
+        serverConfig: serverConfig as WebSocketServerConfig,
+      })
 
       set({ server })
       server.init()
@@ -285,6 +289,11 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       ]
     });
   },
+
+  setObservers(observers?: DataStoryObservers) {
+    if (!observers) return;
+    set({ observers })
+  }
 }));
 
 export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);

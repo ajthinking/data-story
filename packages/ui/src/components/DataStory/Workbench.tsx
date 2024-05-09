@@ -1,5 +1,5 @@
 import { DataStoryControls } from './dataStoryControls';
-import { useId, useState } from 'react';
+import { useId, useState, useEffect } from 'react';
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -45,14 +45,30 @@ export const Workbench = ({
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
     traverseNodes: state.traverseNodes,
+    setObservers: state.setObservers,
   });
 
-  const { connect, nodes, edges, onNodesChange, onEdgesChange, onInit, openNodeModalId, setOpenNodeModalId, traverseNodes } = useStore(selector, shallow);
+  const {
+    connect,
+    nodes,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    onInit,
+    openNodeModalId,
+    setOpenNodeModalId,
+    traverseNodes,
+    setObservers } = useStore(selector, shallow);
 
   const id = useId()
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [showRunModal, setShowRunModal] = useState(false);
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
+
+  useEffect(() => {
+    setObservers(observers);
+    console.log('observers change?', observers)
+  }, [observers, setObservers]);
 
   useHotkeys({
     nodes,
@@ -84,7 +100,6 @@ export const Workbench = ({
               server,
               initDiagram,
               callback,
-              observers: observers,
             });
           }}
           minZoom={0.25}

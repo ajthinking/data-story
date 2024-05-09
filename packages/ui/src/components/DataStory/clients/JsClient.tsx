@@ -1,9 +1,7 @@
 import {
-  Application,
   Diagram,
   Executor,
   ExecutorFactory,
-  NodeDescription,
   InMemoryStorage,
   InputObserverController,
   type ItemValue,
@@ -14,25 +12,22 @@ import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { ItemsOptions } from './ItemsApi';
-import { JSClientOptions, DataStoryObservers } from '../types';
+import type { DataStoryObservers, JSClientOptions } from '../types';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: JSClientOptions['setAvailableNodes'];
   private updateEdgeCounts: JSClientOptions['updateEdgeCounts'];
   private app: JSClientOptions['app'];
-  private observers?: JSClientOptions['observers'];
   private executor: Executor | undefined
 
   constructor({
     setAvailableNodes,
     updateEdgeCounts,
     app,
-    observers
   }:JSClientOptions) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;
-    this.observers = observers;
   }
 
   itemsApi = () => {
@@ -60,21 +55,21 @@ export class JsClient implements ServerClient {
     console.log('Connected to server: JS')
   }
 
-  run(diagram: Diagram) {
+  run(diagram: Diagram, observers?: DataStoryObservers) {
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
 
     const storage = new InMemoryStorage();
     const sendMsg: NotifyObserversCallback = ( inputObserver: InputObserver, items: ItemValue[]) => {
-      this.observers?.watchDataChange(
+      observers?.watchDataChange(
         inputObserver,
         items
       )
     }
 
     const inputObserverController = new InputObserverController(
-      this.observers?.inputObservers || [],
+      observers?.inputObservers || [],
       sendMsg
     );
 

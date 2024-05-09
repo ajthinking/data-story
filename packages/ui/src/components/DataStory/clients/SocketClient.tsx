@@ -5,7 +5,7 @@ import { DataStoryEvents } from '../events/dataStoryEventType';
 import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
-import {  SocketClientOptions } from '../types';
+import { DataStoryObservers, SocketClientOptions } from '../types';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
@@ -14,19 +14,14 @@ export class SocketClient implements ServerClient {
   protected reconnectTimeoutMs = 1000;
   private setAvailableNodes: SocketClientOptions['setAvailableNodes'];
   private updateEdgeCounts: SocketClientOptions['updateEdgeCounts'];
-  private serverConfig: SocketClientOptions['serverConfig'];
-  private observers?: SocketClientOptions['observers'];
 
   constructor({
     setAvailableNodes,
     updateEdgeCounts,
     serverConfig,
-    observers
   }:SocketClientOptions) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
-    this.serverConfig = serverConfig;
-    this.observers = observers;
 
     this.socket$ = webSocket({
       url: serverConfig.url,
@@ -92,16 +87,25 @@ export class SocketClient implements ServerClient {
     });
   }
 
-  run(diagram: Diagram) {
+  run(diagram: Diagram, observers?: DataStoryObservers) {
     const message = {
       type: 'run',
       diagram,
-      inputObserver: this?.observers?.inputObservers || [],
+      inputObserver: observers?.inputObservers || [],
     };
 
     this.socketSendMsg(message);
     eventManager.emit({
       type: DataStoryEvents.RUN_START
+    });
+
+    this.wsObservable.pipe(
+      filter(data => data.type === 'NotifyObservers')
+    ).forEach((data) => {
+      observers?.watchDataChange(
+        data.inputObserver,
+        data.items
+      );
     });
   }
 
@@ -173,16 +177,7 @@ export class SocketClient implements ServerClient {
       return
     }
 
-    if(data.type === 'NotifyObservers') {
-      this.observers?.watchDataChange(
-        data.inputObserver,
-        data.items
-      );
-
-      return;
-    }
-
-    if (data.type === 'UpdateStorage' ) {
+    if (data.type === 'UpdateStorage' || data.type === 'NotifyObservers') {
       return;
     }
 

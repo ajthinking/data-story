@@ -1,4 +1,4 @@
-import { ServerConfig } from './clients/ServerConfig';
+import { ServerConfig, WebSocketServerConfig } from './clients/ServerConfig';
 import {
   Diagram,
   Param,
@@ -20,7 +20,6 @@ export type DataStoryObservers = {
 type ClientOptions = {
   setAvailableNodes: (nodes: NodeDescription[]) => void,
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-  observers?: DataStoryObservers,
 };
 
 export type JSClientOptions = ClientOptions & {
@@ -28,7 +27,7 @@ export type JSClientOptions = ClientOptions & {
 }
 
 export type SocketClientOptions = ClientOptions & {
-  serverConfig: ServerConfig,
+  serverConfig: WebSocketServerConfig,
 }
 
 export type DataStoryProps = {
