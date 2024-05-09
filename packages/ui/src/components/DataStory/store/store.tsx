@@ -313,7 +313,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
 
   setObservers(observerId: string, observers?: TypeNameTodo) {
-    this.observerMap.set(observerId, observers || {} as TypeNameTodo);
+    get().observerMap.set(observerId, observers || {} as TypeNameTodo);
   },
 
 }));

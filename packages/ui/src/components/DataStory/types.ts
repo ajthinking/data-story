@@ -6,6 +6,7 @@ import {
   type InputObserver,
   type NotifyObserversCallback,
   type ReportCallback,
+  type InputObserveConfig,
   Application, NodeDescription
 } from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
@@ -19,8 +20,8 @@ export type DataStoryObservers = {
   watchDataChange: ReportCallback,
 }
 
-export type TypeNameTodo =  {
-  inputObservers: InputObserver[],
+export type TypeNameTodo = {
+  inputObservers: Array<InputObserveConfig & {observerId?: string}>,
   watchDataChange: NotifyObserversCallback,
 }
 
@@ -43,7 +44,7 @@ export type DataStoryProps = {
   callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
-  observers?: DataStoryObservers;
+  observers?: TypeNameTodo;
 }
 
 export type StoreInitOptions = {
@@ -51,7 +52,6 @@ export type StoreInitOptions = {
   server?: ServerConfig,
   initDiagram?: Diagram,
   callback?: DataStoryCallback,
-  observers?: DataStoryObservers,
 }
 
 export type StoreInitServer = (serverConfig: ServerConfig, observers?: DataStoryObservers)  => void;

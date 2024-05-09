@@ -19,7 +19,7 @@ import {
 } from '@floating-ui/react';
 import { useIntersectionObserver } from './UseIntersectionObserver';
 import { useMount, useUnmount } from 'ahooks';
-import { DataStoryObservers } from '../DataStory/types';
+import { DataStoryObservers, TypeNameTodo } from '../DataStory/types';
 import { createDataStoryId } from '@data-story/core';
 
 const TRUNCATE_CELL_LENGTH = 50;
@@ -146,18 +146,17 @@ const TableNodeComponent = ({ id, data }: {
   const observerId = useRef(createDataStoryId());
   // Add the node to the inputObservers when the node is mounted
   useMount(() => {
-    const observer = observerMap?.get(observerId.current);
-    if (observer) {
+    if (observerMap?.get(observerId.current)) {
       console.error('observers already exist');
       return;
     }
 
-    const tableObserver : DataStoryObservers = {
+    const tableObserver : TypeNameTodo = {
       inputObservers: [{ nodeId: id, portId: 'input' }],
       watchDataChange: (inputObserver, items) => {
         console.log('watchDataChange', inputObserver, items);
         // todo: the observer maybe unmounted
-        if(!observer) {
+        if(!observerMap?.get(observerId.current)) {
           console.error('observer unmounted');
           return;
         }
