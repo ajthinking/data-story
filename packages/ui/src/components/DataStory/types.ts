@@ -1,5 +1,12 @@
 import { ServerConfig } from './clients/ServerConfig';
-import { Diagram, Param, RepeatableParam, type InputObserver, type NotifyObserversCallback } from '@data-story/core';
+import {
+  Diagram,
+  Param,
+  RepeatableParam,
+  type InputObserver,
+  type NotifyObserversCallback,
+  Application, NodeDescription
+} from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import type { ReactFlowInstance } from 'reactflow';
@@ -9,6 +16,19 @@ export type DataStoryCallback = (options: {run: () => void}) => void;
 export type DataStoryObservers = {
   inputObservers: InputObserver[],
   watchDataChange: NotifyObserversCallback,
+}
+type ClientOptions = {
+  setAvailableNodes: (nodes: NodeDescription[]) => void,
+  updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+  observers?: DataStoryObservers,
+};
+
+export type JSClientOptions = ClientOptions & {
+  app: Application,
+}
+
+export type SocketClientOptions = ClientOptions & {
+  serverConfig: ServerConfig,
 }
 
 export type DataStoryProps = {

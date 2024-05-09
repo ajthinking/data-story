@@ -14,26 +14,21 @@ import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { ItemsOptions } from './ItemsApi';
-import { DataStoryObservers } from '../types';
+import { JSClientOptions, DataStoryObservers } from '../types';
 
 export class JsClient implements ServerClient {
-  private setAvailableNodes: (nodes: NodeDescription[]) => void;
-  private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  private app: Application;
+  private setAvailableNodes: JSClientOptions['setAvailableNodes'];
+  private updateEdgeCounts: JSClientOptions['updateEdgeCounts'];
+  private app: JSClientOptions['app'];
+  private observers?: JSClientOptions['observers'];
   private executor: Executor | undefined
-  private observers?: DataStoryObservers;
 
   constructor({
     setAvailableNodes,
     updateEdgeCounts,
     app,
     observers
-  }: {
-    setAvailableNodes: (nodes: NodeDescription[]) => void,
-    updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    app: Application,
-    observers?: DataStoryObservers,
-  }) {
+  }:JSClientOptions) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;

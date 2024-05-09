@@ -1,25 +1,33 @@
-import { createDataStoryId, Diagram, Hook, NodeDescription } from '@data-story/core';
+import { createDataStoryId, Diagram, Hook } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
-import { WebSocketServerConfig } from './ServerConfig';
-import { DataStoryObservers } from '../types';
+import {  SocketClientOptions } from '../types';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
   protected wsObservable: Observable<any>;
   protected maxReconnectTries = 100;
   protected reconnectTimeoutMs = 1000;
+  private setAvailableNodes: SocketClientOptions['setAvailableNodes'];
+  private updateEdgeCounts: SocketClientOptions['updateEdgeCounts'];
+  private serverConfig: SocketClientOptions['serverConfig'];
+  private observers?: SocketClientOptions['observers'];
 
-  constructor(
-    protected setAvailableNodes: (nodes: NodeDescription[]) => void,
-    protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    protected serverConfig: WebSocketServerConfig,
-    protected observers?: DataStoryObservers,
-  ) {
+  constructor({
+    setAvailableNodes,
+    updateEdgeCounts,
+    serverConfig,
+    observers
+  }:SocketClientOptions) {
+    this.setAvailableNodes = setAvailableNodes;
+    this.updateEdgeCounts = updateEdgeCounts;
+    this.serverConfig = serverConfig;
+    this.observers = observers;
+
     this.socket$ = webSocket({
       url: serverConfig.url,
       openObserver: {
