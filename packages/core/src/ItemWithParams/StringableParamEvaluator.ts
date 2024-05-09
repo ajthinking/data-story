@@ -22,13 +22,6 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // INTERPOLATE GLOBAL PARAMS
     // **********************************************************************
     if (param.interpolate) {
-      if(param.name === 'json') {
-        console.log('DUDE WE GONNA INTERPOLATE JSON!', {
-          param,
-          globalParams,
-        })
-      }
-
       // Find any @{PARAM_NAME} and replace with the value of the global param
       const GLOBAL_PARAM_PATTERN = /@\{(\w+)\}/g;
       transformedValue = transformedValue.replace(GLOBAL_PARAM_PATTERN, (_: string, name: string) => {
