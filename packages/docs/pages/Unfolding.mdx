@@ -15,6 +15,7 @@ Let's consider an example!
 Here we have a diagram with a custom node *FooBarStamper*. Give it a run!
 <UnfoldingDemo part={'MAIN'} />
 
+```mdx
 ## FooBarStamper implementation
 The FooBarStamper will simply take all incoming items, add a foo property with value 'bar', then output it. 
 Note how the green input and output nodes corresponds to the ports of FooBarStamper instantiation in the main diagram.
@@ -23,3 +24,4 @@ Note how the green input and output nodes corresponds to the ports of FooBarStam
 ## Unfolded Main diagram
 When executing the diagram, behind the scenes, it will first be unfolded, resulting in the topology below. This is typically a backend/headless only operation, not visible in the UI. 
 <UnfoldingDemo part={'MAIN_UNFOLDED'} />
+```

@@ -11,7 +11,7 @@ import {
 } from '@data-story/core';
 
 export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
-  const { Create, Table, Input, Map, Output, ConsoleLog } = nodes;
+  const { Create, Table, Input, Map, Output, ConsoleLog, Signal, Ignore } = nodes;
 
   const app = new Application();
   app.register(coreNodeProvider);
@@ -20,39 +20,38 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
   const nestedNode = new DiagramBuilder()
     .withParams([
       str({
-        name: 'stamp',
-        value: 'foo'}
+        name: 'log_message',
+        value: 'hey a log message'}
       )
     ])
     .add(nodes.Input, { port_name: 'input'})
     .add(nodes.Map, { json: JSON.stringify({
-      foo: 'bar',
-      global_param_access: 'The foo stamp was >>>@{stamp}<<<',
+      message: 'Hello World, @{log_message}!',
     })})
-    .add(nodes.Output, { port_name: 'stamped'})
+    .add(nodes.Output, { port_name: 'output'})
+    .add(ConsoleLog)
+    .add(Create, { data: JSON.stringify({
+      message: 'Create, @{log_message}!',
+    })})
+    .add(ConsoleLog)
     .get()
 
   // Hack to test if this really works
-  const param = nestedNode.params.find(param => param.name === 'stamp') as StringableParam;
+  const param = nestedNode.params.find(param => param.name === 'log_message') as StringableParam;
   param.interpolate = true;
 
-  app.addNestedNode('FooBarStamper', nestedNode);
+  app.addNestedNode('InstantLog', nestedNode);
 
   app.boot();
 
   const diagram = new DiagramBuilder()
-    .add({ ...Create, label: 'Users'}, { data: JSON.stringify([
-      { name: 'Alice', age: 23 },
-      { name: 'Bob', age: 34 },
-      { name: 'Charlie', age: 45 },
-    ]) })
-    .addNestedNode('FooBarStamper', nestedNode)
-    // .linkByLabel('Create.output', 'NestedNode.acceptable')
-    .add(Table)
+    .add(Signal, { count: 3 })
+    .addNestedNode('InstantLog', nestedNode)
+    .add(Ignore)
     .get()
 
   const nestedNodes = {
-    'FooBarStamper': nestedNode,
+    'InstantLog': nestedNode,
   }
 
   const unfolded = new UnfoldedDiagramFactory(
