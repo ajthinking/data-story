@@ -18,6 +18,7 @@ import {
   useRole
 } from '@floating-ui/react';
 import { useIntersectionObserver } from './UseIntersectionObserver';
+import { useMount } from 'ahooks';
 
 const TRUNCATE_CELL_LENGTH = 50;
 
@@ -129,14 +130,27 @@ const TableNodeComponent = ({ id, data }: {
   const [total, setTotal] = useState(0);
   const selector = (state: StoreSchema) => ({
     server: state.server,
+    observers: state.observers,
+    setObservers: state.setObservers,
   });
 
-  const { server } = useStore(selector, shallow);
+  const { server, observers, setObservers } = useStore(selector, shallow);
 
   const getTableRef = () => {
     return tableRef;
   }
-  const input = data.inputs[0]
+  const input = data.inputs[0];
+
+  // Add the node to the inputObservers when the node is mounted
+  useMount(() => {
+    const isNodeInInputObservers = observers?.inputObservers?.some(observer => observer.nodeId === id);
+    if (!isNodeInInputObservers && observers?.watchDataChange) {
+      setObservers({
+        inputObservers: [...(observers?.inputObservers || []), { nodeId: id }],
+        watchDataChange: observers?.watchDataChange,
+      });
+    }
+  });
 
   const loadTableData = useCallback(async() => {
     if (loading || (total === offset && offset !== 0)) return;
