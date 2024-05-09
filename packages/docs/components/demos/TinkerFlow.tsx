@@ -43,7 +43,7 @@ export default () => {
     'NestedNode': nestedNode,
   }).unfold();
 
-  console.log(JSON.stringify(unfolded.diagram, null, 2))
+  // console.log(JSON.stringify(unfolded.diagram))
 
   return (
     <div className="w-full h-1/2">

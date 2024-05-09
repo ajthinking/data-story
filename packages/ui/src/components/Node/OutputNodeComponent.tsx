@@ -14,7 +14,8 @@ const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataSto
   const { setOpenNodeModalId } = useStore(selector, shallow);
 
   const portName = (data?.params?.[0]?.value ?? '') as string
-  const input = data.inputs[0]
+  const inputPort = data.inputs[0]
+  const outputPort = data.outputs[0]
 
   return (
     <div
@@ -31,7 +32,7 @@ const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataSto
             type="target"
             position={Position.Left}
             style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 6, left: -6 }}
-            id={input.id}
+            id={inputPort.id}
             isConnectable={true}
           />
         </div>
@@ -41,6 +42,15 @@ const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataSto
             Output: { portName }
           </div>
         </div>
+        {/* INVISIBLE PORT. ONLY USED WHEN SHOWING AN UNFOLDED DIAGRAM */}
+        <Handle
+          className="relative"
+          type="source"
+          position={Position.Right}
+          style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 1, width: 1, top: 0, right: 0}}
+          id={outputPort.id}
+          isConnectable={false}
+        />
       </div>
     </div>
   );
