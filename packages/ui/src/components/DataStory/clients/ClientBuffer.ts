@@ -1,15 +1,14 @@
 import { InputObserver, ItemValue } from '@data-story/core';
-import { UnaryFunction, Observable, concatMap, bufferTime, pipe } from 'rxjs';
+import { bufferTime, concatMap, Observable, pipe, UnaryFunction } from 'rxjs';
 
 function groupNotifications(data: {
   items: ItemValue[],
   inputObservers: InputObserver[]
 }[]) {
   const getNotifyObserverKey = (items: ItemValue[], inputObservers: InputObserver[]) => {
-    const key = inputObservers.map((inputObserver) => {
+    return inputObservers.map((inputObserver) => {
       return inputObserver.observerId;
     }).sort().join(',');
-    return key;
   }
 
   const groupedNotificationMap = new Map<string, {items: ItemValue[], inputObservers: InputObserver[]}>();

@@ -17,9 +17,8 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { useIntersectionObserver } from './UseIntersectionObserver';
 import { useMount, useUnmount } from 'ahooks';
-import { ServerClientObservationConfig, DataStoryObservers } from '../DataStory/types';
+import {  DataStoryObservers } from '../DataStory/types';
 import { createDataStoryId } from '@data-story/core';
 
 const TRUNCATE_CELL_LENGTH = 50;
@@ -125,18 +124,15 @@ const TableNodeComponent = ({ id, data }: {
   selected: boolean
 }) => {
   const [items, setItems] = useState([]) as any
-  const [loading, setLoading] = useState(false);
-  const [offset, setOffset] = useState(0)
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
-  const [total, setTotal] = useState(0);
   const selector = (state: StoreSchema) => ({
     server: state.server,
     observerMap: state.observerMap,
     setObservers: state.setObservers,
   });
 
-  const { server, observerMap, setObservers } = useStore(selector, shallow);
+  const {  observerMap, setObservers } = useStore(selector, shallow);
 
   const getTableRef = () => {
     return tableRef;
@@ -153,14 +149,14 @@ const TableNodeComponent = ({ id, data }: {
 
     const tableObserver : DataStoryObservers = {
       inputObservers: [{ nodeId: id, portId: 'input' }],
-      onDataChange: (items, inputObserver) => {
-        console.log('onDataChange', inputObserver, items);
-        // setItems(prevItems => [...prevItems, ...items]);
-        // setIsDataFetched(true);
+      onDataChange: (batchedItems, inputObserver) => {
         if(!observerMap?.get(observerId.current)) {
           console.error('observer unmounted');
           return;
         }
+        setIsDataFetched(true);
+
+        setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
       }
     }
 
@@ -173,46 +169,17 @@ const TableNodeComponent = ({ id, data }: {
     }
   })
 
-  const loadTableData = useCallback(async() => {
-    if (loading || (total === offset && offset !== 0)) return;
-    setLoading(true);
-    const limit = 100
-
-    const itemsApi = server!.itemsApi
-    if (!itemsApi) return;
-
-    const { items: fetchedItems, total: fetchedTotal } = await itemsApi()?.getItems({
-      atNodeId: id,
-      limit,
-      offset,
-    })
-
-    if (fetchedItems && fetchedItems.length > 0) {
-      setItems(prevItems => [...prevItems, ...fetchedItems]);
-      setOffset(prevOffset => prevOffset + fetchedItems.length)
-    }
-
-    setLoading(false);
-    setTotal(fetchedTotal);
-  }, [id, loading, offset, server, total]);
-
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {
       setItems([])
-      setOffset(0);
       setIsDataFetched(false);
     }
-
-    // if (event.type === DataStoryEvents.RUN_SUCCESS) {
-    //   loadTableData();
-    // }
   }, []);
 
   useDataStoryEvent(dataStoryEvent);
-  // todo: 这里应该也自动加载数据了
-  // const loaderRef = useIntersectionObserver(loadTableData);
   let { headers, rows } = new ItemCollection(items).toTable()
 
+  console.log('items', items)
   if (items.length === 0) {
     headers = []
     rows = []
@@ -295,14 +262,6 @@ const TableNodeComponent = ({ id, data }: {
                 </tr>}
               </tbody>
             </table>
-            {
-              (<div
-                // ref={loaderRef}
-                style={{ display: isDataFetched ? 'block' : 'none' }}
-                className="loading-spinner h-0.5"
-              >
-              </div>)
-            }
             {
               (isDataFetched && headers.length === 0 && rows.length === 0)
               && (<div className="text-center text-gray-500 p-2">
