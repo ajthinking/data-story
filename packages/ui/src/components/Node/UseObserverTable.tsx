@@ -12,7 +12,6 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
   setItems: (value: any) => void
 }): void {
   const selector = (state: StoreSchema) => ({
-    server: state.server,
     observerMap: state.observerMap,
     setObservers: state.setObservers,
   });

@@ -5,7 +5,8 @@ import { ReactFlowProvider } from 'reactflow';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
 import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
-import { multiline } from '@data-story/core';
+import { InputObserver, ItemValue, multiline } from '@data-story/core';
+import { DataStoryObservers } from '../DataStory/types';
 
 const data = {
   'params': [],
@@ -43,28 +44,14 @@ const mountTableNodeComponent = () => {
 
 let testPerformanceLimit = 20;
 const mockGetItems = (items: unknown[]): void => {
-  // Set the limit constant to 10000 for testing performance
-
+  const observerMap = new Map();
   cy.stub(store, 'createStore').returns(() => {
     return {
-      server: {
-        itemsApi: () => {
-          const getItems = ({
-            atNodeId = '',
-            limit = testPerformanceLimit,
-            offset = 0
-          }) => {
-            return {
-              items: items.slice(offset, offset + testPerformanceLimit),
-              total: items.length
-            };
-          }
-
-          return {
-            getItems
-          };
-        }
-      }
+      setObservers: (observerId: string, observers?: DataStoryObservers) => {
+        observerMap.set(observerId, (observers || {}) as DataStoryObservers);
+        observers?.onDataChange(items as ItemValue[], observers?.inputObservers[0] as InputObserver);
+      },
+      observerMap: observerMap,
     }
   });
 };
@@ -119,22 +106,22 @@ describe('test TableNodeComponent for tooltip', () => {
 });
 
 describe('test TableNodeComponent for table', () => {
-  it('render default component', () => {
+  it('render component with empty data', () => {
     mockGetItems([]);
     mountTableNodeComponent();
 
     cy.dataCy('data-story-table').should('exist');
+    cy.dataCy('data-story-table-no-data').should('have.text', 'No data');
   });
 
-  it('render component with empty data', () => {
-    mockGetItems([]);
+  it('render component with Awaiting data', () => {
     mountTableNodeComponent();
 
     cy.get('th').should('have.length', 1);
     cy.get('th').should('have.text', 'Awaiting data');
   });
 
-  it('render component with data', () => {
+  it('render component with normal data', () => {
     mockGetItems([normal]);
     mountTableNodeComponent();
 

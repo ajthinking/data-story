@@ -92,7 +92,6 @@ export class SocketClient implements ServerClient {
       filter(data => data.type === 'NotifyObservers'),
       clientBuffer()
     ).subscribe((data) => {
-      console.log('NotifyObservers', data)
       this?.observers?.onDataChange(
         data.items,
         data.inputObservers,

@@ -140,7 +140,6 @@ const TableNodeComponent = ({ id, data }: {
   }
   const input = data.inputs[0];
 
-  console.log('items', items)
   if (items.length === 0) {
     headers = []
     rows = []
@@ -225,7 +224,7 @@ const TableNodeComponent = ({ id, data }: {
             </table>
             {
               (isDataFetched && headers.length === 0 && rows.length === 0)
-              && (<div className="text-center text-gray-500 p-2">
+              && (<div data-cy={'data-story-table-no-data'} className="text-center text-gray-500 p-2">
                 No data
               </div>)
             }
