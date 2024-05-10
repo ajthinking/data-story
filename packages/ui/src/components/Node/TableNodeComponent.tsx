@@ -1,6 +1,4 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { StoreSchema, useStore } from '../DataStory/store/store';
-import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
 import { ItemCollection } from './ItemCollection';
@@ -17,9 +15,7 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { useMount, useUnmount } from 'ahooks';
-import {  DataStoryObservers } from '../DataStory/types';
-import { createDataStoryId } from '@data-story/core';
+import { useObserverTable } from './UseObserverTable';
 
 const TRUNCATE_CELL_LENGTH = 50;
 
@@ -123,51 +119,11 @@ const TableNodeComponent = ({ id, data }: {
   data: DataStoryNodeData,
   selected: boolean
 }) => {
-  const [items, setItems] = useState([]) as any
+  const [items, setItems] = useState([]);
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
-  const selector = (state: StoreSchema) => ({
-    server: state.server,
-    observerMap: state.observerMap,
-    setObservers: state.setObservers,
-  });
 
-  const {  observerMap, setObservers } = useStore(selector, shallow);
-
-  const getTableRef = () => {
-    return tableRef;
-  }
-  const input = data.inputs[0];
-
-  const observerId = useRef(createDataStoryId());
-  // Add the node to the inputObservers when the node is mounted
-  useMount(() => {
-    if (observerMap?.get(observerId.current)) {
-      console.error('observers already exist');
-      return;
-    }
-
-    const tableObserver : DataStoryObservers = {
-      inputObservers: [{ nodeId: id, portId: 'input' }],
-      onDataChange: (batchedItems, inputObserver) => {
-        if(!observerMap?.get(observerId.current)) {
-          console.error('observer unmounted');
-          return;
-        }
-        setIsDataFetched(true);
-
-        setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
-      }
-    }
-
-    setObservers(observerId.current, tableObserver);
-  });
-
-  useUnmount(() => {
-    if (observerMap && !observerMap?.get(observerId.current)) {
-      observerMap.delete(observerId.current);
-    }
-  })
+  useObserverTable( { id, isDataFetched, setIsDataFetched, setItems } );
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {
@@ -178,6 +134,11 @@ const TableNodeComponent = ({ id, data }: {
 
   useDataStoryEvent(dataStoryEvent);
   let { headers, rows } = new ItemCollection(items).toTable()
+
+  const getTableRef = () => {
+    return tableRef;
+  }
+  const input = data.inputs[0];
 
   console.log('items', items)
   if (items.length === 0) {
