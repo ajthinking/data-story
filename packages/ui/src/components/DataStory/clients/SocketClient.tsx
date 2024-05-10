@@ -15,6 +15,7 @@ export class SocketClient implements ServerClient {
   protected reconnectTimeoutMs = 1000;
   private setAvailableNodes: SocketClientOptions['setAvailableNodes'];
   private updateEdgeCounts: SocketClientOptions['updateEdgeCounts'];
+  private observers?: ServerClientObservationConfig;
 
   constructor({
     setAvailableNodes,
@@ -86,9 +87,21 @@ export class SocketClient implements ServerClient {
       // Called if at any point WebSocket API signals some kind of error
       error: (err) => console.log('WebSocket error: ', err),
     });
+
+    this.wsObservable.pipe(
+      filter(data => data.type === 'NotifyObservers'),
+      clientBuffer()
+    ).subscribe((data) => {
+      console.log('NotifyObservers', data)
+      this?.observers?.onDataChange(
+        data.items,
+        data.inputObservers,
+      );
+    });
   }
 
   run(diagram: Diagram, observers?: ServerClientObservationConfig) {
+    this.observers = observers;
     const message = {
       type: 'run',
       diagram,
@@ -98,16 +111,6 @@ export class SocketClient implements ServerClient {
     this.socketSendMsg(message);
     eventManager.emit({
       type: DataStoryEvents.RUN_START
-    });
-
-    this.wsObservable.pipe(
-      filter(data => data.type === 'NotifyObservers'),
-      clientBuffer()
-    ).forEach((data) => {
-      observers?.onDataChange(
-        data.items,
-        data.inputObservers,
-      );
     });
   }
 
