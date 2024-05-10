@@ -3,16 +3,17 @@ import {
   Executor,
   ExecutorFactory,
   InMemoryStorage,
+  type InputObserver,
   InputObserverController,
   type ItemValue,
-  type InputObserver,
-  type NotifyObserversCallback,
 } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { ItemsOptions } from './ItemsApi';
-import type { ServerClientObservationConfig, JSClientOptions } from '../types';
+import type { JSClientOptions, ServerClientObservationConfig } from '../types';
+import { Subject } from 'rxjs';
+import { clientBuffer } from './ClientBuffer';
 
 export class JsClient implements ServerClient {
   private setAvailableNodes: JSClientOptions['setAvailableNodes'];
@@ -24,7 +25,7 @@ export class JsClient implements ServerClient {
     setAvailableNodes,
     updateEdgeCounts,
     app,
-  }:JSClientOptions) {
+  }: JSClientOptions) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;
@@ -32,12 +33,12 @@ export class JsClient implements ServerClient {
 
   itemsApi = () => {
     return {
-      getItems: async ({
+      getItems: async({
         atNodeId,
         limit = 10,
         offset = 0,
       }: ItemsOptions) => {
-        if(!this.executor) return { items: [], total: 0 };
+        if (!this.executor) return { items: [], total: 0 };
 
         const items = this.executor.storage.itemsMap.get(atNodeId) || [];
 
@@ -49,7 +50,7 @@ export class JsClient implements ServerClient {
     }
   };
 
-  init () {
+  init() {
     this.setAvailableNodes(this.app.descriptions())
 
     console.log('Connected to server: JS')
@@ -61,23 +62,30 @@ export class JsClient implements ServerClient {
     });
 
     const storage = new InMemoryStorage();
-    const sendMsg = (items: ItemValue[], inputObservers: InputObserver[]) => {
+    const notifyObservers$: Subject<{items: ItemValue[], inputObservers: InputObserver[]}> = new Subject();
+
+    notifyObservers$.pipe(
+      clientBuffer()
+    ).subscribe((data) => {
       observers?.onDataChange(
-        items,
-        inputObservers
+        data.items,
+        data.inputObservers
       )
-    }
+    });
 
     const inputObserverController = new InputObserverController(
       observers?.inputObservers || [],
-      sendMsg
+      (items: ItemValue[], inputObservers: InputObserver[]) => {
+        notifyObservers$.next({ items, inputObservers });
+      }
     );
 
     this.executor = ExecutorFactory.create({
       diagram,
       registry: this.app.registry,
       storage,
-      inputObserverController })
+      inputObserverController
+    })
 
     const execution = this.executor.execute();
 
@@ -88,12 +96,12 @@ export class JsClient implements ServerClient {
           if (!done) {
             this.updateEdgeCounts(update.counts)
             for(const hook of update.hooks) {
-              if(hook.type === 'CONSOLE_LOG') {
+              if (hook.type === 'CONSOLE_LOG') {
                 console.log(...hook.args)
               } else {
                 const userHook = this.app.hooks.get(hook.type)
 
-                if(userHook) {
+                if (userHook) {
                   userHook(...hook.args)
                 }
               }

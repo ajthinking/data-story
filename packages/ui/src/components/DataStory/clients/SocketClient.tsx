@@ -6,6 +6,7 @@ import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } f
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
 import { ServerClientObservationConfig, SocketClientOptions } from '../types';
+import { clientBuffer } from './ClientBuffer';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
@@ -100,7 +101,8 @@ export class SocketClient implements ServerClient {
     });
 
     this.wsObservable.pipe(
-      filter(data => data.type === 'NotifyObservers')
+      filter(data => data.type === 'NotifyObservers'),
+      clientBuffer()
     ).forEach((data) => {
       observers?.onDataChange(
         data.items,
