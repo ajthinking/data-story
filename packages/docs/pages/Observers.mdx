@@ -22,9 +22,9 @@ onDataChange: (inputObserver: InputObserver, items: ItemValue[]) => void
 
 ## Demo
 
-import DataStoryDemo from '../../components/demos/DataStoryDemo';
+import ObserversDemo from '../components/demos/ObserversDemo';
 
-<DataStoryDemo observers ={ {
+<ObserversDemo observers ={ {
   inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
   onDataChange: (inputObserver, items) => {
     console.log('onDataChange', inputObserver, items);

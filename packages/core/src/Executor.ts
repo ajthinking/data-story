@@ -4,22 +4,28 @@ import { isFinished } from './utils/isFinished';
 import { ExecutionMemory } from './ExecutionMemory';
 import { mapToRecord } from './utils/mapToRecord';
 import { arrayToRecord } from './utils/arrayToRecord';
-import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
-import { ExecutionMemoryFactoryParams } from './types/ExecutionFactoryParams';
+import { Diagram } from './Diagram';
+import { Registry } from './Registry';
+import { Storage } from './types/Storage';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
 export class Executor {
   public readonly memory: ExecutionMemory;
-  public diagram: ExecutionMemoryFactoryParams['diagram'];
-  public registry: ExecutionMemoryFactoryParams['registry'];
-  public storage: ExecutionMemoryFactoryParams['storage'];
+  public diagram: Diagram;
+  public registry: Registry;
+  public storage: Storage;
 
-  constructor(params: ExecutionMemoryFactoryParams) {
+  constructor(params: {
+    diagram: Diagram;
+    registry: Registry;
+    storage: Storage;
+    memory: ExecutionMemory;
+  }) {
     this.diagram = params.diagram
     this.registry = params.registry
     this.storage = params.storage
-    this.memory = ExecutionMemoryFactory.create(params);
+    this.memory = params.memory
   }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {

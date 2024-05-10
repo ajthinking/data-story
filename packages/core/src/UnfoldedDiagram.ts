@@ -1,7 +1,8 @@
 import { Diagram } from './Diagram'
+import { Param } from './Param'
 import { NodeId } from './types/Node'
 
 export type UnfoldedDiagram = {
   diagram: Diagram
-  unfoldMap: Record<NodeId, NodeId>
+  unfoldedGlobalParams: Record<NodeId, Param[]>
 }

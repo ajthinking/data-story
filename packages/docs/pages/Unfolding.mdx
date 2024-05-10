@@ -1,0 +1,27 @@
+import UnfoldingDemo from '../components/demos/UnfoldingDemo';
+
+# Unfolding
+When a diagram is to be executed, it is *unfolded*, meaning it will be converted into a flat structure.
+This process will reduce any nested nodes into their underlying nodes. It will then connect everything with input/output nodes.
+Furthermore it will pass on any node params which will act as *global* params inside resolved underlying nodes.
+
+```ts
+// When creating the execution
+const { diagram } = UnfoldedDiagramFactory.create(original, definitions)
+```
+Let's consider an example!
+
+## Main diagram
+Here we have a diagram with a custom node *FooBarStamper*. Give it a run!
+<UnfoldingDemo part={'MAIN'} />
+
+```mdx
+## FooBarStamper implementation
+The FooBarStamper will simply take all incoming items, add a foo property with value 'bar', then output it. 
+Note how the green input and output nodes corresponds to the ports of FooBarStamper instantiation in the main diagram.
+<UnfoldingDemo part={'NESTED_NODE'} />
+
+## Unfolded Main diagram
+When executing the diagram, behind the scenes, it will first be unfolded, resulting in the topology below. This is typically a backend/headless only operation, not visible in the UI. 
+<UnfoldingDemo part={'MAIN_UNFOLDED'} />
+```

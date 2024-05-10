@@ -14,6 +14,7 @@ const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStor
   const { setOpenNodeModalId } = useStore(selector, shallow);
 
   const portName = (data?.params?.[0]?.value ?? '') as string
+  const inputPort = data.inputs[0]
   const outputPort = data.outputs[0]
 
   return (
@@ -24,6 +25,15 @@ const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStor
       }}
     >
       <div className="flex w-full items-right justify-end -mx-4">
+        {/* INVISIBLE PORT. ONLY USED WHEN SHOWING AN UNFOLDED DIAGRAM */}
+        <Handle
+          className="relative"
+          type="target"
+          position={Position.Left}
+          style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 1, width: 1, top: 0, right: 0}}
+          id={inputPort.id}
+          isConnectable={true}
+        />
         <div className={'rounded-l rounded-full py-1 text-xs font-bold font-mono tracking-wide border border-gray-400 rounded bg-green-700 text-gray-100 px-2' + (selected ? ' bg-green-800 shadow-xl' : '') }>
           <div className="w-24" />
           <div className="flex w-full whitespace-nowrap">

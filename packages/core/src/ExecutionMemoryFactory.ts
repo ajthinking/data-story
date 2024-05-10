@@ -1,32 +1,28 @@
+import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
+import { InputObserverController } from './InputObserverController'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
+import { Param } from './Param'
+import { Registry } from './Registry'
 import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
 import { Node, NodeId } from './types/Node'
-import { ExecutionMemoryFactoryParams } from './types/ExecutionFactoryParams';
+import { Storage } from './types/Storage'
 
 export class ExecutionMemoryFactory {
-  public diagram: ExecutionMemoryFactoryParams['diagram'];
-  public registry: ExecutionMemoryFactoryParams['registry'];
-  public storage: ExecutionMemoryFactoryParams['storage'];
-  public inputObserverController: ExecutionMemoryFactoryParams['inputObserverController'];
+  constructor(
+    public diagram: Diagram,
+    public registry: Registry,
+    public storage: Storage,
+    public unfoldedGlobalParams: Record<NodeId, Param[]>,
+    public inputObserverController?: InputObserverController,
+  ) {}
 
-  constructor(params: ExecutionMemoryFactoryParams) {
-    this.diagram = params.diagram
-    this.registry = params.registry
-    this.storage = params.storage
-    this.inputObserverController = params.inputObserverController
-  }
-
-  static create(
-    { diagram, registry, storage, inputObserverController }: ExecutionMemoryFactoryParams
-  ) {
-    const instance = new this({ diagram, registry, storage, inputObserverController })
-
+  create() {
     // Create a new memory
     const memory = new ExecutionMemory({
       nodeStatuses: new Map<NodeId, NodeStatus>(),
@@ -38,13 +34,13 @@ export class ExecutionMemoryFactory {
     })
 
     // Configure the memory's initial state
-    for(const link of instance.diagram.links) {
+    for(const link of this.diagram.links) {
       // Set all links to be empty
       memory.setLinkItems(link.id, [])
       memory.setLinkCount(link.id, 0)
     }
 
-    for(const node of instance.diagram.nodes) {
+    for(const node of this.diagram.nodes) {
       // Set all nodes to available
       memory.setNodeStatus(node.id, 'AVAILABLE')
 
@@ -52,19 +48,19 @@ export class ExecutionMemoryFactory {
       // Potentially, if configured, reuse already present input device
       // (e.g. if the node is a sub diagram)
       const inputDevice = memory.inputDevices.get(node.id)
-        || instance.makeInputDevice(node, memory)
+        || this.makeInputDevice(node, memory)
 
       // Register output devices
       // Potentially, if configured, reuse already present output device
       // (e.g. if the node is a sub diagram)
       const outputDevice = memory.outputDevices.get(node.id)
-        || instance.makeOutputDevice(node, memory)
+        || this.makeOutputDevice(node, memory)
 
       memory.inputDevices.set(node.id, inputDevice)
       memory.outputDevices.set(node.id, outputDevice)
 
       // Initialize runner generators
-      const computer = instance.registry.computers[node.type]
+      const computer = this.registry.computers[node.type]
       if (!computer) throw new Error(`Computer "${node.type}" not found`)
 
       memory.setNodeRunner(
@@ -72,8 +68,8 @@ export class ExecutionMemoryFactory {
         computer.run({
           input: inputDevice,
           output: outputDevice,
-          params: instance.makeParamsDevice(node, memory),
-          storage: instance.storage,
+          params: this.makeParamsDevice(node, memory),
+          storage: this.storage,
           hooks: {
             register: (hook: Hook) => {
               memory.pushHooks([hook])
@@ -116,7 +112,9 @@ export class ExecutionMemoryFactory {
         try {
           const emptyItem = {}
           const evaluator = new ParamEvaluator();
-          return evaluator.evaluate(emptyItem, param, this.diagram.params);
+          const globalParams = this.unfoldedGlobalParams[node.id] ?? this.diagram.params;
+
+          return evaluator.evaluate(emptyItem, param, globalParams);
         } catch(error) {
           console.error('error', error);
           return param.value;

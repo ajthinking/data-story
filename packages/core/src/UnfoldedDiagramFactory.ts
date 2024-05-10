@@ -1,9 +1,11 @@
 import { Diagram } from './Diagram'
+import { Param } from './Param'
 import { NestedNodes } from './Registry'
 import { UnfoldedDiagram } from './UnfoldedDiagram'
-import { Node } from './types/Node'
+import { Node, NodeId } from './types/Node'
 
 export class UnfoldedDiagramFactory {
+  public unfoldedGlobalParams: Record<NodeId, Param[]> = {}
   constructor(
     public diagram: Diagram,
     public nestedNodes: NestedNodes
@@ -18,28 +20,31 @@ export class UnfoldedDiagramFactory {
 
     return {
       diagram,
-      unfoldMap: {},
+      unfoldedGlobalParams: instance.unfoldedGlobalParams,
     }
   }
 
   unfold(): UnfoldedDiagram {
     const replacables = this.diagram.nodes.filter(node => node.type in this.nestedNodes)
 
-    for(const type of new Set(replacables.map(node => node.type))) {
-      const nestedDiagram = this.nestedNodes[type]
-      if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${type}"`)
+    for(const node of replacables) {
+      const nestedDiagram = this.nestedNodes[node.type]
+      if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.type}"`)
 
       this.diagram.nodes.push(...nestedDiagram.nodes)
       this.diagram.links.push(...nestedDiagram.links)
-    }
 
-    for(const node of replacables) {
+      // Register the unfold map
+      for(const replacer of nestedDiagram.nodes) {
+        this.unfoldedGlobalParams[replacer.id] = structuredClone(node.params)
+      }
+
       this.unfoldNode(node)
     }
 
     return {
       diagram: this.diagram,
-      unfoldMap: {},
+      unfoldedGlobalParams: this.unfoldedGlobalParams,
     }
   }
 

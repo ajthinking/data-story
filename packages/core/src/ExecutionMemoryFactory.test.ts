@@ -19,9 +19,8 @@ describe('create', () => {
 
     const storage = new InMemoryStorage();
 
-    const memory = ExecutionMemoryFactory.create(
-      { diagram, registry, storage },
-    );
+    const factory = new ExecutionMemoryFactory(diagram, registry, storage, {});
+    const memory = factory.create();
 
     const [ link ] = diagram.links
 
@@ -42,9 +41,8 @@ describe('create', () => {
 
     const storage = new InMemoryStorage();
 
-    const memory = ExecutionMemoryFactory.create(
-      { diagram, registry, storage },
-    );
+    const factory = new ExecutionMemoryFactory(diagram, registry, storage, {});
+    const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
     expect(memory.getNodeStatus(firstNode.id)).toEqual('AVAILABLE');
@@ -64,9 +62,8 @@ describe('create', () => {
 
     const storage = new InMemoryStorage();
 
-    const memory = ExecutionMemoryFactory.create(
-      { diagram, registry, storage },
-    );
+    const factory = new ExecutionMemoryFactory(diagram, registry, storage, {});
+    const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
 
@@ -90,9 +87,8 @@ describe('create', () => {
 
     const storage = new InMemoryStorage();
 
-    const memory = ExecutionMemoryFactory.create(
-      { diagram, registry, storage },
-    );
+    const factory = new ExecutionMemoryFactory(diagram, registry, storage, {});
+    const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
 
