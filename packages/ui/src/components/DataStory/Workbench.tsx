@@ -67,7 +67,6 @@ export const Workbench = ({
 
   useEffect(() => {
     setObservers('workbench', observers);
-    console.log('observers change?', observers)
   }, [observers, setObservers]);
 
   useHotkeys({

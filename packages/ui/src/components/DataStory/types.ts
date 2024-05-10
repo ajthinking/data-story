@@ -25,6 +25,11 @@ export type DataStoryObservers = {
   onDataChange: NotifyObserversCallback,
 }
 
+export type ObserverMap = Map<string, {
+  inputObservers: Array<InputObserveConfig & {observerId?: string}>,
+  onDataChange: NotifyObserversCallback,
+}>
+
 type ClientOptions = {
   setAvailableNodes: (nodes: NodeDescription[]) => void,
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void,

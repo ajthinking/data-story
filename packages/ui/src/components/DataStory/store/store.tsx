@@ -17,12 +17,10 @@ import {
 import { SocketClient } from '../clients/SocketClient';
 import {
   createDataStoryId,
-  Diagram, InputObserveConfig,
-  InputObserver,
+  Diagram,
   LinkGuesser,
   Node,
   NodeDescription,
-  NotifyObserversCallback,
   Param
 } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
@@ -34,7 +32,8 @@ import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
-import { ServerClientObservationConfig, StoreInitOptions, StoreInitServer, DataStoryObservers } from '../types';
+import { createObservers } from './createObservers';
+import { DataStoryObservers, ObserverMap, StoreInitOptions, StoreInitServer } from '../types';
 
 export type StoreSchema = {
   /** The main reactflow instance */
@@ -84,10 +83,7 @@ export type StoreSchema = {
   setOpenNodeModalId: (id: string | null) => void;
 
   /** observerMap are used to monitor data changes in the node */
-  observerMap: Map<string, {
-    inputObservers: Array<InputObserveConfig & {observerId?: string}>,
-    onDataChange: NotifyObserversCallback,
-  }>;
+  observerMap: ObserverMap;
   setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 
@@ -242,27 +238,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   onRun: () => {
-    const newInputObservers: InputObserver[] = Array.from(get().observerMap.entries()).map(([key, observer]) => {
-      return observer.inputObservers.map((inputObserver) => {
-        return {
-          ...inputObserver,
-          observerId: key,
-        }
-      });
-    }).flat();
-
-    const observers: ServerClientObservationConfig = {
-      inputObservers: newInputObservers,
-      onDataChange: (items, inputObservers) => {
-        const observerMap = get().observerMap;
-        inputObservers.forEach((inputObserver) => {
-          const observer = observerMap.get(inputObserver!.observerId);
-          if (observer) {
-            observer.onDataChange(items, inputObserver);
-          }
-        });
-      }
-    };
+    const observers = createObservers(get().observerMap);
 
     get().server!.run(
       get().toDiagram(),
