@@ -6,6 +6,7 @@ import { Node } from './types/Node'
 import { ItemValue } from './types/ItemValue'
 import { PortName } from './types/Port'
 import { InputObserverController } from './InputObserverController';
+import { UnfoldedDiagram } from './UnfoldedDiagram'
 
 export type PortLinkMap = Record<PortName, LinkId[]>
 
@@ -14,7 +15,7 @@ export class InputDevice {
     // The node that is using this input device
     private node: Node,
     // The node topology
-    private diagram: Diagram,
+    private unfoldedDiagram: UnfoldedDiagram,
     // Reference to the current execution state
     private memory: ExecutionMemory,
     protected readonly inputObserverController?: InputObserverController,
@@ -33,7 +34,7 @@ export class InputDevice {
   pullFrom(name: string, count: number = Infinity): ItemWithParams[] {
     let remaining = count
     const pulled: ItemValue[] = []
-    const links = this.diagram.linksAtInput(this.node, name)
+    const links = this.unfoldedDiagram.diagram.linksAtInput(this.node, name)
 
     for(const link of links) {
       const batch = this.memory.pullLinkItems(link.id, remaining)
@@ -49,13 +50,21 @@ export class InputDevice {
     }, pulled);
 
     // Enhance ItemValue to ItemWithParams
-    return pulled.map(item => new ItemWithParams(item, this.node.params, this.diagram.params));
+    return pulled.map(item => new ItemWithParams(
+      item,
+      this.node.params,
+      this.globalParamsForNode()
+    ));
   }
 
   pullNew(template: ItemValue = {}): ItemWithParams[] {
     const item = structuredClone(template)
 
-    return [new ItemWithParams(item, this.node.params, this.diagram.params)]
+    return [new ItemWithParams(
+      item,
+      this.node.params,
+      this.globalParamsForNode()
+    )]
   }
 
   getPortNames(): string[] {
@@ -69,7 +78,7 @@ export class InputDevice {
   haveItemsAtInput(name: string, minimum?: number): boolean {
     const port = this.node.inputs.find(input => input.name === name)!
 
-    const links = this.diagram.linksAtInputPortId(port.id)
+    const links = this.unfoldedDiagram.diagram.linksAtInputPortId(port.id)
 
     const requiredItems = minimum || 1
 
@@ -82,11 +91,11 @@ export class InputDevice {
 
   haveAllItemsAtInput(name: string): boolean {
     const port = this.node.inputs.find(input => input.name === name)!
-    const links = this.diagram.linksAtInputPortId(port.id)
+    const links = this.unfoldedDiagram.diagram.linksAtInputPortId(port.id)
 
     for(const link of links) {
       const sourcePort = link.sourcePortId
-      const sourceNode = this.diagram.nodeWithOutputPortId(sourcePort)!
+      const sourceNode = this.unfoldedDiagram.diagram.nodeWithOutputPortId(sourcePort)!
       const sourceStatus = this.memory.getNodeStatus(sourceNode.id)
 
       if(sourceStatus !== 'COMPLETE') return false
@@ -111,10 +120,12 @@ export class InputDevice {
     return false
   }
 
-  /**
-   * @visibleForTesting
-   */
   setItemsAt(linkId: LinkId, items: ItemValue[]) {
     this.memory.setLinkItems(linkId, items)
+  }
+
+  protected globalParamsForNode() {
+    return this.unfoldedDiagram.unfoldedGlobalParams[this.node.id]
+      ?? this.unfoldedDiagram.diagram.params
   }
 }

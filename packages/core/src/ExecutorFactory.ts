@@ -18,13 +18,15 @@ export const ExecutorFactory = {
     storage: Storage;
     inputObserverController?: InputObserverController;
   }) {
-    const unfolded = UnfoldedDiagramFactory.create(diagram, registry.nestedNodes)
+    const unfolded = UnfoldedDiagramFactory.create(
+      diagram,
+      registry.nestedNodes
+    )
 
     const memory = new ExecutionMemoryFactory(
-      unfolded.diagram,
+      unfolded,
       registry,
       storage,
-      unfolded.unfoldedGlobalParams,
       inputObserverController
     ).create()
 
