@@ -21,7 +21,6 @@ import {
 import { expectDone } from './testSteps/expectDone';
 import { ExecutionMemory } from '../../ExecutionMemory';
 import { InMemoryStorage } from '../../InMemoryStorage';
-import { InputDeviceInterface } from '../../types/InputDeviceInterface';
 import { InputDevice } from '../../InputDevice';
 import { ComputerConfig } from '../../types/ComputerConfig';
 import { ComputerFactory } from '../../ComputerFactory';
@@ -63,7 +62,7 @@ export class ComputerTester {
     [key: string]: ItemValue[]
   } = {}
   runner: AsyncGenerator | null = null
-  inputDevice: InputDeviceInterface | null = null
+  inputDevice: InputDevice | null = null
   outputDevice: OutputDevice | null = null
   hooksDevice: { register: (hook: Hook) => void} = { register: vi.fn() }
   memory: ExecutionMemory | null = null

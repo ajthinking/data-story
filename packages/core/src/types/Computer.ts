@@ -3,8 +3,6 @@ export type ReturnResult = void | never
 export type NextArgument = void
 
 import { HooksDevice } from './HooksDevice'
-import { InputDeviceInterface } from './InputDeviceInterface'
-import { OutputDeviceInterface } from '../OutputDevice'
 import { Param } from '../Param'
 import { ParamsDevice } from './ParamsDevice'
 import { AbstractPort, Port } from './Port'
@@ -12,10 +10,12 @@ import { Storage } from './Storage'
 import { Diagram } from '../Diagram'
 import { Executor } from '../Executor'
 import { Node } from './Node'
+import { InputDevice } from '../InputDevice'
+import { OutputDevice } from '../OutputDevice'
 
 export type RunArgs = {
-  input: InputDeviceInterface,
-  output: OutputDeviceInterface,
+  input: InputDevice,
+  output: OutputDevice,
   params: ParamsDevice,
   storage?: Storage,
   hooks: HooksDevice,
@@ -35,7 +35,7 @@ export interface Computer {
   run: (args: RunArgs) => AsyncGenerator<NextResult, ReturnResult, NextArgument>
   canRun?: (options: {
     isAvailable: () => boolean,
-    input: InputDeviceInterface,
+    input: InputDevice,
     params: Record<string, Param>
   }) => boolean
 }

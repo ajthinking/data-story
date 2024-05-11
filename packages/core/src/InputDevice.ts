@@ -3,14 +3,13 @@ import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams } from './ItemWithParams'
 import { Diagram } from './Diagram'
 import { Node } from './types/Node'
-import { InputDeviceInterface } from './types/InputDeviceInterface'
 import { ItemValue } from './types/ItemValue'
 import { PortName } from './types/Port'
 import { InputObserverController } from './InputObserverController';
 
 export type PortLinkMap = Record<PortName, LinkId[]>
 
-export class InputDevice implements InputDeviceInterface {
+export class InputDevice {
   constructor(
     // The node that is using this input device
     private node: Node,
