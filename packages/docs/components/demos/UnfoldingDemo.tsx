@@ -13,10 +13,9 @@ import {
 export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
   const { Create, Table, Input, Map, Output, ConsoleLog } = nodes;
 
-  const app = new Application();
-  app.register(coreNodeProvider);
-
+  // *************************************
   // Make a nested node
+  // *************************************
   const nestedNode = new DiagramBuilder()
     .withParams([
       str({
@@ -32,14 +31,17 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
     .add(nodes.Output, { port_name: 'stamped'})
     .get()
 
-  // Hack to test if this really works
-  const param = nestedNode.params.find(param => param.name === 'stamp') as StringableParam;
-  param.interpolate = true;
-
+  // *************************************
+  // Make app, register nested node
+  // *************************************
+  const app = new Application();
+  app.register(coreNodeProvider);
   app.addNestedNode('FooBarStamper', nestedNode);
-
   app.boot();
 
+  // *************************************
+  // Build main diagram, use the nested node
+  // *************************************
   const diagram = new DiagramBuilder()
     .add({ ...Create, label: 'Users'}, { data: JSON.stringify([
       { name: 'Alice', age: 23 },
@@ -47,10 +49,12 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
       { name: 'Charlie', age: 45 },
     ]) })
     .addNestedNode('FooBarStamper', nestedNode)
-    // .linkByLabel('Create.output', 'NestedNode.acceptable')
     .add(Table)
     .get()
 
+  // *************************************
+  // Unfold diagram (for visualization purposes)
+  // *************************************
   const nestedNodes = {
     'FooBarStamper': nestedNode,
   }
@@ -60,11 +64,14 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
     nestedNodes
   ).unfold();
 
+  // *************************************
+  // Render requested part
+  // *************************************
   return (
-    <div className="w-full h-1/2">
+    <div className="w-full h-1/4">
       {part === 'MAIN' && <DataStory
         server={{ type: 'JS', app }}
-        callback={({ run }) => run()}
+        callback={({ run }) => run()} // TODO this does not work?!
         initDiagram={diagram}
       />}
       {part === 'NESTED_NODE' && <DataStory

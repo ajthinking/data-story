@@ -37,7 +37,7 @@ import { DataStoryObservers, ObserverMap, StoreInitOptions, StoreInitServer } fr
 
 export type StoreSchema = {
   /** The main reactflow instance */
-  rfInstance: ReactFlowInstance|undefined;
+  rfInstance: ReactFlowInstance | undefined;
   toDiagram: () => Diagram;
 
   /** Addable Nodes */
@@ -67,7 +67,7 @@ export type StoreSchema = {
 
   /** The Server and its config */
   serverConfig: ServerConfig;
-  server: null|ServerClient;
+  server: null | ServerClient;
   initServer: StoreInitServer;
 
   /** When DataStory component initializes */
@@ -79,8 +79,8 @@ export type StoreSchema = {
   onRun: () => void;
 
   /** Modals */
-  openNodeModalId: string|null;
-  setOpenNodeModalId: (id: string|null) => void;
+  openNodeModalId: string | null;
+  setOpenNodeModalId: (id: string | null) => void;
 
   /** observerMap are used to monitor data changes in the node */
   observerMap: ObserverMap;
@@ -220,8 +220,9 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     if (options.callback) {
       const run = () => {
         get().server?.run(
-          // TODO it seems this does not await setNodes/setEdges?
           get().toDiagram(),
+          // TODO this does not work?!
+          createObservers(get().observerMap)
         )
       }
 
@@ -285,7 +286,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     get().setEdges(updatedEdges);
   },
-  setOpenNodeModalId: (id: string|null) => {
+  setOpenNodeModalId: (id: string | null) => {
     set({ openNodeModalId: id })
   },
   traverseNodes: (direction: Direction) => {

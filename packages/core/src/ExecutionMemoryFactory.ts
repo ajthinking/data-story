@@ -7,6 +7,7 @@ import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
 import { Param } from './Param'
 import { Registry } from './Registry'
+import { UnfoldedDiagram } from './UnfoldedDiagram'
 import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
@@ -15,10 +16,9 @@ import { Storage } from './types/Storage'
 
 export class ExecutionMemoryFactory {
   constructor(
-    public diagram: Diagram,
+    public unfoldedDiagram: UnfoldedDiagram,
     public registry: Registry,
     public storage: Storage,
-    public unfoldedGlobalParams: Record<NodeId, Param[]>,
     public inputObserverController?: InputObserverController,
   ) {}
 
@@ -34,13 +34,13 @@ export class ExecutionMemoryFactory {
     })
 
     // Configure the memory's initial state
-    for(const link of this.diagram.links) {
+    for(const link of this.unfoldedDiagram.diagram.links) {
       // Set all links to be empty
       memory.setLinkItems(link.id, [])
       memory.setLinkCount(link.id, 0)
     }
 
-    for(const node of this.diagram.nodes) {
+    for(const node of this.unfoldedDiagram.diagram.nodes) {
       // Set all nodes to available
       memory.setNodeStatus(node.id, 'AVAILABLE')
 
@@ -86,7 +86,7 @@ export class ExecutionMemoryFactory {
   protected makeInputDevice(node: Node, memory: ExecutionMemory) {
     return new InputDevice(
       node,
-      this.diagram,
+      this.unfoldedDiagram,
       memory,
       this.inputObserverController,
     )
@@ -96,7 +96,7 @@ export class ExecutionMemoryFactory {
     let map: PortLinkMap = {}
 
     for(const output of node.outputs) {
-      const connectedLinks = this.diagram.linksAtOutputPortId(output.id)
+      const connectedLinks = this.unfoldedDiagram.diagram.linksAtOutputPortId(output.id)
       map[output.name] = connectedLinks.map(link => link.id);
     }
 
@@ -112,7 +112,8 @@ export class ExecutionMemoryFactory {
         try {
           const emptyItem = {}
           const evaluator = new ParamEvaluator();
-          const globalParams = this.unfoldedGlobalParams[node.id] ?? this.diagram.params;
+          const globalParams = this.unfoldedDiagram.unfoldedGlobalParams[node.id]
+            ?? this.unfoldedDiagram.diagram.params;
 
           return evaluator.evaluate(emptyItem, param, globalParams);
         } catch(error) {

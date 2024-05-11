@@ -11,14 +11,7 @@ export type OutputTree = Record<PortId, LinkItems>
 
 export type PortLinkMap = Record<PortName, LinkId[]>
 
-export interface OutputDeviceInterface {
-  getPortNames(): string[]
-  push(items: ItemValue[]): void
-  pushTo(name: string, items: ItemValue[]): void
-  itemsAt?(name: string): ItemValue
-}
-
-export class OutputDevice implements OutputDeviceInterface {
+export class OutputDevice {
   constructor(
     private portLinkMap: PortLinkMap = {},
     private memory: ExecutionMemory,

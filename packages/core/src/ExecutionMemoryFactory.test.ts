@@ -3,6 +3,7 @@ import { DiagramBuilder } from './DiagramBuilder'
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { InMemoryStorage } from './InMemoryStorage';
 import { Registry } from './Registry';
+import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
 import { ConsoleLog, Create } from './computers'
 
 describe('create', () => {
@@ -12,6 +13,8 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
+    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+
     const registry = new Registry({
       Create: new ComputerFactory().fromComputerConfig(Create),
       ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
@@ -19,7 +22,7 @@ describe('create', () => {
 
     const storage = new InMemoryStorage();
 
-    const factory = new ExecutionMemoryFactory(diagram, registry, storage, {});
+    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry, storage);
     const memory = factory.create();
 
     const [ link ] = diagram.links
@@ -34,6 +37,8 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
+    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+
     const registry = new Registry({
       Create: new ComputerFactory().fromComputerConfig(Create),
       ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
@@ -41,7 +46,7 @@ describe('create', () => {
 
     const storage = new InMemoryStorage();
 
-    const factory = new ExecutionMemoryFactory(diagram, registry, storage, {});
+    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry, storage);
     const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
@@ -55,6 +60,8 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
+    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+
     const registry = new Registry({
       Create: new ComputerFactory().fromComputerConfig(Create),
       ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
@@ -62,7 +69,7 @@ describe('create', () => {
 
     const storage = new InMemoryStorage();
 
-    const factory = new ExecutionMemoryFactory(diagram, registry, storage, {});
+    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry, storage);
     const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
@@ -80,6 +87,8 @@ describe('create', () => {
       .add(ConsoleLog)
       .get();
 
+    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+
     const registry = new Registry({
       Create: new ComputerFactory().fromComputerConfig(Create),
       ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
@@ -87,7 +96,7 @@ describe('create', () => {
 
     const storage = new InMemoryStorage();
 
-    const factory = new ExecutionMemoryFactory(diagram, registry, storage, {});
+    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry, storage);
     const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
