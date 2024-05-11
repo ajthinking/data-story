@@ -57,7 +57,6 @@
     "@stylistic/eslint-plugin": "^0.1.2",
     "@types/mocha": "^10.0.6",
     "@typescript-eslint/parser": "^6.9.0",
-    "@vitest/coverage-c8": "^0.29.7",
     "cypress": "^13.6.1",
     "eslint": "^8.52.0",
     "eslint-plugin-import": "^2.25.0",
