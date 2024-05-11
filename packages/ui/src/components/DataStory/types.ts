@@ -1,14 +1,46 @@
-import { ServerConfig } from './clients/ServerConfig';
-import { Diagram, Param, RepeatableParam, type InputObserver, type NotifyObserversCallback } from '@data-story/core';
+import { ServerConfig, WebSocketServerConfig } from './clients/ServerConfig';
+import {
+  Diagram,
+  Param,
+  RepeatableParam,
+  type InputObserver,
+  type NotifyObserversCallback,
+  type ReportCallback,
+  type InputObserveConfig,
+  Application, NodeDescription
+} from '@data-story/core';
 import { UseFormReturn } from 'react-hook-form';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import type { ReactFlowInstance } from 'reactflow';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
-export type DataStoryObservers = {
+export type ServerClientObservationConfig = {
   inputObservers: InputObserver[],
-  watchDataChange: NotifyObserversCallback,
+  onDataChange: ReportCallback,
+}
+
+export type DataStoryObservers = {
+  inputObservers: Array<InputObserveConfig & {observerId?: string}>,
+  onDataChange: NotifyObserversCallback,
+}
+
+export type ObserverMap = Map<string, {
+  inputObservers: Array<InputObserveConfig & {observerId?: string}>,
+  onDataChange: NotifyObserversCallback,
+}>
+
+type ClientOptions = {
+  setAvailableNodes: (nodes: NodeDescription[]) => void,
+  updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+};
+
+export type JSClientOptions = ClientOptions & {
+  app: Application,
+}
+
+export type SocketClientOptions = ClientOptions & {
+  serverConfig: WebSocketServerConfig,
 }
 
 export type DataStoryProps = {
@@ -25,10 +57,9 @@ export type StoreInitOptions = {
   server?: ServerConfig,
   initDiagram?: Diagram,
   callback?: DataStoryCallback,
-  observers?: DataStoryObservers,
 }
 
-export type StoreInitServer = (serverConfig: ServerConfig, observers?: DataStoryObservers)  => void;
+export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig)  => void;
 
 export type FormCommonProps = {
   form: UseFormReturn<{

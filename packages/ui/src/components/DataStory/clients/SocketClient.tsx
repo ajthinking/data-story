@@ -1,25 +1,30 @@
-import { createDataStoryId, Diagram, Hook, NodeDescription } from '@data-story/core';
+import { createDataStoryId, Diagram, Hook } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { catchError, filter, firstValueFrom, map, Observable, retry, timeout } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { ItemsOptions, ItemsResponse } from './ItemsApi';
-import { WebSocketServerConfig } from './ServerConfig';
-import { DataStoryObservers } from '../types';
+import { ServerClientObservationConfig, SocketClientOptions } from '../types';
+import { clientBuffer } from './ClientBuffer';
 
 export class SocketClient implements ServerClient {
   protected socket$: WebSocketSubject<any>;
   protected wsObservable: Observable<any>;
   protected maxReconnectTries = 100;
   protected reconnectTimeoutMs = 1000;
+  private setAvailableNodes: SocketClientOptions['setAvailableNodes'];
+  private updateEdgeCounts: SocketClientOptions['updateEdgeCounts'];
+  private observers?: ServerClientObservationConfig;
 
-  constructor(
-    protected setAvailableNodes: (nodes: NodeDescription[]) => void,
-    protected updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    protected serverConfig: WebSocketServerConfig,
-    protected observers?: DataStoryObservers,
-  ) {
+  constructor({
+    setAvailableNodes,
+    updateEdgeCounts,
+    serverConfig,
+  }:SocketClientOptions) {
+    this.setAvailableNodes = setAvailableNodes;
+    this.updateEdgeCounts = updateEdgeCounts;
+
     this.socket$ = webSocket({
       url: serverConfig.url,
       openObserver: {
@@ -82,13 +87,24 @@ export class SocketClient implements ServerClient {
       // Called if at any point WebSocket API signals some kind of error
       error: (err) => console.log('WebSocket error: ', err),
     });
+
+    this.wsObservable.pipe(
+      filter(data => data.type === 'NotifyObservers'),
+      clientBuffer()
+    ).subscribe((data) => {
+      this?.observers?.onDataChange(
+        data.items,
+        data.inputObservers,
+      );
+    });
   }
 
-  run(diagram: Diagram) {
+  run(diagram: Diagram, observers?: ServerClientObservationConfig) {
+    this.observers = observers;
     const message = {
       type: 'run',
       diagram,
-      inputObserver: this?.observers?.inputObservers || [],
+      inputObservers: observers?.inputObservers || [],
     };
 
     this.socketSendMsg(message);
@@ -165,16 +181,7 @@ export class SocketClient implements ServerClient {
       return
     }
 
-    if(data.type === 'NotifyObservers') {
-      this.observers?.watchDataChange(
-        data.inputObserver,
-        data.items
-      );
-
-      return;
-    }
-
-    if (data.type === 'UpdateStorage' ) {
+    if (data.type === 'UpdateStorage' || data.type === 'NotifyObservers') {
       return;
     }
 

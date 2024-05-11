@@ -1,4 +1,4 @@
 import type { ItemValue } from './ItemValue';
-import type { InputObserver } from './InputObserver';
+import { InputObserver } from './InputObserver';
 
-export type NotifyObserversCallback = (inputObserver: InputObserver, items: ItemValue[]) => void;
+export type NotifyObserversCallback = (items: ItemValue[], inputObserver: InputObserver) => void;

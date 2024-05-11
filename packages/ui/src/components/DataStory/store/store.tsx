@@ -15,7 +15,14 @@ import {
 } from 'reactflow';
 
 import { SocketClient } from '../clients/SocketClient';
-import { Diagram, LinkGuesser, Node, NodeDescription, Param, createDataStoryId } from '@data-story/core';
+import {
+  createDataStoryId,
+  Diagram,
+  LinkGuesser,
+  Node,
+  NodeDescription,
+  Param
+} from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
@@ -25,11 +32,12 @@ import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
-import { DataStoryObservers, StoreInitOptions, StoreInitServer } from '../types';
+import { createObservers } from './createObservers';
+import { DataStoryObservers, ObserverMap, StoreInitOptions, StoreInitServer } from '../types';
 
 export type StoreSchema = {
   /** The main reactflow instance */
-  rfInstance: ReactFlowInstance | undefined;
+  rfInstance: ReactFlowInstance|undefined;
   toDiagram: () => Diagram;
 
   /** Addable Nodes */
@@ -59,7 +67,7 @@ export type StoreSchema = {
 
   /** The Server and its config */
   serverConfig: ServerConfig;
-  server: null | ServerClient;
+  server: null|ServerClient;
   initServer: StoreInitServer;
 
   /** When DataStory component initializes */
@@ -71,8 +79,12 @@ export type StoreSchema = {
   onRun: () => void;
 
   /** Modals */
-  openNodeModalId: string | null;
-  setOpenNodeModalId: (id: string | null) => void;
+  openNodeModalId: string|null;
+  setOpenNodeModalId: (id: string|null) => void;
+
+  /** observerMap are used to monitor data changes in the node */
+  observerMap: ObserverMap;
+  setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -85,6 +97,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   server: null,
   availableNodes: [],
   openNodeModalId: null,
+  observerMap: new Map(),
 
   // METHODS
   toDiagram: () => {
@@ -112,7 +125,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   connect: (connection: Connection) => {
     // Assume we have a full connection
-    if(!connection.sourceHandle || !connection.targetHandle) return
+    if (!connection.sourceHandle || !connection.targetHandle) return
 
     // Operate via the diagram!
     const diagram = get().toDiagram()
@@ -153,7 +166,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     const link = new LinkGuesser(diagram).guess(node)
     diagram.add(node)
-    if(link) diagram.connect(link)
+    if (link) diagram.connect(link)
 
     get().updateDiagram(diagram)
 
@@ -200,7 +213,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     })
 
     set({ rfInstance: options.rfInstance })
-    get().initServer(get().serverConfig, options.observers)
+    get().initServer(get().serverConfig)
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
@@ -208,7 +221,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       const run = () => {
         get().server?.run(
           // TODO it seems this does not await setNodes/setEdges?
-          get().toDiagram()
+          get().toDiagram(),
         )
       }
 
@@ -225,17 +238,19 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   onRun: () => {
+    const observers = createObservers(get().observerMap);
+
     get().server!.run(
-      get().toDiagram()
+      get().toDiagram(),
+      observers,
     )
   },
-  initServer: (serverConfig: ServerConfig, observers?: DataStoryObservers) => {
+  initServer: (serverConfig: ServerConfig) => {
     if (serverConfig.type === 'JS') {
       const server = new JsClient({
         setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
         app: serverConfig.app,
-        observers,
       })
 
       set({ server })
@@ -243,12 +258,11 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     }
 
     if (serverConfig.type === 'SOCKET') {
-      const server = new SocketClient(
-        get().setAvailableNodes,
-        get().updateEdgeCounts,
-        serverConfig as WebSocketServerConfig,
-        observers,
-      )
+      const server = new SocketClient({
+        setAvailableNodes: get().setAvailableNodes,
+        updateEdgeCounts: get().updateEdgeCounts,
+        serverConfig: serverConfig as WebSocketServerConfig,
+      })
 
       set({ server })
       server.init()
@@ -271,7 +285,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     get().setEdges(updatedEdges);
   },
-  setOpenNodeModalId: (id: string | null) => {
+  setOpenNodeModalId: (id: string|null) => {
     set({ openNodeModalId: id })
   },
   traverseNodes: (direction: Direction) => {
@@ -285,6 +299,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       ]
     });
   },
+
+  setObservers(observerId: string, observers?: DataStoryObservers) {
+    get().observerMap.set(observerId, (observers || {
+      inputObservers: [], onDataChange: () => {}
+    }) as DataStoryObservers);
+  },
+
 }));
 
 export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);

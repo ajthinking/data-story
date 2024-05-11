@@ -1,53 +1,44 @@
 import {
-  Application,
   Diagram,
   Executor,
   ExecutorFactory,
-  NodeDescription,
   InMemoryStorage,
+  type InputObserver,
   InputObserverController,
   type ItemValue,
-  type InputObserver,
-  type NotifyObserversCallback,
 } from '@data-story/core';
 import { ServerClient } from './ServerClient';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { ItemsOptions } from './ItemsApi';
-import { DataStoryObservers } from '../types';
+import type { JSClientOptions, ServerClientObservationConfig } from '../types';
+import { Subject } from 'rxjs';
+import { clientBuffer } from './ClientBuffer';
 
 export class JsClient implements ServerClient {
-  private setAvailableNodes: (nodes: NodeDescription[]) => void;
-  private updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  private app: Application;
+  private setAvailableNodes: JSClientOptions['setAvailableNodes'];
+  private updateEdgeCounts: JSClientOptions['updateEdgeCounts'];
+  private app: JSClientOptions['app'];
   private executor: Executor | undefined
-  private observers?: DataStoryObservers;
 
   constructor({
     setAvailableNodes,
     updateEdgeCounts,
     app,
-    observers
-  }: {
-    setAvailableNodes: (nodes: NodeDescription[]) => void,
-    updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-    app: Application,
-    observers?: DataStoryObservers,
-  }) {
+  }: JSClientOptions) {
     this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;
-    this.observers = observers;
   }
 
   itemsApi = () => {
     return {
-      getItems: async ({
+      getItems: async({
         atNodeId,
         limit = 10,
         offset = 0,
       }: ItemsOptions) => {
-        if(!this.executor) return { items: [], total: 0 };
+        if (!this.executor) return { items: [], total: 0 };
 
         const items = this.executor.storage.itemsMap.get(atNodeId) || [];
 
@@ -59,35 +50,42 @@ export class JsClient implements ServerClient {
     }
   };
 
-  init () {
+  init() {
     this.setAvailableNodes(this.app.descriptions())
 
     console.log('Connected to server: JS')
   }
 
-  run(diagram: Diagram) {
+  run(diagram: Diagram, observers?: ServerClientObservationConfig) {
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
 
     const storage = new InMemoryStorage();
-    const sendMsg: NotifyObserversCallback = ( inputObserver: InputObserver, items: ItemValue[]) => {
-      this.observers?.watchDataChange(
-        inputObserver,
-        items
+    const notifyObservers$: Subject<{items: ItemValue[], inputObservers: InputObserver[]}> = new Subject();
+
+    notifyObservers$.pipe(
+      clientBuffer()
+    ).subscribe((data) => {
+      observers?.onDataChange(
+        data.items,
+        data.inputObservers
       )
-    }
+    });
 
     const inputObserverController = new InputObserverController(
-      this.observers?.inputObservers || [],
-      sendMsg
+      observers?.inputObservers || [],
+      (items: ItemValue[], inputObservers: InputObserver[]) => {
+        notifyObservers$.next({ items, inputObservers });
+      }
     );
 
     this.executor = ExecutorFactory.create({
       diagram,
       registry: this.app.registry,
       storage,
-      inputObserverController })
+      inputObserverController
+    })
 
     const execution = this.executor.execute();
 
@@ -98,12 +96,12 @@ export class JsClient implements ServerClient {
           if (!done) {
             this.updateEdgeCounts(update.counts)
             for(const hook of update.hooks) {
-              if(hook.type === 'CONSOLE_LOG') {
+              if (hook.type === 'CONSOLE_LOG') {
                 console.log(...hook.args)
               } else {
                 const userHook = this.app.hooks.get(hook.type)
 
-                if(userHook) {
+                if (userHook) {
                   userHook(...hook.args)
                 }
               }
