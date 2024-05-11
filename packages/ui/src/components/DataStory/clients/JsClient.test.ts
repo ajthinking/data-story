@@ -42,7 +42,7 @@ describe('JsClient', () => {
       updateEdgeCounts: updateEdgeCountsMock,
       app: appMock
     });
-    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {}) as any;
   });
 
   afterEach(() => {
