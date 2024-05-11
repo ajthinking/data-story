@@ -30,6 +30,7 @@ import { Param } from '../../Param';
 import { toLookup } from '../../utils/toLookup';
 import { ParamEvaluator } from '../../ItemWithParams/ParamEvaluator';
 import { merge } from '../../utils/merge';
+import { UnfoldedDiagramFactory } from '../../UnfoldedDiagramFactory';
 
 export const when = (computerConfig: ComputerConfig) => {
   return new ComputerTester(computerConfig)
@@ -233,12 +234,18 @@ export class ComputerTester {
   }
 
   protected makeInputDevice() {
+    const diagramClone = this.diagram!.clone()
+    const unfoldedDiagram = new UnfoldedDiagramFactory(
+      diagramClone,
+      {}
+    ).unfold()
+
     return new InputDevice(
       {
         ...this.node!,
         params: this.makeParams()
       },
-      this.diagram!,
+      unfoldedDiagram,
       this.memory!
     )
   }

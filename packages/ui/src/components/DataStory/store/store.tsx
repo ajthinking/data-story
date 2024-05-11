@@ -220,8 +220,9 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     if (options.callback) {
       const run = () => {
         get().server?.run(
-          // TODO it seems this does not await setNodes/setEdges?
           get().toDiagram(),
+          // TODO this does not work?!
+          createObservers(get().observerMap)
         )
       }
 

@@ -71,7 +71,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
     <div className="w-full h-1/4">
       {part === 'MAIN' && <DataStory
         server={{ type: 'JS', app }}
-        callback={({ run }) => run()}
+        callback={({ run }) => run()} // TODO this does not work?!
         initDiagram={diagram}
       />}
       {part === 'NESTED_NODE' && <DataStory
