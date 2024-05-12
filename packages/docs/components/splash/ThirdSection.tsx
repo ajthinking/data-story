@@ -7,7 +7,7 @@ export default () => {
             className="mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:pl-8 flex flex-col lg:flex-row">
             <div className="sm:text-center lg:text-left">
               <div className="select-none text-xl tracking-tight font-extrabold text-gray-50 sm:text-2xl md:text-2xl">
-                <div className="text-gray-50">ReactJS | NodeJS | Browser | Desktop | Headless</div>
+                <div className="text-gray-50">ReactJS | NodeJS | Browser | Headless</div>
               </div>
               <div>
                 <div className="mt-5 sm:mt-8 flex sm:justify-center lg:justify-start">
