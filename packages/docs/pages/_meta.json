@@ -37,7 +37,6 @@
   },  
   "getting-started": "Getting Started",  
   "customize": "Customize",
-  "contributing": "Contributing",
   "playground": {
     "title": "Playground",
     "display": "hidden",
@@ -63,5 +62,9 @@
     "title": "Docs",
     "display": "hidden",
     "type": "doc"
-  }  
+  },
+  "Visualize": "Visualize",
+  "Unfolding": "Unfolding",
+  "Observers": "Observers",
+  "contributing": "Contributing"
 }

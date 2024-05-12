@@ -65,7 +65,7 @@ export class JsClient implements ServerClient {
     const notifyObservers$: Subject<{items: ItemValue[], inputObservers: InputObserver[]}> = new Subject();
 
     notifyObservers$.pipe(
-      clientBuffer()
+      clientBuffer(50)
     ).subscribe((data) => {
       observers?.onDataChange(
         data.items,
