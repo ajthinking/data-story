@@ -38,11 +38,22 @@ const getCoreVersion = () => {
 }
 const saveDiagram = (key: string, diagram: Diagram) => {
   try {
+    // There's no need to save the diagram's `link label` and `link labelBgStyle`
+    const links = diagram.links.map(link => {
+      const { label, labelBgStyle, ...rest } = link;
+      return rest;
+    });
+
+    const savedDiagram = {
+      ...diagram,
+      links
+    };
+
     const diagramJSON = JSON.stringify({
       type: 'save',
       version: getCoreVersion(),
       name: key,
-      diagram
+      diagram: savedDiagram
     } as LocalDiagram);
 
     localStorage?.setItem(key, diagramJSON);
