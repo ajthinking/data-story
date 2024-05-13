@@ -46,6 +46,9 @@ export type SocketClientOptions = ClientOptions & {
 export type DataStoryProps = {
   server?: ServerConfig
   initDiagram?: Diagram
+  /**
+   * @deprecated Use `onInitialize` instead
+   */
   callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
