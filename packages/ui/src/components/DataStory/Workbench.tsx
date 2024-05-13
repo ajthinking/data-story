@@ -1,11 +1,6 @@
 import { DataStoryControls } from './dataStoryControls';
-import { useId, useState, useEffect } from 'react';
-import ReactFlow, {
-  Background,
-  BackgroundVariant,
-  ReactFlowInstance,
-  ReactFlowProvider,
-} from 'reactflow';
+import { useEffect, useId, useState } from 'react';
+import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider, } from 'reactflow';
 import NodeComponent from '../Node/NodeComponent';
 import { RunModal } from './modals/runModal/runModal';
 import { AddNodeModal } from './modals/addNodeModal';
@@ -34,6 +29,7 @@ export const Workbench = ({
   hideToolbar = false,
   slotComponent,
   observers,
+  onInitialize,
 }: DataStoryProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -45,6 +41,7 @@ export const Workbench = ({
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
     traverseNodes: state.traverseNodes,
+    onRun: state.onRun,
     setObservers: state.setObservers,
   });
 
@@ -58,16 +55,26 @@ export const Workbench = ({
     openNodeModalId,
     setOpenNodeModalId,
     traverseNodes,
-    setObservers } = useStore(selector, shallow);
+    onRun,
+    setObservers
+  } = useStore(selector, shallow);
 
   const id = useId()
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [showRunModal, setShowRunModal] = useState(false);
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
+  const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
 
   useEffect(() => {
     setObservers('workbench', observers);
   }, [observers, setObservers]);
+
+  useEffect(() => {
+    if (onInitialize && onRun && isExecutePostRenderEffect) {
+      onInitialize({ run: onRun });
+      setIsExecutePostRenderEffect(false);
+    }
+  }, [isExecutePostRenderEffect, onRun, onInitialize]);
 
   useHotkeys({
     nodes,
@@ -100,11 +107,12 @@ export const Workbench = ({
               initDiagram,
               callback,
             });
+            setIsExecutePostRenderEffect(true);
           }}
           minZoom={0.25}
           maxZoom={8}
           fitView={true}
-          fitViewOptions = {{
+          fitViewOptions={{
             padding: 0.25,
           }}
         >
@@ -114,9 +122,9 @@ export const Workbench = ({
             setShowRunModal={setShowRunModal}
             setShowAddNodeModal={setShowAddNodeModal}
           />
-          <Background color='#E7E7E7' variant={BackgroundVariant.Lines} />
+          <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
         </ReactFlow>
-        <NodeSettingsModal showModal={Boolean(openNodeModalId)} />
+        <NodeSettingsModal showModal={Boolean(openNodeModalId)}/>
       </ReactFlowProvider>
 
       {/* Modals */}

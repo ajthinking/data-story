@@ -9,7 +9,8 @@ export const DataStory =  ({
   callback,
   hideToolbar = false,
   slotComponent,
-  observers
+  observers,
+  onInitialize,
 }: DataStoryProps) => {
   return <DataStoryProvider>
     <Workbench
@@ -19,6 +20,7 @@ export const DataStory =  ({
       hideToolbar={ hideToolbar }
       slotComponent={ slotComponent }
       observers={ observers }
+      onInitialize={ onInitialize }
     />
   </DataStoryProvider>;
 }

@@ -50,6 +50,7 @@ export type DataStoryProps = {
   hideToolbar?: boolean
   slotComponent?: React.ReactNode;
   observers?: DataStoryObservers;
+  onInitialize?: (options: { run: () => void }) => void;
 }
 
 export type StoreInitOptions = {
