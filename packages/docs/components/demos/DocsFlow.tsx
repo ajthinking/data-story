@@ -39,7 +39,7 @@ export default () => {
       <DataStory
         server={{ type: 'JS', app }}
         initDiagram={diagram}
-        callback={(options) => setTimeout(options.run, 100)}
+        onInitialize={(options) => options.run()}
         hideToolbar={true}
       />
     </div>

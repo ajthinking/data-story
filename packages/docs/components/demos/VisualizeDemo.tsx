@@ -92,7 +92,7 @@ export default () => {
         ],
       }} />
       <DataStory
-        callback={({ run }) => {
+        onInitialize={({ run }) => {
           setPoints([])
           run()
         }}
