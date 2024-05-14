@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
 import { ItemCollection } from './ItemCollection';
@@ -15,6 +15,8 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
+import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 
 const TRUNCATE_CELL_LENGTH = 50;
@@ -123,27 +125,65 @@ const TableNodeComponent = ({ id, data }: {
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
-  useObserverTable( { id, isDataFetched, setIsDataFetched, setItems } );
+  useObserverTable({ id, isDataFetched, setIsDataFetched, setItems });
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {
-      setItems([])
+      setItems([]);
       setIsDataFetched(false);
     }
   }, []);
 
   useDataStoryEvent(dataStoryEvent);
-  let { headers, rows } = new ItemCollection(items).toTable()
+  let { headers, rows } = new ItemCollection(items).toTable();
 
   const getTableRef = () => {
     return tableRef;
-  }
+  };
+
   const input = data.inputs[0];
 
   if (items.length === 0) {
-    headers = []
-    rows = []
+    headers = [];
+    rows = [];
   }
+
+  const columns: ColumnDef<any>[] = useMemo(
+    () =>
+      headers.map((header) => ({
+        accessorKey: header,
+        header: header,
+      })),
+    [headers]
+  );
+
+  const tableData = useMemo(
+    () =>
+      rows.map((row) => {
+        const rowData = {};
+        headers.forEach((header, index) => {
+          rowData[header] = row[index];
+        });
+        return rowData;
+      }),
+    [rows, headers]
+  );
+
+  const tableInstance = useReactTable({
+    data: tableData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const { getHeaderGroups, getRowModel } = tableInstance;
+
+  const parentRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
+
+  const rowVirtualizer = useVirtualizer({
+    count: getRowModel().rows.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 35, // 假设每行的高度为35px
+  });
 
   return (
     (
