@@ -37,6 +37,7 @@ const formatTooltipContent = (content: unknown) => {
 
 function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
   const { content = '', getTableRef } = props;
+  console.log(content, 'content');
   const [showTooltip, setShowTooltip] = useState(false);
   const cellRef = useRef<HTMLDivElement>(null);
 
@@ -92,7 +93,7 @@ function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableEleme
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="select-text overflow-visible z-50 bg-white shadow-lg p-2 rounded-md"
+        className="select-text overflow-visible z-50 bg-white shadow-lg p-2 rounded-md h-16"
       >
         {formatTooltipContent(content) as string}
       </pre>
@@ -135,7 +136,7 @@ const TableNodeComponent = ({ id, data }: {
   }, []);
 
   useDataStoryEvent(dataStoryEvent);
-  let { headers, rows } = new ItemCollection(items).toTable();
+  let { headers = [], rows = [] } = new ItemCollection(items).toTable();
 
   const getTableRef = () => {
     return tableRef;
@@ -143,12 +144,7 @@ const TableNodeComponent = ({ id, data }: {
 
   const input = data.inputs[0];
 
-  if (items.length === 0) {
-    headers = [];
-    rows = [];
-  }
-
-  const columns: ColumnDef<any>[] = useMemo(
+  const columns: ColumnDef<Record<string, unknown>>[] = useMemo(
     () =>
       headers.map((header) => ({
         accessorKey: header,
@@ -168,6 +164,7 @@ const TableNodeComponent = ({ id, data }: {
       }),
     [rows, headers]
   );
+  console.log(tableData, 'tableData');
 
   const tableInstance = useReactTable({
     data: tableData,
@@ -182,9 +179,13 @@ const TableNodeComponent = ({ id, data }: {
   const rowVirtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 35, // 假设每行的高度为35px
+    estimateSize: () => 20, // 假设每行的高度为35px
+    overscan: 5, // 预加载5行
+    // 设置 total size 默认为 20px
   });
 
+  console.log(rowVirtualizer, 'rowVirtualizer' );
+  console.log(getHeaderGroups(), 'getHeaderGroups()')
   return (
     (
       <div
@@ -213,45 +214,75 @@ const TableNodeComponent = ({ id, data }: {
             />
           </div>
         </div>
-        <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs max-h-24">
+        <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs">
           <div
             data-cy={'data-story-table'}
-            className="max-h-24 nowheel overflow-auto scrollbar rounded-sm">
-            <table ref={tableRef} className="table-auto rounded-sm">
-              <thead>
-                <tr className="bg-gray-200 space-x-8">
-                  {
-                    !isDataFetched &&
-                  <th
-                    className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
-                    Awaiting data
-                  </th>
-                  }
-                  {
-                    headers.map(header => (<th
-                      data-cy={'data-story-table-th'}
-                      className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
-                      key={header}
+            ref={parentRef}
+            className="max-h-48 h-48 nowheel overflow-auto scrollbar rounded-sm relative">
+            <table ref={tableRef} className="table-auto rounded-sm grid">
+              <thead className="grid sticky top-0 z-1">
+                {
+                  getHeaderGroups().map((headerGroup) => (
+                    <tr
+                      key={headerGroup.id}
+                      className="bg-gray-200 space-x-8"
                     >
-                      <TableNodeCell getTableRef={getTableRef} content={header}/>
-                    </th>))
-                  }
-                </tr>
+                      {
+                        !isDataFetched &&
+                      <th
+                        className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
+                        Awaiting data
+                      </th>
+                      }
+                      {
+                        headerGroup.headers.map((header) => (
+                          <th
+                            data-cy={'data-story-table-th'}
+                            key={header.id}
+                            colSpan={header.colSpan}
+                            className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
+                          >
+                            <TableNodeCell getTableRef={getTableRef} content={header.column.columnDef.header}/>
+                          </th>
+                        ))
+                      }
+                    </tr>
+                  ))
+                }
               </thead>
-              <tbody>
-                {rows.map((row, rowindex) => (<tr
-                  data-cy={'data-story-table-row'}
-                  className="odd:bg-gray-50"
-                  key={rowindex}
-                >
-                  {row.map((cell, cellIndex) => (<td
-                    className="whitespace-nowrap px-1"
-                    key={cellIndex}
+              <tbody
+                style={{
+                  display: 'grid',
+                  height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
+                  position: 'relative', //needed for absolute positioning of rows
+                }}
+              >
+                {rowVirtualizer.getVirtualItems().map((virtualRow, rowindex) => {
+                  const row = getRowModel().rows[virtualRow.index];
+                  console.log(row, 'row')
+                  return (<tr
+                    data-cy={'data-story-table-row'}
+                    className="odd:bg-gray-50 absolute flex"
+                    data-index={virtualRow.index} //needed for dynamic row height measurement
+                    ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
+                    key={row.id}
+                    style={{
+                      transform: `translateY(${virtualRow.start}px)`,
+                      height: `${virtualRow.size}px`,
+                      width: '100%'
+                    }}
                   >
-                    <TableNodeCell getTableRef={getTableRef} content={cell}/>
-
-                  </td>))}
-                </tr>))}
+                    {row.getVisibleCells().map((cell, cellIndex) => (<td
+                      className="whitespace-nowrap px-1 flex"
+                      key={cell.id}
+                      style={{
+                        width: cell.column.getSize(),
+                      }}
+                    >
+                      <TableNodeCell getTableRef={getTableRef} content={cell.renderValue()}/>
+                    </td>))}
+                  </tr>);
+                })}
                 {!isDataFetched && <tr className="bg-gray-100 hover:bg-gray-200">
                   <td
                     colSpan={6}
@@ -272,7 +303,8 @@ const TableNodeComponent = ({ id, data }: {
         </div>
       </div>
     )
-  );
+  )
+  ;
 };
 
 export default memo(TableNodeComponent)
