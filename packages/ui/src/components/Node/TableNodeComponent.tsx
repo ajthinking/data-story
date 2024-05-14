@@ -15,7 +15,7 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { ColumnDef, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { ColumnDef, getCoreRowModel, useReactTable, flexRender } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 
@@ -136,7 +136,11 @@ const TableNodeComponent = ({ id, data }: {
   }, []);
 
   useDataStoryEvent(dataStoryEvent);
-  let { headers = [], rows = [] } = new ItemCollection(items).toTable();
+
+  let { headers, rows } = useMemo(() => {
+    const itemCollection = new ItemCollection(items);
+    return itemCollection.toTable();
+  }, [items]);
 
   const getTableRef = () => {
     return tableRef;
@@ -170,6 +174,7 @@ const TableNodeComponent = ({ id, data }: {
     data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    debugTable: true,
   });
 
   const { getHeaderGroups, getRowModel } = tableInstance;
@@ -184,7 +189,7 @@ const TableNodeComponent = ({ id, data }: {
     // 设置 total size 默认为 20px
   });
 
-  console.log(rowVirtualizer, 'rowVirtualizer' );
+  console.log(rowVirtualizer, 'rowVirtualizer');
   console.log(getHeaderGroups(), 'getHeaderGroups()')
   return (
     (
@@ -225,7 +230,7 @@ const TableNodeComponent = ({ id, data }: {
                   getHeaderGroups().map((headerGroup) => (
                     <tr
                       key={headerGroup.id}
-                      className="bg-gray-200 space-x-8"
+                      className="bg-gray-200 space-x-8 flex w-full"
                     >
                       {
                         !isDataFetched &&
@@ -239,10 +244,17 @@ const TableNodeComponent = ({ id, data }: {
                           <th
                             data-cy={'data-story-table-th'}
                             key={header.id}
-                            colSpan={header.colSpan}
-                            className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10"
+                            style={{
+                              width: header.getSize(),
+                            }}
+                            className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10 flex"
                           >
-                            <TableNodeCell getTableRef={getTableRef} content={header.column.columnDef.header}/>
+                            {
+                              flexRender(
+                                <TableNodeCell getTableRef={getTableRef} content={header.column.columnDef.header}/>,
+                                header.getContext()
+                              )
+                            }
                           </th>
                         ))
                       }
@@ -268,7 +280,6 @@ const TableNodeComponent = ({ id, data }: {
                     key={row.id}
                     style={{
                       transform: `translateY(${virtualRow.start}px)`,
-                      height: `${virtualRow.size}px`,
                       width: '100%'
                     }}
                   >
@@ -279,7 +290,12 @@ const TableNodeComponent = ({ id, data }: {
                         width: cell.column.getSize(),
                       }}
                     >
-                      <TableNodeCell getTableRef={getTableRef} content={cell.renderValue()}/>
+                      {
+                        flexRender(
+                          <TableNodeCell getTableRef={getTableRef} content={cell.getContext().getValue()}/>,
+                          cell.getContext()
+                        )
+                      }
                     </td>))}
                   </tr>);
                 })}
