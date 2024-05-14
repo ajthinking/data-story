@@ -43,6 +43,7 @@
     "@data-story/core": "workspace:*",
     "@floating-ui/react": "^0.26.10",
     "@tanstack/react-table": "^8.11.7",
+    "@tanstack/react-virtual": "^3.5.0",
     "ahooks": "^3.7.10",
     "clsx": "^2.0.0",
     "concurrently": "^8.2.1",
