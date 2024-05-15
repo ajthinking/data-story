@@ -15,9 +15,10 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { ColumnDef, getCoreRowModel, useReactTable, flexRender } from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
+import { Port } from '@data-story/core';
 
 const TRUNCATE_CELL_LENGTH = 50;
 
@@ -117,6 +118,44 @@ function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableEleme
   );
 }
 
+function HandleComponent(props: {input: Port}) {
+  return <div className="absolute z-30">
+    <div className="absolute">
+
+    </div>
+    <div>
+      <Handle
+        className="relative"
+        type="target"
+        position={Position.Left}
+        style={{
+          opacity: 0,
+          backgroundColor: 'red',
+          position: 'relative',
+          height: 1,
+          width: 1,
+          top: 0,
+          right: 0
+        }}
+        id={props.input.id}
+        isConnectable={true}
+      />
+    </div>
+  </div>;
+}
+
+function LoadingComponent() {
+  return <div className="max-h-28 nowheel overflow-auto  rounded-sm relative">
+    <div
+      className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
+      Awaiting data
+    </div>
+    <div className="text-center bg-gray-100 hover:bg-gray-200">
+      Load initial data...
+    </div>
+  </div>;
+}
+
 const TableNodeComponent = ({ id, data }: {
   id: string,
   data: DataStoryNodeData,
@@ -196,126 +235,92 @@ const TableNodeComponent = ({ id, data }: {
       <div
         className="shadow-xl bg-gray-50 border rounded border-gray-300"
       >
-        <div className="absolute z-30">
-          <div className="absolute">
-
-          </div>
-          <div className="">
-            <Handle
-              className="relative"
-              type="target"
-              position={Position.Left}
-              style={{
-                opacity: 0,
-                backgroundColor: 'red',
-                position: 'relative',
-                height: 1,
-                width: 1,
-                top: 0,
-                right: 0
-              }}
-              id={input.id}
-              isConnectable={true}
-            />
-          </div>
-        </div>
+        <HandleComponent input={input}/>
         <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs">
-          <div
-            data-cy={'data-story-table'}
-            ref={parentRef}
-            className="max-h-48 h-48 nowheel overflow-auto scrollbar rounded-sm relative">
-            <table ref={tableRef} className="table-auto rounded-sm grid">
-              <thead className="grid sticky top-0 z-1">
-                {
-                  getHeaderGroups().map((headerGroup) => (
-                    <tr
-                      key={headerGroup.id}
-                      className="bg-gray-200 space-x-8 flex w-full"
-                    >
-                      {
-                        !isDataFetched &&
-                      <th
-                        className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
-                        Awaiting data
-                      </th>
-                      }
-                      {
-                        headerGroup.headers.map((header) => (
-                          <th
-                            data-cy={'data-story-table-th'}
-                            key={header.id}
-                            style={{
-                              width: header.getSize(),
-                            }}
-                            className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10 flex"
-                          >
-                            {
-                              flexRender(
-                                <TableNodeCell getTableRef={getTableRef} content={header.column.columnDef.header}/>,
-                                header.getContext()
-                              )
-                            }
-                          </th>
-                        ))
-                      }
-                    </tr>
-                  ))
-                }
-              </thead>
-              <tbody
-                style={{
-                  display: 'grid',
-                  height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
-                  position: 'relative', //needed for absolute positioning of rows
-                }}
-              >
-                {rowVirtualizer.getVirtualItems().map((virtualRow, rowindex) => {
-                  const row = getRowModel().rows[virtualRow.index];
-                  console.log(row, 'row')
-                  return (<tr
-                    data-cy={'data-story-table-row'}
-                    className="odd:bg-gray-50 absolute flex"
-                    data-index={virtualRow.index} //needed for dynamic row height measurement
-                    ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
-                    key={row.id}
-                    style={{
-                      transform: `translateY(${virtualRow.start}px)`,
-                      width: '100%'
-                    }}
-                  >
-                    {row.getVisibleCells().map((cell, cellIndex) => (<td
-                      className="whitespace-nowrap px-1 flex"
-                      key={cell.id}
+          { isDataFetched ?
+            (<div
+              data-cy={'data-story-table'}
+              ref={parentRef}
+              className="max-h-28 h-28 nowheel overflow-auto scrollbar rounded-sm relative">
+              <table ref={tableRef} className="table-auto rounded-sm grid">
+                <thead className="grid sticky top-0 z-1">
+                  {
+                    getHeaderGroups().map((headerGroup) => (
+                      <tr
+                        key={headerGroup.id}
+                        className="bg-gray-200 space-x-8 flex w-full"
+                      >
+                        {
+                          headerGroup.headers.map((header) => (
+                            <th
+                              data-cy={'data-story-table-th'}
+                              key={header.id}
+                              style={{
+                                width: header.getSize(),
+                              }}
+                              className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10 flex"
+                            >
+                              {
+                                flexRender(
+                                  <TableNodeCell getTableRef={getTableRef} content={header.column.columnDef.header}/>,
+                                  header.getContext()
+                                )
+                              }
+                            </th>
+                          ))
+                        }
+                      </tr>
+                    ))
+                  }
+                </thead>
+                <tbody
+                  style={{
+                    display: 'grid',
+                    height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
+                    position: 'relative', //needed for absolute positioning of rows
+                  }}
+                >
+                  {rowVirtualizer.getVirtualItems().map((virtualRow, rowindex) => {
+                    const row = getRowModel().rows[virtualRow.index];
+                    console.log(row, 'row')
+                    return (<tr
+                      data-cy={'data-story-table-row'}
+                      className="odd:bg-gray-50 absolute flex"
+                      data-index={virtualRow.index} //needed for dynamic row height measurement
+                      ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
+                      key={row.id}
                       style={{
-                        width: cell.column.getSize(),
+                        transform: `translateY(${virtualRow.start}px)`,
+                        width: '100%'
                       }}
                     >
-                      {
-                        flexRender(
-                          <TableNodeCell getTableRef={getTableRef} content={cell.getContext().getValue()}/>,
-                          cell.getContext()
-                        )
-                      }
-                    </td>))}
-                  </tr>);
-                })}
-                {!isDataFetched && <tr className="bg-gray-100 hover:bg-gray-200">
-                  <td
-                    colSpan={6}
-                    className="text-center"
-                  >
-                  Load initial data...
-                  </td>
-                </tr>}
-              </tbody>
-            </table>
-            {
-              (isDataFetched && headers.length === 0 && rows.length === 0)
+                      {row.getVisibleCells().map((cell, cellIndex) => (<td
+                        className="whitespace-nowrap px-1 flex"
+                        key={cell.id}
+                        style={{
+                          width: cell.column.getSize(),
+                        }}
+                      >
+                        {
+                          flexRender(
+                            <TableNodeCell getTableRef={getTableRef} content={cell.getContext().getValue()}/>,
+                            cell.getContext()
+                          )
+                        }
+                      </td>))}
+                    </tr>);
+                  })}
+                </tbody>
+              </table>
+              {
+                (headers.length === 0 && rows.length === 0)
               && (<div data-cy={'data-story-table-no-data'} className="text-center text-gray-500 p-2">
                 No data
               </div>)
-            }
-          </div>
+              }
+            </div>)
+            : <LoadingComponent/>
+          }
         </div>
       </div>
     )
