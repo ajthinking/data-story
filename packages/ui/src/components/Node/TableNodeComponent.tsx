@@ -21,8 +21,8 @@ import { useObserverTable } from './UseObserverTable';
 import { Port } from '@data-story/core';
 
 /**
- * 1. 固定宽度问题
- * 2. xx.properties 无法展示的问题
+ * 1. 固定宽度问题 - ?
+ * 2. xx.properties 无法展示的问题 -get
  * 3. 渲染时长的问题
  * 4. 提 PR
  */
@@ -151,7 +151,7 @@ function HandleComponent(props: {input: Port}) {
 }
 
 function LoadingComponent() {
-  return <div className="max-h-28 nowheel overflow-auto  rounded-sm relative">
+  return <div data-cy={'data-story-table'} className="max-h-28 nowheel overflow-auto  rounded-sm relative">
     <div
       className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
       Awaiting data
@@ -178,7 +178,10 @@ const TableNodeComponent = ({ id, data }: {
       setItems([]);
       setIsDataFetched(false);
     }
-  }, []);
+    if (event.type === DataStoryEvents.RUN_SUCCESS) {
+      !isDataFetched && setIsDataFetched(true);
+    }
+  }, [isDataFetched]);
 
   useDataStoryEvent(dataStoryEvent);
 
@@ -199,7 +202,7 @@ const TableNodeComponent = ({ id, data }: {
         accessorKey: header,
         id: header,
         header: () => <TableNodeCell getTableRef={getTableRef} content={header}/>,
-        cell: ({ cell, row}) => {
+        cell: ({ cell, row }) => {
           const originalContent = row.original[cell.column?.id];
           return <TableNodeCell getTableRef={getTableRef} content={originalContent}/>
         }
@@ -216,13 +219,13 @@ const TableNodeComponent = ({ id, data }: {
       }),
     [rows, headers]
   );
-  console.log(tableData, 'tableData');
 
   const tableInstance = useReactTable({
     data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     debugTable: true,
+    // it doesn't work:
     defaultColumn: {
       size: 150, //starting column size
       minSize: 100, //enforced during column resizing
@@ -241,8 +244,10 @@ const TableNodeComponent = ({ id, data }: {
     overscan: 5,
   });
 
-  console.log(rowVirtualizer, 'rowVirtualizer');
-  console.log(getHeaderGroups(), 'getHeaderGroups()')
+  const showNoData = useMemo(() => {
+    return headers.length === 0 && rows.length === 0;
+  }, [headers.length, rows.length]);
+
   return (
     (
       <div
@@ -250,11 +255,14 @@ const TableNodeComponent = ({ id, data }: {
       >
         <HandleComponent input={input}/>
         <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs">
-          { isDataFetched ?
+          {isDataFetched ?
             (<div
               data-cy={'data-story-table'}
               ref={parentRef}
-              className="max-h-24 h-24 nowheel overflow-auto scrollbar rounded-sm relative">
+              style={{
+                height: showNoData ? '40px' : '140px'
+              }}
+              className="nowheel overflow-auto scrollbar rounded-sm relative">
               <table ref={tableRef} className="table-auto rounded-sm grid">
                 <thead className="grid sticky top-0 z-10">
                   {
@@ -309,17 +317,16 @@ const TableNodeComponent = ({ id, data }: {
                           width: cell.column.getSize(),
                         }}
                       >
-                        { flexRender(cell.column.columnDef.cell, cell.getContext()) }
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </td>))}
                     </tr>);
                   })}
                 </tbody>
               </table>
               {
-                (headers.length === 0 && rows.length === 0)
-              && (<div data-cy={'data-story-table-no-data'} className="text-center text-gray-500 p-2">
-                No data
-              </div>)
+                showNoData && (<div data-cy={'data-story-table-no-data'} className="text-center text-gray-500 p-2">
+                  No data
+                </div>)
               }
             </div>)
             : <LoadingComponent/>
