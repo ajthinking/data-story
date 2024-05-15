@@ -23,10 +23,6 @@
       "cache": false,
       "persistent": true
     },
-    "watch:server": {
-      "cache": false,
-      "persistent": true
-    },
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist"],

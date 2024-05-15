@@ -3,10 +3,9 @@
   "version": "0.0.1",
   "description": "DataStory documentation",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "watch:server": "nodemon -x 'node --experimental-default-type=module ./servers/full.js'"
+    "dev": "node ./dist/servers/nextServer.js",
+    "build": "next build && tsc -p tsconfig.server.json",
+    "start": "next start"
   },
   "repository": {
     "type": "git",
