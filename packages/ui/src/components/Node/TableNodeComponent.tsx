@@ -191,7 +191,10 @@ const TableNodeComponent = ({ id, data }: {
     () =>
       headers.map((header) => ({
         accessorKey: header,
-        header: header,
+        id: header,
+        cell: ({ cell, row}) => {
+          return <TableNodeCell getTableRef={getTableRef} content={cell.getValue()}/>
+        }
       })),
     [headers]
   );
@@ -223,9 +226,8 @@ const TableNodeComponent = ({ id, data }: {
   const rowVirtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 20, // 假设每行的高度为35px
-    overscan: 5, // 预加载5行
-    // 设置 total size 默认为 20px
+    estimateSize: () => 24, // every row fixed height
+    overscan: 5,
   });
 
   console.log(rowVirtualizer, 'rowVirtualizer');
@@ -241,9 +243,9 @@ const TableNodeComponent = ({ id, data }: {
             (<div
               data-cy={'data-story-table'}
               ref={parentRef}
-              className="max-h-28 h-28 nowheel overflow-auto scrollbar rounded-sm relative">
+              className="max-h-24 h-24 nowheel overflow-auto scrollbar rounded-sm relative">
               <table ref={tableRef} className="table-auto rounded-sm grid">
-                <thead className="grid sticky top-0 z-1">
+                <thead className="grid sticky top-0 z-10">
                   {
                     getHeaderGroups().map((headerGroup) => (
                       <tr
@@ -256,16 +258,12 @@ const TableNodeComponent = ({ id, data }: {
                               data-cy={'data-story-table-th'}
                               key={header.id}
                               style={{
+                                height: '24px',
                                 width: header.getSize(),
                               }}
-                              className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10 flex"
+                              className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 flex"
                             >
-                              {
-                                flexRender(
-                                  <TableNodeCell getTableRef={getTableRef} content={header.column.columnDef.header}/>,
-                                  header.getContext()
-                                )
-                              }
+                              {flexRender(header.column.columnDef.header, header.getContext())}
                             </th>
                           ))
                         }
@@ -287,7 +285,6 @@ const TableNodeComponent = ({ id, data }: {
                       data-cy={'data-story-table-row'}
                       className="odd:bg-gray-50 absolute flex"
                       data-index={virtualRow.index} //needed for dynamic row height measurement
-                      ref={node => rowVirtualizer.measureElement(node)} //measure dynamic row height
                       key={row.id}
                       style={{
                         transform: `translateY(${virtualRow.start}px)`,
@@ -298,15 +295,11 @@ const TableNodeComponent = ({ id, data }: {
                         className="whitespace-nowrap px-1 flex"
                         key={cell.id}
                         style={{
+                          height: '24px',
                           width: cell.column.getSize(),
                         }}
                       >
-                        {
-                          flexRender(
-                            <TableNodeCell getTableRef={getTableRef} content={cell.getContext().getValue()}/>,
-                            cell.getContext()
-                          )
-                        }
+                        { flexRender(cell.column.columnDef.cell, cell.getContext()) }
                       </td>))}
                     </tr>);
                   })}
