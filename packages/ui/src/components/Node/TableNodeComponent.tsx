@@ -20,7 +20,13 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import { Port } from '@data-story/core';
 
-const TRUNCATE_CELL_LENGTH = 50;
+/**
+ * 1. 固定宽度问题
+ * 2. xx.properties 无法展示的问题
+ * 3. 渲染时长的问题
+ * 4. 提 PR
+ */
+const TRUNCATE_CELL_LENGTH = 15;
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
@@ -38,7 +44,6 @@ const formatTooltipContent = (content: unknown) => {
 
 function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
   const { content = '', getTableRef } = props;
-  console.log(content, 'content');
   const [showTooltip, setShowTooltip] = useState(false);
   const cellRef = useRef<HTMLDivElement>(null);
 
@@ -103,6 +108,7 @@ function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableEleme
 
   return (
     <div
+      className="w-full"
       ref={cellRef}>
       <span
         ref={refs.setReference} {...getReferenceProps()}
@@ -192,12 +198,12 @@ const TableNodeComponent = ({ id, data }: {
       headers.map((header) => ({
         accessorKey: header,
         id: header,
+        header: () => <TableNodeCell getTableRef={getTableRef} content={header}/>,
         cell: ({ cell, row}) => {
-          return <TableNodeCell getTableRef={getTableRef} content={cell.getValue()}/>
+          const originalContent = row.original[cell.column?.id];
+          return <TableNodeCell getTableRef={getTableRef} content={originalContent}/>
         }
-      })),
-    [headers]
-  );
+      })), [headers]);
 
   const tableData = useMemo(
     () =>
@@ -217,6 +223,11 @@ const TableNodeComponent = ({ id, data }: {
     columns,
     getCoreRowModel: getCoreRowModel(),
     debugTable: true,
+    defaultColumn: {
+      size: 150, //starting column size
+      minSize: 100, //enforced during column resizing
+      maxSize: 200, //enforced during column resizing
+    },
   });
 
   const { getHeaderGroups, getRowModel } = tableInstance;
@@ -250,7 +261,7 @@ const TableNodeComponent = ({ id, data }: {
                     getHeaderGroups().map((headerGroup) => (
                       <tr
                         key={headerGroup.id}
-                        className="bg-gray-200 space-x-8 flex w-full"
+                        className="bg-gray-200 flex w-full"
                       >
                         {
                           headerGroup.headers.map((header) => (
@@ -261,7 +272,7 @@ const TableNodeComponent = ({ id, data }: {
                                 height: '24px',
                                 width: header.getSize(),
                               }}
-                              className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 flex"
+                              className="flex whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 "
                             >
                               {flexRender(header.column.columnDef.header, header.getContext())}
                             </th>
@@ -280,11 +291,10 @@ const TableNodeComponent = ({ id, data }: {
                 >
                   {rowVirtualizer.getVirtualItems().map((virtualRow, rowindex) => {
                     const row = getRowModel().rows[virtualRow.index];
-                    console.log(row, 'row')
                     return (<tr
                       data-cy={'data-story-table-row'}
-                      className="odd:bg-gray-50 absolute flex"
-                      data-index={virtualRow.index} //needed for dynamic row height measurement
+                      className="odd:bg-gray-50 absolute w-full flex"
+                      // data-index={virtualRow.index} //needed for dynamic row height measurement
                       key={row.id}
                       style={{
                         transform: `translateY(${virtualRow.start}px)`,
