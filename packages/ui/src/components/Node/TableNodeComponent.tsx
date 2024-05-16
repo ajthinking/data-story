@@ -255,6 +255,7 @@ const TableNodeComponent = ({ id, data }: {
               style={{
                 height: showNoData ? '40px' : '140px'
               }}
+              data-cy={'data-story-table-scroll'}
               className="nowheel overflow-auto scrollbar rounded-sm relative">
               <table ref={tableRef} className="table-auto rounded-sm">
                 <thead className="sticky top-0 z-10">
@@ -287,14 +288,14 @@ const TableNodeComponent = ({ id, data }: {
                 <tbody
                   style={{
                     height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
-                    position: 'relative', //needed for absolute positioning of rows
+                    position: 'relative',
                   }}
                 >
                   {rowVirtualizer.getVirtualItems().map((virtualRow, rowindex) => {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
                       data-cy={'data-story-table-row'}
-                      className="odd:bg-gray-50 w-full "
+                      className="odd:bg-gray-50 w-full absolute"
                       key={row.id}
                       style={{
                         transform: `translateY(${virtualRow.start}px)`,
