@@ -20,13 +20,6 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import { Port } from '@data-story/core';
 
-/**
- * 1. 固定宽度问题 - get
- * 2. xx.properties 无法展示的问题 -get
- * 3. resolve test failure - get
- * 3. 渲染时长的问题
- * 4. 提 PR
- */
 const TRUNCATE_CELL_LENGTH = 50;
 
 const formatCellContent = (content: unknown) => {
@@ -163,6 +156,7 @@ function LoadingComponent() {
 }
 
 const fixedHeight = 24;
+
 const TableNodeComponent = ({ id, data }: {
   id: string,
   data: DataStoryNodeData,
@@ -225,18 +219,17 @@ const TableNodeComponent = ({ id, data }: {
     data: tableData,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    debugTable: true,
   });
 
   const { getHeaderGroups, getRowModel } = tableInstance;
 
   const parentRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 
-  const rowVirtualizer = useVirtualizer({
+  const virtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => fixedHeight, // every row fixed height
-    overscan: 5,
+    overscan: 10,
   });
 
   const showNoData = useMemo(() => {
@@ -255,17 +248,16 @@ const TableNodeComponent = ({ id, data }: {
               ref={parentRef}
               style={{
                 height: showNoData ? '40px' : 'auto',
-                maxHeight: '140px',
               }}
               data-cy={'data-story-table-scroll'}
-              className="nowheel overflow-auto scrollbar rounded-sm relative">
-              <table ref={tableRef} className="table-auto rounded-sm">
-                <thead className="sticky top-0 z-10">
+              className="max-h-48 nowheel overflow-auto scrollbar rounded-sm">
+              <table ref={tableRef} className="table-auto">
+                <thead>
                   {
                     getHeaderGroups().map((headerGroup) => (
                       <tr
                         key={headerGroup.id}
-                        className="bg-gray-200 w-full"
+                        className="bg-gray-200 space-x-8"
                       >
                         {
                           headerGroup.headers.map((header) => (
@@ -277,7 +269,7 @@ const TableNodeComponent = ({ id, data }: {
                                 width: header.getContext().header.getSize(),
                                 minWidth: 0,
                               }}
-                              className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0"
+                              className="z-10 sticky top-0 whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300"
                             >
                               {flexRender(header.column.columnDef.header, header.getContext())}
                             </th>
@@ -288,7 +280,7 @@ const TableNodeComponent = ({ id, data }: {
                   }
                 </thead>
                 <tbody>
-                  {rowVirtualizer.getVirtualItems().map((virtualRow, rowindex) => {
+                  {virtualizer.getVirtualItems().map((virtualRow, rowindex) => {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
                       data-cy={'data-story-table-row'}
