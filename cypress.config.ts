@@ -9,6 +9,8 @@ export default defineConfig({
       bundler: 'webpack',
       webpackConfig: webpackConfig
     },
+    viewportWidth: 384,
+    viewportHeight: 216,
   },
 
   e2e: {

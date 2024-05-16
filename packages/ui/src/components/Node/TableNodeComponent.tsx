@@ -23,6 +23,7 @@ import { Port } from '@data-story/core';
 /**
  * 1. 固定宽度问题 - get
  * 2. xx.properties 无法展示的问题 -get
+ * 3. resolve test failure - get
  * 3. 渲染时长的问题
  * 4. 提 PR
  */
@@ -161,6 +162,7 @@ function LoadingComponent() {
   </div>;
 }
 
+const fixedHeight = 24;
 const TableNodeComponent = ({ id, data }: {
   id: string,
   data: DataStoryNodeData,
@@ -233,14 +235,13 @@ const TableNodeComponent = ({ id, data }: {
   const rowVirtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 24, // every row fixed height
+    estimateSize: () => fixedHeight, // every row fixed height
     overscan: 5,
   });
 
   const showNoData = useMemo(() => {
     return headers.length === 0 && rows.length === 0;
   }, [headers.length, rows.length]);
-  console.log(headers, rows, 'headers, rows', items, 'items  111');
 
   return (
     (
@@ -253,7 +254,8 @@ const TableNodeComponent = ({ id, data }: {
             (<div
               ref={parentRef}
               style={{
-                height: showNoData ? '40px' : '140px'
+                height: showNoData ? '40px' : 'auto',
+                maxHeight: '140px',
               }}
               data-cy={'data-story-table-scroll'}
               className="nowheel overflow-auto scrollbar rounded-sm relative">
@@ -271,7 +273,7 @@ const TableNodeComponent = ({ id, data }: {
                               data-cy={'data-story-table-th'}
                               key={header.id}
                               style={{
-                                height: '24px',
+                                height: `${fixedHeight}px`,
                                 width: header.getContext().header.getSize(),
                                 minWidth: 0,
                               }}
@@ -285,30 +287,27 @@ const TableNodeComponent = ({ id, data }: {
                     ))
                   }
                 </thead>
-                <tbody
-                  style={{
-                    height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
-                    position: 'relative',
-                  }}
-                >
+                <tbody>
                   {rowVirtualizer.getVirtualItems().map((virtualRow, rowindex) => {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
                       data-cy={'data-story-table-row'}
-                      className="odd:bg-gray-50 w-full absolute"
+                      className="odd:bg-gray-50 w-full"
                       key={row.id}
                       style={{
-                        transform: `translateY(${virtualRow.start}px)`,
-                        width: '100%'
+                        transform: `translateY(${
+                          virtualRow.start - rowindex * virtualRow.size
+                        }px)`,
+                        width: '100%',
                       }}
                     >
                       {row.getVisibleCells().map((cell, cellIndex) => (<td
                         className="whitespace-nowrap px-1"
                         key={cell.id}
                         style={{
-                          height: '24px',
                           width: cell.getContext().column.getSize(),
                           minWidth: 0,
+                          height: `${fixedHeight}px`,
                         }}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
