@@ -21,12 +21,12 @@ import { useObserverTable } from './UseObserverTable';
 import { Port } from '@data-story/core';
 
 /**
- * 1. 固定宽度问题 - ?
+ * 1. 固定宽度问题 - get
  * 2. xx.properties 无法展示的问题 -get
  * 3. 渲染时长的问题
  * 4. 提 PR
  */
-const TRUNCATE_CELL_LENGTH = 15;
+const TRUNCATE_CELL_LENGTH = 50;
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
@@ -108,7 +108,6 @@ function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableEleme
 
   return (
     <div
-      className="w-full"
       ref={cellRef}>
       <span
         ref={refs.setReference} {...getReferenceProps()}
@@ -151,7 +150,7 @@ function HandleComponent(props: {input: Port}) {
 }
 
 function LoadingComponent() {
-  return <div data-cy={'data-story-table'} className="max-h-28 nowheel overflow-auto  rounded-sm relative">
+  return <div data-cy={'data-story-table-await-data'} className="max-h-28 nowheel overflow-auto  rounded-sm relative">
     <div
       className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
       Awaiting data
@@ -225,12 +224,6 @@ const TableNodeComponent = ({ id, data }: {
     columns,
     getCoreRowModel: getCoreRowModel(),
     debugTable: true,
-    // it doesn't work:
-    defaultColumn: {
-      size: 150, //starting column size
-      minSize: 100, //enforced during column resizing
-      maxSize: 200, //enforced during column resizing
-    },
   });
 
   const { getHeaderGroups, getRowModel } = tableInstance;
@@ -247,6 +240,7 @@ const TableNodeComponent = ({ id, data }: {
   const showNoData = useMemo(() => {
     return headers.length === 0 && rows.length === 0;
   }, [headers.length, rows.length]);
+  console.log(headers, rows, 'headers, rows', items, 'items  111');
 
   return (
     (
@@ -254,22 +248,21 @@ const TableNodeComponent = ({ id, data }: {
         className="shadow-xl bg-gray-50 border rounded border-gray-300"
       >
         <HandleComponent input={input}/>
-        <div className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs">
+        <div data-cy={'data-story-table'} className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs">
           {isDataFetched ?
             (<div
-              data-cy={'data-story-table'}
               ref={parentRef}
               style={{
                 height: showNoData ? '40px' : '140px'
               }}
               className="nowheel overflow-auto scrollbar rounded-sm relative">
-              <table ref={tableRef} className="table-auto rounded-sm grid">
-                <thead className="grid sticky top-0 z-10">
+              <table ref={tableRef} className="table-auto rounded-sm">
+                <thead className="sticky top-0 z-10">
                   {
                     getHeaderGroups().map((headerGroup) => (
                       <tr
                         key={headerGroup.id}
-                        className="bg-gray-200 flex w-full"
+                        className="bg-gray-200 w-full"
                       >
                         {
                           headerGroup.headers.map((header) => (
@@ -278,9 +271,10 @@ const TableNodeComponent = ({ id, data }: {
                               key={header.id}
                               style={{
                                 height: '24px',
-                                width: header.getSize(),
+                                width: header.getContext().header.getSize(),
+                                minWidth: 0,
                               }}
-                              className="flex whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 "
+                              className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0"
                             >
                               {flexRender(header.column.columnDef.header, header.getContext())}
                             </th>
@@ -292,7 +286,6 @@ const TableNodeComponent = ({ id, data }: {
                 </thead>
                 <tbody
                   style={{
-                    display: 'grid',
                     height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
                     position: 'relative', //needed for absolute positioning of rows
                   }}
@@ -301,8 +294,7 @@ const TableNodeComponent = ({ id, data }: {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
                       data-cy={'data-story-table-row'}
-                      className="odd:bg-gray-50 absolute w-full flex"
-                      // data-index={virtualRow.index} //needed for dynamic row height measurement
+                      className="odd:bg-gray-50 w-full "
                       key={row.id}
                       style={{
                         transform: `translateY(${virtualRow.start}px)`,
@@ -310,11 +302,12 @@ const TableNodeComponent = ({ id, data }: {
                       }}
                     >
                       {row.getVisibleCells().map((cell, cellIndex) => (<td
-                        className="whitespace-nowrap px-1 flex"
+                        className="whitespace-nowrap px-1"
                         key={cell.id}
                         style={{
                           height: '24px',
-                          width: cell.column.getSize(),
+                          width: cell.getContext().column.getSize(),
+                          minWidth: 0,
                         }}
                       >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
