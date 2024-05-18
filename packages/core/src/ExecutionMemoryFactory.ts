@@ -117,8 +117,9 @@ export class ExecutionMemoryFactory {
 
           return evaluator.evaluate(emptyItem, param, globalParams);
         } catch(error) {
+          console.log('Failed while evaluating param', param, error)
           console.error('error', error);
-          return param.value;
+          throw error
         }
       }
     })
