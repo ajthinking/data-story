@@ -93,7 +93,7 @@ function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableEleme
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="select-text overflow-visible z-50 bg-white shadow-lg p-2 rounded-md h-16"
+        className="select-text overflow-visible z-50 bg-white shadow-lg rounded-md text-xxxs"
       >
         {formatTooltipContent(content) as string}
       </pre>
@@ -229,7 +229,7 @@ const TableNodeComponent = ({ id, data }: {
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => fixedHeight, // every row fixed height
-    overscan: 5,
+    overscan: 2,
   });
 
   const virtualItems = virtualizer.getVirtualItems();
@@ -267,7 +267,7 @@ const TableNodeComponent = ({ id, data }: {
                     getHeaderGroups().map((headerGroup) => (
                       <tr
                         key={headerGroup.id}
-                        className="bg-gray-200 space-x-8 z-10"
+                        className="bg-gray-200 space-x-4 z-10"
                       >
                         {
                           headerGroup.headers.map((header) => (

@@ -48,7 +48,6 @@ function runSuccess(): void {
 
 const mockGetItems = (items: unknown[]): void => {
   const observerMap = new Map();
-  // todo: mock 失败
   cy.stub(store, 'createStore').returns(() => {
     return {
       setObservers: (observerId: string, observers?: DataStoryObservers) => {
