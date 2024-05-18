@@ -30,8 +30,12 @@ const mountTableNodeComponent = () => {
         <TableNodeComponent id={id} data={data} selected={false}/>
       </ReactFlowProvider>
     </DataStoryProvider>
-  )
+  );
+}
 
+let testPerformanceLimit = 20;
+
+function runSuccess(): void {
   cy.dataCy('data-story-table')
     .then(() => {
       cy.wait(10).then(() => {
@@ -39,10 +43,9 @@ const mountTableNodeComponent = () => {
           type: DataStoryEvents.RUN_SUCCESS
         });
       })
-    })
+    });
 }
 
-let testPerformanceLimit = 20;
 const mockGetItems = (items: unknown[]): void => {
   const observerMap = new Map();
   cy.stub(store, 'createStore').returns(() => {
@@ -75,7 +78,7 @@ describe('test TableNodeComponent for tooltip', () => {
     cy.dataCy('data-story-table-tooltip').should('have.text', longKey);
 
     // click on the table to close the tooltip
-    cy.dataCy('data-story-table').click();
+    cy.dataCy('data-story-table').click({ force: true});
 
     // test long value on tooltip
     const longValue = oversize['long_property'];
@@ -109,6 +112,7 @@ describe('test TableNodeComponent for table', () => {
   it('render component with empty data', () => {
     mockGetItems([]);
     mountTableNodeComponent();
+    runSuccess();
 
     cy.dataCy('data-story-table').should('exist');
     cy.dataCy('data-story-table-no-data').should('have.text', 'No data');
@@ -117,13 +121,14 @@ describe('test TableNodeComponent for table', () => {
   it('render component with Awaiting data', () => {
     mountTableNodeComponent();
 
-    cy.get('th').should('have.length', 1);
-    cy.get('th').should('have.text', 'Awaiting data');
+    cy.get('th').should('have.length', 0);
+    cy.dataCy('data-story-table-await-data').should('contain.text', 'Awaiting data');
   });
 
   it('render component with normal data', () => {
     mockGetItems([normal]);
     mountTableNodeComponent();
+    runSuccess();
 
     const headerLength = Object.keys(normal).length;
 
@@ -203,7 +208,8 @@ describe('test TableNodeComponent for table', () => {
         cy.log(`cypress render Time: ${renderTime}ms`);
       });
 
-    cy.dataCy('data-story-table-row').should('have.length', testPerformanceLimit);
+    // table rows within the user's current viewable area are rendered
+    cy.dataCy('data-story-table-row').should('have.length.lessThan', 20);
   });
 
   it('test table component scroll', () => {
@@ -217,7 +223,7 @@ describe('test TableNodeComponent for table', () => {
     cy.wait(10);
 
     const start = performance.now();
-    cy.dataCy('data-story-table')
+    cy.dataCy('data-story-table-scroll')
       .scrollTo('bottom')
       .then(() => {
         const end = performance.now();

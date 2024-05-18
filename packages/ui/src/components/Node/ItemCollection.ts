@@ -71,8 +71,8 @@ export class ItemCollection {
     });
 
     return {
-      headers: Array.from(headers),
-      rows
+      headers: Array.from(headers) ?? [],
+      rows: rows ?? [],
     };
   }
 
