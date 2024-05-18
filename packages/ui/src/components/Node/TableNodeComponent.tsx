@@ -174,9 +174,9 @@ const TableNodeComponent = ({ id, data }: {
       setIsDataFetched(false);
     }
     if (event.type === DataStoryEvents.RUN_SUCCESS) {
-      !isDataFetched && setIsDataFetched(true);
+      setIsDataFetched(true);
     }
-  }, [isDataFetched]);
+  }, []);
 
   useDataStoryEvent(dataStoryEvent);
 
