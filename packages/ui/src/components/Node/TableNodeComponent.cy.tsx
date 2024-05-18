@@ -78,7 +78,7 @@ describe('test TableNodeComponent for tooltip', () => {
     cy.dataCy('data-story-table-tooltip').should('have.text', longKey);
 
     // click on the table to close the tooltip
-    cy.dataCy('data-story-table-th').eq(0).click();
+    cy.dataCy('data-story-table').click({ force: true});
 
     // test long value on tooltip
     const longValue = oversize['long_property'];
