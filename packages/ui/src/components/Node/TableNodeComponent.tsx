@@ -93,7 +93,7 @@ function TableNodeCell(props: {tableRef: React.RefObject<HTMLTableElement>, cont
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="select-text overflow-visible z-50 bg-white shadow-lg rounded-md text-xxxs"
+        className="select-text overflow-visible z-50 bg-white shadow-lg rounded-md"
       >
         {formatTooltipContent(content) as string}
       </pre>
@@ -249,7 +249,7 @@ const TableNodeComponent = ({ id, data }: {
         className="shadow-xl bg-gray-50 border rounded border-gray-300"
       >
         <HandleComponent input={input}/>
-        <div data-cy={'data-story-table'} className="text-gray-600 bg-gray-100 rounded font-mono text-xxxs">
+        <div data-cy={'data-story-table'} className="text-gray-600 bg-gray-100 rounded font-mono">
           {isDataFetched ?
             (<div
               ref={parentRef}
