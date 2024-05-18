@@ -246,7 +246,7 @@ const TableNodeComponent = ({ id, data }: {
     (
       <div
         ref={tableRef}
-        className="shadow-xl bg-gray-50 border rounded border-gray-300"
+        className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xxs"
       >
         <HandleComponent input={input}/>
         <div data-cy={'data-story-table'} className="text-gray-600 bg-gray-100 rounded font-mono">
@@ -296,7 +296,7 @@ const TableNodeComponent = ({ id, data }: {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
                       data-cy={'data-story-table-row'}
-                      className="odd:bg-gray-50 w-full"
+                      className="odd:bg-gray-50 w-full text-xxs"
                       key={row.id}
                       style={{
                         width: '100%',
