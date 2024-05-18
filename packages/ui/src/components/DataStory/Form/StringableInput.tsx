@@ -22,7 +22,7 @@ export function StringableInput({
   onCursorPositionChange: (position: number) => void // Add this line
 }) {
   // State to keep track of the number of rows and cursor position
-  const [rows, setRows] = useState(calculateRows(String(param.value)));
+  const [rows, setRows] = useState(calculateRows(String(form.getValues(name))));
 
   const handleCursorChange = (event: any) => {
     // Get the current cursor position
@@ -36,9 +36,9 @@ export function StringableInput({
   // Effect to listen for form changes - primarily for external updates
   useEffect(() => {
     const subscription = form.watch((value, formEvent) => {
-      if (formEvent.name === `params.${name}` && formEvent.type === 'change') {
+      if (formEvent.name === name && formEvent.type === 'change') {
         try {
-          const fieldValue = get(value.params, name)
+          const fieldValue = get(value, name)
           const newRows = calculateRows(fieldValue);
           setRows(newRows);
         } catch (e) {
