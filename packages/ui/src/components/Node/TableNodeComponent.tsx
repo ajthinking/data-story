@@ -16,7 +16,7 @@ import {
   useRole
 } from '@floating-ui/react';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import { notUndefined, useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import { Port } from '@data-story/core';
 
@@ -229,8 +229,18 @@ const TableNodeComponent = ({ id, data }: {
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => fixedHeight, // every row fixed height
-    overscan: 10,
+    overscan: 5,
   });
+
+  const virtualItems = virtualizer.getVirtualItems();
+
+  const [before, after] =
+    virtualItems.length > 0
+      ? [
+        notUndefined(virtualItems[0]).start - virtualizer.options.scrollMargin,
+        virtualizer.getTotalSize() - notUndefined(virtualItems[virtualItems.length - 1]).end,
+      ]
+      : [0, 0];
 
   const showNoData = useMemo(() => {
     return headers.length === 0 && rows.length === 0;
@@ -257,7 +267,7 @@ const TableNodeComponent = ({ id, data }: {
                     getHeaderGroups().map((headerGroup) => (
                       <tr
                         key={headerGroup.id}
-                        className="bg-gray-200 space-x-8"
+                        className="bg-gray-200 space-x-8 z-10"
                       >
                         {
                           headerGroup.headers.map((header) => (
@@ -269,7 +279,7 @@ const TableNodeComponent = ({ id, data }: {
                                 width: header.getContext().header.getSize(),
                                 minWidth: 0,
                               }}
-                              className="z-10 sticky top-0 whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300"
+                              className="z-10  sticky top-0 whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300"
                             >
                               {flexRender(header.column.columnDef.header, header.getContext())}
                             </th>
@@ -280,6 +290,11 @@ const TableNodeComponent = ({ id, data }: {
                   }
                 </thead>
                 <tbody>
+                  {before > 0 && (
+                    <tr>
+                      <td style={{ height: before }} />
+                    </tr>
+                  )}
                   {virtualizer.getVirtualItems().map((virtualRow, rowindex) => {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
@@ -287,9 +302,6 @@ const TableNodeComponent = ({ id, data }: {
                       className="odd:bg-gray-50 w-full"
                       key={row.id}
                       style={{
-                        transform: `translateY(${
-                          virtualRow.start - rowindex * virtualRow.size
-                        }px)`,
                         width: '100%',
                       }}
                     >
@@ -306,6 +318,11 @@ const TableNodeComponent = ({ id, data }: {
                       </td>))}
                     </tr>);
                   })}
+                  {after > 0 && (
+                    <tr>
+                      <td style={{ height: after }} />
+                    </tr>
+                  )}
                 </tbody>
               </table>
               {
