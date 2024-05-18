@@ -36,8 +36,8 @@ const formatTooltipContent = (content: unknown) => {
   }
 }
 
-function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
-  const { content = '', getTableRef } = props;
+function TableNodeCell(props: {tableRef: React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
+  const { content = '', tableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
   const cellRef = useRef<HTMLDivElement>(null);
 
@@ -108,7 +108,7 @@ function TableNodeCell(props: {getTableRef: () => React.RefObject<HTMLTableEleme
       >
         {formatCellContent(content)}
       </span>
-      <FloatingPortal root={getTableRef()}>
+      <FloatingPortal root={tableRef}>
         {
           showTooltip && Tooltip()
         }
@@ -185,10 +185,6 @@ const TableNodeComponent = ({ id, data }: {
     return itemCollection.toTable();
   }, [items]);
 
-  const getTableRef = () => {
-    return tableRef;
-  };
-
   const input = data.inputs[0];
 
   const columns: ColumnDef<Record<string, unknown>>[] = useMemo(
@@ -196,10 +192,10 @@ const TableNodeComponent = ({ id, data }: {
       headers.map((header) => ({
         accessorKey: header,
         id: header,
-        header: () => <TableNodeCell getTableRef={getTableRef} content={header}/>,
+        header: () => <TableNodeCell tableRef={tableRef} content={header}/>,
         cell: ({ cell, row }) => {
           const originalContent = row.original[cell.column?.id];
-          return <TableNodeCell getTableRef={getTableRef} content={originalContent}/>
+          return <TableNodeCell tableRef={tableRef} content={originalContent}/>
         }
       })), [headers]);
 
@@ -249,6 +245,7 @@ const TableNodeComponent = ({ id, data }: {
   return (
     (
       <div
+        ref={tableRef}
         className="shadow-xl bg-gray-50 border rounded border-gray-300"
       >
         <HandleComponent input={input}/>
@@ -261,7 +258,7 @@ const TableNodeComponent = ({ id, data }: {
               }}
               data-cy={'data-story-table-scroll'}
               className="max-h-48 nowheel overflow-auto scrollbar rounded-sm">
-              <table ref={tableRef} className="table-auto">
+              <table className="table-auto">
                 <thead>
                   {
                     getHeaderGroups().map((headerGroup) => (
