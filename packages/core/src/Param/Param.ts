@@ -5,6 +5,7 @@ import { Evaluation } from './Evaluation'
 import { numberCast } from './casts/numberCast'
 import { stringCast } from './casts/stringCast'
 import { hjsonEvaluation } from './evaluations/hjsonEvaluation'
+import { jsExpressionEvaluation } from './evaluations/jsExpressionEvaluation'
 import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
 
@@ -171,6 +172,8 @@ export const json_ = ({
     evaluations: evaluations ?? [
       { ...jsonEvaluation, selected: true },
       hjsonEvaluation,
+      jsFunctionEvaluation,
+      jsExpressionEvaluation,
     ],
     casts: [
       numberCast,

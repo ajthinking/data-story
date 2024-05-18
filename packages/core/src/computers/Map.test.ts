@@ -6,7 +6,7 @@ it('replaces items when mode is set to REPLACE', () => {
     .hasParams({
       mode: 'REPLACE',
       json: `{
-        newKey: newValue
+        "newKey": "newValue"
       }`,
     })
     .getsInput([
@@ -26,8 +26,8 @@ it('merges items when mode is set to MERGE', () => {
     .hasParams({
       mode: 'MERGE',
       json: `{
-        properties: {
-          newProp: newPropValue
+        "properties": {
+          "newProp": "newPropValue"
         }
       }`
     })
