@@ -30,12 +30,6 @@ export const Map: ComputerConfig = {
       name: 'json',
       value: '{\n\tfoo: bar\n}',
       help: '',
-      multiline: true,
-      evaluations: [
-        { ...hjsonEvaluation, selected: true },
-        jsonEvaluation,
-        jsFunctionEvaluation,
-      ]
     })
   ],
 
