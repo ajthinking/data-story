@@ -1,6 +1,6 @@
 {
   "name": "@data-story/core",
-  "version": "0.0.81",
+  "version": "0.0.82",
   "main": "dist/main/index.js",
   "type": "commonjs",
   "types": "dist/main/index.d.ts",
