@@ -155,7 +155,7 @@ function LoadingComponent() {
   </div>;
 }
 
-const fixedHeight = 24;
+const fixedHeight = 12;
 
 const TableNodeComponent = ({ id, data }: {
   id: string,
@@ -246,7 +246,7 @@ const TableNodeComponent = ({ id, data }: {
     (
       <div
         ref={tableRef}
-        className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xxs"
+        className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xxxs"
       >
         <HandleComponent input={input}/>
         <div data-cy={'data-story-table'} className="text-gray-600 bg-gray-100 rounded font-mono">
@@ -273,8 +273,8 @@ const TableNodeComponent = ({ id, data }: {
                               key={header.id}
                               style={{
                                 height: `${fixedHeight}px`,
-                                width: header.getContext().header.getSize(),
-                                minWidth: 0,
+                                width: 'auto',
+                                minWidth: '25px',
                               }}
                               className="z-10  sticky top-0 whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300"
                             >
@@ -296,18 +296,18 @@ const TableNodeComponent = ({ id, data }: {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
                       data-cy={'data-story-table-row'}
-                      className="odd:bg-gray-50 w-full text-xxs"
+                      className="odd:bg-gray-50 w-full text-xxxs"
                       key={row.id}
                       style={{
                         width: '100%',
                       }}
                     >
                       {row.getVisibleCells().map((cell, cellIndex) => (<td
-                        className="whitespace-nowrap px-1"
+                        className="whitespace-nowrap px-1 py-0 my-0"
                         key={cell.id}
                         style={{
-                          width: cell.getContext().column.getSize(),
-                          minWidth: 0,
+                          width: 'auto',
+                          minWidth: '25px',
                           height: `${fixedHeight}px`,
                         }}
                       >

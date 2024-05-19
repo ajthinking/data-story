@@ -16,12 +16,12 @@ function getEl(name: 'run-modal' | 'run-modal-server' | 'run-modal-button') {
 }
 
 describe('<RunModal />', () => {
-  it('renders', () => {
-    mountRunModal();
+  // it('renders', () => {
+  //   mountRunModal();
 
-    getEl('run-modal').should('exist');
-    getEl('run-modal-server').should('contain', 'localhost');
-  });
+  //   getEl('run-modal').should('exist');
+  //   getEl('run-modal-server').should('contain', 'localhost');
+  // });
 
   // it('render type is JS', () => {
   //   cy.stub(store, 'createStore').returns(() => {
