@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
 import { ItemCollection } from './ItemCollection';
@@ -11,6 +11,7 @@ import {
   offset,
   shift,
   useClick,
+  useDismiss,
   useFloating,
   useInteractions,
   useRole
@@ -39,7 +40,6 @@ const formatTooltipContent = (content: unknown) => {
 function TableNodeCell(props: {tableRef: React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
   const { content = '', tableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
-  const cellRef = useRef<HTMLDivElement>(null);
 
   const { refs, floatingStyles, context } = useFloating({
     open: showTooltip,
@@ -56,36 +56,16 @@ function TableNodeCell(props: {tableRef: React.RefObject<HTMLTableElement>, cont
     ]
   });
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent) => {
-      if (
-        showTooltip &&
-        cellRef.current &&
-        !cellRef.current?.contains(event.target as Node) &&
-        !refs.floating.current?.contains(event.target as Node)
-      ) {
-        setShowTooltip(false);
-      }
-    }
-
-    refs.floating.current?.addEventListener('mousedown', (event) => {
-      event.stopPropagation();
-    });
-
-    document.addEventListener('click', handleOutsideClick);
-    return () => {
-      document.removeEventListener('click', handleOutsideClick);
-    }
-  }, [showTooltip]);
-
   const click = useClick(context);
   const role = useRole(context, { role: 'tooltip' });
-
+  const dismiss = useDismiss(context);
   // Merge all the interactions into prop getters
   const { getReferenceProps, getFloatingProps } = useInteractions([
     click,
-    role
+    role,
+    dismiss
   ]);
+
   const Tooltip = () => {
     return (
       <pre
@@ -101,8 +81,7 @@ function TableNodeCell(props: {tableRef: React.RefObject<HTMLTableElement>, cont
   }
 
   return (
-    <div
-      ref={cellRef}>
+    <div>
       <span
         ref={refs.setReference} {...getReferenceProps()}
       >
