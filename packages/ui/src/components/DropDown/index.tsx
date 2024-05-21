@@ -81,7 +81,7 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
           ref={refs.setFloating}
           {...getFloatingProps()}
           style={floatingStyles}
-          className="max-h-128 overflow-scroll z-100 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+          className="max-h-128 overflow-scroll z-10 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           {optionGroups.map((optionGroup) => {
             return (
               <div className="mb-2" key={optionGroup.label}>
