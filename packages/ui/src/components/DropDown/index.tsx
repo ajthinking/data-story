@@ -70,7 +70,7 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
           ref={refs.setReference}
           {...getReferenceProps()}
           type="button"
-          className="px-2 py-1 text-xs text-gray-200 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
+          className="px-2 py-1 text-gray-200 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
             stroke="currentColor" className="w-3 h-3">
