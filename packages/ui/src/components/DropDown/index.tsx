@@ -1,6 +1,16 @@
 import '../../styles/globals.css';
 import { useState } from 'react';
 import { useEscapeKey } from '../DataStory/hooks/useEscapeKey';
+import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useClick,
+  useFloating,
+  useFloatingTree,
+  useInteractions
+} from '@floating-ui/react';
 
 export type Option = {
   label: string
@@ -33,6 +43,48 @@ export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
     setIsOpen(false);
   };
 
+  const tree = useFloatingTree();
+
+  // React.useEffect(() => {
+  //   if (!tree) return;
+  //
+  //   function handleTreeClick() {
+  //     setIsOpen(false);
+  //   }
+  //
+  //   function onSubMenuOpen(event: { nodeId: string; parentId: string }) {
+  //     if (event.nodeId !== nodeId && event.parentId === parentId) {
+  //       setIsOpen(false);
+  //     }
+  //   }
+  //
+  //   tree.events.on("click", handleTreeClick);
+  //   tree.events.on("menuopen", onSubMenuOpen);
+  //
+  //   return () => {
+  //     tree.events.off("click", handleTreeClick);
+  //     tree.events.off("menuopen", onSubMenuOpen);
+  //   };
+  // }, [tree, nodeId, parentId]);
+
+  const {refs, floatingStyles, context} = useFloating({
+    open: isOpen,
+    onOpenChange: setIsOpen,
+    placement: 'bottom-start',
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(2),
+      flip({
+        fallbackAxisSideDirection: 'start'
+      }),
+      shift()
+    ]
+  });
+  const click = useClick(context);
+
+  const {getReferenceProps, getFloatingProps} = useInteractions([
+    click,
+  ]);
   // Cant use this as it will close the whole modal
   // useEscapeKey(() => {
   //   closeDropdown();
@@ -42,14 +94,20 @@ export const DropDown = ({ optionGroups }: { optionGroups: OptionGroup[]}) => {
     <div className="">
       <div className="ml-1 relative bg-gray-50">
         <button
+          ref={refs.setReference}
+          {...getReferenceProps()}
           type="button"
           className="px-2 py-1 text-xs text-gray-200 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
-          onClick={toggleDropdown}
+          // onClick={toggleDropdown}
         ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-3 h-3">
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
           </svg>
         </button>
-        {isOpen && (<div className="max-h-128 overflow-scroll absolute origin-top-right mt-4 right-0 z-100 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        {isOpen && (<div
+          ref={refs.setFloating}
+          {...getFloatingProps()}
+          style={floatingStyles}
+          className="max-h-128 overflow-scroll absolute origin-top-right mt-4 right-0 z-100 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
           {optionGroups.map((optionGroup) => {
             return (
               <div className="mb-2" key={optionGroup.label}>
