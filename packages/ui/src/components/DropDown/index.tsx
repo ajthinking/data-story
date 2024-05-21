@@ -1,8 +1,9 @@
 import '../../styles/globals.css';
-import { useCallback, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import {
   autoUpdate,
   flip,
+  FloatingPortal,
   offset,
   shift,
   useClick,
@@ -77,51 +78,56 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
           </svg>
         </button>
-        {isOpen && (<div
-          ref={refs.setFloating}
-          {...getFloatingProps()}
-          style={floatingStyles}
-          className="max-h-128 overflow-scroll z-10 w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-          {optionGroups.map((optionGroup) => {
-            return (
-              <div className="mb-2" key={optionGroup.label}>
-                <div key={optionGroup.label}
-                  className="font-bold text-gray-400 flex w-full justify-center text-xs px-2 py-2 border-b uppercase tracking-widest">{optionGroup.label}</div>
-                <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                  {optionGroup.options.map((option) => {
-                    return (
-                      <li key={option.label} className="cursor-pointer">
-                        <div
-                          className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
-                          onClick={() => {
-                            if (optionGroup.selectable) {
-                              optionGroup.options.forEach((option) => {
-                                option.selected = false
+
+        <FloatingPortal>
+          {isOpen && (<div
+            ref={refs.setFloating}
+            {...getFloatingProps()}
+            style={floatingStyles}
+            // If the float nesting becomes more complex moving forward, we might need to consider using a floatingTree
+            className="max-h-128 overflow-scroll z-[100] w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+            {optionGroups.map((optionGroup) => {
+              return (
+                <div className="mb-2" key={optionGroup.label}>
+                  <div key={optionGroup.label}
+                    className="font-bold text-gray-400 flex w-full justify-center text-xs px-2 py-2 border-b uppercase tracking-widest">{optionGroup.label}</div>
+                  <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    {optionGroup.options.map((option) => {
+                      return (
+                        <li key={option.label} className="cursor-pointer">
+                          <div
+                            className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
+                            onClick={() => {
+                              if (optionGroup.selectable) {
+                                optionGroup.options.forEach((option) => {
+                                  option.selected = false
+                                })
+
+                                option.selected = true
+                              }
+
+                              option.callback({
+                                close: closeDropdown,
+                                selectedIndex: optionGroup.options.findIndex((option) => option.selected),
                               })
-
-                              option.selected = true
                             }
+                            }
+                          >
+                            {option.label}
+                            {option.selected && (<div className="">✓</div>)}
+                          </div>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                  {optionGroup.options.length === 0 &&
+                    <div className="text-xs text-gray-400 px-2 py-2">{optionGroup.emptyMessage ?? 'N/A'}</div>}
+                </div>
+              )
+            })}
+          </div>)}
+        </FloatingPortal>
 
-                            option.callback({
-                              close: closeDropdown,
-                              selectedIndex: optionGroup.options.findIndex((option) => option.selected),
-                            })
-                          }
-                          }
-                        >
-                          {option.label}
-                          {option.selected && (<div className="">✓</div>)}
-                        </div>
-                      </li>
-                    )
-                  })}
-                </ul>
-                {optionGroup.options.length === 0 &&
-                  <div className="text-xs text-gray-400 px-2 py-2">{optionGroup.emptyMessage ?? 'N/A'}</div>}
-              </div>
-            )
-          })}
-        </div>)}
       </div>
     </div>
   )
