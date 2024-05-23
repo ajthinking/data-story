@@ -99,11 +99,11 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
                             className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
                             onClick={(event) => {
                               if (optionGroup.selectable) {
-                                // todo: tested
-                                option.selected = !option.selected
-                                optionGroup.options.forEach((option) => {
-                                  if (option.label !== option.label) option.selected = false
+                                option.selected = !option.selected;
+                                optionGroup.options.forEach((innerOption) => {
+                                  if (innerOption.label !== option.label) innerOption.selected = false
                                 })
+                                console.log(option, 'option', optionGroup.options, 'options')
                               }
 
                               option.callback({
