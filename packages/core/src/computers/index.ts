@@ -9,6 +9,7 @@ export { Describe } from './Describe'
 export { Clone } from './Clone'
 export { Fake } from './Fake'
 export { Filter } from './Filter';
+export { FlatMap } from './FlatMap';
 export { Ignore } from './Ignore'
 export { InstantThrow } from './InstantThrow';
 export { Input } from './Input';
