@@ -91,4 +91,27 @@ describe('toTable', () => {
     expect(headers).toEqual([]);
     expect(rows).toEqual([]);
   });
+
+  it('should handle nullable objects filled and not filled', () => {
+    const mockData = [
+      {
+        'name': {
+          'first': 'John',
+          'last': 'Doe'
+        },
+        'age': 21,
+      },
+      {
+        'name': null,
+        'age': 22,
+      },
+    ];
+
+    const { headers, rows } = new ItemCollection(mockData).toTable();
+    expect(headers).toEqual(['name.first', 'name.last', 'age', 'name']);
+    expect(rows).toEqual([
+      ['John', 'Doe', '21', undefined],
+      [undefined, undefined, '22', 'null'],
+    ]);
+  })
 });

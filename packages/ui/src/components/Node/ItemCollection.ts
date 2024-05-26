@@ -1,4 +1,4 @@
-import { ItemValue } from '@data-story/core'
+import { ItemValue, get } from '@data-story/core'
 
 type JSONValue = string | number | boolean | {[key: string]: JSONValue} | JSONValue[];
 
@@ -36,26 +36,22 @@ export class ItemCollection {
     /**
      * @description get value by header's path
      */
-    const getValueByPath = (object: ItemValue, path: string[]): string | undefined => {
-      let current: any = object;
-      for(let i = 0; i < path.length; i++) {
-        if (current[path[i]] === undefined) {
-          return undefined;
-        }
-        current = current[path[i]];
+    const getValueByPath = (object: ItemValue, path: string): string | undefined => {
+      let rawValue: any = get(object, path);
+
+      const currentType = typeof rawValue;
+
+      if (currentType === 'object' && Array.isArray(rawValue)) {
+        return this.serializeArrayContent(rawValue);
       }
 
-      const currentType = typeof current;
-
-      if (currentType === 'object' && Array.isArray(current)) {
-        return this.serializeArrayContent(current);
-      }
-
-      if (currentType === 'object' && current !== null) {
+      if (currentType === 'object' && rawValue !== null) {
         return undefined;
       }
 
-      return typeof current === 'string' ? current : JSON.stringify(current);
+      return typeof rawValue === 'string'
+        ? rawValue
+        : JSON.stringify(rawValue);
     }
 
     /**
@@ -64,7 +60,7 @@ export class ItemCollection {
     this.items.forEach(item => {
       const row: (string | undefined)[] = [];
       headers.forEach(header => {
-        const value = getValueByPath(item, header.split('.'));
+        const value = getValueByPath(item, header);
         row.push(value);
       });
       rows.push(row);
