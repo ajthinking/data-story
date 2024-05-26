@@ -1,4 +1,4 @@
-import glob from 'glob';
+import * as glob from 'glob';
 import { promises as fs } from 'fs';
 import { ComputerConfig } from '@data-story/core';
 
