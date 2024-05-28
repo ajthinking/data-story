@@ -1,5 +1,5 @@
 import { StringableParam, get } from '@data-story/core';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 // Function to calculate the number of rows based on content
@@ -21,8 +21,15 @@ export function StringableInput({
   param: StringableParam,
   onCursorPositionChange: (position: number) => void // Add this line
 }) {
-  // todo:1. 测试之前的格式，兼容性问题。 2. textArea 下的表现
-  const stringName = `${name}.content`;
+  const stringName = useMemo(() => `${name}.content`, [name]);
+
+  // change Stringable format from string to object to maintain compatibility
+  useEffect(() => {
+    const beforeValue = form.getValues(name);
+    if (beforeValue && !form.getValues(stringName)) {
+      form.setValue(stringName, beforeValue);
+    }
+  }, [form, name, stringName]);
   // State to keep track of the number of rows and cursor position
   const [rows, setRows] = useState(calculateRows(String(form.getValues(stringName))));
 
