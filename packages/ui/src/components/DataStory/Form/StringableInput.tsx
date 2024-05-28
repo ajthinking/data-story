@@ -21,9 +21,12 @@ export function StringableInput({
   param: StringableParam,
   onCursorPositionChange: (position: number) => void // Add this line
 }) {
+  // todo:1. 测试之前的格式，兼容性问题。 2. textArea 下的表现
+  const stringName = `${name}.content`;
   // State to keep track of the number of rows and cursor position
-  const [rows, setRows] = useState(calculateRows(String(form.getValues(name))));
+  const [rows, setRows] = useState(calculateRows(String(form.getValues(stringName))));
 
+  console.log(rows, 'rows in StringableInput form.getValues(name)')
   const handleCursorChange = (event: any) => {
     // Get the current cursor position
     const cursorPosition = event.target.selectionStart;
@@ -36,9 +39,9 @@ export function StringableInput({
   // Effect to listen for form changes - primarily for external updates
   useEffect(() => {
     const subscription = form.watch((value, formEvent) => {
-      if (formEvent.name === name && formEvent.type === 'change') {
+      if (formEvent.name === stringName && formEvent.type === 'change') {
         try {
-          const fieldValue = get(value, name)
+          const fieldValue = get(value, stringName)
           const newRows = calculateRows(fieldValue);
           setRows(newRows);
         } catch (e) {
@@ -47,7 +50,7 @@ export function StringableInput({
       }
     });
     return () => subscription.unsubscribe();
-  }, [form, name]);
+  }, [form, stringName]);
 
   return (
     <div className="flex w-full text-gray-500">
@@ -55,12 +58,12 @@ export function StringableInput({
         ? <textarea
           className="text-xs p-2 w-full bg-gray-50 font-mono"
           rows={rows}
-          {...form.register(`${name}`)}
+          {...form.register(`${stringName}`)}
           onSelect={handleCursorChange}
         />
         : <input
           className="text-xs p-2 w-full bg-gray-50 font-mono"
-          {...form.register(`${name}`)}
+          {...form.register(`${stringName}`)}
         />
       }
     </div>
