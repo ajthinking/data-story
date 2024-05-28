@@ -1,5 +1,5 @@
 import '../../styles/globals.css';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -12,6 +12,7 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
+import { UseFormReturn } from 'react-hook-form';
 
 export type Option = {
   label: string
@@ -33,8 +34,35 @@ export type OptionGroup = {
   selectable?: boolean
 }
 
-export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
+export const DropDown = ({
+  optionGroups,
+  form,
+  name
+}: {
+  optionGroups: OptionGroup[],
+  name?: string,
+  form?: UseFormReturn<{
+    [x: string]: any;
+  }, any>
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  // Based on the provided optionGroups, form, and name, create unique options for the current dropdown
+  const dropDownOptions = useMemo(() =>
+    optionGroups.map((optionGroup) => {
+      return {
+        ...optionGroup,
+        options: optionGroup.options.map((option) => {
+          const defaultSelected = form?.getValues(`${name}.${optionGroup.label}`) === option.label;
+          return {
+            ...option,
+            selected: defaultSelected
+          }
+        })
+      }
+    }), [form, name, optionGroups]);
+
+  console.log(dropDownOptions, 'dropDownOptions');
 
   const closeDropdown = useCallback(() => {
     setIsOpen(false);
@@ -65,7 +93,7 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
   ]);
 
   return (
-    <div className="">
+    <div>
       <div className="ml-1 relative bg-gray-50">
         <button
           ref={refs.setReference}
@@ -86,16 +114,18 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
             style={floatingStyles}
             // If the float nesting becomes more complex moving forward, we might need to consider using a floatingTree
             className="max-h-128 overflow-scroll z-[100] w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-            {optionGroups.map((optionGroup) => {
+            {dropDownOptions.map((optionGroup) => {
               return (
                 <div className="mb-2" key={optionGroup.label}>
                   <div key={optionGroup.label}
                     className="font-bold text-gray-400 flex w-full justify-center text-xs px-2 py-2 border-b uppercase tracking-widest">{optionGroup.label}</div>
                   <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     {optionGroup.options.map((option) => {
+                      const optionName = `${name}.${optionGroup.label}`;
                       return (
                         <li key={option.label} className="cursor-pointer">
                           <div
+                            {...form?.register(optionName)}
                             className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
                             onClick={(event) => {
                               if (optionGroup.selectable) {
@@ -103,7 +133,9 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
                                 optionGroup.options.forEach((innerOption) => {
                                   if (innerOption.label !== option.label) innerOption.selected = false
                                 })
-                                console.log(option, 'option', optionGroup.options, 'options')
+
+                                const value = option.selected ? option.label : '';
+                                form?.setValue(optionName, value);
                               }
 
                               option.callback({
