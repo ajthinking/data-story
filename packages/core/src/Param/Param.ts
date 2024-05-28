@@ -20,7 +20,7 @@ export type StringableParam = {
   interpolationsFromPort?: PortName[],
   casts?: Cast[],
   evaluations?: Evaluation[],
-  value: string | number
+  value: string | number | Record<string, number | string>
 }
 
 export type PropertySelectionParam = {

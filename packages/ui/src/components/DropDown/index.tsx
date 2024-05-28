@@ -62,8 +62,6 @@ export const DropDown = ({
       }
     }), [form, name, optionGroups]);
 
-  console.log(dropDownOptions, 'dropDownOptions');
-
   const closeDropdown = useCallback(() => {
     setIsOpen(false);
   }, []);
