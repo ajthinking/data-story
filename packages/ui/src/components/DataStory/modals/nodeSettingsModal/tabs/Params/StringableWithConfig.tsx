@@ -33,11 +33,14 @@ export function StringableWithConfig({
       name={name ?? param.name}
       onCursorPositionChange={handleCursorPositionChange}
     />
-    <DropDown optionGroups={[
-      paramOptions(param, node, form, cursorPosition),
-      evaluationOptions(param),
-      castOptions(param),
-    ].filter(Boolean) as OptionGroup[]} />
+    <DropDown
+      name={name ?? param.name}
+      form={form}
+      optionGroups={[
+        paramOptions(param, node, form, cursorPosition),
+        evaluationOptions(param),
+        castOptions(param),
+      ].filter(Boolean) as OptionGroup[]} />
   </div>)
 }
 

@@ -24,16 +24,15 @@ export function StringableInput({
   const stringName = useMemo(() => `${name}.content`, [name]);
 
   // change Stringable format from string to object to maintain compatibility
-  useEffect(() => {
-    const beforeValue = form.getValues(name);
-    if (beforeValue && !form.getValues(stringName)) {
-      form.setValue(stringName, beforeValue);
-    }
+  const latestValue = useMemo(() => {
+    const latestValue = form.getValues(stringName) ?? form.getValues(name);
+    form.setValue(stringName, latestValue);
+    return latestValue;
   }, [form, name, stringName]);
-  // State to keep track of the number of rows and cursor position
-  const [rows, setRows] = useState(calculateRows(String(form.getValues(stringName))));
 
-  console.log(rows, 'rows in StringableInput form.getValues(name)')
+  // State to keep track of the number of rows and cursor position
+  const [rows, setRows] = useState(calculateRows(String(latestValue)));
+
   const handleCursorChange = (event: any) => {
     // Get the current cursor position
     const cursorPosition = event.target.selectionStart;
