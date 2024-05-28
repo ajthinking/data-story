@@ -4,6 +4,8 @@ import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
 import Hjson from '@data-story/hjson';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
+import { Evaluation } from '../Param/Evaluation';
+import { Cast } from '../Param/Cast';
 
 export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
   type = 'StringableParam' as const;
@@ -17,8 +19,8 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     if (param.type !== 'StringableParam') throw new Error(`Param "${param.name}" must be StringableParam`);
 
     // maintain compatibility with Stringable. new type: object | old type: string
-    let transformedValue: string | any =  typeof param.value === 'object' ?
-      String(param.value?.content ) :
+    let transformedValue: string | any = typeof param.value === 'object' ?
+      String(param.value?.content) :
       String(param.value);
 
     // **********************************************************************
@@ -36,11 +38,11 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // INTERPOLATE ITEM PROPERTIES
     // **********************************************************************
     if (param.interpolate) {
-    /** Replace template strings with item properties
-     * Example: { greeting: "Hi ${name}!"}
-     * Becomes: { greeting: "Hi Bob!"}
-     * When the item value is { name: "Bob" }
-     */
+      /** Replace template strings with item properties
+       * Example: { greeting: "Hi ${name}!"}
+       * Becomes: { greeting: "Hi Bob!"}
+       * When the item value is { name: "Bob" }
+       */
       transformedValue = transformedValue.replace(
         /\${([\w\.]+)}/g,
         (_: string, name: string) => get(itemValue, name)
@@ -52,7 +54,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // **********************************************************************
     // TODO option for this
     if (true) {
-    /** Replaces function calls */
+      /** Replaces function calls */
       transformedValue = transformedValue.replace(/@(\w+)\((.*)\)/g, (_: string, fn: string, expression: string) => {
         const args = expression.split(',').map(arg => arg.trim());
 
@@ -79,8 +81,20 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // **********************************************************************
     // EVALUATE
     // **********************************************************************
-    const evaluations = param.evaluations || [];
-    const selectedEvaluation = evaluations.find(e => e.selected);
+    // Compatible with the storage method for evaluations.
+    let selectedEvaluation: Evaluation | undefined;
+    if (typeof param.value === 'object') {
+      // new method: evaluation is stored in param.value
+      selectedEvaluation = {
+        type: param.value?.['Evaluation'] as string,
+        label: param.value?.['Evaluation'] as string,
+        selected: true,
+      };
+    } else {
+      // old method: evaluation is stored in param.evaluations
+      const evaluations = param.evaluations || [];
+      selectedEvaluation = evaluations.find(e => e.selected);
+    }
 
     if (selectedEvaluation?.type === 'JSON') {
       transformedValue = JSON.parse(transformedValue);
@@ -97,7 +111,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
 
     if (selectedEvaluation?.type === 'JS_EXPRESSION') {
       try {
-      // Wrap with parentheses to ensure brackets are not interpreted as a block
+        // Wrap with parentheses to ensure brackets are not interpreted as a block
         const nonBlockExpression = `(${transformedValue})`;
         transformedValue = eval(nonBlockExpression);
       } catch(error) {
@@ -109,8 +123,20 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // **********************************************************************
     // CAST
     // **********************************************************************
-    const casts = param.casts || [];
-    const selectedCast = casts.find(c => c.selected);
+    // Compatible with the storage method for casts.
+    let selectedCast: Cast | undefined;
+    if (typeof param.value === 'object') {
+      // new method: cast is stored in param.value
+      selectedCast = {
+        type: param.value?.['Cast'] as string,
+        label: param.value?.['Cast'] as string,
+        selected: true,
+      };
+    } else {
+      // old method: cast is stored in param.casts
+      const casts = param.casts || [];
+      selectedCast = casts.find(c => c.selected);
+    }
 
     if (selectedCast?.type === 'stringCast') {
       transformedValue = String(transformedValue);
