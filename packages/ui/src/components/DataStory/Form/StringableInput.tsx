@@ -20,15 +20,8 @@ export function StringableInput({
   const stringName = useMemo(() => `${name}.value`, [name]);
   const { getValues, setValue, watch, register } = useFormContext()
 
-  // change Stringable format from string to object to maintain compatibility
-  const latestValue = useMemo(() => {
-    const latestValue = getValues(stringName) ?? getValues(name);
-    setValue(stringName, latestValue);
-    return latestValue;
-  }, [getValues, name, setValue, stringName]);
-
   // State to keep track of the number of rows and cursor position
-  const [rows, setRows] = useState(calculateRows(String(latestValue)));
+  const [rows, setRows] = useState(calculateRows(String(getValues(stringName))));
 
   const handleCursorChange = (event: any) => {
     // Get the current cursor position

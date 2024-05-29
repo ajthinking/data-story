@@ -20,9 +20,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
 
     // maintain compatibility with Stringable. new type: object | old type: string
     console.log(param.value, 'param.value', param);
-    let transformedValue: string | any = typeof param.value === 'object' ?
-      String(param.value?.value) :
-      String(param.value);
+    let transformedValue: any  = String(param.value?.value);
 
     // **********************************************************************
     // INTERPOLATE GLOBAL PARAMS
@@ -82,20 +80,9 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // **********************************************************************
     // EVALUATE
     // **********************************************************************
-    // Compatible with the storage method for evaluations.
-    let selectedEvaluation: Evaluation | undefined;
-    if (typeof param.value === 'object') {
-      // new method: evaluation is stored in param.value
-      selectedEvaluation = {
-        type: param.value?.['Evaluation'] as string,
-        label: param.value?.['Evaluation'] as string,
-        selected: true,
-      };
-    } else {
-      // old method: evaluation is stored in param.evaluations
-      const evaluations = param.evaluations || [];
-      selectedEvaluation = evaluations.find(e => e.selected);
-    }
+    const selectedEvaluation = {
+      type: param.value?.['Evaluation'] as string,
+    };
 
     if (selectedEvaluation?.type === 'JSON') {
       transformedValue = JSON.parse(transformedValue);
@@ -124,20 +111,9 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // **********************************************************************
     // CAST
     // **********************************************************************
-    // Compatible with the storage method for casts.
-    let selectedCast: Cast | undefined;
-    if (typeof param.value === 'object') {
-      // new method: cast is stored in param.value
-      selectedCast = {
-        type: param.value?.['Cast'] as string,
-        label: param.value?.['Cast'] as string,
-        selected: true,
-      };
-    } else {
-      // old method: cast is stored in param.casts
-      const casts = param.casts || [];
-      selectedCast = casts.find(c => c.selected);
-    }
+    let selectedCast = {
+      type: param.value?.['Cast'] as string,
+    };
 
     if (selectedCast?.type === 'stringCast') {
       transformedValue = String(transformedValue);
