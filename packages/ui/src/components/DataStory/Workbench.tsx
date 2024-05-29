@@ -1,5 +1,5 @@
 import { DataStoryControls } from './dataStoryControls';
-import { useEffect, useId, useState } from 'react';
+import { useCallback, useEffect, useId, useState } from 'react';
 import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider, } from 'reactflow';
 import NodeComponent from '../Node/NodeComponent';
 import { RunModal } from './modals/runModal/runModal';
@@ -13,6 +13,7 @@ import { useHotkeys } from './useHotkeys';
 import TableNodeComponent from '../Node/TableNodeComponent';
 import { DataStoryProps } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
+import { onDragOver, onDrop } from './onDrop';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -43,6 +44,7 @@ export const Workbench = ({
     traverseNodes: state.traverseNodes,
     onRun: state.onRun,
     setObservers: state.setObservers,
+    addNodeFromDescription: state.addNodeFromDescription,
   });
 
   const {
@@ -56,7 +58,8 @@ export const Workbench = ({
     setOpenNodeModalId,
     traverseNodes,
     onRun,
-    setObservers
+    setObservers,
+    addNodeFromDescription,
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -115,6 +118,11 @@ export const Workbench = ({
           fitViewOptions={{
             padding: 0.25,
           }}
+          onDragOver={useCallback(onDragOver, [])}
+          onDrop={useCallback(
+            (e) => onDrop(e, addNodeFromDescription),
+            [addNodeFromDescription]
+          )}
         >
           <DataStoryControls
             slotComponent={slotComponent}

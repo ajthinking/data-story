@@ -33,6 +33,11 @@ export type { InputObserveConfig } from './types/InputObserveConfig';
 export type { InputObserver } from './types/InputObserver';
 export type { NotifyObserversCallback } from './types/NotifyObserversCallback';
 export type { ReportCallback } from './types/ReportCallback';
+export { json_ } from './Param'
+export { jsonEvaluation } from './Param/evaluations/jsonEvaluation'
+export { hjsonEvaluation } from './Param/evaluations/hjsonEvaluation'
+export { jsFunctionEvaluation } from './Param/evaluations/jsFunctionEvaluation'
+export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluation'
 
 export * as nodes from './computers'
 export * from './Param'
