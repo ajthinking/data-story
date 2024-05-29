@@ -51,9 +51,13 @@ export const DropDown = ({
       return {
         ...optionGroup,
         options: optionGroup.options.map((option) => {
-          if (option.selected) setValue(`${name}.${optionGroup.label}`, option.label);
+          const value = getValues(`${name}.${optionGroup.label}`);
+          const defaultSelected = option.selected && !value ? true : value === option.label;
 
-          const defaultSelected = getValues(`${name}.${optionGroup.label}`) === option.label || option.selected;
+          if (defaultSelected && !value) {
+            setValue(`${name}.${optionGroup.label}`, option.label);
+          }
+
           return {
             ...option,
             selected: defaultSelected

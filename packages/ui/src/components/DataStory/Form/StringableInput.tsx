@@ -17,7 +17,7 @@ export function StringableInput({
   param: StringableParam,
   onCursorPositionChange: (position: number) => void // Add this line
 }) {
-  const stringName = useMemo(() => `${name}.value`, [name]);
+  const stringName = useMemo(() => `${name}.content`, [name]);
   const { getValues, setValue, watch, register } = useFormContext()
 
   // change Stringable format from string to object to maintain compatibility
