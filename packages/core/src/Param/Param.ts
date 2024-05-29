@@ -1,5 +1,4 @@
 import { PortName } from '../types/Port'
-import { snakeCaseToTitleCase } from '../utils/snakeCaseToTitleCase'
 import { Cast } from './Cast'
 import { Evaluation } from './Evaluation'
 import { numberCast } from './casts/numberCast'
@@ -8,6 +7,12 @@ import { hjsonEvaluation } from './evaluations/hjsonEvaluation'
 import { jsExpressionEvaluation } from './evaluations/jsExpressionEvaluation'
 import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
+
+export interface StringableInputValue extends Record<string, any> {
+  value: any,
+  Evaluation?: string,
+  Cast?: string,
+}
 
 export type StringableParam = {
   name: string,
@@ -20,7 +25,7 @@ export type StringableParam = {
   interpolationsFromPort?: PortName[],
   casts?: Cast[],
   evaluations?: Evaluation[],
-  value: string | number | Record<string, number | string>
+  value: StringableInputValue,
 }
 
 export type PropertySelectionParam = {
@@ -58,7 +63,7 @@ export type RepeatableParam<RepeatableRow> = {
   help: string,
   type: 'RepeatableParam',
   row: RepeatableRow,
-  value: Param[]
+  value: Record<string, unknown>[]
 }
 
 export type Param =
@@ -103,7 +108,10 @@ export const str = ({
     casts: [
       { ...stringCast, selected: true },
     ],
-    value: value ?? '',
+    value: {
+      value: value ?? '',
+      Cast: stringCast.type,
+    }
   }
 }
 
@@ -138,7 +146,10 @@ export const num = ({
     casts: [
       { ...numberCast, selected: true },
     ],
-    value: value ?? 0,
+    value: {
+      value: value ?? 0,
+      Cast: numberCast.type,
+    },
   }
 }
 
@@ -179,7 +190,10 @@ export const json_ = ({
       numberCast,
       stringCast,
     ],
-    value: value ?? 0,
+    value: {
+      value: value ?? 0,
+      Evaluation: jsonEvaluation.type,
+    },
   }
 }
 
@@ -218,6 +232,9 @@ export const hjson = ({
       numberCast,
       stringCast,
     ],
-    value: value ?? 0,
+    value: {
+      value: value ?? 0,
+      Evaluation: hjsonEvaluation.type
+    },
   }
 }
