@@ -6,13 +6,8 @@ import { SelectInput } from '../../../../Form/SelectInput';
 
 export function Params({
   node,
-  form
 }: {
   node: ReactFlowNode,
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>
-
 }) {
   return <div className="max-h-128 overflow-y-scroll relative pb-6 pt-4 px-6 flex-auto space-y-1">
     <div className='max-w-4xl w-full space-y-2 p-4'>
@@ -24,7 +19,6 @@ export function Params({
           {/* Horizontal layout */}
           {param.type === 'StringableParam' && <StringableWithConfig
             param={param}
-            form={form}
             name={`params.${param.name}`}
             node={node}
           />}
@@ -32,13 +26,11 @@ export function Params({
           {/* Vertical layout */}
           {param.type === 'RepeatableParam' && <RepeatableWithConfig
             param={param}
-            form={form}
             node={node}
           />}
 
           {param.type === 'SelectParam' && <SelectInput
             name={`params.${param.name}`}
-            form={form}
             param={param}
           />}
         </div>)

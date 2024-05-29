@@ -1,6 +1,6 @@
 import { Param } from '@data-story/core';
 import React, { useCallback } from 'react';
-import { useFieldArray } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 import { DragIcon } from '../icons/dragIcon';
 import { CloseIcon } from '../icons/closeIcon';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -11,7 +11,6 @@ import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/
 
 function RepeatableCell({
   param: paramColumn,
-  form,
   name,
   rowIndex,
   node,
@@ -26,7 +25,6 @@ function RepeatableCell({
     {
       ParamsComponentFactory.defaultInstance.getComponent({
         param: paramColumn,
-        form,
         name: `params.${name}.${rowIndex}.${paramColumn.name}`,
         node,
         type: paramColumn.type,
@@ -41,7 +39,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   reorderRow: (draggedRowIndex: number, targetRowIndex: number) => void;
   deleteRow: (index: number) => void
 }) {
-  const { form, param, node, row, rowIndex, reorderRow, deleteRow } = props;
+  const { param, node, row, rowIndex, reorderRow, deleteRow } = props;
   const name = param.name;
 
   const [, dropRef] = useDrop({
@@ -81,7 +79,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
       param.row.map((column: Param, columnIndex: number) => (
         <RepeatableCell
           key={`${param.row[columnIndex].name}-${columnIndex}`}
-          param={column} form={form}
+          param={column}
           name={name} rowIndex={rowIndex}
           columnIndex={columnIndex} node={node}
         />
@@ -111,12 +109,12 @@ const defaultRowData = (row: Param[]) => {
 }
 
 export function RepeatableComponent({
-  form,
   param,
   node,
 }: RepeatableInputProps) {
+  const { control } = useFormContext();
   const { fields, append, remove, swap } = useFieldArray({
-    control: form.control,
+    control: control,
     name: `params.${param.name}`,
   });
 
@@ -148,7 +146,7 @@ export function RepeatableComponent({
                 reorderRow={swap}
                 deleteRow={remove}
                 row={row} rowIndex={i}
-                param={param} form={form}
+                param={param}
                 node={node}
               />
             )

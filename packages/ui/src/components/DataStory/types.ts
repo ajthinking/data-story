@@ -66,7 +66,7 @@ export type StoreInitOptions = {
 export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig)  => void;
 
 export type FormCommonProps = {
-  form: UseFormReturn<{
+  form?: UseFormReturn<{
     [x: string]: any;
   }, any>;
   node: ReactFlowNode;

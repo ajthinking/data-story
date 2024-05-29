@@ -1,21 +1,17 @@
 import { Param, StringableParam } from '@data-story/core'
 import { StringableInput } from '../../../../Form/StringableInput'
-import { UseFormReturn } from 'react-hook-form';
-import { DropDown, Option, OptionGroup } from '../../../../../DropDown';
+import { useFormContext, UseFormReturn } from 'react-hook-form';
+import { DropDown, OptionGroup } from '../../../../../DropDown';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { useState } from 'react';
 import { FormComponent, FormComponentProps } from '../../../../types';
 
 export function StringableWithConfig({
   param,
-  form,
   name,
   node,
 }: {
   param: StringableParam
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>,
   name?: string,
   node: ReactFlowNode,
 }) {
@@ -24,10 +20,10 @@ export function StringableWithConfig({
   const handleCursorPositionChange = (newPosition: number) => {
     setCursorPosition(newPosition);
   };
+  const form = useFormContext();
 
   return (<div className="group flex bg-gray-50">
     <StringableInput
-      form={form}
       {...param}
       param={param as StringableParam}
       name={name ?? param.name}
@@ -35,7 +31,6 @@ export function StringableWithConfig({
     />
     <DropDown
       name={name ?? param.name}
-      form={form}
       optionGroups={[
         paramOptions(param, node, form, cursorPosition),
         evaluationOptions(param),

@@ -12,7 +12,7 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { UseFormReturn } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 export type Option = {
   label: string
@@ -36,16 +36,14 @@ export type OptionGroup = {
 
 export const DropDown = ({
   optionGroups,
-  form,
   name
 }: {
   optionGroups: OptionGroup[],
   name?: string,
-  form?: UseFormReturn<{
-    [x: string]: any;
-  }, any>
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { getValues, setValue, register } = useFormContext()
 
   // Based on the provided optionGroups, form, and name, create unique options for the current dropdown
   const dropDownOptions = useMemo(() =>
@@ -53,16 +51,16 @@ export const DropDown = ({
       return {
         ...optionGroup,
         options: optionGroup.options.map((option) => {
-          if (option.selected) form?.setValue(`${name}.${optionGroup.label}`, option.label);
+          if (option.selected) setValue(`${name}.${optionGroup.label}`, option.label);
 
-          const defaultSelected = form?.getValues(`${name}.${optionGroup.label}`) === option.label || option.selected;
+          const defaultSelected = getValues(`${name}.${optionGroup.label}`) === option.label || option.selected;
           return {
             ...option,
             selected: defaultSelected
           }
         })
       }
-    }), [form, name, optionGroups]);
+    }), [getValues, name, optionGroups, setValue]);
 
   const closeDropdown = useCallback(() => {
     setIsOpen(false);
@@ -125,7 +123,7 @@ export const DropDown = ({
                       return (
                         <li key={option.label} className="cursor-pointer">
                           <div
-                            {...form?.register(optionName)}
+                            {...register(optionName)}
                             className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
                             onClick={(event) => {
                               if (optionGroup.selectable) {
@@ -135,7 +133,7 @@ export const DropDown = ({
                                 })
 
                                 const value = option.selected ? option.label : '';
-                                form?.setValue(optionName, value);
+                                setValue(optionName, value);
                               }
 
                               option.callback({
