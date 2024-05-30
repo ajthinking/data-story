@@ -1,5 +1,4 @@
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
-import { UseFormReturn } from 'react-hook-form';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
 import { SelectInput } from '../../../../Form/SelectInput';

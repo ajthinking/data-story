@@ -1,29 +1,39 @@
 import { DataStoryProvider } from '../store/store';
 import { ReactFlowProvider } from 'reactflow';
 import { RepeatableInput } from './RepeatableInput';
-import { useForm } from 'react-hook-form';
-import { RepeatableInputProps } from '../types';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import { FormCommonProps, RepeatableInputProps } from '../types';
 import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/ParamsComponentFactory';
 import { defaultValues, mockNode, mockParam } from './mocks';
+
+const MockComponent = ({ param, type }: {
+  param: FormCommonProps & {param: unknown},
+  type: 'StringableParam' | 'PortSelectionParam'
+}) => {
+  const { getValues } = useFormContext();
+  const value = getValues(param.name as string);
+  return {
+    StringableParam: <div data-cy='data-story-stringable-param'>{value}</div>,
+    PortSelectionParam: <div data-cy='data-story-port-selection-param'>{value}</div>
+  }[type];
+};
 
 const RepeatableInputWithForm = () => {
   const mockForm = useForm({
     defaultValues
-  }) as unknown as RepeatableInputProps['form'];
+  });
 
   // change ParamsComponentFactory instance
   ParamsComponentFactory.defaultInstance.availableComponents = [
     {
       getComponent: (params) => {
-        const value = params.form.getValues(params.name as string);
-        return <div data-cy='data-story-stringable-param'> {value} </div>
+        return <MockComponent param={params} type={'StringableParam'}/>
       },
       getType: () => 'StringableParam'
     },
     {
       getComponent: (params) => {
-        const value = params.form.getValues(params.name as string);
-        return <div data-cy='data-story-port-selection-param'>{value}</div>
+        return <MockComponent param={params} type={'PortSelectionParam'} />
       },
       getType: () => 'PortSelectionParam'
     }
@@ -31,7 +41,9 @@ const RepeatableInputWithForm = () => {
 
   return (<DataStoryProvider>
     <ReactFlowProvider>
-      <RepeatableInput form={mockForm} node={mockNode} param={mockParam}/>
+      <FormProvider {...mockForm}>
+        <RepeatableInput node={mockNode} param={mockParam}/>
+      </FormProvider>
     </ReactFlowProvider>
   </DataStoryProvider>)
 }
