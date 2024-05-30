@@ -34,6 +34,44 @@ export type OptionGroup = {
   selectable?: boolean
 }
 
+function DropdownLi({
+  option,
+  optionName,
+  optionGroup,
+  closeDropdown,
+}:{ option: Option,  optionName: string, optionGroup: OptionGroup, closeDropdown: () => void}) {
+  const { setValue, register } = useFormContext()
+
+  return (
+    <li key={option.label} className="cursor-pointer">
+      <div
+        {...register(optionName)}
+        className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
+        onClick={(event) => {
+          if (optionGroup.selectable) {
+            option.selected = !option.selected;
+            optionGroup.options.forEach((innerOption) => {
+              if (innerOption.label !== option.label) innerOption.selected = false
+            })
+
+            const value = option.selected ? option.label : '';
+            setValue(optionName, value);
+          }
+
+          option.callback({
+            close: closeDropdown,
+            selectedIndex: optionGroup.options.findIndex((option) => option.selected),
+          })
+        }
+        }
+      >
+        {option.label}
+        {option.selected && (<div className="">✓</div>)}
+      </div>
+    </li>
+  );
+}
+
 export const DropDown = ({
   optionGroups,
   name
@@ -43,7 +81,7 @@ export const DropDown = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { getValues, setValue, register } = useFormContext()
+  const { getValues, setValue } = useFormContext()
 
   // Based on the provided optionGroups, form, and name, create unique options for the current dropdown
   const dropDownOptions = useMemo(() =>
@@ -124,34 +162,7 @@ export const DropDown = ({
                   <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     {optionGroup.options.map((option) => {
                       const optionName = `${name}.${optionGroup.label}`;
-                      return (
-                        <li key={option.label} className="cursor-pointer">
-                          <div
-                            {...register(optionName)}
-                            className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
-                            onClick={(event) => {
-                              if (optionGroup.selectable) {
-                                option.selected = !option.selected;
-                                optionGroup.options.forEach((innerOption) => {
-                                  if (innerOption.label !== option.label) innerOption.selected = false
-                                })
-
-                                const value = option.selected ? option.label : '';
-                                setValue(optionName, value);
-                              }
-
-                              option.callback({
-                                close: closeDropdown,
-                                selectedIndex: optionGroup.options.findIndex((option) => option.selected),
-                              })
-                            }
-                            }
-                          >
-                            {option.label}
-                            {option.selected && (<div className="">✓</div>)}
-                          </div>
-                        </li>
-                      )
+                      return (<DropdownLi option={option} optionName={optionName} optionGroup={optionGroup} closeDropdown={closeDropdown} />)
                     })}
                   </ul>
                   {optionGroup.options.length === 0 &&
