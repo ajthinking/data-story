@@ -43,7 +43,7 @@ function DropdownLi({
   const { setValue, register } = useFormContext()
 
   return (
-    <li key={option.label} className="cursor-pointer">
+    <li className="cursor-pointer">
       <div
         {...register(optionName)}
         className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
@@ -90,19 +90,14 @@ export const DropDown = ({
         ...optionGroup,
         options: optionGroup.options.map((option) => {
           const value = getValues(`${name}.${optionGroup.label}`);
-          const defaultSelected = option.selected && !value ? true : value === option.label;
-
-          if (defaultSelected && !value) {
-            setValue(`${name}.${optionGroup.label}`, option.label);
-          }
 
           return {
             ...option,
-            selected: defaultSelected
+            selected: value === option.value
           }
         })
       }
-    }), [getValues, name, optionGroups, setValue]);
+    }), [getValues, name, optionGroups]);
 
   const closeDropdown = useCallback(() => {
     setIsOpen(false);
@@ -162,7 +157,7 @@ export const DropDown = ({
                   <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     {optionGroup.options.map((option) => {
                       const optionName = `${name}.${optionGroup.label}`;
-                      return (<DropdownLi option={option} optionName={optionName} optionGroup={optionGroup} closeDropdown={closeDropdown} />)
+                      return (<DropdownLi key={option.label} option={option} optionName={optionName} optionGroup={optionGroup} closeDropdown={closeDropdown} />)
                     })}
                   </ul>
                   {optionGroup.options.length === 0 &&

@@ -18,7 +18,7 @@ export function StringableInput({
   onCursorPositionChange: (position: number) => void // Add this line
 }) {
   const stringName = useMemo(() => `${name}.value`, [name]);
-  const { getValues, setValue, watch, register } = useFormContext()
+  const { getValues,  watch, register } = useFormContext()
 
   // State to keep track of the number of rows and cursor position
   const [rows, setRows] = useState(calculateRows(String(getValues(stringName))));
