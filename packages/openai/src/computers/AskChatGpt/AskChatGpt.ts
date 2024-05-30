@@ -1,23 +1,23 @@
 import { ComputerConfig } from '@data-story/core';
 import { Configuration, OpenAIApi } from 'openai';
+import { createDefaultStringable } from '@data-story/core';
 
 export const AskChatGpt: ComputerConfig = {
   name: 'AskChatGpt',
   inputs: ['input'],
   outputs: ['completions'],
   params: [
-    {
+    createDefaultStringable({
       name: 'prompt',
       label: 'Prompt',
       help: 'Chat prompt',
-      type: 'StringableParam',
       multiline: true,
       canInterpolate: true,
       interpolate: true,
       evaluations: [],
       casts: [],
       value: 'What is the meaning of life?',
-    },
+    }),
   ],
 
   category: 'API',

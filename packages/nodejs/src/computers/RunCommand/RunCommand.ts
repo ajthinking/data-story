@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
-import { ComputerConfig } from '@data-story/core';
+import { ComputerConfig, createDefaultStringable } from '@data-story/core';
 
 const exec = promisify(execCallback);
 
@@ -25,18 +25,17 @@ export const RunCommand: ComputerConfig = {
   inputs: ['input'],
   outputs: ['output', 'error'],
   params: [
-    {
+    createDefaultStringable({
       name: 'command',
       label: 'Command',
       help: 'Command to run',
-      type: 'StringableParam',
       multiline: true,
       canInterpolate: false,
       interpolate: false,
       evaluations: [],
       casts: [],
       value: 'say "Hello World"',
-    }
+    })
   ],
 
   async *run({ input, output, params }) {

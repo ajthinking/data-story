@@ -1,5 +1,6 @@
 import { StoreSchema, useStore } from '../../store/store';
 import { shallow } from 'zustand/shallow';
+import { createDefaultStringable } from '@data-story/core';
 
 const DefineMode = ({ params, setDefineMode }) => {
   const selector = (state: StoreSchema) => ({
@@ -11,9 +12,8 @@ const DefineMode = ({ params, setDefineMode }) => {
 
   const { setParams } = useStore(selector, shallow);
 
-  const sampleParam = {
+  const sampleParam = createDefaultStringable({
     name: 'sampleParam',
-    type: 'StringableParam',
     label: 'sampleParam',
     help: '',
     multiline: false,
@@ -22,7 +22,7 @@ const DefineMode = ({ params, setDefineMode }) => {
     evaluations: [],
     casts: [],
     value: 'default value',
-  }
+  })
 
   const content = params.length > 0 ? params : [sampleParam];
 
