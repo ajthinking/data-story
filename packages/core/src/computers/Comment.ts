@@ -1,16 +1,16 @@
 import { ComputerConfig } from '../types/ComputerConfig';
 import { multiline } from '../utils/multiline';
+import { createDefaultStringable } from '../Param';
 
 export const Comment: ComputerConfig = {
   name: 'Comment',
   inputs: [],
   outputs: [],
   params: [
-    {
+    createDefaultStringable( {
       name: 'content',
       label: 'Content',
       help: 'Markdown content',
-      type: 'StringableParam',
       multiline: true,
       canInterpolate: false,
       interpolate: false,
@@ -19,8 +19,8 @@ export const Comment: ComputerConfig = {
       value: multiline`
         ### Comment
         paragraph
-      `,
-    }
+      `
+    })
   ],
 
   async *run({}) {},

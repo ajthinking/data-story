@@ -77,6 +77,39 @@ export type ParamValue = Param['value']
 
 // // quick param builders
 
+type StringableConfigType = Omit<StringableParam, 'value' | 'type'> & {
+  value: StringableInputValue['value']
+}
+
+export const createDefaultStringable = ({
+  name,
+  label,
+  help,
+  multiline,
+  canInterpolate,
+  interpolate,
+  evaluations,
+  casts,
+  interpolationsFromPort,
+  value,
+}:StringableConfigType): StringableParam => {
+  return {
+    name,
+    type: 'StringableParam',
+    label,
+    help,
+    multiline,
+    canInterpolate,
+    interpolate,
+    evaluations,
+    casts,
+    interpolationsFromPort,
+    value: {
+      value: value,
+    },
+  }
+}
+
 export const str = ({
   name,
   label,

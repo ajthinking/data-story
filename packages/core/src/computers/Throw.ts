@@ -5,16 +5,16 @@ import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { ComputerConfig } from '../types/ComputerConfig';
+import { createDefaultStringable } from '../Param';
 
 export const Throw: ComputerConfig = {
   name: 'Throw',
   inputs: ['input'],
   params: [
-    {
+    createDefaultStringable({
       name: 'message',
       label: 'message',
       help: 'What to throw',
-      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -28,7 +28,7 @@ export const Throw: ComputerConfig = {
         stringCast,
       ],
       value: 'Some error',
-    }
+    })
   ],
 
   async *run({ input, node }) {

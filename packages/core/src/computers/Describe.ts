@@ -3,6 +3,7 @@ import { multiline } from '../utils/multiline';
 import { stringCast } from '../Param/casts/stringCast';
 import { numberCast } from '../Param/casts/numberCast';
 import { get } from '../utils/get';
+import { createDefaultStringable } from '../Param';
 
 export const Describe: ComputerConfig = {
   name: 'Describe',
@@ -12,11 +13,10 @@ export const Describe: ComputerConfig = {
   inputs: ['input'],
   outputs: ['truncated', 'full'],
   params: [
-    {
+    createDefaultStringable(  {
       name: 'path',
       label: 'Path',
       help: 'Dot notated path to desired description root. Leave empty to use the root of the collection.',
-      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -24,20 +24,20 @@ export const Describe: ComputerConfig = {
         {...stringCast, selected: true}
       ],
       value: ''
-    },
-    {
-      name: 'truncate_limit',
-      label: 'Truncate limit',
-      help: 'How many keys to display?',
-      type: 'StringableParam',
-      multiline: false,
-      canInterpolate: true,
-      interpolate: true,
-      casts: [
-        {...numberCast, selected: true}
-      ],
-      value: String(10)
-    },
+    }),
+    createDefaultStringable(
+      {
+        name: 'truncate_limit',
+        label: 'Truncate limit',
+        help: 'How many keys to display?',
+        multiline: false,
+        canInterpolate: true,
+        interpolate: true,
+        casts: [
+          {...numberCast, selected: true}
+        ],
+        value: String(10)
+      }),
   ],
 
   canRun({ input }) {
