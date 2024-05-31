@@ -1,5 +1,5 @@
 import { PortSelectionInput } from './PortSelectionInput';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { FormComponentProps } from '../../../../types';
 
 const TestedPortSelectionInput = (props: {onForm: (f: FormComponentProps['form']) => any}) => {
@@ -11,18 +11,17 @@ const TestedPortSelectionInput = (props: {onForm: (f: FormComponentProps['form']
         { name: 'output2', id: '2' },
       ]),
     },
-  }) as unknown as FormComponentProps['form'];
-  props.onForm(form);
+  });
+  props.onForm(form as unknown as FormComponentProps['form']);
 
   return (
-    <>
+    <FormProvider {...form}>
       <PortSelectionInput
         param={{} as unknown as FormComponentProps['param']}
-        form={form}
         name="PortSelected"
         node={{} as unknown as FormComponentProps['node']}
       />
-    </>
+    </FormProvider>
   );
 }
 
