@@ -105,7 +105,7 @@ export const createDefaultStringable = ({
     casts,
     interpolationsFromPort,
     value: {
-      value: value,
+      value: value ?? '',
     },
   }
 }

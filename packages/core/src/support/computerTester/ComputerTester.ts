@@ -278,7 +278,9 @@ export class ComputerTester {
       const hasExplicitValue = this.explicitParamValues.hasOwnProperty(param.name)
 
       if(hasExplicitValue) {
-        param.value = this.explicitParamValues[param.name]
+        param.value = {
+          value: this.explicitParamValues[param.name]
+        }
         continue
       }
     }

@@ -3,7 +3,7 @@ import { multiline } from '../utils/multiline';
 import { stringCast } from '../Param/casts/stringCast';
 import { numberCast } from '../Param/casts/numberCast';
 import { get } from '../utils/get';
-import { createDefaultStringable } from '../Param';
+import { num, str } from '../Param';
 
 export const Describe: ComputerConfig = {
   name: 'Describe',
@@ -13,19 +13,16 @@ export const Describe: ComputerConfig = {
   inputs: ['input'],
   outputs: ['truncated', 'full'],
   params: [
-    createDefaultStringable(  {
+    str(  {
       name: 'path',
       label: 'Path',
       help: 'Dot notated path to desired description root. Leave empty to use the root of the collection.',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
-      casts: [
-        {...stringCast, selected: true}
-      ],
       value: ''
     }),
-    createDefaultStringable(
+    num(
       {
         name: 'truncate_limit',
         label: 'Truncate limit',
@@ -33,9 +30,6 @@ export const Describe: ComputerConfig = {
         multiline: false,
         canInterpolate: true,
         interpolate: true,
-        casts: [
-          {...numberCast, selected: true}
-        ],
         value: String(10)
       }),
   ],
@@ -45,9 +39,14 @@ export const Describe: ComputerConfig = {
   },
 
   async *run({ input, output, params }) {
+    console.log(params, 'params111')
     const incoming = input.pull()
-      .map(i => get(i.value, String(params.path)))
+      .map(i => {
+        console.log(i.value, 'i.value', String(params.path), 'String(params.path)');
+        return get(i.value, String(params.path));
+      })
 
+    console.log(incoming, 'incoming');
     const description = describeCollection(incoming)
     const truncated = truncateDescription(description, Number(params.truncate_limit))
 
@@ -74,6 +73,7 @@ export function describeCollection(arr: any[]) {
     });
   };
 
+  console.log(arr, 'arr', result, 'result');
   // Iterate over each object in the array
   arr.forEach(obj => {
     processObject(obj, result);
