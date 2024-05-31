@@ -4,7 +4,6 @@ import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluat
 import { when } from '../support/computerTester/ComputerTester';
 import { multiline } from '../utils/multiline';
 import { Create } from './Create';
-import Hjson from '@data-story/hjson';
 
 it('reads json by default', async () => {
   await when(Create)
@@ -26,7 +25,10 @@ it('can parse hjson', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
-      value: '{ cool: "yes" }',
+      value: {
+        value: '{ cool: "yes" }',
+        Evaluation: 'HJSON'
+      },
       evaluations: [
         { ...hjsonEvaluation, selected: true }
       ]
@@ -40,7 +42,10 @@ it('can parse js function', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
-      value: '() => ({ sum: 1 + 1 })',
+      value: {
+        value: '() => ({ sum: 1 + 1 })',
+        Evaluation: 'JS_FUNCTION'
+      },
       evaluations: [
         { ...jsFunctionEvaluation, selected: true }
       ]
@@ -54,10 +59,13 @@ it('can parse js expression', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
-      value: multiline`
+      value: {
+        value: multiline`
       ({
         interesting: 'yes'
       })`,
+        Evaluation: 'JS_EXPRESSION'
+      },
       evaluations: [
         { ...jsExpressionEvaluation, selected: true }
       ]
@@ -71,10 +79,13 @@ it('can directly parse js objects starting with bracket', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
-      value: multiline`
+      value: {
+        value: multiline`
       {
         label: 'statement'
       }`,
+        Evaluation: 'JS_EXPRESSION'
+      },
       evaluations: [
         { ...jsExpressionEvaluation, selected: true }
       ]

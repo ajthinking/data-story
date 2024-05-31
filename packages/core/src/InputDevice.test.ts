@@ -1,7 +1,7 @@
 import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { InputDevice } from './InputDevice'
-import { Param, StringableParam } from './Param'
+import { createDefaultStringable } from './Param'
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
 import { Node } from './types/Node'
 
@@ -222,16 +222,15 @@ describe('params', () => {
       type: 'node-type',
       inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
       outputs: [],
-      params: [{
+      params: [createDefaultStringable({
         name: 'greeting',
         label: 'Greeting',
         help: 'The greeting to use',
-        type: 'StringableParam',
         value: 'Hello ${name}',
         multiline: false,
         canInterpolate: true,
         interpolate: true,
-      }]
+      })]
     }
 
     const links = [
