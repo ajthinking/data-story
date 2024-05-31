@@ -5,16 +5,19 @@ import { DropDown, OptionGroup } from '../../../../../DropDown';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { useState } from 'react';
 import { FormComponent, FormComponentProps } from '../../../../types';
+import { SubField, useFormField, UseFormFieldReturn } from '../../../../Form/UseFormField';
 
-export function StringableWithConfig({
-  param,
-  name,
-  node,
-}: {
+type StringableWithConfigProps = {
   param: StringableParam
   name?: string,
   node: ReactFlowNode,
-}) {
+};
+
+function StringableWithConfigComponent({
+  param,
+  name,
+  node,
+}: StringableWithConfigProps) {
   const [cursorPosition, setCursorPosition] = useState(0);
 
   const handleCursorPositionChange = (newPosition: number) => {
@@ -22,35 +25,40 @@ export function StringableWithConfig({
   };
   const form = useFormContext();
 
+  console.log(form.getValues(`params.${param.name}`), 222)
+  const filedForm = useFormField();
+
   return (<div className="group flex bg-gray-50">
     <StringableInput
       {...param}
       param={param as StringableParam}
-      name={name ?? param.name}
       onCursorPositionChange={handleCursorPositionChange}
     />
     <DropDown
-      name={name ?? param.name}
       optionGroups={[
-        paramOptions(param, node, form, cursorPosition),
+        paramOptions(param, node, filedForm, cursorPosition),
         evaluationOptions(param),
         castOptions(param),
-      ].filter(Boolean) as OptionGroup[]} />
+      ].filter(Boolean) as OptionGroup[]}/>
   </div>)
+}
+
+export function StringableWithConfig(params: StringableWithConfigProps) {
+  return (<SubField fieldName={params.param.name}>
+    <StringableWithConfigComponent {...params} />
+  </SubField>)
 }
 
 const paramOptions = (
   param: StringableParam,
   node: ReactFlowNode,
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>,
+  form: UseFormFieldReturn,
   cursorPosition: number,
 ): OptionGroup | undefined => {
   const portNames = param.interpolationsFromPort
     ?? node.data.inputs.map(port => port.name)
-
-  const [ portName ] = portNames
+  const currentValue = form.getValues();
+  const [portName] = portNames
 
   const port = node.data.inputs.find((port) => port.name === portName)
 
@@ -66,15 +74,13 @@ const paramOptions = (
       label: key,
       value: key,
       callback: ({ close }) => {
-        const currentValue = form.getValues(`params.${param.name}`);
+        const currentValue = form.getValues();
         // Update the form field by adding it to the cursor position
         const interpolation = '${' + key + '}'
         const part1 = currentValue.slice(0, cursorPosition)
         const part2 = currentValue.slice(cursorPosition)
         const newValue = part1 + interpolation + part2
-
-        form.setValue(`params.${param.name}`, newValue);
-
+        form.setValue(newValue);
         close()
       }
     })),
@@ -86,7 +92,7 @@ const evaluationOptions = (
 ): OptionGroup | undefined => {
   const evaluations = param.evaluations ?? []
 
-  if(evaluations.length === 0) return undefined
+  if (evaluations.length === 0) return undefined
 
   return {
     label: 'Evaluation',
@@ -139,8 +145,9 @@ export const castOptions = (
 
 export class StringableComponent implements FormComponent<Param> {
   getComponent(params: FormComponentProps & {param: Param}) {
-    return (<StringableWithConfig {...params} param={params.param as StringableParam} />);
+    return (<StringableWithConfig {...params} param={params.param as StringableParam}/>);
   };
+
   getType() {
     return 'StringableParam';
   }

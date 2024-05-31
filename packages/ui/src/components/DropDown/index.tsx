@@ -12,7 +12,7 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { useFormContext } from 'react-hook-form';
+import { SubField, useFormField } from '../DataStory/Form/UseFormField';
 
 export type Option = {
   label: string
@@ -34,18 +34,22 @@ export type OptionGroup = {
   selectable?: boolean
 }
 
-function DropdownLi({
+type DropdownLiProps = {
+  option: Option,
+  optionGroup: OptionGroup,
+  closeDropdown: () => void};
+
+const DropdownLiComponent = ({
   option,
-  optionName,
   optionGroup,
   closeDropdown,
-}:{ option: Option,  optionName: string, optionGroup: OptionGroup, closeDropdown: () => void}) {
-  const { setValue, register } = useFormContext()
+}:DropdownLiProps) => {
+  const { setValue, register } = useFormField()
 
   return (
     <li className="cursor-pointer">
       <div
-        {...register(optionName)}
+        {...register()}
         className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
         onClick={(event) => {
           if (optionGroup.selectable) {
@@ -55,7 +59,7 @@ function DropdownLi({
             })
 
             const value = option.selected ? option.label : '';
-            setValue(optionName, value);
+            setValue(value);
           }
 
           option.callback({
@@ -72,24 +76,28 @@ function DropdownLi({
   );
 }
 
+const DropdownLi = (params: DropdownLiProps) => {
+  return (<SubField fieldName={params.optionGroup.label ?? ''}>
+    <DropdownLiComponent {...params} />
+  </SubField>)
+}
+
 export const DropDown = ({
   optionGroups,
-  name
 }: {
   optionGroups: OptionGroup[],
-  name?: string,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { getValues, setValue } = useFormContext()
+  const { getValues } = useFormField()
 
-  // Based on the provided optionGroups, form, and name, create unique options for the current dropdown
+  // Based on the provided optionGroups and form, create unique options for the current dropdown
   const dropDownOptions = useMemo(() =>
     optionGroups.map((optionGroup) => {
       return {
         ...optionGroup,
         options: optionGroup.options.map((option) => {
-          const value = getValues(`${name}.${optionGroup.label}`);
+          const value = getValues();
 
           return {
             ...option,
@@ -97,7 +105,7 @@ export const DropDown = ({
           }
         })
       }
-    }), [getValues, name, optionGroups]);
+    }), [getValues, optionGroups]);
 
   const closeDropdown = useCallback(() => {
     setIsOpen(false);
@@ -156,8 +164,7 @@ export const DropDown = ({
                     className="font-bold text-gray-400 flex w-full justify-center text-xs px-2 py-2 border-b uppercase tracking-widest">{optionGroup.label}</div>
                   <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     {optionGroup.options.map((option) => {
-                      const optionName = `${name}.${optionGroup.label}`;
-                      return (<DropdownLi key={option.label} option={option} optionName={optionName} optionGroup={optionGroup} closeDropdown={closeDropdown} />)
+                      return (<DropdownLi key={option.label} option={option} optionGroup={optionGroup} closeDropdown={closeDropdown} />)
                     })}
                   </ul>
                   {optionGroup.options.length === 0 &&

@@ -2,8 +2,9 @@ import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
 import { SelectInput } from '../../../../Form/SelectInput';
+import { SubField } from '../../../../Form/UseFormField';
 
-export function Params({
+export function ParamsTab({
   node,
 }: {
   node: ReactFlowNode,
@@ -37,4 +38,12 @@ export function Params({
     </div>
     {node.data.params.length === 0 && <div className="text-xs text-gray-400">No parameters</div>}
   </div>;
+}
+
+export function Params ({
+  node,
+}) {
+  return (<SubField fieldName={'params'}>
+    <ParamsTab node={node}/>
+  </SubField>);
 }
