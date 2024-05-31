@@ -1,6 +1,6 @@
 import { Param } from '@data-story/core';
-import React, { useCallback } from 'react';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import React, { useCallback, useContext } from 'react';
+import { useFieldArray } from 'react-hook-form';
 import { DragIcon } from '../icons/dragIcon';
 import { CloseIcon } from '../icons/closeIcon';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
@@ -8,29 +8,32 @@ import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FormComponentProps, RepeatableInputProps } from '../types';
 import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/ParamsComponentFactory';
+import { SubField, SubFieldContext, useFormField } from './UseFormField';
 
 function RepeatableCell({
   param: paramColumn,
-  name,
   rowIndex,
   node,
 }: FormComponentProps & {
   columnIndex: number,
   rowIndex: number,
 }) {
-  return <td
-    scope="row"
-    className="border font-medium whitespace-nowrap bg-gray-50 align-top"
-  >
-    {
-      ParamsComponentFactory.defaultInstance.getComponent({
-        param: paramColumn,
-        name: `params.${name}.${rowIndex}.${paramColumn.name}`,
-        node,
-        type: paramColumn.type,
-      })
-    }
-  </td>;
+  const {fieldName} = useContext(SubFieldContext);
+  return <SubField fieldName={`${rowIndex}`}>
+    <td
+      scope="row"
+      className="border font-medium whitespace-nowrap bg-gray-50 align-top"
+    >
+      {
+        ParamsComponentFactory.defaultInstance.getComponent({
+          param: paramColumn,
+          name: fieldName,
+          node,
+          type: paramColumn.type,
+        })
+      }
+    </td>
+  </SubField>;
 }
 
 function RepeatableDraggableRow(props: RepeatableInputProps & {
@@ -40,7 +43,6 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   deleteRow: (index: number) => void
 }) {
   const { param, node, row, rowIndex, reorderRow, deleteRow } = props;
-  const name = param.name;
 
   const [, dropRef] = useDrop({
     accept: 'row',
@@ -80,7 +82,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
         <RepeatableCell
           key={`${param.row[columnIndex].name}-${columnIndex}`}
           param={column}
-          name={name} rowIndex={rowIndex}
+          rowIndex={rowIndex}
           columnIndex={columnIndex} node={node}
         />
       ))
@@ -112,10 +114,11 @@ export function RepeatableComponent({
   param,
   node,
 }: RepeatableInputProps) {
-  const { control } = useFormContext();
+  const { control } = useFormField();
+  const {fieldName} = useContext(SubFieldContext);
   const { fields, append, remove, swap } = useFieldArray({
     control: control,
-    name: `params.${param.name}`,
+    name: fieldName,
   });
 
   const addRow = useCallback(() => {
@@ -168,7 +171,9 @@ export function RepeatableComponent({
 export const RepeatableInput = (props: RepeatableInputProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <RepeatableComponent {...props} />
+      <SubField fieldName={props.param.name}>
+        <RepeatableComponent {...props} />
+      </SubField>
     </DndProvider>
   )
 }

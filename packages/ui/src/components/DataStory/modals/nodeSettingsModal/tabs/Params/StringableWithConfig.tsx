@@ -1,21 +1,18 @@
 import { Param, StringableParam } from '@data-story/core'
 import { StringableInput } from '../../../../Form/StringableInput'
-import { useFormContext, UseFormReturn } from 'react-hook-form';
 import { DropDown, OptionGroup } from '../../../../../DropDown';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { useState } from 'react';
 import { FormComponent, FormComponentProps } from '../../../../types';
-import { SubField, useFormField, UseFormFieldReturn } from '../../../../Form/UseFormField';
+import { SubField, useFormField, UseFormFieldReturn  } from '../../../../Form/UseFormField';
 
 type StringableWithConfigProps = {
   param: StringableParam
-  name?: string,
   node: ReactFlowNode,
 };
 
 function StringableWithConfigComponent({
   param,
-  name,
   node,
 }: StringableWithConfigProps) {
   const [cursorPosition, setCursorPosition] = useState(0);
@@ -23,9 +20,7 @@ function StringableWithConfigComponent({
   const handleCursorPositionChange = (newPosition: number) => {
     setCursorPosition(newPosition);
   };
-  const form = useFormContext();
 
-  console.log(form.getValues(`params.${param.name}`), 222)
   const filedForm = useFormField();
 
   return (<div className="group flex bg-gray-50">
@@ -49,6 +44,16 @@ export function StringableWithConfig(params: StringableWithConfigProps) {
   </SubField>)
 }
 
+export class StringableComponent implements FormComponent<Param> {
+  getComponent(params: FormComponentProps & {param: Param}) {
+    return (<StringableWithConfig {...params} param={params.param as StringableParam}/>);
+  };
+
+  getType() {
+    return 'StringableParam';
+  }
+}
+
 const paramOptions = (
   param: StringableParam,
   node: ReactFlowNode,
@@ -57,7 +62,6 @@ const paramOptions = (
 ): OptionGroup | undefined => {
   const portNames = param.interpolationsFromPort
     ?? node.data.inputs.map(port => port.name)
-  const currentValue = form.getValues();
   const [portName] = portNames
 
   const port = node.data.inputs.find((port) => port.name === portName)
@@ -140,15 +144,5 @@ export const castOptions = (
         })
       }
     })),
-  }
-}
-
-export class StringableComponent implements FormComponent<Param> {
-  getComponent(params: FormComponentProps & {param: Param}) {
-    return (<StringableWithConfig {...params} param={params.param as StringableParam}/>);
-  };
-
-  getType() {
-    return 'StringableParam';
   }
 }
