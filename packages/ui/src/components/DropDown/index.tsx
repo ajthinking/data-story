@@ -70,7 +70,7 @@ const DropdownLiComponent = ({
         }
       >
         {option.label}
-        {option.selected && (<div className="">✓</div>)}
+        {option.selected && (<div>✓</div>)}
       </div>
     </li>
   );

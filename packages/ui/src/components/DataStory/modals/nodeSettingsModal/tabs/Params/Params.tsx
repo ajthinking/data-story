@@ -19,7 +19,6 @@ export function ParamsTab({
           {/* Horizontal layout */}
           {param.type === 'StringableParam' && <StringableWithConfig
             param={param}
-            name={`params.${param.name}`}
             node={node}
           />}
 
@@ -30,7 +29,6 @@ export function ParamsTab({
           />}
 
           {param.type === 'SelectParam' && <SelectInput
-            name={`params.${param.name}`}
             param={param}
           />}
         </div>)

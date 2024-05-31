@@ -1,19 +1,17 @@
 import { SelectParam } from '@data-story/core';
-import { useFormContext } from 'react-hook-form';
+import { SubField, useFormField } from './UseFormField';
 
-export function SelectInput({
+function SelectInputComponent({
   param,
-  name,
 }: {
-  name: string,
   param: SelectParam
 }) {
-  const {register} = useFormContext();
+  const {register} = useFormField();
 
   return (
     <div className="flex w-full text-gray-500">
       <select className="bg-gray-50 text-xs px-2 py-2 w-full"
-        {...register(name)}
+        {...register()}
       >
         {param.options.map((option) => {
           return <option
@@ -25,4 +23,14 @@ export function SelectInput({
 
     </div>
   );
+}
+
+export function SelectInput({
+  param,
+}: {
+  param: SelectParam
+}) {
+  return (<SubField fieldName={param.name}>
+    <SelectInputComponent param={param} />
+  </SubField>);
 }
