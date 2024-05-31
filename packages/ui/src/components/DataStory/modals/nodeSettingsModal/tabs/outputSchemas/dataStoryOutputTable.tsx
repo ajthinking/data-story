@@ -3,7 +3,7 @@ import { ColumnDef, flexRender, getCoreRowModel, Row, useReactTable } from '@tan
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Port } from '@data-story/core';
-import { Controller, ControllerRenderProps } from 'react-hook-form';
+import { Controller, ControllerRenderProps, useFormContext } from 'react-hook-form';
 import { defaultColumns, formatOutputs, OutputSchemaProps } from './common';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { CloseIcon } from '../../../../icons/closeIcon';
@@ -256,10 +256,11 @@ export function OutputTable(props: {
 }
 
 export const DataStoryOutputTable = (props: OutputSchemaProps) => {
+  const { control} = useFormContext()
   return (
     <DndProvider backend={HTML5Backend}>
       <Controller
-        control={props.form.control}
+        control={control}
         name="outputs"
         render={({ field }) => (
           <OutputTable field={field} node={props.node} />
