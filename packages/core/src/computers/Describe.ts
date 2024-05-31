@@ -39,14 +39,11 @@ export const Describe: ComputerConfig = {
   },
 
   async *run({ input, output, params }) {
-    console.log(params, 'params111')
     const incoming = input.pull()
       .map(i => {
-        console.log(i.value, 'i.value', String(params.path), 'String(params.path)');
         return get(i.value, String(params.path));
       })
 
-    console.log(incoming, 'incoming');
     const description = describeCollection(incoming)
     const truncated = truncateDescription(description, Number(params.truncate_limit))
 
@@ -73,7 +70,6 @@ export function describeCollection(arr: any[]) {
     });
   };
 
-  console.log(arr, 'arr', result, 'result');
   // Iterate over each object in the array
   arr.forEach(obj => {
     processObject(obj, result);

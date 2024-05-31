@@ -278,9 +278,11 @@ export class ComputerTester {
       const hasExplicitValue = this.explicitParamValues.hasOwnProperty(param.name)
 
       if(hasExplicitValue) {
-        param.value = {
+        param.value = param.type === 'StringableParam' ?  {
+          ...param.value,
           value: this.explicitParamValues[param.name]
-        }
+        } : this.explicitParamValues[param.name];
+
         continue
       }
     }
