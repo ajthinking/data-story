@@ -1,21 +1,29 @@
 import { DataStoryProvider } from '../store/store';
 import { ReactFlowProvider } from 'reactflow';
 import { RepeatableInput } from './RepeatableInput';
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';
-import { FormCommonProps, RepeatableInputProps } from '../types';
+import { FormProvider, useForm } from 'react-hook-form';
+import { FormCommonProps } from '../types';
 import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/ParamsComponentFactory';
 import { defaultValues, mockNode, mockParam } from './mocks';
+import { FormFieldWrapper, useFormField } from './UseFormField';
 
 const MockComponent = ({ param, type }: {
   param: FormCommonProps & {param: unknown},
   type: 'StringableParam' | 'PortSelectionParam'
 }) => {
-  const { getValues } = useFormContext();
-  const value = getValues(param.name as string);
-  return {
-    StringableParam: <div data-cy='data-story-stringable-param'>{value}</div>,
-    PortSelectionParam: <div data-cy='data-story-port-selection-param'>{value}</div>
-  }[type];
+  const { getValues } = useFormField();
+  const value = getValues();
+  return (
+    <>
+      {
+        //The StringableParam` is composed of `stringInput` + `dropdown`. only mocked the `stringInput` part, so retrieve `value.value`
+        type === 'StringableParam' && <div data-cy='data-story-stringable-param'>{value.value}</div>
+      }
+      {
+        type === 'PortSelectionParam' && <div data-cy='data-story-port-selection-param'>{value}</div>
+      }
+    </>
+  )
 };
 
 const RepeatableInputWithForm = () => {
@@ -27,13 +35,17 @@ const RepeatableInputWithForm = () => {
   ParamsComponentFactory.defaultInstance.availableComponents = [
     {
       getComponent: (params) => {
-        return <MockComponent param={params} type={'StringableParam'}/>
+        return <FormFieldWrapper fieldName={'value'}>
+          <MockComponent param={params} type={'StringableParam'}/>
+        </FormFieldWrapper>
       },
       getType: () => 'StringableParam'
     },
     {
       getComponent: (params) => {
-        return <MockComponent param={params} type={'PortSelectionParam'} />
+        return <FormFieldWrapper fieldName={'port'}>
+          <MockComponent param={params} type={'PortSelectionParam'} />
+        </FormFieldWrapper>
       },
       getType: () => 'PortSelectionParam'
     }
