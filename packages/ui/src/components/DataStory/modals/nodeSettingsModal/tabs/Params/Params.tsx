@@ -4,7 +4,7 @@ import { RepeatableWithConfig } from './RepeatableWithConfig';
 import { SelectInput } from '../../../../Form/SelectInput';
 import { FormFieldWrapper } from '../../../../Form/UseFormField';
 
-export function ParamsTab({
+export function ParamsComponent({
   node,
 }: {
   node: ReactFlowNode,
@@ -42,6 +42,6 @@ export function Params ({
   node,
 }) {
   return (<FormFieldWrapper fieldName={'params'}>
-    <ParamsTab node={node}/>
+    <ParamsComponent node={node}/>
   </FormFieldWrapper>);
 }
