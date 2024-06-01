@@ -27,7 +27,6 @@ function RepeatableCell({
       {
         ParamsComponentFactory.defaultInstance.getComponent({
           param: paramColumn,
-          name: fieldName,
           node,
           type: paramColumn.type,
         })
