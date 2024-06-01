@@ -28,7 +28,7 @@ export const Map: ComputerConfig = {
     },
     json_({
       name: 'json',
-      value: '{\n\tfoo: bar\n}',
+      value: '{\n\t"foo": "bar"\n}',
       help: '',
     })
   ],

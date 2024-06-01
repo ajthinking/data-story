@@ -18,7 +18,6 @@ function RepeatableCell({
   columnIndex: number,
   rowIndex: number,
 }) {
-  const {fieldName} = useContext(FormFieldContext);
   return <FormFieldWrapper fieldName={`${rowIndex}`}>
     <td
       scope="row"

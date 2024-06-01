@@ -40,9 +40,7 @@ export const Describe: ComputerConfig = {
 
   async *run({ input, output, params }) {
     const incoming = input.pull()
-      .map(i => {
-        return get(i.value, String(params.path));
-      })
+      .map(i => get(i.value, String(params.path)))
 
     const description = describeCollection(incoming)
     const truncated = truncateDescription(description, Number(params.truncate_limit))
