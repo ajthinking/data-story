@@ -2,7 +2,7 @@ import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
 import { SelectInput } from '../../../../Form/SelectInput';
-import { SubField } from '../../../../Form/UseFormField';
+import { FormFieldWrapper } from '../../../../Form/UseFormField';
 
 export function ParamsTab({
   node,
@@ -41,7 +41,7 @@ export function ParamsTab({
 export function Params ({
   node,
 }) {
-  return (<SubField fieldName={'params'}>
+  return (<FormFieldWrapper fieldName={'params'}>
     <ParamsTab node={node}/>
-  </SubField>);
+  </FormFieldWrapper>);
 }

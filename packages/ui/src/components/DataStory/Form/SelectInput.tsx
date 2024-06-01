@@ -1,5 +1,5 @@
 import { SelectParam } from '@data-story/core';
-import { SubField, useFormField } from './UseFormField';
+import { FormFieldWrapper, useFormField } from './UseFormField';
 
 function SelectInputComponent({
   param,
@@ -30,7 +30,7 @@ export function SelectInput({
 }: {
   param: SelectParam
 }) {
-  return (<SubField fieldName={param.name}>
+  return (<FormFieldWrapper fieldName={param.name}>
     <SelectInputComponent param={param} />
-  </SubField>);
+  </FormFieldWrapper>);
 }

@@ -12,7 +12,7 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { SubField, useFormField } from '../DataStory/Form/UseFormField';
+import { FormFieldWrapper, useFormField } from '../DataStory/Form/UseFormField';
 
 export type Option = {
   label: string
@@ -77,9 +77,9 @@ const DropdownLiComponent = ({
 }
 
 const DropdownLi = (params: DropdownLiProps) => {
-  return (<SubField fieldName={params.optionGroup.label ?? ''}>
+  return (<FormFieldWrapper fieldName={params.optionGroup.label ?? ''}>
     <DropdownLiComponent {...params} />
-  </SubField>)
+  </FormFieldWrapper>)
 }
 
 export const DropDown = ({

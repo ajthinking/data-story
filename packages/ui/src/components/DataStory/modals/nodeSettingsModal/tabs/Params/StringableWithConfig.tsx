@@ -4,7 +4,7 @@ import { DropDown, OptionGroup } from '../../../../../DropDown';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { useState } from 'react';
 import { FormComponent, FormComponentProps } from '../../../../types';
-import { SubField, useFormField, UseFormFieldReturn  } from '../../../../Form/UseFormField';
+import { FormFieldWrapper, useFormField, UseFormFieldReturn  } from '../../../../Form/UseFormField';
 
 type StringableWithConfigProps = {
   param: StringableParam
@@ -39,9 +39,9 @@ function StringableWithConfigComponent({
 }
 
 export function StringableWithConfig(params: StringableWithConfigProps) {
-  return (<SubField fieldName={params.param.name}>
+  return (<FormFieldWrapper fieldName={params.param.name}>
     <StringableWithConfigComponent {...params} />
-  </SubField>)
+  </FormFieldWrapper>)
 }
 
 export class StringableComponent implements FormComponent<Param> {

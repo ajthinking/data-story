@@ -157,7 +157,6 @@ export function OutputTable(props: {
       data.splice(draggedRowIndex, 1)[0] as Port
     );
     setData([...data]);
-    console.log('output data', data);
 
     props.field.onChange(JSON.stringify(data));
   };

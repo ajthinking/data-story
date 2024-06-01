@@ -6,20 +6,19 @@ import {
 import { createContext, ReactNode, useContext } from 'react';
 import { UseFormRegisterReturn } from 'react-hook-form/dist/types/form';
 
-export const SubFieldContext = createContext<{fieldName: string}>({fieldName:''});
+export const FormFieldContext = createContext<{fieldName: string}>({fieldName:''});
 
-export const SubField = ({fieldName, children}: {fieldName: string, children: ReactNode}) => {
-  const {fieldName: parentFieldName} = useContext(SubFieldContext);
+export const FormFieldWrapper = ({fieldName, children}: {fieldName: string, children: ReactNode}) => {
+  const {fieldName: parentFieldName} = useContext(FormFieldContext);
   const value = parentFieldName ? `${parentFieldName}.${fieldName}` : fieldName;
-  // console.log(`SubField: ${value}`)
   return (
-    <SubFieldContext.Provider value={{fieldName: value}}>
+    <FormFieldContext.Provider value={{fieldName: value}}>
       {children}
-    </SubFieldContext.Provider>
+    </FormFieldContext.Provider>
   )
 }
 
-type UseFormFieldReturn<TFieldValues extends FieldValues = FieldValues, TContext = any> = Pick<
+export type UseFormFieldReturn<TFieldValues extends FieldValues = FieldValues, TContext = any> = Pick<
 UseFormReturn<TFieldValues, TContext>,
 'watch' | 'control'
 > & {
@@ -29,8 +28,7 @@ UseFormReturn<TFieldValues, TContext>,
 };
 
 export const useFormField = (): UseFormFieldReturn => {
-  const {fieldName} = useContext(SubFieldContext);
-  // console.log(fieldName, 'fieldName')
+  const {fieldName} = useContext(FormFieldContext);
   const form = useFormContext();
   return {
     setValue: (value: any) => form.setValue(fieldName, value),

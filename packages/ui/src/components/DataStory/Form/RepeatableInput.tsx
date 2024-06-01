@@ -8,7 +8,7 @@ import { Row } from '@tanstack/react-table';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { FormComponentProps, RepeatableInputProps } from '../types';
 import { ParamsComponentFactory } from '../modals/nodeSettingsModal/tabs/Params/ParamsComponentFactory';
-import { SubField, SubFieldContext, useFormField } from './UseFormField';
+import { FormFieldWrapper, FormFieldContext, useFormField } from './UseFormField';
 
 function RepeatableCell({
   param: paramColumn,
@@ -18,8 +18,8 @@ function RepeatableCell({
   columnIndex: number,
   rowIndex: number,
 }) {
-  const {fieldName} = useContext(SubFieldContext);
-  return <SubField fieldName={`${rowIndex}`}>
+  const {fieldName} = useContext(FormFieldContext);
+  return <FormFieldWrapper fieldName={`${rowIndex}`}>
     <td
       scope="row"
       className="border font-medium whitespace-nowrap bg-gray-50 align-top"
@@ -33,7 +33,7 @@ function RepeatableCell({
         })
       }
     </td>
-  </SubField>;
+  </FormFieldWrapper>;
 }
 
 function RepeatableDraggableRow(props: RepeatableInputProps & {
@@ -115,7 +115,7 @@ export function RepeatableComponent({
   node,
 }: RepeatableInputProps) {
   const { control } = useFormField();
-  const {fieldName} = useContext(SubFieldContext);
+  const {fieldName} = useContext(FormFieldContext);
   const { fields, append, remove, swap } = useFieldArray({
     control: control,
     name: fieldName,
@@ -171,9 +171,9 @@ export function RepeatableComponent({
 export const RepeatableInput = (props: RepeatableInputProps) => {
   return (
     <DndProvider backend={HTML5Backend}>
-      <SubField fieldName={props.param.name}>
+      <FormFieldWrapper fieldName={props.param.name}>
         <RepeatableComponent {...props} />
-      </SubField>
+      </FormFieldWrapper>
     </DndProvider>
   )
 }

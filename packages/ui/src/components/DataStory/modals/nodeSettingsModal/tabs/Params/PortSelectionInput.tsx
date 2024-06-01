@@ -2,7 +2,7 @@ import { Param } from '@data-story/core'
 import { useWatch } from 'react-hook-form';
 import { useMemo } from 'react';
 import { FormComponent, FormComponentProps } from '../../../../types';
-import { SubField, useFormField } from '../../../../Form/UseFormField';
+import { FormFieldWrapper, useFormField } from '../../../../Form/UseFormField';
 
 export function PortSelectionInputComponent({
   param,
@@ -38,9 +38,9 @@ export function PortSelectionInputComponent({
 }
 
 export function PortSelectionInput(params: FormComponentProps & {param: Param}) {
-  return (<SubField fieldName={'port'}>
+  return (<FormFieldWrapper fieldName={'port'}>
     <PortSelectionInputComponent {...params} />
-  </SubField>);
+  </FormFieldWrapper>);
 }
 
 export class PortSelectionComponent implements FormComponent<Param> {

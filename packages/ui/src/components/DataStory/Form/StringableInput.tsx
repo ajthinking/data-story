@@ -1,6 +1,6 @@
 import { StringableParam, get } from '@data-story/core';
 import { useContext, useEffect, useState } from 'react';
-import { SubField, SubFieldContext, useFormField } from './UseFormField';
+import { FormFieldWrapper, FormFieldContext, useFormField } from './UseFormField';
 
 // Function to calculate the number of rows based on content
 const calculateRows = (content: string) => {
@@ -17,7 +17,7 @@ export function StringableInputComponent({
   param,
   onCursorPositionChange,
 }: StringableInput) {
-  const {fieldName} = useContext(SubFieldContext);
+  const {fieldName} = useContext(FormFieldContext);
 
   const { getValues,  watch, register } = useFormField()
 
@@ -68,7 +68,7 @@ export function StringableInputComponent({
 }
 
 export function StringableInput(params: StringableInput) {
-  return <SubField fieldName={'value'}>
+  return <FormFieldWrapper fieldName={'value'}>
     <StringableInputComponent {...params} />
-  </SubField>
+  </FormFieldWrapper>
 }
