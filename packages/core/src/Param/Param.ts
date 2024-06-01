@@ -139,7 +139,7 @@ export const str = ({
     interpolate: interpolate ?? true,
     evaluations: evaluations,
     casts: [
-      { ...stringCast, selected: true },
+      stringCast
     ],
     value: {
       value: value ?? '',
@@ -177,7 +177,7 @@ export const num = ({
     interpolate: interpolate ?? true,
     evaluations: evaluations,
     casts: [
-      { ...numberCast, selected: true },
+      numberCast
     ],
     value: {
       value: value ?? 0,
@@ -214,7 +214,7 @@ export const json_ = ({
     canInterpolate: canInterpolate ?? true,
     interpolate: interpolate ?? true,
     evaluations: evaluations ?? [
-      { ...jsonEvaluation, selected: true },
+      jsonEvaluation,
       hjsonEvaluation,
       jsFunctionEvaluation,
       jsExpressionEvaluation,
@@ -258,7 +258,7 @@ export const hjson = ({
     canInterpolate: canInterpolate ?? true,
     interpolate: interpolate ?? true,
     evaluations: evaluations ?? [
-      { ...hjsonEvaluation, selected: true },
+      hjsonEvaluation ,
       jsonEvaluation,
     ],
     casts: [

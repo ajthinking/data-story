@@ -1,5 +1,5 @@
 import '../../styles/globals.css';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -37,14 +37,16 @@ export type OptionGroup = {
 type DropdownLiProps = {
   option: Option,
   optionGroup: OptionGroup,
-  closeDropdown: () => void};
+  closeDropdown: () => void
+};
 
 const DropdownLiComponent = ({
   option,
   optionGroup,
   closeDropdown,
-}:DropdownLiProps) => {
-  const { setValue, register } = useFormField()
+}: DropdownLiProps) => {
+  const { setValue, register, getValues } = useFormField()
+  const isCurrentOptionSelected = option.value === getValues();
 
   return (
     <li className="cursor-pointer">
@@ -53,24 +55,19 @@ const DropdownLiComponent = ({
         className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
         onClick={(event) => {
           if (optionGroup.selectable) {
-            option.selected = !option.selected;
-            optionGroup.options.forEach((innerOption) => {
-              if (innerOption.label !== option.label) innerOption.selected = false
-            })
-
-            const value = option.selected ? option.label : '';
+            const value = isCurrentOptionSelected ? '' : option.value;
             setValue(value);
           }
 
           option.callback({
             close: closeDropdown,
-            selectedIndex: optionGroup.options.findIndex((option) => option.selected),
+            selectedIndex: optionGroup.options.findIndex((option) => isCurrentOptionSelected),
           })
         }
         }
       >
         {option.label}
-        {option.selected && (<div>✓</div>)}
+        {isCurrentOptionSelected && (<div>✓</div>)}
       </div>
     </li>
   );
@@ -88,24 +85,6 @@ export const DropDown = ({
   optionGroups: OptionGroup[],
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { getValues } = useFormField()
-
-  // Based on the provided optionGroups and form, create unique options for the current dropdown
-  const dropDownOptions = useMemo(() =>
-    optionGroups.map((optionGroup) => {
-      return {
-        ...optionGroup,
-        options: optionGroup.options.map((option) => {
-          const value = getValues();
-
-          return {
-            ...option,
-            selected: value === option.value
-          }
-        })
-      }
-    }), [getValues, optionGroups]);
 
   const closeDropdown = useCallback(() => {
     setIsOpen(false);
@@ -157,14 +136,15 @@ export const DropDown = ({
             style={floatingStyles}
             // If the float nesting becomes more complex moving forward, we might need to consider using a floatingTree
             className="max-h-128 overflow-scroll z-[100] w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-            {dropDownOptions.map((optionGroup) => {
+            {optionGroups.map((optionGroup) => {
               return (
                 <div className="mb-2" key={optionGroup.label}>
                   <div key={optionGroup.label}
                     className="font-bold text-gray-400 flex w-full justify-center text-xs px-2 py-2 border-b uppercase tracking-widest">{optionGroup.label}</div>
                   <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     {optionGroup.options.map((option) => {
-                      return (<DropdownLi key={option.label} option={option} optionGroup={optionGroup} closeDropdown={closeDropdown} />)
+                      return (<DropdownLi key={option.label} option={option} optionGroup={optionGroup}
+                        closeDropdown={closeDropdown}/>)
                     })}
                   </ul>
                   {optionGroup.options.length === 0 &&

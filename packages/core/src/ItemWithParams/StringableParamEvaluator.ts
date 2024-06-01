@@ -18,7 +18,6 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // Ensure param is StringableParam
     if (param.type !== 'StringableParam') throw new Error(`Param "${param.name}" must be StringableParam`);
 
-    // maintain compatibility with Stringable. new type: object | old type: string
     let transformedValue: any  = String(param.value?.value);
 
     // **********************************************************************
