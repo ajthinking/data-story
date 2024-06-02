@@ -5,6 +5,7 @@ import CustomHandle from './CustomHandle';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from 'reactflow';
 import { PortIcon } from '../DataStory/icons/portIcon';
+import { StringableParam } from '@data-story/core/*';
 
 const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataStoryNodeData; selected: boolean }) => {
   const selector = (state: StoreSchema) => ({
@@ -13,7 +14,9 @@ const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataSto
 
   const { setOpenNodeModalId } = useStore(selector, shallow);
 
-  const portName = (data?.params?.[0]?.value ?? '') as string
+  const portName = (data?.params?.[0] as StringableParam)
+    .value.value
+
   const inputPort = data.inputs[0]
   const outputPort = data.outputs[0]
 
