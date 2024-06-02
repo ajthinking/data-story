@@ -3,6 +3,7 @@ import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
 import MarkdownIt from 'markdown-it';
+import { StringableParam } from '@data-story/core';
 
 const markdown = new MarkdownIt();
 
@@ -16,9 +17,9 @@ const CommentNodeComponent = ({ id, data }: {
 
   const { setOpenNodeModalId } = useStore(selector, shallow);
 
-  const contentParam = data.params.find((param) => param.name === 'content')!
+  const contentParam = data.params.find((param) => param.name === 'content')! as StringableParam
 
-  const htmlContent = markdown.render(contentParam.value as string);
+  const htmlContent = markdown.render(contentParam.value.value);
 
   return (
     (

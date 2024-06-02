@@ -1,4 +1,4 @@
-import { str } from '../Param';
+import { createDefaultStringable, str } from '../Param';
 import { ComputerConfig } from '../types/ComputerConfig';
 
 export const Output: ComputerConfig = {
@@ -6,10 +6,13 @@ export const Output: ComputerConfig = {
   inputs: ['input'],
   outputs: ['output'],
   params: [
-    str({
+    createDefaultStringable({
       name: 'port_name',
       label: 'Port Name',
       value: 'output',
+      help: 'The name of the output port.',
+      multiline: false,
+      canInterpolate: true
     })
   ],
 
