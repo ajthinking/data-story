@@ -1,18 +1,13 @@
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
-import { UseFormReturn } from 'react-hook-form';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
 import { SelectInput } from '../../../../Form/SelectInput';
+import { FormFieldWrapper } from '../../../../Form/UseFormField';
 
-export function Params({
+export function ParamsComponent({
   node,
-  form
 }: {
   node: ReactFlowNode,
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>
-
 }) {
   return <div className="max-h-128 overflow-y-scroll relative pb-6 pt-4 px-6 flex-auto space-y-1">
     <div className='max-w-4xl w-full space-y-2 p-4'>
@@ -24,21 +19,16 @@ export function Params({
           {/* Horizontal layout */}
           {param.type === 'StringableParam' && <StringableWithConfig
             param={param}
-            form={form}
-            name={`params.${param.name}`}
             node={node}
           />}
 
           {/* Vertical layout */}
           {param.type === 'RepeatableParam' && <RepeatableWithConfig
             param={param}
-            form={form}
             node={node}
           />}
 
           {param.type === 'SelectParam' && <SelectInput
-            name={`params.${param.name}`}
-            form={form}
             param={param}
           />}
         </div>)
@@ -46,4 +36,12 @@ export function Params({
     </div>
     {node.data.params.length === 0 && <div className="text-xs text-gray-400">No parameters</div>}
   </div>;
+}
+
+export function Params ({
+  node,
+}) {
+  return (<FormFieldWrapper fieldName={'params'}>
+    <ParamsComponent node={node}/>
+  </FormFieldWrapper>);
 }

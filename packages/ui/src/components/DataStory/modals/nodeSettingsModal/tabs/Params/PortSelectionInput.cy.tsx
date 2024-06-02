@@ -1,28 +1,26 @@
 import { PortSelectionInput } from './PortSelectionInput';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { FormComponentProps } from '../../../../types';
 
 const TestedPortSelectionInput = (props: {onForm: (f: FormComponentProps['form']) => any}) => {
   const form = useForm({
     defaultValues: {
-      PortSelected: '',
+      port: '',
       outputs: JSON.stringify([
         { name: 'output1', id: '1' },
         { name: 'output2', id: '2' },
       ]),
     },
-  }) as unknown as FormComponentProps['form'];
-  props.onForm(form);
+  });
+  props.onForm(form as unknown as FormComponentProps['form']);
 
   return (
-    <>
+    <FormProvider {...form}>
       <PortSelectionInput
         param={{} as unknown as FormComponentProps['param']}
-        form={form}
-        name="PortSelected"
         node={{} as unknown as FormComponentProps['node']}
       />
-    </>
+    </FormProvider>
   );
 }
 
@@ -49,9 +47,10 @@ describe('PortSelectionInput', () => {
   it('selects the correct option', () => {
     cy.get('select').select('output2');
     cy.get('select').should('have.value', 'output2');
-    cy.dataCy('data-story-port-selection-input').then(() => {
+    cy.dataCy('data-story-port-selection-input').then((el) => {
+      expect(el).contain('output2');
       // @ts-ignore
-      const PortSelectedVal = formRef.val!.getValues('PortSelected');
+      const PortSelectedVal = formRef.val!.getValues('port');
       expect(PortSelectedVal).to.equal('output2');
     })
   });
@@ -74,9 +73,10 @@ describe('PortSelectionInput', () => {
   });
 
   it('PortSelected value is not in options', () => {
-    cy.dataCy('data-story-port-selection-input').then(() => {
+    cy.dataCy('data-story-port-selection-input').then((el) => {
+      expect(el).contain('');
       // @ts-ignore
-      const PortSelectedVal = formRef.val!.getValues('PortSelected');
+      const PortSelectedVal = formRef.val!.getValues('port');
       expect(PortSelectedVal).to.equal('');
     });
     cy.get('select').should('have.value', null);

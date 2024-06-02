@@ -1,30 +1,28 @@
 import { ComputerConfig } from '../types/ComputerConfig';
-import { numberCast } from '../Param/casts/numberCast';
+import { num, StringableInputValue } from '../Param';
 
 export const Await: ComputerConfig = {
   name: 'Await',
   inputs: ['input'],
   outputs: ['output', 'no_items'],
   params: [
-    {
-      name: 'number_of_items',
-      label: 'Number of Items',
-      help: 'How many items to await?',
-      type: 'StringableParam',
-      multiline: false,
-      canInterpolate: true,
-      interpolate: true,
-      casts: [
-        {...numberCast, selected: true}
-      ],
-      value: 'Infinity'
-    },
+    num(
+      {
+        name: 'number_of_items',
+        label: 'Number of Items',
+        help: 'How many items to await?',
+        multiline: false,
+        canInterpolate: true,
+        interpolate: true,
+        value: 'Infinity',
+      }
+    )
   ],
 
   canRun({ input, params }) {
     const haveChunk = input.haveItemsAtInput(
       'input',
-      params.number_of_items.value as number
+      (params.number_of_items.value as StringableInputValue).value as number
     )
 
     const haveRemainder = input.haveAllItemsAtInput('input')
@@ -40,7 +38,7 @@ export const Await: ComputerConfig = {
 
       const pulledCount = incoming.length
       if(pulledCount > 0) hasPulledAny = true
-      const chunkSize = params.number_of_items as number
+      const chunkSize = params.number_of_items as unknown as number
 
       output.push(incoming)
 

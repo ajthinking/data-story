@@ -5,6 +5,7 @@ import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { ComputerConfig } from '../types/ComputerConfig';
+import { createDefaultStringable } from '../Param';
 
 export const ConsoleLog: ComputerConfig = {
   name: 'ConsoleLog',
@@ -12,11 +13,10 @@ export const ConsoleLog: ComputerConfig = {
   inputs: ['input'],
 
   params: [
-    {
+    createDefaultStringable( {
       name: 'message',
       label: 'message',
       help: 'What to log. Leave blank to log the whole item.',
-      type: 'StringableParam',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
@@ -30,7 +30,7 @@ export const ConsoleLog: ComputerConfig = {
         stringCast,
       ],
       value: '',
-    }
+    })
   ],
 
   async *run({ input, hooks, params: rawParams }) {

@@ -2,15 +2,15 @@ import { Param } from '@data-story/core'
 import { useWatch } from 'react-hook-form';
 import { useMemo } from 'react';
 import { FormComponent, FormComponentProps } from '../../../../types';
+import { FormFieldWrapper, useFormField } from '../../../../Form/UseFormField';
 
-export function PortSelectionInput({
+export function PortSelectionInputComponent({
   param,
-  form,
-  name,
   node,
 }: FormComponentProps) {
+  const {register, control} = useFormField();
   const outputsDraft = useWatch({
-    control: form.control,
+    control: control,
     name: 'outputs',
     exact: true,
   });
@@ -24,7 +24,7 @@ export function PortSelectionInput({
       <select
         key={'port'}
         className="bg-gray-50 px-2 py-1"
-        {...form.register(name!)}
+        {...register()}
       >
         {parsedOutputs.map(output => (
           <option
@@ -35,6 +35,12 @@ export function PortSelectionInput({
       </select>
     </div>
   </div>)
+}
+
+export function PortSelectionInput(params: FormComponentProps & {param: Param}) {
+  return (<FormFieldWrapper fieldName={'port'}>
+    <PortSelectionInputComponent {...params} />
+  </FormFieldWrapper>);
 }
 
 export class PortSelectionComponent implements FormComponent<Param> {

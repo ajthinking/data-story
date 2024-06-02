@@ -4,6 +4,8 @@ import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
 import Hjson from '@data-story/hjson';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
+import { Evaluation } from '../Param/Evaluation';
+import { Cast } from '../Param/Cast';
 
 export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
   type = 'StringableParam' as const;
@@ -16,7 +18,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // Ensure param is StringableParam
     if (param.type !== 'StringableParam') throw new Error(`Param "${param.name}" must be StringableParam`);
 
-    let transformedValue: string | any = String(param.value);
+    let transformedValue: any  = String(param.value?.value);
 
     // **********************************************************************
     // INTERPOLATE GLOBAL PARAMS
@@ -33,11 +35,11 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // INTERPOLATE ITEM PROPERTIES
     // **********************************************************************
     if (param.interpolate) {
-    /** Replace template strings with item properties
-     * Example: { greeting: "Hi ${name}!"}
-     * Becomes: { greeting: "Hi Bob!"}
-     * When the item value is { name: "Bob" }
-     */
+      /** Replace template strings with item properties
+       * Example: { greeting: "Hi ${name}!"}
+       * Becomes: { greeting: "Hi Bob!"}
+       * When the item value is { name: "Bob" }
+       */
       transformedValue = transformedValue.replace(
         /\${([\w\.]+)}/g,
         (_: string, name: string) => get(itemValue, name)
@@ -49,7 +51,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // **********************************************************************
     // TODO option for this
     if (true) {
-    /** Replaces function calls */
+      /** Replaces function calls */
       transformedValue = transformedValue.replace(/@(\w+)\((.*)\)/g, (_: string, fn: string, expression: string) => {
         const args = expression.split(',').map(arg => arg.trim());
 
@@ -76,8 +78,9 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // **********************************************************************
     // EVALUATE
     // **********************************************************************
-    const evaluations = param.evaluations || [];
-    const selectedEvaluation = evaluations.find(e => e.selected);
+    const selectedEvaluation = {
+      type: param.value?.['Evaluation'] as string,
+    };
 
     if (selectedEvaluation?.type === 'JSON') {
       transformedValue = JSON.parse(transformedValue);
@@ -94,7 +97,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
 
     if (selectedEvaluation?.type === 'JS_EXPRESSION') {
       try {
-      // Wrap with parentheses to ensure brackets are not interpreted as a block
+        // Wrap with parentheses to ensure brackets are not interpreted as a block
         const nonBlockExpression = `(${transformedValue})`;
         transformedValue = eval(nonBlockExpression);
       } catch(error) {
@@ -106,8 +109,9 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // **********************************************************************
     // CAST
     // **********************************************************************
-    const casts = param.casts || [];
-    const selectedCast = casts.find(c => c.selected);
+    let selectedCast = {
+      type: param.value?.['Cast'] as string,
+    };
 
     if (selectedCast?.type === 'stringCast') {
       transformedValue = String(transformedValue);

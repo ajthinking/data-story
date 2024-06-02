@@ -51,7 +51,10 @@ describe('unfold', () => {
       'Input.1': expect.arrayContaining([
         expect.objectContaining({
           name: 'stamp',
-          value: 'foo',
+          value:  {
+            Cast: 'stringCast',
+            value: 'foo',
+          },
         }),
       ]),
     })

@@ -10,7 +10,9 @@ export const removePropertyData = {
   ],
   'value': [
     {
-      'property': 'foo-1'
+      'property': {
+        value: 'foo-1',
+      }
     }
   ]
 };
@@ -29,18 +31,26 @@ export const mockRepeatableData = {
   ],
   value: [
     {
-      value: 'value-11',
+      value: {
+        value: 'value-11'
+      },
       remove_properties: [
         {
-          'property': 'property-11'
+          'property': {
+            value: 'property-11'
+          }
         }
       ]
     },
     {
-      value: 'value-22',
+      value: {
+        value: 'value-22'
+      },
       remove_properties: [
         {
-          'property': 'property-22'
+          'property': {
+            value: 'property-22'
+          }
         }
       ]
     }
@@ -64,11 +74,17 @@ export const mockPortMapData = {
   ],
   'value': [
     {
-      'value': '22',
+      'value': {
+        value: '22',
+        'Cast': 'numberCast'
+      },
       'port': 'unfiltered'
     },
     {
-      'value': 'id',
+      'value': {
+        value: 'id',
+        'Cast': 'stringCast'
+      },
       'port': 'outputzdbj'
     }
   ]

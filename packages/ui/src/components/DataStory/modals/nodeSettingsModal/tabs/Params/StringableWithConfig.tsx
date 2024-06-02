@@ -1,58 +1,68 @@
 import { Param, StringableParam } from '@data-story/core'
 import { StringableInput } from '../../../../Form/StringableInput'
-import { UseFormReturn } from 'react-hook-form';
-import { DropDown, Option, OptionGroup } from '../../../../../DropDown';
+import { DropDown, OptionGroup } from '../../../../../DropDown';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { useState } from 'react';
 import { FormComponent, FormComponentProps } from '../../../../types';
+import { FormFieldWrapper, useFormField, UseFormFieldReturn  } from '../../../../Form/UseFormField';
 
-export function StringableWithConfig({
-  param,
-  form,
-  name,
-  node,
-}: {
+type StringableWithConfigProps = {
   param: StringableParam
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>,
-  name?: string,
   node: ReactFlowNode,
-}) {
+};
+
+function StringableWithConfigComponent({
+  param,
+  node,
+}: StringableWithConfigProps) {
   const [cursorPosition, setCursorPosition] = useState(0);
 
   const handleCursorPositionChange = (newPosition: number) => {
     setCursorPosition(newPosition);
   };
 
+  const filedForm = useFormField();
+
   return (<div className="group flex bg-gray-50">
     <StringableInput
-      form={form}
       {...param}
       param={param as StringableParam}
-      name={name ?? param.name}
       onCursorPositionChange={handleCursorPositionChange}
     />
-    <DropDown optionGroups={[
-      paramOptions(param, node, form, cursorPosition),
-      evaluationOptions(param),
-      castOptions(param),
-    ].filter(Boolean) as OptionGroup[]} />
+    <DropDown
+      optionGroups={[
+        paramOptions(param, node, filedForm, cursorPosition),
+        evaluationOptions(param),
+        castOptions(param),
+      ].filter(Boolean) as OptionGroup[]}/>
   </div>)
+}
+
+export function StringableWithConfig(params: StringableWithConfigProps) {
+  return (<FormFieldWrapper fieldName={params.param.name}>
+    <StringableWithConfigComponent {...params} />
+  </FormFieldWrapper>)
+}
+
+export class StringableComponent implements FormComponent<Param> {
+  getComponent(params: FormComponentProps & {param: Param}) {
+    return (<StringableWithConfig {...params} param={params.param as StringableParam}/>);
+  };
+
+  getType() {
+    return 'StringableParam';
+  }
 }
 
 const paramOptions = (
   param: StringableParam,
   node: ReactFlowNode,
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>,
+  form: UseFormFieldReturn,
   cursorPosition: number,
 ): OptionGroup | undefined => {
   const portNames = param.interpolationsFromPort
     ?? node.data.inputs.map(port => port.name)
-
-  const [ portName ] = portNames
+  const [portName] = portNames
 
   const port = node.data.inputs.find((port) => port.name === portName)
 
@@ -68,15 +78,13 @@ const paramOptions = (
       label: key,
       value: key,
       callback: ({ close }) => {
-        const currentValue = form.getValues(`params.${param.name}`);
+        const currentValue = form.getValues();
         // Update the form field by adding it to the cursor position
         const interpolation = '${' + key + '}'
         const part1 = currentValue.slice(0, cursorPosition)
         const part2 = currentValue.slice(cursorPosition)
         const newValue = part1 + interpolation + part2
-
-        form.setValue(`params.${param.name}`, newValue);
-
+        form.setValue(newValue);
         close()
       }
     })),
@@ -88,7 +96,7 @@ const evaluationOptions = (
 ): OptionGroup | undefined => {
   const evaluations = param.evaluations ?? []
 
-  if(evaluations.length === 0) return undefined
+  if (evaluations.length === 0) return undefined
 
   return {
     label: 'Evaluation',
@@ -136,14 +144,5 @@ export const castOptions = (
         })
       }
     })),
-  }
-}
-
-export class StringableComponent implements FormComponent<Param> {
-  getComponent(params: FormComponentProps & {param: Param}) {
-    return (<StringableWithConfig {...params} param={params.param as StringableParam} />);
-  };
-  getType() {
-    return 'StringableParam';
   }
 }

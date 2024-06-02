@@ -1,5 +1,4 @@
 import { PortName } from '../types/Port'
-import { snakeCaseToTitleCase } from '../utils/snakeCaseToTitleCase'
 import { Cast } from './Cast'
 import { Evaluation } from './Evaluation'
 import { numberCast } from './casts/numberCast'
@@ -8,6 +7,12 @@ import { hjsonEvaluation } from './evaluations/hjsonEvaluation'
 import { jsExpressionEvaluation } from './evaluations/jsExpressionEvaluation'
 import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
+
+export interface StringableInputValue extends Record<string, any> {
+  value: any,
+  Evaluation?: string,
+  Cast?: string,
+}
 
 export type StringableParam = {
   name: string,
@@ -20,7 +25,7 @@ export type StringableParam = {
   interpolationsFromPort?: PortName[],
   casts?: Cast[],
   evaluations?: Evaluation[],
-  value: string | number
+  value: StringableInputValue,
 }
 
 export type PropertySelectionParam = {
@@ -58,7 +63,7 @@ export type RepeatableParam<RepeatableRow> = {
   help: string,
   type: 'RepeatableParam',
   row: RepeatableRow,
-  value: Param[]
+  value: Record<string, unknown>[]
 }
 
 export type Param =
@@ -71,6 +76,39 @@ export type Param =
 export type ParamValue = Param['value']
 
 // // quick param builders
+
+type StringableConfigType = Omit<StringableParam, 'value' | 'type'> & {
+  value: StringableInputValue['value']
+}
+
+export const createDefaultStringable = ({
+  name,
+  label,
+  help,
+  multiline,
+  canInterpolate,
+  interpolate,
+  evaluations,
+  casts,
+  interpolationsFromPort,
+  value,
+}:StringableConfigType): StringableParam => {
+  return {
+    name,
+    type: 'StringableParam',
+    label,
+    help,
+    multiline,
+    canInterpolate,
+    interpolate,
+    evaluations,
+    casts,
+    interpolationsFromPort,
+    value: {
+      value: value ?? '',
+    },
+  }
+}
 
 export const str = ({
   name,
@@ -101,9 +139,12 @@ export const str = ({
     interpolate: interpolate ?? true,
     evaluations: evaluations,
     casts: [
-      { ...stringCast, selected: true },
+      stringCast
     ],
-    value: value ?? '',
+    value: {
+      value: value ?? '',
+      Cast: stringCast.type,
+    }
   }
 }
 
@@ -136,9 +177,12 @@ export const num = ({
     interpolate: interpolate ?? true,
     evaluations: evaluations,
     casts: [
-      { ...numberCast, selected: true },
+      numberCast
     ],
-    value: value ?? 0,
+    value: {
+      value: value ?? 0,
+      Cast: numberCast.type,
+    },
   }
 }
 
@@ -170,7 +214,7 @@ export const json_ = ({
     canInterpolate: canInterpolate ?? true,
     interpolate: interpolate ?? true,
     evaluations: evaluations ?? [
-      { ...jsonEvaluation, selected: true },
+      jsonEvaluation,
       hjsonEvaluation,
       jsFunctionEvaluation,
       jsExpressionEvaluation,
@@ -179,7 +223,10 @@ export const json_ = ({
       numberCast,
       stringCast,
     ],
-    value: value ?? 0,
+    value: {
+      value: value ?? 0,
+      Evaluation: jsonEvaluation.type,
+    },
   }
 }
 
@@ -211,13 +258,16 @@ export const hjson = ({
     canInterpolate: canInterpolate ?? true,
     interpolate: interpolate ?? true,
     evaluations: evaluations ?? [
-      { ...hjsonEvaluation, selected: true },
+      hjsonEvaluation ,
       jsonEvaluation,
     ],
     casts: [
       numberCast,
       stringCast,
     ],
-    value: value ?? 0,
+    value: {
+      value: value ?? 0,
+      Evaluation: hjsonEvaluation.type
+    },
   }
 }

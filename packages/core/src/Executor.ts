@@ -136,6 +136,7 @@ export class Executor {
       if(hook) return hook({
         isAvailable: () => this.memory.getNodeStatus(node.id) === 'AVAILABLE',
         input: this.memory.getInputDevice(node.id)!,
+        // todo: It seems the params didn't evaluate correctly
         params: arrayToRecord(node.params, 'name')
       })
 

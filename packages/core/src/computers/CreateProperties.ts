@@ -5,6 +5,7 @@ import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation'
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { ComputerConfig } from '../types/ComputerConfig';
+import { createDefaultStringable } from '../Param';
 
 export const CreateProperties: ComputerConfig = {
   name: 'CreateProperties',
@@ -18,22 +19,20 @@ export const CreateProperties: ComputerConfig = {
       help: 'The properties to create',
       type: 'RepeatableParam',
       row: [
-        {
+        createDefaultStringable({
           name: 'key',
           label: 'Key',
           help: 'The key to create',
-          type: 'StringableParam',
           multiline: false,
           canInterpolate: true,
           interpolate: true,
           interpolationsFromPort: ['input'],
           value: '',
-        },
-        {
+        }),
+        createDefaultStringable({
           name: 'value',
           label: 'Value',
           help: 'The value to create',
-          type: 'StringableParam',
           multiline: true,
           canInterpolate: true,
           interpolate: true,
@@ -48,7 +47,7 @@ export const CreateProperties: ComputerConfig = {
             stringCast,
           ],
           value: '',
-        },
+        })
       ],
       value: [],
     },

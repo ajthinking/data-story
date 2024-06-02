@@ -1,6 +1,6 @@
 import { StringableParam, get } from '@data-story/core';
-import { useEffect, useState } from 'react';
-import { UseFormReturn } from 'react-hook-form';
+import { useContext, useEffect, useState } from 'react';
+import { FormFieldWrapper, FormFieldContext, useFormField } from './UseFormField';
 
 // Function to calculate the number of rows based on content
 const calculateRows = (content: string) => {
@@ -8,21 +8,21 @@ const calculateRows = (content: string) => {
   return Math.max(newLines, 1); // Ensure a minimum of 1 row
 };
 
-export function StringableInput({
-  name,
-  form,
+interface StringableInput {
+  param: StringableParam;
+  onCursorPositionChange: (position: number) => void; // Add this line
+}
+
+export function StringableInputComponent({
   param,
   onCursorPositionChange,
-}: {
-  form: UseFormReturn<{
-    [x: string]: any;
-  }, any>
-  name: string,
-  param: StringableParam,
-  onCursorPositionChange: (position: number) => void // Add this line
-}) {
+}: StringableInput) {
+  const {fieldName} = useContext(FormFieldContext);
+
+  const { getValues,  watch, register } = useFormField()
+
   // State to keep track of the number of rows and cursor position
-  const [rows, setRows] = useState(calculateRows(String(form.getValues(name))));
+  const [rows, setRows] = useState(calculateRows(String(getValues())));
 
   const handleCursorChange = (event: any) => {
     // Get the current cursor position
@@ -35,10 +35,10 @@ export function StringableInput({
 
   // Effect to listen for form changes - primarily for external updates
   useEffect(() => {
-    const subscription = form.watch((value, formEvent) => {
-      if (formEvent.name === name && formEvent.type === 'change') {
+    const subscription = watch((value, formEvent) => {
+      if (formEvent.name === fieldName && formEvent.type === 'change') {
         try {
-          const fieldValue = get(value, name)
+          const fieldValue = get(value, fieldName)
           const newRows = calculateRows(fieldValue);
           setRows(newRows);
         } catch (e) {
@@ -47,7 +47,7 @@ export function StringableInput({
       }
     });
     return () => subscription.unsubscribe();
-  }, [form, name]);
+  }, [fieldName, watch]);
 
   return (
     <div className="flex w-full text-gray-500">
@@ -55,14 +55,20 @@ export function StringableInput({
         ? <textarea
           className="text-xs p-2 w-full bg-gray-50 font-mono"
           rows={rows}
-          {...form.register(`${name}`)}
+          {...register()}
           onSelect={handleCursorChange}
         />
         : <input
           className="text-xs p-2 w-full bg-gray-50 font-mono"
-          {...form.register(`${name}`)}
+          {...register()}
         />
       }
     </div>
   );
+}
+
+export function StringableInput(params: StringableInput) {
+  return <FormFieldWrapper fieldName={'value'}>
+    <StringableInputComponent {...params} />
+  </FormFieldWrapper>
 }

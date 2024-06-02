@@ -40,7 +40,7 @@ describe('evaluate', () => {
       []
     );
 
-    expect(result).toEqual(removePropertyData.value);
+    expect(result).toEqual([{ property: 'foo-1' }]);
   });
 
   it('should test RepeatableParam contain the PortSelectionParam type', () => {
@@ -50,7 +50,10 @@ describe('evaluate', () => {
       []
     );
 
-    expect(result).toEqual(mockPortMapData.value);
+    expect(result).toEqual([
+      { value: 22, port: 'unfiltered' },
+      { value: 'id', port: 'outputzdbj' }
+    ]);
   });
 
   it('should test RepeatableParam contain the RepeatableParam type', () => {
@@ -60,7 +63,10 @@ describe('evaluate', () => {
       []
     );
 
-    expect(result).toEqual(mockRepeatableData.value);
+    expect(result).toEqual([
+      { value: 'value-11', remove_properties: [{ property: 'property-11' }] },
+      { value: 'value-22', remove_properties: [{ property: 'property-22' }] }
+    ]);
   });
 
   it('recursive called count', () => {
@@ -95,7 +101,9 @@ describe('evaluate', () => {
           {
             "name": "value",
             "type": "StringableParam",
-            "value": "value-11",
+            "value": {
+              "value": "value-11",
+            },
           },
           [],
         ],
@@ -113,7 +121,9 @@ describe('evaluate', () => {
             "type": "RepeatableParam",
             "value": [
               {
-                "property": "property-11",
+                "property": {
+                  "value": "property-11",
+                },
               },
             ],
           },
@@ -124,7 +134,9 @@ describe('evaluate', () => {
           {
             "name": "property",
             "type": "StringableParam",
-            "value": "property-11",
+            "value": {
+              "value": "property-11",
+            },
           },
           [],
         ],
@@ -133,7 +145,9 @@ describe('evaluate', () => {
           {
             "name": "value",
             "type": "StringableParam",
-            "value": "value-22",
+            "value": {
+              "value": "value-22",
+            },
           },
           [],
         ],
@@ -151,7 +165,9 @@ describe('evaluate', () => {
             "type": "RepeatableParam",
             "value": [
               {
-                "property": "property-22",
+                "property": {
+                  "value": "property-22",
+                },
               },
             ],
           },
@@ -162,7 +178,9 @@ describe('evaluate', () => {
           {
             "name": "property",
             "type": "StringableParam",
-            "value": "property-22",
+            "value": {
+              "value": "property-22",
+            },
           },
           [],
         ],

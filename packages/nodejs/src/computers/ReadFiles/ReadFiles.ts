@@ -1,6 +1,6 @@
 import * as glob from 'glob';
 import { promises as fs } from 'fs';
-import { ComputerConfig } from '@data-story/core';
+import { ComputerConfig, createDefaultStringable } from '@data-story/core';
 
 export const ReadFiles: ComputerConfig = {
   name: 'ReadFiles',
@@ -16,23 +16,21 @@ export const ReadFiles: ComputerConfig = {
     }
   }],
   params: [
-    {
+    createDefaultStringable({
       name: 'include',
       label: 'Include',
       help: 'Glob pattern to include',
-      type: 'StringableParam',
       multiline: true,
       canInterpolate: true,
       interpolate: true,
       evaluations: [],
       casts: [],
       value: '${path}/**/*.ts',
-    },
-    {
+    }),
+    createDefaultStringable(    {
       name: 'ignore',
       label: 'Ignore',
       help: 'Glob pattern to ignore',
-      type: 'StringableParam',
       multiline: true,
       canInterpolate: true,
       interpolate: true,
@@ -40,6 +38,7 @@ export const ReadFiles: ComputerConfig = {
       casts: [],
       value: '**/node_modules/**',
     },
+    )
   ],
 
   async *run({ input, output }) {

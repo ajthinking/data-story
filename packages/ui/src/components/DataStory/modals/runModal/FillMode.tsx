@@ -1,5 +1,5 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Params } from '../nodeSettingsModal/tabs';
 import { ReactFlowNode } from '../../../Node/ReactFlowNode';
 import { Param, Port } from '@data-story/core';
@@ -38,23 +38,25 @@ const FillMode = ({ params, setParams, handleRun }) => {
   };
 
   return (
-    <div>
-      <Params form={form} node={{ ...nullNode }} />
-      <div className="flex w-full justify-center items-center space-x-2">
-        <button
-          data-cy="run-modal-button"
-          className={clsx(
-            'flex w-full items-center justify-center space-y-4 mt-4 px-16 py-2',
-            'bg-blue-500 hover:bg-blue-600',
-            'font-mono font-bold text-xs text-gray-50 uppercase',
-            'rounded'
-          )}
-          onClick={form.handleSubmit(onSubmit)}
-        >
+    <FormProvider {...form}>
+      <div>
+        <Params node={{ ...nullNode }} />
+        <div className="flex w-full justify-center items-center space-x-2">
+          <button
+            data-cy="run-modal-button"
+            className={clsx(
+              'flex w-full items-center justify-center space-y-4 mt-4 px-16 py-2',
+              'bg-blue-500 hover:bg-blue-600',
+              'font-mono font-bold text-xs text-gray-50 uppercase',
+              'rounded'
+            )}
+            onClick={form.handleSubmit(onSubmit)}
+          >
           Run
-        </button>
+          </button>
+        </div>
       </div>
-    </div>
+    </FormProvider>
   );
 };
 

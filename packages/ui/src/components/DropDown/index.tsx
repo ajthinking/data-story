@@ -1,5 +1,5 @@
 import '../../styles/globals.css';
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -12,6 +12,7 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
+import { FormFieldWrapper, useFormField } from '../DataStory/Form/UseFormField';
 
 export type Option = {
   label: string
@@ -33,7 +34,56 @@ export type OptionGroup = {
   selectable?: boolean
 }
 
-export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
+type DropdownLiProps = {
+  option: Option,
+  optionGroup: OptionGroup,
+  closeDropdown: () => void
+};
+
+const DropdownLiComponent = ({
+  option,
+  optionGroup,
+  closeDropdown,
+}: DropdownLiProps) => {
+  const { setValue, register, getValues } = useFormField()
+  const isCurrentOptionSelected = option.value === getValues();
+
+  return (
+    <li className="cursor-pointer">
+      <div
+        {...register()}
+        className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
+        onClick={(event) => {
+          if (optionGroup.selectable) {
+            const value = isCurrentOptionSelected ? '' : option.value;
+            setValue(value);
+          }
+
+          option.callback({
+            close: closeDropdown,
+            selectedIndex: optionGroup.options.findIndex((option) => isCurrentOptionSelected),
+          })
+        }
+        }
+      >
+        {option.label}
+        {isCurrentOptionSelected && (<div>✓</div>)}
+      </div>
+    </li>
+  );
+}
+
+const DropdownLi = (params: DropdownLiProps) => {
+  return (<FormFieldWrapper fieldName={params.optionGroup.label ?? ''}>
+    <DropdownLiComponent {...params} />
+  </FormFieldWrapper>)
+}
+
+export const DropDown = ({
+  optionGroups,
+}: {
+  optionGroups: OptionGroup[],
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const closeDropdown = useCallback(() => {
@@ -65,7 +115,7 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
   ]);
 
   return (
-    <div className="">
+    <div>
       <div className="ml-1 relative bg-gray-50">
         <button
           ref={refs.setReference}
@@ -93,31 +143,8 @@ export const DropDown = ({ optionGroups }: {optionGroups: OptionGroup[]}) => {
                     className="font-bold text-gray-400 flex w-full justify-center text-xs px-2 py-2 border-b uppercase tracking-widest">{optionGroup.label}</div>
                   <ul role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                     {optionGroup.options.map((option) => {
-                      return (
-                        <li key={option.label} className="cursor-pointer">
-                          <div
-                            className="flex justify-between px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
-                            onClick={() => {
-                              if (optionGroup.selectable) {
-                                optionGroup.options.forEach((option) => {
-                                  option.selected = false
-                                })
-
-                                option.selected = true
-                              }
-
-                              option.callback({
-                                close: closeDropdown,
-                                selectedIndex: optionGroup.options.findIndex((option) => option.selected),
-                              })
-                            }
-                            }
-                          >
-                            {option.label}
-                            {option.selected && (<div className="">✓</div>)}
-                          </div>
-                        </li>
-                      )
+                      return (<DropdownLi key={option.label} option={option} optionGroup={optionGroup}
+                        closeDropdown={closeDropdown}/>)
                     })}
                   </ul>
                   {optionGroup.options.length === 0 &&
