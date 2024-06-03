@@ -65,7 +65,9 @@ describe('add', () => {
 
     expect(periodParam).toMatchObject({
       name: 'period',
-      value: 99
+      value: {
+        value: 99
+      }
     })
   })
 
