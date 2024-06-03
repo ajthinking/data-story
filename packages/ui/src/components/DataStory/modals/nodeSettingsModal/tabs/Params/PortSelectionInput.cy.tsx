@@ -1,8 +1,12 @@
 import { PortSelectionInput } from './PortSelectionInput';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
 import { FormComponentProps } from '../../../../types';
 
-const TestedPortSelectionInput = (props: {onForm: (f: FormComponentProps['form']) => any}) => {
+type FormReturn = UseFormReturn<{
+  [x: string]: any;
+}, any>;
+
+const TestedPortSelectionInput = (props: {onForm: (f: FormReturn) => any}) => {
   const form = useForm({
     defaultValues: {
       port: '',
@@ -12,7 +16,7 @@ const TestedPortSelectionInput = (props: {onForm: (f: FormComponentProps['form']
       ]),
     },
   });
-  props.onForm(form as unknown as FormComponentProps['form']);
+  props.onForm(form as unknown as FormReturn);
 
   return (
     <FormProvider {...form}>
@@ -24,7 +28,7 @@ const TestedPortSelectionInput = (props: {onForm: (f: FormComponentProps['form']
   );
 }
 
-const mountPortSelectionInput = (formRef: {val: null | FormComponentProps['form']} = { val: null }) => {
+const mountPortSelectionInput = (formRef: {val: null | FormReturn} = { val: null }) => {
   cy.mount(<TestedPortSelectionInput onForm={(f) => formRef.val = f}/>);
 }
 describe('PortSelectionInput', () => {
