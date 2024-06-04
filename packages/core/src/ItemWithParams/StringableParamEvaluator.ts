@@ -4,8 +4,7 @@ import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
 import Hjson from '@data-story/hjson';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
-import { Evaluation } from '../Param/Evaluation';
-import { Cast } from '../Param/Cast';
+import { ParamEvaluator } from './ParamEvaluator';
 
 export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
   type = 'StringableParam' as const;
@@ -27,7 +26,14 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
       // Find any @{PARAM_NAME} and replace with the value of the global param
       const GLOBAL_PARAM_PATTERN = /@\{(\w+)\}/g;
       transformedValue = transformedValue.replace(GLOBAL_PARAM_PATTERN, (_: string, name: string) => {
-        return globalParams.find(p => p.name === name)?.value;
+        const param =  globalParams.find(p => p.name === name);
+        if (!param) {
+          console.error(`Global param "${name}" not found`);
+          return '';
+        }
+
+        const paramEvaluator = new ParamEvaluator();
+        return paramEvaluator.evaluate(itemValue, param as Param, []);
       });
     }
 
