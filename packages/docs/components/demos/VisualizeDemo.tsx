@@ -59,6 +59,10 @@ export default () => {
 
   const mapNode = diagram.nodes.find(n => n.type === 'Map');
   const jsonParam = mapNode.params.find(p => p.name === 'json') as any;
+  jsonParam.value = {
+    ...jsonParam.value,
+    Evaluation: 'JS_EXPRESSION',
+  }
   jsonParam.evaluations = [{
     type: 'JS_EXPRESSION',
     label: 'JS Expression',
