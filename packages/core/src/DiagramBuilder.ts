@@ -7,7 +7,8 @@ import { AbstractPort, Port, PortName } from './types/Port';
 import { ComputerConfig } from './types/ComputerConfig';
 import { Fake } from './computers/Fake';
 import { createDataStoryId } from './utils/createDataStoryId';
-import { Param } from './Param';
+import { Param, StringableInputValue } from './Param';
+import { isStringableParam } from './utils/isStringableParam';
 
 export class DiagramBuilder {
   diagram: Diagram
@@ -87,7 +88,7 @@ export class DiagramBuilder {
 
       if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
 
-      param.value = value
+      param.value = isStringableParam(param.type) ? { value } : value;
     }
 
     if(this.aboveDirective) {
@@ -137,7 +138,8 @@ export class DiagramBuilder {
       type: name,
       // The inputs have not yet been assigned ids, to it here
       inputs: diagram.inputNodes().map(inputNode => {
-        const inputName = inputNode.params.find(param => param.name === 'port_name')!.value as string
+        const param = inputNode.params.find(param => param.name === 'port_name');
+        const inputName = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value as string
 
         return {
           name: inputName,
@@ -147,7 +149,8 @@ export class DiagramBuilder {
       }),
       // The outputs have not yet been assigned ids, to it here
       outputs: diagram.outputNodes().map(outputNode => {
-        const outputName = outputNode.params.find(param => param.name === 'port_name')!.value as string
+        const param = outputNode.params.find(param => param.name === 'port_name');
+        const outputName = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value as string
 
         return {
           name: outputName,
@@ -165,7 +168,7 @@ export class DiagramBuilder {
 
       if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
 
-      param.value = value
+      param.value = isStringableParam(param.type) ? { value } : value;
     }
 
     if(this.aboveDirective) {

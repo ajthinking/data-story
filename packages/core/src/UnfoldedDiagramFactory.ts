@@ -1,8 +1,9 @@
 import { Diagram } from './Diagram'
-import { Param } from './Param'
+import { Param, StringableInputValue } from './Param'
 import { NestedNodes } from './Registry'
 import { UnfoldedDiagram } from './UnfoldedDiagram'
 import { Node, NodeId } from './types/Node'
+import { isStringableParam } from './utils/isStringableParam';
 
 export class UnfoldedDiagramFactory {
   public unfoldedGlobalParams: Record<NodeId, Param[]> = {}
@@ -66,10 +67,11 @@ export class UnfoldedDiagramFactory {
             const isInputNode = node.type === 'Input'
             if(!isInputNode) return false;
 
-            const portName = node.params[0]?.value
+            const param = node.params[0];
+            const portName: string = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value;
             if(!portName) throw new Error(`No port name found for input node "${node.id}". The node was ${JSON.stringify(node)}`)
 
-            const matchesPortName = portName === inputPort.name
+            const matchesPortName = portName === inputPort.name;
 
             return matchesPortName
           })
@@ -92,7 +94,8 @@ export class UnfoldedDiagramFactory {
             const isOutputNode = node.type === 'Output'
             if(!isOutputNode) return false;
 
-            const portName = node.params[0]?.value
+            const param = node.params[0];
+            const portName: string = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value;
             if(!portName) throw new Error(`No port name found for output node "${node.id}. The node was ${JSON.stringify(node)}"`)
 
             const matchesPortName = portName === outputPort.name
