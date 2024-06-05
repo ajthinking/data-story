@@ -12,8 +12,8 @@ export const Await: ComputerConfig = {
         label: 'Number of Items',
         help: 'How many items to await?',
         multiline: false,
-        canInterpolate: true,
-        interpolate: true,
+        canInterpolate: false,
+        interpolate: false,
         value: 'Infinity',
       }
     )
