@@ -1,5 +1,6 @@
 import {basicSetup, EditorView} from 'codemirror'
 import {autocompletion} from '@codemirror/autocomplete'
+import { useEffect } from 'react';
 
 // Our list of completions (can be static, since the editor
 /// will do filtering based on context).
@@ -9,24 +10,41 @@ const completions = [
   {label: '@password', type: 'variable'},
 ]
 
-function myCompletions(context) {
-  console.log(context, 'context111')
-  let before = context.matchBefore(/[$@][a-zA-Z0-9]*$/)
-  // If completion wasn't explicitly started and there
-  // is no word before the cursor, don't open completions.
-  if (!context.explicit && !before) return null
-  return {
-    from: before ? before.from : context.pos,
-    options: completions,
-    validFor: /^[$@][a-zA-Z0-9]+$/
-  }
-}
+const EditorExp: RegExp = /[$@][a-zA-Z0-9]*$/;
 
-let view = new EditorView({
-  doc: '// Type a \'p\'\n',
-  extensions: [
-    basicSetup,
-    autocompletion({override: [myCompletions]})
-  ],
-  parent: document.body
-})
+// view destroy
+
+// 封装一个 useCodeMirror hook
+const useCodeMirror = ({
+  container,
+  completions,
+  defaultDoc
+}: {
+  container:  HTMLDivElement | null,
+  completions: {label: string, type: string, info?: string}[],
+  defaultDoc?: string
+}) => {
+  useEffect(() => {
+    const myCompletions = (context) => {
+      console.log(context, 'context111')
+      let before = context.matchBefore(EditorExp)
+      if (!context.explicit && !before) return null
+      return {
+        from: before ? before.from : context.pos,
+        options: completions,
+        validFor: EditorExp
+      }
+    }
+
+    if (!container) return
+    let view = new EditorView({
+      doc: defaultDoc || '',
+      extensions: [
+        basicSetup,
+        autocompletion({override: [myCompletions]})
+      ],
+      parent: container
+    })
+    return () => view.destroy()
+  }, [container, defaultDoc, completions])
+}
