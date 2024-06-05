@@ -88,7 +88,7 @@ export class DiagramBuilder {
 
       if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
 
-      param.value = isStringableParam(param.type) ? { value } : value;
+      param.value = isStringableParam(param.type) ? { ...(param.value as StringableInputValue ?? {}), value } : value;
     }
 
     if(this.aboveDirective) {
@@ -168,7 +168,7 @@ export class DiagramBuilder {
 
       if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
 
-      param.value = isStringableParam(param.type) ? { value } : value;
+      param.value = isStringableParam(param.type) ? { ...(param.value as StringableInputValue ?? {}), value } : value;
     }
 
     if(this.aboveDirective) {
