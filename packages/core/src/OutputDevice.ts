@@ -45,6 +45,24 @@ export class OutputDevice {
     }
   }
 
+  pushToLinks(linkIds: LinkId[], itemable: (ItemValue | ItemWithParams)[]) {
+    // When outputting we should not be in a params infused ItemWithParams
+    const items = itemable.map(i => isItemWithParams(i) ? i.value : i)
+
+    for(const linkId of linkIds) {
+      // Update items on link
+      this.memory.pushLinkItems(
+        linkId,
+        // Clone items to ensure induvidual mutation per branch
+        structuredClone(items)
+      )
+
+      // Update link counts
+      const count = this.memory.getLinkCount(linkId)!
+      this.memory.setLinkCount(linkId, count + items.length)
+    }
+  }
+
   /**
    *
    * (Test) Utility to get items have been outputted through a port

@@ -12,6 +12,7 @@ import { Executor } from '../Executor'
 import { Node } from './Node'
 import { InputDevice } from '../InputDevice'
 import { OutputDevice } from '../OutputDevice'
+import { UnfoldedDiagram } from '../UnfoldedDiagram'
 
 export type RunArgs = {
   input: InputDevice,
@@ -20,6 +21,7 @@ export type RunArgs = {
   storage?: Storage,
   hooks: HooksDevice,
   node: Node,
+  unfoldedDiagram: UnfoldedDiagram,
 }
 
 export interface Computer {

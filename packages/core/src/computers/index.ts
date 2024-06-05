@@ -18,6 +18,8 @@ export { Log } from './Log';
 export { CreateProperties } from './CreateProperties'
 // export { Merge } from './Merge';
 export { Pass } from './Pass';
+export { Portal } from './Portal';
+export { SendToPortal } from './SendToPortal';
 export { Request } from './Request'
 export { Signal } from './Signal'
 export { Sleep } from './Sleep'

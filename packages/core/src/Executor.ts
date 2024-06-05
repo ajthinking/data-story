@@ -182,6 +182,8 @@ export class Executor {
    * Marks nodes as complete if some default heuristics are met.
    */
   protected attemptToMarkNodeComplete(node: Node) {
+    if(node.id.includes('Portal')) console.log('Attempting to mark node complete', node.id)
+
     // Node must not be busy
     if(this.memory.getNodeStatus(node.id) === 'BUSY') return;
 

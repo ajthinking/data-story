@@ -109,6 +109,7 @@ export class ComputerTester {
         storage: new InMemoryStorage(),
         hooks: this.hooksDevice,
         node: this.node,
+        unfoldedDiagram: new UnfoldedDiagramFactory(this.diagram!, {}).unfold(),
       })
     )
 

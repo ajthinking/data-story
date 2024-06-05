@@ -76,6 +76,7 @@ export class ExecutionMemoryFactory {
             }
           },
           node,
+          unfoldedDiagram: this.unfoldedDiagram,
         }),
       )
     }
