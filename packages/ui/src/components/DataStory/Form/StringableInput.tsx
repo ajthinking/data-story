@@ -1,6 +1,8 @@
-import { StringableParam, get } from '@data-story/core';
-import { useContext, useEffect, useState } from 'react';
-import { FormFieldWrapper, FormFieldContext, useFormField } from './UseFormField';
+import { get, StringableParam } from '@data-story/core';
+import { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { FormFieldContext, FormFieldWrapper, useFormField } from './UseFormField';
+import { MyCodeMirrorComponent, MyCodeMirrorComponent1, useCodeMirror } from './editor';
+import { Controller, ControllerRenderProps, RefCallBack, useController } from 'react-hook-form';
 
 // Function to calculate the number of rows based on content
 const calculateRows = (content: string) => {
@@ -11,15 +13,16 @@ const calculateRows = (content: string) => {
 interface StringableInput {
   param: StringableParam;
   onCursorPositionChange: (position: number) => void; // Add this line
+  field?: ControllerRenderProps<any, `${string}.value`>;
 }
 
 export function StringableInputComponent({
   param,
   onCursorPositionChange,
 }: StringableInput) {
-  const {fieldName} = useContext(FormFieldContext);
-
-  const { getValues,  watch, register } = useFormField()
+  const { fieldName } = useContext(FormFieldContext);
+  const editorRef:  RefObject<any> = useRef(null);
+  const { getValues, watch, setValue, control} = useFormField();
 
   // State to keep track of the number of rows and cursor position
   const [rows, setRows] = useState(calculateRows(String(getValues())));
@@ -33,7 +36,6 @@ export function StringableInputComponent({
     }
   };
 
-  // Effect to listen for form changes - primarily for external updates
   useEffect(() => {
     const subscription = watch((value, formEvent) => {
       if (formEvent.name === fieldName && formEvent.type === 'change') {
@@ -41,7 +43,7 @@ export function StringableInputComponent({
           const fieldValue = get(value, fieldName)
           const newRows = calculateRows(fieldValue);
           setRows(newRows);
-        } catch (e) {
+        } catch(e) {
           // Handle error or TODO note
         }
       }
@@ -49,20 +51,31 @@ export function StringableInputComponent({
     return () => subscription.unsubscribe();
   }, [fieldName, watch]);
 
+  const handleChange = (e) => {
+    // console.log('e', e);
+    // setValue(e.target.value);
+    // field.onChange(e);
+  }
+
   return (
     <div className="flex w-full text-gray-500">
-      {param.multiline
-        ? <textarea
-          className="text-xs p-2 w-full bg-gray-50 font-mono"
-          rows={rows}
-          {...register()}
-          onSelect={handleCursorChange}
-        />
-        : <input
-          className="text-xs p-2 w-full bg-gray-50 font-mono"
-          {...register()}
-        />
-      }
+      <MyCodeMirrorComponent1 />
+      {/*{param.multiline*/}
+      {/*  ? <textarea*/}
+      {/*    className="text-xs p-2 w-full bg-gray-50 font-mono"*/}
+      {/*    rows={rows}*/}
+      {/*    // onSelect={handleCursorChange}*/}
+      {/*    value={getValues()}*/}
+      {/*    // onChange={handleChange}*/}
+      {/*    ref={editorRef}*/}
+      {/*  />*/}
+      {/*  : <input*/}
+      {/*    value={getValues()}*/}
+      {/*    // onChange={handleChange}*/}
+      {/*    ref={editorRef}*/}
+      {/*    className="text-xs p-2 w-full bg-gray-50 font-mono"*/}
+      {/*  />*/}
+      {/*}*/}
     </div>
   );
 }
