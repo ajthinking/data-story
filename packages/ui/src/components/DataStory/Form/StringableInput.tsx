@@ -1,14 +1,9 @@
-import { get, StringableParam } from '@data-story/core';
-import { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { FormFieldContext, FormFieldWrapper, useFormField } from './UseFormField';
-import {  CodeMirrorComponent  } from './editor';
-import { Controller, ControllerRenderProps, RefCallBack, useController } from 'react-hook-form';
-
-// Function to calculate the number of rows based on content
-const calculateRows = (content: string) => {
-  const newLines = content.split('\n').length;
-  return Math.max(newLines, 1); // Ensure a minimum of 1 row
-};
+import {  StringableParam } from '@data-story/core';
+import {  useCallback} from 'react';
+import { FormFieldWrapper, useFormField } from './UseFormField';
+import { ControllerRenderProps } from 'react-hook-form';
+import { autocompletion } from '@codemirror/autocomplete';
+import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 interface StringableInput {
   param: StringableParam;
@@ -16,65 +11,54 @@ interface StringableInput {
   field?: ControllerRenderProps<any, `${string}.value`>;
 }
 
+const basicSetup: BasicSetupOptions = {
+  lineNumbers: false,
+  highlightActiveLineGutter: false,
+  highlightActiveLine: false,
+  foldGutter: false,
+};
+
+/**
+ * todo: completions are hardcoded here, should be fetched from param
+ */
+const completions = [
+  { label: '@panic', type: 'keyword' },
+  { label: '$park', type: 'constant', info: 'Test completion' },
+  { label: '@password', type: 'variable' },
+];
+
 export function StringableInputComponent({
   param,
   onCursorPositionChange,
 }: StringableInput) {
-  const { fieldName } = useContext(FormFieldContext);
-  const { getValues, watch, setValue, control} = useFormField();
+  const { getValues,  setValue} = useFormField();
 
-  // State to keep track of the number of rows and cursor position
-  const [rows, setRows] = useState(calculateRows(String(getValues())));
+  const myCompletions = useCallback((context) => {
+    let before = context.matchBefore(/[$@][a-zA-Z0-9]*$/);
+    if (!context.explicit && !before) return null;
+    return {
+      from: before ? before.from : context.pos,
+      options: completions,
+      validFor: /^[$@][a-zA-Z0-9]+$/,
+    };
+  }, []);
 
-  const handleCursorChange = (event: any) => {
-    // Get the current cursor position
-    const cursorPosition = event.target.selectionStart;
-    // Notify the parent component about the cursor position change
-    if (onCursorPositionChange) {
-      onCursorPositionChange(cursorPosition);
-    }
-  };
+  const extensions = [
+    autocompletion({ override: [myCompletions] }), ];
 
-  useEffect(() => {
-    const subscription = watch((value, formEvent) => {
-      if (formEvent.name === fieldName && formEvent.type === 'change') {
-        try {
-          const fieldValue = get(value, fieldName)
-          const newRows = calculateRows(fieldValue);
-          setRows(newRows);
-        } catch(e) {
-          // Handle error or TODO note
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [fieldName, watch]);
-
-  const handleChange = (e) => {
-    // console.log('e', e);
-    // setValue(e.target.value);
-    // field.onChange(e);
-  }
+  const onChange = useCallback((value, viewUpdate) => {
+    setValue(value);
+  }, [setValue]);
 
   return (
     <div className="flex w-full text-gray-500">
-      <CodeMirrorComponent />
-      {/*{param.multiline*/}
-      {/*  ? <textarea*/}
-      {/*    className="text-xs p-2 w-full bg-gray-50 font-mono"*/}
-      {/*    rows={rows}*/}
-      {/*    // onSelect={handleCursorChange}*/}
-      {/*    value={getValues()}*/}
-      {/*    // onChange={handleChange}*/}
-      {/*    ref={editorRef}*/}
-      {/*  />*/}
-      {/*  : <input*/}
-      {/*    value={getValues()}*/}
-      {/*    // onChange={handleChange}*/}
-      {/*    ref={editorRef}*/}
-      {/*    className="text-xs p-2 w-full bg-gray-50 font-mono"*/}
-      {/*  />*/}
-      {/*}*/}
+      <CodeMirror
+        className="text-xs p-2 w-full bg-gray-50 font-mono"
+        value={getValues().toString()}
+        basicSetup={basicSetup}
+        extensions={extensions}
+        onChange={onChange}
+      />
     </div>
   );
 }
