@@ -319,6 +319,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@data-story/ui@workspace:packages/ui"
   dependencies:
+    "@codemirror/autocomplete": "npm:^6.16.2"
     "@data-story/core": "workspace:*"
     "@floating-ui/react": "npm:^0.26.10"
     "@tailwindcss/typography": "npm:^0.5.10"
@@ -334,6 +335,7 @@ __metadata:
     autoprefixer: "npm:^10.4.13"
     axios: "npm:^1.3.4"
     clsx: "npm:^2.0.0"
+    codemirror: "npm:^6.0.1"
     concurrently: "npm:^8.2.1"
     css-loader: "npm:^6.8.1"
     markdown-it: "npm:^13.0.2"
@@ -4525,11 +4527,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "data-story@workspace:."
   dependencies:
-    "@codemirror/autocomplete": "npm:^6.16.2"
     "@stylistic/eslint-plugin": "npm:^0.1.2"
     "@types/mocha": "npm:^10.0.6"
     "@typescript-eslint/parser": "npm:^6.9.0"
-    codemirror: "npm:^6.0.1"
     cypress: "npm:^13.6.1"
     eslint: "npm:^8.52.0"
     eslint-plugin-import: "npm:^2.25.0"
