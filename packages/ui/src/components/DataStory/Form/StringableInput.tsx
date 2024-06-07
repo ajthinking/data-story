@@ -1,7 +1,7 @@
 import { get, StringableParam } from '@data-story/core';
 import { RefObject, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { FormFieldContext, FormFieldWrapper, useFormField } from './UseFormField';
-import { MyCodeMirrorComponent, MyCodeMirrorComponent1, useCodeMirror } from './editor';
+import {  CodeMirrorComponent  } from './editor';
 import { Controller, ControllerRenderProps, RefCallBack, useController } from 'react-hook-form';
 
 // Function to calculate the number of rows based on content
@@ -21,7 +21,6 @@ export function StringableInputComponent({
   onCursorPositionChange,
 }: StringableInput) {
   const { fieldName } = useContext(FormFieldContext);
-  const editorRef:  RefObject<any> = useRef(null);
   const { getValues, watch, setValue, control} = useFormField();
 
   // State to keep track of the number of rows and cursor position
@@ -59,7 +58,7 @@ export function StringableInputComponent({
 
   return (
     <div className="flex w-full text-gray-500">
-      <MyCodeMirrorComponent1 />
+      <CodeMirrorComponent />
       {/*{param.multiline*/}
       {/*  ? <textarea*/}
       {/*    className="text-xs p-2 w-full bg-gray-50 font-mono"*/}
