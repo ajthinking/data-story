@@ -16,6 +16,7 @@ const basicSetup: BasicSetupOptions = {
   highlightActiveLineGutter: false,
   highlightActiveLine: false,
   foldGutter: false,
+  autocompletion: true
 };
 
 /**
@@ -27,6 +28,8 @@ const completions = [
   { label: '@password', type: 'variable' },
 ];
 
+const parameterReg = /[$@][a-zA-Z0-9]*$/;
+
 export function StringableInputComponent({
   param,
   onCursorPositionChange,
@@ -34,17 +37,16 @@ export function StringableInputComponent({
   const { getValues,  setValue} = useFormField();
 
   const myCompletions = useCallback((context) => {
-    let before = context.matchBefore(/[$@][a-zA-Z0-9]*$/);
+    let before = context.matchBefore(parameterReg);
     if (!context.explicit && !before) return null;
     return {
       from: before ? before.from : context.pos,
       options: completions,
-      validFor: /^[$@][a-zA-Z0-9]+$/,
+      validFor: parameterReg,
     };
   }, []);
 
-  const extensions = [
-    autocompletion({ override: [myCompletions] }), ];
+  const extensions = [autocompletion({ override: [myCompletions] }), ];
 
   const onChange = useCallback((value, viewUpdate) => {
     setValue(value);
