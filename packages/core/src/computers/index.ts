@@ -22,6 +22,7 @@ export { Request } from './Request'
 export { Signal } from './Signal'
 export { Sleep } from './Sleep'
 export { Table } from './Table'
+export { Test } from './Test';
 export { Throw } from './Throw';
 export { Output } from './Output';
 export { Sample } from './Sample';
