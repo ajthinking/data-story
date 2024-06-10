@@ -3,7 +3,7 @@ import { Param, str } from '../Param'
 
 describe('value', () => {
   it('can be accessed when no params is supplied', () => {
-    const item = new ItemWithParams({ name: 'Bob' }, [])
+    const item = new ItemWithParams({ name: 'Bob' }, [], [])
     expect(item.value).toEqual({ name: 'Bob' })
   })
 
@@ -15,7 +15,8 @@ describe('value', () => {
           name: 'greeting',
           value: 'Hello ${name}!',
         })
-      ]
+      ],
+      []
     )
 
     expect(item.value).toEqual({ name: 'Bob' })
@@ -31,7 +32,8 @@ describe('params', () => {
           name: 'greeting',
           value: 'Hello ${name}!',
         })
-      ]
+      ],
+      []
     )
 
     expect(item.params.greeting).toEqual('Hello Bob!')

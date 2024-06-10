@@ -1,68 +1,66 @@
-import { StringableParam, get } from '@data-story/core';
-import { useContext, useEffect, useState } from 'react';
-import { FormFieldWrapper, FormFieldContext, useFormField } from './UseFormField';
-
-// Function to calculate the number of rows based on content
-const calculateRows = (content: string) => {
-  const newLines = content.split('\n').length;
-  return Math.max(newLines, 1); // Ensure a minimum of 1 row
-};
+import {  StringableParam } from '@data-story/core';
+import {  useCallback} from 'react';
+import { FormFieldWrapper, useFormField } from './UseFormField';
+import { ControllerRenderProps } from 'react-hook-form';
+import { autocompletion } from '@codemirror/autocomplete';
+import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 interface StringableInput {
   param: StringableParam;
   onCursorPositionChange: (position: number) => void; // Add this line
+  field?: ControllerRenderProps<any, `${string}.value`>;
 }
+
+const basicSetup: BasicSetupOptions = {
+  lineNumbers: false,
+  highlightActiveLineGutter: false,
+  highlightActiveLine: false,
+  foldGutter: false,
+  autocompletion: true
+};
+
+/**
+ * todo: completions are hardcoded here, should be fetched from param
+ */
+const completions = [
+  { label: '@panic', type: 'keyword' },
+  { label: '$park', type: 'constant', info: 'Test completion' },
+  { label: '@password', type: 'variable' },
+];
+
+const parameterReg = /[$@][a-zA-Z0-9]*$/;
 
 export function StringableInputComponent({
   param,
   onCursorPositionChange,
 }: StringableInput) {
-  const {fieldName} = useContext(FormFieldContext);
+  const { getValues,  setValue} = useFormField();
 
-  const { getValues,  watch, register } = useFormField()
+  const myCompletions = useCallback((context) => {
+    let before = context.matchBefore(parameterReg);
+    if (!context.explicit && !before) return null;
+    return {
+      from: before ? before.from : context.pos,
+      options: completions,
+      validFor: parameterReg,
+    };
+  }, []);
 
-  // State to keep track of the number of rows and cursor position
-  const [rows, setRows] = useState(calculateRows(String(getValues())));
+  const extensions = [autocompletion({ override: [myCompletions] }), ];
 
-  const handleCursorChange = (event: any) => {
-    // Get the current cursor position
-    const cursorPosition = event.target.selectionStart;
-    // Notify the parent component about the cursor position change
-    if (onCursorPositionChange) {
-      onCursorPositionChange(cursorPosition);
-    }
-  };
-
-  // Effect to listen for form changes - primarily for external updates
-  useEffect(() => {
-    const subscription = watch((value, formEvent) => {
-      if (formEvent.name === fieldName && formEvent.type === 'change') {
-        try {
-          const fieldValue = get(value, fieldName)
-          const newRows = calculateRows(fieldValue);
-          setRows(newRows);
-        } catch (e) {
-          // Handle error or TODO note
-        }
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [fieldName, watch]);
+  const onChange = useCallback((value, viewUpdate) => {
+    setValue(value);
+  }, [setValue]);
 
   return (
     <div className="flex w-full text-gray-500">
-      {param.multiline
-        ? <textarea
-          className="text-xs p-2 w-full bg-gray-50 font-mono"
-          rows={rows}
-          {...register()}
-          onSelect={handleCursorChange}
-        />
-        : <input
-          className="text-xs p-2 w-full bg-gray-50 font-mono"
-          {...register()}
-        />
-      }
+      <CodeMirror
+        className="text-xs p-2 w-full bg-gray-50 font-mono"
+        value={getValues().toString()}
+        basicSetup={basicSetup}
+        extensions={extensions}
+        onChange={onChange}
+      />
     </div>
   );
 }
