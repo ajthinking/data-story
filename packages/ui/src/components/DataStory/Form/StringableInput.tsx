@@ -1,14 +1,12 @@
 import {  StringableParam } from '@data-story/core';
 import {  useCallback} from 'react';
 import { FormFieldWrapper, useFormField } from './UseFormField';
-import { ControllerRenderProps } from 'react-hook-form';
 import { autocompletion } from '@codemirror/autocomplete';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 
 interface StringableInput {
   param: StringableParam;
   onCursorPositionChange: (position: number) => void; // Add this line
-  field?: ControllerRenderProps<any, `${string}.value`>;
 }
 
 const basicSetup: BasicSetupOptions = {
@@ -55,7 +53,7 @@ export function StringableInputComponent({
   return (
     <div className="flex w-full text-gray-500">
       <CodeMirror
-        className="text-xs p-2 w-full bg-gray-50 font-mono"
+        className="text-xs p-1 w-full bg-white font-mono"
         value={getValues().toString()}
         basicSetup={basicSetup}
         extensions={extensions}
