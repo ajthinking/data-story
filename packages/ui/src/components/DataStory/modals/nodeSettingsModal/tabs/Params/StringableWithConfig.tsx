@@ -23,7 +23,7 @@ function StringableWithConfigComponent({
 
   const filedForm = useFormField();
 
-  return (<div className="group flex bg-gray-50">
+  return (<div className="group flex bg-gray-50 h-full">
     <StringableInput
       {...param}
       param={param as StringableParam}

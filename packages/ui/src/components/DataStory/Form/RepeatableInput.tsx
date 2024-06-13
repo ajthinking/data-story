@@ -20,6 +20,7 @@ function RepeatableCell({
 }) {
   return <FormFieldWrapper fieldName={`${rowIndex}`}>
     <td
+      style={{height: '1px'}}
       scope="row"
       className="border font-medium whitespace-nowrap bg-gray-50 align-top"
     >
