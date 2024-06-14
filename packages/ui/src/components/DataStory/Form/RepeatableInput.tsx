@@ -98,6 +98,32 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
   </tr>;
 }
 
+type RowType = {
+  id: string;
+  key: Record<string, any>,
+  value: Record<string, any>
+}
+
+function areEqual(prevProps, nextProps) {
+  // Check if row is equal
+  let isEqualRow = true;
+  if(prevProps.row !== nextProps.row) {
+    Object.keys(nextProps.row as RowType).forEach((key) => {
+      if (prevProps.row[key] !== nextProps.row[key]) {
+        isEqualRow = false;
+        return;
+      }
+    });
+  }
+
+  return prevProps.rowIndex === nextProps.rowIndex &&
+    isEqualRow &&
+    prevProps.reorderRow === nextProps.reorderRow &&
+    prevProps.deleteRow === nextProps.deleteRow;
+}
+
+const MemoRepeatableDraggableRow = React.memo(RepeatableDraggableRow, areEqual);
+
 const defaultRowData = (row: Param[]) => {
   const id = Math.random().toString(36).substring(7);
   const data = Object.fromEntries(row.map((column: Param) => {
@@ -143,8 +169,8 @@ export function RepeatableComponent({
         <tbody>
           {fields.map((row, i) => {
             return (
-              <RepeatableDraggableRow
-                key={`${i}-${row.id}`}
+              <MemoRepeatableDraggableRow
+                key={row.id}
                 reorderRow={swap}
                 deleteRow={remove}
                 row={row} rowIndex={i}
