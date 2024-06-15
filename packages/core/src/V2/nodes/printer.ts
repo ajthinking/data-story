@@ -11,7 +11,12 @@ export const printer: Element = {
   tags: [],
   boot: async ({ inputs }) => {
     inputs.input.subscribe({
-      next: itemBatch => console.log(itemBatch)
+      next: itemBatch => {
+        console.log('Printer received batch:', itemBatch);
+      },
+      complete: () => {
+        console.log('Printer complete.');
+      }
     });
   },
 }

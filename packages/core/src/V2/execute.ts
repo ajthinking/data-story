@@ -5,6 +5,8 @@ import { creator } from './nodes/creator'
 import { printer } from './nodes/printer'
 import { Diagram } from '../Diagram'
 import { Element, OperatorBootArgs } from './Element'
+import { slowCreator } from './nodes/slowCreator'
+import { sleeper } from './nodes/sleeper'
 
 type NodeId = string
 type PortName = string
@@ -13,6 +15,8 @@ const nodes: Record<string, Element> = {
   creator,
   mapper,
   printer,
+  slowCreator,
+  sleeper,
 }
 
 // Assumes output ports are named 'output'
@@ -43,6 +47,7 @@ export const execute = async (diagram: Diagram) => {
 
   for(const operatorNode of operatorNodes) {
     const operator = nodes[operatorNode.type]
+    if(!operator) throw new Error(`Operator ${operatorNode.type} not found`)
     const operatorArgs: OperatorBootArgs = {
       inputs: {},
       outputs: {},
@@ -51,10 +56,16 @@ export const execute = async (diagram: Diagram) => {
     for(const input of operatorNode.inputs) {
       const inputName = input.name
       const links = diagram.linksAtInput(operatorNode, input.name)
-      const sourceNodes = links.map(link => diagram.nodeWithOutputPortId(link.sourcePortId)!)
+      const observables = links.map(link => {
+        const sourceNode = diagram.nodeWithOutputPortId(link.sourcePortId)
+        if(!sourceNode) return;
+        const sourcePortId = link.sourcePortId
+        const portName = sourceNode.outputs.find(output => output.id === sourcePortId)!.name
+        return outputMap[sourceNode.id][portName].asObservable()
+      })
 
       operatorArgs.inputs[inputName] = merge<ItemValue[][]>(
-        ...sourceNodes.map(sourceNode => outputMap[sourceNode.id]['output'].asObservable())
+        ...observables
       )
     }
 

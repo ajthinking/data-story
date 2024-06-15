@@ -9,7 +9,11 @@ export const creator: Element = {
   params: [],
   tags: [],
   boot: async ({ outputs }) => {
-    outputs.output.next([{ created: true }])
-    outputs.output.complete()
+    console.log('Creator started.');
+    const data = [{ created: true }];
+    console.log('Creator emitting data:', data);
+    outputs.output.next(data);
+    outputs.output.complete();
+    console.log('Creator completed.');
   },
 }
