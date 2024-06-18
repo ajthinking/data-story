@@ -67,7 +67,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
     className="bg-white border-b dark:border-gray-700">
     <td
       ref={dropRef}
-      className="border font-medium whitespace-nowrap bg-gray-50 align-top"
+      className="border font-medium whitespace-nowrap bg-gray-50 align-top w-10"
     >
       <button
         data-cy='data-story-repeatable-drag-row'
@@ -86,7 +86,7 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
         />
       ))
     }
-    <td className="border font-medium whitespace-nowrap bg-gray-50 align-top">
+    <td className="border font-medium whitespace-nowrap bg-gray-50 align-top w-10">
       <button
         className="p-2"
         data-cy='data-story-repeatable-delete-row'

@@ -122,10 +122,12 @@ function DropDownOperator(props: {
     <div className="flex flex-col items-center">
       {Object.keys(value ?? {}).map((key) => {
         return ((key === 'Evaluation' || key === 'Cast') && getLabelFromType(value[key]))
-          ? (<div className="rounded-md p-0.5 scale-75 text-white" style={{
-            fontSize: '12px',
-            backgroundColor: getBgColor(key),
-          }}>
+          ? (<div key={key}
+            className="rounded-md p-0.5 scale-75 text-white w-20 text-center"
+            style={{
+              fontSize: '12px',
+              backgroundColor: getBgColor(key),
+            }}>
             {getLabelFromType(value[key])}
           </div>)
           : ''})}
