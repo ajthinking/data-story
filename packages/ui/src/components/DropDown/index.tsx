@@ -116,18 +116,19 @@ function DropDownOperator(props: {
 }) {
   const { getValues } = useFormField();
   const value = useMemo(getValues, [getValues]);
+
   return <div className="flex flex-row">
     {/*create the tag show the selected option*/}
     <div className="flex flex-col items-center">
       {Object.keys(value ?? {}).map((key) => {
-        console.log('getvalues', value);
-        return key === 'value' ? ''
-          : (<div className="rounded-md p-0.5 scale-75 text-white" style={{
+        return ((key === 'Evaluation' || key === 'Cast') && getLabelFromType(value[key]))
+          ? (<div className="rounded-md p-0.5 scale-75 text-white" style={{
             fontSize: '12px',
             backgroundColor: getBgColor(key),
           }}>
             {getLabelFromType(value[key])}
-          </div>)})}
+          </div>)
+          : ''})}
     </div>
     <div>
       <button

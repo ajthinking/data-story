@@ -53,7 +53,7 @@ export function StringableInputComponent({
   return (
     <div className="flex w-full text-gray-500 h-full">
       <CodeMirror
-        className="text-xs w-full bg-white font-mono"
+        className="text-xs h-full w-full bg-white font-mono"
         value={getValues().toString()}
         basicSetup={basicSetup}
         extensions={extensions}
