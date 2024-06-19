@@ -38,6 +38,8 @@ export { jsonEvaluation } from './Param/evaluations/jsonEvaluation'
 export { hjsonEvaluation } from './Param/evaluations/hjsonEvaluation'
 export { jsFunctionEvaluation } from './Param/evaluations/jsFunctionEvaluation'
 export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluation'
+export { numberCast } from './Param/casts/numberCast'
+export { stringCast } from './Param/casts/stringCast'
 
 export * as nodes from './computers'
 export * from './Param'
