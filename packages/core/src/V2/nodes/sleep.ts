@@ -2,7 +2,7 @@ import { INodePorts, IOperatorNode, IOperatorNodeConfig } from '../Node';
 import { EMPTY, Observable } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
-class NodePorts implements INodePorts {
+export class NodePorts implements INodePorts {
   constructor(private output: Observable<unknown>) {
   }
 
@@ -14,7 +14,7 @@ class NodePorts implements INodePorts {
   }
 }
 
-type CreateOutputPort = (input: INodePorts) => INodePorts;
+export type CreateOutputPort = (input: INodePorts) => INodePorts;
 
 export class OperatorNode implements IOperatorNode {
 
