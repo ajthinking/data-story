@@ -1,27 +1,31 @@
 import { Observable } from 'rxjs';
 
-export interface NodePorts {
+export interface INodePorts {
   getPort(portName: string): Observable<unknown>;
 }
 
 export interface ISourceNode {
-  getOutput(): NodePorts;
+  getOutput(): INodePorts;
   nodeType: 'source';
 }
 
-interface OperatorNode {
-  getOutput(inputs: NodePorts): NodePorts;
+export interface IOperatorNode {
+  getOutput(inputs: INodePorts): INodePorts;
   nodeType: 'operator';
 }
 
-interface WatcherNode {
-  watch(inputs: NodePorts): void;
+export interface IWatcherNode {
+  watch(inputs: INodePorts): void;
   nodeType: 'watcher';
 }
 /**
  * Provides a simple way to create a computer
  */
 
-export interface SourceNodeConfig {
+export interface ISourceNodeConfig {
   boot: (param: unknown) => ISourceNode ;
+}
+
+export interface IOperatorNodeConfig {
+  boot: (param: unknown) => IOperatorNode;
 }

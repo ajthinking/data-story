@@ -1,9 +1,8 @@
-import { sleep } from '../../utils/sleep';
-import { SourceNodeConfig, NodePorts, ISourceNode } from '../Node';
+import { ISourceNodeConfig, INodePorts, ISourceNode } from '../Node';
 import { Observable, EMPTY, interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-export class SignalNodePorts implements NodePorts {
+export class SignalNodePorts implements INodePorts {
 
   constructor(public params:{ period: number, count: number, expression: (i: number) =>  unknown}) {
   }
@@ -25,13 +24,13 @@ export class SignalNodePorts implements NodePorts {
 
 export class SourceNode implements ISourceNode {
 
-  private outputPorts: NodePorts;
+  private outputPorts: INodePorts;
 
-  constructor(initialOutputPorts: NodePorts) {
+  constructor(initialOutputPorts: INodePorts) {
     this.outputPorts = initialOutputPorts;
   }
 
-  getOutput(): NodePorts {
+  getOutput(): INodePorts {
     return this.outputPorts;
   }
   nodeType = 'source' as const;
@@ -44,7 +43,7 @@ interface SignalNodeParams  {
   expression?: (i: number) => unknown
 }
 
-export const Signal: SourceNodeConfig = {
+export const Signal: ISourceNodeConfig = {
   boot: (param: unknown): ISourceNode  => {
     const signalNodeParams = param as SignalNodeParams;
     const period = Number(signalNodeParams?.period)
