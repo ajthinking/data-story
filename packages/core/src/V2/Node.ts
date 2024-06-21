@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, Subscription, SubscriptionLike } from 'rxjs';
 
 export interface INodePorts {
   getPort(portName: string): Observable<unknown>;
@@ -14,8 +14,14 @@ export interface IOperatorNode {
   nodeType: 'operator';
 }
 
+export type WatcherEvents = 'completed' | 'errored';
+
+export interface IWatcherResult {
+  subscription: SubscriptionLike;
+  readonly events: Observable<WatcherEvents>;
+}
 export interface IWatcherNode {
-  watch(inputs: INodePorts): void;
+  watch(inputs: INodePorts): IWatcherResult;
   nodeType: 'watcher';
 }
 /**
@@ -28,4 +34,8 @@ export interface ISourceNodeConfig {
 
 export interface IOperatorNodeConfig {
   boot: (param: unknown) => IOperatorNode;
+}
+
+export interface IWatcherNodeConfig {
+  boot: (param?: unknown) => IWatcherNode;
 }
