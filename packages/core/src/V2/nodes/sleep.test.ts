@@ -1,6 +1,7 @@
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { NodePorts, Sleep } from './sleep';
+import { LinkNodePorts } from './link';
 
 describe('Sleep OperatorNode', () => {
   let testScheduler: TestScheduler;
@@ -14,32 +15,40 @@ describe('Sleep OperatorNode', () => {
   it('should delay the output by 20ms', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const inputValues = { a: 1 };
-      const inputObservable = cold('-a|', inputValues);
+      const inputObservable = cold('a|', inputValues);
       const duration = 20;
 
-      const inputPorts = new NodePorts(inputObservable);
+      const inputPorts = new LinkNodePorts(inputObservable);
       const sleepNode = Sleep.boot(duration);
       const outputPorts = sleepNode.getOutput(inputPorts);
       const outputObservable = outputPorts.getPort('output');
 
-      // expectObservable(outputObservable).toBe('---(a|)', inputValues);
-      expectObservable(outputObservable).toBe('---------------------a|', inputValues);
-      // expectObservable(outputObservable).toBe('20ms (a|)', inputValues);
+      expectObservable(outputObservable).toBe('20ms (a|)', inputValues);
     });
   });
 
-  it('should delay the output by 0ms', () => {
+  it('should delay series of outputs by 20ms', () => {
     testScheduler.run(({ cold, expectObservable }) => {
-      const inputValues = { a: 1 };
-      const inputObservable = cold('-a|', inputValues);
-      const duration = 0;
+      const inputValues = { a: 1, b: 2, c: 3 };
+      const inputObservable = cold('a - b - c|', inputValues);
+      const duration = 20;
 
-      const inputPorts = new NodePorts(inputObservable);
+      const inputPorts = new LinkNodePorts(inputObservable);
       const sleepNode = Sleep.boot(duration);
       const outputPorts = sleepNode.getOutput(inputPorts);
       const outputObservable = outputPorts.getPort('output');
 
-      expectObservable(outputObservable).toBe('-a|', inputValues);
+      expectObservable(outputObservable).toBe('20ms a - b - (c|)', inputValues);
+    });
+  });
+
+  it('should return EMPTY when requested port is not "output"', () => {
+    const sleepNode = Sleep.boot(10);
+    const outputPorts = sleepNode.getOutput(new LinkNodePorts(of({})));
+    const outputObservable = outputPorts.getPort('notOutput');
+
+    testScheduler.run(({ expectObservable }) => {
+      expectObservable(outputObservable).toBe('|', {});
     });
   });
 });
