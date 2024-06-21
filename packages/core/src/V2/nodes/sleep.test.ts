@@ -18,7 +18,7 @@ describe('Sleep OperatorNode', () => {
       const inputObservable = cold('a|', inputValues);
       const duration = 20;
 
-      const inputPorts = new LinkNodePorts(inputObservable);
+      const inputPorts = new LinkNodePorts(inputObservable, 'input');
       const sleepNode = Sleep.boot(duration);
       const outputPorts = sleepNode.getOutput(inputPorts);
       const outputObservable = outputPorts.getPort('output');
@@ -33,7 +33,7 @@ describe('Sleep OperatorNode', () => {
       const inputObservable = cold('a - b - c|', inputValues);
       const duration = 20;
 
-      const inputPorts = new LinkNodePorts(inputObservable);
+      const inputPorts = new LinkNodePorts(inputObservable, 'input');
       const sleepNode = Sleep.boot(duration);
       const outputPorts = sleepNode.getOutput(inputPorts);
       const outputObservable = outputPorts.getPort('output');
@@ -44,7 +44,7 @@ describe('Sleep OperatorNode', () => {
 
   it('should return EMPTY when requested port is not "output"', () => {
     const sleepNode = Sleep.boot(10);
-    const outputPorts = sleepNode.getOutput(new LinkNodePorts(of({})));
+    const outputPorts = sleepNode.getOutput(new LinkNodePorts(of({}), 'input'));
     const outputObservable = outputPorts.getPort('notOutput');
 
     testScheduler.run(({ expectObservable }) => {

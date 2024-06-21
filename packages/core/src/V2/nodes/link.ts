@@ -1,33 +1,25 @@
-// transfer output port to input port
-// calculate the items count
-
 import { INodePorts, IOperatorNodeConfig } from '../Node';
 import { CreateOutputPort, NodePorts, OperatorNode } from './sleep';
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export class LinkNodePorts implements INodePorts {
-  private output: Observable<unknown>;
-  constructor(private input: Observable<unknown>) {
-    this.output = this.input;
+  constructor(private fromPort: Observable<unknown>, private toPortName: string) {
   }
 
   getPort(portName: string): Observable<unknown> {
-    if (portName === 'input') {
-      return this.input;
+    if (portName === this.toPortName) {
+      return this.fromPort;
     }
     return EMPTY;
-  }
-
-  getItemsCount(): number {
-    return this.input.pipe(map((i) => i))?.length;
   }
 }
 
 export const Link: IOperatorNodeConfig = {
   boot: (param: unknown) => {
+    const { from, to } = param as { from: string, to: string };
     const createLinkOutput: CreateOutputPort = (input) => {
-      return new LinkNodePorts(input.getPort('output'));
+      return new LinkNodePorts(input.getPort(from), to);
     }
 
     return new OperatorNode(createLinkOutput);
