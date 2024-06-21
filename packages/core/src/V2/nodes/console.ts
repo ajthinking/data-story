@@ -20,6 +20,7 @@ export class WatcherResult implements IWatcherResult, Observer<any> {
     // ignore
   }
 
+  // todo: ensure complete and error are called only once
   watch(observable: Observable<any>) {
     this.subscription.add(observable.subscribe(this));
   }

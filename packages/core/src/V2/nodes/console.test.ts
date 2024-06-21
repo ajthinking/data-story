@@ -1,32 +1,37 @@
-import { beforeEach, describe } from 'vitest';
-import { TestScheduler } from 'rxjs/testing';
+import { describe, expect, vi } from 'vitest';
 import { LinkNodePorts } from './link';
-import { of } from 'rxjs';
+import { firstValueFrom, interval, of, lastValueFrom } from 'rxjs';
+import { Console } from './console';
+import { take } from 'rxjs/operators';
 
 describe('Console', () => {
-  let testScheduler: TestScheduler;
-  beforeEach(() => {
-    testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected);
+  it('should watch values from input node', async () => {
+    const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((val) => {
+      expect(val).toBe(1);
     });
-  });
-  it('should watch values from input node', () => {
-    testScheduler.run(({ cold, expectObservable }) => {
-      const inputValues = { a: 1, b: 2, c: 3 };
-      const inputObservable = cold('a - b - c|', inputValues);
-      const inputPorts = new LinkNodePorts(inputObservable, 'input');
-      const consoleNode = Console.boot();
-      const outputPorts = consoleNode.getOutput(inputPorts);
-      const outputObservable = outputPorts.getPort('output');
-      expectObservable(outputObservable).toBe('a - b - c|', inputValues);
-    });
-  });
-  it('should return EMPTY when requested port is not "output"', () => {
+
+    const inputPorts = new LinkNodePorts(of(1), 'input');
     const consoleNode = Console.boot();
-    const outputPorts = consoleNode.getOutput(new LinkNodePorts(of({}), 'input'));
-    const outputObservable = outputPorts.getPort('notOutput');
-    testScheduler.run(({ expectObservable }) => {
-      expectObservable(outputObservable).toBe('|', {});
+    const watcher = consoleNode.watch(inputPorts);
+
+    await firstValueFrom(watcher.events);
+
+    expect(mockConsoleLog).toBeCalledTimes(1);
+  });
+
+  it('should watch multiple values from input node', async () => {
+    let count = 0;
+    const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((val) => {
+      expect(val).toBe(count);
+      count++;
     });
+
+    const inputPorts = new LinkNodePorts(interval(100).pipe(take(3)), 'input');
+    const consoleNode = Console.boot();
+    const watcher = consoleNode.watch(inputPorts);
+
+    await lastValueFrom(watcher.events);
+
+    expect(mockConsoleLog).toBeCalledTimes(3);
   });
 })
