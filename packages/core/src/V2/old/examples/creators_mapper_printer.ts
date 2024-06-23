@@ -1,4 +1,4 @@
-import { Diagram } from '../../Diagram';
+import { Diagram } from '../../../Diagram';
 
 // creator.1 --->
 //               mapper ---> printer

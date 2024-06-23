@@ -1,4 +1,4 @@
-import { Diagram } from '../../Diagram';
+import { Diagram } from '../../../Diagram';
 
 // creator ---> sleeper ---> printer
 const diagram = new Diagram()

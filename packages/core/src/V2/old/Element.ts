@@ -1,6 +1,6 @@
-import { Param } from '../Param'
-import { ItemValue } from '../types/ItemValue'
-import { AbstractPort, PortName } from '../types/Port'
+import { Param } from '../../Param'
+import { ItemValue } from '../../types/ItemValue'
+import { AbstractPort, PortName } from '../../types/Port'
 import { Observable, Subject } from 'rxjs'
 
 export type OperatorBootArgs = {

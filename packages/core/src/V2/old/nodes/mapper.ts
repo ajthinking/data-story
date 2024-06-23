@@ -1,4 +1,4 @@
-import { Element } from '../old/Element'
+import { Element } from '../Element'
 export const mapper: Element = {
   name: 'mapper',
   label: 'Mapper',

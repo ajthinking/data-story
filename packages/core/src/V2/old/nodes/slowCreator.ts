@@ -1,5 +1,5 @@
-import { sleep } from '../../utils/sleep';
-import { Element } from '../old/Element'
+import { sleep } from '../../../utils/sleep';
+import { Element } from '../Element'
 
 export const slowCreator: Element = {
   name: 'slowCreator',

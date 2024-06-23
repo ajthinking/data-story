@@ -1,5 +1,5 @@
 import { sleep } from '../../utils/sleep';
-import { Element } from '../old/Element'
+import { Element } from '../Element'
 export const sleeper: Element = {
   name: 'sleeper',
   label: 'Sleeper',

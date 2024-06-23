@@ -1,4 +1,4 @@
-import { Diagram } from '../../Diagram';
+import { Diagram } from '../../../Diagram';
 
 // slowCreator.1 ---> printer.1
 const diagram = new Diagram()
