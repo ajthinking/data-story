@@ -1,12 +1,12 @@
 import { Observable, Subject, merge } from 'rxjs'
 import { ItemValue } from '../../types/ItemValue'
-import { mapper } from '../nodes/mapper'
-import { creator } from '../nodes/creator'
-import { printer } from '../nodes/printer'
+import { mapper } from './nodes/mapper'
+import { creator } from './nodes/creator'
+import { printer } from './nodes/printer'
 import { Diagram } from '../../Diagram'
 import { Element, OperatorBootArgs } from './Element'
-import { slowCreator } from '../nodes/slowCreator'
-import { sleeper } from '../nodes/sleeper'
+import { slowCreator } from './nodes/slowCreator'
+import { sleeper } from './nodes/sleeper'
 
 type NodeId = string
 type PortName = string
