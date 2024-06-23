@@ -1,5 +1,7 @@
+import axios from 'axios';
 import { sleep } from '../../../utils/sleep';
 import { Element } from '../Element'
+import { switchMap, from, of, delay } from 'rxjs';
 export const sleeper: Element = {
   name: 'sleeper',
   label: 'Sleeper',
@@ -9,15 +11,10 @@ export const sleeper: Element = {
   params: [],
   tags: [],
   boot: async ({ inputs, outputs }) => {
-    inputs.input.subscribe({
-      next: async itemBatch => {
-        await sleep(1000);
-        outputs.output.next(itemBatch);
-      },
+    inputs.input.pipe(delay(2000)).subscribe({
       complete: () => {
-        // Completing here forego next sleep promise..
         outputs.output.complete();
       }
     });
   },
-}
+};

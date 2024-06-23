@@ -14,13 +14,13 @@ export type OperatorBootArgs = {
 
 // Todo, if needed separate into Source, Operator and Watcher nodes
 export interface Element {
-  name?: string
+  name: string
   label?: string
   docs?: string
   category?: string
-  inputs?: (PortName  | AbstractPort)[]
-  outputs?: (PortName | AbstractPort)[]
-  params?: Param[]
+  inputs: (PortName  | AbstractPort)[]
+  outputs: (PortName | AbstractPort)[]
+  params: Param[]
   tags?: string[]
 
   boot: (args: OperatorBootArgs) => Promise<void>
