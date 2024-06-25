@@ -1,10 +1,10 @@
-import { PortProvider, SourceNode } from '../Node';
+import { PortProvider, SourceElement } from '../circuitElement';
 
 export type CreateSourceOutputPort = () => PortProvider;
 
-export class Source implements SourceNode {
+export class Source implements SourceElement {
 
-  nodeType = 'source' as const;
+  elementType = 'source' as const;
 
   constructor(private createOutputPort: CreateSourceOutputPort) {
   }

@@ -1,17 +1,16 @@
-import { WatcherNode, IWatcherResult, PortProvider, WatcherEvent } from '../Node';
+import { PortProvider, WatcherElement, WatcherEvent, WatcherResult } from '../circuitElement';
 import { Observable, Observer, ReplaySubject, Subscription } from 'rxjs';
 
-// todo: I doesn't good idea about how to rename the IwatcherResult type
-export class WatcherResult implements IWatcherResult, Observer<any> {
+export class ObserverResult implements WatcherResult, Observer<any> {
   events = new ReplaySubject<WatcherEvent>();
   subscription = new Subscription();
 
-  public complete() {
+  complete() {
     this.events.next('completed');
     this.events.complete();
   }
 
-  public error(e: Error) {
+  error(e: Error) {
     this.events.next('errored');
     this.events.complete();
   }
@@ -27,15 +26,15 @@ export class WatcherResult implements IWatcherResult, Observer<any> {
 
 }
 
-export type CreateWatcher = (input: PortProvider) => WatcherResult;
+export type CreateWatcher = (input: PortProvider) => ObserverResult;
 
-export class Watcher implements WatcherNode {
-  nodeType = 'watcher' as const;
+export class Watcher implements WatcherElement {
+  elementType = 'watcher' as const;
 
   constructor(private watchExecute: CreateWatcher) {
   }
 
-  watch(inputs: PortProvider): IWatcherResult {
+  watch(inputs: PortProvider): WatcherResult {
     return this.watchExecute(inputs);
   }
 }

@@ -1,4 +1,4 @@
-import { PortProvider } from '../Node';
+import { PortProvider } from '../circuitElement';
 import { EMPTY, Observable } from 'rxjs';
 
 export class NodePorts implements PortProvider {

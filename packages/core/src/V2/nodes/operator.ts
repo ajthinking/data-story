@@ -1,10 +1,10 @@
-import { OperatorNode, PortProvider } from '../Node';
+import { OperatorElement, PortProvider } from '../circuitElement';
 
 import { CreateOutputPort } from './nodePorts';
 
-export class Operator implements OperatorNode {
+export class Operator implements OperatorElement {
 
-  nodeType = 'operator' as const;
+  elementType = 'operator' as const;
 
   constructor(private createOutputPort: CreateOutputPort) {
   }

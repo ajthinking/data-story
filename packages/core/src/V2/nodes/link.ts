@@ -1,4 +1,4 @@
-import { OperatorNodeOperatorConfig, PortProvider } from '../Node';
+import { OperatorElementConfig, PortProvider } from '../circuitElement';
 import { EMPTY, Observable } from 'rxjs';
 import { Operator } from './operator';
 import { CreateOutputPort } from './nodePorts';
@@ -15,7 +15,7 @@ export class LinkNodePorts implements PortProvider {
   }
 }
 
-export const Link: OperatorNodeOperatorConfig = {
+export const Link: OperatorElementConfig = {
   boot: (param: unknown) => {
     const { from, to } = param as {from: string, to: string};
     const createLinkOutput: CreateOutputPort = (input) => {

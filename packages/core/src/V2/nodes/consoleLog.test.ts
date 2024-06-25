@@ -1,17 +1,17 @@
 import { describe, expect, vi } from 'vitest';
 import { LinkNodePorts } from './link';
 import { firstValueFrom, interval, of, lastValueFrom } from 'rxjs';
-import { Console } from './console';
+import { consoleLog } from './consoleLog';
 import { take } from 'rxjs/operators';
 
-describe('console', () => {
+describe('consoleLog', () => {
   it('should watch values from input node', async () => {
     const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((val) => {
       expect(val).toBe(1);
     });
 
     const inputPorts = new LinkNodePorts(of(1), 'input');
-    const consoleNode = Console.boot();
+    const consoleNode = consoleLog.boot();
     const watcher = consoleNode.watch(inputPorts);
 
     await firstValueFrom(watcher.events);
@@ -27,7 +27,7 @@ describe('console', () => {
     });
 
     const inputPorts = new LinkNodePorts(interval(100).pipe(take(3)), 'input');
-    const consoleNode = Console.boot();
+    const consoleNode = consoleLog.boot();
     const watcher = consoleNode.watch(inputPorts);
 
     await lastValueFrom(watcher.events);

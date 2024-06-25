@@ -52,6 +52,6 @@ describe('signal', () => {
   it('should have the correct nodeType', () => {
     const sourceNode = Signal.boot({ period: 10, count: 3, expression: (i: number) => i * 10 });
 
-    expect(sourceNode.nodeType).toBe('source');
+    expect(sourceNode.elementType).toBe('source');
   });
 });

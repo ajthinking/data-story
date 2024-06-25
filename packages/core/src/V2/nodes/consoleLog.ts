@@ -1,11 +1,11 @@
-import { WatcherNodeOperatorConfig } from '../Node';
+import { WatcherElementConfig } from '../circuitElement';
 import { tap } from 'rxjs/operators';
-import { CreateWatcher, Watcher, WatcherResult } from './watcher';
+import { CreateWatcher, Watcher, ObserverResult } from './watcher';
 
-export const Console: WatcherNodeOperatorConfig = {
+export const consoleLog: WatcherElementConfig = {
   boot: () => {
     const createConsoleOutput: CreateWatcher = (input) => {
-      const watcherResult = new WatcherResult();
+      const watcherResult = new ObserverResult();
       watcherResult.watch(
         input.getPort('input').pipe(
           tap(console.log)

@@ -3,10 +3,10 @@
 
 import { CreateOutputPort, NodePorts } from './nodePorts';
 import { map, tap } from 'rxjs/operators';
-import { OperatorNodeOperatorConfig } from '../Node';
+import { OperatorElementConfig } from '../circuitElement';
 import { Operator } from './operator';
 
-export const LinkCount: OperatorNodeOperatorConfig = {
+export const LinkCount: OperatorElementConfig = {
   boot: (param: unknown) => {
     const linkCountParams = param as { getLinkCount: (count: number) => void };
     const createLinkCountOutput: CreateOutputPort = (input) => {
