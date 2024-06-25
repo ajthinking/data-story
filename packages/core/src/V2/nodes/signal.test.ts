@@ -1,8 +1,9 @@
-import { Signal, Source } from './signal';
+import { Signal } from './signal';
 import { describe } from 'vitest';
 import { take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
-import { NodePorts } from './sleep';
+import { Source } from './source';
+import { NodePorts } from './nodePorts';
 
 describe('Signal', () => {
   let testScheduler: TestScheduler;

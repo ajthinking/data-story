@@ -1,4 +1,4 @@
-import { IWatcherNode, IWatcherResult, PortProvider, WatcherEvent } from '../Node';
+import { WatcherNode, IWatcherResult, PortProvider, WatcherEvent } from '../Node';
 import { Observable, Observer, ReplaySubject, Subscription } from 'rxjs';
 
 export class WatcherResult implements IWatcherResult, Observer<any> {
@@ -28,7 +28,7 @@ export class WatcherResult implements IWatcherResult, Observer<any> {
 
 export type CreateWatcher = (input: PortProvider) => WatcherResult;
 
-export class Watcher implements IWatcherNode {
+export class Watcher implements WatcherNode {
   nodeType = 'watcher' as const;
 
   constructor(private watchExecute: CreateWatcher) {

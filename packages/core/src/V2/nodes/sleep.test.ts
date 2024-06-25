@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { NodePorts, Sleep } from './sleep';
+import { Sleep } from './sleep';
 import { LinkNodePorts } from './link';
 
 describe('Sleep OperatorNode', () => {

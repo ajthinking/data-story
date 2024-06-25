@@ -1,32 +1,7 @@
-import { PortProvider, IOperatorNode, IOperatorNodeConfig } from '../Node';
-import { EMPTY, Observable } from 'rxjs';
+import { IOperatorNodeConfig } from '../Node';
 import { delay } from 'rxjs/operators';
-
-export class NodePorts implements PortProvider {
-  constructor(private output: Observable<unknown>) {
-  }
-
-  getPort(portName: string): Observable<unknown> {
-    if (portName === 'output') {
-      return this.output;
-    }
-    return EMPTY;
-  }
-}
-
-export type CreateOutputPort = (input: PortProvider) => PortProvider;
-
-export class Operator implements IOperatorNode {
-
-  nodeType = 'operator' as const;
-
-  constructor(private createOutputPort: CreateOutputPort) {
-  }
-
-  getOutput(inputs: PortProvider): PortProvider {
-    return this.createOutputPort(inputs);
-  }
-}
+import { Operator } from './operator';
+import { CreateOutputPort, NodePorts } from './nodePorts';
 
 export const Sleep: IOperatorNodeConfig = {
   boot: (param: unknown) => {

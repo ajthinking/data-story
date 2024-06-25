@@ -1,22 +1,8 @@
-import { ISourceNode, ISourceNodeConfig, PortProvider } from '../Node';
+import { ISourceNodeConfig, SourceNode } from '../Node';
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { NodePorts } from './sleep';
-
-type CreateSourceOutputPort = () => PortProvider;
-
-export class Source implements ISourceNode {
-
-  nodeType = 'source' as const;
-
-  constructor(private createOutputPort: CreateSourceOutputPort) {
-  }
-
-  getOutput(): PortProvider {
-    return this.createOutputPort();
-  }
-
-}
+import { CreateSourceOutputPort, Source } from './source';
+import { NodePorts } from './nodePorts';
 
 interface SignalNodeParams {
   period?: number,
@@ -25,7 +11,7 @@ interface SignalNodeParams {
 }
 
 export const Signal: ISourceNodeConfig = {
-  boot: (param: unknown): ISourceNode => {
+  boot: (param: unknown): SourceNode => {
     const signalNodeParams = param as SignalNodeParams;
     const period = Number(signalNodeParams?.period)
     const count = Number(signalNodeParams?.count)

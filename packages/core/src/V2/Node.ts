@@ -1,17 +1,19 @@
-import { Observable, Subscription, SubscriptionLike } from 'rxjs';
+import { Observable, SubscriptionLike } from 'rxjs';
 
 export interface PortProvider {
   getPort(portName: string): Observable<unknown>;
 }
 
-export interface ISourceNode {
-  getOutput(): PortProvider;
+export interface SourceNode {
   nodeType: 'source';
+
+  getOutput(): PortProvider;
 }
 
-export interface IOperatorNode {
-  getOutput(inputs: PortProvider): PortProvider;
+export interface OperatorNode {
   nodeType: 'operator';
+
+  getOutput(inputs: PortProvider): PortProvider;
 }
 
 export type WatcherEvent = 'completed' | 'errored';
@@ -20,22 +22,25 @@ export interface IWatcherResult {
   subscription: SubscriptionLike;
   readonly events: Observable<WatcherEvent>;
 }
-export interface IWatcherNode {
-  watch(inputs: PortProvider): IWatcherResult;
+
+export interface WatcherNode {
   nodeType: 'watcher';
+
+  watch(inputs: PortProvider): IWatcherResult;
 }
+
 /**
  * Provides a simple way to create a computer
  */
 
 export interface ISourceNodeConfig {
-  boot: (param: unknown) => ISourceNode ;
+  boot: (param: unknown) => SourceNode;
 }
 
 export interface IOperatorNodeConfig {
-  boot: (param: unknown) => IOperatorNode;
+  boot: (param: unknown) => OperatorNode;
 }
 
 export interface IWatcherNodeConfig {
-  boot: (param?: unknown) => IWatcherNode;
+  boot: (param?: unknown) => WatcherNode;
 }
