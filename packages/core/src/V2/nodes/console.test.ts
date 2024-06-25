@@ -4,7 +4,7 @@ import { firstValueFrom, interval, of, lastValueFrom } from 'rxjs';
 import { Console } from './console';
 import { take } from 'rxjs/operators';
 
-describe('Console', () => {
+describe('console', () => {
   it('should watch values from input node', async () => {
     const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((val) => {
       expect(val).toBe(1);

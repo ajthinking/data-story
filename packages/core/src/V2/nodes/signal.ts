@@ -1,4 +1,4 @@
-import { ISourceNodeConfig, SourceNode } from '../Node';
+import { SourceNodeOperatorConfig, SourceNode } from '../Node';
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { CreateSourceOutputPort, Source } from './source';
@@ -10,7 +10,7 @@ interface SignalNodeParams {
   expression?: (i: number) => unknown
 }
 
-export const Signal: ISourceNodeConfig = {
+export const Signal: SourceNodeOperatorConfig = {
   boot: (param: unknown): SourceNode => {
     const signalNodeParams = param as SignalNodeParams;
     const period = Number(signalNodeParams?.period)

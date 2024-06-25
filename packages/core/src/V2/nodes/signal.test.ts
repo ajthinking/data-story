@@ -5,7 +5,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { Source } from './source';
 import { NodePorts } from './nodePorts';
 
-describe('Signal', () => {
+describe('signal', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {

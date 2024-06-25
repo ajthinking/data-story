@@ -1,6 +1,7 @@
 import { WatcherNode, IWatcherResult, PortProvider, WatcherEvent } from '../Node';
 import { Observable, Observer, ReplaySubject, Subscription } from 'rxjs';
 
+// todo: I doesn't good idea about how to rename the IwatcherResult type
 export class WatcherResult implements IWatcherResult, Observer<any> {
   events = new ReplaySubject<WatcherEvent>();
   subscription = new Subscription();

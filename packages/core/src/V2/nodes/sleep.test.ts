@@ -3,7 +3,7 @@ import { TestScheduler } from 'rxjs/testing';
 import { Sleep } from './sleep';
 import { LinkNodePorts } from './link';
 
-describe('Sleep OperatorNode', () => {
+describe('sleep', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(() => {

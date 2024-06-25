@@ -1,8 +1,8 @@
-import { IWatcherNodeConfig } from '../Node';
+import { WatcherNodeOperatorConfig } from '../Node';
 import { tap } from 'rxjs/operators';
 import { CreateWatcher, Watcher, WatcherResult } from './watcher';
 
-export const Console: IWatcherNodeConfig = {
+export const Console: WatcherNodeOperatorConfig = {
   boot: () => {
     const createConsoleOutput: CreateWatcher = (input) => {
       const watcherResult = new WatcherResult();
@@ -11,6 +11,8 @@ export const Console: IWatcherNodeConfig = {
           tap(console.log)
         )
       )
+
+      watcherResult.complete();
       return watcherResult;
     }
     return new Watcher(createConsoleOutput);
