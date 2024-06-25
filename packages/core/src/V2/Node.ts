@@ -1,27 +1,27 @@
 import { Observable, Subscription, SubscriptionLike } from 'rxjs';
 
-export interface INodePorts {
+export interface PortProvider {
   getPort(portName: string): Observable<unknown>;
 }
 
 export interface ISourceNode {
-  getOutput(): INodePorts;
+  getOutput(): PortProvider;
   nodeType: 'source';
 }
 
 export interface IOperatorNode {
-  getOutput(inputs: INodePorts): INodePorts;
+  getOutput(inputs: PortProvider): PortProvider;
   nodeType: 'operator';
 }
 
-export type WatcherEvents = 'completed' | 'errored';
+export type WatcherEvent = 'completed' | 'errored';
 
 export interface IWatcherResult {
   subscription: SubscriptionLike;
-  readonly events: Observable<WatcherEvents>;
+  readonly events: Observable<WatcherEvent>;
 }
 export interface IWatcherNode {
-  watch(inputs: INodePorts): IWatcherResult;
+  watch(inputs: PortProvider): IWatcherResult;
   nodeType: 'watcher';
 }
 /**

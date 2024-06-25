@@ -1,9 +1,9 @@
-import { INodePorts, IOperatorNodeConfig } from '../Node';
-import { CreateOutputPort, NodePorts, OperatorNode } from './sleep';
+import { PortProvider, IOperatorNodeConfig } from '../Node';
+import { CreateOutputPort, NodePorts, Operator } from './sleep';
 import { EMPTY, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-export class LinkNodePorts implements INodePorts {
+export class LinkNodePorts implements PortProvider {
   constructor(private fromPort: Observable<unknown>, private toPortName: string) {
   }
 
@@ -22,6 +22,6 @@ export const Link: IOperatorNodeConfig = {
       return new LinkNodePorts(input.getPort(from), to);
     }
 
-    return new OperatorNode(createLinkOutput);
+    return new Operator(createLinkOutput);
   }
 }

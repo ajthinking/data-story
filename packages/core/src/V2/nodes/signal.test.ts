@@ -1,4 +1,4 @@
-import { Signal, SourceNode } from './signal';
+import { Signal, Source } from './signal';
 import { describe } from 'vitest';
 import { take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -39,7 +39,7 @@ describe('Signal', () => {
   it('should return the correct SourceNode instance', () => {
     const sourceNode = Signal.boot({ period: 10, count: 3, expression:(i: number) => i * 10 });
 
-    expect(sourceNode).toBeInstanceOf(SourceNode);
+    expect(sourceNode).toBeInstanceOf(Source);
   });
 
   it('should return the correct NodePorts instance', () => {
