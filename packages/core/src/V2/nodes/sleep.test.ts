@@ -21,9 +21,9 @@ describe('sleep', () => {
       const inputPorts = new LinkNodePorts(inputObservable, 'input');
       const sleepNode = Sleep.boot(duration);
       const outputPorts = sleepNode.getOutput(inputPorts);
-      const outputObservable = outputPorts.getPort('output');
+      const output$ = outputPorts.getPort('output');
 
-      expectObservable(outputObservable).toBe('20ms (a|)', inputValues);
+      expectObservable(output$).toBe('20ms (a|)', inputValues);
     });
   });
 
