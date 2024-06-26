@@ -33,6 +33,7 @@
     "build-vite": "vite build",
     "watch:tsc": "tsc --watch",
     "tinker": "npx ts-node ./src/tinker.ts",
+    "demo": "npx ts-node ./src/V2/old/demo.ts",
     "test": "yarn run -T vitest run",
     "watch:test": "yarn run -T vitest",
     "build": "tsc -p tsconfig.build.json && yarn build-vite",
