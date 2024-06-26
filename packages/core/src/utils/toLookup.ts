@@ -3,7 +3,7 @@ import { get } from './get';
 export const toLookup = <T extends {}>(
   items: T[],
   keyPath: string,
-  valuePath: string
+  valuePath?: string
 ) => {
   return items.reduce((result, item) => {
     const key = get(item, keyPath);
