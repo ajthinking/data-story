@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { sleep } from '../../../utils/sleep';
 import { Element } from '../Element'
-import { switchMap, from, of } from 'rxjs';
+import { switchMap, from, of, concatMap } from 'rxjs';
 export const requestor: Element = {
   name: 'requestor',
   label: 'Requestor',
@@ -10,8 +10,9 @@ export const requestor: Element = {
   outputs: ['output'],
   params: [],
   tags: [],
-  boot: async ({ inputs, outputs }) => {
+  boot: ({ inputs, outputs }) => {
     inputs.input.pipe(
+      concatMap(batch => from(batch)),
       switchMap(itemBatch =>
         from(axios.get('https://jsonplaceholder.typicode.com/todos')).pipe(
           switchMap(response => {

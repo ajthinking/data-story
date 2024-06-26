@@ -11,29 +11,17 @@ type ParamConfig = {
     | ParamValue
     | Partial<Param>
     | Record<string, ParamValue & Partial<Param>>
+    | any // TODO ¯\_(ツ)_/¯
   )
 }
 type AddNodeConfig =
   undefined
   | Omit<Partial<Element>, 'params'> | ParamConfig
 
-// NOTHING
-const i0: AddNodeConfig = undefined
-
-// EXPLICIT NO PARAMS
-const i1: AddNodeConfig = {
-  label: 'Creator',
-  params: []
-}
-
-const i: AddNodeConfig = {
-  delay: String(1000),
-  label: 'My Creator',
-}
-
 export class Builder {
   private nodes: Node[] = []
   private links: Link[] = []
+  private elementIdCounters: Record<string, number> = {}
 
   constructor(private availableElements: Element[]) {}
 
@@ -43,7 +31,11 @@ export class Builder {
     // Ensure the element exists
     if (!template) throw new Error(`Element ${elementName} not found`)
 
-    this.addElement(template, config)
+    const { boot, ...cloneables } = template;
+    this.addElement({
+      ...structuredClone(cloneables),
+      boot,
+    }, config)
 
     return this
   }
@@ -83,7 +75,14 @@ export class Builder {
   }
 
   private elementToNode(element: Element): Node {
-    const elementId = `${element.name}.${1}`
+    if (!this.elementIdCounters[element.name]) {
+      this.elementIdCounters[element.name] = 1;
+    } else {
+      this.elementIdCounters[element.name]++;
+    }
+
+    const elementId = `${element.name}.${this.elementIdCounters[element.name]}`
+
     return {
       id: elementId,
       type: element.name,
@@ -106,7 +105,57 @@ export class Builder {
     }
   }
 
-  connect() {
+  connect(connections? : string | [fromPortId: string, toPortId: string][]) {
+    if(!connections) return this.guessConnections()
+    if(typeof connections === 'string') return this.connectByString(connections)
+
+    return this.connectByArray(connections)
+  }
+
+  connectByArray(connections: [fromPortId: string, toPortId: string][]) {
+    for(const [fromPortId, toPortId] of connections) {
+      const sourceNode = this.nodes.find(n => n.outputs.some(o => o.id === fromPortId))
+      const targetNode = this.nodes.find(n => n.inputs.some(i => i.id === toPortId))
+
+      if(!sourceNode || !targetNode) {
+        throw new Error('Source or target node not found')
+      }
+
+      const link = {
+        id: `${sourceNode.id}--->${targetNode.id}`,
+        sourcePortId: fromPortId,
+        targetPortId: toPortId,
+      }
+
+      this.links.push(link)
+    }
+
+    return this
+  }
+
+  connectByString(connections: string) {
+    const parsed: [from: string, to: string][] = connections
+    // Process line by line
+      .split('\n')
+    // Remove empty lines
+      .map(line => line.trim()).filter(Boolean)
+    // Remove whitespace and "|"
+      .map(line => line.replace(/\s*\|\s*/, ''))
+    // Split by arrows of any length
+      .map(line => line.split(/-+>/))
+    // Ensure two parts or throw
+      .map((parseInt) => {
+        const [from, to, rest] = parseInt
+        if (!from || !to) throw new Error(`Invalid line connection string: \n${connections}\nCould not resolve from & to parts.`);
+        if(rest) throw new Error(`Invalid line connection string: \n${connections}\nToo many parts.`);
+
+        return [from, to]
+      })
+
+    return this.connectByArray(parsed)
+  }
+
+  guessConnections() {
     for (let i = 0; i < this.nodes.length - 1; i++) {
       const current = this.nodes[i]
       const next = this.nodes[i + 1]

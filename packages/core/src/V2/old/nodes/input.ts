@@ -1,7 +1,7 @@
 import { Element } from '../Element'
-export const mapper: Element = {
-  name: 'mapper',
-  label: 'Mapper',
+export const input: Element = {
+  name: 'input',
+  label: 'Input',
   category: 'Operator',
   inputs: ['input'],
   outputs: ['output'],
@@ -10,7 +10,7 @@ export const mapper: Element = {
   boot: ({ inputs, outputs }) => {
     inputs.input.subscribe({
       next: itemBatch => {
-        console.log('Mapper received batch:', itemBatch);
+        console.log('Input received batch:', itemBatch);
 
         outputs.output.next(
           itemBatch.map(item => ({
@@ -20,8 +20,8 @@ export const mapper: Element = {
         )
       },
       complete: () => {
-        console.log('mapper received complete signal on "input".');
-        console.log('mapper about to complete "output".')
+        console.log('input received complete signal on "input".');
+        console.log('input about to complete "output".')
         outputs.output.complete()
       }
     });

@@ -10,6 +10,7 @@ export type OperatorBootArgs = {
   outputs: {
     [key: string]: Subject<ItemValue[]>
   },
+  params: Record<string, Param>
 }
 
 // Todo, if needed separate into Source, Operator and Watcher nodes
@@ -23,5 +24,5 @@ export interface Element {
   params: Param[]
   tags?: string[]
 
-  boot: (args: OperatorBootArgs) => Promise<void>
+  boot: (args: OperatorBootArgs) => void
 }
