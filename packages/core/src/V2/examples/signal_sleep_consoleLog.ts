@@ -63,3 +63,19 @@ const getWatcherResult = (diagramArr: SourceOperatorsWatcherArray): WatcherResul
     operators.reduce((acc, operator) => operator.getOutput(acc), source.getOutput())
   );
 }
+
+// transform watcherResult to promise
+export const transformWatcherResultToPromise = async (diagram: WatcherResult) => {
+  return new Promise<void>(async (resolve, reject) => {
+    diagram.events.subscribe({
+      complete: () => {
+        console.log('completed');
+        resolve();
+      },
+      error: (e) => {
+        console.error(e, 'error');
+        reject(e);
+      }
+    });
+  });
+}
