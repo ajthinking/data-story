@@ -22,8 +22,7 @@ describe('consoleLog', () => {
   it('should watch multiple values from input node', async () => {
     let count = 0;
     const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((val) => {
-      expect(val).toBe(count);
-      count++;
+      expect(val).toBe(count++);
     });
 
     const inputPorts = new LinkNodePorts(interval(100).pipe(take(3)), 'input');
