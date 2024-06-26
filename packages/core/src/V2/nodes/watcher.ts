@@ -6,11 +6,13 @@ export class ObserverResult implements WatcherResult, Observer<any> {
   subscription = new Subscription();
 
   complete() {
+    console.log('completed')
     this.events.next('completed');
     this.events.complete();
   }
 
   error(e: Error) {
+    console.error('error', e)
     this.events.next('errored');
     this.events.complete();
   }
