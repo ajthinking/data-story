@@ -34,10 +34,10 @@ describe('linkCount', () => {
       const inputObservable = cold('a - b - c|', inputValues);
       const inputPorts = new LinkElementPorts(inputObservable, 'input');
 
-      let linkCount = 1;
+      let count = 1;
       const ports = linkCount.boot({
         getLinkCount: (count: number) => {
-          expect(count).toBe(linkCount++);
+          expect(count).toBe(count++);
         }
       });
 
