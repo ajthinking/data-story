@@ -1,10 +1,10 @@
 import { describe } from 'vitest';
-import { createDiagram } from './signal_sleep_consoleLog';
+import { signal_sleep_consoleLog } from './signal_sleep_consoleLog';
 import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 describe('signal_sleep_consoleLog', () => {
   it('test', async () => {
-    const result = createDiagram();
+    const result = signal_sleep_consoleLog();
 
     await lastValueFrom(result.events);
     // expect(result).toBe(undefined);
