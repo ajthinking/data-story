@@ -1,6 +1,6 @@
 import { OperatorElement, PortProvider } from '../circuitElement';
 
-import { CreateOutputPort } from './nodePorts';
+import { CreateOutputPort } from './elementPorts';
 
 export class Operator implements OperatorElement {
 

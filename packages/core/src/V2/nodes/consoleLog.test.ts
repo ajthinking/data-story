@@ -1,5 +1,5 @@
 import { describe, expect, vi } from 'vitest';
-import { LinkNodePorts } from './link';
+import { LinkElementPorts } from './link';
 import { firstValueFrom, interval, of, lastValueFrom } from 'rxjs';
 import { consoleLog } from './consoleLog';
 import { take } from 'rxjs/operators';
@@ -10,7 +10,7 @@ describe('consoleLog', () => {
       expect(val).toBe(1);
     });
 
-    const inputPorts = new LinkNodePorts(of(1), 'input');
+    const inputPorts = new LinkElementPorts(of(1), 'input');
     const consoleNode = consoleLog.boot();
     const watcher = consoleNode.watch(inputPorts);
 
@@ -25,7 +25,7 @@ describe('consoleLog', () => {
       expect(val).toBe(count++);
     });
 
-    const inputPorts = new LinkNodePorts(interval(100).pipe(take(3)), 'input');
+    const inputPorts = new LinkElementPorts(interval(100).pipe(take(3)), 'input');
     const consoleNode = consoleLog.boot();
     const watcher = consoleNode.watch(inputPorts);
 

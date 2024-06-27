@@ -1,5 +1,5 @@
 import { describe } from 'vitest';
-import { LinkNodePorts } from './link';
+import { LinkElementPorts } from './link';
 import { TestScheduler } from 'rxjs/testing';
 import { LinkCount } from './linkCount';
 import { of } from 'rxjs';
@@ -16,7 +16,7 @@ describe('linkCount', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const inputValues = { a: 1 };
       const inputObservable = cold('a|', inputValues);
-      const inputPorts = new LinkNodePorts(inputObservable, 'input');
+      const inputPorts = new LinkElementPorts(inputObservable, 'input');
 
       const ports = LinkCount.boot({
         getLinkCount: (count: number) => {
@@ -32,7 +32,7 @@ describe('linkCount', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const inputValues = { a: 1, b: 2, c: 3 };
       const inputObservable = cold('a - b - c|', inputValues);
-      const inputPorts = new LinkNodePorts(inputObservable, 'input');
+      const inputPorts = new LinkElementPorts(inputObservable, 'input');
 
       let linkCount = 1;
       const ports = LinkCount.boot({
@@ -52,7 +52,7 @@ describe('linkCount', () => {
         expect(count).toBe(0);
       }
     });
-    const outputPorts = ports.getOutput(new LinkNodePorts(of({}), 'input'));
+    const outputPorts = ports.getOutput(new LinkElementPorts(of({}), 'input'));
     const outputObservable = outputPorts.getPort('notOutput');
 
     testScheduler.run(({ expectObservable }) => {

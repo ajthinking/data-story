@@ -1,7 +1,7 @@
 import { PortProvider } from '../circuitElement';
 import { EMPTY, Observable } from 'rxjs';
 
-export class NodePorts implements PortProvider {
+export class ElementPorts implements PortProvider {
   constructor(private output: Observable<unknown>) {
   }
 

@@ -2,7 +2,7 @@ import { SourceElementConfig, SourceElement } from '../circuitElement';
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { CreateSourceOutputPort, Source } from './source';
-import { NodePorts } from './nodePorts';
+import { ElementPorts } from './elementPorts';
 
 interface SignalNodeParams {
   period?: number,
@@ -18,7 +18,7 @@ export const Signal: SourceElementConfig = {
     const expression = signalNodeParams?.expression ?? ((i: number) => {
       return { id: i + 1 }
     });
-    const createSignalOutput: CreateSourceOutputPort = () => new NodePorts(interval(period)
+    const createSignalOutput: CreateSourceOutputPort = () => new ElementPorts(interval(period)
       .pipe(
         take(count),
         map((i) => {

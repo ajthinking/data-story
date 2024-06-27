@@ -3,7 +3,7 @@ import { describe } from 'vitest';
 import { take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
 import { Source } from './source';
-import { NodePorts } from './nodePorts';
+import { ElementPorts } from './elementPorts';
 
 describe('signal', () => {
   let testScheduler: TestScheduler;
@@ -46,7 +46,7 @@ describe('signal', () => {
   it('should return the correct NodePorts instance', () => {
     const sourceNode = Signal.boot({ period: 10, count: 3, expression:(i: number) => i * 10 });
 
-    expect(sourceNode.getOutput()).toBeInstanceOf(NodePorts);
+    expect(sourceNode.getOutput()).toBeInstanceOf(ElementPorts);
   });
 
   it('should have the correct nodeType', () => {

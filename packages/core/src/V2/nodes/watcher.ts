@@ -6,7 +6,7 @@ export class ObserverResult implements WatcherResult, Observer<any> {
   subscription = new Subscription();
 
   complete() {
-    console.log('completed')
+    console.warn('completed')
     this.events.next('completed');
     this.events.complete();
   }
