@@ -61,7 +61,6 @@ const getWatcherResult = (diagramArr: SourceOperatorsWatcherArray): WatcherResul
 
   return (watcher as Watcher).watch(
     operators.reduce((acc, operator) => {
-      console.log('acc:', acc, 'operator:', operator.elementType);
       return  operator.getOutput(acc)
     }, source.getOutput())
   );
