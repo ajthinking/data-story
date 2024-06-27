@@ -3,10 +3,11 @@ import { LinkElementPorts } from './link';
 import { firstValueFrom, interval, of, lastValueFrom } from 'rxjs';
 import { consoleLog } from './consoleLog';
 import { take } from 'rxjs/operators';
+import * as logWithTimeDefault from '../../utils/logWithTime';
 
 describe('consoleLog', () => {
   it('should watch values from input node', async () => {
-    const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((val) => {
+    const mockLog = vi.spyOn(logWithTimeDefault, 'logWithTime').mockImplementation((val) => {
       expect(val).toBe(1);
     });
 
@@ -16,12 +17,12 @@ describe('consoleLog', () => {
 
     await firstValueFrom(watcher.events);
 
-    expect(mockConsoleLog).toBeCalledTimes(1);
+    expect(mockLog).toBeCalledTimes(1);
   });
 
   it('should watch multiple values from input node', async () => {
     let count = 0;
-    const mockConsoleLog = vi.spyOn(console, 'log').mockImplementation((val) => {
+    const mockLog = vi.spyOn(logWithTimeDefault, 'logWithTime').mockImplementation((val) => {
       expect(val).toBe(count++);
     });
 
@@ -31,6 +32,6 @@ describe('consoleLog', () => {
 
     await lastValueFrom(watcher.events);
 
-    expect(mockConsoleLog).toBeCalledTimes(3);
+    expect(mockLog).toBeCalledTimes(3);
   });
 })

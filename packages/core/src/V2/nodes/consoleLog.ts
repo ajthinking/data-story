@@ -1,6 +1,7 @@
 import { WatcherElementConfig } from '../circuitElement';
 import { tap } from 'rxjs/operators';
 import { CreateWatcher, Watcher, ObserverResult } from './watcher';
+import { logWithTime } from '../../utils/logWithTime';
 
 export const consoleLog: WatcherElementConfig = {
   boot: () => {
@@ -8,7 +9,7 @@ export const consoleLog: WatcherElementConfig = {
       const watcherResult = new ObserverResult();
       watcherResult.watch(
         input.getPort('input').pipe(
-          tap(console.log)
+          tap(logWithTime)
         )
       )
 
