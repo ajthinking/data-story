@@ -1,7 +1,7 @@
 import { describe } from 'vitest';
 import { LinkElementPorts } from './link';
 import { TestScheduler } from 'rxjs/testing';
-import { LinkCount } from './linkCount';
+import { linkCount } from './linkCount';
 import { of } from 'rxjs';
 
 describe('linkCount', () => {
@@ -18,7 +18,7 @@ describe('linkCount', () => {
       const inputObservable = cold('a|', inputValues);
       const inputPorts = new LinkElementPorts(inputObservable, 'input');
 
-      const ports = LinkCount.boot({
+      const ports = linkCount.boot({
         getLinkCount: (count: number) => {
           expect(count).toBe(1);
         }
@@ -35,7 +35,7 @@ describe('linkCount', () => {
       const inputPorts = new LinkElementPorts(inputObservable, 'input');
 
       let linkCount = 1;
-      const ports = LinkCount.boot({
+      const ports = linkCount.boot({
         getLinkCount: (count: number) => {
           expect(count).toBe(linkCount++);
         }
@@ -47,7 +47,7 @@ describe('linkCount', () => {
   });
 
   it('should return EMPTY when requested port is not "output"', () => {
-    const ports = LinkCount.boot({
+    const ports = linkCount.boot({
       getLinkCount: (count: number) => {
         expect(count).toBe(0);
       }

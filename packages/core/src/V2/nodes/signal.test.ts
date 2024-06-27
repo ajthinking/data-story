@@ -1,4 +1,4 @@
-import { Signal } from './signal';
+import { signal } from './signal';
 import { describe } from 'vitest';
 import { take } from 'rxjs/operators';
 import { TestScheduler } from 'rxjs/testing';
@@ -17,7 +17,7 @@ describe('signal', () => {
   it('should emit values according to the expression when "output" port is requested', () => {
     testScheduler.run(({ expectObservable }) => {
       const expression = vi.fn().mockImplementation(i => ({identifier: i * 10}));
-      const ports = Signal.boot({ period: 10, count: 3, expression });
+      const ports = signal.boot({ period: 10, count: 3, expression });
       const output$ = ports.getOutput().getPort('output');
 
       expectObservable(output$.pipe(take(3))).toBe('10ms a 9ms b 9ms (c|)', {
@@ -29,7 +29,7 @@ describe('signal', () => {
   });
 
   it('should return EMPTY when requested port is not "output"', () => {
-    const ports = Signal.boot({ period: 10, count: 3, expression: (i: number) => i * 10 });
+    const ports = signal.boot({ period: 10, count: 3, expression: (i: number) => i * 10 });
     const output$ = ports.getOutput().getPort('notOutput');
 
     testScheduler.run(({ expectObservable }) => {
@@ -38,19 +38,19 @@ describe('signal', () => {
   });
 
   it('should return the correct SourceNode instance', () => {
-    const sourceNode = Signal.boot({ period: 10, count: 3, expression:(i: number) => i * 10 });
+    const sourceNode = signal.boot({ period: 10, count: 3, expression:(i: number) => i * 10 });
 
     expect(sourceNode).toBeInstanceOf(Source);
   });
 
   it('should return the correct NodePorts instance', () => {
-    const sourceNode = Signal.boot({ period: 10, count: 3, expression:(i: number) => i * 10 });
+    const sourceNode = signal.boot({ period: 10, count: 3, expression:(i: number) => i * 10 });
 
     expect(sourceNode.getOutput()).toBeInstanceOf(ElementPorts);
   });
 
   it('should have the correct nodeType', () => {
-    const sourceNode = Signal.boot({ period: 10, count: 3, expression: (i: number) => i * 10 });
+    const sourceNode = signal.boot({ period: 10, count: 3, expression: (i: number) => i * 10 });
 
     expect(sourceNode.elementType).toBe('source');
   });

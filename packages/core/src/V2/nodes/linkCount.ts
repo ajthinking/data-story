@@ -6,7 +6,7 @@ import { map, tap } from 'rxjs/operators';
 import { OperatorElementConfig } from '../circuitElement';
 import { Operator } from './operator';
 
-export const LinkCount: OperatorElementConfig = {
+export const linkCount: OperatorElementConfig = {
   boot: (param: unknown) => {
     const linkCountParams = param as { getLinkCount: (count: number) => void };
     const createLinkCountOutput: CreateOutputPort = (input) => {

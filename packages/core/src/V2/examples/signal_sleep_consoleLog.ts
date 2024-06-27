@@ -1,7 +1,7 @@
-import { Signal } from '../nodes/signal';
-import { Link } from '../nodes/link';
-import { LinkCount } from '../nodes/linkCount';
-import { Sleep } from '../nodes/sleep';
+import { signal } from '../nodes/signal';
+import { link } from '../nodes/link';
+import { linkCount } from '../nodes/linkCount';
+import { sleep } from '../nodes/sleep';
 import { consoleLog } from '../nodes/consoleLog';
 import { Watcher } from '../nodes/watcher';
 import { OperatorElement, SourceElement, WatcherElement, WatcherResult } from '../circuitElement';
@@ -9,18 +9,18 @@ import { OperatorElement, SourceElement, WatcherElement, WatcherResult } from '.
 // signal --link linkCount link --> sleep --link linkCount link --> consoleLog
 
 export const createDiagram = () => {
-  const signalNode = Signal.boot({ period: 10, count: 3, expression: (i: number) => i * 10 });
-  const link = Link.boot({ from: 'output', to: 'input' });
-  const linkCount = LinkCount.boot({
+  const signalEle = signal.boot({ period: 10, count: 3, expression: (i: number) => i * 10 });
+  const linkEle = link.boot({ from: 'output', to: 'input' });
+  const linkCountEle = linkCount.boot({
     getLinkCount: (count: number) => {
-      console.log('linkCount:', count);
+      // console.log('linkCount:', count);
     }
   });
-  const sleep = Sleep.boot({ period: 100 });
-  const consoleLogNode = consoleLog.boot();
+  const sleepEle = sleep.boot({ period: 100 });
+  const consoleLogEle = consoleLog.boot();
 
   // every node order is error, not signal -> link -> sleep -> consoleLog. it didn't async await
-  const diagram = getWatcherResult([signalNode, link, linkCount, link, sleep, link, linkCount, link, consoleLogNode]);
+  const diagram = getWatcherResult([signalEle, linkEle, linkCountEle, linkEle, sleepEle, linkEle, linkCountEle, linkEle, consoleLogEle]);
 
   return diagram;
 }
@@ -60,7 +60,10 @@ const getWatcherResult = (diagramArr: SourceOperatorsWatcherArray): WatcherResul
   const { source, operators, watcher } = validateDiagramArr(diagramArr);
 
   return (watcher as Watcher).watch(
-    operators.reduce((acc, operator) => operator.getOutput(acc), source.getOutput())
+    operators.reduce((acc, operator) => {
+      console.log('acc:', acc, 'operator:', operator.elementType);
+      return  operator.getOutput(acc)
+    }, source.getOutput())
   );
 }
 

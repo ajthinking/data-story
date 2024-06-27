@@ -15,7 +15,7 @@ export class LinkElementPorts implements PortProvider {
   }
 }
 
-export const Link: OperatorElementConfig = {
+export const link: OperatorElementConfig = {
   boot: (param: unknown) => {
     const { from, to } = param as {from: string, to: string};
     const createLinkOutput: CreateOutputPort = (input) => {

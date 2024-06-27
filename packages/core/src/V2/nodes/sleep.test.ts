@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { Sleep } from './sleep';
+import { sleep } from './sleep';
 import { LinkElementPorts } from './link';
 
 describe('sleep', () => {
@@ -19,7 +19,7 @@ describe('sleep', () => {
       const duration = 20;
 
       const inputPorts = new LinkElementPorts(inputObservable, 'input');
-      const sleepNode = Sleep.boot(duration);
+      const sleepNode = sleep.boot(duration);
       const outputPorts = sleepNode.getOutput(inputPorts);
       const output$ = outputPorts.getPort('output');
 
@@ -34,7 +34,7 @@ describe('sleep', () => {
       const duration = 20;
 
       const inputPorts = new LinkElementPorts(inputObservable, 'input');
-      const sleepNode = Sleep.boot(duration);
+      const sleepNode = sleep.boot(duration);
       const outputPorts = sleepNode.getOutput(inputPorts);
       const outputObservable = outputPorts.getPort('output');
 
@@ -43,7 +43,7 @@ describe('sleep', () => {
   });
 
   it('should return EMPTY when requested port is not "output"', () => {
-    const sleepNode = Sleep.boot(10);
+    const sleepNode = sleep.boot(10);
     const outputPorts = sleepNode.getOutput(new LinkElementPorts(of({}), 'input'));
     const outputObservable = outputPorts.getPort('notOutput');
 
