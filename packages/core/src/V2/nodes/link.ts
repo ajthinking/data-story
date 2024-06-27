@@ -22,6 +22,6 @@ export const link: OperatorElementConfig = {
       return new LinkElementPorts(input.getPort(from), to);
     }
 
-    return new Operator(createLinkOutput);
+    return new Operator(createLinkOutput, 'link');
   }
 }

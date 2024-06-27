@@ -14,6 +14,6 @@ export const consoleLog: WatcherElementConfig = {
 
       return watcherResult;
     }
-    return new Watcher(createConsoleOutput);
+    return new Watcher(createConsoleOutput, 'consoleLog');
   }
 }

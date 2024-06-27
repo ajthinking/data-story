@@ -26,6 +26,6 @@ export const signal: SourceElementConfig = {
         })
       ));
 
-    return new Source(createSignalOutput);
+    return new Source(createSignalOutput, 'signal');
   }
 }

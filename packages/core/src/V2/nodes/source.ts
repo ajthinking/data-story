@@ -6,7 +6,7 @@ export class Source implements SourceElement {
 
   elementType = 'source' as const;
 
-  constructor(private createOutputPort: CreateSourceOutputPort) {
+  constructor(private createOutputPort: CreateSourceOutputPort, public elementName: string) {
   }
 
   getOutput(): PortProvider {

@@ -17,6 +17,6 @@ export const linkCount: OperatorElementConfig = {
         })
       ))
     }
-    return new Operator(createLinkCountOutput);
+    return new Operator(createLinkCountOutput, 'linkCount');
   }
 }

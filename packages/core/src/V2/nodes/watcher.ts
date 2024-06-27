@@ -33,7 +33,7 @@ export type CreateWatcher = (input: PortProvider) => ObserverResult;
 export class Watcher implements WatcherElement {
   elementType = 'watcher' as const;
 
-  constructor(private watchExecute: CreateWatcher) {
+  constructor(private watchExecute: CreateWatcher, public elementName: string) {
   }
 
   watch(inputs: PortProvider): WatcherResult {

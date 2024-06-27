@@ -13,6 +13,7 @@ export interface PortProvider {
  */
 export interface SourceElement {
   elementType: 'source';
+  elementName: string;
 
   getOutput(): PortProvider;
 }
@@ -23,6 +24,7 @@ export interface SourceElement {
  */
 export interface OperatorElement {
   elementType: 'operator';
+  elementName: string;
 
   getOutput(inputs: PortProvider): PortProvider;
 }
@@ -39,6 +41,7 @@ export interface WatcherResult {
  */
 export interface WatcherElement {
   elementType: 'watcher';
+  elementName: string;
 
   watch(inputs: PortProvider): WatcherResult;
 }
