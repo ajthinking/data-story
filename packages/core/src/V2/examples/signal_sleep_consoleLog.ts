@@ -25,16 +25,16 @@ export const createDiagram = () => {
   return diagram;
 }
 
-// [S, O, O..., W] => WatcherResult
 type SourceOperatorsWatcherArray = [SourceElement, ...OperatorElement[], WatcherElement];
 
+// [S, O, O..., W] => WatcherResult
 const validateDiagramArr = (diagramArr: SourceOperatorsWatcherArray): {
   source: SourceElement,
   operators: OperatorElement[],
   watcher: WatcherElement
 } => {
-  if (!diagramArr.length) {
-    throw new Error('diagramArr should not be empty');
+  if (diagramArr.length < 3) {
+    throw new Error('diagramArr should not less than 3 elements');
   }
 
   const source = diagramArr[0];
@@ -68,8 +68,8 @@ const getWatcherResult = (diagramArr: SourceOperatorsWatcherArray): WatcherResul
 }
 
 // transform watcherResult to promise
-export const transformWatcherResultToPromise = async (diagram: WatcherResult) => {
-  return new Promise<void>(async (resolve, reject) => {
+export const transformWatcherResultToPromise = async(diagram: WatcherResult) => {
+  return new Promise<void>(async(resolve, reject) => {
     diagram.events.subscribe({
       complete: () => {
         console.log('completed');
