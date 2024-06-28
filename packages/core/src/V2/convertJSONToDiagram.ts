@@ -12,19 +12,17 @@ const allElements = {
   ConsoleLog: consoleLog
 }
 
-function convertParams(params: Record<string, any>[]): Record<string, any> {
+export const convertParams = (params: Record<string, any>[]): Record<string, any> => {
   const result = params.reduce((acc, param) => {
     const { name, value, type } = param;
-    if (type === 'StringableParam') {
-      return { [name]: value.value }
-    }
-    return { [name]: value }
+    acc[name] = type === 'StringableParam' ? value.value : value;
+    return acc;
   }, {});
   console.log(result)
   return result;
-}
+};
 
-function convertNodesToElements(nodes: Record<string, any>[]): DataStoryElement[] {
+export const convertNodesToElements = (nodes: Record<string, any>[]): DataStoryElement[] => {
   const eles = nodes.map(node => {
     const param = convertParams(node.params);
     const { type } = node;
@@ -34,13 +32,13 @@ function convertNodesToElements(nodes: Record<string, any>[]): DataStoryElement[
     return element;
   })
   return eles;
+};
+
+export function convertLinksToElements(links: any): OperatorElement {
+
 }
 
-function convertLinksToElements(links: any): OperatorElement {
-
-}
-
-const convertJSONToDiagram = (json: string) => {
+export const convertJSONToDiagram = (json: string) => {
   const { name, diagram } = JSON.parse(json);
   const { nodes, links } = diagram;
   convertNodesToElements(nodes);
