@@ -1,7 +1,13 @@
 import { describe, expect } from 'vitest';
-import { convertNodesToElements, convertParams } from './convertJSONToDiagram';
+import { convertElementsWithLinks, convertNodesToElements, convertParams } from './convertJSONToDiagram';
 import { DiagramBuilder } from '../DiagramBuilder';
 import { ConsoleLog, Signal, Sleep } from '../computers';
+
+export interface JSONLink {
+  id: string;
+  sourcePortId: string;
+  targetPortId: string;
+}
 
 export const diagramJson = {
   'type': 'save', 'version': '0.0.84', 'name': 'data-story-diagram', 'diagram': {
@@ -93,7 +99,7 @@ export const diagramJson = {
         }],
         'position': { 'x': 379.3388256198429, 'y': 35.091765031663826 }
       }],
-    'links': [{
+    'links': [<JSONLink>{
       'id': 'tqfYRubEzW',
       'sourcePortId': 'Signal.KsNZw9NetO.output',
       'targetPortId': 'Sleep.zmZCqheRDy.input'
@@ -147,3 +153,14 @@ describe('convertNodesToElements', () => {
     expect(elements[2].elementName).toBe('consoleLog');
   })
 })
+
+describe('convertElementsWithLinks', () => {
+  it('should convert elements with links', () => {
+    const elements = convertNodesToElements(diagramJSON.nodes);
+    const elementsWithLinks = convertElementsWithLinks(diagramJSON.links, elements);
+    const elementNames = elementsWithLinks.map(ele => ele.elementName);
+
+    expect(elementsWithLinks.length).toBe(5);
+    expect(elementNames).toEqual(['signal', 'link', 'sleep', 'link', 'consoleLog']);
+  })
+});
