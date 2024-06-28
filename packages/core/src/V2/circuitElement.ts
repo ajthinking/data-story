@@ -29,6 +29,8 @@ export interface OperatorElement {
   getOutput(inputs: PortProvider): PortProvider;
 }
 
+export type DataStoryElement = SourceElement | OperatorElement | WatcherElement;
+
 export type WatcherEvent = 'completed' | 'errored';
 
 export interface WatcherResult {
