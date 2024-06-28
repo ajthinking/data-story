@@ -1,4 +1,4 @@
-import { OperatorElement, SourceElement, WatcherElement, WatcherResult } from './circuitElement';
+import { OperatorElement, PortProvider, SourceElement, WatcherElement, WatcherResult } from './circuitElement';
 import { Watcher } from './nodes/watcher';
 
 type SourceOperatorsWatcherArray = [SourceElement, ...OperatorElement[], WatcherElement];
@@ -31,13 +31,17 @@ const validateDiagramArr = (diagramArr: SourceOperatorsWatcherArray): {
   return { source, operators, watcher };
 };
 
+export const composeOperators = (operators: OperatorElement[], input: PortProvider): PortProvider => {
+  return operators.slice(1).reduce((acc, operator) => {
+    return operator.getOutput(acc);
+  }, operators[0].getOutput(input));
+}
+
 export const processDiagramArray = (diagramArr: SourceOperatorsWatcherArray): WatcherResult => {
   const { source, operators, watcher } = validateDiagramArr(diagramArr);
 
   return (watcher as Watcher).watch(
-    operators.reduce((acc, operator) => {
-      return operator.getOutput(acc)
-    }, source.getOutput())
+    composeOperators(operators, source.getOutput())
   );
 }
 // transform watcherResult to promise

@@ -1,4 +1,4 @@
-import { signal, SignalNodeParams } from '../nodes/signal';
+import { signal } from '../nodes/signal';
 import { link } from '../nodes/link';
 import { linkCount } from '../nodes/linkCount';
 import { sleep } from '../nodes/sleep';
@@ -19,11 +19,7 @@ export const signal_sleep_consoleLog = (params: SignalNodeParams) => {
   return processDiagramArray([
     signalEle,
     linkEle,
-    linkCountEle,
-    linkEle,
     sleepEle,
-    linkEle,
-    linkCountEle,
     linkEle,
     consoleLogEle]);
 }

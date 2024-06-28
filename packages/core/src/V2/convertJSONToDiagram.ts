@@ -34,13 +34,13 @@ export const convertNodesToElements = (nodes: Record<string, any>[]): DataStoryE
   return eles;
 };
 
-export function convertLinksToElements(links: any): OperatorElement {
+export function convertElementsWithLinks(links: any, elements: DataStoryElement[]) {
 
 }
 
 export const convertJSONToDiagram = (json: string) => {
   const { name, diagram } = JSON.parse(json);
   const { nodes, links } = diagram;
-  convertNodesToElements(nodes);
-  convertLinksToElements(links);
+  const elements = convertNodesToElements(nodes);
+  convertElementsWithLinks(links, elements);
 }
