@@ -4,7 +4,7 @@ import { map, take } from 'rxjs/operators';
 import { CreateSourceOutputPort, Source } from './source';
 import { ElementPorts } from './elementPorts';
 
-interface SignalNodeParams {
+export interface SignalNodeParams {
   period?: number,
   count?: number,
   expression?: (i: number) => unknown
