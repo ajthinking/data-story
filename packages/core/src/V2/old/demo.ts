@@ -39,24 +39,40 @@ const app = new ApplicationV2([
 ])
 
 const examples: Record<string, Diagram> = {
-  // OK
-  '0': app.getBuilder()
+  // Case: End at an operator
+  0: app.getBuilder()
     .add('creator', { count: 2 })
     .add('sleeper', { duration: 5000 })
+    // no operator listening to sleeper output
     .connect()
     .get(),
 
-  // OK
-  '1': app.getBuilder()
+  // Case: End at a watcher
+  1: app.getBuilder()
     .add('creator', { count: 3 })
     .add('sleeper', { duration: 2000 })
     .add('printer')
     .connect()
     .get(),
 
+  // Case: multiple links at same ports
+  2: app.getBuilder()
+    .add('creator', { count: 1 })
+    .add('creator', { count: 1 })
+    .add('sleeper', { duration: 2000 })
+    .add('printer')
+    .add('printer')
+    .connect(`
+      creator.1.output----->sleeper.1.input
+      creator.2.output----->sleeper.1.input
+                            |  sleeper.1.output----->printer.1.input
+                            |  sleeper.1.output----->printer.2.input
+    `)
+    .get(),
+
   // ATTEMPTED LOOP BACK TO A INPUT NODE
   // CANT COMPLETE - "Done" is never logged, neither "Catched something"
-  '2': app.getBuilder()
+  3: app.getBuilder()
     .add('creator', { count: 2 })
     .add('input')
     .add('alternator')
