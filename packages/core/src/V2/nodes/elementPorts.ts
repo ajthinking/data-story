@@ -19,6 +19,7 @@ export class ElementPorts implements PortProvider {
     Object.keys(param).forEach((key) => {
       elementsPorts.ports.set(key, param[key]);
     });
+    return elementsPorts;
   }
 }
 

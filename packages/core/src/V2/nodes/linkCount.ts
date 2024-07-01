@@ -18,7 +18,9 @@ export const linkCount: OperatorElementConfig = {
       })
     );
     const createLinkCountOutput: CreateOutputPort = (input) => {
-      return new ElementPorts(getObservable(input), 'pipe')
+      return ElementPorts.fromPorts({
+        pipe: getObservable(input)
+      });
     }
 
     return new Operator(createLinkCountOutput, 'linkCount');
