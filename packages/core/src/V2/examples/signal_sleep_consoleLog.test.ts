@@ -26,7 +26,6 @@ describe('signal_sleep_consoleLog', () => {
       console.warn(val);
       result.push(val as number);
     });
-    result.sort((a, b) => a - b);
 
     await signal_sleep_consoleLog_multiple({
       period: 10,
@@ -34,6 +33,7 @@ describe('signal_sleep_consoleLog', () => {
       expression: (i: number) => i + 1
     });
 
+    result.sort((a, b) => a - b);
     expect(mockLog).toBeCalledTimes(9);
     expect(result).toEqual([1, 1, 1, 2, 2, 2, 3, 3, 3]);
   })
