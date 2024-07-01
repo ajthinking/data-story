@@ -18,7 +18,7 @@ export const signal_sleep_consoleLog = async(params: SignalNodeParams) => {
 
   const diagramComposer = new DiagramComposer();
   diagramComposer.addElements([signalEle, sleepEle, consoleLogEle]);
-  diagramComposer.addLink(linkEle, sleepEle, consoleLogEle);
+  // diagramComposer.addLink(linkEle, sleepEle, consoleLogEle);
   diagramComposer.addLink(linkEle, signalEle, consoleLogEle);
   diagramComposer.addLink(linkEle, signalEle, sleepEle);
 
