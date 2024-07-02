@@ -1,6 +1,3 @@
-// inputvalue === outputvalue
-// show the value pass numbe r of links
-
 import { CreateOutputPort, ElementPorts } from './elementPorts';
 import { map } from 'rxjs/operators';
 import { OperatorElementConfig, PortProvider } from '../circuitElement';

@@ -1,5 +1,4 @@
 import { Observable, SubscriptionLike } from 'rxjs';
-// todo: need double check the description
 /**
  * get data stream from the one port of the element
  */
