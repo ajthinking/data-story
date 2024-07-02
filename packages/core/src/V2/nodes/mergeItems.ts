@@ -1,30 +1,38 @@
 import { OperatorElementConfig } from '../circuitElement';
 import { CreateOutputPort, ElementPorts } from './elementPorts';
 import { Operator } from './operator';
-import { map, filter, mergeMap, every } from 'rxjs/operators';
+import { every, filter, map, mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { ItemWithParams } from '../../ItemWithParams';
 
 export const mergeItems: OperatorElementConfig = {
-  boot: () => {
-    function isMatch(r: unknown, s: unknown): boolean {
-      return true;
-    }
-
-    function mergeObject(r: unknown, s: unknown): unknown{
-      return Object.assign({}, r, s);
-    }
+  boot: (params: unknown) => {
+    const {
+      requestor_key,
+      supplier_key
+    } = params as {
+      requestor_key: string,
+      supplier_key: string
+    };
 
     let createMergeOutput: CreateOutputPort = (input) => {
-      let requestors = input.getPort('requestors');
-      let suppliers = input.getPort('suppliers');
+      let requestors = input.getPort('requestors') as Observable<ItemWithParams[]>;
+      let suppliers = input.getPort('suppliers') as Observable<ItemWithParams[]>;
 
-      const merged_port = requestors.pipe(
+      const isMatch = (r: ItemWithParams[], s: ItemWithParams[]): boolean => {
+        return true;
+      }
+
+      const mergeObject = (r: unknown, s: unknown): unknown => Object.assign({}, r, s);
+
+      const mergedPort = requestors.pipe(
         mergeMap(r => suppliers.pipe(
           filter(s => isMatch(r, s)),
           map(s => mergeObject(r, s)),
         ))
       );
 
-      const not_merged_port = requestors.pipe(
+      const notMergedPort = requestors.pipe(
         mergeMap(r => suppliers.pipe(
           filter(s => isMatch(r, s)),
           every(() => false),
@@ -34,8 +42,8 @@ export const mergeItems: OperatorElementConfig = {
       );
 
       return ElementPorts.fromPorts({
-        merged: merged_port,
-        not_merged: not_merged_port
+        merged: mergedPort,
+        not_merged: notMergedPort
       });
     };
     return new Operator(createMergeOutput, 'merge');
