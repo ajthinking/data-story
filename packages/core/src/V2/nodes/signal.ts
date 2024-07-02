@@ -1,35 +1,24 @@
-import { ISourceNodeConfig, INodePorts, ISourceNode } from '../Node';
-import { Observable, EMPTY, interval } from 'rxjs';
+import { SourceElementConfig, SourceElement } from '../circuitElement';
+import { interval } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { NodePorts } from './sleep';
+import { CreateSourceOutputPort, Source } from './source';
+import { ElementPorts } from './elementPorts';
 
-type CreateSourceOutputPort = () => INodePorts;
-
-export class SourceNode implements ISourceNode {
-
-  constructor(private createOutputPort: CreateSourceOutputPort) {
-  }
-
-  getOutput(): INodePorts {
-    return this.createOutputPort();
-  }
-  nodeType = 'source' as const;
-
-}
-
-interface SignalNodeParams  {
+export interface SignalNodeParams {
   period?: number,
   count?: number,
   expression?: (i: number) => unknown
 }
 
-export const Signal: ISourceNodeConfig = {
-  boot: (param: unknown): ISourceNode  => {
+export const signal: SourceElementConfig = {
+  boot: (param: unknown): SourceElement => {
     const signalNodeParams = param as SignalNodeParams;
     const period = Number(signalNodeParams?.period)
     const count = Number(signalNodeParams?.count)
-    const expression = signalNodeParams?.expression ?? ((i: number) => { return  { id: i + 1 } });
-    const createSignalOutput: CreateSourceOutputPort = () => new NodePorts(interval(period)
+    const expression = signalNodeParams?.expression ?? ((i: number) => {
+      return { id: i + 1 }
+    });
+    const createSignalOutput: CreateSourceOutputPort = () => new ElementPorts(interval(period)
       .pipe(
         take(count),
         map((i) => {
@@ -37,6 +26,6 @@ export const Signal: ISourceNodeConfig = {
         })
       ));
 
-    return new SourceNode(createSignalOutput);
+    return new Source(createSignalOutput, 'signal');
   }
 }
