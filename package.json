@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "demo": "yarn workspace @data-story/core run demo",
+    "tinker": "yarn workspace @data-story/core run tinker",
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && yarn build && turbo dev --parallel",
     "kill": "kill-port 3000 3300",
     "build": "turbo build",
