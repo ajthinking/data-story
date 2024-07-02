@@ -16,14 +16,14 @@ describe('linkCount', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const inputValues = { a: 1 };
       const inputObservable = cold('a|', inputValues);
-      const inputPorts = new LinkElementPorts(inputObservable, 'input');
+      const inputPorts = new LinkElementPorts(inputObservable, 'pipe');
 
       const ports = linkCount.boot({
         getLinkCount: (count: number) => {
           expect(count).toBe(1);
         }
       });
-      const output$ = ports.getOutput(inputPorts).getPort('output');
+      const output$ = ports.getOutput(inputPorts).getPort('pipe');
       expectObservable(output$).toBe('a|', inputValues);
     })
   });
@@ -32,7 +32,7 @@ describe('linkCount', () => {
     testScheduler.run(({ cold, expectObservable }) => {
       const inputValues = { a: 1, b: 2, c: 3 };
       const inputObservable = cold('a - b - c|', inputValues);
-      const inputPorts = new LinkElementPorts(inputObservable, 'input');
+      const inputPorts = new LinkElementPorts(inputObservable, 'pipe');
 
       let count = 1;
       const ports = linkCount.boot({
@@ -41,7 +41,7 @@ describe('linkCount', () => {
         }
       });
 
-      const output$ = ports.getOutput(inputPorts).getPort('output');
+      const output$ = ports.getOutput(inputPorts).getPort('pipe');
       expectObservable(output$).toBe('a - b - c|', inputValues);
     })
   });
@@ -52,7 +52,7 @@ describe('linkCount', () => {
         expect(count).toBe(0);
       }
     });
-    const outputPorts = ports.getOutput(new LinkElementPorts(of({}), 'input'));
+    const outputPorts = ports.getOutput(new LinkElementPorts(of({}), 'pipe'));
     const outputObservable = outputPorts.getPort('notOutput');
 
     testScheduler.run(({ expectObservable }) => {

@@ -1,5 +1,4 @@
 import { Observable, SubscriptionLike } from 'rxjs';
-// todo: need double check the description
 /**
  * get data stream from the one port of the element
  */
@@ -28,6 +27,8 @@ export interface OperatorElement {
 
   getOutput(inputs: PortProvider): PortProvider;
 }
+
+export type DataStoryElement = SourceElement | OperatorElement | WatcherElement;
 
 export type WatcherEvent = 'completed' | 'errored';
 
