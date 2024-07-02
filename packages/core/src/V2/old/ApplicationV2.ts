@@ -6,11 +6,15 @@ import { execute } from './execute';
 export class ApplicationV2 {
   constructor(private availableElements: Element[]) {}
 
+  getAvailableElements() {
+    return this.availableElements;
+  }
+
   getBuilder() {
     return new Builder(this.availableElements);
   }
 
   getExecutor() {
-    return (diagram: Diagram) => execute(diagram, this.availableElements);
+    return (diagram: Diagram) => execute(diagram, this);
   }
 }

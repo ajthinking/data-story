@@ -8,13 +8,14 @@ import { Element, OperatorBootArgs } from './Element'
 import { sleeper } from './nodes/sleeper'
 import { toLookup } from '../../utils/toLookup'
 import { droner } from './nodes/droner'
+import { ApplicationV2 } from './ApplicationV2'
 
 type NodeId = string
 type PortName = string
 
 // Assumes output ports are named 'output'
 // Example: execute(createMapPrint)
-export const execute = async (diagram: Diagram, elements: Element[]) => {
+export const execute = async (diagram: Diagram, app: ApplicationV2) => {
   const completionSubject = new Subject<void>();
   const nodeCompletionPromises: Promise<void>[] = [];
 
@@ -42,12 +43,13 @@ export const execute = async (diagram: Diagram, elements: Element[]) => {
     .filter(node => node.inputs.length > 0)
 
   for (const operatorNode of operatorNodes) {
-    const operator = elements.find(element => element.name === operatorNode.type)
+    const operator = app.getAvailableElements().find(element => element.name === operatorNode.type)
     if (!operator) throw new Error(`Operator ${operatorNode.type} not found`);
     const operatorArgs: OperatorBootArgs = {
       inputs: {},
       outputs: {},
       params: toLookup(operatorNode.params, 'name'),
+      app,
     };
 
     for (const input of operatorNode.inputs) {
@@ -102,7 +104,7 @@ export const execute = async (diagram: Diagram, elements: Element[]) => {
   // **************************************************
   const sourceNodes = diagram.nodes.filter(node => node.inputs.length === 0)
   for(const sourceNode of sourceNodes) {
-    const source = elements.find(element => element.name === sourceNode.type)
+    const source = app.getAvailableElements().find(element => element.name === sourceNode.type)
     if (!source) throw new Error(`Source ${sourceNode.type} not found`);
 
     source.boot({
@@ -110,7 +112,8 @@ export const execute = async (diagram: Diagram, elements: Element[]) => {
       outputs: {
         output: outputMap[sourceNode.id]['output']
       },
-      params: toLookup(sourceNode.params, 'name')
+      params: toLookup(sourceNode.params, 'name'),
+      app,
     })
   }
 

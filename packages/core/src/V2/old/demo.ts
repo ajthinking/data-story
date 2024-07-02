@@ -91,10 +91,10 @@ const examples: Record<string, Diagram> = {
 
 (async () => {
   try {
-    const example = process.argv[2]
-    console.log(example)
+    const exampleId = process.argv[2]
+    console.log(exampleId)
 
-    const diagram = examples[example]
+    const diagram = examples[exampleId]
     const execute = app.getExecutor()
     await execute(diagram)
     console.log('Done')

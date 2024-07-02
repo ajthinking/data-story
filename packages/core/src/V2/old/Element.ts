@@ -2,6 +2,7 @@ import { Param } from '../../Param'
 import { ItemValue } from '../../types/ItemValue'
 import { AbstractPort, PortName } from '../../types/Port'
 import { Observable, Subject } from 'rxjs'
+import { ApplicationV2 } from './ApplicationV2'
 
 export type OperatorBootArgs = {
   inputs: {
@@ -10,7 +11,8 @@ export type OperatorBootArgs = {
   outputs: {
     [key: string]: Subject<ItemValue[]>
   },
-  params: Record<string, Param>
+  params: Record<string, Param>,
+  app: ApplicationV2
 }
 
 // Todo, if needed separate into Source, Operator and Watcher nodes
