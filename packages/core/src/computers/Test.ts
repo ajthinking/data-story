@@ -29,10 +29,17 @@ export const Test: ComputerConfig = {
           ],
           multiline: false,
         }),
-        str({
+        {
           name: 'operator',
+          label: 'operator',
+          help: '',
+          type: 'SelectParam',
           value: '==',
-        }),
+          options: [
+            { value: '==', label: '==' },
+            { value: '===', label: '===' },
+          ],
+        },
         createDefaultStringable({
           name: 'operand2',
           label: 'Operand 2',
