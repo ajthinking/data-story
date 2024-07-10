@@ -1,8 +1,8 @@
 import { Param } from '@data-story/core'
 import { useWatch } from 'react-hook-form';
 import { useMemo } from 'react';
-import { FormComponent, FormComponentProps } from '../../../../types';
-import { FormFieldWrapper, useFormField } from '../../../../Form/UseFormField';
+import { FormComponent, FormComponentProps } from '../types';
+import { FormFieldWrapper, useFormField } from './UseFormField';
 
 export function PortSelectionInputComponent({
   param,

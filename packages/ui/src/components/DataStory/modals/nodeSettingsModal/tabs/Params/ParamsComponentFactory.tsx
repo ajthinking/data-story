@@ -1,7 +1,7 @@
 import { Param  } from '@data-story/core';
 import {  FormComponent, FormComponentProps } from '../../../../types';
 import { StringableComponent } from './StringableWithConfig';
-import { PortSelectionComponent } from './PortSelectionInput';
+import { PortSelectionComponent } from '../../../../Form/PortSelectionInput';
 import { SelectComponent } from '../../../../Form/SelectInput';
 
 export class ParamsComponentFactory{
