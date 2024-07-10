@@ -4,6 +4,19 @@ import { numberCast } from '../Param/casts/numberCast';
 import { stringCast } from '../Param/casts/stringCast';
 import { ComputerConfig } from '../types/ComputerConfig';
 
+type OperationFunction = (a: string, b: string) => boolean;
+
+const sharedOperators = [
+  { value: '==', label: '==' },
+  { value: '===', label: '===' },
+  { value: '!=', label: '!=' },
+  { value: '!==', label: '!==' },
+  { value: '>', label: '>' },
+  { value: '>=', label: '>=' },
+  { value: '<', label: '<' },
+  { value: '<=', label: '<=' },
+];
+
 export const Test: ComputerConfig = {
   name: 'Test',
   label: 'Test',
@@ -35,10 +48,7 @@ export const Test: ComputerConfig = {
           help: '',
           type: 'SelectParam',
           value: '==',
-          options: [
-            { value: '==', label: '==' },
-            { value: '===', label: '===' },
-          ],
+          options: sharedOperators,
         },
         createDefaultStringable({
           name: 'operand2',
@@ -68,48 +78,26 @@ export const Test: ComputerConfig = {
         operand2: string,
       }[]
 
+      /**
+       * @return {Record<string, (a: string, b: string) => boolean>}
+       * e.g.: { '==': (a, b) => a == b }
+       */
+      const operators: Record<string, OperationFunction> = sharedOperators.reduce(
+        (acc, { value }) => {
+          acc[value] = new Function('a', 'b', `return a ${value} b`) as OperationFunction;
+          return acc;
+        },
+        {} as Record<string, OperationFunction>
+      );
+
       return tests.every(test => {
-        if(test.operator === '==') {
-          console.log('Evaluating', test.operand1, test.operator, test.operand2, test.operand1 == test.operand2)
-          return test.operand1 == test.operand2
+        const operation = operators[test.operator];
+        if (!operation) {
+          throw new Error(`Operator "${test.operator}" not supported`);
         }
-
-        if(test.operator === '===') {
-          console.log('Evaluating', test.operand1, test.operator, test.operand2, test.operand1 === test.operand2)
-          return test.operand1 === test.operand2
-        }
-
-        if(test.operator === '!=') {
-          console.log('Evaluating', test.operand1, test.operator, test.operand2, test.operand1 != test.operand2)
-          return test.operand1 != test.operand2
-        }
-
-        if(test.operator === '!==') {
-          console.log('Evaluating', test.operand1, test.operator, test.operand2, test.operand1 !== test.operand2)
-          return test.operand1 !== test.operand2
-        }
-
-        if(test.operator === '>') {
-          console.log('Evaluating', test.operand1, test.operator, test.operand2, test.operand1 > test.operand2)
-          return test.operand1 > test.operand2
-        }
-
-        if(test.operator === '>=') {
-          console.log('Evaluating', test.operand1, test.operator, test.operand2, test.operand1 >= test.operand2)
-          return test.operand1 >= test.operand2
-        }
-
-        if(test.operator === '<') {
-          console.log('Evaluating', test.operand1, test.operator, test.operand2, test.operand1 < test.operand2)
-          return test.operand1 < test.operand2
-        }
-
-        if(test.operator === '<=') {
-          console.log('Evaluating', test.operand1, test.operator, test.operand2, test.operand1 <= test.operand2)
-          return test.operand1 <= test.operand2
-        }
-
-        throw new Error(`Operator "${test.operator}" not supported`)
+        const result = operation(test.operand1, test.operand2);
+        console.log('Evaluating', test.operand1, test.operator, test.operand2, result);
+        return result;
       });
     };
 
