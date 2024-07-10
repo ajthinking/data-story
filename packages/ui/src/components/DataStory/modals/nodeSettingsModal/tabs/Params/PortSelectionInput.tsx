@@ -44,7 +44,7 @@ export function PortSelectionInput(params: FormComponentProps & {param: Param}) 
 }
 
 export class PortSelectionComponent implements FormComponent<Param> {
-  getComponent(params: FormComponentProps & {param: Param}) {
+  getComponent(params: FormComponentProps) {
     return (<PortSelectionInput {...params} />);
   };
 

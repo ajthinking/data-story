@@ -75,7 +75,7 @@ export type Param =
 
 export type ParamValue = Param['value']
 
-// // quick param builders
+// quick param builders
 
 type StringableConfigType = Omit<StringableParam, 'value' | 'type'> & {
   value: StringableInputValue['value']

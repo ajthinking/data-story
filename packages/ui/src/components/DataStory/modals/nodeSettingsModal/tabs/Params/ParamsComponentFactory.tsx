@@ -2,11 +2,13 @@ import { Param  } from '@data-story/core';
 import {  FormComponent, FormComponentProps } from '../../../../types';
 import { StringableComponent } from './StringableWithConfig';
 import { PortSelectionComponent } from './PortSelectionInput';
+import { SelectComponent } from '../../../../Form/SelectInput';
 
 export class ParamsComponentFactory{
   availableComponents: FormComponent<Param>[] = [
     new StringableComponent(),
-    new PortSelectionComponent()
+    new PortSelectionComponent(),
+    new SelectComponent(),
   ]
   private selectedComponent?: FormComponent<Param> = undefined;
 

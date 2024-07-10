@@ -1,5 +1,6 @@
-import { SelectParam } from '@data-story/core';
+import { Param, SelectParam } from '@data-story/core';
 import { FormFieldWrapper, useFormField } from './UseFormField';
+import { FormComponent, FormComponentProps } from '../types';
 
 function SelectInputComponent({
   param,
@@ -33,4 +34,14 @@ export function SelectInput({
   return (<FormFieldWrapper fieldName={param.name}>
     <SelectInputComponent param={param} />
   </FormFieldWrapper>);
+}
+
+export class SelectComponent implements FormComponent<Param>{
+  getComponent(params: FormComponentProps) {
+    return (<SelectInput param={params.param as SelectParam} />);
+  };
+
+  getType() {
+    return 'SelectParam';
+  }
 }
