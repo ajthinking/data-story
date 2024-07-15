@@ -11,6 +11,21 @@ export type OutputTree = Record<PortId, LinkItems>
 
 export type PortLinkMap = Record<PortName, LinkId[]>
 
+const formatItems = (items: ItemValue[]): ItemValue[] => {
+  try {
+    return structuredClone(items);
+  } catch (e) {
+    try {
+      return JSON.parse(JSON.stringify(items));
+    } catch (jsonError) {
+      throw new Error(`
+        Items are not serializable: ${jsonError}
+        Items might not be structured cloneable.
+      `);
+    }
+  }
+};
+
 export class OutputDevice {
   constructor(
     private portLinkMap: PortLinkMap = {},
@@ -32,11 +47,12 @@ export class OutputDevice {
     const items = itemable.map(i => isItemWithParams(i) ? i.value : i)
 
     for(const linkId of connectedLinks) {
+      const formattedItems =  formatItems(items);
       // Update items on link
       this.memory.pushLinkItems(
         linkId,
         // Clone items to ensure induvidual mutation per branch
-        structuredClone(items)
+        formattedItems
       )
 
       // Update link counts
