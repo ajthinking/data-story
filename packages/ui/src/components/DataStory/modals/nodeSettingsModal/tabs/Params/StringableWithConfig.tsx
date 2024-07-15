@@ -45,7 +45,7 @@ export function StringableWithConfig(params: StringableWithConfigProps) {
 }
 
 export class StringableComponent implements FormComponent<Param> {
-  getComponent(params: FormComponentProps & {param: Param}) {
+  getComponent(params: FormComponentProps) {
     return (<StringableWithConfig {...params} param={params.param as StringableParam}/>);
   };
 

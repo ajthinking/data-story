@@ -1,6 +1,6 @@
 import { PortSelectionInput } from './PortSelectionInput';
 import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
-import { FormComponentProps } from '../../../../types';
+import { FormComponentProps } from '../types';
 
 type FormReturn = UseFormReturn<{
   [x: string]: any;
