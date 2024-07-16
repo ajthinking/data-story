@@ -37,7 +37,7 @@ import { DataStoryObservers, ObserverMap, StoreInitOptions, StoreInitServer } fr
 
 export type StoreSchema = {
   /** The main reactflow instance */
-  rfInstance: ReactFlowInstance | undefined;
+  rfInstance: StoreInitOptions['rfInstance'] | undefined;
   toDiagram: () => Diagram;
 
   /** Addable Nodes */

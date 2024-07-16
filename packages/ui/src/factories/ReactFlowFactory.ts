@@ -6,7 +6,7 @@ export const ReactFlowFactory = {
     return {
       nodes: diagram.nodes.map(node => {
         return {
-          width: 128,
+          minWidth: 128,
           height: 52,
           id: node.id,
           position: {
