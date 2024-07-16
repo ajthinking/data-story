@@ -6,7 +6,7 @@ import { ReactFlowNode } from '../../../Node/ReactFlowNode';
 import { useEscapeKey } from '../../hooks/useEscapeKey';
 import { useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
-import { useUpdateNodeInternals } from 'reactflow';
+import { useUpdateNodeInternals } from '@xyflow/react';
 
 type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Docs';
 

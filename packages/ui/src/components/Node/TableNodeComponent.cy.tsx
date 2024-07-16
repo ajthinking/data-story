@@ -1,7 +1,7 @@
 import TableNodeComponent from './TableNodeComponent';
 import * as store from '../DataStory/store/store';
 import { DataStoryProvider } from '../DataStory/store/store';
-import { ReactFlowProvider } from 'reactflow';
+import { ReactFlowProvider } from '@xyflow/react';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
 import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';

@@ -9,9 +9,8 @@ import {
   type InputObserveConfig,
   Application, NodeDescription
 } from '@data-story/core';
-import { UseFormReturn } from 'react-hook-form';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
-import type { ReactFlowInstance } from 'reactflow';
+import type { ReactFlowInstance } from '@xyflow/react';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 

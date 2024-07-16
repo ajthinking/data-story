@@ -1,5 +1,5 @@
 import { Param, Port } from '@data-story/core';
-import { Node } from 'reactflow';
+import { Node } from '@xyflow/react';
 
 export type DataStoryNodeData = {
   params: Param[],

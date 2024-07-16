@@ -1,5 +1,5 @@
 import { Diagram } from '@data-story/core'
-import { ReactFlowJsonObject } from 'reactflow'
+import { ReactFlowJsonObject } from '@xyflow/react'
 
 export const ReactFlowFactory = {
   fromDiagram(diagram: Diagram): ReactFlowJsonObject<any, any> {

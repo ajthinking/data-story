@@ -3,7 +3,7 @@ import { StoreSchema, useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import CustomHandle from './CustomHandle';
 import { DataStoryNodeData } from './ReactFlowNode';
-import { Handle, Position } from 'reactflow';
+import { Handle, Position } from '@xyflow/react';
 import { PortIcon } from '../DataStory/icons/portIcon';
 import { StringableParam } from '@data-story/core/*';
 
