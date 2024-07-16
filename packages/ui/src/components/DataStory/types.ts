@@ -10,7 +10,7 @@ import {
   Application, NodeDescription
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
-import type { ReactFlowInstance } from '@xyflow/react';
+import type { Edge, ReactFlowInstance } from '@xyflow/react';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -56,7 +56,7 @@ export type DataStoryProps = {
 }
 
 export type StoreInitOptions = {
-  rfInstance: ReactFlowInstance,
+  rfInstance: ReactFlowInstance<ReactFlowNode, Edge<Record<string, unknown>, string | undefined>>,
   server?: ServerConfig,
   initDiagram?: Diagram,
   callback?: DataStoryCallback,
