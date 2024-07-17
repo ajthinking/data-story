@@ -1,5 +1,5 @@
 import { DataStoryProvider } from '../store/store';
-import { ReactFlowProvider } from 'reactflow';
+import { ReactFlowProvider } from '@xyflow/react';
 import { RepeatableInput } from './RepeatableInput';
 import { FormProvider, useForm } from 'react-hook-form';
 import { FormCommonProps } from '../types';

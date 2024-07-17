@@ -1,12 +1,12 @@
 import { Diagram } from '@data-story/core'
-import { ReactFlowJsonObject } from 'reactflow'
+import { ReactFlowJsonObject } from '@xyflow/react'
 
 export const ReactFlowFactory = {
   fromDiagram(diagram: Diagram): ReactFlowJsonObject<any, any> {
     return {
       nodes: diagram.nodes.map(node => {
         return {
-          width: 128,
+          minWidth: 128,
           height: 52,
           id: node.id,
           position: {

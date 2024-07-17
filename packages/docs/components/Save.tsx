@@ -1,4 +1,4 @@
-import { ControlButton } from 'reactflow';
+import { ControlButton } from '@xyflow/react';
 import React from 'react';
 import { DataStoryEvents, DataStoryEventType, SaveIcon, useDataStoryControls, useDataStoryEvent } from '@data-story/ui';
 import { Diagram } from '@data-story/core';

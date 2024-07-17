@@ -1,6 +1,6 @@
 import { DataStoryControls } from './dataStoryControls';
 import { useCallback, useEffect, useId, useState } from 'react';
-import ReactFlow, { Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider, } from 'reactflow';
+import { ReactFlow, Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { RunModal } from './modals/runModal/runModal';
 import { AddNodeModal } from './modals/addNodeModal';
@@ -11,9 +11,10 @@ import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
 import { useHotkeys } from './useHotkeys';
 import TableNodeComponent from '../Node/TableNodeComponent';
-import { DataStoryProps } from './types';
+import { DataStoryProps, StoreInitOptions } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDragOver, onDrop } from './onDrop';
+import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -99,11 +100,11 @@ export const Workbench = ({
           className='bg-gray-50'
           nodes={nodes}
           edges={edges}
-          nodeTypes={nodeTypes}
+          nodeTypes={nodeTypes as NodeTypes}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={connect}
-          onInit={(rfInstance: ReactFlowInstance<any, any>) => {
+          onInit={(rfInstance: StoreInitOptions['rfInstance']) => {
             onInit({
               rfInstance,
               server,

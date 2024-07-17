@@ -1,8 +1,9 @@
 import { Diagram, Link, Param } from '@data-story/core'
-import { ReactFlowJsonObject } from 'reactflow'
+import { ReactFlowJsonObject } from '@xyflow/react'
 import { NodeFactory } from './NodeFactory'
+import { ReactFlowNode } from '../components/Node/ReactFlowNode';
 
-export type ReactFlowJsonObjectWithParams = ReactFlowJsonObject & {
+export type ReactFlowJsonObjectWithParams = ReactFlowJsonObject<ReactFlowNode> & {
   params: Param[]
 }
 

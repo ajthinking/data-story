@@ -1,4 +1,4 @@
-import { ControlButton, Controls } from 'reactflow';
+import { ControlButton, Controls } from '@xyflow/react';
 import { RunIcon } from './icons/runIcon';
 import { AddNodeIcon } from './icons/addNodeIcon';
 import { Diagram } from '@data-story/core';

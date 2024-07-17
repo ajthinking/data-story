@@ -12,7 +12,7 @@ import {
   OnEdgesChange,
   OnNodesChange,
   ReactFlowInstance,
-} from 'reactflow';
+} from '@xyflow/react';
 
 import { SocketClient } from '../clients/SocketClient';
 import {
@@ -37,7 +37,7 @@ import { DataStoryObservers, ObserverMap, StoreInitOptions, StoreInitServer } fr
 
 export type StoreSchema = {
   /** The main reactflow instance */
-  rfInstance: ReactFlowInstance | undefined;
+  rfInstance: StoreInitOptions['rfInstance'] | undefined;
   toDiagram: () => Diagram;
 
   /** Addable Nodes */
@@ -115,7 +115,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   onNodesChange: (changes: NodeChange[]) => {
     set({
-      nodes: applyNodeChanges(changes, get().nodes),
+      nodes: applyNodeChanges(changes, get().nodes) as ReactFlowNode[],
     });
   },
   onEdgesChange: (changes: EdgeChange[]) => {
@@ -232,7 +232,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   updateDiagram: (diagram: Diagram) => {
     const reactFlowObject = ReactFlowFactory.fromDiagram(diagram)
 
-    get().setNodes(reactFlowObject.nodes);
+    // Node<any, string|undefined>[]
+    get().setNodes(reactFlowObject.nodes as ReactFlowNode[]);
     get().setEdges(reactFlowObject.edges);
     set({
       params: diagram.params
