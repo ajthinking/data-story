@@ -14,7 +14,7 @@ const CustomHandle = ({ id, isConnectable, isInput }: {
         className="relative bg-red-500"
         type="target"
         position={Position.Left}
-        style={{ opacity: 0, position: 'relative', height: 12, width: 12, top: 9, left: 10}}
+        style={{ opacity: 0, position: 'relative', height: 12, width: 12, top: 8, left: 10}}
         id={id}
         isConnectable={isConnectable}
       />
@@ -28,7 +28,7 @@ const CustomHandle = ({ id, isConnectable, isInput }: {
         className="relative"
         type="source"
         position={Position.Right}
-        style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 9, right: 8}}
+        style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 8, right: 8}}
         id={id}
         isConnectable={isConnectable}
       />
