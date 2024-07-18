@@ -54,7 +54,7 @@ export class Application {
     ];
   }
 
-  getBuilder() {
+  getDiagramBuilder() {
     return new DiagramBuilder();
   }
 }

@@ -1,6 +1,4 @@
 import { Diagram } from './Diagram';
-import { DiagramBuilder } from './DiagramBuilder';
-import { ConsoleLog, Create, Input, Output, Pass } from './computers';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
 import { Port } from './types/Port';

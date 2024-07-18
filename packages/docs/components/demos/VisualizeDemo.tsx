@@ -1,7 +1,6 @@
-import { Application, coreNodeProvider, Diagram, DiagramBuilder, nodes } from '@data-story/core';
+import { Application, core, coreNodeProvider, DiagramBuilder, nodes } from '@data-story/core';
 import React from 'react';
 import { DataStory, type DataStoryObservers } from '@data-story/ui';
-import { ServerRequest } from '../../const';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -48,7 +47,7 @@ export default () => {
     .boot();
   const { Signal, Table, Map, Create, Request, ConsoleLog } = nodes;
 
-  const diagram = new DiagramBuilder()
+  const diagram = core.getBuilder()
     .add(Signal, {
       period: 100,
       count: 100,
@@ -69,7 +68,7 @@ export default () => {
     selected: true,
   }]
 
-  const tableAndConsoleLog = new DiagramBuilder()
+  const tableAndConsoleLog = core.getBuilder()
     .add(Create)
     .add(Request)
     .add(ConsoleLog)

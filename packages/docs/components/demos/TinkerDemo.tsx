@@ -7,6 +7,7 @@ import {
   multiline,
   str,
   UnfoldedDiagramFactory,
+  core,
 } from '@data-story/core';
 
 import useWindowDimensions from '../../hooks/useWindowDimensions';
@@ -20,7 +21,7 @@ export default () => {
 
   app.boot();
 
-  const diagram = new DiagramBuilder()
+  const diagram = core.getBuilder()
     .add(Create)
     .get()
 

@@ -1,10 +1,10 @@
 import { DataStory } from '@data-story/ui'
 import {
   Application,
-  DiagramBuilder,
   coreNodeProvider,
   nodes,
   multiline,
+  core,
 } from '@data-story/core';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 
@@ -27,7 +27,7 @@ export default () => {
   `
 
   // Good for computers
-  const bigDiagram = new DiagramBuilder()
+  const bigDiagram = core.getBuilder()
     .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
     .add({...Pass, label: 'Automation'})
     .add({...Ignore, label: 'for React & NodeJS'})
@@ -40,7 +40,7 @@ export default () => {
     .get()
 
   // Good for mobile
-  const smallDiagram = new DiagramBuilder()
+  const smallDiagram = core.getBuilder()
     .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
     .add({...Ignore, label: 'Automation'})
     .above('Signal.1').add(Comment, { content: welcomeMarkdown})

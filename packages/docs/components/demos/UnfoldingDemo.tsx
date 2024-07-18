@@ -5,9 +5,8 @@ import {
   coreNodeProvider,
   nodes,
   UnfoldedDiagramFactory,
-  multiline,
   str,
-  StringableParam,
+  core,
 } from '@data-story/core';
 
 export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
@@ -16,7 +15,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
   // *************************************
   // Make a nested node
   // *************************************
-  const nestedNode = new DiagramBuilder()
+  const nestedNode = core.getBuilder()
     .withParams([
       str({
         name: 'stamp',
@@ -42,7 +41,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
   // *************************************
   // Build main diagram, use the nested node
   // *************************************
-  const diagram = new DiagramBuilder()
+  const diagram = core.getBuilder()
     .add({ ...Create, label: 'Users'}, { data: JSON.stringify([
       { name: 'Alice', age: 23 },
       { name: 'Bob', age: 34 },
