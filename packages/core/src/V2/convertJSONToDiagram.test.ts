@@ -1,7 +1,7 @@
 import { describe, expect } from 'vitest';
 import { convertElementsWithLinks, convertNodesToElements, convertParams } from './convertJSONToDiagram';
-import { DiagramBuilder } from '../DiagramBuilder';
 import { ConsoleLog, Signal, Sleep } from '../computers';
+import { core } from '../core';
 
 export interface JSONLink {
   id: string;
@@ -9,7 +9,7 @@ export interface JSONLink {
   targetPortId: string;
 }
 
-const diagramJSON = new DiagramBuilder()
+const diagramJSON = core.getDiagramBuilder()
   .add(Signal)
   .add(Sleep)
   .add(ConsoleLog)

@@ -40,6 +40,6 @@ export { jsFunctionEvaluation } from './Param/evaluations/jsFunctionEvaluation'
 export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluation'
 export { numberCast } from './Param/casts/numberCast'
 export { stringCast } from './Param/casts/stringCast'
-
+export { core } from './core'
 export * as nodes from './computers'
 export * from './Param'

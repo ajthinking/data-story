@@ -1,14 +1,14 @@
 import { ComputerFactory } from './ComputerFactory';
-import { DiagramBuilder } from './DiagramBuilder'
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { InMemoryStorage } from './InMemoryStorage';
 import { Registry } from './Registry';
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
 import { ConsoleLog, Create } from './computers'
+import { core } from './core';
 
 describe('create', () => {
   it('sets empty link items and counts', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(ConsoleLog)
       .get();
@@ -32,7 +32,7 @@ describe('create', () => {
   })
 
   it('sets all nodes to available', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(ConsoleLog)
       .get();
@@ -55,7 +55,7 @@ describe('create', () => {
   })
 
   it('creates input and output devices', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(ConsoleLog)
       .get();
@@ -82,7 +82,7 @@ describe('create', () => {
   })
 
   it('sets node runners', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(ConsoleLog)
       .get();

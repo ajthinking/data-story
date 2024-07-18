@@ -1,17 +1,13 @@
 import { Diagram } from './Diagram';
-import { Executor } from './Executor';
 import { Computer, RunArgs } from './types/Computer';
-import { DiagramBuilder } from './DiagramBuilder';
 import { ConsoleLog, Create, Ignore, Input, Output, Pass, Signal, Throw } from './computers';;
 import { InMemoryStorage } from './InMemoryStorage';
 import { whenRunning } from './support/diagramExecutionTester/DiagramExecutionTester';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
-import { ItemValue } from './types/ItemValue';
-import { Application } from './Application';
-import { coreNodeProvider } from './coreNodeProvider';
 import { ExecutorFactory } from './ExecutorFactory';
 import { Registry } from './Registry';
+import { core } from './core';
 
 describe('execute', () => {
   it('can execute an empty diagram and return an execution update', async () => {
@@ -239,7 +235,7 @@ describe('execute', () => {
   })
 
   it('can test diagram executions like this', async () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Signal, { period: 1, count: 10 })
       .add(Ignore)
       .get()
@@ -250,7 +246,7 @@ describe('execute', () => {
   })
 
   it.todo('can test failed diagram executions like this', async () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(Throw)
       .get()

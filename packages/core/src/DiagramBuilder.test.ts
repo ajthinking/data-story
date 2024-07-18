@@ -1,10 +1,10 @@
 import { Ignore, Create, Pass, Signal } from './computers';
+import { core } from './core';
 import { Diagram } from './Diagram';
-import { DiagramBuilder } from './DiagramBuilder';
 
 describe('get', () => {
   it('returns the diagram', () => {
-    const diagram = new DiagramBuilder().get()
+    const diagram = core.getDiagramBuilder().get()
 
     expect(diagram).toBeInstanceOf(Diagram)
   })
@@ -12,7 +12,7 @@ describe('get', () => {
 
 describe('add', () => {
   it('adds a node to the diagram and ensures unique ids', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(Pass)
       .add(Pass)
@@ -54,7 +54,7 @@ describe('add', () => {
   })
 
   it('can set params', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Signal, { period: 99 })
       .get()
 
@@ -72,7 +72,7 @@ describe('add', () => {
   })
 
   it.todo('can set params without affecting other nodes', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Signal, { label: 'Sigge' })
       .add(Pass)
       .get()
@@ -96,7 +96,7 @@ describe('add', () => {
   })
 
   it('links nodes together if possible', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(Pass)
       .get()
@@ -110,7 +110,7 @@ describe('add', () => {
   })
 
   it('does not link nodes together if not possible', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(Create)
       .get()
@@ -121,7 +121,7 @@ describe('add', () => {
 
 describe('on', () => {
   it('can link to a previous node port', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(Pass)
       .from('Create.1.output').add(Ignore)
@@ -142,7 +142,7 @@ describe('on', () => {
 
 // describe('on', () => {
 // it('can link to specified port on most recent node', () => {
-//   const diagram = new DiagramBuilder()
+//   const diagram = core.getDiagramBuilder()
 //     .add(Merge)
 //     .from('not_merged').add(Pass)
 //     .get();

@@ -1,4 +1,4 @@
-import { Application, coreNodeProvider, Diagram, DiagramBuilder, nodes } from '@data-story/core';
+import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
 import React from 'react';
 import { DataStory, type DataStoryObservers } from '@data-story/ui';
 import { ServerRequest } from '../../const';
@@ -13,7 +13,7 @@ export default ({ mode, observers }:
     .boot();
   const { Signal, Table } = nodes;
 
-  const diagram = new DiagramBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(Signal, { period: 5, count: 30 })
     .add(Table)
     .get();

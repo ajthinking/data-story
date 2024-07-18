@@ -1,10 +1,10 @@
 import { it } from 'vitest'
 import { Create } from '../../computers'
-import { DiagramBuilder } from '../../DiagramBuilder'
 import { whenRunning } from './DiagramExecutionTester'
+import { core } from '../../core'
 
 it('can test diagram executions like this', async () => {
-  const diagram = new DiagramBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(Create)
     .get()
 
