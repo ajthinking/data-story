@@ -86,7 +86,7 @@ export class DiagramExecutionTester {
     .add(Throw, { message: 'Im gonna wreck it!' })
     .get()
 
-  const diagram = core.getBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(Create)
     .get()
 

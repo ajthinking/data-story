@@ -142,7 +142,7 @@ describe('on', () => {
 
 // describe('on', () => {
 // it('can link to specified port on most recent node', () => {
-//   const diagram = core.getBuilder()
+//   const diagram = core.getDiagramBuilder()
 //     .add(Merge)
 //     .from('not_merged').add(Pass)
 //     .get();

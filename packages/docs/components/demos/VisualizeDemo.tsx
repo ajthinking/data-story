@@ -47,7 +47,7 @@ export default () => {
     .boot();
   const { Signal, Table, Map, Create, Request, ConsoleLog } = nodes;
 
-  const diagram = core.getBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(Signal, {
       period: 100,
       count: 100,
@@ -68,7 +68,7 @@ export default () => {
     selected: true,
   }]
 
-  const tableAndConsoleLog = core.getBuilder()
+  const tableAndConsoleLog = core.getDiagramBuilder()
     .add(Create)
     .add(Request)
     .add(ConsoleLog)

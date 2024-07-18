@@ -13,7 +13,7 @@ export default ({ mode, observers }:
     .boot();
   const { Signal, Table } = nodes;
 
-  const diagram = core.getBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(Signal, { period: 5, count: 30 })
     .add(Table)
     .get();

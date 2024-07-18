@@ -21,7 +21,7 @@ export default () => {
 
   app.boot();
 
-  const diagram = core.getBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(Create)
     .get()
 

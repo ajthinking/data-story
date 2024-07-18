@@ -94,7 +94,7 @@ describe('unfold', () => {
   //     .add(nodes.Output, { port_name: 'passed'})
   //     .get()
 
-  //   const diagram = core.getBuilder()
+  //   const diagram = core.getDiagramBuilder()
   //     .add(Create)
   //     .addNestedNode('NestedNode', nestedNode)
   //     .add(Ignore)

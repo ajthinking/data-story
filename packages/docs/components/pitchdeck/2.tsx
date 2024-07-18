@@ -13,7 +13,7 @@ export default () => {
   app.boot();
 
   // HubSpot Example
-  const diagram = core.getBuilder()
+  const diagram = core.getDiagramBuilder()
     .addFake({
       label: 'Products',
       outputs: ['all', 'error']

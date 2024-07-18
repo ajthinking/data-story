@@ -15,7 +15,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
   // *************************************
   // Make a nested node
   // *************************************
-  const nestedNode = core.getBuilder()
+  const nestedNode = core.getDiagramBuilder()
     .withParams([
       str({
         name: 'stamp',
@@ -41,7 +41,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
   // *************************************
   // Build main diagram, use the nested node
   // *************************************
-  const diagram = core.getBuilder()
+  const diagram = core.getDiagramBuilder()
     .add({ ...Create, label: 'Users'}, { data: JSON.stringify([
       { name: 'Alice', age: 23 },
       { name: 'Bob', age: 34 },

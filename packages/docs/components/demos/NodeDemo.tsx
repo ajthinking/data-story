@@ -8,7 +8,7 @@ export default ({ nodeName }: { nodeName: string}) => {
 
   app.boot();
 
-  const diagram = core.getBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(nodes[nodeName])
     .get()
 

@@ -22,7 +22,7 @@ export default () => {
 
   const { Signal, Pass, Comment, Ignore } = nodes;
 
-  const diagram = core.getBuilder()
+  const diagram = core.getDiagramBuilder()
     .add({...Signal, label: 'DataSource'}, { period: 20, count: 100000})
     .add({...Pass, label: 'Transforms'})
     .add({...Ignore, label: 'Actions'})

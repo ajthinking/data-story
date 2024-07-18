@@ -27,7 +27,7 @@ export default () => {
   `
 
   // Good for computers
-  const bigDiagram = core.getBuilder()
+  const bigDiagram = core.getDiagramBuilder()
     .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
     .add({...Pass, label: 'Automation'})
     .add({...Ignore, label: 'for React & NodeJS'})
@@ -40,7 +40,7 @@ export default () => {
     .get()
 
   // Good for mobile
-  const smallDiagram = core.getBuilder()
+  const smallDiagram = core.getDiagramBuilder()
     .add({...Signal, label: 'Realtime'}, { period: 20, count: 100000})
     .add({...Ignore, label: 'Automation'})
     .above('Signal.1').add(Comment, { content: welcomeMarkdown})
