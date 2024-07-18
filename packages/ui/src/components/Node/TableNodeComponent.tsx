@@ -110,9 +110,9 @@ function HandleComponent(props: {input: Port}) {
           opacity: 0,
           backgroundColor: 'red',
           position: 'relative',
-          height: 1,
+          height: 12,
           width: 1,
-          top: 0,
+          top: 4,
           right: 0
         }}
         id={props.input.id}
