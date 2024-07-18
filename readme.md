@@ -1,12 +1,15 @@
 ## DataStory :dizzy:
 
+Bringing [flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) to React and Node.js.
+
 Visual Programming | Data Transformation | ETL | Process design
+
+<a href="https://datastory.dev/docs" target="_blank">Docs</a>
+| <a href="https://datastory.dev/playground" target="_blank">Playground</a>
 
 ![ds_readme_gif](https://user-images.githubusercontent.com/3457668/229267838-b8dcc5cc-9639-4f95-962b-48eae8250d4e.gif)
 
 
-<a href="https://datastory.dev/docs" target="_blank">Docs</a>
-| <a href="https://datastory.dev/playground" target="_blank">Playground</a>
 
 
 ## Installation
