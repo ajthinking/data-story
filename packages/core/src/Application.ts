@@ -1,5 +1,6 @@
 import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
+import { DiagramBuilder } from './DiagramBuilder';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
 import { ComputerConfig } from './types/ComputerConfig';
@@ -51,5 +52,9 @@ export class Application {
       ...fromComputers,
       ...fromNestedNodes
     ];
+  }
+
+  getDiagramBuilder() {
+    return new DiagramBuilder();
   }
 }

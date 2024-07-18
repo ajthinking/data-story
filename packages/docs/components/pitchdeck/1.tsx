@@ -1,5 +1,5 @@
 import { DataStory } from '@data-story/ui'
-import { coreNodeProvider, Application, DiagramBuilder, multiline, nodes } from '@data-story/core';
+import { coreNodeProvider, Application, DiagramBuilder, multiline, nodes, core } from '@data-story/core';
 
 const { Comment, Map } = nodes;
 
@@ -13,7 +13,7 @@ export default () => {
   app.boot();
 
   // HubSpot Example
-  const diagram = new DiagramBuilder()
+  const diagram = core.getDiagramBuilder()
     .addFake({
       label: 'Lime.persons',
       outputs: ['persons', 'error']

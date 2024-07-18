@@ -1,12 +1,11 @@
-import { UnfoldedDiagramFactory, nodes } from '.';
-import { DiagramBuilder } from './DiagramBuilder'
+import { UnfoldedDiagramFactory, core, nodes } from '.';
 import { DiagramQuery } from './DiagramQuery';
 import { str } from './Param'
 const { Create, Table, Input, Map, Output, ConsoleLog, Ignore } = nodes;
 
 describe('unfold', () => {
   it('unfolds a diagram without nested nodes without modifying the diagram', () => {
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .add(Table)
       .get();
@@ -17,7 +16,7 @@ describe('unfold', () => {
   })
 
   it('unfolds a diagram with simple nested node', () => {
-    const nestedNode = new DiagramBuilder()
+    const nestedNode = core.getDiagramBuilder()
       .withParams([
         str({
           name: 'stamp',
@@ -29,7 +28,7 @@ describe('unfold', () => {
       .add(nodes.Output, { port_name: 'output'})
       .get()
 
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .addNestedNode('NestedNode', nestedNode)
       .add(Ignore)
@@ -61,13 +60,13 @@ describe('unfold', () => {
   })
 
   it('unfolds a diagram with simple nested node with custom named ports', () => {
-    const nestedNode = new DiagramBuilder()
+    const nestedNode = core.getDiagramBuilder()
       .add(nodes.Input, { port_name: 'incoming'})
       .add(nodes.Map)
       .add(nodes.Output, { port_name: 'outgoing'})
       .get()
 
-    const diagram = new DiagramBuilder()
+    const diagram = core.getDiagramBuilder()
       .add(Create)
       .addNestedNode('NestedNode', nestedNode)
       .add(Ignore)
@@ -95,7 +94,7 @@ describe('unfold', () => {
   //     .add(nodes.Output, { port_name: 'passed'})
   //     .get()
 
-  //   const diagram = new DiagramBuilder()
+  //   const diagram = core.getDiagramBuilder()
   //     .add(Create)
   //     .addNestedNode('NestedNode', nestedNode)
   //     .add(Ignore)

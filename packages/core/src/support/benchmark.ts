@@ -1,9 +1,8 @@
 import { Application } from '../Application';
-import { DiagramBuilder } from '../DiagramBuilder';
-import { Executor } from '../Executor';
 import { ExecutorFactory } from '../ExecutorFactory';
 import { InMemoryStorage } from '../InMemoryStorage';
 import { Create, Ignore, CreateProperties } from '../computers';
+import { core } from '../core';
 import { coreNodeProvider } from '../coreNodeProvider';
 
 (async () => {
@@ -23,7 +22,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
 
   app.boot();
 
-  const diagram = new DiagramBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(Create, {json: JSON.stringify(data)})
     .add(CreateProperties)
     .add(Ignore)

@@ -1,12 +1,10 @@
 import { expect } from 'vitest';
 import { Diagram } from '../../Diagram';
 import { ExecutionUpdate } from '../../types/ExecutionUpdate';
-import { Executor } from '../../Executor';
 
 import { InMemoryStorage } from '../../InMemoryStorage';
 import * as computerConfigs from '../../computers'
 import { ComputerFactory } from '../../ComputerFactory';
-import { Computer } from '../../types/Computer';
 import { ExecutorFactory } from '../../ExecutorFactory';
 import { ComputerRecord, Registry } from '../../Registry';
 
@@ -88,7 +86,7 @@ export class DiagramExecutionTester {
     .add(Throw, { message: 'Im gonna wreck it!' })
     .get()
 
-  const diagram = new DiagramBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(Create)
     .get()
 

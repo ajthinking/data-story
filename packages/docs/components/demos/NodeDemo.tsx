@@ -1,5 +1,5 @@
 import { DataStory } from '@data-story/ui'
-import { Application, DiagramBuilder, nodes, coreNodeProvider } from '@data-story/core';
+import { Application, nodes, coreNodeProvider, core } from '@data-story/core';
 
 export default ({ nodeName }: { nodeName: string}) => {
   const app = new Application();
@@ -8,7 +8,7 @@ export default ({ nodeName }: { nodeName: string}) => {
 
   app.boot();
 
-  const diagram = new DiagramBuilder()
+  const diagram = core.getDiagramBuilder()
     .add(nodes[nodeName])
     .get()
 
