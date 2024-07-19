@@ -1,13 +1,13 @@
 import { ComputerFactory } from './ComputerFactory'
-import { ComputerConfig } from './types/ComputerConfig'
+import { Computer } from './types/Computer'
 
-describe('fromComputerConfig', () => {
+describe('get', () => {
   it('creates a computer from a sparse config', () => {
     const config = {
       name: 'test computer',
-    } as ComputerConfig
+    } as Computer
 
-    const computer = new ComputerFactory().fromComputerConfig(config)
+    const computer = new ComputerFactory().getInstance(config)
 
     expect(computer).toMatchObject({
       name: 'test computer',
@@ -25,11 +25,29 @@ describe('fromComputerConfig', () => {
   it('upgrades simple string inputs and outputs to Port', () => {
     const config = {
       name: 'test computer',
-      inputs: ['input1', 'input2'],
-      outputs: ['output1', 'output2'],
-    } as ComputerConfig
+      inputs: [
+        {
+          name: 'input1',
+          schema: {},
+        },
+        {
+          name: 'input2',
+          schema: {},
+        },
+      ],
+      outputs: [
+        {
+          name: 'output1',
+          schema: {},
+        },
+        {
+          name: 'output2',
+          schema: {},
+        },
+      ],
+    } as Computer
 
-    const computer = new ComputerFactory().fromComputerConfig(config)
+    const computer = new ComputerFactory().getInstance(config)
 
     expect(computer).toMatchObject({
       name: 'test computer',

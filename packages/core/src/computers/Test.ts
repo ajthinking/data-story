@@ -2,7 +2,7 @@ import { ItemWithParams } from '../ItemWithParams';
 import { createDefaultStringable, str } from '../Param';
 import { numberCast } from '../Param/casts/numberCast';
 import { stringCast } from '../Param/casts/stringCast';
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 
 type OperationFunction = (a: string, b: string) => boolean;
 
@@ -17,11 +17,24 @@ const sharedOperators = [
   { value: '<=', label: '<=' },
 ];
 
-export const Test: ComputerConfig = {
+export const Test: Computer = {
   name: 'Test',
   label: 'Test',
-  inputs: ['input'],
-  outputs: ['passed', 'failed'],
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [
+    {
+      name: 'passed',
+      schema: {},
+    },
+    {
+      name: 'failed',
+      schema: {},
+    },
+  ],
   params: [
     {
       name: 'tests',

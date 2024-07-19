@@ -1,12 +1,27 @@
 import axios from 'axios';
-import { ComputerConfig } from '../types/ComputerConfig';
 import { json_, str } from '../Param';
 import { get } from '../utils/get';
+import { Computer } from '../types/Computer';
 
-export const RequestLoop: ComputerConfig = {
+export const RequestLoop: Computer = {
   name: 'RequestLoop',
+  label: 'RequestLoop',
+  tags: [],
   inputs: [],
-  outputs: ['items', 'response', 'error'],
+  outputs: [
+    {
+      name: 'items',
+      schema: {},
+    },
+    {
+      name: 'response',
+      schema: {},
+    },
+    {
+      name: 'error',
+      schema: {},
+    },
+  ],
   params: [
     str({
       name: 'url',

@@ -1,4 +1,3 @@
-import { ComputerConfig } from '../types/ComputerConfig';
 import { sleep } from '../utils/sleep';
 import { multiline } from '../utils/multiline';
 import { hjson, json_, num } from '../Param';
@@ -7,9 +6,12 @@ import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation'
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
+import { Computer } from '../types/Computer';
 
-export const Signal: ComputerConfig = {
+export const Signal: Computer = {
   name: 'Signal',
+  label: 'Signal',
+  tags: [],
   docs: multiline`
     ### Description
     Creates an item every X ms, Y times. Useful for testing.

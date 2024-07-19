@@ -44,7 +44,7 @@ export const run: MessageHandler<RunMessage> = async(
 
   const executor = ExecutorFactory.create({
     diagram,
-    registry: app.registry,
+    registry: app.getRegistry(),
     storage,
     inputObserverController
   });

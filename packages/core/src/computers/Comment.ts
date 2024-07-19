@@ -1,9 +1,11 @@
-import { ComputerConfig } from '../types/ComputerConfig';
 import { multiline } from '../utils/multiline';
 import { createDefaultStringable } from '../Param';
+import { Computer } from '../types/Computer';
 
-export const Comment: ComputerConfig = {
+export const Comment: Computer = {
   name: 'Comment',
+  label: 'Comment',
+  tags: [],
   inputs: [],
   outputs: [],
   params: [

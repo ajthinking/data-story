@@ -1,13 +1,16 @@
 import glob from 'glob';
 import { promises as fs } from 'fs';
-import { ComputerConfig, str } from '@data-story/core';
+import { Computer, str } from '@data-story/core';
 
-export const JsonFileWrite: ComputerConfig = {
+export const JsonFileWrite: Computer = {
   name: 'JsonFile.write',
+  label: 'JsonFile.write',
+  tags: [],
   inputs: [{
     name: 'input',
     schema: {}
   }],
+  outputs: [],
   params: [
     str({
       name: 'path',

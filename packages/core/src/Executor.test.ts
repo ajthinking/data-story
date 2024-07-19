@@ -251,6 +251,8 @@ describe('execute', () => {
       .add(Throw)
       .get()
 
+    console.log('OK')
+
     await whenRunning(diagram)
       .expectFail()
       .ok()

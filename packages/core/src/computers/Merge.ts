@@ -1,11 +1,30 @@
 import { str } from '../Param';
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 
-export const Merge: ComputerConfig = {
+export const Merge: Computer = {
   name: 'Merge',
   label: 'Merge',
-  inputs: ['requestors', 'suppliers'],
-  outputs: ['merged', 'not_merged'],
+  tags: [],
+  inputs: [
+    {
+      name: 'requestors',
+      schema: {},
+    },
+    {
+      name: 'suppliers',
+      schema: {},
+    },
+  ],
+  outputs: [
+    {
+      name: 'merged',
+      schema: {},
+    },
+    {
+      name: 'not_merged',
+      schema: {},
+    },
+  ],
   params: [
     str({
       name: 'requestor_key',

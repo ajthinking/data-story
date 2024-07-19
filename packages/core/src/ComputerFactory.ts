@@ -1,7 +1,5 @@
-import { ComputerConfig } from './types/ComputerConfig';
 import { AbstractPort, PortName } from './types/Port';
 import { Computer } from './types/Computer';
-import { Diagram } from './Diagram';
 
 /**
  * Ensure all inputs/outputs are Port
@@ -13,26 +11,22 @@ const portableToPort = (portable: PortName | AbstractPort): AbstractPort => {
 }
 
 export class ComputerFactory {
-  constructor(
-    public computerConfigs: ComputerConfig[] = [],
-  ) {}
-
-  fromComputerConfig(config: ComputerConfig): Computer {
+  getInstance(template: Computer): Computer {
     return {
       // Properties
       ...structuredClone({
-        name: config.name ?? 'unnamed',
-        label: config.label ?? config.name ?? 'unlabeled',
-        docs: config.docs,
-        category: config.category,
-        inputs: config.inputs?.map(portableToPort) ?? [],
-        outputs: config.outputs?.map(portableToPort) ?? [],
-        params: config.params ?? [],
-        tags: config.tags ?? [],
+        name: template.name ?? 'unnamed',
+        label: template.label ?? template.name ?? 'unlabeled',
+        docs: template.docs,
+        category: template.category,
+        inputs: template.inputs?.map(portableToPort) ?? [],
+        outputs: template.outputs?.map(portableToPort) ?? [],
+        params: template.params ?? [],
+        tags: template.tags ?? [],
       }),
       // Methods
-      run: config.run ?? (async function*() {}),
-      canRun: config.canRun,
+      run: template.run ?? (async function*() {}),
+      canRun: template.canRun,
     };
   }
 }

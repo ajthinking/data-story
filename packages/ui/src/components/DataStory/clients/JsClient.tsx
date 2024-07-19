@@ -82,7 +82,7 @@ export class JsClient implements ServerClient {
 
     this.executor = ExecutorFactory.create({
       diagram,
-      registry: this.app.registry,
+      registry: this.app.getRegistry(),
       storage,
       inputObserverController
     })

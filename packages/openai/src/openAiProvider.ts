@@ -1,10 +1,9 @@
-import { Application, ComputerConfig, ComputerFactory, ServiceProvider } from '@data-story/core';
-import * as computerConfigs from './computers'
+import { Application, ComputerFactory, ServiceProvider } from '@data-story/core';
+import * as computers from './computers'
 
 export const openAiProvider: ServiceProvider = {
   register: (app: Application) => {
-    const configs = Object.values(computerConfigs)
-    app.addComputerConfigs(configs);
+    app.addComputers(Object.values(computers));
   },
 
   boot: (app: Application) => {}

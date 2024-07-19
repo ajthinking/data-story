@@ -1,10 +1,15 @@
-import { ComputerConfig, createDefaultStringable } from '@data-story/core';
+import { Computer, createDefaultStringable } from '@data-story/core';
 import { promises as fs } from 'fs'
 import * as nodePath from 'path'
 
-export const ListFiles: ComputerConfig = {
+export const ListFiles: Computer = {
   name: 'ListFiles',
-  inputs: ['input'],
+  label: 'ListFiles',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
   outputs: [{
     name: 'output',
     schema: {

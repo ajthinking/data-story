@@ -4,11 +4,11 @@ import { Node, NodeId } from './types/Node';
 import { Link } from './types/Link';
 import { PositionGuesser } from './PositionGuesser';
 import { AbstractPort, Port, PortName } from './types/Port';
-import { ComputerConfig } from './types/ComputerConfig';
 import { Fake } from './computers/Fake';
 import { createDataStoryId } from './utils/createDataStoryId';
 import { Param, StringableInputValue } from './Param';
 import { isStringableParam } from './utils/isStringableParam';
+import { Computer } from './types/Computer';
 
 export class DiagramBuilder {
   diagram: Diagram
@@ -47,7 +47,7 @@ export class DiagramBuilder {
   }
 
   add(
-    config: ComputerConfig,
+    config: Computer,
     params: Record<string, any> = {},
     ports?: {
       inputs?: AbstractPort[],
@@ -56,7 +56,7 @@ export class DiagramBuilder {
   ) {
     // The computer config might be partial
     // so we are resolving it to a full computer
-    const computer = new ComputerFactory().fromComputerConfig(config)
+    const computer = new ComputerFactory().getInstance(config)
 
     const nodeId = `${computer.name}.${this.getScopedId(computer.name)}`
 

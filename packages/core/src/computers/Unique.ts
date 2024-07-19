@@ -1,13 +1,27 @@
 import axios from 'axios';
-import { ComputerConfig } from '../types/ComputerConfig';
 import { json_, str } from '../Param';
 import Hjson from '@data-story/hjson';
 import { ItemWithParams } from '../ItemWithParams';
+import { Computer } from '../types/Computer';
 
-export const Unique: ComputerConfig = {
+export const Unique: Computer = {
   name: 'Unique',
-  inputs: ['input'],
-  outputs: ['unique', 'duplicates'],
+  label: 'Unique',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [
+    {
+      name: 'unique',
+      schema: {},
+    },
+    {
+      name: 'duplicates',
+      schema: {},
+    },
+  ],
   params: [
     str({
       name: 'property',

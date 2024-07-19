@@ -4,12 +4,18 @@ import { stringCast } from '../Param/casts/stringCast';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
-import { ComputerConfig } from '../types/ComputerConfig';
 import { createDefaultStringable } from '../Param';
+import { Computer } from '../types/Computer';
 
-export const Throw: ComputerConfig = {
+export const Throw: Computer = {
   name: 'Throw',
-  inputs: ['input'],
+  label: 'Throw',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [],
   params: [
     createDefaultStringable({
       name: 'message',

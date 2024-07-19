@@ -1,9 +1,18 @@
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 
-export const Pass: ComputerConfig = {
+export const Pass: Computer = {
   name: 'Pass',
-  inputs: ['input'],
-  outputs: ['output'],
+  label: 'Pass',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [{
+    name: 'output',
+    schema: {},
+  }],
+  params: [],
 
   async *run({ input, output }) {
     while(true) {

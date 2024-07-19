@@ -1,13 +1,21 @@
-import { ComputerConfig } from '../types/ComputerConfig';
 import { json_ } from '../Param';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
+import { Computer } from '../types/Computer';
 
-export const Create: ComputerConfig = {
+export const Create: Computer = {
   name: 'Create',
-  outputs: ['output'],
+  label: 'Create',
+  tags: [],
+  inputs: [],
+  outputs: [
+    {
+      name: 'output',
+      schema: {}
+    }
+  ],
   params: [
     json_({
       name: 'data',

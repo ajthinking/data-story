@@ -1,6 +1,6 @@
-import { ComputerConfig } from './types/ComputerConfig'
 import { ComputerFactory } from './ComputerFactory'
 import { NodeDescriptionFactory } from './NodeDescriptionFactory'
+import { Computer } from './types/Computer'
 
 describe('fromComputer', () => {
   it('returns a NodeDescription', () => {
@@ -10,9 +10,9 @@ describe('fromComputer', () => {
         name: 'input1',
         schema: {},
       }],
-    } as ComputerConfig
+    } as Computer
 
-    const computer = new ComputerFactory().fromComputerConfig(config)
+    const computer = new ComputerFactory().getInstance(config)
 
     const nodeDescription = NodeDescriptionFactory.fromComputer(computer)
 

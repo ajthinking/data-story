@@ -1,13 +1,23 @@
-import { ComputerConfig, num, str } from '@data-story/core';
+import { Computer, num, str } from '@data-story/core';
 import { Client } from '@hubspot/api-client';
 import { EntityPage } from './EntityPage';
 import { CrmEntityName } from './CrmEntityName';
 
-const Template: ComputerConfig = {
+const Template: Computer = {
   name: 'NAME',
   label: 'LABEL',
+  tags: [],
   inputs: [],
-  outputs: ['all', 'errors'],
+  outputs: [
+    {
+      name: 'all',
+      schema: {}
+    },
+    {
+      name: 'errors',
+      schema: {},
+    },
+  ],
   category: 'Hubspot',
   params: [
     str({

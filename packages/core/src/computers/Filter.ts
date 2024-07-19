@@ -1,11 +1,22 @@
 import { str } from '../Param';
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 
-export const Filter: ComputerConfig = {
+export const Filter: Computer = {
   name: 'Filter',
   label: 'Filter',
-  inputs: ['input'],
-  outputs: ['unfiltered'],
+  tags: [],
+  inputs: [
+    {
+      name: 'input',
+      schema: {},
+    },
+  ],
+  outputs: [
+    {
+      name: 'unfiltered',
+      schema: {},
+    },
+  ],
   params: [
     // property
     str({

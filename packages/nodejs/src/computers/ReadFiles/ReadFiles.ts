@@ -1,9 +1,11 @@
 import * as glob from 'glob';
 import { promises as fs } from 'fs';
-import { ComputerConfig, createDefaultStringable } from '@data-story/core';
+import { Computer, createDefaultStringable } from '@data-story/core';
 
-export const ReadFiles: ComputerConfig = {
+export const ReadFiles: Computer = {
   name: 'ReadFiles',
+  label: 'ReadFiles',
+  tags: [],
   inputs: [{
     name: 'input',
     schema: {}

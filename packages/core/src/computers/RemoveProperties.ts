@@ -1,12 +1,19 @@
-import { ComputerConfig } from '../types/ComputerConfig';
 import { str } from '../Param';
 import { ItemWithParams } from '../ItemWithParams';
+import { Computer } from '../types/Computer';
 
-export const RemoveProperties: ComputerConfig = {
+export const RemoveProperties: Computer = {
   name: 'RemoveProperties',
   label: 'RemoveProperties',
-  inputs: ['input'],
-  outputs: ['output'],
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [{
+    name: 'output',
+    schema: {},
+  }],
   params: [
     {
       name: 'remove_properties',

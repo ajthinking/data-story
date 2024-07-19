@@ -1,11 +1,27 @@
-import { ComputerConfig } from '../types/ComputerConfig';
 import { numberCast } from '../Param/casts/numberCast';
 import { num } from '../Param';
+import { Computer } from '../types/Computer';
 
-export const Clone: ComputerConfig = {
+export const Clone: Computer = {
   name: 'Clone',
-  inputs: ['input'],
-  outputs: ['original', 'clones'],
+  label: 'Clone',
+  tags: [],
+  inputs: [
+    {
+      name: 'input',
+      schema: {}
+    }
+  ],
+  outputs: [
+    {
+      name: 'original',
+      schema: {}
+    },
+    {
+      name: 'clones',
+      schema: {}
+    },
+  ],
   params: [
     num({
       name: 'count',

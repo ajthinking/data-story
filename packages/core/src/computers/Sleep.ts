@@ -1,12 +1,20 @@
 import { sleep } from '../utils/sleep';
-import { ComputerConfig } from '../types/ComputerConfig';
 import { numberCast } from '../Param/casts/numberCast';
 import { createDefaultStringable } from '../Param';
+import { Computer } from '../types/Computer';
 
-export const Sleep: ComputerConfig = {
+export const Sleep: Computer = {
   name: 'Sleep',
-  inputs: ['input'],
-  outputs: ['output'],
+  label: 'Sleep',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {}
+  }],
+  outputs: [{
+    name: 'output',
+    schema: {}
+  }],
   params: [
     createDefaultStringable({
       name: 'duration',

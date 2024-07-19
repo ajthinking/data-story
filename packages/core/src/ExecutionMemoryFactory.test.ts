@@ -16,8 +16,8 @@ describe('create', () => {
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const registry = new Registry({
-      Create: new ComputerFactory().fromComputerConfig(Create),
-      ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
+      Create: new ComputerFactory().getInstance(Create),
+      ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
     }, {})
 
     const storage = new InMemoryStorage();
@@ -40,8 +40,8 @@ describe('create', () => {
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const registry = new Registry({
-      Create: new ComputerFactory().fromComputerConfig(Create),
-      ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
+      Create: new ComputerFactory().getInstance(Create),
+      ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
     }, {})
 
     const storage = new InMemoryStorage();
@@ -63,8 +63,8 @@ describe('create', () => {
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const registry = new Registry({
-      Create: new ComputerFactory().fromComputerConfig(Create),
-      ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
+      Create: new ComputerFactory().getInstance(Create),
+      ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
     }, {})
 
     const storage = new InMemoryStorage();
@@ -90,8 +90,8 @@ describe('create', () => {
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const registry = new Registry({
-      Create: new ComputerFactory().fromComputerConfig(Create),
-      ConsoleLog: new ComputerFactory().fromComputerConfig(ConsoleLog),
+      Create: new ComputerFactory().getInstance(Create),
+      ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
     }, {})
 
     const storage = new InMemoryStorage();

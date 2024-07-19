@@ -2,18 +2,26 @@ import { json_ } from '../Param';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
-import { ComputerConfig } from '../types/ComputerConfig';
 import { ItemValue } from '../types/ItemValue';
 import { merge } from '../utils/merge';
 import { multiline } from '../utils/multiline';
+import { Computer } from '../types/Computer';
 
-export const Map: ComputerConfig = {
+export const Map: Computer = {
   name: 'Map',
+  label: 'Map',
+  tags: [],
   docs: multiline`
   Replaces the item with a new value. Supported input are: HJSON, JSON and JS function
   `,
-  inputs: ['input'],
-  outputs: ['output'],
+  inputs: [{
+    name: 'input',
+    schema: {}
+  }],
+  outputs: [{
+    name: 'output',
+    schema: {}
+  }],
   params: [
     {
       name: 'mode',

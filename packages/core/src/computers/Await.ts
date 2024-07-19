@@ -1,10 +1,26 @@
-import { ComputerConfig } from '../types/ComputerConfig';
 import { num, StringableInputValue } from '../Param';
+import { Computer } from '../types/Computer';
 
-export const Await: ComputerConfig = {
+export const Await: Computer = {
   name: 'Await',
-  inputs: ['input'],
-  outputs: ['output', 'no_items'],
+  label: 'Await',
+  tags: [],
+  inputs: [
+    {
+      name: 'input',
+      schema: {}
+    }
+  ],
+  outputs: [
+    {
+      name: 'output',
+      schema: {}
+    },
+    {
+      name: 'no_items',
+      schema: {}
+    },
+  ],
   params: [
     num(
       {

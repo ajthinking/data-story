@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
 import { JsClient } from './JsClient';
-import { Application, Diagram, Executor, NodeDescription } from '@data-story/core';
+import { Application, Diagram, Executor, NodeDescription, Registry } from '@data-story/core';
 
 vi.mock('@data-story/core', () => {
   const originalModule = vi.importActual('@data-story/core');
@@ -35,6 +35,9 @@ describe('JsClient', () => {
       descriptions: vi.fn().mockReturnValue([]),
       computers: [],
       hooks: new Map(),
+      getRegistry: () => {
+        return {};
+      }
       // Add any other properties or methods expected by the Application type
     } as unknown as Application; // Cast to Application if necessary
     client = new JsClient({

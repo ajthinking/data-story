@@ -1,12 +1,15 @@
 import { promises as fs } from 'fs';
-import { ComputerConfig, str } from '@data-story/core';
+import { Computer, str } from '@data-story/core';
 
-export const WriteFile: ComputerConfig = {
+export const WriteFile: Computer = {
   name: 'WriteFile',
+  label: 'WriteFile',
+  tags: [],
   inputs: [{
     name: 'input',
     schema: {}
   }],
+  outputs: [],
   params: [
     str({
       name: 'path',

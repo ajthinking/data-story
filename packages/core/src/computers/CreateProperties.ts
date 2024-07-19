@@ -4,14 +4,25 @@ import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
-import { ComputerConfig } from '../types/ComputerConfig';
 import { createDefaultStringable } from '../Param';
+import { Computer } from '../types/Computer';
 
-export const CreateProperties: ComputerConfig = {
+export const CreateProperties: Computer = {
   name: 'CreateProperties',
   label: 'CreateProperties',
-  inputs: ['input'],
-  outputs: ['output'],
+  tags: [],
+  inputs: [
+    {
+      name: 'input',
+      schema: {}
+    }
+  ],
+  outputs: [
+    {
+      name: 'output',
+      schema: {}
+    }
+  ],
   params: [
     {
       name: 'properties',
