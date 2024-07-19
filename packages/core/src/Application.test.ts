@@ -78,7 +78,7 @@ describe('addComputers', () => {
 
     app.addComputers([computer])
 
-    expect(app.registry.computers.Signal).toMatchObject(
+    expect(app.getRegistry().computers.Signal).toMatchObject(
       computer
     )
   })
