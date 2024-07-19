@@ -20,6 +20,7 @@ export { CreateProperties } from './CreateProperties'
 export { Pass } from './Pass';
 export { Request } from './Request'
 export { RequestLoop } from './RequestLoop'
+export { RequestLoopByToken } from './RequestLoopByToken'
 export { Signal } from './Signal'
 export { Sleep } from './Sleep'
 export { Table } from './Table'
