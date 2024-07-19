@@ -1,11 +1,24 @@
-import { ComputerConfig } from '../types/ComputerConfig';
 import { num } from '../Param';
+import { Computer } from '../types/Computer';
 
-export const Sample: ComputerConfig = {
+export const Sample: Computer = {
   name: 'Sample',
-  inputs: ['input'],
-  outputs: ['sampled', 'not_sampled'],
-
+  label: 'Sample',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [
+    {
+      name: 'sampled',
+      schema: {},
+    },
+    {
+      name: 'not_sampled',
+      schema: {},
+    },
+  ],
   params: [
     num({
       name: 'sample_rate',

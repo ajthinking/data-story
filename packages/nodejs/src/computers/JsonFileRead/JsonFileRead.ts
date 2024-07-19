@@ -1,10 +1,22 @@
 import glob from 'glob';
 import fs from 'fs';
-import { ComputerConfig, get, serializeError, str, stringifyError } from '@data-story/core';
+import { Computer, get, serializeError, str, stringifyError } from '@data-story/core';
 
-export const JsonFileRead: ComputerConfig = {
+export const JsonFileRead: Computer = {
   name: 'JsonFile.read',
-  outputs: ['output', 'errors'],
+  label: 'JsonFile.read',
+  tags: [],
+  inputs: [],
+  outputs: [
+    {
+      name: 'output',
+      schema: {},
+    },
+    {
+      name: 'errors',
+      schema: {},
+    },
+  ],
   params: [
     str({
       name: 'file_path',

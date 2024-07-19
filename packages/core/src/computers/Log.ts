@@ -1,8 +1,15 @@
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 
-export const Log: ComputerConfig = {
+export const Log: Computer = {
   name: 'Log',
-  inputs: ['input'],
+  label: 'Log',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [],
+  params: [],
 
   async *run({ input, output }) {
     while(true) {

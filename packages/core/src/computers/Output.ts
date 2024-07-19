@@ -1,10 +1,18 @@
 import { createDefaultStringable, str } from '../Param';
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 
-export const Output: ComputerConfig = {
+export const Output: Computer = {
   name: 'Output',
-  inputs: ['input'],
-  outputs: ['output'],
+  label: 'Output',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [{
+    name: 'output',
+    schema: {},
+  }],
   params: [
     createDefaultStringable({
       name: 'port_name',

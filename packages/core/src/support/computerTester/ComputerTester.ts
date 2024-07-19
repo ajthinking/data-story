@@ -6,7 +6,6 @@ import { ItemValue } from '../../types/ItemValue';
 import { Node, NodeId } from '../../types/Node';
 import { OutputDevice } from '../../OutputDevice';
 import { TestStep } from './TestStep';
-import * as computerConfigs from '../../computers'
 
 import {
   doRun,
@@ -22,7 +21,6 @@ import { expectDone } from './testSteps/expectDone';
 import { ExecutionMemory } from '../../ExecutionMemory';
 import { InMemoryStorage } from '../../InMemoryStorage';
 import { InputDevice } from '../../InputDevice';
-import { ComputerConfig } from '../../types/ComputerConfig';
 import { ComputerFactory } from '../../ComputerFactory';
 import { LinkId } from '../../types/Link';
 import { Hook } from '../../types/Hook';
@@ -32,8 +30,8 @@ import { ParamEvaluator } from '../../ItemWithParams/ParamEvaluator';
 import { merge } from '../../utils/merge';
 import { UnfoldedDiagramFactory } from '../../UnfoldedDiagramFactory';
 
-export const when = (computerConfig: ComputerConfig) => {
-  return new ComputerTester(computerConfig)
+export const when = (computer: Computer) => {
+  return new ComputerTester(computer)
 }
 
 export type ExpectedOutputItems = {
@@ -70,8 +68,8 @@ export class ComputerTester {
   expectedErrorMessage: string | undefined
   computer: Computer
 
-  constructor(computerConfig: ComputerConfig) {
-    this.computer = new ComputerFactory().fromComputerConfig(computerConfig)
+  constructor(computer: Computer) {
+    this.computer = new ComputerFactory().getInstance(computer)
   }
 
   /**

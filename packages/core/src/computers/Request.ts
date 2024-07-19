@@ -1,13 +1,31 @@
 import axios from 'axios';
-import { ComputerConfig } from '../types/ComputerConfig';
 import { json_, str } from '../Param';
 import Hjson from '@data-story/hjson';
 import { get } from '../utils/get';
+import { Computer } from '../types/Computer';
 
-export const Request: ComputerConfig = {
+export const Request: Computer = {
   name: 'Request',
-  inputs: ['input'],
-  outputs: ['items', 'response', 'error'],
+  label: 'Request',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [
+    {
+      name: 'items',
+      schema: {},
+    },
+    {
+      name: 'response',
+      schema: {},
+    },
+    {
+      name: 'error',
+      schema: {},
+    },
+  ],
   params: [
     str({
       name: 'url',

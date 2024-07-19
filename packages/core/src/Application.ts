@@ -3,13 +3,13 @@ import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
-import { ComputerConfig } from './types/ComputerConfig';
+import { Computer } from './types/Computer';
 import { ServiceProvider } from './types/ServiceProvider';
 
 export class Application {
   providers: ServiceProvider[] = [];
-  registry = new Registry({}, {});
   hooks = new Map<string, Function>();
+  private registry = new Registry({}, {});
 
   register(provider: ServiceProvider | ServiceProvider[]) {
     this.providers.push(
@@ -28,9 +28,8 @@ export class Application {
     return this;
   }
 
-  addComputerConfigs(computerConfigs: ComputerConfig[]) {
-    for (const config of computerConfigs) {
-      const computer = new ComputerFactory().fromComputerConfig(config);
+  addComputers(computers: Computer[]) {
+    for (const computer of computers) {
       this.registry.computers[computer.name] = computer;
     }
   }
@@ -56,5 +55,9 @@ export class Application {
 
   getDiagramBuilder() {
     return new DiagramBuilder();
+  }
+
+  getRegistry() {
+    return this.registry;
   }
 }

@@ -1,11 +1,19 @@
-import { ComputerConfig } from '@data-story/core';
+import { Computer } from '@data-story/core';
 import { Configuration, OpenAIApi } from 'openai';
 import { createDefaultStringable } from '@data-story/core';
 
-export const AskChatGpt: ComputerConfig = {
+export const AskChatGpt: Computer = {
   name: 'AskChatGpt',
-  inputs: ['input'],
-  outputs: ['completions'],
+  label: 'AskChatGpt',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {}
+  }],
+  outputs: [{
+    name: 'completions',
+    schema: {}
+  }],
   params: [
     createDefaultStringable({
       name: 'prompt',

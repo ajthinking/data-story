@@ -2,7 +2,6 @@ import { Application } from './Application'
 import { ComputerFactory } from './ComputerFactory'
 import { Signal } from './computers'
 import { Computer } from './types/Computer'
-import { ComputerConfig } from './types/ComputerConfig'
 import { ServiceProvider } from './types/ServiceProvider'
 
 describe('register', () => {
@@ -69,18 +68,18 @@ describe('boot', () => {
   })
 })
 
-describe('addComputerConfigs', () => {
-  it('adds computers to the application via a config object', () => {
+describe('addComputers', () => {
+  it('adds computers to the application', () => {
     const app = new Application()
-    const config: ComputerConfig = {
+    const computer = {
       name: 'Signal',
-      run: async function*() {}
-    }
+      run: async function*(_) {}
+    } as Computer;
 
-    app.addComputerConfigs([config])
+    app.addComputers([computer])
 
     expect(app.registry.computers.Signal).toMatchObject(
-      new ComputerFactory().fromComputerConfig(config)
+      computer
     )
   })
 })
@@ -89,10 +88,19 @@ describe('descriptions', ()  => {
   it('returns descriptions of all computers', () => {
     const app = new Application()
 
-    app.addComputerConfigs([ Signal ])
+    app.addComputers([ Signal ])
 
     expect(app.descriptions()).toMatchObject([
       { name: 'Signal' }
     ])
   })
 })
+
+interface STRICT {
+  name: string
+  age: number
+}
+
+const chill = {
+  name: 'chiller'
+} as STRICT

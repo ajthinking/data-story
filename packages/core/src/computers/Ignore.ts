@@ -1,8 +1,15 @@
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 
-export const Ignore: ComputerConfig = {
+export const Ignore: Computer = {
   name: 'Ignore',
-  inputs: ['input'],
+  label: 'Ignore',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [],
+  params: [],
 
   async *run({ input }) {
     while(true) {

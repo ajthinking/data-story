@@ -1,17 +1,33 @@
-import { ComputerConfig } from '../types/ComputerConfig';
 import { multiline } from '../utils/multiline';
 import { stringCast } from '../Param/casts/stringCast';
 import { numberCast } from '../Param/casts/numberCast';
 import { get } from '../utils/get';
 import { num, str } from '../Param';
+import { Computer } from '../types/Computer';
 
-export const Describe: ComputerConfig = {
+export const Describe: Computer = {
   name: 'Describe',
+  label: 'Describe',
+  tags: [],
   docs: multiline`
     Describes the data structure of inputed items. Full outputs a nested object with occurrences of each item/key. Use the "truncated" port to get a similar summary more suitable for humans.
   `,
-  inputs: ['input'],
-  outputs: ['truncated', 'full'],
+  inputs: [
+    {
+      name: 'input',
+      schema: {}
+    }
+  ],
+  outputs: [
+    {
+      name: 'full',
+      schema: {}
+    },
+    {
+      name: 'truncated',
+      schema: {}
+    },
+  ],
   params: [
     str(  {
       name: 'path',

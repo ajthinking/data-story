@@ -3,10 +3,10 @@ import { Diagram } from '../../Diagram';
 import { ExecutionUpdate } from '../../types/ExecutionUpdate';
 
 import { InMemoryStorage } from '../../InMemoryStorage';
-import * as computerConfigs from '../../computers'
 import { ComputerFactory } from '../../ComputerFactory';
 import { ExecutorFactory } from '../../ExecutorFactory';
 import { ComputerRecord, Registry } from '../../Registry';
+import { core } from '../../core';
 
 export const whenRunning = (diagram: Diagram) => {
   return new DiagramExecutionTester(diagram)
@@ -19,16 +19,9 @@ export class DiagramExecutionTester {
   constructor(public diagram: Diagram) {}
 
   async ok() {
-    let computers: ComputerRecord = {}
-
-    for(const config of Object.values(computerConfigs)) {
-      const computer = new ComputerFactory().fromComputerConfig(config)
-      computers[computer.name] = computer
-    }
-
     const executor = ExecutorFactory.create({
       diagram: this.diagram,
-      registry: new Registry(computers, {}),
+      registry: core.getRegistry(),
       storage: await this.makeStorage()
     })
 

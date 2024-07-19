@@ -1,8 +1,15 @@
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 
-export const Table: ComputerConfig = {
+export const Table: Computer = {
   name: 'Table',
-  inputs: ['input'],
+  label: 'Table',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [],
+  params: [],
 
   async* run({ input, hooks, params: rawParams, node, storage }) {
     while(true) {

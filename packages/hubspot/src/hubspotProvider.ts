@@ -1,10 +1,10 @@
-import { Application, ComputerConfig, ComputerFactory, ServiceProvider } from '@data-story/core';
-import * as computerConfigs from './computers'
+import { Application, Computer, ComputerFactory, ServiceProvider } from '@data-story/core';
+import * as computers from './computers'
 
 export const hubspotProvider: ServiceProvider = {
   register: (app: Application) => {
-    const configs = Object.values(computerConfigs as {[key: string]: ComputerConfig})
-    app.addComputerConfigs(configs);
+    const configs = Object.values(computers as {[key: string]: Computer})
+    app.addComputers(configs);
   },
 
   boot: (app: Application) => {}

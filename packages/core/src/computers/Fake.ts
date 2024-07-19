@@ -1,10 +1,13 @@
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 import { multiline } from '../utils/multiline';
 import { sleep } from '../utils/sleep';
 
-export const Fake: ComputerConfig = {
+export const Fake: Computer = {
   name: 'Fake',
   label: 'Fake',
+  tags: [],
+  inputs: [],
+  outputs: [],
   docs: multiline`
     ### Description
     This is a Fake node, used to visualize an example.

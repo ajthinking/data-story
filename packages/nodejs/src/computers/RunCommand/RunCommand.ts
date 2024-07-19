@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
-import { ComputerConfig, createDefaultStringable } from '@data-story/core';
+import { Computer, createDefaultStringable } from '@data-story/core';
 
 const exec = promisify(execCallback);
 
@@ -20,10 +20,24 @@ async function awaitableExec(command: string): Promise<{
   }
 }
 
-export const RunCommand: ComputerConfig = {
+export const RunCommand: Computer = {
   name: 'RunCommand',
-  inputs: ['input'],
-  outputs: ['output', 'error'],
+  label: 'RunCommand',
+  tags: [],
+  inputs: [{
+    name: 'input',
+    schema: {},
+  }],
+  outputs: [
+    {
+      name: 'output',
+      schema: {},
+    },
+    {
+      name: 'error',
+      schema: {},
+    },
+  ],
   params: [
     createDefaultStringable({
       name: 'command',
