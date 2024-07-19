@@ -19,7 +19,7 @@ export { CreateProperties } from './CreateProperties'
 // export { Merge } from './Merge';
 export { Pass } from './Pass';
 export { Request } from './Request'
-export { RequestLoop } from './RequestLoop'
+export { RequestLoopByOffset } from './RequestLoopByOffset'
 export { RequestLoopByToken } from './RequestLoopByToken'
 export { Signal } from './Signal'
 export { Sleep } from './Sleep'
