@@ -49,12 +49,17 @@ export const RequestLoopByToken: Computer = {
       value: 'results',
     }),
     str({
+      name: 'cursor_path',
+      help: 'Path to the cursor in the response data.',
+      value: 'paging.next.after',
+    }),
+    str({
       name: 'limit',
       help: 'How many items to request in each batch.',
       value: '25',
     }),
     str({
-      name: 'cursorToken',
+      name: 'cursor_token',
       help: 'the token to use for pagination',
       value: '0',
     }),
@@ -66,58 +71,58 @@ export const RequestLoopByToken: Computer = {
 
   async* run({ input, output, params }) {
     const [incoming] = input.pullNew();
-    const { url, method, body, config, item_path, limit, cursorToken } = incoming.params as {
+    const { url, method, body, config, item_path, limit, cursor_token, cursor_path } = incoming.params as {
       url: string,
       method: string,
       body: any,
       config: any,
       item_path: any,
       limit: string,
-      cursorToken: string,
+      cursor_path: string,
+      cursor_token: string,
     };
 
-    // localStorage.setItems('cursorToken', cursorToken);
-    let currentOffset: number | string = cursorToken;
+    let hasNextPage = true;
+    let currentCursor = cursor_token;
 
-    let currentUrl = `${url}?after=${currentOffset}&limit=${limit}`;
-    console.log('Requesting:', currentUrl)
-    try {
-      let response;
-      if (method === 'GET') {
-        response = await axios.get(currentUrl, config);
-      } else if (method === 'POST') {
-        response = await axios.post(currentUrl, body, config);
-      } else {
-        throw new Error(`Unsupported method: ${method}`);
+    while(hasNextPage) {
+      let currentUrl = currentCursor ? `${url}?after=${currentCursor}&limit=${limit}` : `${url}?limit=${limit}`;
+      console.log('Requesting:', currentUrl)
+      try {
+        let response;
+        if (method === 'GET') {
+          response = await axios.get(currentUrl, config);
+        } else if (method === 'POST') {
+          response = await axios.post(currentUrl, body, config);
+        } else {
+          throw new Error(`Unsupported method: ${method}`);
+        }
+
+        const items = get(response.data, item_path);
+        currentCursor = get(response.data, cursor_path);
+
+        output.pushTo('items', items);
+        output.pushTo('response', [response]);
+
+        yield;
+
+        if (!!currentCursor) {
+          hasNextPage = true;
+        } else {
+          hasNextPage = false;
+        }
+
+        console.log({
+          items: items.length,
+          limit,
+        })
+      } catch(error: any) {
+        console.log(error)
+        output.pushTo('error', [error]);
       }
-
-      const items = get(response.data, item_path);
-      const pagination = get(response.data, 'paging');
-
-      output.pushTo('items', items);
-      output.pushTo('response', [pagination]);
-
-      yield;
-
-      const nextOffset: number | string | null = items.length == limit ?
-        Number(currentOffset) + Number(limit) :
-        null;
-
-      if (nextOffset) {
-        currentOffset = nextOffset;
-      } else {
-      }
-
-      console.log({
-        items: items.length,
-        limit,
-        currentOffset,
-        nextOffset,
-      })
-    } catch(error: any) {
-      console.log(error)
-      output.pushTo('error', [error]);
     }
+
+    yield
   }
 
 };
