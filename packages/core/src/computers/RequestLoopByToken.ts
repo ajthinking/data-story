@@ -1,12 +1,27 @@
 import axios from 'axios';
-import { ComputerConfig } from '../types/ComputerConfig';
+import { Computer } from '../types/Computer';
 import { json_, str } from '../Param';
 import { get } from '../utils/get';
 
-export const RequestLoopByToken: ComputerConfig = {
+export const RequestLoopByToken: Computer = {
   name: 'RequestLoopByToken',
+  label: 'RequestLoopByToken',
+  tags: [],
   inputs: [],
-  outputs: ['items', 'response', 'error'],
+  outputs: [
+    {
+      name: 'items',
+      schema: {},
+    },
+    {
+      name: 'response',
+      schema: {},
+    },
+    {
+      name: 'error',
+      schema: {},
+    },
+  ],
   params: [
     str({
       name: 'url',
@@ -61,8 +76,8 @@ export const RequestLoopByToken: ComputerConfig = {
       cursorToken: string,
     };
 
-    localStorage.setItems('cursorToken', cursorToken);
-    let currentOffset: number|string = cursorToken;
+    // localStorage.setItems('cursorToken', cursorToken);
+    let currentOffset: number | string = cursorToken;
 
     let currentUrl = `${url}?after=${currentOffset}&limit=${limit}`;
     console.log('Requesting:', currentUrl)
@@ -84,7 +99,7 @@ export const RequestLoopByToken: ComputerConfig = {
 
       yield;
 
-      const nextOffset: number|string|null = items.length == limit ?
+      const nextOffset: number | string | null = items.length == limit ?
         Number(currentOffset) + Number(limit) :
         null;
 
