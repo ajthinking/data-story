@@ -44,12 +44,12 @@ const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStor
           </div>
         </div>
         <div className="flex flex-col items-center justify-center">
-          <div className="absolute my-0.5 -ml-2"><PortIcon /></div>
+          <div className="absolute my-0.5"><PortIcon /></div>
           <Handle
             className="relative"
             type="source"
             position={Position.Right}
-            style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 6, right: 6}}
+            style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 6, right: 11}}
             id={outputPort.id}
             isConnectable={true}
           />
