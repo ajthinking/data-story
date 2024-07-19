@@ -1,6 +1,7 @@
 import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
+import { DiagramBuilderV3 } from './DiagramBuilderV3';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
 import { Computer } from './types/Computer';
@@ -55,6 +56,12 @@ export class Application {
 
   getDiagramBuilder() {
     return new DiagramBuilder();
+  }
+
+  getDiagramBuilderV3() {
+    return new DiagramBuilderV3(
+      Object.values(this.registry.computers)
+    );
   }
 
   getRegistry() {

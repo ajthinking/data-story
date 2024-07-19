@@ -21,9 +21,11 @@ export default () => {
 
   app.boot();
 
-  const diagram = core.getDiagramBuilder()
-    .add(Create)
+  const diagram = core.getDiagramBuilderV3()
+    .add('Create')
     .get()
+
+  console.log(diagram)
 
   diagram.params = [
     str({
