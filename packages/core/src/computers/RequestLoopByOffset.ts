@@ -3,9 +3,9 @@ import { json_, str } from '../Param';
 import { get } from '../utils/get';
 import { Computer } from '../types/Computer';
 
-export const RequestLoop: Computer = {
-  name: 'RequestLoop',
-  label: 'RequestLoop',
+export const RequestLoopByOffset: Computer = {
+  name: 'RequestLoopByOffset',
+  label: 'RequestLoopByOffset',
   tags: [],
   inputs: [],
   outputs: [
