@@ -29,7 +29,7 @@ export const Workbench = ({
   initDiagram,
   callback,
   hideToolbar = false,
-  slotComponent,
+  slotComponents,
   observers,
   onInitialize,
 }: DataStoryProps) => {
@@ -126,7 +126,7 @@ export const Workbench = ({
           )}
         >
           <DataStoryControls
-            slotComponent={slotComponent}
+            slotComponents={slotComponents}
             hideToolbar={hideToolbar}
             setShowRunModal={setShowRunModal}
             setShowAddNodeModal={setShowAddNodeModal}

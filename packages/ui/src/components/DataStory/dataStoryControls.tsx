@@ -24,12 +24,12 @@ export function DataStoryControls({
   hideToolbar = false,
   setShowRunModal,
   setShowAddNodeModal,
-  slotComponent
+  slotComponents
 }: {
   hideToolbar?: boolean;
   setShowRunModal: (showRunModal: boolean) => void;
   setShowAddNodeModal: (showAddNodeModal: boolean) => void;
-  slotComponent?: React.ReactNode;
+  slotComponents?: React.ReactNode[];
 }) {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
@@ -67,7 +67,11 @@ export function DataStoryControls({
     </ControlButton>
 
     <DataStoryControlsContext.Provider value={context}>
-      {slotComponent}
+      {(slotComponents || []).map((component, index) => (
+        <React.Fragment key={index}>
+          {component}
+        </React.Fragment>
+      ))}
     </DataStoryControlsContext.Provider>
   </Controls>;
 }

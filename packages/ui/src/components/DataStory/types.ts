@@ -50,7 +50,7 @@ export type DataStoryProps = {
    */
   callback?: DataStoryCallback
   hideToolbar?: boolean
-  slotComponent?: React.ReactNode;
+  slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: (options: { run: () => void }) => void;
 }
