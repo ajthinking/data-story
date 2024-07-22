@@ -8,7 +8,7 @@ export const DataStory =  ({
   initDiagram,
   callback,
   hideToolbar = false,
-  slotComponent,
+  slotComponents,
   observers,
   onInitialize,
 }: DataStoryProps) => {
@@ -18,7 +18,7 @@ export const DataStory =  ({
       initDiagram={ initDiagram }
       callback={ callback }
       hideToolbar={ hideToolbar }
-      slotComponent={ slotComponent }
+      slotComponents={ slotComponents }
       observers={ observers }
       onInitialize={ onInitialize }
     />

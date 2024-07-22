@@ -15,7 +15,10 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
   return (
     <div className="w-full" style={{ height: '100vh' }} data-cy="playground">
       <DataStory
-        slotComponent={<SaveComponent/>}
+        slotComponents={[
+          <SaveComponent/>,
+          <SaveComponent/>,
+        ]}
         initDiagram={initDiagram}
         server={mode === 'node'
           ? { type: 'SOCKET', url: ServerRequest }
