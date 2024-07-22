@@ -17,7 +17,6 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
       <DataStory
         slotComponents={[
           <SaveComponent/>,
-          <SaveComponent/>,
         ]}
         initDiagram={initDiagram}
         server={mode === 'node'
