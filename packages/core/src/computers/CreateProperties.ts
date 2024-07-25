@@ -68,17 +68,19 @@ export const CreateProperties: Computer = {
     while(true) {
       const [ item ] = input.pull(1)
 
-      const map = item.params.properties as any
-
       const result = {
         ...item.value,
       }
+      console.log('result', result)
 
-      for(const { key, value } of map) {
-        result[key] = value
+      for(const { id, key } of item.params.properties as any) {
+        const fresh = (item.params.properties as any)
+          .find((p: any) => p.id === id)
+
+        item.value[key] = fresh.value
       }
 
-      output.push([result])
+      output.push([item.value])
 
       yield;
     }
