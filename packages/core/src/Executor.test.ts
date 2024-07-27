@@ -1,6 +1,6 @@
 import { Diagram } from './Diagram';
 import { Computer, RunArgs } from './types/Computer';
-import { ConsoleLog, Create, Ignore, Input, Output, Pass, Signal, Throw } from './computers';;
+import { Create, Ignore, Signal, Throw } from './computers';
 import { InMemoryStorage } from './InMemoryStorage';
 import { whenRunning } from './support/diagramExecutionTester/DiagramExecutionTester';
 import { Link } from './types/Link';
