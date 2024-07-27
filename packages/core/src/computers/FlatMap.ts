@@ -11,9 +11,6 @@ export const FlatMap: Computer = {
   name: 'FlatMap',
   label: 'FlatMap',
   tags: [],
-  docs: multiline`
-  Replaces the item with a new value. Supported input are: HJSON, JSON and JS function
-  `,
   inputs: [{
     name: 'input',
     schema: {}

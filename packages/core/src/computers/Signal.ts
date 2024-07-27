@@ -12,11 +12,6 @@ export const Signal: Computer = {
   name: 'Signal',
   label: 'Signal',
   tags: [],
-  docs: multiline`
-    ### Description
-    Creates an item every X ms, Y times. Useful for testing.
-    The output will look like \`{ id: 1 }, { id: 2 }\` etc.
-  `,
   inputs: [],
   outputs: [{
     name: 'output',

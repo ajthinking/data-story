@@ -4,7 +4,6 @@ import { AbstractPort } from './Port';
 export type NodeDescription = {
   name: string,
   label?: string,
-  docs? : string,
   category?: string,
   inputs: AbstractPort[],
   outputs: AbstractPort[],
