@@ -10,6 +10,10 @@ Visual Programming | Data Transformation | ETL | Process design
 ![ds_readme_gif](https://user-images.githubusercontent.com/3457668/229267838-b8dcc5cc-9639-4f95-962b-48eae8250d4e.gif)
 
 
+![status](https://img.shields.io/badge/status-unstable-yellow)
+![npm version](https://img.shields.io/npm/v/@data-story/core?label=core&color=green)
+![npm version](https://img.shields.io/npm/v/@data-story/ui?label=ui&color=green)
+![npm version](https://img.shields.io/npm/v/@data-story/nodejs?label=nodejs&color=green)
 
 
 ## Installation
