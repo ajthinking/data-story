@@ -3,7 +3,6 @@ import { Computer } from '../types/Computer';
 export const Pass: Computer = {
   name: 'Pass',
   label: 'Pass',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

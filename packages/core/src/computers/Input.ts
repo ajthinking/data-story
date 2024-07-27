@@ -4,7 +4,6 @@ import { Computer } from '../types/Computer';
 export const Input: Computer = {
   name: 'Input',
   label: 'Input',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

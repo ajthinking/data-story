@@ -6,7 +6,6 @@ import { Computer } from '../types/Computer';
 export const Sleep: Computer = {
   name: 'Sleep',
   label: 'Sleep',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {}

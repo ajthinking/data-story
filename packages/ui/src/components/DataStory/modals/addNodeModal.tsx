@@ -80,7 +80,7 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
                 <span className='text-indigo-500 font-mono'>{nodeDescription.category || 'Core'}::</span>
                 {nodeDescription.label || nodeDescription.name}
               </div>
-              <div className='flex space-x-1'>
+              {/* <div className='flex space-x-1'>
                 {nodeDescription.tags.map((tag: string) => {
                   let style = 'bg-blue-300 border px-2 rounded tracking-wide text-xxs text-white';
                   return (
@@ -89,7 +89,7 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
                     </div>
                   );
                 })}
-              </div>
+              </div> */}
             </button>
           );
         })}

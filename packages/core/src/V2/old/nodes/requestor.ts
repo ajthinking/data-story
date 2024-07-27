@@ -9,7 +9,7 @@ export const requestor: Element = {
   inputs: ['input'],
   outputs: ['output'],
   params: [],
-  tags: [],
+
   boot: ({ inputs, outputs }) => {
     inputs.input.pipe(
       concatMap(batch => from(batch)),

@@ -6,7 +6,7 @@ export const alternator: Element = {
   inputs: ['input'],
   outputs: ['output1', 'output2'],
   params: [],
-  tags: [],
+
   boot: ({ inputs, outputs }) => {
     let toggle = true;
     const swapToggle = () => {

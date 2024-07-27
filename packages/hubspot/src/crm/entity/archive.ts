@@ -6,7 +6,6 @@ import { CrmEntityName } from './CrmEntityName';
 const Template: Computer = {
   name: 'NAME',
   label: 'LABEL',
-  tags: [],
   inputs: [
     {
       name: 'incoming',

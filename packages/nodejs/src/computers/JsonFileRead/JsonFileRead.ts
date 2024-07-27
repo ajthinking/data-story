@@ -5,7 +5,6 @@ import { Computer, get, serializeError, str, stringifyError } from '@data-story/
 export const JsonFileRead: Computer = {
   name: 'JsonFile.read',
   label: 'JsonFile.read',
-  tags: [],
   inputs: [],
   outputs: [
     {

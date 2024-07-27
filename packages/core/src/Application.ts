@@ -1,4 +1,3 @@
-import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
 import { DiagramBuilderV3 } from './DiagramBuilderV3';

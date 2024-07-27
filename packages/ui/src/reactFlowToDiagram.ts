@@ -29,7 +29,6 @@ export const reactFlowToDiagram = (flow: SerializedReactFlow): Diagram => {
     return {
       id: flowNode.id,
       type: flowNode.data.computer,
-      docs: flowNode.data.docs,
       inputs: flowNode.data.inputs.map(input => {
         return {
           id: input.id,

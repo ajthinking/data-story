@@ -10,10 +10,6 @@ import { Computer } from '../types/Computer';
 export const Map: Computer = {
   name: 'Map',
   label: 'Map',
-  tags: [],
-  docs: multiline`
-  Replaces the item with a new value. Supported input are: HJSON, JSON and JS function
-  `,
   inputs: [{
     name: 'input',
     schema: {}

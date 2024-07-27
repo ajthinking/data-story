@@ -1,4 +1,4 @@
-import { Params, InputSchemas, OutputSchemas, Code, Docs } from './tabs';
+import { Params, InputSchemas, OutputSchemas } from './tabs';
 import { shallow } from 'zustand/shallow';
 import { StoreSchema, useStore } from '../../store/store';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -8,14 +8,12 @@ import { useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 import { useUpdateNodeInternals } from '@xyflow/react';
 
-type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas' | 'Code' | 'Docs';
+type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas';
 
 const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   Params,
   InputSchemas,
   OutputSchemas: OutputSchemas,
-  Code,
-  Docs,
 };
 
 export const NodeSettingsModalContent = () => {

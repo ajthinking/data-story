@@ -5,7 +5,6 @@ import * as nodePath from 'path'
 export const ListFiles: Computer = {
   name: 'ListFiles',
   label: 'ListFiles',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

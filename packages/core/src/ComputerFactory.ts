@@ -17,12 +17,10 @@ export class ComputerFactory {
       ...structuredClone({
         name: template.name ?? 'unnamed',
         label: template.label ?? template.name ?? 'unlabeled',
-        docs: template.docs,
         category: template.category,
         inputs: template.inputs?.map(portableToPort) ?? [],
         outputs: template.outputs?.map(portableToPort) ?? [],
         params: template.params ?? [],
-        tags: template.tags ?? [],
       }),
       // Methods
       run: template.run ?? (async function*() {}),

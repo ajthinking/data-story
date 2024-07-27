@@ -7,7 +7,6 @@ import { Computer } from '../types/Computer';
 export const Request: Computer = {
   name: 'Request',
   label: 'Request',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

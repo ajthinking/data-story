@@ -8,7 +8,7 @@ export const looper: Element = {
   inputs: ['input'],
   outputs: ['output'],
   params: [],
-  tags: [],
+
   boot: ({ inputs, outputs }) => {
     inputs.input.pipe(
       concatMap(async item => {

@@ -5,7 +5,6 @@ import { Computer } from '../types/Computer';
 export const Clone: Computer = {
   name: 'Clone',
   label: 'Clone',
-  tags: [],
   inputs: [
     {
       name: 'input',

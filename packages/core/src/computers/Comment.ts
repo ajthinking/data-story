@@ -5,7 +5,6 @@ import { Computer } from '../types/Computer';
 export const Comment: Computer = {
   name: 'Comment',
   label: 'Comment',
-  tags: [],
   inputs: [],
   outputs: [],
   params: [

@@ -4,7 +4,6 @@ import { Computer } from '../types/Computer';
 export const Merge: Computer = {
   name: 'Merge',
   label: 'Merge',
-  tags: [],
   inputs: [
     {
       name: 'requestors',

@@ -22,7 +22,7 @@ export const creator: Element = {
       value: String(1)
     }),
   ],
-  tags: [],
+
   boot: ({ outputs, params }) => {
     const count = parseInt(params.count.value as unknown as string);
     const data = Array.from({ length: count }, (_, index) => ({ id: index + 1 }));

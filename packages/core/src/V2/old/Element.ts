@@ -19,12 +19,10 @@ export type OperatorBootArgs = {
 export interface Element {
   name: string
   label?: string
-  docs?: string
   category?: string
   inputs: (PortName  | AbstractPort)[]
   outputs: (PortName | AbstractPort)[]
   params: Param[]
-  tags?: string[]
 
   boot: (args: OperatorBootArgs) => void
 }

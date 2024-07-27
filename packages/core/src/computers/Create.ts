@@ -8,7 +8,6 @@ import { Computer } from '../types/Computer';
 export const Create: Computer = {
   name: 'Create',
   label: 'Create',
-  tags: [],
   inputs: [],
   outputs: [
     {

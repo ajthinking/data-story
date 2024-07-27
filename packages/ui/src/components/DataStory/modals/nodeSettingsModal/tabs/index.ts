@@ -1,5 +1,3 @@
-export { Code } from './Code'
-export { Docs } from './Docs'
 export { InputSchemas } from './InputSchemas'
 export { OutputSchemas } from './outputSchemas'
 export { Params } from './Params'

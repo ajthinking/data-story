@@ -8,7 +8,7 @@ export const printer: Element = {
   inputs: ['input'],
   outputs: [],
   params: [],
-  tags: [],
+
   boot: ({ inputs }) => {
     inputs.input.subscribe({
       next: itemBatch => {

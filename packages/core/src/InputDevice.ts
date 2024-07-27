@@ -1,7 +1,6 @@
 import { LinkId } from './types/Link'
 import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams } from './ItemWithParams'
-import { Diagram } from './Diagram'
 import { Node } from './types/Node'
 import { ItemValue } from './types/ItemValue'
 import { PortName } from './types/Port'

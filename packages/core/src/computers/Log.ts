@@ -3,7 +3,6 @@ import { Computer } from '../types/Computer';
 export const Log: Computer = {
   name: 'Log',
   label: 'Log',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

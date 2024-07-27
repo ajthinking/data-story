@@ -8,10 +8,6 @@ import { Computer } from '../types/Computer';
 export const Describe: Computer = {
   name: 'Describe',
   label: 'Describe',
-  tags: [],
-  docs: multiline`
-    Describes the data structure of inputed items. Full outputs a nested object with occurrences of each item/key. Use the "truncated" port to get a similar summary more suitable for humans.
-  `,
   inputs: [
     {
       name: 'input',

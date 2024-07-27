@@ -5,15 +5,8 @@ import { sleep } from '../utils/sleep';
 export const Fake: Computer = {
   name: 'Fake',
   label: 'Fake',
-  tags: [],
   inputs: [],
   outputs: [],
-  docs: multiline`
-    ### Description
-    This is a Fake node, used to visualize an example.
-    You may configure desired faked input and output ports on creation.
-    Label can be set to any value.
-  `,
   params: [],
 
   canRun({ isAvailable }) {
