@@ -5,7 +5,6 @@ import { Computer, createDefaultStringable } from '@data-story/core';
 export const ReadFiles: Computer = {
   name: 'ReadFiles',
   label: 'ReadFiles',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {}

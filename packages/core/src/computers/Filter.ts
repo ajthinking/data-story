@@ -4,7 +4,6 @@ import { Computer } from '../types/Computer';
 export const Filter: Computer = {
   name: 'Filter',
   label: 'Filter',
-  tags: [],
   inputs: [
     {
       name: 'input',

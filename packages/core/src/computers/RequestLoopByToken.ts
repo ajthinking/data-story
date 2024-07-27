@@ -6,7 +6,6 @@ import { get } from '../utils/get';
 export const RequestLoopByToken: Computer = {
   name: 'RequestLoopByToken',
   label: 'RequestLoopByToken',
-  tags: [],
   inputs: [],
   outputs: [
     {

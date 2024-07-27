@@ -7,7 +7,6 @@ import { Computer } from '../types/Computer';
 export const Unique: Computer = {
   name: 'Unique',
   label: 'Unique',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

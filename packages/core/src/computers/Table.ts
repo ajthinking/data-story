@@ -3,7 +3,6 @@ import { Computer } from '../types/Computer';
 export const Table: Computer = {
   name: 'Table',
   label: 'Table',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

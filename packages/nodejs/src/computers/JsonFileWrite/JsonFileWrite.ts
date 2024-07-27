@@ -5,7 +5,6 @@ import { Computer, str } from '@data-story/core';
 export const JsonFileWrite: Computer = {
   name: 'JsonFile.write',
   label: 'JsonFile.write',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {}

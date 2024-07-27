@@ -5,7 +5,6 @@ import { createDefaultStringable } from '@data-story/core';
 export const AskChatGpt: Computer = {
   name: 'AskChatGpt',
   label: 'AskChatGpt',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {}

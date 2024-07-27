@@ -10,7 +10,6 @@ import { Computer } from '../types/Computer';
 export const Map: Computer = {
   name: 'Map',
   label: 'Map',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {}

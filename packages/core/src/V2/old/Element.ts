@@ -23,7 +23,6 @@ export interface Element {
   inputs: (PortName  | AbstractPort)[]
   outputs: (PortName | AbstractPort)[]
   params: Param[]
-  tags?: string[]
 
   boot: (args: OperatorBootArgs) => void
 }

@@ -28,7 +28,7 @@ export const sleeper: Element = {
       value: String(100)
     }),
   ],
-  tags: [],
+
   boot: ({ inputs, outputs, params }) => {
     const duration = parseInt(params.duration.value as unknown as string, 10);
 

@@ -25,7 +25,7 @@ describe('fromComputer', () => {
       }],
       outputs: [],
       params: [],
-      tags: [],
+
     })
   })
 })

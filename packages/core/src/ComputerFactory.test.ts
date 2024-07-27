@@ -16,7 +16,6 @@ describe('get', () => {
       inputs: [],
       outputs: [],
       params: {},
-      tags: [],
       run: expect.any(Function),
       canRun: undefined,
     })

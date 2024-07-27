@@ -7,7 +7,7 @@ export const droner: Element = {
   inputs: [],
   outputs: [],
   params: [],
-  tags: [],
+
   boot: ({}) => {
     console.log('Droner boot.');
   },

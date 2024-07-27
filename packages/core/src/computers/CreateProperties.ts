@@ -10,7 +10,6 @@ import { Computer } from '../types/Computer';
 export const CreateProperties: Computer = {
   name: 'CreateProperties',
   label: 'CreateProperties',
-  tags: [],
   inputs: [
     {
       name: 'input',

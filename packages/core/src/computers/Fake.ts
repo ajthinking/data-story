@@ -5,7 +5,6 @@ import { sleep } from '../utils/sleep';
 export const Fake: Computer = {
   name: 'Fake',
   label: 'Fake',
-  tags: [],
   inputs: [],
   outputs: [],
   params: [],

@@ -8,5 +8,4 @@ export type NodeDescription = {
   inputs: AbstractPort[],
   outputs: AbstractPort[],
   params: Param[],
-  tags: string[],
 }

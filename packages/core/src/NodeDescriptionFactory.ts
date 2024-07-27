@@ -11,7 +11,6 @@ export const NodeDescriptionFactory = {
       inputs: computer.inputs,
       outputs: computer.outputs,
       params: computer.params,
-      tags: computer.tags,
     }
   },
 
@@ -43,7 +42,7 @@ export const NodeDescriptionFactory = {
           }
         }),
       params: diagram.params,
-      tags: [], // TODO
+      // TODO
     }
   }
 }

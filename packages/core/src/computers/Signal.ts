@@ -11,7 +11,6 @@ import { Computer } from '../types/Computer';
 export const Signal: Computer = {
   name: 'Signal',
   label: 'Signal',
-  tags: [],
   inputs: [],
   outputs: [{
     name: 'output',

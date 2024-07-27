@@ -6,7 +6,7 @@ export const input: Element = {
   inputs: ['input'],
   outputs: ['output'],
   params: [],
-  tags: [],
+
   boot: ({ inputs, outputs }) => {
     inputs.input.subscribe({
       next: itemBatch => {

@@ -6,7 +6,6 @@ import { Computer } from '../types/Computer';
 export const RequestLoopByOffset: Computer = {
   name: 'RequestLoopByOffset',
   label: 'RequestLoopByOffset',
-  tags: [],
   inputs: [],
   outputs: [
     {

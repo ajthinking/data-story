@@ -19,7 +19,7 @@ export const loop_simulation: Element = {
   inputs: ['input'],
   outputs: ['output'],
   params: [],
-  tags: [],
+
   boot: ({ inputs, outputs, app }) => {
     inputs.input.subscribe({
       next: itemBatch => {

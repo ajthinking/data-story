@@ -10,7 +10,6 @@ import { Computer } from '../types/Computer';
 export const ConsoleLog: Computer = {
   name: 'ConsoleLog',
   label: 'Console.log',
-  tags: [],
   inputs: [
     {
       name: 'input',

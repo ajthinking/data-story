@@ -4,7 +4,6 @@ import { Computer } from '../types/Computer';
 export const Await: Computer = {
   name: 'Await',
   label: 'Await',
-  tags: [],
   inputs: [
     {
       name: 'input',

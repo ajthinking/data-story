@@ -20,7 +20,6 @@ const sharedOperators = [
 export const Test: Computer = {
   name: 'Test',
   label: 'Test',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

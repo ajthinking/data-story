@@ -5,7 +5,6 @@ import { Computer } from '../types/Computer';
 export const RemoveProperties: Computer = {
   name: 'RemoveProperties',
   label: 'RemoveProperties',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

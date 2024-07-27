@@ -10,7 +10,6 @@ import { Computer } from '../types/Computer';
 export const FlatMap: Computer = {
   name: 'FlatMap',
   label: 'FlatMap',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {}

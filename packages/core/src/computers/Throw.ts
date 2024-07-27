@@ -10,7 +10,6 @@ import { Computer } from '../types/Computer';
 export const Throw: Computer = {
   name: 'Throw',
   label: 'Throw',
-  tags: [],
   inputs: [{
     name: 'input',
     schema: {},

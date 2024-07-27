@@ -55,7 +55,6 @@ export const onDrop = (event, addNodeFromDescription) => {
             ]
           })
         ],
-        tags: [],
       }
 
       addNodeFromDescription(description);
