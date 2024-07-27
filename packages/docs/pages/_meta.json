@@ -1,11 +1,6 @@
 {
   "index": {
-    "title": "Home",
-    "display": "hidden",
-    "type": "page",
-    "theme": {
-      "layout": "raw"
-    }    
+    "title": "Home"    
   },
   "menu": {
     "title": "Resources",
@@ -18,16 +13,7 @@
       "playground": {
         "title": "Playground",
         "href": "/playground"
-      },
-      "downloads": {
-        "title": "Downloads",
-        "newWindow": true,
-        "href": "/downloads"
-      },      
-      "about": {
-        "title": "Docs",
-        "href": "/docs"
-      },
+      },  
       "github": {
         "title": "GitHub",
         "newWindow": true,
@@ -58,11 +44,6 @@
     "display": "hidden",
     "type": "doc"
   },  
-  "docs": {
-    "title": "Docs",
-    "display": "hidden",
-    "type": "doc"
-  },
   "Visualize": "Visualize",
   "Unfolding": "Unfolding",
   "Observers": "Observers",
