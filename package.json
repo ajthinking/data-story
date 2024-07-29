@@ -26,6 +26,7 @@
     "release-nodejs": "yarn workspace @data-story/nodejs run release",
     "ci:test": "turbo test --filter=@data-story/core --filter=@data-story/ui --filter=@data-story/docs && yarn cy:component && yarn ci:e2e",
     "ci:e2e": "start-server-and-test 'yarn dev -- --port 3009' 3009 'cy:e2e' ",
+    "core:test": "turbo test --filter=@data-story/core",
     "cy:e2e": "cypress run --e2e",
     "cy:component": "cypress run --component",
     "cy:open": "cypress open"

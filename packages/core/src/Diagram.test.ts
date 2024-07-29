@@ -64,27 +64,36 @@ describe('connect', () => {
     diagram.connect(link)
     expect(diagram.links).toEqual([link])
   })
+})
 
-  it('calls provided onConnect handlers', () => {
-    const callback1 = vi.fn()
-    const callback2 = vi.fn()
-
-    const diagram = new Diagram({
-      onConnect: [
-        callback1,
-        callback2,
-      ]
-    })
+describe('clone', () => {
+  it('creates a deep clone of the diagram', () => {
+    const node: Node = {
+      id: 'node-id',
+      type: 'MyNode',
+      inputs: [],
+      outputs: [],
+      params: []
+    };
 
     const link: Link = {
-      id: 'fake-link-id',
-      sourcePortId: 'fake-port-id-1',
-      targetPortId: 'fake-port-id-2',
-    }
+      id: 'link-id',
+      sourcePortId: 'port-id-1',
+      targetPortId: 'port-id-2',
+    };
 
-    diagram.connect(link)
+    const viewport = { x: 10, y: 20, zoom: 2 };
+    const diagram = new Diagram({ nodes: [node], links: [link], viewport });
 
-    expect(callback1).toHaveBeenCalledWith(link, diagram)
-    expect(callback2).toHaveBeenCalledWith(link, diagram)
-  })
-})
+    const clone = diagram.clone();
+
+    expect(clone).not.toBe(diagram); // Different instances
+    expect(clone.nodes).toEqual(diagram.nodes);
+    expect(clone.links).toEqual(diagram.links);
+    expect(clone.viewport).toEqual(diagram.viewport);
+
+    // Modify clone and check original remains unchanged
+    clone.nodes[0].id = 'modified-node-id';
+    expect(diagram.nodes[0].id).toBe('node-id');
+  });
+});

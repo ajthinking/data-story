@@ -59,7 +59,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
   }
 
   const unfolded = new UnfoldedDiagramFactory(
-    diagram.clone(), // TODO, unfolding should not mutate the diagram
+    diagram.clone(),
     nestedNodes
   ).unfold();
 
