@@ -20,6 +20,8 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack
 import { notUndefined, useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import { Port } from '@data-story/core';
+import { PortIcon } from '../DataStory/icons/portIcon';
+import CustomHandle from './CustomHandle';
 
 const TRUNCATE_CELL_LENGTH = 50;
 
@@ -94,32 +96,6 @@ function TableNodeCell(props: {tableRef: React.RefObject<HTMLTableElement>, cont
       </FloatingPortal>
     </div>
   );
-}
-
-function HandleComponent(props: {input: Port}) {
-  return <div className="absolute z-30">
-    <div className="absolute">
-
-    </div>
-    <div>
-      <Handle
-        className="relative"
-        type="target"
-        position={Position.Left}
-        style={{
-          opacity: 0,
-          backgroundColor: 'red',
-          position: 'relative',
-          height: 12,
-          width: 1,
-          top: 4,
-          right: 0
-        }}
-        id={props.input.id}
-        isConnectable={true}
-      />
-    </div>
-  </div>;
 }
 
 function LoadingComponent() {
@@ -238,8 +214,9 @@ const TableNodeComponent = ({ id, data }: {
           }
         }}
       >
-        <HandleComponent input={input}/>
-        <div data-cy={'data-story-table'} className="text-gray-600 bg-gray-100 rounded font-mono">
+        <CustomHandle id={input.id} isConnectable={true} isInput={true} />
+
+        <div data-cy={'data-story-table'} className="text-gray-600 bg-gray-100 rounded font-mono -mt-3">
           {isDataFetched ?
             (<div
               ref={parentRef}
