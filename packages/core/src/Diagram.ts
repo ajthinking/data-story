@@ -1,7 +1,6 @@
 import { PortId } from './types/PortId'
 import { Link } from './types/Link'
 import { Node } from './types/Node'
-import { syncPortSchemas } from './syncPortSchemas'
 import { Param } from './Param'
 
 export type OnConnectCallbacks = (link: Link, diagram: Diagram) => void
@@ -10,40 +9,31 @@ export class Diagram {
   nodes: Node[]
   links: Link[]
   params: Param[]
-  viewport: { x: number, y: number, zoom: number } = {
-    x: 0,
-    y: 0,
-    zoom: 1
-  }
-  onConnect: OnConnectCallbacks[]
+  viewport: { x: number, y: number, zoom: number }
 
   constructor(options?: {
     nodes?: Node[],
     links?: Link[],
     params?: Param[],
-    onConnect?: OnConnectCallbacks[],
+    viewport?: { x: number, y: number, zoom: number }
   }) {
     this.nodes = options?.nodes || []
     this.links = options?.links || []
     this.params = options?.params || []
-    this.onConnect = options?.onConnect || [
-      syncPortSchemas,
-    ]
+    this.viewport = options?.viewport || {
+      x: 0,
+      y: 0,
+      zoom: 1
+    }
   }
 
-  clone() {
-    // Constructable state
-    const cloned = new Diagram({
-      nodes: structuredClone(this.nodes),
-      links: structuredClone(this.links),
-      params: structuredClone(this.params),
-      onConnect: [...this.onConnect],
+  clone(): Diagram {
+    return new Diagram({
+      nodes: this.nodes.map(node => ({ ...node })),
+      links: this.links.map(link => ({ ...link })),
+      params: this.params.map(param => ({ ...param })),
+      viewport: { ...this.viewport },
     });
-
-    // Other state
-    cloned.viewport = { ...this.viewport };
-
-    return cloned;
   }
 
   add(node: Node) {
@@ -54,10 +44,6 @@ export class Diagram {
 
   connect(link: Link) {
     this.links.push(link)
-
-    for(const callback of this.onConnect) {
-      callback(link, this)
-    }
 
     return this
   }
