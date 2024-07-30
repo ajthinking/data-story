@@ -3,7 +3,7 @@ import { Workbench } from './Workbench';
 import { DataStoryProvider } from './store/store';
 import { DataStoryProps } from './types';
 
-export const DataStory =  ({
+export const DataStory = ({
   server,
   initDiagram,
   callback,
@@ -14,13 +14,13 @@ export const DataStory =  ({
 }: DataStoryProps) => {
   return <DataStoryProvider>
     <Workbench
-      server={ server }
-      initDiagram={ initDiagram }
-      callback={ callback }
-      hideToolbar={ hideToolbar }
-      slotComponents={ slotComponents }
-      observers={ observers }
-      onInitialize={ onInitialize }
+      server={server}
+      initDiagram={initDiagram}
+      callback={callback}
+      hideToolbar={hideToolbar}
+      slotComponents={slotComponents}
+      observers={observers}
+      onInitialize={onInitialize}
     />
   </DataStoryProvider>;
 }
