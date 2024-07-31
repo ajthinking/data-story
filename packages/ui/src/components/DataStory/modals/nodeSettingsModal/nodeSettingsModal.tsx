@@ -9,7 +9,6 @@ export const NodeSettingsModalContent = () => {
     nodes: state.nodes,
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
-    updateNode: state.updateNode,
   });
 
   const { nodes, openNodeModalId, setOpenNodeModalId } = useStore(selector, shallow);

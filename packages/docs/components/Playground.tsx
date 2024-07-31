@@ -1,6 +1,6 @@
 import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React from 'react';
-import { DataStory, AllotmentDataStory } from '@data-story/ui';
+import { AllotmentDataStory } from '@data-story/ui';
 import { loadDiagram, LocalStorageKey,  SaveComponent } from './Save';
 import { ServerRequest } from '../const';
 
