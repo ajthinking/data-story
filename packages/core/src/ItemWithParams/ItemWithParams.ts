@@ -18,13 +18,13 @@ export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWi
   return false;
 }
 
-export class ItemWithParams {
+export class ItemWithParams<ExpectedType extends ItemValue = ItemValue> {
   type = 'ItemWithParams' as const
-  value: ItemValue;
+  value: ExpectedType;
   params: Record<string, ParamValue>;
 
   constructor(
-    value: ItemValue,
+    value: ExpectedType,
     rawParams: Param[],
     globalParams: Param[],
   ) {

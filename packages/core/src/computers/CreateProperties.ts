@@ -66,15 +66,16 @@ export const CreateProperties: Computer = {
   async *run({ input, output }) {
     while(true) {
       const [ item ] = input.pull(1)
+      if(typeof item.value !== 'object') throw new Error(
+        'Items sent to CreateProperties must be an objects!'
+      )
 
-      const result = {
-        ...item.value,
-      }
-      console.log('result', result)
+      type Property = { id: any, key: string, value: any }
+      const properties = item.params.properties as Property[]
 
-      for(const { id, key } of item.params.properties as any) {
-        const fresh = (item.params.properties as any)
-          .find((p: any) => p.id === id)
+      for(const { id, key } of properties) {
+        const fresh = (item.params.properties as Property[])
+          .find((p: any) => p.id === id)!
 
         item.value[key] = fresh.value
       }
