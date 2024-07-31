@@ -39,11 +39,6 @@
       "layout": "raw"
     }    
   },
-  "downloads": {
-    "title": "Downloads",
-    "display": "hidden",
-    "type": "doc"
-  },  
   "Visualize": "Visualize",
   "Unfolding": "Unfolding",
   "Observers": "Observers",
