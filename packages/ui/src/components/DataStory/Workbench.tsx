@@ -1,6 +1,6 @@
 import { DataStoryControls } from './dataStoryControls';
 import { useCallback, useEffect, useId, useState } from 'react';
-import { ReactFlow, Background, BackgroundVariant, ReactFlowInstance, ReactFlowProvider, } from '@xyflow/react';
+import { ReactFlow, Background, BackgroundVariant, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { RunModal } from './modals/runModal/runModal';
 import { AddNodeModal } from './modals/addNodeModal';
@@ -24,61 +24,24 @@ const nodeTypes = {
   tableNodeComponent: TableNodeComponent,
 };
 
-export const Workbench = ({
-  server,
-  initDiagram,
-  callback,
-  hideToolbar = false,
-  slotComponents,
-  observers,
-  onInitialize,
-}: DataStoryProps) => {
+export const Workbench = (props: DataStoryProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
-    edges: state.edges,
-    onNodesChange: state.onNodesChange,
-    onEdgesChange: state.onEdgesChange,
-    connect: state.connect,
-    onInit: state.onInit,
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
     traverseNodes: state.traverseNodes,
-    onRun: state.onRun,
-    setObservers: state.setObservers,
-    addNodeFromDescription: state.addNodeFromDescription,
   });
 
   const {
-    connect,
     nodes,
-    edges,
-    onNodesChange,
-    onEdgesChange,
-    onInit,
     openNodeModalId,
     setOpenNodeModalId,
     traverseNodes,
-    onRun,
-    setObservers,
-    addNodeFromDescription,
   } = useStore(selector, shallow);
 
-  const id = useId()
-  const [showConfigModal, setShowConfigModal] = useState(false);
   const [showRunModal, setShowRunModal] = useState(false);
   const [showAddNodeModal, setShowAddNodeModal] = useState(false);
-  const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
-
-  useEffect(() => {
-    setObservers('workbench', observers);
-  }, [observers, setObservers]);
-
-  useEffect(() => {
-    if (onInitialize && onRun && isExecutePostRenderEffect) {
-      onInitialize({ run: onRun });
-      setIsExecutePostRenderEffect(false);
-    }
-  }, [isExecutePostRenderEffect, onRun, onInitialize]);
+  const [showConfigModal, setShowConfigModal] = useState(false);
 
   useHotkeys({
     nodes,
@@ -94,47 +57,7 @@ export const Workbench = ({
 
   return (
     <>
-      <ReactFlowProvider>
-        <ReactFlow
-          id={id}
-          className='bg-gray-50'
-          nodes={nodes}
-          edges={edges}
-          nodeTypes={nodeTypes as NodeTypes}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={connect}
-          onInit={(rfInstance: StoreInitOptions['rfInstance']) => {
-            onInit({
-              rfInstance,
-              server,
-              initDiagram,
-              callback,
-            });
-            setIsExecutePostRenderEffect(true);
-          }}
-          minZoom={0.25}
-          maxZoom={8}
-          fitView={true}
-          fitViewOptions={{
-            padding: 0.25,
-          }}
-          onDragOver={useCallback(onDragOver, [])}
-          onDrop={useCallback(
-            (e) => onDrop(e, addNodeFromDescription),
-            [addNodeFromDescription]
-          )}
-        >
-          <DataStoryControls
-            slotComponents={slotComponents}
-            hideToolbar={hideToolbar}
-            setShowRunModal={setShowRunModal}
-            setShowAddNodeModal={setShowAddNodeModal}
-          />
-          <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
-        </ReactFlow>
-        <NodeSettingsModal showModal={Boolean(openNodeModalId)}/>
-      </ReactFlowProvider>
+      <Flow {...props} setShowRunModal={setShowRunModal} setShowAddNodeModal={setShowAddNodeModal} />
 
       {/* Modals */}
       <RunModal showModal={showRunModal} setShowModal={setShowRunModal}/>
@@ -142,3 +65,98 @@ export const Workbench = ({
     </>
   );
 };
+
+const Flow = ({
+  server,
+  initDiagram,
+  callback,
+  hideToolbar = false,
+  slotComponents,
+  observers,
+  onInitialize,
+  setShowRunModal,
+  setShowAddNodeModal,
+}: DataStoryProps & {
+  setShowRunModal: React.Dispatch<React.SetStateAction<boolean>>,
+  setShowAddNodeModal: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
+  const selector = (state: StoreSchema) => ({
+    nodes: state.nodes,
+    edges: state.edges,
+    onNodesChange: state.onNodesChange,
+    onEdgesChange: state.onEdgesChange,
+    connect: state.connect,
+    onInit: state.onInit,
+    onRun: state.onRun,
+    setObservers: state.setObservers,
+    addNodeFromDescription: state.addNodeFromDescription,
+  });
+
+  const {
+    connect,
+    nodes,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    onInit,
+    onRun,
+    setObservers,
+    addNodeFromDescription,
+  } = useStore(selector, shallow);
+  const id = useId()
+  const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
+
+  useEffect(() => {
+    setObservers('workbench', observers);
+  }, [observers, setObservers]);
+
+  useEffect(() => {
+    if (onInitialize && onRun && isExecutePostRenderEffect) {
+      onInitialize({ run: onRun });
+      setIsExecutePostRenderEffect(false);
+    }
+  }, [isExecutePostRenderEffect, onRun, onInitialize]);
+
+  return (
+    <>
+      <ReactFlow
+        id={id}
+        className='bg-gray-50'
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes as NodeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={connect}
+        onInit={(rfInstance: StoreInitOptions['rfInstance']) => {
+          onInit({
+            rfInstance,
+            server,
+            initDiagram,
+            callback,
+          });
+          setIsExecutePostRenderEffect(true);
+        }}
+        minZoom={0.25}
+        maxZoom={8}
+        fitView={true}
+        fitViewOptions={{
+          padding: 0.25,
+        }}
+        onDragOver={useCallback(onDragOver, [])}
+        onDrop={useCallback(
+          (e) => onDrop(e, addNodeFromDescription),
+          [addNodeFromDescription]
+        )}
+      >
+        <DataStoryControls
+          slotComponents={slotComponents}
+          hideToolbar={hideToolbar}
+          setShowRunModal={setShowRunModal}
+          setShowAddNodeModal={setShowAddNodeModal}
+        />
+        <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
+      </ReactFlow>
+    </>
+  )
+}
