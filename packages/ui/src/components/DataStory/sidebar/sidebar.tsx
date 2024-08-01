@@ -9,11 +9,11 @@ export const Sidebar = (props: Partial<NodeSettingsFormProps>) => {
 
   console.log(node, 'node')
   return (
-    <div className="sidebar">
+    <div className={'h-4/5'}>
       <div className="sidebar-header">
         <h2>Data Stories</h2>
       </div>
-      <div className="sidebar-content">
+      <div className={'h-3/5'}>
         {
           Boolean(node?.id && node?.data)
             ? <NodeSettingsForm node={node!} onClose={onClose!} onUpdateNodeData={onUpdateNodeData!}/>

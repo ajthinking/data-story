@@ -9,7 +9,7 @@ export function ParamsComponent({
 }: {
   node: ReactFlowNode,
 }) {
-  return <div className="max-h-128 overflow-y-scroll relative pb-6 pt-4 px-6 flex-auto space-y-1">
+  return <>
     <div className='max-w-4xl w-full space-y-2 p-4'>
       {node.data.params.map((param) => {
         return (<div className="flex flex-col border-b border-white pb-4" key={param.name}>
@@ -35,7 +35,7 @@ export function ParamsComponent({
       })}
     </div>
     {node.data.params.length === 0 && <div className="text-xs text-gray-400">No parameters</div>}
-  </div>;
+  </>;
 }
 
 export function Params ({
