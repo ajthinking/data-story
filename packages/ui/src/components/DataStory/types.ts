@@ -1,13 +1,14 @@
 import { ServerConfig, WebSocketServerConfig } from './clients/ServerConfig';
 import {
+  Application,
   Diagram,
+  type InputObserveConfig,
+  type InputObserver,
+  NodeDescription,
+  type NotifyObserversCallback,
   Param,
   RepeatableParam,
-  type InputObserver,
-  type NotifyObserversCallback,
-  type ReportCallback,
-  type InputObserveConfig,
-  Application, NodeDescription
+  type ReportCallback
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import type { Edge, ReactFlowInstance } from '@xyflow/react';
@@ -53,6 +54,9 @@ export type DataStoryProps = {
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: (options: { run: () => void }) => void;
+  closeNodeSetting?: boolean;
+  selectedNodeData?: ReactFlowNode['data'];
+  onSelectedNode?: (node?: ReactFlowNode) => void;
 }
 
 export type StoreInitOptions = {
@@ -79,4 +83,10 @@ export type RepeatableInputProps = FormCommonProps & {
 export interface FormComponent<TParams extends Param> {
   getComponent: (params: FormCommonProps & {param: TParams}) => React.ReactNode;
   getType: () => string;
+}
+
+export interface NodeSettingsFormProps {
+  node: ReactFlowNode;
+  onClose: (boolean) => void;
+  onUpdateNodeData: (data: ReactFlowNode['data']) => void;
 }
