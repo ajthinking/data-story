@@ -1,12 +1,8 @@
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { InputSchemas, OutputSchemas, Params } from '../modals/nodeSettingsModal/tabs';
 import { useState } from 'react';
-import { useStore } from '../store/store';
-import { shallow } from 'zustand/shallow';
-import { useUpdateNodeInternals } from '@xyflow/react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useEscapeKey } from '../hooks/useEscapeKey';
 
 type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas';
 const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
@@ -15,15 +11,14 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   OutputSchemas: OutputSchemas,
 };
 
-interface NodeSettingsFormProps {
+export interface NodeSettingsFormProps {
   node: ReactFlowNode;
-  close: () => void;
+  onClose: () => void;
+  onUpdateNodeData: (data: ReactFlowNode['data']) => void;
 }
 
-export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, close }) => {
+export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClose, onUpdateNodeData }) => {
   const [tab, setTab] = useState<TabKey>('Params');
-  const { updateNode } = useStore((state) => ({ updateNode: state.updateNode }), shallow);
-  const updateNodeInternals = useUpdateNodeInternals();
 
   const defaultValues = {
     label: node?.data?.label,
@@ -55,18 +50,11 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, close 
         if (param.hasOwnProperty('value')) param.value = value;
       }
 
-      updateNode({
-        ...node,
-        data: newData
-      });
-
-      // Ensure ports are updated
-      updateNodeInternals(node.id);
+      onUpdateNodeData(newData);
     })()
 
-    close()
+    onClose()
   }
-  useEscapeKey(close);
 
   const TabComponent = TAB_COMPONENTS[tab as keyof typeof TAB_COMPONENTS];
 
@@ -87,7 +75,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, close 
             </div>}
             <div
               className="cursor-pointer p-1 ml-auto text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
-              onClick={close}>
+              onClick={onClose}>
               <span className="text-gray-500 h-6 w-6 text-2xl block outline-none focus:outline-none">
                 ×
               </span>
@@ -114,7 +102,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, close 
         <div className="my-2 flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
           <button
             className="text-gray-500 focus:text-gray-800 background-transparent font-bold uppercase px-6 py-2 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            type="button" onClick={close}>
+            type="button" onClick={onClose}>
             Close
           </button>
           {<button
