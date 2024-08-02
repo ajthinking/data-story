@@ -26,14 +26,16 @@ const SettingsIcon = (isActive: boolean) => (
 );
 
 const activities: Activity[] = [
-  { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon },
   { id: 'node', name: 'Node Config', icon: NodeConfigIcon },
+  { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon },
   { id: 'settings', name: 'Settings', icon: SettingsIcon },
 ];
 
 export const ActivityBar = ({
   onActivityChange,
+  onClose,
 }: {
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
   onActivityChange: (activity: string) => void;
 }) => {
   const [activeKey, setActiveKey] = useState<string>(activities[0].id);
@@ -43,6 +45,9 @@ export const ActivityBar = ({
   }, [activeKey, onActivityChange]);
 
   const handleActivityClick = (id: string) => {
+    if (id === activeKey) {
+      onClose((prev) => !prev);
+    }
     setActiveKey(id);
     console.log(`Activity changed to: ${id}`);
   };

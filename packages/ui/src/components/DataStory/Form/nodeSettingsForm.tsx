@@ -106,7 +106,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         <div className="flex items-center justify-end p-4 border-t border-solid ">
           <button
             className="text-gray-500 focus:text-gray-800 background-transparent font-bold uppercase px-6 py-2 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-            type="button" onClick={onClose}>
+            type="button" onClick={() => onClose(true)}>
             Close
           </button>
           {<button

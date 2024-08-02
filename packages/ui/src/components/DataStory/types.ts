@@ -85,9 +85,13 @@ export interface FormComponent<TParams extends Param> {
   getType: () => string;
 }
 
-export interface NodeSettingsFormProps {
+export type NodeSettingsFormProps = {
   node: ReactFlowNode;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
-  activeBar: string;
   onUpdateNodeData: (data: ReactFlowNode['data']) => void;
 }
+
+export type NodeSettingsSidebarProps = {
+  activeBar?: string;
+  isSidebarClose?: boolean;
+} & NodeSettingsFormProps;
