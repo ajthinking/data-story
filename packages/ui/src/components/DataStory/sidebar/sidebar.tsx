@@ -1,19 +1,24 @@
 import { NodeSettingsForm } from '../Form/nodeSettingsForm';
-import { NodeSettingsFormProps } from '../types';
+import { NodeSettingsSidebarProps } from '../types';
+import { SidebarPlaceholder } from './sidebarPlaceholder';
 
-export const Sidebar = (props: Partial<NodeSettingsFormProps>) => {
-  const { node, onClose, onUpdateNodeData} = props;
-  const handleClose = () => {
-    onClose?.(false);
-  }
-
-  console.log(node, 'node')
+export const Sidebar = (props: NodeSettingsSidebarProps) => {
+  const { node, onClose, onUpdateNodeData, activeBar } = props;
   return (
-    <div style={{ height: 'calc(100vh - 75px)'}}>
+    <div style={{ height: 'calc(100vh - 75px)' }}>
+      {/*different activeBar show different sidebar*/}
       {
-        Boolean(node?.id && node?.data)
+        activeBar === 'diagram'
+        && <SidebarPlaceholder content={'todo: show diagram configuration'}/>
+      }
+      {
+        activeBar === 'settings'
+        && <SidebarPlaceholder content={'todo: show diagram settings, including run and add modal features'}/>
+      }
+      {
+        Boolean(node?.id && node?.data) && activeBar === 'node'
           ? <NodeSettingsForm node={node!} onClose={onClose!} onUpdateNodeData={onUpdateNodeData!}/>
-          : <p> click one node </p>
+          : <SidebarPlaceholder content={'Click on a node to see its configuration'}/>
       }
     </div>
   );
