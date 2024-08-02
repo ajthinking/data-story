@@ -53,7 +53,7 @@ export type DataStoryProps = {
   hideToolbar?: boolean
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
-  onInitialize?: (options: { run: () => void }) => void;
+  onInitialize?: (options: {run: () => void}) => void;
   isSidebarClose?: boolean;
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
@@ -66,7 +66,7 @@ export type StoreInitOptions = {
   callback?: DataStoryCallback,
 }
 
-export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig)  => void;
+export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig) => void;
 
 export type FormCommonProps = {
   node: ReactFlowNode;
@@ -80,6 +80,7 @@ export type FormComponentProps = FormCommonProps & {
 export type RepeatableInputProps = FormCommonProps & {
   param: RepeatableParam<Param[]>;
 }
+
 export interface FormComponent<TParams extends Param> {
   getComponent: (params: FormCommonProps & {param: TParams}) => React.ReactNode;
   getType: () => string;
@@ -91,7 +92,7 @@ export type NodeSettingsFormProps = {
   onUpdateNodeData: (data: ReactFlowNode['data']) => void;
 }
 
-export type NodeSettingsSidebarProps = {
+export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   activeBar?: string;
-  isSidebarClose?: boolean;
-} & NodeSettingsFormProps;
+  node?: ReactFlowNode;
+};

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ReactFlowNode } from '../../Node/ReactFlowNode';
 
 type Activity = {
   id: string;
@@ -34,9 +35,11 @@ const activities: Activity[] = [
 export const ActivityBar = ({
   onActivityChange,
   onClose,
+  selectedNode
 }: {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   onActivityChange: (activity: string) => void;
+  selectedNode?: ReactFlowNode;
 }) => {
   const [activeKey, setActiveKey] = useState<string>(activities[0].id);
 
@@ -45,12 +48,22 @@ export const ActivityBar = ({
   }, [activeKey, onActivityChange]);
 
   const handleActivityClick = (id: string) => {
+    // 1. when click the same activity, switch sidebar status
     if (id === activeKey) {
       onClose((prev) => !prev);
+    } else {
+      // 2. when click different activity, show sidebar and switch activity
+      onClose(false);
     }
     setActiveKey(id);
-    console.log(`Activity changed to: ${id}`);
   };
+
+  useEffect(() => {
+    if (selectedNode) {
+      setActiveKey('node');
+      onClose(false);
+    }
+  }, [selectedNode]);
 
   return (
     <aside
