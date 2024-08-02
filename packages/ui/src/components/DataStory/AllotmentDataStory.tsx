@@ -18,16 +18,14 @@ export const AllotmentDataStory = (
 
   return (
     <Allotment>
-      <Allotment.Pane minSize={80} maxSize={80}>
+      <Allotment.Pane minSize={60} maxSize={60}>
         <ActivityBar selectedNode={selectedNode} onActivityChange={setActiveKey} onClose={setIsSidebarClose}/>
       </Allotment.Pane>
-      {
-        !isSidebarClose && <Allotment.Pane minSize={300} maxSize={600}>
-          <Sidebar activeBar={activeKey} node={selectedNode}
-            onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
-        </Allotment.Pane>
-      }
-      <Allotment.Pane snap minSize={200}>
+      <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
+        <Sidebar activeBar={activeKey} node={selectedNode}
+          onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
+      </Allotment.Pane>
+      <Allotment.Pane minSize={300}>
         <DataStory {...props} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode}/>
       </Allotment.Pane>
     </Allotment>
