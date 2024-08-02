@@ -54,7 +54,7 @@ export type DataStoryProps = {
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: (options: { run: () => void }) => void;
-  closeNodeSetting?: boolean;
+  isSidebarClose?: boolean;
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
 }
@@ -87,6 +87,7 @@ export interface FormComponent<TParams extends Param> {
 
 export interface NodeSettingsFormProps {
   node: ReactFlowNode;
-  onClose: (boolean) => void;
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  activeBar: string;
   onUpdateNodeData: (data: ReactFlowNode['data']) => void;
 }

@@ -14,20 +14,22 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 export const AllotmentDataStory = (
   props: DataStoryProps
 ) => {
+  // todo close sidebar
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
-  const [isCloseSidebar, setIsCloseSidebar] = useState(false);
+  const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
+  const [activeKey, setActiveKey] = useState('activity');
 
   return (
     <Allotment>
       <Allotment.Pane minSize={80} maxSize={80}>
-        <ActivityBar/>
+        <ActivityBar onActivityChange={setActiveKey} />
       </Allotment.Pane>
-      <Allotment.Pane minSize={0} maxSize={400}>
-        <Sidebar node={selectedNode} onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsCloseSidebar}/>
+      <Allotment.Pane minSize={300} maxSize={600}>
+        <Sidebar activeBar={activeKey} node={selectedNode} onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
       </Allotment.Pane>
-      <Allotment.Pane snap minSize={400}>
-        <DataStory {...props} selectedNodeData={updateSelectedNodeData} onSelectedNode={setSelectedNode} closeNodeSetting={isCloseSidebar} />
+      <Allotment.Pane snap minSize={200}>
+        <DataStory {...props} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode} isSidebarClose={isSidebarClose} />
       </Allotment.Pane>
     </Allotment>
   )

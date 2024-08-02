@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Activity = {
   id: string;
@@ -31,11 +31,19 @@ const activities: Activity[] = [
   { id: 'settings', name: 'Settings', icon: SettingsIcon },
 ];
 
-export const ActivityBar: React.FC = () => {
-  const [activeActivity, setActiveActivity] = useState<string>(activities[0].id);
+export const ActivityBar = ({
+  onActivityChange,
+}: {
+  onActivityChange: (activity: string) => void;
+}) => {
+  const [activeKey, setActiveKey] = useState<string>(activities[0].id);
+
+  useEffect(() => {
+    onActivityChange(activeKey);
+  }, [activeKey, onActivityChange]);
 
   const handleActivityClick = (id: string) => {
-    setActiveActivity(id);
+    setActiveKey(id);
     console.log(`Activity changed to: ${id}`);
   };
 
@@ -48,10 +56,10 @@ export const ActivityBar: React.FC = () => {
         <button
           key={id}
           title={name}
-          className={`p-2 rounded ${activeActivity === id ? 'bg-blue-500' : 'hover:bg-blue-100'}`}
+          className={`p-2 rounded ${activeKey === id ? 'bg-blue-500' : 'hover:bg-blue-100'}`}
           onClick={() => handleActivityClick(id)}
         >
-          {icon(activeActivity === id)} {/* 调用图标函数，并传入活动状态 */}
+          {icon(activeKey === id)} {/* 调用图标函数，并传入活动状态 */}
         </button>
       ))}
     </aside>
