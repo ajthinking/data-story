@@ -1,5 +1,5 @@
 import { InputSchemas, OutputSchemas, Params } from '../modals/nodeSettingsModal/tabs';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 import { FormProvider, useForm } from 'react-hook-form';
 import { NodeSettingsFormProps } from '../types';
@@ -14,18 +14,24 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
 export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClose, onUpdateNodeData }) => {
   const [tab, setTab] = useState<TabKey>('Params');
 
-  const defaultValues = {
-    label: node?.data?.label,
-    outputs: JSON.stringify(node?.data?.outputs, null, 2),
-    params: node?.data?.params.reduce((acc, param: Param) => {
-      acc[param.name] = param.value;
-      return acc;
-    }, {} as Record<string, ParamValue>),
-  };
+  const defaultValues = useMemo(() => {
+    return  {
+      label: node?.data?.label,
+      outputs: JSON.stringify(node?.data?.outputs, null, 2),
+      params: node?.data?.params.reduce((acc, param: Param) => {
+        acc[param.name] = param.value;
+        return acc;
+      }, {} as Record<string, ParamValue>),
+    };
+  }, [node]);
 
   const form = useForm({
     defaultValues,
   });
+
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [node, defaultValues]);
 
   const saveAndClose = () => {
     form.handleSubmit((submitted: {

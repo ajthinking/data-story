@@ -56,7 +56,7 @@ export type DataStoryProps = {
   onInitialize?: (options: { run: () => void }) => void;
   closeNodeSetting?: boolean;
   selectedNodeData?: ReactFlowNode['data'];
-  onSelectedNode?: (node?: ReactFlowNode) => void;
+  onNodeSelected?: (node?: ReactFlowNode) => void;
 }
 
 export type StoreInitOptions = {
