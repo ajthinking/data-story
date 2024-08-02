@@ -1,4 +1,4 @@
-import { DataStory } from '@data-story/ui'
+import { AllotmentDataStory, DataStory } from '@data-story/ui'
 import {
   Application,
   DiagramBuilder,
@@ -68,16 +68,16 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
   // *************************************
   return (
     <div className="w-full h-1/4">
-      {part === 'MAIN' && <DataStory
+      {part === 'MAIN' && <AllotmentDataStory
         server={{ type: 'JS', app }}
         onInitialize={({ run }) => run()}
         initDiagram={diagram}
       />}
-      {part === 'NESTED_NODE' && <DataStory
+      {part === 'NESTED_NODE' && <AllotmentDataStory
         server={{ type: 'JS', app }}
         initDiagram={nestedNode}
       />}
-      {part === 'MAIN_UNFOLDED' && <DataStory
+      {part === 'MAIN_UNFOLDED' && <AllotmentDataStory
         server={{ type: 'JS', app }}
         initDiagram={
           unfolded.diagram

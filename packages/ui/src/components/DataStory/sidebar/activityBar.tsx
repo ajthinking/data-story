@@ -53,7 +53,7 @@ export const ActivityBar = ({
     <aside
       aria-label="ActivityBar"
       id="default-activity-bar"
-      className="bg-f4f4f4 text-gray-800 flex flex-col items-center py-2 space-y-4 w-50">
+      className="bg-white text-gray-800 flex flex-col items-center py-2 space-y-4 w-50 h-full">
       {activities.map(({ id, name, icon }) => (
         <button
           key={id}

@@ -1,6 +1,6 @@
 import { Application, core, coreNodeProvider, DiagramBuilder, nodes } from '@data-story/core';
 import React from 'react';
-import { DataStory, type DataStoryObservers } from '@data-story/ui';
+import { AllotmentDataStory, DataStory, type DataStoryObservers } from '@data-story/ui';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -76,7 +76,7 @@ export default () => {
     .get();
 
   return (
-    <div className="w-full" style={{ height: '36vh' }}>
+    <div className="w-full" style={{ height: '54vh' }}>
       <Line options={options} data={{
         labels: points.map(p => p.x),
         datasets: [
@@ -94,23 +94,26 @@ export default () => {
           },
         ],
       }} />
-      <DataStory
-        onInitialize={({ run }) => {
-          setPoints([])
-          run()
-        }}
-        initDiagram={diagram}
-        observers={{
-          inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
-          onDataChange: (items) => {
-            setPoints([
-              ...points,
-              ...items,
-            ].slice(-100))
-          },
-        }}
-        server={{ type: 'JS', app }}
-      />
+      <div className={'h-2/3'}>
+        <AllotmentDataStory
+          onInitialize={({ run }) => {
+            setPoints([])
+            run()
+          }}
+          initDiagram={diagram}
+          observers={{
+            inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
+            onDataChange: (items) => {
+              setPoints([
+                ...points,
+                ...items,
+              ].slice(-100))
+            },
+          }}
+          server={{ type: 'JS', app }}
+        />
+      </div>
+
     </div>
   );
 };

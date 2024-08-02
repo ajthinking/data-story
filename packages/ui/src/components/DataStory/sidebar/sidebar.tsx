@@ -4,8 +4,9 @@ import { SidebarPlaceholder } from './sidebarPlaceholder';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const { node, onClose, onUpdateNodeData, activeBar } = props;
+
   return (
-    <div style={{ height: 'calc(100vh - 75px)' }}>
+    <div className={'h-full'}>
       {/*different activeBar show different sidebar*/}
       {
         activeBar === 'diagram'

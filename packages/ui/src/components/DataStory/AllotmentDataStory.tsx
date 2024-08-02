@@ -12,12 +12,12 @@ export const AllotmentDataStory = (
   props: DataStoryProps
 ) => {
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
-  const [isSidebarClose, setIsSidebarClose] = useState(false);
+  const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [activeKey, setActiveKey] = useState('activity');
 
   return (
-    <Allotment>
+    <Allotment className='h-full border-0.5'>
       <Allotment.Pane minSize={60} maxSize={60}>
         <ActivityBar selectedNode={selectedNode} onActivityChange={setActiveKey} onClose={setIsSidebarClose}/>
       </Allotment.Pane>
