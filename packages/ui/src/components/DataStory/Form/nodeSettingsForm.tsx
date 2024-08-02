@@ -73,13 +73,6 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
               className="flex flex-col pr-4 my-2 mt-3 italic flex flex-col align-center justify-center text-sm text-gray-400 font-base tracking widest">
               renamed from {node.data?.computer}
             </div>}
-            {/*<div*/}
-            {/*  className="cursor-pointer p-1 ml-auto text-black float-right text-3xl leading-none font-semibold outline-none focus:outline-none"*/}
-            {/*  onClick={onClose}>*/}
-            {/*  <span className="text-gray-500 h-6 w-6 text-2xl block outline-none focus:outline-none">*/}
-            {/*    ×*/}
-            {/*  </span>*/}
-            {/*</div>*/}
           </div>
         </div>
         {/* ***** TABS ***** */}

@@ -28,8 +28,7 @@ export const AllotmentDataStory = (
         </Allotment.Pane>
       }
       <Allotment.Pane snap minSize={200}>
-        <DataStory {...props} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode}
-          isSidebarClose={isSidebarClose}/>
+        <DataStory {...props} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode}/>
       </Allotment.Pane>
     </Allotment>
   )

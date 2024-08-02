@@ -1,12 +1,11 @@
 import { DataStoryControls } from './dataStoryControls';
-import { useCallback, useEffect, useId, useMemo, useState } from 'react';
-import { ReactFlow, Background, BackgroundVariant, ReactFlowProvider, useUpdateNodeInternals, } from '@xyflow/react';
+import { useCallback, useEffect, useId, useState } from 'react';
+import { Background, BackgroundVariant, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { RunModal } from './modals/runModal/runModal';
 import { AddNodeModal } from './modals/addNodeModal';
 import { StoreSchema, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
-import { NodeSettingsModal } from './modals/nodeSettingsModal/nodeSettingsModal';
 import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
 import { useHotkeys } from './useHotkeys';
@@ -15,7 +14,7 @@ import { DataStoryProps, StoreInitOptions } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDragOver, onDrop } from './onDrop';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
-import { ReactFlowNode } from '../Node/ReactFlowNode';
+import { useSelectedNodeSettings } from './Form/useSelectedNodeSettings';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -59,7 +58,7 @@ export const Workbench = (props: DataStoryProps) => {
   return (
     <>
       <ReactFlowProvider>
-        <Flow {...props} setShowRunModal={setShowRunModal} setShowAddNodeModal={setShowAddNodeModal} />
+        <Flow {...props} setShowRunModal={setShowRunModal} setShowAddNodeModal={setShowAddNodeModal}/>
       </ReactFlowProvider>
 
       {/* Modals */}
@@ -68,55 +67,6 @@ export const Workbench = (props: DataStoryProps) => {
     </>
   );
 };
-
-const useSelectedNodeSettings = ({onSelectedNode, selectedNodeData, closeNodeSetting}: {
-  onSelectedNode?: (node?: ReactFlowNode) => void;
-  selectedNodeData?: ReactFlowNode['data'];
-  closeNodeSetting?: boolean;
-}) => {
-  const selector = (state: StoreSchema) => ({
-    nodes: state.nodes,
-    openNodeModalId: state.openNodeModalId,
-    setOpenNodeModalId: state.setOpenNodeModalId,
-  });
-
-  const {
-    nodes,
-    openNodeModalId,
-    setOpenNodeModalId,
-  } = useStore(selector, shallow);
-
-  const node = useMemo(() => {
-    const node = nodes.find((n) => n.id === openNodeModalId);
-    onSelectedNode?.(node);
-    return node;
-  }, [nodes, openNodeModalId]);
-
-  useEffect(() => {
-    if(closeNodeSetting) {
-      setOpenNodeModalId(null);
-    }
-  },[closeNodeSetting]);
-
-  const { updateNode } = useStore((state) => ({ updateNode: state.updateNode }), shallow);
-  // todo: useUpdateNodeInternals should in the ReactFlowProvider
-  const updateNodeInternals = useUpdateNodeInternals();
-
-  useEffect(() => {
-    if (!node || !selectedNodeData) return;
-    updateNode({
-      ...node,
-      data: selectedNodeData!
-    });
-
-    // Ensure ports are updated
-    updateNodeInternals(node.id);
-  }, [node, selectedNodeData]);
-
-  return {
-    node,
-  }
-}
 
 const Flow = ({
   server,
@@ -128,8 +78,7 @@ const Flow = ({
   onInitialize,
   setShowRunModal,
   setShowAddNodeModal,
-  onSelectedNode,
-  closeNodeSetting,
+  onNodeSelected,
   selectedNodeData
 }: DataStoryProps & {
   setShowRunModal: React.Dispatch<React.SetStateAction<boolean>>,
@@ -158,7 +107,6 @@ const Flow = ({
     onRun,
     setObservers,
     addNodeFromDescription,
-    openNodeModalId
   } = useStore(selector, shallow);
   const id = useId()
   const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
@@ -174,9 +122,8 @@ const Flow = ({
     }
   }, [isExecutePostRenderEffect, onRun, onInitialize]);
 
-  const {node} =  useSelectedNodeSettings({
-    onSelectedNode: onSelectedNode,
-    closeNodeSetting: closeNodeSetting,
+  useSelectedNodeSettings({
+    onSelectedNode: onNodeSelected,
     selectedNodeData: selectedNodeData,
   });
 

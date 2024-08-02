@@ -54,7 +54,6 @@ export type DataStoryProps = {
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: (options: {run: () => void}) => void;
-  isSidebarClose?: boolean;
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
 }
