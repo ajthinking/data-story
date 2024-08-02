@@ -61,7 +61,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
   return (
     <FormProvider {...form}>
       <div
-        className="shadow-lg relative flex flex-col justify-between w-full bg-white outline-none focus:outline-none">
+        className="shadow-lg relative flex flex-col justify-between w-full bg-white outline-none focus:outline-none h-full">
         {/* ***** HEADER ***** */}
         <div className="flex items-start px-8 py-2">
           <input
@@ -103,7 +103,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         </div>
 
         {/* ***** FOOTER ***** */}
-        <div className="my-2 flex items-center justify-end p-6 border-t border-solid ">
+        <div className="flex items-center justify-end p-4 border-t border-solid ">
           <button
             className="text-gray-500 focus:text-gray-800 background-transparent font-bold uppercase px-6 py-2 text-xs outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
             type="button" onClick={onClose}>
