@@ -1,6 +1,6 @@
 import { Application, core, coreNodeProvider, DiagramBuilder, nodes } from '@data-story/core';
 import React from 'react';
-import { AllotmentDataStory, DataStory, type DataStoryObservers } from '@data-story/ui';
+import { DataStory  } from '@data-story/ui';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -76,7 +76,7 @@ export default () => {
     .get();
 
   return (
-    <div className="w-full" style={{ height: '54vh' }}>
+    <div className="w-full" style={{ height: '60vh' }}>
       <Line options={options} data={{
         labels: points.map(p => p.x),
         datasets: [
@@ -94,8 +94,8 @@ export default () => {
           },
         ],
       }} />
-      <div className={'h-2/3'}>
-        <AllotmentDataStory
+      <div className={'h-1/2'}>
+        <DataStory
           onInitialize={({ run }) => {
             setPoints([])
             run()

@@ -1,4 +1,4 @@
-export { DataStory, AllotmentDataStory } from './components/DataStory';
+export { DataWorkbenchContainer, DataStory } from './components/DataStory';
 export { DropDown } from './components/DropDown';
 export { SaveIcon } from './components/DataStory/icons/saveIcon'
 export { OpenIcon } from './components/DataStory/icons/openIcon'

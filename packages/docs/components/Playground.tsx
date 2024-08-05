@@ -1,6 +1,6 @@
 import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React from 'react';
-import { AllotmentDataStory } from '@data-story/ui';
+import { DataStory } from '@data-story/ui';
 import { loadDiagram, LocalStorageKey,  SaveComponent } from './Save';
 import { ServerRequest } from '../const';
 
@@ -14,7 +14,7 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
 
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
-      <AllotmentDataStory
+      <DataStory
         slotComponents={[
           <SaveComponent/>,
         ]}
