@@ -71,7 +71,6 @@ export const Workbench = (props: DataStoryProps) => {
 const Flow = ({
   server,
   initDiagram,
-  callback,
   hideToolbar = false,
   slotComponents,
   observers,
@@ -143,7 +142,7 @@ const Flow = ({
             rfInstance,
             server,
             initDiagram,
-            callback,
+            callback: onInitialize,
           });
           setIsExecutePostRenderEffect(true);
         }}

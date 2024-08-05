@@ -46,14 +46,10 @@ export type SocketClientOptions = ClientOptions & {
 export type DataStoryProps = {
   server?: ServerConfig
   initDiagram?: Diagram
-  /**
-   * @deprecated Use `onInitialize` instead
-   */
-  callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
-  onInitialize?: (options: {run: () => void}) => void;
+  onInitialize?: DataStoryCallback;
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
 }
