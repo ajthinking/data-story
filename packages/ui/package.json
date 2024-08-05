@@ -26,7 +26,8 @@
     "ci:unit": "yarn run -T vitest run --config vitest.config.ts --passWithNoTests",
     "test:unit": "yarn run -T vitest --config vitest.config.ts --passWithNoTests",
     "test:component": "yarn run -T cypress run --project ../../ ../../cypress.config.ts --component --spec 'src/**/*.cy.tsx'",
-    "test": "yarn run ci:unit && yarn run test:component"
+    "test": "yarn run ci:unit && yarn run test:component",
+    "tinker": "npx ts-node ./src/tinker.ts"
   },
   "release-it": {
     "git": false,
