@@ -6,7 +6,7 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const { node, onClose, onUpdateNodeData, activeBar } = props;
 
   return (
-    <div className={'h-full'}>
+    <div className='h-full bg-white text-gray-500'>
       {/*different activeBar show different sidebar*/}
       {
         activeBar === 'diagram'
