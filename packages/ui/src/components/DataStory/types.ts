@@ -1,13 +1,14 @@
 import { ServerConfig, WebSocketServerConfig } from './clients/ServerConfig';
 import {
+  Application,
   Diagram,
+  type InputObserveConfig,
+  type InputObserver,
+  NodeDescription,
+  type NotifyObserversCallback,
   Param,
   RepeatableParam,
-  type InputObserver,
-  type NotifyObserversCallback,
-  type ReportCallback,
-  type InputObserveConfig,
-  Application, NodeDescription
+  type ReportCallback
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import type { Edge, ReactFlowInstance } from '@xyflow/react';
@@ -45,14 +46,13 @@ export type SocketClientOptions = ClientOptions & {
 export type DataStoryProps = {
   server?: ServerConfig
   initDiagram?: Diagram
-  /**
-   * @deprecated Use `onInitialize` instead
-   */
-  callback?: DataStoryCallback
   hideToolbar?: boolean
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
-  onInitialize?: (options: { run: () => void }) => void;
+  onInitialize?: DataStoryCallback;
+  selectedNodeData?: ReactFlowNode['data'];
+  onNodeSelected?: (node?: ReactFlowNode) => void;
+  selectedNode?: ReactFlowNode;
 }
 
 export type StoreInitOptions = {
@@ -62,7 +62,7 @@ export type StoreInitOptions = {
   callback?: DataStoryCallback,
 }
 
-export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig)  => void;
+export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig) => void;
 
 export type FormCommonProps = {
   node: ReactFlowNode;
@@ -76,7 +76,19 @@ export type FormComponentProps = FormCommonProps & {
 export type RepeatableInputProps = FormCommonProps & {
   param: RepeatableParam<Param[]>;
 }
+
 export interface FormComponent<TParams extends Param> {
   getComponent: (params: FormCommonProps & {param: TParams}) => React.ReactNode;
   getType: () => string;
 }
+
+export type NodeSettingsFormProps = {
+  node: ReactFlowNode;
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
+  onUpdateNodeData: (data: ReactFlowNode['data']) => void;
+}
+
+export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
+  activeBar?: string;
+  node?: ReactFlowNode;
+};

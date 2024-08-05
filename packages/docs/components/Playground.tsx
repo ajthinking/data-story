@@ -13,7 +13,7 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
   const [initDiagram] = React.useState<Diagram>(diagram);
 
   return (
-    <div className="w-full" style={{ height: '100vh' }} data-cy="playground">
+    <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         slotComponents={[
           <SaveComponent/>,
