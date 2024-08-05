@@ -3,7 +3,7 @@ import { Workbench } from './Workbench';
 import { DataStoryProvider } from './store/store';
 import { DataStoryProps } from './types';
 
-export const DataWorkbenchContainer = (props : DataStoryProps) => {
+export const WorkbenchContainer = (props : DataStoryProps) => {
   return <DataStoryProvider>
     <Workbench {...props} />
   </DataStoryProvider>;

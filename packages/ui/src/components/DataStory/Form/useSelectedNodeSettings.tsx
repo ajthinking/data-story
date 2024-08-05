@@ -5,9 +5,10 @@ import { useLatest } from 'ahooks';
 import { useEffect, useMemo } from 'react';
 import { useUpdateNodeInternals } from '@xyflow/react';
 
-export const useSelectedNodeSettings = ({ onSelectedNode, selectedNodeData }: {
+export const useSelectedNodeSettings = ({ onSelectedNode, selectedNodeData, selectedNode }: {
   onSelectedNode?: (node?: ReactFlowNode) => void;
   selectedNodeData?: ReactFlowNode['data'];
+  selectedNode?: ReactFlowNode
 }) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -18,6 +19,7 @@ export const useSelectedNodeSettings = ({ onSelectedNode, selectedNodeData }: {
   const {
     nodes,
     openNodeModalId,
+    setOpenNodeModalId
   } = useStore(selector, shallow);
 
   const latestNodes = useLatest(nodes);
@@ -29,10 +31,19 @@ export const useSelectedNodeSettings = ({ onSelectedNode, selectedNodeData }: {
   const updateNodeInternals = useUpdateNodeInternals();
 
   useEffect(() => {
-    if (!node) return;
+    if(!node ) {
+      return;
+    }
     onSelectedNode?.(node);
   }, [node]);
 
+  useEffect(() => {
+    if (!selectedNode) {
+      setOpenNodeModalId(null);
+    }
+  }, [selectedNode]);
+
+  // the useEffect is triggered only when the node configuration is saved
   useEffect(() => {
     if (!node || !selectedNodeData) return;
     updateNode({

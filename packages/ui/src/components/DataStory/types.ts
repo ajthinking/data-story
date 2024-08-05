@@ -52,6 +52,7 @@ export type DataStoryProps = {
   onInitialize?: DataStoryCallback;
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
+  selectedNode?: ReactFlowNode;
 }
 
 export type StoreInitOptions = {

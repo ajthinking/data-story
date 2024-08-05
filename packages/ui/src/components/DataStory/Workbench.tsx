@@ -78,7 +78,8 @@ const Flow = ({
   setShowRunModal,
   setShowAddNodeModal,
   onNodeSelected,
-  selectedNodeData
+  selectedNodeData,
+  selectedNode
 }: DataStoryProps & {
   setShowRunModal: React.Dispatch<React.SetStateAction<boolean>>,
   setShowAddNodeModal: React.Dispatch<React.SetStateAction<boolean>>
@@ -124,6 +125,7 @@ const Flow = ({
   useSelectedNodeSettings({
     onSelectedNode: onNodeSelected,
     selectedNodeData: selectedNodeData,
+    selectedNode: selectedNode,
   });
 
   return (

@@ -4,8 +4,8 @@ import { DataStoryProps } from './types';
 import 'allotment/dist/style.css';
 import { ActivityBar } from './sidebar/activityBar';
 import { Sidebar } from './sidebar/sidebar';
-import { DataWorkbenchContainer } from './DataWorkbenchContainer';
-import { useState } from 'react';
+import { WorkbenchContainer } from './WorkbenchContainer';
+import { useEffect, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 
 export const DataStory = (
@@ -15,6 +15,12 @@ export const DataStory = (
   const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [activeKey, setActiveKey] = useState('activity');
+
+  useEffect(() => {
+    if (activeKey !== 'node') {
+      setSelectedNode(undefined);
+    }
+  }, [activeKey]);
 
   return (
     <Allotment className='h-full border-0.5'>
@@ -26,7 +32,7 @@ export const DataStory = (
           onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
       </Allotment.Pane>
       <Allotment.Pane minSize={300}>
-        <DataWorkbenchContainer {...props} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode}/>
+        <WorkbenchContainer {...props} selectedNode={selectedNode} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode}/>
       </Allotment.Pane>
     </Allotment>
   )
