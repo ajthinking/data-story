@@ -3,30 +3,38 @@ import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { DiagramIcon } from '../icons/diagramIcon';
 import { ConfigIcon } from '../icons/configIcon';
 import { NodeIcon } from '../icons/nodeIcon';
+import { AddNodeIcon } from '../icons/addNodeIcon';
+import { IconProps } from '../types';
+import { RunIcon } from '../icons/runIcon';
+import { SaveIcon } from '../icons/saveIcon';
 
 type Activity = {
   id: string;
   name: string;
-  icon: (isActive: boolean) => JSX.Element;
+  icon: React.FC<IconProps>;
+  position: 'top' | 'bottom';
 };
 
-const activities: Activity[] = [
-  { id: 'node', name: 'Node Config', icon: NodeIcon },
-  { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon },
-  { id: 'settings', name: 'Settings', icon: ConfigIcon },
-  { id: 'experiment', name: 'Experiment', icon: ConfigIcon },
-];
+const activityGroups: Activity[] = [
+  { id: 'node', name: 'Node Config', icon: NodeIcon, position: 'top' },
+  { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon, position: 'top' },
+  { id: 'settings', name: 'Settings', icon: ConfigIcon, position: 'top' },
+  { id: 'experiment', name: 'Experiment', icon: ConfigIcon, position: 'top' },
+  { id: 'addNode', name: 'Add Node', icon: AddNodeIcon, position: 'bottom' },
+  { id: 'run', name: 'Run Diagram', icon: RunIcon, position: 'bottom' },
+  { id: 'save', name: 'Save Diagram', icon: SaveIcon, position: 'bottom' }
+]
 
 export const ActivityBar = ({
   onActivityChange,
   onClose,
-  selectedNode
+  selectedNode,
 }: {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   onActivityChange: (activity: string) => void;
   selectedNode?: ReactFlowNode;
 }) => {
-  const [activeKey, setActiveKey] = useState<string>(activities[0].id);
+  const [activeKey, setActiveKey] = useState<string>(activityGroups[0].id);
 
   useEffect(() => {
     onActivityChange(activeKey);
@@ -50,24 +58,29 @@ export const ActivityBar = ({
     }
   }, [selectedNode]);
 
+  const renderActivityButtons = (position: 'top' | 'bottom') => {
+    return activityGroups
+      .filter((activity) => activity.position === position)
+      .map(({ id, name, icon }) => (
+        <button
+          key={id}
+          title={name} // Tooltips are provided by the title attribute.
+          className={`p-2 rounded ${activeKey === id ? 'bg-blue-500' : 'hover:bg-blue-100'}`}
+          onClick={() => handleActivityClick(id)}
+        >
+          {icon({ isActive: activeKey === id })}
+        </button>
+      ));
+  };
+
   return (
     <aside
       aria-label="ActivityBar"
       id="default-activity-bar"
-      className="bg-gray-50 text-gray-800 flex flex-col items-center h-full"
+      className="bg-white text-gray-800 flex flex-col items-center justify-between py-2 space-y-4 w-50 h-full"
     >
-      {activities.map(({ id, name, icon }) => (
-        <button
-          key={id}
-          title={name}
-          className={`py-1 w-full ${activeKey === id ? 'border-l-2 border-blue-500 bg-blue-500' : 'hover:bg-blue-100'}`}
-          onClick={() => handleActivityClick(id)}
-        >
-          <div className="p-2 flex justify-center items-center">
-            {icon(activeKey === id)}
-          </div>
-        </button>
-      ))}
+      <div className="col-start">{renderActivityButtons('top')}</div>
+      <div className="col-end">{renderActivityButtons('bottom')}</div>
     </aside>
   );
 };
