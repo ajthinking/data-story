@@ -24,7 +24,7 @@ const nodeTypes = {
   tableNodeComponent: TableNodeComponent,
 };
 
-export const Workbench = (props: DataStoryProps) => {
+export const DataStoryCanvas = (props: DataStoryProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     openNodeModalId: state.openNodeModalId,
