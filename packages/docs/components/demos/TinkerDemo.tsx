@@ -25,8 +25,6 @@ export default () => {
     .add('Create')
     .get()
 
-  console.log(diagram)
-
   diagram.params = [
     str({
       name: 'message',

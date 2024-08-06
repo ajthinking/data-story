@@ -54,6 +54,7 @@
     "codemirror": "^6.0.1",
     "concurrently": "^8.2.1",
     "markdown-it": "^13.0.2",
+    "react-arborist": "^3.4.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "rxjs": "^7.8.1",

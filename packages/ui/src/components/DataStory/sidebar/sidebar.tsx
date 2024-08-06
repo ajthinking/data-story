@@ -1,5 +1,6 @@
 import { NodeSettingsForm } from '../Form/nodeSettingsForm';
 import { NodeSettingsSidebarProps } from '../types';
+import { Experiment } from './experiment';
 import { SidebarPlaceholder } from './sidebarPlaceholder';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
@@ -8,6 +9,10 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
   return (
     <div className='h-full bg-white text-gray-500'>
       {/*different activeBar show different sidebar*/}
+      {
+        activeBar === 'experiment'
+        && <Experiment />
+      }
       {
         activeBar === 'diagram'
         && <SidebarPlaceholder content={'todo: show diagram configuration'}/>

@@ -14,6 +14,7 @@ const activities: Activity[] = [
   { id: 'node', name: 'Node Config', icon: NodeIcon },
   { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon },
   { id: 'settings', name: 'Settings', icon: ConfigIcon },
+  { id: 'experiment', name: 'Experiment', icon: ConfigIcon },
 ];
 
 export const ActivityBar = ({
