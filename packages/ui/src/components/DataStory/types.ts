@@ -92,3 +92,7 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   activeBar?: string;
   node?: ReactFlowNode;
 };
+
+export type IconProps = {
+  isActive?: boolean;
+};

@@ -1,4 +1,8 @@
-export function NodeIcon (isActive = false) {
+import { IconProps } from '../types';
+
+export const NodeIcon: React.FC<IconProps> = ({
+  isActive = false
+}) => {
   return (
     <svg className={`w-6 h-6 ${isActive ? 'fill-white' : 'fill-blue-500'}`} viewBox="0 0 1024 1024" version="1.1"
       xmlns="http://www.w3.org/2000/svg"
