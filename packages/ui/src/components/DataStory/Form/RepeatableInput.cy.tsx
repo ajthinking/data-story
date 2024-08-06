@@ -1,4 +1,4 @@
-import { DataStoryProvider } from '../store/store';
+import { DataStoryCanvasProvider } from '../store/store';
 import { ReactFlowProvider } from '@xyflow/react';
 import { RepeatableInput } from './RepeatableInput';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -51,13 +51,13 @@ const RepeatableInputWithForm = () => {
     }
   ];
 
-  return (<DataStoryProvider>
+  return (<DataStoryCanvasProvider>
     <ReactFlowProvider>
       <FormProvider {...mockForm}>
         <RepeatableInput node={mockNode} param={mockParam}/>
       </FormProvider>
     </ReactFlowProvider>
-  </DataStoryProvider>)
+  </DataStoryCanvasProvider>)
 }
 
 function mountRepeatableInput() {

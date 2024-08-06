@@ -4,9 +4,10 @@ import { DataStoryProps } from './types';
 import 'allotment/dist/style.css';
 import { ActivityBar } from './sidebar/activityBar';
 import { Sidebar } from './sidebar/sidebar';
-import { WorkbenchContainer } from './WorkbenchContainer';
 import { useEffect, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
+import { DataStoryCanvasProvider } from './store/store';
+import { DataStoryCanvas } from './DataStoryCanvas';
 
 export const DataStory = (
   props: DataStoryProps
@@ -32,7 +33,9 @@ export const DataStory = (
           onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
       </Allotment.Pane>
       <Allotment.Pane minSize={300}>
-        <WorkbenchContainer {...props} selectedNode={selectedNode} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode}/>
+        <DataStoryCanvasProvider>
+          <DataStoryCanvas {...props} selectedNode={selectedNode} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode}/>
+        </DataStoryCanvasProvider>
       </Allotment.Pane>
     </Allotment>
   )

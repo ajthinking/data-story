@@ -315,12 +315,12 @@ export const DataStoryContext = React.createContext<ReturnType<typeof createStor
 // @ts-ignore: UseBoundStore is an overloaded function, so the type of params here cannot be accurately inferred.
 export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
   const store = React.useContext(DataStoryContext);
-  if (!store) throw new Error('useStore must be used within a DataStoryProvider');
+  if (!store) throw new Error('useStore must be used within a DataStoryCanvasProvider');
   // @ts-ignore
   return store(...params);
 };
 
-export const DataStoryProvider = ({ children }: {children: React.ReactNode}) => {
+export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {
   const [useLocalStore] = useState(() => createStore());
 
   return <DataStoryContext.Provider value={useLocalStore}>

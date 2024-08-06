@@ -1,6 +1,6 @@
 import TableNodeComponent from './TableNodeComponent';
 import * as store from '../DataStory/store/store';
-import { DataStoryProvider } from '../DataStory/store/store';
+import { DataStoryCanvasProvider } from '../DataStory/store/store';
 import { ReactFlowProvider } from '@xyflow/react';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
@@ -25,11 +25,11 @@ const id = 'Table.1';
 
 const mountTableNodeComponent = () => {
   cy.mount(
-    <DataStoryProvider>
+    <DataStoryCanvasProvider>
       <ReactFlowProvider>
         <TableNodeComponent id={id} data={data} selected={false}/>
       </ReactFlowProvider>
-    </DataStoryProvider>
+    </DataStoryCanvasProvider>
   );
 }
 
