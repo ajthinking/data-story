@@ -16,6 +16,8 @@ export const DataStory = (
   const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [activeKey, setActiveKey] = useState('activity');
+  const [showRunModal, setShowRunModal] = useState(false);
+  const [showAddNodeModal, setShowAddNodeModal] = useState(false);
 
   useEffect(() => {
     if (activeKey !== 'node') {
@@ -29,12 +31,20 @@ export const DataStory = (
         <ActivityBar selectedNode={selectedNode} onActivityChange={setActiveKey} onClose={setIsSidebarClose}/>
       </Allotment.Pane>
       <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
-        <Sidebar activeBar={activeKey} node={selectedNode}
+        <Sidebar
+          showAddNodeModal={showAddNodeModal}
+          showRunModal={showRunModal}
+          activeBar={activeKey} node={selectedNode}
           onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
       </Allotment.Pane>
       <Allotment.Pane minSize={300}>
         <DataStoryCanvasProvider>
-          <DataStoryCanvas {...props} selectedNode={selectedNode} selectedNodeData={updateSelectedNodeData} onNodeSelected={setSelectedNode}/>
+          <DataStoryCanvas {...props}
+            setShowRunModal={setShowRunModal}
+            setShowAddNodeModal={setShowAddNodeModal}
+            selectedNode={selectedNode}
+            selectedNodeData={updateSelectedNodeData}
+            onNodeSelected={setSelectedNode}/>
         </DataStoryCanvasProvider>
       </Allotment.Pane>
     </Allotment>

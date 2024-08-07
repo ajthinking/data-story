@@ -4,7 +4,7 @@ import { Experiment } from './experiment';
 import { SidebarPlaceholder } from './sidebarPlaceholder';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
-  const { node, onClose, onUpdateNodeData, activeBar } = props;
+  const { node, onClose, onUpdateNodeData, activeBar, showAddNodeModal, showRunModal } = props;
 
   return (
     <div className='h-full bg-white text-gray-500'>

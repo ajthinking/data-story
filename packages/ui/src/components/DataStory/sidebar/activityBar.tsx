@@ -31,7 +31,7 @@ export const ActivityBar = ({
   onActivityChange: (activity: string) => void;
   selectedNode?: ReactFlowNode;
 }) => {
-  const [activeKey, setActiveKey] = useState<string>(activityGroups[0].id);
+  const [activeKey, setActiveKey] = useState<string>('');
 
   useEffect(() => {
     onActivityChange(activeKey);

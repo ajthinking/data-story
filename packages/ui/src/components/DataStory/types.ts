@@ -53,6 +53,9 @@ export type DataStoryProps = {
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
   selectedNode?: ReactFlowNode;
+  setShowRunModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowAddNodeModal: React.Dispatch<React.SetStateAction<boolean>>
+
 }
 
 export type StoreInitOptions = {
@@ -91,6 +94,8 @@ export type NodeSettingsFormProps = {
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   activeBar?: string;
   node?: ReactFlowNode;
+  showRunModal: boolean;
+  showAddNodeModal: boolean;
 };
 
 export type IconProps = {

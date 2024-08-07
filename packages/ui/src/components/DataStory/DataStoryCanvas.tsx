@@ -39,31 +39,27 @@ export const DataStoryCanvas = (props: DataStoryProps) => {
     traverseNodes,
   } = useStore(selector, shallow);
 
-  const [showRunModal, setShowRunModal] = useState(false);
-  const [showAddNodeModal, setShowAddNodeModal] = useState(false);
-  const [showConfigModal, setShowConfigModal] = useState(false);
-
-  useHotkeys({
-    nodes,
-    openNodeModalId,
-    setShowRunModal,
-    setOpenNodeModalId,
-    showConfigModal,
-    showRunModal,
-    showAddNodeModal,
-    traverseNodes,
-    setShowAddNodeModal,
-  });
+  // useHotkeys({
+  //   nodes,
+  //   openNodeModalId,
+  //   setShowRunModal,
+  //   setOpenNodeModalId,
+  //   showConfigModal,
+  //   showRunModal,
+  //   showAddNodeModal,
+  //   traverseNodes,
+  //   setShowAddNodeModal,
+  // });
 
   return (
     <>
       <ReactFlowProvider>
-        <Flow {...props} setShowRunModal={setShowRunModal} setShowAddNodeModal={setShowAddNodeModal}/>
+        <Flow {...props}/>
       </ReactFlowProvider>
 
       {/* Modals */}
-      <RunModal showModal={showRunModal} setShowModal={setShowRunModal}/>
-      <AddNodeModal showModal={showAddNodeModal} setShowModal={setShowAddNodeModal}/>
+      {/*<RunModal showModal={showRunModal} setShowModal={setShowRunModal}/>*/}
+      {/*<AddNodeModal showModal={showAddNodeModal} setShowModal={setShowAddNodeModal}/>*/}
     </>
   );
 };
@@ -79,11 +75,8 @@ const Flow = ({
   setShowAddNodeModal,
   onNodeSelected,
   selectedNodeData,
-  selectedNode
-}: DataStoryProps & {
-  setShowRunModal: React.Dispatch<React.SetStateAction<boolean>>,
-  setShowAddNodeModal: React.Dispatch<React.SetStateAction<boolean>>
-}) => {
+  selectedNode,
+}: DataStoryProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     edges: state.edges,
