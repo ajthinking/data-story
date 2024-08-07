@@ -3,10 +3,7 @@ import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { DiagramIcon } from '../icons/diagramIcon';
 import { ConfigIcon } from '../icons/configIcon';
 import { NodeIcon } from '../icons/nodeIcon';
-import { AddNodeIcon } from '../icons/addNodeIcon';
 import { IconProps } from '../types';
-import { RunIcon } from '../icons/runIcon';
-import { SaveIcon } from '../icons/saveIcon';
 
 type Activity = {
   id: string;
@@ -80,7 +77,7 @@ export const ActivityBar = ({
       className="bg-white text-gray-800 flex flex-col items-center justify-between py-2 space-y-4 w-50 h-full"
     >
       <div className="col-start">{renderActivityButtons('top')}</div>
-      <div className="col-end">{renderActivityButtons('bottom')}</div>
+      {/*<div className="col-end">{renderActivityButtons('bottom')}</div>*/}
     </aside>
   );
 };
