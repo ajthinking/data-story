@@ -1,5 +1,4 @@
 import { shallow } from 'zustand/shallow';
-import { Modal } from '../../modal';
 import { StoreSchema, useStore } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import FillMode from './FillMode';
@@ -23,10 +22,9 @@ export const RunModalContent = (props: RunModalContentProps) => {
     onRun: state.onRun,
     params: state.params,
     setParams: state.setParams,
-    serverConfig: state.serverConfig,
   });
 
-  const { onRun, serverConfig, params, setParams } = useStore(selector, shallow);
+  const { onRun, params, setParams } = useStore(selector, shallow);
 
   const handleRun = (newParams) => {
     setParams(newParams);
@@ -35,7 +33,7 @@ export const RunModalContent = (props: RunModalContentProps) => {
   };
 
   return (
-    <Modal title={'Run'} setShowModal={setShowModal}>
+    <div>
       <div className="flex flex-col space-y-2" data-cy="run-modal">
         <div className="flex flex-col space-y-2 text-xs text-gray-500">
           {/* ***** TABS ***** */}
@@ -56,15 +54,15 @@ export const RunModalContent = (props: RunModalContentProps) => {
         </div>
 
         {defineMode
-          ? (<DefineMode params={params} setDefineMode={setDefineMode} />)
-          : (<FillMode params={params} setParams={setParams} handleRun={handleRun} />)}
+          ? (<DefineMode params={params} setDefineMode={setDefineMode}/>)
+          : (<FillMode params={params} setParams={setParams} handleRun={handleRun}/>)}
       </div>
-    </Modal>
+    </div>
   );
 };
 
-export const RunModal = ({ showModal, setShowModal }: { showModal: boolean; setShowModal: (show: boolean) => void }) => {
+export const RunModal = ({ showModal, setShowModal }: {showModal: boolean; setShowModal: (show: boolean) => void}) => {
   if (!showModal) return null;
 
-  return <RunModalContent setShowModal={setShowModal} />;
+  return <RunModalContent setShowModal={setShowModal}/>;
 };

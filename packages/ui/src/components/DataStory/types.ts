@@ -96,6 +96,8 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   node?: ReactFlowNode;
   showRunModal: boolean;
   showAddNodeModal: boolean;
+  setShowRunModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setShowAddNodeModal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type IconProps = {

@@ -2,16 +2,31 @@ import { NodeSettingsForm } from '../Form/nodeSettingsForm';
 import { NodeSettingsSidebarProps } from '../types';
 import { Experiment } from './experiment';
 import { SidebarPlaceholder } from './sidebarPlaceholder';
+import { RunModalContent } from '../modals/runModal/runModal';
+import { AddNodeModalContentProps } from '../modals/addNodeModal';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
-  const { node, onClose, onUpdateNodeData, activeBar, showAddNodeModal, showRunModal } = props;
+  const {
+    node, onClose, onUpdateNodeData, activeBar,
+    showAddNodeModal, showRunModal, setShowAddNodeModal, setShowRunModal
+  } = props;
+
+  console.log(showRunModal, 'showRunModal');
 
   return (
     <div className='h-full bg-white text-gray-500'>
+      {/*show add node modal and run modal*/}
+      {showRunModal &&
+        <div>
+          <RunModalContent setShowModal={setShowRunModal}/>
+        </div>
+      }
+      {showAddNodeModal && <AddNodeModalContentProps setShowModal={setShowAddNodeModal}/>}
+
       {/*different activeBar show different sidebar*/}
       {
         activeBar === 'experiment'
-        && <Experiment />
+        && <Experiment/>
       }
       {
         activeBar === 'diagram'
