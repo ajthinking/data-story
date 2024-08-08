@@ -9,7 +9,7 @@ export const SaveIcon: React.FC<IconProps> = ({ isActive = false }) => {
       viewBox="0 0 24 24"
       strokeWidth={2.0}
       stroke="currentColor"
-      className={`w-6 h-6 ${isActive ? 'text-gray-700 fill-white' : 'fill-blue-500'}`}
+      className={`w-6 h-6 ${isActive ? 'text-gray-700 fill-white' : 'fill-gray-400'}`}
     >
       <path
         strokeLinecap="round"

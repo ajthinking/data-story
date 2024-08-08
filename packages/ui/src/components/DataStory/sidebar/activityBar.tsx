@@ -17,9 +17,6 @@ const activityGroups: Activity[] = [
   { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon, position: 'top' },
   { id: 'settings', name: 'Settings', icon: ConfigIcon, position: 'top' },
   { id: 'experiment', name: 'Experiment', icon: ConfigIcon, position: 'top' },
-  { id: 'addNode', name: 'Add Node', icon: AddNodeIcon, position: 'bottom' },
-  { id: 'run', name: 'Run Diagram', icon: RunIcon, position: 'bottom' },
-  { id: 'save', name: 'Save Diagram', icon: SaveIcon, position: 'bottom' }
 ]
 
 export const ActivityBar = ({

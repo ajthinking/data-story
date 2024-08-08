@@ -2,11 +2,6 @@ import { shallow } from 'zustand/shallow';
 import { Modal } from '../../modal';
 import { StoreSchema, useStore } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
-import { Params } from '../nodeSettingsModal/tabs';
-import { Node, Param, ParamValue, Port } from '@data-story/core';
-import { ReactFlowNode } from '../../../Node/ReactFlowNode';
-import { useForm } from 'react-hook-form';
 import FillMode from './FillMode';
 import DefineMode from './DefineMode';
 
@@ -73,19 +68,3 @@ export const RunModal = ({ showModal, setShowModal }: { showModal: boolean; setS
 
   return <RunModalContent setShowModal={setShowModal} />;
 };
-
-{/* <div className="flex w-full justify-center items-center space-x-2">
-<button
-  ref={runButtonReference}
-  data-cy="run-modal-button"
-  className={clsx(
-    'flex w-full items-center justify-center space-y-4 mt-4 px-16 py-2',
-    'bg-blue-500 hover:bg-blue-600',
-    'font-mono text-xs text-gray-50 uppercase',
-    'rounded'
-  )}
-  onClick={() => setDefineMode(!defineMode)}
->
-  {defineMode ? 'Fill Params' : 'Define Params'}
-</button>
-</div> */}
