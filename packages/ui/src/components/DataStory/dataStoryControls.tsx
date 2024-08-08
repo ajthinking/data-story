@@ -27,8 +27,8 @@ export function DataStoryControls({
   slotComponents
 }: {
   hideToolbar?: boolean;
-  setShowRunModal: (showRunModal: boolean) => void;
-  setShowAddNodeModal: (showAddNodeModal: boolean) => void;
+  setShowRunModal: (showRunModal: string) => void;
+  setShowAddNodeModal: (showAddNodeModal: string) => void;
   slotComponents?: React.ReactNode[];
 }) {
   const selector = (state: StoreSchema) => ({
@@ -53,12 +53,12 @@ export function DataStoryControls({
     <ControlButton
       title="Run"
       aria-label="Run"
-      onClick={() => setShowRunModal(true)}
+      onClick={() => setShowRunModal('run')}
     >
       <RunIcon/>
     </ControlButton>
     <ControlButton
-      onClick={() => setShowAddNodeModal(true)}
+      onClick={() => setShowAddNodeModal('addNode')}
       title="Add Node"
       data-cy="add-node-button"
       aria-label="Add Node"

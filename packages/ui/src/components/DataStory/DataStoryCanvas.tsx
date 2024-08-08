@@ -2,13 +2,10 @@ import { DataStoryControls } from './dataStoryControls';
 import { useCallback, useEffect, useId, useState } from 'react';
 import { Background, BackgroundVariant, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
-import { RunModal } from './modals/runModal/runModal';
-import { AddNodeModal } from './modals/addNodeModal';
 import { StoreSchema, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
 import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
-import { useHotkeys } from './useHotkeys';
 import TableNodeComponent from '../Node/TableNodeComponent';
 import { DataStoryProps, StoreInitOptions } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
@@ -56,10 +53,6 @@ export const DataStoryCanvas = (props: DataStoryProps) => {
       <ReactFlowProvider>
         <Flow {...props}/>
       </ReactFlowProvider>
-
-      {/* Modals */}
-      {/*<RunModal showModal={showRunModal} setShowModal={setShowRunModal}/>*/}
-      {/*<AddNodeModal showModal={showAddNodeModal} setShowModal={setShowAddNodeModal}/>*/}
     </>
   );
 };
@@ -71,8 +64,7 @@ const Flow = ({
   slotComponents,
   observers,
   onInitialize,
-  setShowRunModal,
-  setShowAddNodeModal,
+  setSidebarKey,
   onNodeSelected,
   selectedNodeData,
   selectedNode,
@@ -156,8 +148,8 @@ const Flow = ({
         <DataStoryControls
           slotComponents={slotComponents}
           hideToolbar={hideToolbar}
-          setShowRunModal={setShowRunModal}
-          setShowAddNodeModal={setShowAddNodeModal}
+          setShowRunModal={setSidebarKey}
+          setShowAddNodeModal={setSidebarKey}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>

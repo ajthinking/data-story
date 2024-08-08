@@ -15,50 +15,41 @@ export const DataStory = (
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
-  const [activeKey, setActiveKey] = useState('activity');
-  const [showRunModal, setShowRunModal] = useState(false);
-  const [showAddNodeModal, setShowAddNodeModal] = useState(false);
+  const [sidebarKey, setSidebarKey] = useState('');
 
   useEffect(() => {
-    if (activeKey !== 'node') {
+    if (sidebarKey !== 'node') {
       setSelectedNode(undefined);
     }
-  }, [activeKey]);
+  }, [sidebarKey]);
 
   useEffect(() => {
-    if (showRunModal || showAddNodeModal) {
-      setActiveKey('');
+    if (!sidebarKey) {
+      setIsSidebarClose(true);
+    } else {
       setIsSidebarClose(false);
     }
-  }, [showRunModal, showAddNodeModal]);
-
-  useEffect(() => {
-    if (!!activeKey) {
-      setShowRunModal(false);
-      setShowAddNodeModal(false);
-    }
-  }, [activeKey]);
-  console.log('DataStory is sidebar close', isSidebarClose);
+  }, [sidebarKey]);
 
   return (
     <DataStoryCanvasProvider>
       <Allotment className='h-full border-0.5'>
       <Allotment.Pane minSize={44} maxSize={44}>
-          <ActivityBar selectedNode={selectedNode} onActivityChange={setActiveKey} onClose={setIsSidebarClose}/>
+          <ActivityBar
+            selectedNode={selectedNode}
+            setActiveKey={setSidebarKey}
+            activeKey={sidebarKey}
+            onClose={setIsSidebarClose}/>
         </Allotment.Pane>
         <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
           <Sidebar
-            showAddNodeModal={showAddNodeModal}
-            showRunModal={showRunModal}
-            setShowAddNodeModal={setShowAddNodeModal}
-            setShowRunModal={setShowRunModal}
-            activeBar={activeKey} node={selectedNode}
+            sidebarKey={sidebarKey}
+            setSidebarKey={setSidebarKey} node={selectedNode}
             onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
         </Allotment.Pane>
         <Allotment.Pane minSize={300}>
           <DataStoryCanvas {...props}
-            setShowRunModal={setShowRunModal}
-            setShowAddNodeModal={setShowAddNodeModal}
+            setSidebarKey={setSidebarKey}
             selectedNode={selectedNode}
             selectedNodeData={updateSelectedNodeData}
             onNodeSelected={setSelectedNode}/>

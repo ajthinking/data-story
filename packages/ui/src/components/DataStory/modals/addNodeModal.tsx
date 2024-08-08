@@ -5,7 +5,7 @@ import { StoreSchema, useStore } from '../store/store';
 import clsx from 'clsx';
 
 export interface AddNodeModalContentProps {
-  setShowModal: (show: boolean) => void
+  setShowModal: (show: string) => void
 }
 
 export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
@@ -27,7 +27,7 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
 
   const doAddNode = (nodeDescription: NodeDescription) => {
     addNodeFromDescription(nodeDescription);
-    setShowModal(false);
+    setShowModal('');
   };
 
   const matchingNodes = availableNodes
@@ -92,7 +92,7 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
 }
 export const AddNodeModal = ({ showModal, setShowModal }: {
   showModal: boolean,
-  setShowModal: (show: boolean) => void
+  setShowModal: (show: string) => void
 }) => {
   if (!showModal) return null;
 

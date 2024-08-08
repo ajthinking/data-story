@@ -7,40 +7,33 @@ import { AddNodeModalContentProps } from '../modals/addNodeModal';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const {
-    node, onClose, onUpdateNodeData, activeBar,
-    showAddNodeModal, showRunModal, setShowAddNodeModal, setShowRunModal
+    node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey
   } = props;
 
-  console.log(showRunModal, 'showRunModal');
+  const renderContent = () => {
+    switch (sidebarKey) {
+      case 'run':
+        return <RunModalContent setShowModal={setSidebarKey} />;
+      case 'addNode':
+        return <AddNodeModalContentProps setShowModal={setSidebarKey} />;
+      case 'experiment':
+        return <Experiment />;
+      case 'diagram':
+        return <SidebarPlaceholder content={'todo: show diagram configuration'} />;
+      case 'settings':
+        return <SidebarPlaceholder content={'todo: show diagram settings, including run and add modal features'} />;
+      case 'node':
+        return node?.id && node?.data
+          ? <NodeSettingsForm node={node} onClose={onClose} onUpdateNodeData={onUpdateNodeData} />
+          : <SidebarPlaceholder content={'Click on a node to see its configuration'} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className='h-full bg-white text-gray-500'>
-      {/*show add node modal and run modal*/}
-      {showRunModal &&
-        <div>
-          <RunModalContent setShowModal={setShowRunModal}/>
-        </div>
-      }
-      {showAddNodeModal && <AddNodeModalContentProps setShowModal={setShowAddNodeModal}/>}
-
-      {/*different activeBar show different sidebar*/}
-      {
-        activeBar === 'experiment'
-        && <Experiment/>
-      }
-      {
-        activeBar === 'diagram'
-        && <SidebarPlaceholder content={'todo: show diagram configuration'}/>
-      }
-      {
-        activeBar === 'settings'
-        && <SidebarPlaceholder content={'todo: show diagram settings, including run and add modal features'}/>
-      }
-      {
-        Boolean(node?.id && node?.data) && activeBar === 'node'
-          ? <NodeSettingsForm node={node!} onClose={onClose!} onUpdateNodeData={onUpdateNodeData!}/>
-          : <SidebarPlaceholder content={'Click on a node to see its configuration'}/>
-      }
+      {renderContent()}
     </div>
   );
 }

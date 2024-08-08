@@ -6,13 +6,14 @@ import DefineMode from './DefineMode';
 import { SidebarWrap } from '../../sidebar/sidebarWrap';
 
 export interface RunModalContentProps {
-  setShowModal: (show: boolean) => void;
+  setShowModal: (show: string) => void;
 }
 
 export const RunModalContent = (props: RunModalContentProps) => {
   const [defineMode, setDefineMode] = useState(false);
   const { setShowModal }: RunModalContentProps = props;
 
+  console.log('coming run modal content props');
   const runButtonReference = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -30,7 +31,8 @@ export const RunModalContent = (props: RunModalContentProps) => {
   const handleRun = (newParams) => {
     setParams(newParams);
     onRun();
-    setShowModal(false);
+    console.log('running');
+    setShowModal('');
   };
 
   return (
@@ -62,7 +64,7 @@ export const RunModalContent = (props: RunModalContentProps) => {
   );
 };
 
-export const RunModal = ({ showModal, setShowModal }: {showModal: boolean; setShowModal: (show: boolean) => void}) => {
+export const RunModal = ({ showModal, setShowModal }: {showModal: boolean; setShowModal: (show: string) => void}) => {
   if (!showModal) return null;
 
   return <RunModalContent setShowModal={setShowModal}/>;

@@ -20,20 +20,16 @@ const activityGroups: Activity[] = [
 ]
 
 export const ActivityBar = ({
-  onActivityChange,
+  setActiveKey,
   onClose,
+  activeKey,
   selectedNode,
 }: {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
-  onActivityChange: (activity: string) => void;
+  setActiveKey: (activity: string) => void;
+  activeKey: string;
   selectedNode?: ReactFlowNode;
 }) => {
-  const [activeKey, setActiveKey] = useState<string>('');
-
-  useEffect(() => {
-    onActivityChange(activeKey);
-  }, [activeKey, onActivityChange]);
-
   const handleActivityClick = (id: string) => {
     // 1. when click the same activity, switch sidebar status
     if (id === activeKey) {
