@@ -1,10 +1,13 @@
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
 import { DiagramBuilderV3 } from './DiagramBuilderV3';
+import { ExecutorFactory } from './ExecutorFactory';
+import { InputObserverController } from './InputObserverController';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
 import { Computer } from './types/Computer';
 import { ServiceProvider } from './types/ServiceProvider';
+import { Storage } from './types/Storage';
 
 export class Application {
   providers: ServiceProvider[] = [];
@@ -61,6 +64,19 @@ export class Application {
     return new DiagramBuilderV3(
       Object.values(this.registry.computers)
     );
+  }
+
+  getExecutor({ diagram, storage, inputObserverController}: {
+    diagram: Diagram;
+    storage: Storage;
+    inputObserverController?: InputObserverController;
+  }) {
+    return ExecutorFactory.create({
+      diagram,
+      registry: this.registry,
+      storage,
+      inputObserverController
+    })
   }
 
   getRegistry() {

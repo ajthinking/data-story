@@ -42,9 +42,8 @@ export const run: MessageHandler<RunMessage> = async(
     sendMsg
   );
 
-  const executor = ExecutorFactory.create({
+  const executor = app.getExecutor({
     diagram,
-    registry: app.getRegistry(),
     storage,
     inputObserverController
   });

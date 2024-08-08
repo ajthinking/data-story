@@ -23,7 +23,7 @@ app.register([
 ... that executes your diagram with real time feedback:
 ```ts
 // async generator magic ✨
-const executor = ExecutorFactory.create(diagram)
+const executor = app.getExecutor(diagram)
 ```
 
 ## Tell me more
