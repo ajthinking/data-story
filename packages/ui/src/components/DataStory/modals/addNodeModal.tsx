@@ -51,19 +51,21 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
     });
 
   return (
-    <div className='h-full w-20'>
-      1111
-      <div data-cy="add-node-modal">
+    <div className='h-full p-2'>
+      <div data-cy="add-node-modal" className="m-2">
         <input
           data-cy='add-node-modal-input'
-          className=' bg-white mb-2 text-gray-500 font-mono text-sm border border-gray-100 rounded px-4 py-4'
+          className='w-80 bg-white text-gray-500 font-mono text-sm border border-gray-100 rounded p-4'
           placeholder={'Type format, action, resource ...'}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           ref={inputReference}
         ></input>
       </div>
-      <div className='group grid grid-cols-2 gap-2' data-cy='add-node-modal-node-list'>
+      <div
+        style={{height: 'calc(100vh - 160px)'}}
+        className='group grid grid-cols-2 gap-2 overflow-y-auto'
+        data-cy='add-node-modal-node-list'>
         {matchingNodes.map((nodeDescription: NodeDescription) => {
           return (
             <button
@@ -77,7 +79,7 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}
             >
-              <div className='text-gray-500 text-sm'>
+              <div className='text-gray-500 text-sm overflow-hidden'>
                 <span className='text-indigo-500 font-mono'>{nodeDescription.category || 'Core'}::</span>
                 {nodeDescription.label || nodeDescription.name}
               </div>

@@ -3,6 +3,7 @@ import { StoreSchema, useStore } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import FillMode from './FillMode';
 import DefineMode from './DefineMode';
+import { SidebarWrap } from '../../sidebar/sidebarWrap';
 
 export interface RunModalContentProps {
   setShowModal: (show: boolean) => void;
@@ -33,26 +34,26 @@ export const RunModalContent = (props: RunModalContentProps) => {
   };
 
   return (
-    <div>
-      <div className="flex flex-col space-y-2" data-cy="run-modal">
-        <div className="flex flex-col space-y-2 text-xs text-gray-500">
-          {/* ***** TABS ***** */}
-          <div className="mx-4 flex space-x-8 text-xxs uppercase text-gray-400">
-            <div
-              onClick={() => setDefineMode(false)}
-              className={`pb-2 hover:text-gray-500 cursor-pointer ${!defineMode && 'border-b-2 border-blue-400'}`}
-            >
+    <div className="flex flex-col space-y-2" data-cy="run-modal">
+      <div className="flex flex-col space-y-2 text-xs text-gray-500">
+        {/* ***** TABS ***** */}
+        <div className="mx-4 flex space-x-8 text-xxs uppercase text-gray-400">
+          <div
+            onClick={() => setDefineMode(false)}
+            className={`pb-2 hover:text-gray-500 cursor-pointer ${!defineMode && 'border-b-2 border-blue-400'}`}
+          >
               Fill
-            </div>
-            <div
-              onClick={() => setDefineMode(true)}
-              className={`pb-2 hover:text-gray-500 cursor-pointer ${defineMode && 'border-b-2 border-blue-400'}`}
-            >
+          </div>
+          <div
+            onClick={() => setDefineMode(true)}
+            className={`pb-2 hover:text-gray-500 cursor-pointer ${defineMode && 'border-b-2 border-blue-400'}`}
+          >
               Define
-            </div>
           </div>
         </div>
+      </div>
 
+      <div className="p-5">
         {defineMode
           ? (<DefineMode params={params} setDefineMode={setDefineMode}/>)
           : (<FillMode params={params} setParams={setParams} handleRun={handleRun}/>)}
