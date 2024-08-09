@@ -67,7 +67,7 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
                 'flex justify-between items-center px-4 py-2',
                 'text-base font-bold text-gray-400 cursor-pointer',
                 'border border-gray-300 shadow',
-                'bg-gray-100 hover:bg-slate-200'
+                'bg-gray-100 hover:bg-slate-200 max-h-16'
               )}
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}
@@ -83,11 +83,3 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
     </div>
   );
 }
-// export const AddNodeModal = ({ showModal, setShowModal }: {
-//   showModal: boolean,
-//   setShowModal: (show: string) => void
-// }) => {
-//   if (!showModal) return null;
-//
-//   return (<AddNodeModalContentProps setShowModal={setShowModal}/>)
-// };

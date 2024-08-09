@@ -2,8 +2,8 @@ import { NodeSettingsForm } from '../Form/nodeSettingsForm';
 import { NodeSettingsSidebarProps } from '../types';
 import { Experiment } from './experiment';
 import { SidebarPlaceholder } from './sidebarPlaceholder';
-import { RunModalContent } from '../modals/runModal/runModal';
-import { AddNodeModalContentProps } from '../modals/addNodeModal';
+import { RunModalContent } from '../modals/runModal/runForm';
+import { AddNodeModalContentProps } from '../modals/addNodeForm';
 import { NodeDescription } from '@data-story/core';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {

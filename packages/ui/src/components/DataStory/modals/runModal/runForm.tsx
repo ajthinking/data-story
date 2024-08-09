@@ -55,9 +55,3 @@ export const RunModalContent = (props: RunModalContentProps) => {
     </div>
   );
 };
-
-// export const RunModal = ({ showModal, setShowModal }: {showModal: boolean; setShowModal: (show: string) => void}) => {
-//   if (!showModal) return null;
-//
-//   return <RunModalContent setShowModal={setShowModal}/>;
-// };
