@@ -2,8 +2,9 @@ import { ControlButton, Controls } from '@xyflow/react';
 import { RunIcon } from './icons/runIcon';
 import { AddNodeIcon } from './icons/addNodeIcon';
 import { Diagram } from '@data-story/core';
-import { StoreSchema, useStore } from './store/store';
+import { useStore } from './store/store';
 import React, { useMemo } from 'react';
+import { StoreSchema } from './types';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;

@@ -70,7 +70,6 @@ export const ActivityBar = ({
       className="bg-white text-gray-800 flex flex-col items-center justify-between py-2 space-y-4 w-50 h-full"
     >
       <div className="col-start">{renderActivityButtons('top')}</div>
-      {/*<div className="col-end">{renderActivityButtons('bottom')}</div>*/}
     </aside>
   );
 };

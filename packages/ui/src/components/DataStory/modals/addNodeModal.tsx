@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import { NodeDescription } from '@data-story/core';
-import { StoreSchema, useStore } from '../store/store';
+import { useStore } from '../store/store';
 import clsx from 'clsx';
+import { StoreSchema } from '../types';
 
 export interface AddNodeModalContentProps {
   setShowModal: (show: string) => void
