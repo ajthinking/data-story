@@ -55,7 +55,8 @@ export type DataStoryProps = {
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
   selectedNode?: ReactFlowNode;
-  setSidebarKey?: React.Dispatch<React.SetStateAction<string>>
+  setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
+  sidebarKey?: string;
 }
 
 export type StoreInitOptions = {

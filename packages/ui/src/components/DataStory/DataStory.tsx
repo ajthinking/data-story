@@ -53,6 +53,7 @@ export const DataStory = (
           <DataStoryCanvas {...props}
             ref={partialStoreRef}
             setSidebarKey={setSidebarKey}
+            sidebarKey={sidebarKey}
             selectedNode={selectedNode}
             selectedNodeData={updateSelectedNodeData}
             onNodeSelected={setSelectedNode}/>

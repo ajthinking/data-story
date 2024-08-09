@@ -44,12 +44,12 @@ export function useHotkeys({
       const enter = event.code === 'Enter';
 
       // Ensure no modal is already open
-      if ([
-        openNodeModalId,
-        showConfigModal,
-        showRunModal,
-        showAddNodeModal,
-      ].find(Boolean)) return;
+      // if ([
+      //   openNodeModalId,
+      //   showConfigModal,
+      //   showRunModal,
+      //   showAddNodeModal,
+      // ].find(Boolean)) return;
 
       // Open modal!
       if (shiftR) setShowRunModal(true);
@@ -82,8 +82,8 @@ export function useHotkeys({
 
       // Ensure no modal is already open
       if ([
-        openNodeModalId,
-        showConfigModal,
+        // openNodeModalId,
+        // showConfigModal,
         showRunModal,
         showAddNodeModal,
       ].find(Boolean)) return;

@@ -259,7 +259,6 @@ export const useGetStore = (ref: Ref<unknown>) => {
   });
   const { onRun, addNodeFromDescription, availableNodes } = useStore(selector, shallow);
 
-  console.log(availableNodes, 'availableNodes 111');
   useImperativeHandle(ref, () => {
     return ({
       onRun,

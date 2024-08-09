@@ -14,8 +14,6 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
 
-  console.log(availableNodes, 'available nodes')
-  console.log('coming add node modal content props');
   useEffect(() => {
     inputReference?.current?.focus();
   }, []);

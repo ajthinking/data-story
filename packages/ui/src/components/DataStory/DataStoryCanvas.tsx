@@ -12,6 +12,7 @@ import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDragOver, onDrop } from './onDrop';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { useSelectedNodeSettings } from './Form/useSelectedNodeSettings';
+import { useHotkeys } from './useHotkeys';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -29,6 +30,7 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
     traverseNodes: state.traverseNodes,
   });
   useGetStore(ref);
+  const {setSidebarKey, sidebarKey} = props;
 
   const {
     nodes,
@@ -37,17 +39,22 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
     traverseNodes,
   } = useStore(selector, shallow);
 
-  // useHotkeys({
-  //   nodes,
-  //   openNodeModalId,
-  //   setShowRunModal,
-  //   setOpenNodeModalId,
-  //   showConfigModal,
-  //   showRunModal,
-  //   showAddNodeModal,
-  //   traverseNodes,
-  //   setShowAddNodeModal,
-  // });
+  console.log(nodes, 'nodes');
+  useHotkeys({
+    nodes,
+    openNodeModalId,
+    setShowRunModal:(show: boolean) => {
+      setSidebarKey!(show ? 'run' : '');
+    },
+    setOpenNodeModalId,
+    showConfigModal: sidebarKey === 'node',
+    showRunModal: sidebarKey === 'run',
+    showAddNodeModal: sidebarKey === 'addNode',
+    traverseNodes,
+    setShowAddNodeModal: (show: boolean) => {
+      setSidebarKey!(show ? 'addNode' : '');
+    },
+  });
 
   return (
     <>
