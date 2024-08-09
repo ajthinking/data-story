@@ -25,7 +25,7 @@ export const DataStory = (
 
   return (
     <Allotment className='h-full border-0.5'>
-      <Allotment.Pane minSize={60} maxSize={60}>
+      <Allotment.Pane minSize={44} maxSize={44}>
         <ActivityBar selectedNode={selectedNode} onActivityChange={setActiveKey} onClose={setIsSidebarClose}/>
       </Allotment.Pane>
       <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
