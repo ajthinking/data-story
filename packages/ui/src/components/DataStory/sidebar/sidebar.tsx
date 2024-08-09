@@ -4,6 +4,7 @@ import { Experiment } from './experiment';
 import { SidebarPlaceholder } from './sidebarPlaceholder';
 import { RunModalContent } from '../modals/runModal/runModal';
 import { AddNodeModalContentProps } from '../modals/addNodeModal';
+import { NodeDescription } from '@data-story/core';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const {
@@ -14,9 +15,14 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const renderContent = () => {
     switch (sidebarKey) {
       case 'run':
-        return <RunModalContent onRun={() => partialStoreRef.current?.onRun?.()} setShowModal={setSidebarKey} />;
+        return <RunModalContent
+          onRun={() => partialStoreRef.current?.onRun?.()}
+          setShowModal={setSidebarKey} />;
       case 'addNode':
-        return <AddNodeModalContentProps setShowModal={setSidebarKey} />;
+        return <AddNodeModalContentProps
+          availableNodes={partialStoreRef.current?.availableNodes || []}
+          addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
+          setShowModal={setSidebarKey} />;
       case 'experiment':
         return <Experiment />;
       case 'diagram':

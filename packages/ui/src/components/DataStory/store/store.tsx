@@ -8,7 +8,7 @@ import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param }
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig, WebSocketServerConfig } from '../clients/ServerConfig';
-import React, { useImperativeHandle, useState } from 'react';
+import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
@@ -251,18 +251,22 @@ export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
 };
 
 // https://react.dev/reference/react/useImperativeHandle
-export const useGetStore = (ref) => {
+export const useGetStore = (ref: Ref<unknown>) => {
   const selector = (state: StoreSchema) => ({
     onRun: state.onRun,
+    addNodeFromDescription: state.addNodeFromDescription,
+    availableNodes: state.availableNodes
   });
-  const { onRun } = useStore(selector, shallow);
+  const { onRun, addNodeFromDescription, availableNodes } = useStore(selector, shallow);
 
+  console.log(availableNodes, 'availableNodes 111');
   useImperativeHandle(ref, () => {
-    console.log(ref, 'ref', onRun, 'onRun');
     return ({
       onRun,
+      addNodeFromDescription,
+      availableNodes
     });
-  }, []);
+  }, [availableNodes, onRun, addNodeFromDescription]);
 }
 
 export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {

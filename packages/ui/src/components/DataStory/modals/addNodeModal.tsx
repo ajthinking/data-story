@@ -1,30 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
-import { shallow } from 'zustand/shallow';
 import { NodeDescription } from '@data-story/core';
-import { useStore } from '../store/store';
 import clsx from 'clsx';
 import { StoreSchema } from '../types';
 
 export interface AddNodeModalContentProps {
-  setShowModal: (show: string) => void
+  setShowModal: (show: string) => void;
+  addNodeFromDescription: StoreSchema['addNodeFromDescription'];
+  availableNodes: NodeDescription[];
 }
 
 export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
-  const { setShowModal }: AddNodeModalContentProps = props;
+  const { setShowModal, availableNodes, addNodeFromDescription }: AddNodeModalContentProps = props;
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
 
+  console.log(availableNodes, 'available nodes')
   console.log('coming add node modal content props');
   useEffect(() => {
     inputReference?.current?.focus();
   }, []);
-
-  const selector = (state: StoreSchema) => ({
-    addNodeFromDescription: state.addNodeFromDescription,
-    availableNodes: state.availableNodes,
-  });
-
-  const { addNodeFromDescription, availableNodes } = useStore(selector, shallow);
 
   const doAddNode = (nodeDescription: NodeDescription) => {
     addNodeFromDescription(nodeDescription);
@@ -91,11 +85,11 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
     </div>
   );
 }
-export const AddNodeModal = ({ showModal, setShowModal }: {
-  showModal: boolean,
-  setShowModal: (show: string) => void
-}) => {
-  if (!showModal) return null;
-
-  return (<AddNodeModalContentProps setShowModal={setShowModal}/>)
-};
+// export const AddNodeModal = ({ showModal, setShowModal }: {
+//   showModal: boolean,
+//   setShowModal: (show: string) => void
+// }) => {
+//   if (!showModal) return null;
+//
+//   return (<AddNodeModalContentProps setShowModal={setShowModal}/>)
+// };
