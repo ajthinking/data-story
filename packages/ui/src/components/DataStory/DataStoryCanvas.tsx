@@ -1,13 +1,13 @@
 import { DataStoryControls } from './dataStoryControls';
-import { useCallback, useEffect, useId, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useId, useState } from 'react';
 import { Background, BackgroundVariant, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
-import { StoreSchema, useStore } from './store/store';
+import { useGetStore, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
 import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
 import TableNodeComponent from '../Node/TableNodeComponent';
-import { DataStoryProps, StoreInitOptions } from './types';
+import { DataStoryProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDragOver, onDrop } from './onDrop';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
@@ -21,13 +21,14 @@ const nodeTypes = {
   tableNodeComponent: TableNodeComponent,
 };
 
-export const DataStoryCanvas = (props: DataStoryProps) => {
+export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     openNodeModalId: state.openNodeModalId,
     setOpenNodeModalId: state.setOpenNodeModalId,
     traverseNodes: state.traverseNodes,
   });
+  useGetStore(ref);
 
   const {
     nodes,
@@ -55,7 +56,7 @@ export const DataStoryCanvas = (props: DataStoryProps) => {
       </ReactFlowProvider>
     </>
   );
-};
+});
 
 const Flow = ({
   server,
@@ -148,8 +149,8 @@ const Flow = ({
         <DataStoryControls
           slotComponents={slotComponents}
           hideToolbar={hideToolbar}
-          setShowRunModal={setSidebarKey}
-          setShowAddNodeModal={setSidebarKey}
+          setShowRunModal={setSidebarKey!}
+          setShowAddNodeModal={setSidebarKey!}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>

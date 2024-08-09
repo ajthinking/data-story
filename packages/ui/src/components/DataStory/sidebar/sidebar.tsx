@@ -7,13 +7,14 @@ import { AddNodeModalContentProps } from '../modals/addNodeModal';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const {
-    node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey
+    node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
+    partialStoreRef
   } = props;
 
   const renderContent = () => {
     switch (sidebarKey) {
       case 'run':
-        return <RunModalContent setShowModal={setSidebarKey} />;
+        return <RunModalContent onRun={() => partialStoreRef.current?.onRun?.()} setShowModal={setSidebarKey} />;
       case 'addNode':
         return <AddNodeModalContentProps setShowModal={setSidebarKey} />;
       case 'experiment':

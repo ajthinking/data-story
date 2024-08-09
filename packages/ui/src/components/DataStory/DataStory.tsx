@@ -1,21 +1,22 @@
 import './../../styles/globals.css';
 import { Allotment } from 'allotment';
-import { DataStoryProps } from './types';
+import { DataStoryProps, StoreSchema } from './types';
 import 'allotment/dist/style.css';
 import { ActivityBar } from './sidebar/activityBar';
 import { Sidebar } from './sidebar/sidebar';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 
 export const DataStory = (
-  props: Omit<DataStoryProps, 'setShowAddNodeModal' | 'setShowRunModal'>
+  props: Omit<DataStoryProps,'setSidebarKey'>
 ) => {
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState('');
+  const partialStoreRef = useRef<Partial<StoreSchema>>(null);
 
   useEffect(() => {
     if (sidebarKey !== 'node') {
@@ -43,12 +44,14 @@ export const DataStory = (
         </Allotment.Pane>
         <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
           <Sidebar
+            partialStoreRef={partialStoreRef}
             sidebarKey={sidebarKey}
             setSidebarKey={setSidebarKey} node={selectedNode}
             onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
         </Allotment.Pane>
         <Allotment.Pane minSize={300}>
           <DataStoryCanvas {...props}
+            ref={partialStoreRef}
             setSidebarKey={setSidebarKey}
             selectedNode={selectedNode}
             selectedNodeData={updateSelectedNodeData}

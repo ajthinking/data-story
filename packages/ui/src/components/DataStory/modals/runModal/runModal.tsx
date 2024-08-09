@@ -1,37 +1,29 @@
-import { shallow } from 'zustand/shallow';
-import { StoreSchema, useStore } from '../../store/store';
 import { useEffect, useRef, useState } from 'react';
 import FillMode from './FillMode';
 import DefineMode from './DefineMode';
-import { SidebarWrap } from '../../sidebar/sidebarWrap';
+import { Param } from '@data-story/core';
+import { StoreSchema } from '../../types';
 
 export interface RunModalContentProps {
   setShowModal: (show: string) => void;
+  onRun: StoreSchema['onRun']
 }
 
 export const RunModalContent = (props: RunModalContentProps) => {
   const [defineMode, setDefineMode] = useState(false);
-  const { setShowModal }: RunModalContentProps = props;
+  const [params, setParams] = useState<Param[]>([]);
+  const { setShowModal, onRun }: RunModalContentProps = props;
 
-  console.log('coming run modal content props');
+  console.log('coming run modal content props', onRun);
   const runButtonReference = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     runButtonReference?.current?.focus();
   }, []);
 
-  const selector = (state: StoreSchema) => ({
-    onRun: state.onRun,
-    params: state.params,
-    setParams: state.setParams,
-  });
-
-  const { onRun, params, setParams } = useStore(selector, shallow);
-
-  const handleRun = (newParams) => {
+  const handleRun = (newParams: Param[]) => {
     setParams(newParams);
     onRun();
-    console.log('running');
     setShowModal('');
   };
 
@@ -57,15 +49,15 @@ export const RunModalContent = (props: RunModalContentProps) => {
 
       <div className="p-5">
         {defineMode
-          ? (<DefineMode params={params} setDefineMode={setDefineMode}/>)
+          ? (<DefineMode params={params} setParams={setParams} setDefineMode={setDefineMode}/>)
           : (<FillMode params={params} setParams={setParams} handleRun={handleRun}/>)}
       </div>
     </div>
   );
 };
 
-export const RunModal = ({ showModal, setShowModal }: {showModal: boolean; setShowModal: (show: string) => void}) => {
-  if (!showModal) return null;
-
-  return <RunModalContent setShowModal={setShowModal}/>;
-};
+// export const RunModal = ({ showModal, setShowModal }: {showModal: boolean; setShowModal: (show: string) => void}) => {
+//   if (!showModal) return null;
+//
+//   return <RunModalContent setShowModal={setShowModal}/>;
+// };

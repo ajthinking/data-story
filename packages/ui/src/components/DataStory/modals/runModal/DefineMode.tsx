@@ -1,17 +1,6 @@
-import { StoreSchema, useStore } from '../../store/store';
-import { shallow } from 'zustand/shallow';
 import { createDefaultStringable } from '@data-story/core';
 
-const DefineMode = ({ params, setDefineMode }) => {
-  const selector = (state: StoreSchema) => ({
-    onRun: state.onRun,
-    params: state.params,
-    setParams: state.setParams,
-    serverConfig: state.serverConfig,
-  });
-
-  const { setParams } = useStore(selector, shallow);
-
+const DefineMode = ({ params, setParams, setDefineMode }) => {
   const sampleParam = createDefaultStringable({
     name: 'sampleParam',
     label: 'sampleParam',
