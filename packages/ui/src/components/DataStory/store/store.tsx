@@ -1,91 +1,21 @@
 import { StoreApi, UseBoundStore } from 'zustand';
 import { createWithEqualityFn } from 'zustand/traditional';
 
-import {
-  applyEdgeChanges,
-  applyNodeChanges,
-  Connection,
-  Edge,
-  EdgeChange,
-  NodeChange,
-  OnConnect,
-  OnEdgesChange,
-  OnNodesChange,
-  ReactFlowInstance,
-} from '@xyflow/react';
+import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeChange, } from '@xyflow/react';
 
 import { SocketClient } from '../clients/SocketClient';
-import {
-  createDataStoryId,
-  Diagram,
-  LinkGuesser,
-  Node,
-  NodeDescription,
-  Param
-} from '@data-story/core';
+import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
-import { ServerClient } from '../clients/ServerClient';
 import { JsClient } from '../clients/JsClient';
 import { ServerConfig, WebSocketServerConfig } from '../clients/ServerConfig';
-import React, { useState } from 'react';
+import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
 import { createObservers } from './createObservers';
-import { DataStoryObservers, ObserverMap, StoreInitOptions, StoreInitServer } from '../types';
-
-export type StoreSchema = {
-  /** The main reactflow instance */
-  rfInstance: StoreInitOptions['rfInstance'] | undefined;
-  toDiagram: () => Diagram;
-
-  /** Addable Nodes */
-  availableNodes: NodeDescription[],
-  setAvailableNodes: (nodes: NodeDescription[]) => void,
-
-  /** The Nodes */
-  nodes: ReactFlowNode[];
-  updateNode: (node: ReactFlowNode) => void;
-  addNode: (node: ReactFlowNode) => void;
-  addNodeFromDescription: (nodeDescription: NodeDescription) => void;
-  onNodesChange: OnNodesChange;
-  setNodes: (nodes: ReactFlowNode[]) => void;
-  selectNode: (nodeId: string) => void;
-  traverseNodes: (direction: Direction) => void;
-
-  /** The Edges */
-  edges: Edge[];
-  onEdgesChange: OnEdgesChange;
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  setEdges: (edges: Edge[]) => void;
-  connect: OnConnect;
-
-  /** Global Params */
-  params: Param[],
-  setParams: (params: Param[]) => void;
-
-  /** The Server and its config */
-  serverConfig: ServerConfig;
-  server: null | ServerClient;
-  initServer: StoreInitServer;
-
-  /** When DataStory component initializes */
-  onInit: (options: StoreInitOptions) => void;
-
-  updateDiagram: (diagram: Diagram) => void;
-
-  /** Run the diagram */
-  onRun: () => void;
-
-  /** Modals */
-  openNodeModalId: string | null;
-  setOpenNodeModalId: (id: string | null) => void;
-
-  /** observerMap are used to monitor data changes in the node */
-  observerMap: ObserverMap;
-  setObservers: (key: string, observers?: DataStoryObservers) => void;
-};
+import { DataStoryObservers, StoreInitOptions, StoreSchema } from '../types';
+import { shallow } from 'zustand/shallow';
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
   // DEFAULTS
@@ -319,6 +249,24 @@ export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
   // @ts-ignore
   return store(...params);
 };
+
+// https://react.dev/reference/react/useImperativeHandle
+export const useGetStore = (ref: Ref<unknown>) => {
+  const selector = (state: StoreSchema) => ({
+    onRun: state.onRun,
+    addNodeFromDescription: state.addNodeFromDescription,
+    availableNodes: state.availableNodes
+  });
+  const { onRun, addNodeFromDescription, availableNodes } = useStore(selector, shallow);
+
+  useImperativeHandle(ref, () => {
+    return ({
+      onRun,
+      addNodeFromDescription,
+      availableNodes
+    });
+  }, [availableNodes, onRun, addNodeFromDescription]);
+}
 
 export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {
   const [useLocalStore] = useState(() => createStore());

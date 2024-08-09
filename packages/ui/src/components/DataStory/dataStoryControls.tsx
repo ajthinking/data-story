@@ -2,8 +2,9 @@ import { ControlButton, Controls } from '@xyflow/react';
 import { RunIcon } from './icons/runIcon';
 import { AddNodeIcon } from './icons/addNodeIcon';
 import { Diagram } from '@data-story/core';
-import { StoreSchema, useStore } from './store/store';
+import { useStore } from './store/store';
 import React, { useMemo } from 'react';
+import { StoreSchema } from './types';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -27,8 +28,8 @@ export function DataStoryControls({
   slotComponents
 }: {
   hideToolbar?: boolean;
-  setShowRunModal: (showRunModal: boolean) => void;
-  setShowAddNodeModal: (showAddNodeModal: boolean) => void;
+  setShowRunModal: (showRunModal: string) => void;
+  setShowAddNodeModal: (showAddNodeModal: string) => void;
   slotComponents?: React.ReactNode[];
 }) {
   const selector = (state: StoreSchema) => ({
@@ -53,12 +54,12 @@ export function DataStoryControls({
     <ControlButton
       title="Run"
       aria-label="Run"
-      onClick={() => setShowRunModal(true)}
+      onClick={() => setShowRunModal('run')}
     >
       <RunIcon/>
     </ControlButton>
     <ControlButton
-      onClick={() => setShowAddNodeModal(true)}
+      onClick={() => setShowAddNodeModal('addNode')}
       title="Add Node"
       data-cy="add-node-button"
       aria-label="Add Node"

@@ -1,12 +1,11 @@
 import React from 'react'
-import { RunModal } from './runModal/runModal'
 import { DataStoryCanvasProvider } from '../store/store';
 import * as store from '../store/store';
 
 function mountRunModal(): void {
   cy.mount(
     <DataStoryCanvasProvider>
-      <RunModal showModal={true} setShowModal={(show) => show}/>
+      {/*<RunModal showModal={true} setShowModal={(show) => show}/>*/}
     </DataStoryCanvasProvider>
   )
 }

@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
-import { StoreSchema, useStore } from '../DataStory/store/store';
+import { useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
 import MarkdownIt from 'markdown-it';
 import { StringableParam } from '@data-story/core';
+import { StoreSchema } from '../DataStory/types';
 
 const markdown = new MarkdownIt();
 

@@ -1,5 +1,5 @@
-import { StoreSchema, useStore } from '../DataStory/store/store';
-import { DataStoryObservers } from '../DataStory/types';
+import { useStore } from '../DataStory/store/store';
+import { DataStoryObservers, StoreSchema } from '../DataStory/types';
 import { createDataStoryId } from '@data-story/core';
 import { useMount, useUnmount } from 'ahooks';
 import { useRef } from 'react';

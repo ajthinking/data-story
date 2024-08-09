@@ -11,7 +11,9 @@ import {
   type ReportCallback
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
-import type { Edge, ReactFlowInstance } from '@xyflow/react';
+import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
+import { Direction } from './getNodesWithNewSelection';
+import { ServerClient } from './clients/ServerClient';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -53,6 +55,8 @@ export type DataStoryProps = {
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
   selectedNode?: ReactFlowNode;
+  setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
+  sidebarKey?: string;
 }
 
 export type StoreInitOptions = {
@@ -88,7 +92,65 @@ export type NodeSettingsFormProps = {
   onUpdateNodeData: (data: ReactFlowNode['data']) => void;
 }
 
+export type StoreSchema = {
+  /** The main reactflow instance */
+  rfInstance: StoreInitOptions['rfInstance'] | undefined;
+  toDiagram: () => Diagram;
+
+  /** Addable Nodes */
+  availableNodes: NodeDescription[],
+  setAvailableNodes: (nodes: NodeDescription[]) => void,
+
+  /** The Nodes */
+  nodes: ReactFlowNode[];
+  updateNode: (node: ReactFlowNode) => void;
+  addNode: (node: ReactFlowNode) => void;
+  addNodeFromDescription: (nodeDescription: NodeDescription) => void;
+  onNodesChange: OnNodesChange;
+  setNodes: (nodes: ReactFlowNode[]) => void;
+  selectNode: (nodeId: string) => void;
+  traverseNodes: (direction: Direction) => void;
+
+  /** The Edges */
+  edges: Edge[];
+  onEdgesChange: OnEdgesChange;
+  updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
+  setEdges: (edges: Edge[]) => void;
+  connect: OnConnect;
+
+  /** Global Params */
+  params: Param[],
+  setParams: (params: Param[]) => void;
+
+  /** The Server and its config */
+  serverConfig: ServerConfig;
+  server: null | ServerClient;
+  initServer: StoreInitServer;
+
+  /** When DataStory component initializes */
+  onInit: (options: StoreInitOptions) => void;
+
+  updateDiagram: (diagram: Diagram) => void;
+
+  /** Run the diagram */
+  onRun: () => void;
+
+  /** Modals */
+  openNodeModalId: string | null;
+  setOpenNodeModalId: (id: string | null) => void;
+
+  /** observerMap are used to monitor data changes in the node */
+  observerMap: ObserverMap;
+  setObservers: (key: string, observers?: DataStoryObservers) => void;
+};
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   activeBar?: string;
+  sidebarKey: string;
   node?: ReactFlowNode;
+  setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
+  partialStoreRef: React.RefObject<Partial<StoreSchema>>;
+};
+
+export type IconProps = {
+  isActive?: boolean;
 };
