@@ -54,15 +54,18 @@ export const ActivityBar = ({
     <aside
       aria-label="ActivityBar"
       id="default-activity-bar"
-      className="bg-white text-gray-800 flex flex-col items-center py-2 space-y-4 w-50 h-full">
+      className="bg-gray-50 text-gray-800 flex flex-col items-center h-full"
+    >
       {activities.map(({ id, name, icon }) => (
         <button
           key={id}
           title={name}
-          className={`p-2 rounded ${activeKey === id ? 'bg-blue-500' : 'hover:bg-blue-100'}`}
+          className={`py-1 w-full ${activeKey === id ? 'border-l-2 border-blue-500 bg-blue-500' : 'hover:bg-blue-100'}`}
           onClick={() => handleActivityClick(id)}
         >
-          {icon(activeKey === id)}
+          <div className="p-2 flex justify-center items-center">
+            {icon(activeKey === id)}
+          </div>
         </button>
       ))}
     </aside>

@@ -50,10 +50,10 @@ export const Experiment = ({
 
   return (
     <div className="">
-      <div className="uppercase text-xs px-10 py-2 text-gray-600">
+      <div className="uppercase text-xs px-8 py-2 text-gray-600">
         Explorer
       </div>
-      <div className="px-4 py-2">
+      <div className="px-2 py-2">
         <Tree
           initialData={data}
           openByDefault={true}
