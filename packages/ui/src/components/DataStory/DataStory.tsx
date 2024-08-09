@@ -35,7 +35,7 @@ export const DataStory = (
   return (
     <DataStoryCanvasProvider>
       <Allotment className='h-full border-0.5'>
-      <Allotment.Pane minSize={44} maxSize={44}>
+        <Allotment.Pane minSize={44} maxSize={44}>
           <ActivityBar
             selectedNode={selectedNode}
             setActiveKey={setSidebarKey}

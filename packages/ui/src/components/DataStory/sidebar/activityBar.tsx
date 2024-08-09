@@ -55,10 +55,12 @@ export const ActivityBar = ({
         <button
           key={id}
           title={name} // Tooltips are provided by the title attribute.
-          className={`p-2 rounded ${activeKey === id ? 'bg-blue-500' : 'hover:bg-blue-100'}`}
+          className={`py-1 w-full ${activeKey === id ? 'border-l-2 border-blue-500 bg-blue-500' : 'hover:bg-blue-100'}`}
           onClick={() => handleActivityClick(id)}
         >
-          {icon({ isActive: activeKey === id })}
+          <div className="p-2 flex justify-center items-center">
+            {icon({ isActive: activeKey === id })}
+          </div>
         </button>
       ));
   };
@@ -67,7 +69,7 @@ export const ActivityBar = ({
     <aside
       aria-label="ActivityBar"
       id="default-activity-bar"
-      className="bg-white text-gray-800 flex flex-col items-center justify-between py-2 space-y-4 w-50 h-full"
+      className="bg-gray-50 text-gray-800 flex flex-col items-center h-full"
     >
       <div className="col-start">{renderActivityButtons('top')}</div>
     </aside>

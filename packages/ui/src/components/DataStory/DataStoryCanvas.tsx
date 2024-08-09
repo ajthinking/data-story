@@ -39,7 +39,6 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
     traverseNodes,
   } = useStore(selector, shallow);
 
-  console.log(nodes, 'nodes');
   useHotkeys({
     nodes,
     openNodeModalId,
