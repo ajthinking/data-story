@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useEscapeKey } from '../hooks/useEscapeKey';
 import { CollapseIcon } from '../icons/collapseIcon';
 
@@ -16,8 +16,22 @@ export function SidebarWrap({
   onPrimaryAction?: () => void;
 }) {
   useEscapeKey(() => setShowSidebar(''));
+  const [isCollapseIconActive, setIsCollapseIconActive] = useState(false);
 
   const sidebarRef = useRef<HTMLDivElement | null>(null);
+
+  const handleMouseEnter = () => {
+    setIsCollapseIconActive(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsCollapseIconActive(false);
+  };
+
+  const handleClick = () => {
+    setIsCollapseIconActive(!isCollapseIconActive);
+    setShowSidebar(''); // close sidebar
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
@@ -35,15 +49,19 @@ export function SidebarWrap({
   return <>
     <div ref={sidebarRef} className="relative flex flex-col w-full h-full">
       {title && (
-        <div className="px-6 py-4 border-b border-solid border-slate-200 flex flex-row justify-between">
+        <div className="px-6 py-4 border-b border-solid border-slate-200 flex flex-row justify-between items-end">
           <div className="text-lg font-bold text-gray-400">
             {title}
           </div>
           <button
-            className="p-1 ml-auto text-black text-3xl leading-none font-semibold outline-none focus:outline-none"
-            onClick={() => setShowSidebar('')}>
-            <span className="text-gray-500 h-6 w-6 block outline-none focus:outline-none" title={'sss'}>
-              <CollapseIcon/>
+            className={`${isCollapseIconActive ? 'fill-blue-500' : 'fill-gray-500'} 
+            p-1 ml-auto text-black text-3xl leading-none font-semibold outline-none focus:outline-none`}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <span className="text-gray-500 h-6 w-6 block outline-none focus:outline-none" title={'collapse sidebar'}>
+              <CollapseIcon />
             </span>
           </button>
         </div>
