@@ -59,7 +59,7 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
         style={{height: 'calc(100vh - 160px)'}}
         className='group grid grid-cols-2 gap-2 overflow-y-auto'
         data-cy='add-node-modal-node-list'>
-        {matchingNodes.map((nodeDescription: NodeDescription) => {
+        {matchingNodes.map((nodeDescription: NodeDescription, index: number) => {
           return (
             <button
               tabIndex={0}
@@ -67,7 +67,12 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
                 'flex justify-between items-center px-4 py-2',
                 'text-base font-bold text-gray-400 cursor-pointer',
                 'border border-gray-300 shadow',
-                'bg-gray-100 hover:bg-slate-200 max-h-16'
+                'bg-gray-100 hover:bg-slate-200 max-h-16',
+                {
+                  'mr-1': index % 2 !== 0,
+                  'ml-2': index % 2 === 0,
+                },
+                { 'mt-1': index < 2 }
               )}
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}
