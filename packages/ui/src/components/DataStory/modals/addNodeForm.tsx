@@ -48,7 +48,7 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
       <div data-cy="add-node-modal" className="m-2">
         <input
           data-cy='add-node-modal-input'
-          className='w-80 bg-white text-gray-500 font-mono text-sm border border-gray-100 rounded p-4'
+          className='w-full bg-white text-gray-500 font-mono text-sm border border-gray-100 rounded p-4'
           placeholder={'Type format, action, resource ...'}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -56,8 +56,8 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
         ></input>
       </div>
       <div
-        style={{height: 'calc(100vh - 160px)'}}
-        className='group grid grid-cols-2 gap-2 overflow-y-auto'
+        style={{maxHeight: 'calc(100vh - 160px)'}}
+        className='grid grid-cols-2 gap-2 overflow-y-auto py-1'
         data-cy='add-node-modal-node-list'>
         {matchingNodes.map((nodeDescription: NodeDescription, index: number) => {
           return (
@@ -67,12 +67,11 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
                 'flex justify-between items-center px-4 py-2',
                 'text-base font-bold text-gray-400 cursor-pointer',
                 'border border-gray-300 shadow',
-                'bg-gray-100 hover:bg-slate-200 max-h-16',
+                'bg-gray-100 hover:bg-slate-200 h-14',
                 {
                   'mr-1': index % 2 !== 0,
                   'ml-2': index % 2 === 0,
-                },
-                { 'mt-1': index < 2 }
+                }
               )}
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}
