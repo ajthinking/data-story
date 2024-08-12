@@ -5,23 +5,23 @@ import { Direction } from './getNodesWithNewSelection';
 export function useHotkeys({
   nodes,
   openNodeModalId,
-  setShowRunModal,
+  setShowRunForm,
   setOpenNodeModalId,
   showConfigModal,
   showRunModal,
   showAddNodeModal,
   traverseNodes,
-  setShowAddNodeModal,
+  setShowAddNodeForm,
 }: {
   nodes: ReactFlowNode[],
   openNodeModalId: string | null,
-  setShowRunModal: (show: boolean) => void,
+  setShowRunForm: (show: boolean) => void,
   setOpenNodeModalId: (id: string | null) => void,
   showConfigModal: boolean,
   showRunModal: boolean,
   showAddNodeModal: boolean,
   traverseNodes: (direction: Direction) => void,
-  setShowAddNodeModal: (show: boolean) => void,
+  setShowAddNodeForm: (show: boolean) => void,
 
 }) {
   useEffect(() => {
@@ -44,19 +44,19 @@ export function useHotkeys({
       const enter = event.code === 'Enter';
 
       // Ensure no modal is already open
-      if ([
-        openNodeModalId,
-        showConfigModal,
-        showRunModal,
-        showAddNodeModal,
-      ].find(Boolean)) return;
+      // if ([
+      //   openNodeModalId,
+      //   showConfigModal,
+      //   showRunModal,
+      //   showAddNodeModal,
+      // ].find(Boolean)) return;
 
       // Open modal!
-      if (shiftR) setShowRunModal(true);
+      if (shiftR) setShowRunForm(true);
       if (shiftPlus) {
         // When opening the add node modal, we want to disable the enter key
         window.removeEventListener('keydown', handleEnterPress);
-        setShowAddNodeModal(true);
+        setShowAddNodeForm(true);
       }
 
       // Open node settings modal
@@ -82,8 +82,8 @@ export function useHotkeys({
 
       // Ensure no modal is already open
       if ([
-        openNodeModalId,
-        showConfigModal,
+        // openNodeModalId,
+        // showConfigModal,
         showRunModal,
         showAddNodeModal,
       ].find(Boolean)) return;

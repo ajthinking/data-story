@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { shallow } from 'zustand/shallow';
 import { NodeDescription } from '@data-story/core';
-import { Modal } from '../modal';
-import { StoreSchema, useStore } from '../store/store';
 import clsx from 'clsx';
+import { StoreSchema } from '../types';
 
 export interface AddNodeModalContentProps {
-  setShowModal: (show: boolean) => void
+  setSidebarKey: (show: string) => void;
+  addNodeFromDescription: StoreSchema['addNodeFromDescription'];
+  availableNodes: NodeDescription[];
 }
 
-export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
-  const {setShowModal}: AddNodeModalContentProps = props;
+export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
+  const { setSidebarKey, availableNodes, addNodeFromDescription }: AddNodeModalContentProps = props;
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
 
@@ -18,22 +18,15 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
     inputReference?.current?.focus();
   }, []);
 
-  const selector = (state: StoreSchema) => ({
-    addNodeFromDescription: state.addNodeFromDescription,
-    availableNodes: state.availableNodes,
-  });
-
-  const { addNodeFromDescription, availableNodes } = useStore(selector, shallow);
-
   const doAddNode = (nodeDescription: NodeDescription) => {
     addNodeFromDescription(nodeDescription);
-    setShowModal(false);
+    setSidebarKey('');
   };
 
   const matchingNodes = availableNodes
     .sort((a: NodeDescription, b: NodeDescription) => {
-    // Prioritize sorting by type if either is "Input" or "Output"
-      const typePriority = {Input: 1, Output: 2}; // Define priority for types
+      // Prioritize sorting by type if either is "Input" or "Output"
+      const typePriority = { Input: 1, Output: 2 }; // Define priority for types
       const aTypePriority = typePriority[a.name] || Number.MAX_SAFE_INTEGER; // Default to a very high number if not "Input" or "Output"
       const bTypePriority = typePriority[b.name] || Number.MAX_SAFE_INTEGER; // Same here
 
@@ -51,19 +44,21 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
     });
 
   return (
-    <Modal setShowModal={setShowModal}>
-      <div data-cy="add-node-modal">
+    <div className='h-full p-2'>
+      <div data-cy="add-node-modal" className="m-2">
         <input
           data-cy='add-node-modal-input'
-          className='w-full bg-white mb-2 text-gray-500 font-mono text-sm border border-gray-100 rounded px-4 py-4'
+          className='w-full bg-white text-gray-500 font-mono text-sm border border-gray-100 rounded p-4'
           placeholder={'Type format, action, resource ...'}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           ref={inputReference}
         ></input>
       </div>
-      <div className='group grid grid-cols-2 gap-2' data-cy='add-node-modal-node-list'>
-        {matchingNodes.map((nodeDescription: NodeDescription) => {
+      <div
+        className='grid grid-cols-2 gap-2 py-1'
+        data-cy='add-node-modal-node-list'>
+        {matchingNodes.map((nodeDescription: NodeDescription, index: number) => {
           return (
             <button
               tabIndex={0}
@@ -71,37 +66,23 @@ export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
                 'flex justify-between items-center px-4 py-2',
                 'text-base font-bold text-gray-400 cursor-pointer',
                 'border border-gray-300 shadow',
-                'bg-gray-100 hover:bg-slate-200'
+                'bg-gray-100 hover:bg-slate-200 h-14',
+                {
+                  'mr-1': index % 2 !== 0,
+                  'ml-2': index % 2 === 0,
+                }
               )}
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}
             >
-              <div className='text-gray-500 text-sm'>
+              <div className='text-gray-500 text-sm overflow-hidden'>
                 <span className='text-indigo-500 font-mono'>{nodeDescription.category || 'Core'}::</span>
                 {nodeDescription.label || nodeDescription.name}
               </div>
-              {/* <div className='flex space-x-1'>
-                {nodeDescription.tags.map((tag: string) => {
-                  let style = 'bg-blue-300 border px-2 rounded tracking-wide text-xxs text-white';
-                  return (
-                    <div key={tag} className={style}>
-                      {tag}
-                    </div>
-                  );
-                })}
-              </div> */}
             </button>
           );
         })}
       </div>
-    </Modal>
+    </div>
   );
 }
-export const AddNodeModal = ({ showModal, setShowModal }: {
-  showModal: boolean,
-  setShowModal: (show: boolean) => void
-}) => {
-  if(!showModal) return null;
-
-  return (<AddNodeModalContentProps setShowModal={setShowModal}/>)
-};

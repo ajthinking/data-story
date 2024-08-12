@@ -1,7 +1,8 @@
-export function NodeIcon (isActive = false) {
+export const NodeIcon: React.FC = () => {
   return (
-    <svg className={`w-6 h-6 ${isActive ? 'fill-white' : 'fill-blue-500'}`} viewBox="0 0 1024 1024" version="1.1"
+    <svg className={'w-6 h-6 '} viewBox="0 0 1024 1024" version="1.1"
       xmlns="http://www.w3.org/2000/svg"
+      stroke="currentColor"
       p-id="8453" id="mx_n_1722588859007" width="200" height="200">
       <path
         d="M320 192v128c0 35.2-28.8 64-64 64H128c-35.2 0-64-28.8-64-64V192c0-35.2 28.8-64 64-64h128c35.2 0 64 28.8 64 64z"

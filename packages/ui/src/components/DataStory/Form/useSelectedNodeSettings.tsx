@@ -1,9 +1,10 @@
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
-import { StoreSchema, useStore } from '../store/store';
+import { useStore } from '../store/store';
 import { shallow } from 'zustand/shallow';
 import { useLatest } from 'ahooks';
 import { useEffect, useMemo } from 'react';
 import { useUpdateNodeInternals } from '@xyflow/react';
+import { StoreSchema } from '../types';
 
 export const useSelectedNodeSettings = ({ onSelectedNode, selectedNodeData, selectedNode }: {
   onSelectedNode?: (node?: ReactFlowNode) => void;
