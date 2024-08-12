@@ -33,21 +33,8 @@ export function SidebarWrap({
     setShowSidebar(''); // close sidebar
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(event.target as Node)) {
-        setShowSidebar('');
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [sidebarRef]);
-
   return <>
-    <div ref={sidebarRef} className="relative flex flex-col w-full h-full">
+    <div className="relative flex flex-col w-full h-full">
       {title && (
         <div className="px-4 py-2 border-b border-solid border-slate-200 flex flex-row justify-between items-end">
           <div className="text-lg font-bold text-gray-400">
