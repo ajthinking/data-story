@@ -9,7 +9,7 @@ export interface AddNodeModalContentProps {
   availableNodes: NodeDescription[];
 }
 
-export const AddNodeModalContentProps = (props: AddNodeModalContentProps) => {
+export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
   const { setShowModal, availableNodes, addNodeFromDescription }: AddNodeModalContentProps = props;
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');

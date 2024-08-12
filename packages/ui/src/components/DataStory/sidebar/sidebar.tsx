@@ -2,9 +2,10 @@ import { NodeSettingsForm } from '../Form/nodeSettingsForm';
 import { NodeSettingsSidebarProps } from '../types';
 import { Experiment } from './experiment';
 import { SidebarPlaceholder } from './sidebarPlaceholder';
-import { RunModalContent } from '../modals/runModal/runForm';
-import { AddNodeModalContentProps } from '../modals/addNodeForm';
+import { RunFormContent } from '../modals/runModal/runForm';
+import { AddNodeFormContent } from '../modals/addNodeForm';
 import { NodeDescription } from '@data-story/core';
+import { Run } from './run';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const {
@@ -15,11 +16,11 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const renderContent = () => {
     switch (sidebarKey) {
       case 'run':
-        return <RunModalContent
+        return <Run
           onRun={() => partialStoreRef.current?.onRun?.()}
-          setShowModal={setSidebarKey} />;
+          setShowBar={setSidebarKey} />;
       case 'addNode':
-        return <AddNodeModalContentProps
+        return <AddNodeFormContent
           availableNodes={partialStoreRef.current?.availableNodes || []}
           addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
           setShowModal={setSidebarKey} />;
