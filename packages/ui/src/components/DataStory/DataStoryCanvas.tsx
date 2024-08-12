@@ -155,8 +155,8 @@ const Flow = ({
         <DataStoryControls
           slotComponents={slotComponents}
           hideToolbar={hideToolbar}
-          setShowRunForm={setSidebarKey!}
-          setShowAddNodeForm={setSidebarKey!}
+          setShowRun={(showRunForm: boolean) => setSidebarKey!(showRunForm ? 'run' : '')}
+          setShowAddNode={(showAddNodeForm: boolean) => setSidebarKey!(showAddNodeForm ? 'addNode' : '')}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>
