@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { DiagramIcon } from '../icons/diagramIcon';
 import { ConfigIcon } from '../icons/configIcon';
 import { NodeIcon } from '../icons/nodeIcon';
-import { IconProps } from '../types';
 
 type Activity = {
   id: string;
   name: string;
-  icon: React.FC<IconProps>;
+  icon: React.FC<{}>;
   position: 'top' | 'bottom';
 };
 
@@ -55,11 +54,14 @@ export const ActivityBar = ({
         <button
           key={id}
           title={name} // Tooltips are provided by the title attribute.
-          className={`py-1 w-full ${activeKey === id ? 'border-l-2 border-blue-500 bg-blue-500' : 'hover:bg-blue-100'}`}
+          className={`py-1 w-full 
+          ${activeKey === id
+          ? 'border-l-2 border-blue-500 bg-blue-500 fill-white text-blue-500'
+          : 'hover:bg-blue-100 border-gray-400 fill-gray-400 text-white'}`}
           onClick={() => handleActivityClick(id)}
         >
           <div className="p-2 flex justify-center items-center">
-            {icon({ isActive: activeKey === id })}
+            {icon({})}
           </div>
         </button>
       ));

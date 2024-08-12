@@ -1,9 +1,7 @@
 import { NodeRendererProps, Tree } from 'react-arborist';
 import { ChevronRight } from '../icons/chevronRight';
 import { ChevronDown } from '../icons/chevronDown';
-import { FileIcon } from '../icons/fileIcon';
 import { LogoIcon } from '../icons/logoIcon';
-import { RunIcon } from '../icons/runIcon';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
   const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);

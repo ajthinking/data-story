@@ -1,7 +1,6 @@
 import React from 'react';
-import { IconProps } from '../types';
 
-export const SaveIcon: React.FC<IconProps> = ({ isActive = false }) => {
+export const SaveIcon: React.FC = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -9,7 +8,7 @@ export const SaveIcon: React.FC<IconProps> = ({ isActive = false }) => {
       viewBox="0 0 24 24"
       strokeWidth={2.0}
       stroke="currentColor"
-      className={`w-6 h-6 ${isActive ? 'text-gray-700 fill-white' : 'fill-gray-400'}`}
+      className={'w-6 h-6 '}
     >
       <path
         strokeLinecap="round"
