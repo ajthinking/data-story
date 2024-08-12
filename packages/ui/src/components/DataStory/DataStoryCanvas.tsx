@@ -42,7 +42,7 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
   useHotkeys({
     nodes,
     openNodeModalId,
-    setShowRunModal:(show: boolean) => {
+    setShowRunForm:(show: boolean) => {
       setSidebarKey!(show ? 'run' : '');
     },
     setOpenNodeModalId,
@@ -50,7 +50,7 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
     showRunModal: sidebarKey === 'run',
     showAddNodeModal: sidebarKey === 'addNode',
     traverseNodes,
-    setShowAddNodeModal: (show: boolean) => {
+    setShowAddNodeForm: (show: boolean) => {
       setSidebarKey!(show ? 'addNode' : '');
     },
   });
@@ -155,8 +155,8 @@ const Flow = ({
         <DataStoryControls
           slotComponents={slotComponents}
           hideToolbar={hideToolbar}
-          setShowRunModal={setSidebarKey!}
-          setShowAddNodeModal={setSidebarKey!}
+          setShowRunForm={setSidebarKey!}
+          setShowAddNodeForm={setSidebarKey!}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>
