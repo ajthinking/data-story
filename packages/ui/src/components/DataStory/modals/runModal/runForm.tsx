@@ -5,14 +5,14 @@ import { Param } from '@data-story/core';
 import { StoreSchema } from '../../types';
 
 export interface RunModalContentProps {
-  setShowBar: (show: string) => void;
+  setSidebarKey: (show: string) => void;
   onRun: StoreSchema['onRun']
 }
 
 export const RunFormContent = (props: RunModalContentProps) => {
   const [defineMode, setDefineMode] = useState(false);
   const [params, setParams] = useState<Param[]>([]);
-  const { setShowBar, onRun }: RunModalContentProps = props;
+  const { setSidebarKey, onRun }: RunModalContentProps = props;
 
   const runButtonReference = useRef<HTMLButtonElement>(null);
 
@@ -23,7 +23,7 @@ export const RunFormContent = (props: RunModalContentProps) => {
   const handleRun = (newParams: Param[]) => {
     setParams(newParams);
     onRun();
-    setShowBar('');
+    setSidebarKey('');
   };
 
   return (

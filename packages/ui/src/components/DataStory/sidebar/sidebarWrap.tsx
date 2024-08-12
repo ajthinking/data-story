@@ -49,7 +49,7 @@ export function SidebarWrap({
   return <>
     <div ref={sidebarRef} className="relative flex flex-col w-full h-full">
       {title && (
-        <div className="px-6 py-4 border-b border-solid border-slate-200 flex flex-row justify-between items-end">
+        <div className="px-4 py-2 border-b border-solid border-slate-200 flex flex-row justify-between items-end">
           <div className="text-lg font-bold text-gray-400">
             {title}
           </div>

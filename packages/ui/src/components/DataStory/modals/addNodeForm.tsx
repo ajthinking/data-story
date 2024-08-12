@@ -4,13 +4,13 @@ import clsx from 'clsx';
 import { StoreSchema } from '../types';
 
 export interface AddNodeModalContentProps {
-  setShowModal: (show: string) => void;
+  setSidebarKey: (show: string) => void;
   addNodeFromDescription: StoreSchema['addNodeFromDescription'];
   availableNodes: NodeDescription[];
 }
 
 export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
-  const { setShowModal, availableNodes, addNodeFromDescription }: AddNodeModalContentProps = props;
+  const { setSidebarKey, availableNodes, addNodeFromDescription }: AddNodeModalContentProps = props;
   const inputReference = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState('');
 
@@ -20,7 +20,7 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
 
   const doAddNode = (nodeDescription: NodeDescription) => {
     addNodeFromDescription(nodeDescription);
-    setShowModal('');
+    setSidebarKey('');
   };
 
   const matchingNodes = availableNodes
@@ -56,8 +56,7 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
         ></input>
       </div>
       <div
-        style={{maxHeight: 'calc(100vh - 160px)'}}
-        className='grid grid-cols-2 gap-2 overflow-y-auto py-1'
+        className='grid grid-cols-2 gap-2 py-1'
         data-cy='add-node-modal-node-list'>
         {matchingNodes.map((nodeDescription: NodeDescription, index: number) => {
           return (

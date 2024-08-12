@@ -2,10 +2,9 @@ import { NodeSettingsForm } from '../Form/nodeSettingsForm';
 import { NodeSettingsSidebarProps } from '../types';
 import { Experiment } from './experiment';
 import { SidebarPlaceholder } from './sidebarPlaceholder';
-import { RunFormContent } from '../modals/runModal/runForm';
-import { AddNodeFormContent } from '../modals/addNodeForm';
 import { NodeDescription } from '@data-story/core';
 import { Run } from './run';
+import { AddNode } from './addNode';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const {
@@ -14,26 +13,26 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
   } = props;
 
   const renderContent = () => {
-    switch (sidebarKey) {
+    switch(sidebarKey) {
       case 'run':
         return <Run
           onRun={() => partialStoreRef.current?.onRun?.()}
-          setShowBar={setSidebarKey} />;
+          setSidebarKey={setSidebarKey}/>;
       case 'addNode':
-        return <AddNodeFormContent
+        return <AddNode
           availableNodes={partialStoreRef.current?.availableNodes || []}
           addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
-          setShowModal={setSidebarKey} />;
+          setSidebarKey={setSidebarKey}/>;
       case 'experiment':
-        return <Experiment />;
+        return <Experiment/>;
       case 'diagram':
-        return <SidebarPlaceholder content={'todo: show diagram configuration'} />;
+        return <SidebarPlaceholder content={'todo: show diagram configuration'}/>;
       case 'settings':
-        return <SidebarPlaceholder content={'todo: show diagram settings, including run and add modal features'} />;
+        return <SidebarPlaceholder content={'todo: show diagram settings, including run and add modal features'}/>;
       case 'node':
         return node?.id && node?.data
-          ? <NodeSettingsForm node={node} onClose={onClose} onUpdateNodeData={onUpdateNodeData} />
-          : <SidebarPlaceholder content={'Click on a node to see its configuration'} />;
+          ? <NodeSettingsForm node={node} onClose={onClose} onUpdateNodeData={onUpdateNodeData}/>
+          : <SidebarPlaceholder content={'Click on a node to see its configuration'}/>;
       default:
         return null;
     }

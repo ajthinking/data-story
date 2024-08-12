@@ -3,8 +3,8 @@ import { SidebarWrap } from './sidebarWrap';
 
 export function Run(props: RunModalContentProps) {
   return (
-    <SidebarWrap title={'RUN'} setShowSidebar={props.setShowBar}>
-      <RunFormContent onRun={props.onRun} setShowBar={props.setShowBar}/>
+    <SidebarWrap title={'Run'} setShowSidebar={props.setSidebarKey}>
+      <RunFormContent onRun={props.onRun} setSidebarKey={props.setSidebarKey}/>
     </SidebarWrap>
   );
 }
