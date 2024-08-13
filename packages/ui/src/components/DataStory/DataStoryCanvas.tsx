@@ -41,16 +41,16 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
 
   useHotkeys({
     nodes,
-    openNodeModalId,
-    setShowRunForm:(show: boolean) => {
+    openNodeSidebarId: openNodeModalId,
+    setShowRun:(show: boolean) => {
       setSidebarKey!(show ? 'run' : '');
     },
-    setOpenNodeModalId,
+    setOpenNodeSidebarId: setOpenNodeModalId,
     showConfigModal: sidebarKey === 'node',
-    showRunModal: sidebarKey === 'run',
-    showAddNodeModal: sidebarKey === 'addNode',
+    showRun: sidebarKey === 'run',
+    showAddNode: sidebarKey === 'addNode',
     traverseNodes,
-    setShowAddNodeForm: (show: boolean) => {
+    setShowAddNode: (show: boolean) => {
       setSidebarKey!(show ? 'addNode' : '');
     },
   });

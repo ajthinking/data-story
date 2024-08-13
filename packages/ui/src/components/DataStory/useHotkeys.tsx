@@ -4,30 +4,30 @@ import { Direction } from './getNodesWithNewSelection';
 
 export function useHotkeys({
   nodes,
-  openNodeModalId,
-  setShowRunForm,
-  setOpenNodeModalId,
+  openNodeSidebarId,
+  setShowRun,
+  setOpenNodeSidebarId,
   showConfigModal,
-  showRunModal,
-  showAddNodeModal,
+  showRun,
+  showAddNode,
   traverseNodes,
-  setShowAddNodeForm,
+  setShowAddNode,
 }: {
   nodes: ReactFlowNode[],
-  openNodeModalId: string | null,
-  setShowRunForm: (show: boolean) => void,
-  setOpenNodeModalId: (id: string | null) => void,
+  openNodeSidebarId: string | null,
+  setShowRun: (show: boolean) => void,
+  setOpenNodeSidebarId: (id: string | null) => void,
   showConfigModal: boolean,
-  showRunModal: boolean,
-  showAddNodeModal: boolean,
+  showRun: boolean,
+  showAddNode: boolean,
   traverseNodes: (direction: Direction) => void,
-  setShowAddNodeForm: (show: boolean) => void,
+  setShowAddNode: (show: boolean) => void,
 
 }) {
   useEffect(() => {
     // restore enterkey event listener
     // (it is disabled when the addNodeModal is open)
-    if(!showAddNodeModal) {
+    if(!showAddNode) {
       window.addEventListener('keydown', handleEnterPress);
     }
 
@@ -52,11 +52,11 @@ export function useHotkeys({
       // ].find(Boolean)) return;
 
       // Open modal!
-      if (shiftR) setShowRunForm(true);
+      if (shiftR) setShowRun(true);
       if (shiftPlus) {
         // When opening the add node modal, we want to disable the enter key
         window.removeEventListener('keydown', handleEnterPress);
-        setShowAddNodeForm(true);
+        setShowAddNode(true);
       }
 
       // Open node settings modal
@@ -84,8 +84,8 @@ export function useHotkeys({
       if ([
         // openNodeModalId,
         // showConfigModal,
-        showRunModal,
-        showAddNodeModal,
+        showRun,
+        showAddNode,
       ].find(Boolean)) return;
 
       // Open node settings modal
@@ -97,7 +97,7 @@ export function useHotkeys({
         return selectedNodes.at(0);
       })()
 
-      if (enter && openable && !showAddNodeModal) setOpenNodeModalId(openable.id);
+      if (enter && openable) setOpenNodeSidebarId(openable.id);
     }
 
     // Add the event listener when the component mounts
@@ -111,11 +111,11 @@ export function useHotkeys({
     };
   }, [
     nodes,
-    openNodeModalId,
-    setOpenNodeModalId,
+    openNodeSidebarId,
+    setOpenNodeSidebarId,
     showConfigModal,
-    showRunModal,
-    showAddNodeModal,
+    showRun,
+    showAddNode,
     traverseNodes,
   ]);
 }
