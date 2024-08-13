@@ -24,11 +24,14 @@ export const DataStory = (
   useEffect(() => {
     const { clientv2 } = props
     if(!clientv2) return;
+    console.log('Got a clientv2')
 
     const getTree = async () => {
       const tree = await clientv2.workspacesApi.get({ path: '/' })
+      console.log('Loading Tree...')
       await sleep(5000)
       setTree(tree)
+      console.log('Tree set!')
     }
 
     getTree()
