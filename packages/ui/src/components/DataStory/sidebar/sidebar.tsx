@@ -1,6 +1,6 @@
 import { NodeSettingsForm } from '../Form/nodeSettingsForm';
 import { NodeSettingsSidebarProps } from '../types';
-import { Experiment } from './experiment';
+import { Explorer } from './explorer';
 import { SidebarPlaceholder } from './sidebarPlaceholder';
 import { NodeDescription } from '@data-story/core';
 import { Run } from './run';
@@ -8,7 +8,7 @@ import { AddNode } from './addNode';
 
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const {
-    node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
+    tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
     partialStoreRef
   } = props;
 
@@ -24,7 +24,7 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
           addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
           setSidebarKey={setSidebarKey}/>;
       case 'experiment':
-        return <Experiment/>;
+        return <Explorer tree={tree} />;
       case 'diagram':
         return <SidebarPlaceholder content={'todo: show diagram configuration'}/>;
       case 'settings':

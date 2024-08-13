@@ -8,6 +8,9 @@ import { useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
+import { Tree } from './clients/Tree';
+import { sleep } from '@data-story/core';
+import { useRequest } from 'ahooks';
 
 export const DataStory = (
   props: Omit<DataStoryProps,'setSidebarKey'>
@@ -17,6 +20,22 @@ export const DataStory = (
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
+  const { clientv2 } = props
+
+  const { data: tree, loading } = useRequest(async () => {
+    if (!clientv2) return;
+    console.log('Got a clientv2');
+
+    console.log('Loading Tree...');
+    const tree = await clientv2.workspacesApi.get({ path: '/' });
+    await sleep(5000);
+
+    console.log('Tree set!');
+    return tree;
+  }, {
+    refreshDeps: [clientv2], // Will re-fetch if clientv2 changes
+    manual: !clientv2, // If clientv2 is not available initially, do not run automatically
+  });
 
   useEffect(() => {
     if (sidebarKey !== 'node') {
@@ -44,6 +63,7 @@ export const DataStory = (
         </Allotment.Pane>
         <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
           <Sidebar
+            tree={tree}
             partialStoreRef={partialStoreRef}
             sidebarKey={sidebarKey}
             setSidebarKey={setSidebarKey} node={selectedNode}

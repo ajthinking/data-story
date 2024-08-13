@@ -1,9 +1,4 @@
-export interface Tree {
-  path: string;
-  type: 'file' | 'folder';
-  content?: string;
-  children?: Tree[];
-}
+import { Tree } from './Tree';
 
 export interface WorkspacesApi {
   get: ({ path }) => Promise<Tree>

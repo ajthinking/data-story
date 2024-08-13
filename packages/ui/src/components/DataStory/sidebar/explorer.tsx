@@ -1,7 +1,8 @@
-import { NodeRendererProps, Tree } from 'react-arborist';
+import { NodeRendererProps, Tree as ArboristTree } from 'react-arborist';
 import { ChevronRight } from '../icons/chevronRight';
 import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
+import { Tree } from '../clients/Tree';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
   const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);
@@ -26,9 +27,13 @@ function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
   );
 }
 
-export const Experiment = ({
+export const Explorer = ({
+  tree
 }: {
+  tree?: Tree
 }) => {
+  if(!tree) return <div>Loading...</div>;
+
   const data = [
     {
       id: 'fake-project',
@@ -52,7 +57,7 @@ export const Experiment = ({
         Explorer
       </div>
       <div className="px-2 py-2">
-        <Tree
+        <ArboristTree
           initialData={data}
           openByDefault={true}
           width={600}
@@ -61,7 +66,7 @@ export const Experiment = ({
           rowHeight={24}
         >
           {Node}
-        </Tree>
+        </ArboristTree>
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
+import { JsClientV2 } from './clients/JsClientV2';
+import { Tree } from './clients/Tree';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -46,6 +48,7 @@ export type SocketClientOptions = ClientOptions & {
 }
 
 export type DataStoryProps = {
+  clientv2?: JsClientV2,
   server?: ServerConfig
   initDiagram?: Diagram
   hideToolbar?: boolean
@@ -144,6 +147,7 @@ export type StoreSchema = {
   setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
+  tree?: Tree;
   activeBar?: string;
   sidebarKey: string;
   node?: ReactFlowNode;
