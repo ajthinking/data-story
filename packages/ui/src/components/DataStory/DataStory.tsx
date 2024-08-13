@@ -9,6 +9,7 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { Tree } from './clients/Tree';
+import { sleep } from '@data-story/core';
 
 export const DataStory = (
   props: Omit<DataStoryProps,'setSidebarKey'>
@@ -26,6 +27,7 @@ export const DataStory = (
 
     const getTree = async () => {
       const tree = await clientv2.workspacesApi.get({ path: '/' })
+      await sleep(5000)
       setTree(tree)
     }
 
@@ -58,6 +60,7 @@ export const DataStory = (
         </Allotment.Pane>
         <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
           <Sidebar
+            tree={tree}
             partialStoreRef={partialStoreRef}
             sidebarKey={sidebarKey}
             setSidebarKey={setSidebarKey} node={selectedNode}

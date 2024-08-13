@@ -15,6 +15,7 @@ import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
 import { JsClientV2 } from './clients/JsClientV2';
+import { Tree } from './clients/Tree';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -146,6 +147,7 @@ export type StoreSchema = {
   setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
+  tree?: Tree;
   activeBar?: string;
   sidebarKey: string;
   node?: ReactFlowNode;
