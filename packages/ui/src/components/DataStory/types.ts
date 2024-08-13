@@ -14,6 +14,7 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
+import { JsClientV2 } from './clients/JsClientV2';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -46,6 +47,7 @@ export type SocketClientOptions = ClientOptions & {
 }
 
 export type DataStoryProps = {
+  clientv2?: JsClientV2,
   server?: ServerConfig
   initDiagram?: Diagram
   hideToolbar?: boolean

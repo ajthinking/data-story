@@ -8,3 +8,4 @@ export { DataStoryEvents, type DataStoryEventType } from './components/DataStory
 export type { DataStoryObservers } from './components/DataStory/types'
 
 export { default as NodeComponent } from './components/Node/NodeComponent';
+export { JsClientV2 } from './components/DataStory/clients/JsClientV2';

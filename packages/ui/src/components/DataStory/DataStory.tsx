@@ -19,6 +19,14 @@ export const DataStory = (
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
 
   useEffect(() => {
+    const { clientv2 } = props
+    if(!clientv2) return;
+
+    console.log('DataStory component was initialized with a clientv2')
+    // TODO: Request tree at '/' from the server
+  })
+
+  useEffect(() => {
     if (sidebarKey !== 'node') {
       setSelectedNode(undefined);
     }
