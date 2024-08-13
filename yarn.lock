@@ -252,6 +252,7 @@ __metadata:
     "@data-story/ui": "workspace:*"
     "@types/node": "npm:*"
     "@types/react": "npm:*"
+    ahooks: "npm:^3.8.1"
     autoprefixer: "npm:^10.4.16"
     chart.js: "npm:^4.4.2"
     next: "npm:^13.0.6"
@@ -2595,6 +2596,25 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 10/557ac98e8a59a396bb06c2da224d1fae10846bed4165322c13869a3799b5d0fa1fd6aca1b8c5a73c6a97df9a837be1b842ef2dfaa6a2eb4a6397649a81c64671
+  languageName: node
+  linkType: hard
+
+"ahooks@npm:^3.8.1":
+  version: 3.8.1
+  resolution: "ahooks@npm:3.8.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.21.0"
+    dayjs: "npm:^1.9.1"
+    intersection-observer: "npm:^0.12.0"
+    js-cookie: "npm:^3.0.5"
+    lodash: "npm:^4.17.21"
+    react-fast-compare: "npm:^3.2.2"
+    resize-observer-polyfill: "npm:^1.5.1"
+    screenfull: "npm:^5.0.0"
+    tslib: "npm:^2.4.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10/26d0c55d71aa8379dd34f7b579e88c427932d2095865e202f2d96b2060ccfc9f2dac66079c30f289e508820e5ae5a7d49ca809befd7276447c80431158e36b50
   languageName: node
   linkType: hard
 
@@ -7454,6 +7474,13 @@ __metadata:
   version: 2.2.1
   resolution: "js-cookie@npm:2.2.1"
   checksum: 10/4387f5f5691cb96ca9ff8852c589d3012b53f484fda68630a39e20cabc6c5b740f09225e23233ba56cd9de6ebe300a23d20b2c7315f10c309ad5a89fd8c4990b
+  languageName: node
+  linkType: hard
+
+"js-cookie@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "js-cookie@npm:3.0.5"
+  checksum: 10/366494b1630b9fb8abaef3659748db5dfd52c58c6fc3459b9f0a03b492593bc1b01c6dfcc066b46f6413c28edb3a00cc68fb61ea8cdf6991bedf1f100f8a389d
   languageName: node
   linkType: hard
 

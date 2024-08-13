@@ -23,6 +23,7 @@
     "@data-story/nodejs": "workspace:*",
     "@data-story/openai": "workspace:*",
     "@data-story/ui": "workspace:*",
+    "ahooks": "^3.8.1",
     "chart.js": "^4.4.2",
     "next": "^13.0.6",
     "nextra": "latest",

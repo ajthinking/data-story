@@ -10,32 +10,32 @@ import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { Tree } from './clients/Tree';
 import { sleep } from '@data-story/core';
+import { useRequest } from 'ahooks';
 
 export const DataStory = (
   props: Omit<DataStoryProps,'setSidebarKey'>
 ) => {
-  const [tree, setTree] = useState<Tree>();
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
+  const { clientv2 } = props
 
-  useEffect(() => {
-    const { clientv2 } = props
-    if(!clientv2) return;
-    console.log('Got a clientv2')
+  const { data: tree, loading } = useRequest(async () => {
+    if (!clientv2) return;
+    console.log('Got a clientv2');
 
-    const getTree = async () => {
-      const tree = await clientv2.workspacesApi.get({ path: '/' })
-      console.log('Loading Tree...')
-      await sleep(5000)
-      setTree(tree)
-      console.log('Tree set!')
-    }
+    console.log('Loading Tree...');
+    const tree = await clientv2.workspacesApi.get({ path: '/' });
+    await sleep(5000);
 
-    getTree()
-  }, [props])
+    console.log('Tree set!');
+    return tree;
+  }, {
+    refreshDeps: [clientv2], // Will re-fetch if clientv2 changes
+    manual: !clientv2, // If clientv2 is not available initially, do not run automatically
+  });
 
   useEffect(() => {
     if (sidebarKey !== 'node') {
