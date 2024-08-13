@@ -8,10 +8,12 @@ import { useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
+import { Tree } from './clients/Tree';
 
 export const DataStory = (
   props: Omit<DataStoryProps,'setSidebarKey'>
 ) => {
+  const [tree, setTree] = useState<Tree>();
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
@@ -22,9 +24,13 @@ export const DataStory = (
     const { clientv2 } = props
     if(!clientv2) return;
 
-    console.log('DataStory component was initialized with a clientv2')
-    // TODO: Request tree at '/' from the server
-  })
+    const getTree = async () => {
+      const tree = await clientv2.workspacesApi.get({ path: '/' })
+      setTree(tree)
+    }
+
+    getTree()
+  }, [props])
 
   useEffect(() => {
     if (sidebarKey !== 'node') {
