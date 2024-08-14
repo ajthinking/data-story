@@ -1,9 +1,12 @@
+import { NodeDescription } from '@data-story/core';
 import { Tree } from './Tree';
 
 export interface WorkspacesApi {
-  get: ({ path }) => Promise<Tree>
-  create: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>;
-  update: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>
-  destroy: ({ path }: { path: string }) => Promise<void>
-  move: ({ path, newPath }: { path: string, newPath: string}) => Promise<Tree>
+  getTree: ({ path }) => Promise<Tree>
+  createTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>;
+  updateTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>
+  destroyTree: ({ path }: { path: string }) => Promise<void>
+  moveTree: ({ path, newPath }: { path: string, newPath: string}) => Promise<Tree>
+
+  getNodeDescriptions: ({ path }) => Promise<NodeDescription[]>
 }

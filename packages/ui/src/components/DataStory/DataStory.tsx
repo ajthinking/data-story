@@ -15,6 +15,7 @@ import { useRequest } from 'ahooks';
 export const DataStory = (
   props: Omit<DataStoryProps,'setSidebarKey'>
 ) => {
+  const path = '/';
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(true);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
@@ -22,16 +23,19 @@ export const DataStory = (
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const { clientv2 } = props
 
-  const { data: tree, loading } = useRequest(async () => {
-    if (!clientv2) return;
-    console.log('Got a clientv2');
+  const { data: tree, loading: treeLoading } = useRequest(async () => {
+    return clientv2
+      ? await clientv2.workspacesApi.getTree({ path })
+      : undefined;
+  }, {
+    refreshDeps: [clientv2],
+    manual: !clientv2,
+  });
 
-    console.log('Loading Tree...');
-    const tree = await clientv2.workspacesApi.get({ path: '/' });
-    await sleep(5000);
-
-    console.log('Tree set!');
-    return tree;
+  const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async () => {
+    return clientv2
+      ? await clientv2.workspacesApi.getNodeDescriptions({ path })
+      : undefined;
   }, {
     refreshDeps: [clientv2], // Will re-fetch if clientv2 changes
     manual: !clientv2, // If clientv2 is not available initially, do not run automatically
