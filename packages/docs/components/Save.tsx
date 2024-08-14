@@ -101,20 +101,19 @@ export const loadDiagram = (key: string): LocalDiagram => {
 
 export const LocalStorageKey = 'data-story-diagram';
 
-export const SaveComponent = ({setSaveFunc}: {
-  setSaveFunc:  React.Dispatch<React.SetStateAction<() => void>>
+export const SaveComponent = ({setSaveDiagram}: {
+  setSaveDiagram:  React.Dispatch<React.SetStateAction<() => void>>
 }) => {
   const { getDiagram } = useDataStoryControls();
   useDataStoryEvent(initToast);
 
   const handleSave = useCallback (() => {
-    console.log('save the diagram!!!!!!!')
     const diagram = getDiagram();
     saveDiagram(LocalStorageKey, diagram);
   }, [getDiagram]);
 
   useEffect(() => {
-    setSaveFunc(() => handleSave);
+    setSaveDiagram(() => handleSave);
   }, [handleSave]);
 
   return (
