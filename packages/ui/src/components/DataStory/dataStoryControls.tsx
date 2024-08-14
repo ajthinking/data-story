@@ -22,12 +22,12 @@ export function useDataStoryControls() {
 }
 
 export function DataStoryControls({
-  hideToolbar = false,
+  hideControls = false,
   setShowRun,
   setShowAddNode,
   slotComponents
 }: {
-  hideToolbar?: boolean;
+  hideControls?: boolean;
   setShowRun: (showRun: boolean) => void;
   setShowAddNode: (showAddNode: boolean) => void;
   slotComponents?: React.ReactNode[];
@@ -48,7 +48,7 @@ export function DataStoryControls({
     }
   }), [updateDiagram, toDiagram]);
 
-  if (hideToolbar) return null;
+  if (hideControls) return null;
 
   return <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
     <ControlButton

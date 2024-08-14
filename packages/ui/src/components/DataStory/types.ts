@@ -51,7 +51,7 @@ export type DataStoryProps = {
   clientv2?: JsClientV2,
   server?: ServerConfig
   initDiagram?: Diagram
-  hideToolbar?: boolean
+  hideControls?: boolean
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: DataStoryCallback;

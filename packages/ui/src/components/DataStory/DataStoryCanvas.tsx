@@ -67,7 +67,7 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
 const Flow = ({
   server,
   initDiagram,
-  hideToolbar = false,
+  hideControls = false,
   slotComponents,
   observers,
   onInitialize,
@@ -154,7 +154,7 @@ const Flow = ({
       >
         <DataStoryControls
           slotComponents={slotComponents}
-          hideToolbar={hideToolbar}
+          hideControls={hideControls}
           setShowRun={(showRunForm: boolean) => setSidebarKey!(showRunForm ? 'run' : '')}
           setShowAddNode={(showAddNodeForm: boolean) => setSidebarKey!(showAddNodeForm ? 'addNode' : '')}
         />

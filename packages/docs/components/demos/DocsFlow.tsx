@@ -1,19 +1,13 @@
 import { DataStory } from '@data-story/ui'
 import {
   Application,
-  DiagramBuilder,
   coreNodeProvider,
   nodes,
   multiline,
   core,
 } from '@data-story/core';
 
-import useWindowDimensions from '../../hooks/useWindowDimensions';
-
 export default () => {
-  const { height, width } = useWindowDimensions();
-  const isSmallScreen = width < 768;
-
   const app = new Application();
 
   app.register(coreNodeProvider);
@@ -41,7 +35,7 @@ export default () => {
         server={{ type: 'JS', app }}
         initDiagram={diagram}
         onInitialize={(options) => options.run()}
-        hideToolbar={true}
+        hideControls={true}
       />
     </div>
   );

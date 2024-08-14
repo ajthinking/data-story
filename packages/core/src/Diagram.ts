@@ -3,8 +3,6 @@ import { Link } from './types/Link'
 import { Node } from './types/Node'
 import { Param } from './Param'
 
-export type OnConnectCallbacks = (link: Link, diagram: Diagram) => void
-
 export class Diagram {
   nodes: Node[]
   links: Link[]
