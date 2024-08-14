@@ -70,12 +70,13 @@ export function useHotkeys({
       'Shift+Minus': () => {
         !showAddNode && setShowAddNode(true);
       },
+      'Ctrl+KeyS': () => onSave?.(),
+      'Cmd+KeyS': () => onSave?.(),
+      // The operation below is not valid.
       'ArrowUp': () => traverseNodes('up'),
       'ArrowDown': () => traverseNodes('down'),
       'ArrowLeft': () => traverseNodes('left'),
       'ArrowRight': () => traverseNodes('right'),
-      'Ctrl+KeyS': () => onSave?.(),
-      'Cmd+KeyS': () => onSave?.(),
     };
 
     for(let actionMapKey in actionMap) {

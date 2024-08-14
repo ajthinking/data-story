@@ -1,6 +1,6 @@
 {
   "index": {
-    "title": "Home"    
+    "title": "Home"
   },
   "menu": {
     "title": "Resources",
@@ -9,19 +9,19 @@
       "home": {
         "title": "Home",
         "href": "/"
-      },      
+      },
       "playground": {
         "title": "Playground",
         "href": "/playground"
-      },  
+      },
       "github": {
         "title": "GitHub",
         "newWindow": true,
         "href": "https://github.com/ajthinking/data-story"
       }
     }
-  },  
-  "getting-started": "Getting Started",  
+  },
+  "getting-started": "Getting Started",
   "customize": "Customize",
   "playground": {
     "title": "Playground",
@@ -29,7 +29,7 @@
     "type": "page",
     "theme": {
       "layout": "raw"
-    }    
+    }
   },
   "playground-node": {
     "title": "Playground NodeJS",
@@ -37,10 +37,11 @@
     "type": "page",
     "theme": {
       "layout": "raw"
-    }    
+    }
   },
   "Visualize": "Visualize",
   "Unfolding": "Unfolding",
   "Observers": "Observers",
-  "contributing": "Contributing"
+  "contributing": "Contributing",
+  "hotkeys": "Hotkeys"
 }
