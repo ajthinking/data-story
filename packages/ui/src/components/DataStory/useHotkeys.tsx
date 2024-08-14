@@ -4,16 +4,18 @@ import { Direction } from './getNodesWithNewSelection';
 
 export class HotkeyManager {
   private hotkeys: {};
-  constructor() {
+  private element: React.RefObject<HTMLElement>;
+  constructor(element: React.RefObject<HTMLElement>) {
     this.hotkeys = {};
+    this.element = element;
   }
 
   addEvent() {
-    window?.addEventListener?.('keydown', this.handleKeyDown.bind(this));
+    this.element.current?.addEventListener?.('keydown', this.handleKeyDown.bind(this) as EventListener);
   }
 
   removeEvent() {
-    window?.removeEventListener?.('keydown', this.handleKeyDown.bind(this));
+    this.element.current?.removeEventListener?.('keydown', this.handleKeyDown.bind(this) as EventListener);
   }
 
   register(key: string, callback: (event: KeyboardEvent) => any) {
@@ -27,14 +29,12 @@ export class HotkeyManager {
   handleKeyDown(event: KeyboardEvent) {
     const isCtrlOrCmd = event.ctrlKey || event.metaKey;
     const keyCombination = `${event.shiftKey ? 'Shift+' : ''}${isCtrlOrCmd ? (event.ctrlKey ? 'Ctrl+' : 'Cmd+') : ''}${event.code}`;    if (this.hotkeys[keyCombination]) {
-      console.log('keyCombination', keyCombination);
       event.stopPropagation();
       event.preventDefault();
       this.hotkeys[keyCombination](event);
     }
   }
 }
-const hotkeyManager = new HotkeyManager();
 
 export function useHotkeys({
   nodes,
@@ -44,7 +44,7 @@ export function useHotkeys({
   showAddNode,
   traverseNodes,
   setShowAddNode,
-  // hotkeyManager,
+  hotkeyManager,
   onSave,
 }: {
   nodes: ReactFlowNode[],
@@ -54,7 +54,7 @@ export function useHotkeys({
   showAddNode: boolean,
   traverseNodes: (direction: Direction) => void,
   setShowAddNode: (show: boolean) => void,
-  // hotkeyManager: HotkeyManager,
+  hotkeyManager: HotkeyManager,
   onSave?: () => void,
 }) {
   useEffect(() => {
