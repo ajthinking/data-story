@@ -60,6 +60,7 @@ export type DataStoryProps = {
   selectedNode?: ReactFlowNode;
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
+  onSave?: () => void;
 }
 
 export type StoreInitOptions = {

@@ -53,6 +53,7 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
     setShowAddNode: (show: boolean) => {
       setSidebarKey!(show ? 'addNode' : '');
     },
+    onSave: props.onSave,
   });
 
   return (

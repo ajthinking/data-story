@@ -39,8 +39,8 @@ export function useHotkeys({
         'ArrowDown': () => traverseNodes('down'),
         'ArrowLeft': () => traverseNodes('left'),
         'ArrowRight': () => traverseNodes('right'),
-        'Ctrl+S': () => onSave?.(),
-        'Cmd+S': () => onSave?.(),
+        'Ctrl+KeyS': () => onSave?.(),
+        'Cmd+KeyS': () => onSave?.(),
       };
 
       const isCtrlOrCmd = event.ctrlKey || event.metaKey;
@@ -49,6 +49,7 @@ export function useHotkeys({
       const action = actionMap[keyCombination];
       if (action) {
         event.preventDefault();
+        event.stopPropagation();
         console.log('action222', action);
         action();
       }

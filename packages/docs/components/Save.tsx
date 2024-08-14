@@ -1,5 +1,5 @@
 import { ControlButton } from '@xyflow/react';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { DataStoryEvents, DataStoryEventType, SaveIcon, useDataStoryControls, useDataStoryEvent } from '@data-story/ui';
 import { Diagram } from '@data-story/core';
 import { Bounce, toast, ToastContainer, ToastOptions } from 'react-toastify';
@@ -101,19 +101,28 @@ export const loadDiagram = (key: string): LocalDiagram => {
 
 export const LocalStorageKey = 'data-story-diagram';
 
-export const SaveComponent = () => {
+export const SaveComponent = ({setSaveFunc}: {
+  setSaveFunc:  React.Dispatch<React.SetStateAction<() => void>>
+}) => {
   const { getDiagram } = useDataStoryControls();
   useDataStoryEvent(initToast);
+
+  const handleSave = useCallback (() => {
+    console.log('save the diagram!!!!!!!')
+    const diagram = getDiagram();
+    saveDiagram(LocalStorageKey, diagram);
+  }, [getDiagram]);
+
+  useEffect(() => {
+    setSaveFunc(() => handleSave);
+  }, [handleSave]);
 
   return (
     <>
       <ControlButton
         title="Save"
         aria-label="Save"
-        onClick={() => {
-          const diagram = getDiagram();
-          saveDiagram(LocalStorageKey, diagram);
-        }}>
+        onClick={handleSave}>
         <SaveIcon/>
       </ControlButton>
       <ToastContainer/>
