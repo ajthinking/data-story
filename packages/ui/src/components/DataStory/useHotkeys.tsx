@@ -41,16 +41,6 @@ export function useHotkeys({
       const arrowLeft = event.code === 'ArrowLeft';
       const arrowRight = event.code === 'ArrowRight';
 
-      const enter = event.code === 'Enter';
-
-      // Ensure no modal is already open
-      // if ([
-      //   openNodeModalId,
-      //   showConfigModal,
-      //   showRunModal,
-      //   showAddNodeModal,
-      // ].find(Boolean)) return;
-
       // Open modal!
       if (shiftR) setShowRun(true);
       if (shiftPlus) {
@@ -58,15 +48,6 @@ export function useHotkeys({
         window.removeEventListener('keydown', handleEnterPress);
         setShowAddNode(true);
       }
-
-      // Open node settings modal
-      const openable = (() => {
-        const selectedNodes = nodes.filter((node) => node.selected);
-        const one = selectedNodes.length === 1;
-        if(!one) return null;
-
-        return selectedNodes.at(0);
-      })()
 
       // Select nodes
       if (arrowUp) traverseNodes('up');
