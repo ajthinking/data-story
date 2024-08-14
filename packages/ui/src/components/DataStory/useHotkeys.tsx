@@ -12,6 +12,7 @@ export function useHotkeys({
   showAddNode,
   traverseNodes,
   setShowAddNode,
+  onSave,
 }: {
   nodes: ReactFlowNode[],
   openNodeSidebarId: string | null,
@@ -22,38 +23,35 @@ export function useHotkeys({
   showAddNode: boolean,
   traverseNodes: (direction: Direction) => void,
   setShowAddNode: (show: boolean) => void,
-
+  onSave?: () => void,
 }) {
   useEffect(() => {
-    // restore enterkey event listener
-    // (it is disabled when the addNodeModal is open)
-    if(!showAddNode) {
-      window.addEventListener('keydown', handleEnterPress);
-    }
-
     function handleKeyPress(event: KeyboardEvent) {
       // Swedish Mac keyboard 🤷‍♂️
-      const shiftR = event.shiftKey && event.code === 'KeyR';
-      const shiftPlus = event.shiftKey && event.code === 'Minus'
+      const actionMap = {
+        'Shift+KeyR': () => !showRun && setShowRun(true),
+        'Shift+Minus': () => {
+          console.log('shift minus');
+          // window.removeEventListener('keydown', handleEnterPress); // 注意这里需要保证handleEnterPress的正确引用
+          !showAddNode && setShowAddNode(true);
+        },
+        'ArrowUp': () => traverseNodes('up'),
+        'ArrowDown': () => traverseNodes('down'),
+        'ArrowLeft': () => traverseNodes('left'),
+        'ArrowRight': () => traverseNodes('right'),
+        'Ctrl+S': () => onSave?.(),
+        'Cmd+S': () => onSave?.(),
+      };
 
-      const arrowUp = event.code === 'ArrowUp';
-      const arrowDown = event.code === 'ArrowDown';
-      const arrowLeft = event.code === 'ArrowLeft';
-      const arrowRight = event.code === 'ArrowRight';
-
-      // Open modal!
-      if (shiftR) setShowRun(true);
-      if (shiftPlus) {
-        // When opening the add node modal, we want to disable the enter key
-        window.removeEventListener('keydown', handleEnterPress);
-        setShowAddNode(true);
+      const isCtrlOrCmd = event.ctrlKey || event.metaKey;
+      const keyCombination = `${event.shiftKey ? 'Shift+' : ''}${isCtrlOrCmd ? (event.ctrlKey ? 'Ctrl+' : 'Cmd+') : ''}${event.code}`;
+      console.log(keyCombination, 'key combination');
+      const action = actionMap[keyCombination];
+      if (action) {
+        event.preventDefault();
+        console.log('action222', action);
+        action();
       }
-
-      // Select nodes
-      if (arrowUp) traverseNodes('up');
-      if (arrowDown) traverseNodes('down');
-      if (arrowLeft) traverseNodes('left');
-      if (arrowRight) traverseNodes('right');
     }
 
     function handleEnterPress(event: KeyboardEvent) {
@@ -63,8 +61,6 @@ export function useHotkeys({
 
       // Ensure no modal is already open
       if ([
-        // openNodeModalId,
-        // showConfigModal,
         showRun,
         showAddNode,
       ].find(Boolean)) return;
@@ -73,7 +69,7 @@ export function useHotkeys({
       const openable = (() => {
         const selectedNodes = nodes.filter((node) => node.selected);
         const one = selectedNodes.length === 1;
-        if(!one) return null;
+        if (!one) return null;
 
         return selectedNodes.at(0);
       })()
@@ -81,9 +77,13 @@ export function useHotkeys({
       if (enter && openable) setOpenNodeSidebarId(openable.id);
     }
 
-    // Add the event listener when the component mounts
-    window.addEventListener('keyup', handleKeyPress);
-    window.addEventListener('keydown', handleEnterPress);
+    // (it is disabled when the addNodeModal is open)
+    if (!showAddNode) {
+      window.addEventListener('keydown', handleEnterPress);
+      window.addEventListener('keyup', handleKeyPress);
+    } else {
+      window.addEventListener('keyup', handleKeyPress);
+    }
 
     // Remove the event listener when the component unmounts
     return () => {
