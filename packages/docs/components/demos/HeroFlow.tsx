@@ -57,7 +57,7 @@ export default () => {
         server={{ type: 'JS', app }}
         initDiagram={isSmallScreen ? smallDiagram : bigDiagram}
         onInitialize={(options) => options.run()}
-        hideToolbar={true}
+        hideControls={true}
       />
     </div>
   );

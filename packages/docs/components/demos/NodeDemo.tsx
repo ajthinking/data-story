@@ -17,7 +17,7 @@ export default ({ nodeName }: { nodeName: string}) => {
       <DataStory
         server={{ type: 'JS', app }}
         initDiagram={diagram}
-        hideToolbar={true}
+        hideControls={true}
       />
     </div>
   </div>
