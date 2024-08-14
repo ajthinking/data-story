@@ -138,9 +138,9 @@ export type StoreSchema = {
   /** Run the diagram */
   onRun: () => void;
 
-  /** Modals */
-  openNodeModalId: string | null;
-  setOpenNodeModalId: (id: string | null) => void;
+  /** Sidebar */
+  openNodeSidebarId: string | null;
+  setOpenNodeSidebarId: (id: string | null) => void;
 
   /** observerMap are used to monitor data changes in the node */
   observerMap: ObserverMap;

@@ -11,10 +11,10 @@ const NodeComponent = ({ id, data, selected }: {
   selected: boolean
 }) => {
   const selector = (state: StoreSchema) => ({
-    setOpenNodeModalId: state.setOpenNodeModalId,
+    setOpenNodeSidebarId: state.setOpenNodeSidebarId,
   });
 
-  const { setOpenNodeModalId } = useStore(selector, shallow);
+  const { setOpenNodeSidebarId } = useStore(selector, shallow);
 
   return (
     (
@@ -22,7 +22,7 @@ const NodeComponent = ({ id, data, selected }: {
         className={'text-xs' + (selected ? ' shadow-xl' : '')}
         data-cy="data-story-node-component"
         onDoubleClick={() => {
-          setOpenNodeModalId(id)
+          setOpenNodeSidebarId(id)
         }}
       >
         <div className="w-32" />

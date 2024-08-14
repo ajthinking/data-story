@@ -25,8 +25,8 @@ const nodeTypes = {
 export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
-    openNodeModalId: state.openNodeModalId,
-    setOpenNodeModalId: state.setOpenNodeModalId,
+    openNodeSidebarId: state.openNodeSidebarId,
+    setOpenNodeSidebarId: state.setOpenNodeSidebarId,
     traverseNodes: state.traverseNodes,
   });
   useGetStore(ref);
@@ -34,18 +34,18 @@ export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
 
   const {
     nodes,
-    openNodeModalId,
-    setOpenNodeModalId,
+    openNodeSidebarId,
+    setOpenNodeSidebarId,
     traverseNodes,
   } = useStore(selector, shallow);
 
   useHotkeys({
     nodes,
-    openNodeSidebarId: openNodeModalId,
+    openNodeSidebarId,
     setShowRun:(show: boolean) => {
       setSidebarKey!(show ? 'run' : '');
     },
-    setOpenNodeSidebarId: setOpenNodeModalId,
+    setOpenNodeSidebarId,
     showConfigModal: sidebarKey === 'node',
     showRun: sidebarKey === 'run',
     showAddNode: sidebarKey === 'addNode',
@@ -86,7 +86,6 @@ const Flow = ({
     onRun: state.onRun,
     setObservers: state.setObservers,
     addNodeFromDescription: state.addNodeFromDescription,
-    openNodeModalId: state.openNodeModalId,
   });
 
   const {
@@ -160,7 +159,7 @@ const Flow = ({
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>
-      {/*<NodeSettingsModal showModal={Boolean(openNodeModalId)} onClose={close} node={node!} />*/}
+      {/*<NodeSettingsModal showModal={Boolean(openNodeSidebarId)} onClose={close} node={node!} />*/}
     </>
   )
 }

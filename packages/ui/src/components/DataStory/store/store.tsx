@@ -26,7 +26,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   params: [],
   server: null,
   availableNodes: [],
-  openNodeModalId: null,
+  openNodeSidebarId: null,
   observerMap: new Map(),
 
   // METHODS
@@ -217,8 +217,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     get().setEdges(updatedEdges);
   },
-  setOpenNodeModalId: (id: string | null) => {
-    set({ openNodeModalId: id })
+  setOpenNodeSidebarId: (id: string | null) => {
+    set({ openNodeSidebarId: id })
   },
   traverseNodes: (direction: Direction) => {
     // This is an UI only operation

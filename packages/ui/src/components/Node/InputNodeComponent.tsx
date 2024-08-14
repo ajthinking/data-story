@@ -9,10 +9,10 @@ import { StoreSchema } from '../DataStory/types';
 
 const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStoryNodeData; selected: boolean }) => {
   const selector = (state: StoreSchema) => ({
-    setOpenNodeModalId: state.setOpenNodeModalId,
+    setOpenNodeSidebarId: state.setOpenNodeSidebarId,
   });
 
-  const { setOpenNodeModalId } = useStore(selector, shallow);
+  const { setOpenNodeSidebarId } = useStore(selector, shallow);
 
   const portName = (data?.params?.[0] as StringableParam)
     .value.value
@@ -24,7 +24,7 @@ const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStor
     <div
       className={'text-xs' + (selected ? ' shadow-xl' : '')}
       onDoubleClick={() => {
-        setOpenNodeModalId(id);
+        setOpenNodeSidebarId(id);
       }}
     >
       <div className="flex w-full items-right justify-end -mx-4">
