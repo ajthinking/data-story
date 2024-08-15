@@ -13,6 +13,7 @@ import { onDragOver, onDrop } from './onDrop';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { useSelectedNodeSettings } from './Form/useSelectedNodeSettings';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
+import { useEscapeKey } from './hooks/useEscapeKey';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -45,7 +46,6 @@ const Flow = ({
   onNodeSelected,
   selectedNodeData,
   selectedNode,
-  sidebarKey,
   onSave
 }: DataStoryProps) => {
   const selector = (state: StoreSchema) => ({
@@ -99,22 +99,20 @@ const Flow = ({
   const flowRef = useRef<HTMLDivElement>(null);
 
   const hotkeyManager =  useMemo(() => new HotkeyManager(flowRef), []);
+  const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
+  const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
 
   useHotkeys({
     nodes,
-    setShowRun:(show: boolean) => {
-      setSidebarKey!(show ? 'run' : '');
-    },
+    setShowRun,
     setOpenNodeSidebarId,
-    showRun: sidebarKey === 'run',
-    showAddNode: sidebarKey === 'addNode',
     traverseNodes,
-    setShowAddNode: (show: boolean) => {
-      setSidebarKey!(show ? 'addNode' : '');
-    },
+    setShowAddNode,
     hotkeyManager,
     onSave,
   });
+
+  useEscapeKey(() => setSidebarKey!(''), flowRef);
 
   return (
     <>
@@ -153,8 +151,8 @@ const Flow = ({
         <DataStoryControls
           slotComponents={slotComponents}
           hideControls={hideControls}
-          setShowRun={(showRunForm: boolean) => setSidebarKey!(showRunForm ? 'run' : '')}
-          setShowAddNode={(showAddNodeForm: boolean) => setSidebarKey!(showAddNodeForm ? 'addNode' : '')}
+          setShowRun={setShowRun}
+          setShowAddNode={setShowAddNode}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>

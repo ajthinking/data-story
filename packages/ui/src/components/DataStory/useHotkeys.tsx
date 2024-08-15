@@ -40,8 +40,6 @@ export function useHotkeys({
   nodes,
   setShowRun,
   setOpenNodeSidebarId,
-  showRun,
-  showAddNode,
   traverseNodes,
   setShowAddNode,
   hotkeyManager,
@@ -50,8 +48,6 @@ export function useHotkeys({
   nodes: ReactFlowNode[],
   setShowRun: (show: boolean) => void,
   setOpenNodeSidebarId: (id: string | null) => void,
-  showRun: boolean,
-  showAddNode: boolean,
   traverseNodes: (direction: Direction) => void,
   setShowAddNode: (show: boolean) => void,
   hotkeyManager: HotkeyManager,
@@ -65,13 +61,28 @@ export function useHotkeys({
   }, []);
 
   useEffect(() => {
+    hotkeyManager.register('Shift+Minus', () => {
+      setShowAddNode(true);
+    });
+    return () => hotkeyManager.unregister('Shift+Minus');
+  }, [hotkeyManager, setShowAddNode]);
+
+  useEffect(() => {
+    hotkeyManager.register('Shift+KeyR', () => setShowRun(true));
+    return () => hotkeyManager.unregister('Shift+KeyR');
+  }, [hotkeyManager, setShowRun]);
+
+  useEffect(() => {
+    hotkeyManager.register('Ctrl+KeyS', () => onSave?.());
+    hotkeyManager.register('Cmd+KeyS', () => onSave?.());
+    return () => {
+      hotkeyManager.unregister('Ctrl+KeyS');
+      hotkeyManager.unregister('Cmd+KeyS');
+    }
+  }, [hotkeyManager, onSave]);
+
+  useEffect(() => {
     const actionMap = {
-      'Shift+KeyR': () => !showRun && setShowRun(true),
-      'Shift+Minus': () => {
-        !showAddNode && setShowAddNode(true);
-      },
-      'Ctrl+KeyS': () => onSave?.(),
-      'Cmd+KeyS': () => onSave?.(),
       // The operation below is not valid.
       'ArrowUp': () => traverseNodes('up'),
       'ArrowDown': () => traverseNodes('down'),
@@ -82,16 +93,15 @@ export function useHotkeys({
     for(let actionMapKey in actionMap) {
       hotkeyManager.register(actionMapKey, actionMap[actionMapKey]);
     }
-  }, [onSave, setShowAddNode, setShowRun, showAddNode, showRun, traverseNodes]);
+    return () => {
+      for(let actionMapKey in actionMap) {
+        hotkeyManager.unregister(actionMapKey);
+      }
+    }
+  }, [hotkeyManager, traverseNodes]);
 
   useEffect(() => {
     function handleEnterPress() {
-      // Ensure no modal is already open
-      if ([
-        showRun,
-        showAddNode,
-      ].find(Boolean)) return;
-
       // Open node settings modal
       const openable = (() => {
         const selectedNodes = nodes.filter((node) => node.selected);
@@ -100,10 +110,11 @@ export function useHotkeys({
 
         return selectedNodes.at(0);
       })()
-
       if (openable) setOpenNodeSidebarId(openable.id);
     }
 
     hotkeyManager.register('Enter', handleEnterPress);
-  }, [nodes, setOpenNodeSidebarId, showAddNode, showRun]);
+
+    return () => hotkeyManager.unregister('Enter');
+  }, [nodes, setOpenNodeSidebarId]);
 }
