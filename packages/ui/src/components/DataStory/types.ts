@@ -56,6 +56,8 @@ export type DataStoryProps = {
   observers?: DataStoryObservers;
   onInitialize?: DataStoryCallback;
   onSave?: () => void;
+  hideSidebar?: boolean;
+  hideActivityBar?: boolean;
 }
 
 export type DataStoryCanvasProps = {

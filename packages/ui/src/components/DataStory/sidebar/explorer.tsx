@@ -31,7 +31,7 @@ function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
 
 const LoadingTree: React.FC = () => {
   return (
-    <div className="items-center justify-center h-screen flex">
+    <div className="items-center justify-center h-full flex">
       <div className=" w-10 h-10 fill-blue-500 animate-slow-spin">
         <LoadingIcon />
       </div>

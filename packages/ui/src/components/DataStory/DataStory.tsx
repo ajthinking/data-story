@@ -15,7 +15,7 @@ export const DataStory = (
 ) => {
   const path = '/';
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
-  const [isSidebarClose, setIsSidebarClose] = useState(true);
+  const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
@@ -56,7 +56,7 @@ export const DataStory = (
   return (
     <DataStoryCanvasProvider>
       <Allotment className='h-full border-0.5'>
-        <Allotment.Pane minSize={44} maxSize={44}>
+        <Allotment.Pane visible={!props.hideActivityBar} minSize={44} maxSize={44}>
           <ActivityBar
             selectedNode={selectedNode}
             setActiveKey={setSidebarKey}
