@@ -67,7 +67,7 @@ export const DataStory = (
         </Allotment.Pane>
         <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
           <Sidebar
-            tree={tree}
+            tree={tree} treeLoading={treeLoading}
             partialStoreRef={partialStoreRef}
             sidebarKey={sidebarKey}
             setSidebarKey={setSidebarKey} node={selectedNode}

@@ -9,7 +9,7 @@ import { AddNode } from './addNode';
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const {
     tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
-    partialStoreRef
+    partialStoreRef, treeLoading
   } = props;
 
   const renderContent = () => {
@@ -24,7 +24,7 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
           addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
           setSidebarKey={setSidebarKey}/>;
       case 'experiment':
-        return <Explorer tree={tree} />;
+        return <Explorer tree={tree} treeLoading={treeLoading} />;
       case 'diagram':
         return <SidebarPlaceholder content={'todo: show diagram configuration'}/>;
       case 'settings':

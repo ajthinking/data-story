@@ -149,6 +149,7 @@ export type StoreSchema = {
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   tree?: Tree;
+  treeLoading?: boolean;
   activeBar?: string;
   sidebarKey: string;
   node?: ReactFlowNode;

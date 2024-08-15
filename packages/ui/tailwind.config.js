@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       animation: {
-        'slow-spin': 'spin 4s linear infinite',
+        'slow-spin': 'spin 3s linear infinite',
       },
     },
   },
