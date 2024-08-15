@@ -3,6 +3,8 @@ import { ChevronRight } from '../icons/chevronRight';
 import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
 import { Tree } from '../clients/Tree';
+import { LoadingIcon } from '../icons/loadingIcon';
+import { SidebarPlaceholder } from './sidebarPlaceholder';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
   const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);
@@ -20,19 +22,31 @@ function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
       onClick={() => node.toggle()}
     >
       <div className="scale-0.5">
-        <Icon />
+        <Icon/>
       </div>
       <div className="ml-2">{node.data.name}</div>
     </div>
   );
 }
 
+const LoadingTree: React.FC = () => {
+  return (
+    <div className="items-center justify-center h-full flex">
+      <div className=" w-10 h-10 fill-blue-500 animate-slow-spin">
+        <LoadingIcon />
+      </div>
+    </div>
+  );
+};
+
 export const Explorer = ({
-  tree
+  tree,
+  treeLoading
 }: {
-  tree?: Tree
+  tree?: Tree,
+  treeLoading?: boolean,
 }) => {
-  if(!tree) return <div>Loading...</div>;
+  if (treeLoading) return <LoadingTree/>;
 
   const data = [
     {
@@ -52,22 +66,25 @@ export const Explorer = ({
   ];
 
   return (
-    <div className="">
+    <div className="h-full">
       <div className="uppercase text-xs px-8 py-2 text-gray-600">
         Explorer
       </div>
-      <div className="px-2 py-2">
-        <ArboristTree
-          initialData={data}
-          openByDefault={true}
-          width={600}
-          height={1000}
-          indent={18}
-          rowHeight={24}
-        >
-          {Node}
-        </ArboristTree>
-      </div>
+      {tree
+        ? <div className="px-2 py-2">
+          <ArboristTree
+            initialData={data}
+            openByDefault={true}
+            width={600}
+            height={1000}
+            indent={18}
+            rowHeight={24}
+          >
+            {Node}
+          </ArboristTree>
+        </div>
+        :  <SidebarPlaceholder content={'No data available'}/>}
+
     </div>
   );
 };

@@ -8,16 +8,14 @@ import { useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
-import { Tree } from './clients/Tree';
-import { sleep } from '@data-story/core';
 import { useRequest } from 'ahooks';
 
 export const DataStory = (
-  props: Omit<DataStoryProps,'setSidebarKey'>
+  props: DataStoryProps
 ) => {
   const path = '/';
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
-  const [isSidebarClose, setIsSidebarClose] = useState(true);
+  const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
@@ -58,7 +56,7 @@ export const DataStory = (
   return (
     <DataStoryCanvasProvider>
       <Allotment className='h-full border-0.5'>
-        <Allotment.Pane minSize={44} maxSize={44}>
+        <Allotment.Pane visible={!props.hideActivityBar} minSize={44} maxSize={44}>
           <ActivityBar
             selectedNode={selectedNode}
             setActiveKey={setSidebarKey}
@@ -67,7 +65,7 @@ export const DataStory = (
         </Allotment.Pane>
         <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
           <Sidebar
-            tree={tree}
+            tree={tree} treeLoading={treeLoading}
             partialStoreRef={partialStoreRef}
             sidebarKey={sidebarKey}
             setSidebarKey={setSidebarKey} node={selectedNode}

@@ -7,7 +7,7 @@ import { shallow } from 'zustand/shallow';
 import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
 import TableNodeComponent from '../Node/TableNodeComponent';
-import { DataStoryProps, StoreInitOptions, StoreSchema } from './types';
+import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDragOver, onDrop } from './onDrop';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
@@ -23,7 +23,7 @@ const nodeTypes = {
   tableNodeComponent: TableNodeComponent,
 };
 
-export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
+export const DataStoryCanvas = forwardRef((props: DataStoryCanvasProps, ref) => {
   useGetStore(ref);
 
   return (
@@ -47,7 +47,7 @@ const Flow = ({
   selectedNodeData,
   selectedNode,
   onSave
-}: DataStoryProps) => {
+}: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     edges: state.edges,
