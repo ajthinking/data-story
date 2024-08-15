@@ -3,7 +3,6 @@ import React from 'react';
 import { DataStory, JsClientV2 } from '@data-story/ui';
 import { loadDiagram, LocalStorageKey,  SaveComponent } from './Save';
 import { ServerRequest } from '../const';
-import { useCreation } from 'ahooks';
 
 export default ({ mode }: {mode?: 'js' | 'node'}) => {
   const app = new Application()
@@ -12,16 +11,18 @@ export default ({ mode }: {mode?: 'js' | 'node'}) => {
 
   const { diagram } = loadDiagram(LocalStorageKey);
   const [initDiagram] = React.useState<Diagram>(diagram);
+  const [saveDiagram, setSaveDiagram] = React.useState<() => void>(() => {});
 
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
+        onSave={saveDiagram}
         // TODO: avoid re-creating the client on every render
         // SyntaxError: Cannot use import statement outside a module
         // clientv2={useCreation(() => new JsClientV2(), [])}
         clientv2={new JsClientV2()}
         slotComponents={[
-          <SaveComponent/>,
+          <SaveComponent setSaveDiagram={setSaveDiagram}/>,
         ]}
         initDiagram={initDiagram}
         server={mode === 'node'

@@ -13,10 +13,10 @@ const CommentNodeComponent = ({ id, data }: {
   data: DataStoryNodeData
 }) => {
   const selector = (state: StoreSchema) => ({
-    setOpenNodeModalId: state.setOpenNodeModalId,
+    setOpenNodeSidebarId: state.setOpenNodeSidebarId,
   });
 
-  const { setOpenNodeModalId } = useStore(selector, shallow);
+  const { setOpenNodeSidebarId } = useStore(selector, shallow);
 
   const contentParam = data.params.find((param) => param.name === 'content')! as StringableParam
 
@@ -26,7 +26,7 @@ const CommentNodeComponent = ({ id, data }: {
     (
       <div
         className="max-w-xl prose prose-slate font-mono bg-gray-50 p-4 rounded shadow-xl prose-a:text-blue-500"
-        onDoubleClick={() => setOpenNodeModalId(id)}
+        onDoubleClick={() => setOpenNodeSidebarId(id)}
         dangerouslySetInnerHTML={{ __html: htmlContent }}
       />
     )

@@ -15,10 +15,7 @@ export function SidebarWrap({
   primaryAction?: string;
   onPrimaryAction?: () => void;
 }) {
-  useEscapeKey(() => setShowSidebar(''));
   const [isCollapseIconActive, setIsCollapseIconActive] = useState(false);
-
-  const sidebarRef = useRef<HTMLDivElement | null>(null);
 
   const handleMouseEnter = () => {
     setIsCollapseIconActive(true);

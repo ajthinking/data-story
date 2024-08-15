@@ -13,20 +13,20 @@ export const useSelectedNodeSettings = ({ onSelectedNode, selectedNodeData, sele
 }) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
-    openNodeModalId: state.openNodeModalId,
-    setOpenNodeModalId: state.setOpenNodeModalId,
+    openNodeSidebarId: state.openNodeSidebarId,
+    setOpenNodeSidebarId: state.setOpenNodeSidebarId,
   });
 
   const {
     nodes,
-    openNodeModalId,
-    setOpenNodeModalId
+    openNodeSidebarId,
+    setOpenNodeSidebarId
   } = useStore(selector, shallow);
 
   const latestNodes = useLatest(nodes);
   const node = useMemo(() => {
-    return latestNodes.current.find((n) => n.id === openNodeModalId);
-  }, [latestNodes, openNodeModalId]);
+    return latestNodes.current.find((n) => n.id === openNodeSidebarId);
+  }, [latestNodes, openNodeSidebarId]);
 
   const { updateNode } = useStore((state) => ({ updateNode: state.updateNode }), shallow);
   const updateNodeInternals = useUpdateNodeInternals();
@@ -40,7 +40,7 @@ export const useSelectedNodeSettings = ({ onSelectedNode, selectedNodeData, sele
 
   useEffect(() => {
     if (!selectedNode) {
-      setOpenNodeModalId(null);
+      setOpenNodeSidebarId(null);
     }
   }, [selectedNode]);
 

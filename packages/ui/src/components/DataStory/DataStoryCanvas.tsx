@@ -1,5 +1,5 @@
 import { DataStoryControls } from './dataStoryControls';
-import { forwardRef, useCallback, useEffect, useId, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Background, BackgroundVariant, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
@@ -12,7 +12,8 @@ import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDragOver, onDrop } from './onDrop';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { useSelectedNodeSettings } from './Form/useSelectedNodeSettings';
-import { useHotkeys } from './useHotkeys';
+import { HotkeyManager, useHotkeys } from './useHotkeys';
+import { useEscapeKey } from './hooks/useEscapeKey';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -23,37 +24,7 @@ const nodeTypes = {
 };
 
 export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
-  const selector = (state: StoreSchema) => ({
-    nodes: state.nodes,
-    openNodeModalId: state.openNodeModalId,
-    setOpenNodeModalId: state.setOpenNodeModalId,
-    traverseNodes: state.traverseNodes,
-  });
   useGetStore(ref);
-  const {setSidebarKey, sidebarKey} = props;
-
-  const {
-    nodes,
-    openNodeModalId,
-    setOpenNodeModalId,
-    traverseNodes,
-  } = useStore(selector, shallow);
-
-  useHotkeys({
-    nodes,
-    openNodeModalId,
-    setShowRunForm:(show: boolean) => {
-      setSidebarKey!(show ? 'run' : '');
-    },
-    setOpenNodeModalId,
-    showConfigModal: sidebarKey === 'node',
-    showRunModal: sidebarKey === 'run',
-    showAddNodeModal: sidebarKey === 'addNode',
-    traverseNodes,
-    setShowAddNodeForm: (show: boolean) => {
-      setSidebarKey!(show ? 'addNode' : '');
-    },
-  });
 
   return (
     <>
@@ -75,6 +46,7 @@ const Flow = ({
   onNodeSelected,
   selectedNodeData,
   selectedNode,
+  onSave
 }: DataStoryProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -86,7 +58,8 @@ const Flow = ({
     onRun: state.onRun,
     setObservers: state.setObservers,
     addNodeFromDescription: state.addNodeFromDescription,
-    openNodeModalId: state.openNodeModalId,
+    setOpenNodeSidebarId: state.setOpenNodeSidebarId,
+    traverseNodes: state.traverseNodes,
   });
 
   const {
@@ -99,7 +72,16 @@ const Flow = ({
     onRun,
     setObservers,
     addNodeFromDescription,
+    setOpenNodeSidebarId,
+    traverseNodes
   } = useStore(selector, shallow);
+
+  useSelectedNodeSettings({
+    onSelectedNode: onNodeSelected,
+    selectedNodeData: selectedNodeData,
+    selectedNode: selectedNode,
+  });
+
   const id = useId()
   const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
 
@@ -114,15 +96,29 @@ const Flow = ({
     }
   }, [isExecutePostRenderEffect, onRun, onInitialize]);
 
-  useSelectedNodeSettings({
-    onSelectedNode: onNodeSelected,
-    selectedNodeData: selectedNodeData,
-    selectedNode: selectedNode,
+  const flowRef = useRef<HTMLDivElement>(null);
+
+  const hotkeyManager =  useMemo(() => new HotkeyManager(flowRef), []);
+  const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
+  const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
+
+  useHotkeys({
+    nodes,
+    setShowRun,
+    setOpenNodeSidebarId,
+    traverseNodes,
+    setShowAddNode,
+    hotkeyManager,
+    onSave,
   });
+
+  useEscapeKey(() => setSidebarKey!(''), flowRef);
 
   return (
     <>
       <ReactFlow
+        tabIndex={0}
+        ref={flowRef}
         id={id}
         className='bg-gray-50'
         nodes={nodes}
@@ -155,12 +151,12 @@ const Flow = ({
         <DataStoryControls
           slotComponents={slotComponents}
           hideControls={hideControls}
-          setShowRun={(showRunForm: boolean) => setSidebarKey!(showRunForm ? 'run' : '')}
-          setShowAddNode={(showAddNodeForm: boolean) => setSidebarKey!(showAddNodeForm ? 'addNode' : '')}
+          setShowRun={setShowRun}
+          setShowAddNode={setShowAddNode}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>
-      {/*<NodeSettingsModal showModal={Boolean(openNodeModalId)} onClose={close} node={node!} />*/}
+      {/*<NodeSettingsModal showModal={Boolean(openNodeSidebarId)} onClose={close} node={node!} />*/}
     </>
   )
 }

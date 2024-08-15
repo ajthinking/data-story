@@ -2,120 +2,119 @@ import { useEffect } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Direction } from './getNodesWithNewSelection';
 
+export class HotkeyManager {
+  private hotkeys: {};
+  private element: React.RefObject<HTMLElement>;
+  constructor(element: React.RefObject<HTMLElement>) {
+    this.hotkeys = {};
+    this.element = element;
+  }
+
+  addEvent() {
+    this.element.current?.addEventListener?.('keydown', this.handleKeyDown.bind(this) as EventListener);
+  }
+
+  removeEvent() {
+    this.element.current?.removeEventListener?.('keydown', this.handleKeyDown.bind(this) as EventListener);
+  }
+
+  register(key: string, callback: (event: KeyboardEvent) => any) {
+    this.hotkeys[key] = callback;
+  }
+
+  unregister(key: string) {
+    delete this.hotkeys[key];
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    const isCtrlOrCmd = event.ctrlKey || event.metaKey;
+    const keyCombination = `${event.shiftKey ? 'Shift+' : ''}${isCtrlOrCmd ? (event.ctrlKey ? 'Ctrl+' : 'Cmd+') : ''}${event.code}`;    if (this.hotkeys[keyCombination]) {
+      event.stopPropagation();
+      event.preventDefault();
+      this.hotkeys[keyCombination](event);
+    }
+  }
+}
+
 export function useHotkeys({
   nodes,
-  openNodeModalId,
-  setShowRunForm,
-  setOpenNodeModalId,
-  showConfigModal,
-  showRunModal,
-  showAddNodeModal,
+  setShowRun,
+  setOpenNodeSidebarId,
   traverseNodes,
-  setShowAddNodeForm,
+  setShowAddNode,
+  hotkeyManager,
+  onSave,
 }: {
   nodes: ReactFlowNode[],
-  openNodeModalId: string | null,
-  setShowRunForm: (show: boolean) => void,
-  setOpenNodeModalId: (id: string | null) => void,
-  showConfigModal: boolean,
-  showRunModal: boolean,
-  showAddNodeModal: boolean,
+  setShowRun: (show: boolean) => void,
+  setOpenNodeSidebarId: (id: string | null) => void,
   traverseNodes: (direction: Direction) => void,
-  setShowAddNodeForm: (show: boolean) => void,
-
+  setShowAddNode: (show: boolean) => void,
+  hotkeyManager: HotkeyManager,
+  onSave?: () => void,
 }) {
   useEffect(() => {
-    // restore enterkey event listener
-    // (it is disabled when the addNodeModal is open)
-    if(!showAddNodeModal) {
-      window.addEventListener('keydown', handleEnterPress);
-    }
-
-    function handleKeyPress(event: KeyboardEvent) {
-      // Swedish Mac keyboard 🤷‍♂️
-      const shiftR = event.shiftKey && event.code === 'KeyR';
-      const shiftPlus = event.shiftKey && event.code === 'Minus'
-
-      const arrowUp = event.code === 'ArrowUp';
-      const arrowDown = event.code === 'ArrowDown';
-      const arrowLeft = event.code === 'ArrowLeft';
-      const arrowRight = event.code === 'ArrowRight';
-
-      const enter = event.code === 'Enter';
-
-      // Ensure no modal is already open
-      // if ([
-      //   openNodeModalId,
-      //   showConfigModal,
-      //   showRunModal,
-      //   showAddNodeModal,
-      // ].find(Boolean)) return;
-
-      // Open modal!
-      if (shiftR) setShowRunForm(true);
-      if (shiftPlus) {
-        // When opening the add node modal, we want to disable the enter key
-        window.removeEventListener('keydown', handleEnterPress);
-        setShowAddNodeForm(true);
-      }
-
-      // Open node settings modal
-      const openable = (() => {
-        const selectedNodes = nodes.filter((node) => node.selected);
-        const one = selectedNodes.length === 1;
-        if(!one) return null;
-
-        return selectedNodes.at(0);
-      })()
-
-      // Select nodes
-      if (arrowUp) traverseNodes('up');
-      if (arrowDown) traverseNodes('down');
-      if (arrowLeft) traverseNodes('left');
-      if (arrowRight) traverseNodes('right');
-    }
-
-    function handleEnterPress(event: KeyboardEvent) {
-      // Swedish Mac keyboard 🤷‍♂️
-
-      const enter = event.code === 'Enter';
-
-      // Ensure no modal is already open
-      if ([
-        // openNodeModalId,
-        // showConfigModal,
-        showRunModal,
-        showAddNodeModal,
-      ].find(Boolean)) return;
-
-      // Open node settings modal
-      const openable = (() => {
-        const selectedNodes = nodes.filter((node) => node.selected);
-        const one = selectedNodes.length === 1;
-        if(!one) return null;
-
-        return selectedNodes.at(0);
-      })()
-
-      if (enter && openable && !showAddNodeModal) setOpenNodeModalId(openable.id);
-    }
-
-    // Add the event listener when the component mounts
-    window.addEventListener('keyup', handleKeyPress);
-    window.addEventListener('keydown', handleEnterPress);
-
-    // Remove the event listener when the component unmounts
+    hotkeyManager.addEvent();
     return () => {
-      window.removeEventListener('keyup', handleKeyPress);
-      window.removeEventListener('keydown', handleEnterPress);
+      hotkeyManager.removeEvent();
+    }
+  }, []);
+
+  useEffect(() => {
+    hotkeyManager.register('Shift+Minus', () => {
+      setShowAddNode(true);
+    });
+    return () => hotkeyManager.unregister('Shift+Minus');
+  }, [hotkeyManager, setShowAddNode]);
+
+  useEffect(() => {
+    hotkeyManager.register('Shift+KeyR', () => setShowRun(true));
+    return () => hotkeyManager.unregister('Shift+KeyR');
+  }, [hotkeyManager, setShowRun]);
+
+  useEffect(() => {
+    hotkeyManager.register('Ctrl+KeyS', () => onSave?.());
+    hotkeyManager.register('Cmd+KeyS', () => onSave?.());
+    return () => {
+      hotkeyManager.unregister('Ctrl+KeyS');
+      hotkeyManager.unregister('Cmd+KeyS');
+    }
+  }, [hotkeyManager, onSave]);
+
+  useEffect(() => {
+    const actionMap = {
+      // The operation below is not valid.
+      'ArrowUp': () => traverseNodes('up'),
+      'ArrowDown': () => traverseNodes('down'),
+      'ArrowLeft': () => traverseNodes('left'),
+      'ArrowRight': () => traverseNodes('right'),
     };
-  }, [
-    nodes,
-    openNodeModalId,
-    setOpenNodeModalId,
-    showConfigModal,
-    showRunModal,
-    showAddNodeModal,
-    traverseNodes,
-  ]);
+
+    for(let actionMapKey in actionMap) {
+      hotkeyManager.register(actionMapKey, actionMap[actionMapKey]);
+    }
+    return () => {
+      for(let actionMapKey in actionMap) {
+        hotkeyManager.unregister(actionMapKey);
+      }
+    }
+  }, [hotkeyManager, traverseNodes]);
+
+  useEffect(() => {
+    function handleEnterPress() {
+      // Open node settings modal
+      const openable = (() => {
+        const selectedNodes = nodes.filter((node) => node.selected);
+        const one = selectedNodes.length === 1;
+        if (!one) return null;
+
+        return selectedNodes.at(0);
+      })()
+      if (openable) setOpenNodeSidebarId(openable.id);
+    }
+
+    hotkeyManager.register('Enter', handleEnterPress);
+
+    return () => hotkeyManager.unregister('Enter');
+  }, [nodes, setOpenNodeSidebarId]);
 }
