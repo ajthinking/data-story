@@ -8,12 +8,10 @@ import { useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
-import { Tree } from './clients/Tree';
-import { sleep } from '@data-story/core';
 import { useRequest } from 'ahooks';
 
 export const DataStory = (
-  props: Omit<DataStoryProps,'setSidebarKey'>
+  props: DataStoryProps
 ) => {
   const path = '/';
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();

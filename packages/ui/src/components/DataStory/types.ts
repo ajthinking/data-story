@@ -55,13 +55,16 @@ export type DataStoryProps = {
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: DataStoryCallback;
+  onSave?: () => void;
+}
+
+export type DataStoryCanvasProps = {
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
   selectedNode?: ReactFlowNode;
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
-  onSave?: () => void;
-}
+} & DataStoryProps;
 
 export type StoreInitOptions = {
   rfInstance: ReactFlowInstance<ReactFlowNode, Edge<Record<string, unknown>, string | undefined>>,
