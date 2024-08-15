@@ -17,7 +17,10 @@ module.exports = {
         vsCodeWarmGray: {
           900: '#1E1E1E'
         }
-      }
+      },
+      animation: {
+        'slow-spin': 'spin 4s linear infinite',
+      },
     },
   },
   plugins: [
