@@ -9,6 +9,7 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
+import { LoadingMask } from './common/loadingMask';
 
 export const DataStory = (
   props: DataStoryProps
@@ -20,8 +21,9 @@ export const DataStory = (
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const { clientv2 } = props
+  // const [diagram, setDiagram] = useState(props.initDiagram);
 
-  const { data: tree, loading: treeLoading } = useRequest(async () => {
+  const { data: tree, loading: treeLoading } = useRequest(async() => {
     return clientv2
       ? await clientv2.workspacesApi.getTree({ path })
       : undefined;
@@ -30,7 +32,7 @@ export const DataStory = (
     manual: !clientv2,
   });
 
-  const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async () => {
+  const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
     return clientv2
       ? await clientv2.workspacesApi.getNodeDescriptions({ path })
       : undefined;
@@ -55,32 +57,36 @@ export const DataStory = (
 
   return (
     <DataStoryCanvasProvider>
-      <Allotment className='h-full border-0.5'>
-        <Allotment.Pane visible={!props.hideActivityBar} minSize={44} maxSize={44}>
-          <ActivityBar
-            selectedNode={selectedNode}
-            setActiveKey={setSidebarKey}
-            activeKey={sidebarKey}
-            onClose={setIsSidebarClose}/>
-        </Allotment.Pane>
-        <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
-          <Sidebar
-            tree={tree} treeLoading={treeLoading}
-            partialStoreRef={partialStoreRef}
-            sidebarKey={sidebarKey}
-            setSidebarKey={setSidebarKey} node={selectedNode}
-            onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
-        </Allotment.Pane>
-        <Allotment.Pane minSize={300}>
-          <DataStoryCanvas {...props}
-            ref={partialStoreRef}
-            setSidebarKey={setSidebarKey}
-            sidebarKey={sidebarKey}
-            selectedNode={selectedNode}
-            selectedNodeData={updateSelectedNodeData}
-            onNodeSelected={setSelectedNode}/>
-        </Allotment.Pane>
-      </Allotment>
+      <div className="relative h-full w-full">
+        { treeLoading && <LoadingMask/> }
+        <Allotment className='h-full border-0.5 relative'>
+          <Allotment.Pane visible={!props.hideActivityBar} minSize={44} maxSize={44}>
+            <ActivityBar
+              selectedNode={selectedNode}
+              setActiveKey={setSidebarKey}
+              activeKey={sidebarKey}
+              onClose={setIsSidebarClose}/>
+          </Allotment.Pane>
+          <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
+            <Sidebar
+              tree={tree} treeLoading={treeLoading}
+              partialStoreRef={partialStoreRef}
+              sidebarKey={sidebarKey}
+              setSidebarKey={setSidebarKey} node={selectedNode}
+              onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
+          </Allotment.Pane>
+          <Allotment.Pane minSize={300}>
+            <DataStoryCanvas {...props}
+              // initDiagram={props.mode === 'Workspace' ? diagram : props.initDiagram}
+              ref={partialStoreRef}
+              setSidebarKey={setSidebarKey}
+              sidebarKey={sidebarKey}
+              selectedNode={selectedNode}
+              selectedNodeData={updateSelectedNodeData}
+              onNodeSelected={setSelectedNode}/>
+          </Allotment.Pane>
+        </Allotment>
+      </div>
     </DataStoryCanvasProvider>
   )
 }
