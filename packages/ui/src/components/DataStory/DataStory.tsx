@@ -10,6 +10,7 @@ import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
+import { Diagram } from '@data-story/core';
 
 export const DataStory = (
   props: DataStoryProps
@@ -21,7 +22,7 @@ export const DataStory = (
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const { clientv2 } = props
-  // const [diagram, setDiagram] = useState(props.initDiagram);
+  const [diagram, setDiagram] = useState<Diagram>();
 
   const { data: tree, loading: treeLoading } = useRequest(async() => {
     return clientv2
@@ -31,6 +32,12 @@ export const DataStory = (
     refreshDeps: [clientv2],
     manual: !clientv2,
   });
+
+  useEffect(() => {
+    if (tree) {
+      setDiagram(tree?.content);
+    }
+  }, [tree]);
 
   const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
     return clientv2
@@ -77,7 +84,7 @@ export const DataStory = (
           </Allotment.Pane>
           <Allotment.Pane minSize={300}>
             <DataStoryCanvas {...props}
-              // initDiagram={props.mode === 'Workspace' ? diagram : props.initDiagram}
+              initDiagram={props.mode === 'Workspace' ? diagram : props.initDiagram}
               ref={partialStoreRef}
               setSidebarKey={setSidebarKey}
               sidebarKey={sidebarKey}

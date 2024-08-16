@@ -6,10 +6,12 @@ export const Placeholder = ({
   content: string
 }) => {
   return (
-    <div className="flex flex-col items-start justify-center p-2 h-full bg-transparent">
+    <div className="absolute w-full h-full top-0 left-0 right-0 bottom-0
+    flex flex-col items-center justify-center p-2 fill-gray-500
+     z-10">
       <p> {content} </p>
-      <div className={'fill-gray-500 w-10 h-10'}>
-        <LookingForIcon />
+      <div className={'w-10 h-10'}>
+        <LookingForIcon/>
       </div>
     </div>
   );

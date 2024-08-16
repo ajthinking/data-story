@@ -26,6 +26,7 @@ export default () => {
         initDiagram={diagram}
         onInitialize={(options) => options.run()}
         hideControls={true}
+        mode={'Workspace'}
       />
     </div>
   );

@@ -3,8 +3,7 @@ import { ChevronRight } from '../icons/chevronRight';
 import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
 import { Tree } from '../clients/Tree';
-import { LoadingIcon } from '../icons/loadingIcon';
-import { SidebarPlaceholder } from './sidebarPlaceholder';
+import { Placeholder } from '../common/placeholder';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
   const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);
@@ -69,7 +68,7 @@ export const Explorer = ({
             {Node}
           </ArboristTree>
         </div>
-        :  <SidebarPlaceholder content={'No data available'}/>}
+        :  <Placeholder content={'No data available'}/>}
 
     </div>
   );
