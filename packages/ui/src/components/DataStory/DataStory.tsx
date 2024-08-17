@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
-import { useRequest } from 'ahooks';
+import { useLatest, useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
 
@@ -22,7 +22,10 @@ export const DataStory = (
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const { clientv2 } = props
-  const [diagram, setDiagram] = useState<Diagram>();
+  const initDiagramRef = useLatest(props.initDiagram);
+  const [diagram, setDiagram] = useState<Diagram | undefined>(() => {
+    return props.mode === 'Workspace' ? undefined : initDiagramRef.current;
+  });
 
   const { data: tree, loading: treeLoading } = useRequest(async() => {
     return clientv2
@@ -34,10 +37,10 @@ export const DataStory = (
   });
 
   useEffect(() => {
-    if (tree) {
-      setDiagram(tree?.content);
+    if (props.mode === 'Workspace') {
+      tree && setDiagram(tree.content);
     }
-  }, [tree]);
+  }, [props.mode, tree]);
 
   const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
     return clientv2
@@ -84,7 +87,8 @@ export const DataStory = (
           </Allotment.Pane>
           <Allotment.Pane minSize={300}>
             <DataStoryCanvas {...props}
-              initDiagram={props.mode === 'Workspace' ? diagram : props.initDiagram}
+              treeLoading={treeLoading}
+              initDiagram={diagram}
               ref={partialStoreRef}
               setSidebarKey={setSidebarKey}
               sidebarKey={sidebarKey}

@@ -67,6 +67,7 @@ export type DataStoryCanvasProps = {
   selectedNode?: ReactFlowNode;
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
+  treeLoading?: boolean;
 } & DataStoryProps;
 
 export type StoreInitOptions = {

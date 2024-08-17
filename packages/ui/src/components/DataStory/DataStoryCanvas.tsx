@@ -26,11 +26,12 @@ const nodeTypes = {
 
 export const DataStoryCanvas = forwardRef((props: DataStoryCanvasProps, ref) => {
   useGetStore(ref);
+  const showPlaceholder = !props.initDiagram && !props.treeLoading && props.mode === 'Workspace';
 
   return (
     <>
       <ReactFlowProvider>
-        { !props.initDiagram && <Placeholder content={'No diagram found'}/> }
+        { showPlaceholder && <Placeholder content={'No diagram found'}/> }
         <Flow {...props}/>
       </ReactFlowProvider>
     </>
