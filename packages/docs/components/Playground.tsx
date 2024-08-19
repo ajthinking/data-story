@@ -24,7 +24,7 @@ function Playground({ mode }: {mode?: 'js'|'node'}) {
         // TODO: avoid re-creating the client on every render
         // SyntaxError: Cannot use import statement outside a module
         // clientv2={useCreation(() => new JsClientV2(), [])}
-        clientv2={new JsClientV2()}
+        client={new JsClientV2()}
         slotComponents={[
           <SaveComponent setSaveDiagram={setSaveDiagram}/>,
         ]}

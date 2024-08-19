@@ -24,24 +24,20 @@ export const DataStory = (
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const { client } = props
   const initDiagramRef = useLatest(props.initDiagram);
-  const [diagram, setDiagram] = useState<Diagram | undefined>(() => {
-    return props.mode === 'Workspace' ? undefined : initDiagramRef.current;
-  });
+  const [diagram, setDiagram] = useState<Diagram | undefined>(undefined);
 
   const { data: tree, loading: treeLoading } = useRequest(async() => {
     return client
       ? await client.workspacesApi.getTree({ path })
-      : undefined;
+      : Promise.resolve(null);
   }, {
     refreshDeps: [client],
     manual: !client,
   });
 
   useEffect(() => {
-    if (props.mode === 'Workspace') {
-      tree && setDiagram(tree.content);
-    }
-  }, [props.mode, tree]);
+    tree && setDiagram(tree.content);
+  }, [tree]);
 
   const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
     return client
@@ -87,15 +83,17 @@ export const DataStory = (
               onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
           </Allotment.Pane>
           <Allotment.Pane minSize={300}>
-            <DataStoryCanvas {...props}
-              treeLoading={treeLoading}
-              initDiagram={diagram}
-              ref={partialStoreRef}
-              setSidebarKey={setSidebarKey}
-              sidebarKey={sidebarKey}
-              selectedNode={selectedNode}
-              selectedNodeData={updateSelectedNodeData}
-              onNodeSelected={setSelectedNode}/>
+            {
+              !treeLoading &&
+              <DataStoryCanvas {...props}
+                initDiagram={diagram}
+                ref={partialStoreRef}
+                setSidebarKey={setSidebarKey}
+                sidebarKey={sidebarKey}
+                selectedNode={selectedNode}
+                selectedNodeData={updateSelectedNodeData}
+                onNodeSelected={setSelectedNode}/>
+            }
           </Allotment.Pane>
         </Allotment>
       </div>
