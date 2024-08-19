@@ -58,6 +58,7 @@ export type DataStoryProps = {
   onSave?: () => void;
   hideSidebar?: boolean;
   hideActivityBar?: boolean;
+  mode?: 'Workspace' | 'Single';
 }
 
 export type DataStoryCanvasProps = {
@@ -66,6 +67,7 @@ export type DataStoryCanvasProps = {
   selectedNode?: ReactFlowNode;
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
+  treeLoading?: boolean;
 } & DataStoryProps;
 
 export type StoreInitOptions = {

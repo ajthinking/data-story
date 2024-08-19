@@ -1,10 +1,14 @@
+'use client'
+
 import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React from 'react';
 import { DataStory, JsClientV2 } from '@data-story/ui';
 import { loadDiagram, LocalStorageKey,  SaveComponent } from './Save';
 import { ServerRequest } from '../const';
 
-export default ({ mode }: {mode?: 'js' | 'node'}) => {
+export default Playground;
+
+function Playground({ mode }: {mode?: 'js'|'node'}) {
   const app = new Application()
     .register(coreNodeProvider)
     .boot();

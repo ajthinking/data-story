@@ -3,8 +3,7 @@ import { ChevronRight } from '../icons/chevronRight';
 import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
 import { Tree } from '../clients/Tree';
-import { LoadingIcon } from '../icons/loadingIcon';
-import { SidebarPlaceholder } from './sidebarPlaceholder';
+import { Placeholder } from '../common/placeholder';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
   const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);
@@ -29,25 +28,11 @@ function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
   );
 }
 
-const LoadingTree: React.FC = () => {
-  return (
-    <div className="items-center justify-center h-full flex">
-      <div className=" w-10 h-10 fill-blue-500 animate-slow-spin">
-        <LoadingIcon />
-      </div>
-    </div>
-  );
-};
-
 export const Explorer = ({
-  tree,
-  treeLoading
+  tree
 }: {
   tree?: Tree,
-  treeLoading?: boolean,
 }) => {
-  if (treeLoading) return <LoadingTree/>;
-
   const data = [
     {
       id: 'fake-project',
@@ -83,7 +68,7 @@ export const Explorer = ({
             {Node}
           </ArboristTree>
         </div>
-        :  <SidebarPlaceholder content={'No data available'}/>}
+        :  <Placeholder content={'No data available'}/>}
 
     </div>
   );
