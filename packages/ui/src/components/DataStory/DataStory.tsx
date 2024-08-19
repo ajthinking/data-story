@@ -12,28 +12,29 @@ import { useLatest, useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
 
+const path = '/';
+
 export const DataStory = (
   props: DataStoryProps
 ) => {
-  const path = '/';
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
-  const { clientv2 } = props
+  const { client } = props
   const initDiagramRef = useLatest(props.initDiagram);
   const [diagram, setDiagram] = useState<Diagram | undefined>(() => {
     return props.mode === 'Workspace' ? undefined : initDiagramRef.current;
   });
 
   const { data: tree, loading: treeLoading } = useRequest(async() => {
-    return clientv2
-      ? await clientv2.workspacesApi.getTree({ path })
+    return client
+      ? await client.workspacesApi.getTree({ path })
       : undefined;
   }, {
-    refreshDeps: [clientv2],
-    manual: !clientv2,
+    refreshDeps: [client],
+    manual: !client,
   });
 
   useEffect(() => {
@@ -43,12 +44,12 @@ export const DataStory = (
   }, [props.mode, tree]);
 
   const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
-    return clientv2
-      ? await clientv2.workspacesApi.getNodeDescriptions({ path })
+    return client
+      ? await client.workspacesApi.getNodeDescriptions({ path })
       : undefined;
   }, {
-    refreshDeps: [clientv2], // Will re-fetch if clientv2 changes
-    manual: !clientv2, // If clientv2 is not available initially, do not run automatically
+    refreshDeps: [client], // Will re-fetch if clientv2 changes
+    manual: !client, // If clientv2 is not available initially, do not run automatically
   });
 
   useEffect(() => {

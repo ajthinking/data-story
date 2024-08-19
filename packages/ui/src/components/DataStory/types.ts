@@ -48,7 +48,7 @@ export type SocketClientOptions = ClientOptions & {
 }
 
 export type DataStoryProps = {
-  clientv2?: JsClientV2,
+  client?: JsClientV2,
   server?: ServerConfig
   initDiagram?: Diagram
   hideControls?: boolean
