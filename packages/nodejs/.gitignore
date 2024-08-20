@@ -51,3 +51,5 @@ notes.md
 src/tinker.ts
 
 dist
+
+.data
