@@ -27,7 +27,7 @@ const nodeTypes = {
 export const DataStoryCanvas = forwardRef((props: DataStoryCanvasProps, ref) => {
   useGetStore(ref);
   const showPlaceholder = !props.initDiagram;
-  console.log('DataStoryCanvas', props.initDiagram);
+
   return (
     <>
       <ReactFlowProvider>
