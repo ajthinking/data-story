@@ -37,13 +37,6 @@ export class JsClientV2 {
           }
         ],
       }
-      // single diagram
-      // const singleDiagram = {
-      //   path: '/',
-      //   type: 'file',
-      //   content: new Diagram(),
-      //   children: [],
-      // }
 
       // localStorage.setItem(path, JSON.stringify(defaultTree))
       return defaultTree

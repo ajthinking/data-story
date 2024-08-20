@@ -33,25 +33,27 @@ export const Explorer = ({
 }: {
   tree?: Tree,
 }) => {
+  if (!tree || tree.type !== 'folder') {
+    return <Placeholder content={'No data available'}/>;
+  }
+
   return (
     <div className="h-full">
       <div className="uppercase text-xs px-8 py-2 text-gray-600">
         Explorer
       </div>
-      {tree
-        ? <div className="px-2 py-2">
-          <ArboristTree
-            initialData={[tree]}
-            openByDefault={true}
-            width={600}
-            height={1000}
-            indent={18}
-            rowHeight={24}
-          >
-            {Node}
-          </ArboristTree>
-        </div>
-        :  <Placeholder content={'No data available'}/>}
+      <div className="px-2 py-2">
+        <ArboristTree
+          initialData={[tree]}
+          openByDefault={true}
+          width={600}
+          height={1000}
+          indent={18}
+          rowHeight={24}
+        >
+          {Node}
+        </ArboristTree>
+      </div>
     </div>
   );
 };

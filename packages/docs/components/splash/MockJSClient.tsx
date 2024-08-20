@@ -17,6 +17,9 @@ export class JSClient {
         path: '/',
         type: 'file',
         content: this.digram,
+        id: 'root',
+        name: '/',
+        children: [],
       });
     }
   } as WorkspacesApi;

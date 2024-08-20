@@ -9,7 +9,7 @@ import { AddNode } from './addNode';
 export const Sidebar = (props: NodeSettingsSidebarProps) => {
   const {
     tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
-    partialStoreRef, treeLoading
+    partialStoreRef
   } = props;
 
   const renderContent = () => {
