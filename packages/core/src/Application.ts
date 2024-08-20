@@ -5,11 +5,16 @@ import { ExecutorFactory } from './ExecutorFactory';
 import { InputObserverController } from './InputObserverController';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
+import { TreeManager } from './TreeManager';
 import { Computer } from './types/Computer';
 import { ServiceProvider } from './types/ServiceProvider';
 import { Storage } from './types/Storage';
 
 export class Application {
+  constructor(
+    treeManager = new TreeManager(),
+  ) {}
+
   providers: ServiceProvider[] = [];
   hooks = new Map<string, Function>();
   private registry = new Registry({}, {});
