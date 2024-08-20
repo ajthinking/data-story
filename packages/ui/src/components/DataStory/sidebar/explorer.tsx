@@ -33,7 +33,7 @@ export const Explorer = ({
 }: {
   tree?: Tree,
 }) => {
-  if (!tree || tree.type !== 'folder') {
+  if (!tree || tree.type === 'file') {
     return <Placeholder content={'No data available'}/>;
   }
 

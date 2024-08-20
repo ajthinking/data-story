@@ -50,14 +50,14 @@ export const DataStory = (
     }
   }, [tree]);
 
-  const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
-    return client
-      ? await client.workspacesApi.getNodeDescriptions({ path })
-      : undefined;
-  }, {
-    refreshDeps: [client], // Will re-fetch if clientv2 changes
-    manual: !client, // If clientv2 is not available initially, do not run automatically
-  });
+  // const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
+  //   return client
+  //     ? await client.workspacesApi.getNodeDescriptions({ path })
+  //     : undefined;
+  // }, {
+  //   refreshDeps: [client], // Will re-fetch if clientv2 changes
+  //   manual: !client, // If clientv2 is not available initially, do not run automatically
+  // });
 
   useEffect(() => {
     if (sidebarKey !== 'node') {

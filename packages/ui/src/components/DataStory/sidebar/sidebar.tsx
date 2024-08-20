@@ -23,7 +23,7 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
           availableNodes={partialStoreRef.current?.availableNodes || []}
           addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
           setSidebarKey={setSidebarKey}/>;
-      case 'experiment':
+      case 'explorer':
         return <Explorer tree={tree} />;
       case 'diagram':
         return <Placeholder content={'todo: show diagram configuration'}/>;
