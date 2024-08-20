@@ -33,23 +33,6 @@ export const Explorer = ({
 }: {
   tree?: Tree,
 }) => {
-  const data = [
-    {
-      id: 'fake-project',
-      name: 'fake-project',
-      children: [
-        {
-          id: 'nodes',
-          name: 'nodes',
-          children: [
-            { id: 'todos.get', name: 'todos.get' },
-          ],
-        },
-        { id: 'main', name: 'main' },
-      ]
-    },
-  ];
-
   return (
     <div className="h-full">
       <div className="uppercase text-xs px-8 py-2 text-gray-600">
@@ -58,7 +41,7 @@ export const Explorer = ({
       {tree
         ? <div className="px-2 py-2">
           <ArboristTree
-            initialData={data}
+            initialData={[tree]}
             openByDefault={true}
             width={600}
             height={1000}
@@ -69,7 +52,6 @@ export const Explorer = ({
           </ArboristTree>
         </div>
         :  <Placeholder content={'No data available'}/>}
-
     </div>
   );
 };
