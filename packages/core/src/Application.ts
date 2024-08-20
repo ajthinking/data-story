@@ -5,14 +5,39 @@ import { ExecutorFactory } from './ExecutorFactory';
 import { InputObserverController } from './InputObserverController';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
+import { Tree } from './Tree';
+import { NullTreeManager, TreeManager } from './TreeManager';
 import { Computer } from './types/Computer';
 import { ServiceProvider } from './types/ServiceProvider';
 import { Storage } from './types/Storage';
 
 export class Application {
+  constructor(private treeManager: TreeManager = new NullTreeManager()
+  ) {}
+
   providers: ServiceProvider[] = [];
   hooks = new Map<string, Function>();
   private registry = new Registry({}, {});
+
+  getTree() {
+    return this.treeManager.getTree();
+  }
+
+  createTree({ path, tree }: { path: string, tree: Tree }) {
+    return this.treeManager.createTree({ path, tree });
+  }
+
+  updateTree({ path, tree }: { path: string, tree: Tree }) {
+    return this.treeManager.updateTree({ path, tree });
+  }
+
+  destroyTree({ path }: { path: string }) {
+    return this.treeManager.destroyTree({ path });
+  }
+
+  moveTree({ path, newPath }: { path: string, newPath: string }) {
+    return this.treeManager.moveTree({ path, newPath });
+  }
 
   register(provider: ServiceProvider | ServiceProvider[]) {
     this.providers.push(
@@ -81,5 +106,9 @@ export class Application {
 
   getRegistry() {
     return this.registry;
+  }
+
+  getTreeManager() {
+    return this.treeManager
   }
 }
