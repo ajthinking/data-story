@@ -11,8 +11,19 @@ import { DataStoryCanvas } from './DataStoryCanvas';
 import { useLatest, useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
+import { Tree } from './clients/Tree';
 
 const path = '/';
+const findFirstFileNode = (tree: Tree): Tree | null => {
+  if (tree.type === 'file') return tree;
+  if (!tree.children || tree?.children?.length === 0) return null;
+
+  for (const child of tree.children) {
+    if (child.type === 'file') return child;
+    return findFirstFileNode(child);
+  }
+  return null;
+}
 
 export const DataStory = (
   props: DataStoryProps
@@ -25,20 +36,25 @@ export const DataStory = (
   const { client } = props
   const initDiagramRef = useLatest(props.initDiagram);
   const [diagram, setDiagram] = useState<Diagram | undefined>(undefined);
+  const [diagramKey, setDiagramKey] = useState<string>(path);
 
   const { data: tree, loading: treeLoading } = useRequest(async() => {
     return client
       ? await client.workspacesApi.getTree({ path })
-      : Promise.resolve(null);
+      : Promise.resolve(undefined);
   }, {
     refreshDeps: [client],
     manual: !client,
   });
 
   useEffect(() => {
-    tree && setDiagram(tree.content);
+    if (tree) {
+      const firstFileNode = findFirstFileNode(tree);
+      setDiagram(firstFileNode?.content);
+    }
   }, [tree]);
 
+  // console.log('tree: ', tree, 'diagram: ', diagram);
   const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
     return client
       ? await client.workspacesApi.getNodeDescriptions({ path })
@@ -51,6 +67,7 @@ export const DataStory = (
   useEffect(() => {
     if (sidebarKey !== 'node') {
       setSelectedNode(undefined);
+      // setDiagramKey('/node')
     }
   }, [sidebarKey]);
 
@@ -86,6 +103,7 @@ export const DataStory = (
             {
               !treeLoading &&
               <DataStoryCanvas {...props}
+                key={diagramKey}
                 initDiagram={diagram}
                 ref={partialStoreRef}
                 setSidebarKey={setSidebarKey}
