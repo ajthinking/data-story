@@ -19,26 +19,6 @@ export class Application {
   hooks = new Map<string, Function>();
   private registry = new Registry({}, {});
 
-  getTree() {
-    return this.treeManager.getTree();
-  }
-
-  createTree({ path, tree }: { path: string, tree: Tree }) {
-    return this.treeManager.createTree({ path, tree });
-  }
-
-  updateTree({ path, tree }: { path: string, tree: Tree }) {
-    return this.treeManager.updateTree({ path, tree });
-  }
-
-  destroyTree({ path }: { path: string }) {
-    return this.treeManager.destroyTree({ path });
-  }
-
-  moveTree({ path, newPath }: { path: string, newPath: string }) {
-    return this.treeManager.moveTree({ path, newPath });
-  }
-
   register(provider: ServiceProvider | ServiceProvider[]) {
     this.providers.push(
       ...(Array.isArray(provider) ? provider : [provider])
