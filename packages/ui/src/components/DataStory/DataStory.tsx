@@ -11,9 +11,9 @@ import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
-import { ActivityGroups, findFirstFileNode, isSingleFile, path } from './common/method';
+import { ActivityGroups, areEqual, findFirstFileNode, findNodeById, isSingleFile, path } from './common/method';
 
-export const DataStory = (
+export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
@@ -22,8 +22,8 @@ export const DataStory = (
   const [sidebarKey, setSidebarKey] = useState('');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const { client } = props
-  const [diagram, setDiagram] = useState<Diagram | undefined>(undefined);
-  const [diagramKey, setDiagramKey] = useState<string>(path);
+  const [diagram, setDiagram] = useState<Diagram | null>(null);
+  const [diagramKey, setDiagramKey] = useState<string>();
   const [activityGroups, setActivityGroups] = useState<Activity[]>([]);
 
   const { data: tree, loading: treeLoading } = useRequest(async() => {
@@ -33,14 +33,21 @@ export const DataStory = (
   }, {
     refreshDeps: [client],
     manual: !client,
-  });
+  }, []);
 
   useEffect(() => {
     if (tree) {
       const firstFileNode = findFirstFileNode(tree);
-      setDiagram(firstFileNode?.content);
+      setDiagram(firstFileNode?.content ?? null);
+      setDiagramKey(firstFileNode?.id);
     }
   }, [tree]);
+
+  useEffect(() => {
+    if (!tree || !diagramKey) return;
+    const node = findNodeById(tree, diagramKey);
+    setDiagram(node?.content ?? null);
+  }, [diagramKey, tree]);
 
   useEffect(() => {
     if (!tree || isSingleFile(tree)) {
@@ -62,7 +69,6 @@ export const DataStory = (
   useEffect(() => {
     if (sidebarKey !== 'node') {
       setSelectedNode(undefined);
-      // setDiagramKey('/node')
     }
   }, [sidebarKey]);
 
@@ -89,7 +95,8 @@ export const DataStory = (
           </Allotment.Pane>
           <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
             <Sidebar
-              tree={tree}
+              tree={tree} setDiagramKey={setDiagramKey}
+              setDiagram={setDiagram}
               partialStoreRef={partialStoreRef}
               sidebarKey={sidebarKey}
               setSidebarKey={setSidebarKey} node={selectedNode}
@@ -114,3 +121,5 @@ export const DataStory = (
     </DataStoryCanvasProvider>
   )
 }
+
+export const DataStory = React.memo(DataStoryComponent, areEqual);

@@ -4,7 +4,7 @@ import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
 import { Tree } from '../clients/Tree';
 import { Placeholder } from '../common/placeholder';
-import { Dispatch, SetStateAction } from 'react';
+import { NodeSettingsSidebarProps } from '../types';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
   const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);
@@ -31,15 +31,12 @@ function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
 
 export const Explorer = ({
   tree, setDiagramKey
-}: {
-  tree?: Tree,
-  setDiagramKey: Dispatch<SetStateAction<string | undefined>>
-}) => {
+}: Pick<NodeSettingsSidebarProps, 'tree' | 'setDiagram' | 'setDiagramKey'>
+) => {
   if (!tree || tree.type === 'file') {
     return <Placeholder content={'No data available'}/>;
   }
   const handleClick = (node:  NodeApi<Tree>) =>  {
-    console.log('handle click', node);
     setDiagramKey(node.id);
   }
 

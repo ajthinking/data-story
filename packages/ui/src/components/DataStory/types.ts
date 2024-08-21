@@ -50,8 +50,8 @@ export type SocketClientOptions = ClientOptions & {
 
 export type DataStoryProps = {
   client?: JsClientV2,
-  server?: ServerConfig
-  initDiagram?: Diagram
+  server?: ServerConfig;
+  initDiagram?: Diagram | null;
   hideControls?: boolean
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
@@ -158,11 +158,12 @@ export type StoreSchema = {
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   tree?: Tree;
   activeBar?: string;
-  setDiagramKey: Dispatch<SetStateAction<string | undefined>> ;
+  setDiagramKey: Dispatch<SetStateAction<string | undefined>>;
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
+  setDiagram?: React.Dispatch<React.SetStateAction<Diagram | null>>
 };
 
 export type Activity = {
