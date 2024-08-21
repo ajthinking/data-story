@@ -2,10 +2,10 @@ import { Diagram, NodeDescription } from '@data-story/core';
 import { WorkspacesApi } from '@data-story/ui';
 
 export class JSClient {
-  private digram: Diagram;
+  private diagram: Diagram;
 
-  constructor(digram: Diagram) {
-    this.digram = digram;
+  constructor(diagram: Diagram) {
+    this.diagram = diagram;
   }
 
   workspacesApi: WorkspacesApi = {
@@ -16,7 +16,7 @@ export class JSClient {
       return Promise.resolve({
         path: '/',
         type: 'file',
-        content: this.digram,
+        content: this.diagram,
         id: 'root',
         name: '/',
         children: [],
