@@ -1,11 +1,12 @@
-import { NodeRendererProps, Tree as ArboristTree } from 'react-arborist';
+import { NodeApi, NodeRendererProps, Tree as ArboristTree } from 'react-arborist';
 import { ChevronRight } from '../icons/chevronRight';
 import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
 import { Tree } from '../clients/Tree';
 import { Placeholder } from '../common/placeholder';
+import { Dispatch, SetStateAction } from 'react';
 
-function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
+function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
   const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);
   const isActualRoot = node.data.id === 'fake-project';
 
@@ -29,12 +30,17 @@ function Node({ node, style, dragHandle }: NodeRendererProps<any>) {
 }
 
 export const Explorer = ({
-  tree
+  tree, setDiagramKey
 }: {
   tree?: Tree,
+  setDiagramKey: Dispatch<SetStateAction<string | undefined>>
 }) => {
   if (!tree || tree.type === 'file') {
     return <Placeholder content={'No data available'}/>;
+  }
+  const handleClick = (node:  NodeApi<Tree>) =>  {
+    console.log('handle click', node);
+    setDiagramKey(node.id);
   }
 
   return (
@@ -50,6 +56,7 @@ export const Explorer = ({
           height={1000}
           indent={18}
           rowHeight={24}
+          onActivate={handleClick}
         >
           {Node}
         </ArboristTree>

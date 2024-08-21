@@ -1,5 +1,5 @@
 import { DataStoryControls } from './dataStoryControls';
-import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Background, BackgroundVariant, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
@@ -24,18 +24,20 @@ const nodeTypes = {
   tableNodeComponent: TableNodeComponent,
 };
 
-export const DataStoryCanvas = forwardRef((props: DataStoryCanvasProps, ref) => {
+const DataStoryCanvasComponent = forwardRef((props: DataStoryCanvasProps, ref) => {
   useGetStore(ref);
   const showPlaceholder = !props.initDiagram;
 
   return (
     <>
       <ReactFlowProvider>
-        { showPlaceholder ? <Placeholder content={'No diagram found'}/> : <Flow {...props}/> }
+        {showPlaceholder ? <Placeholder content={'No diagram found'}/> : <Flow {...props}/>}
       </ReactFlowProvider>
     </>
   );
 });
+
+export const DataStoryCanvas = React.memo(DataStoryCanvasComponent);
 
 const Flow = ({
   server,
@@ -100,7 +102,7 @@ const Flow = ({
 
   const flowRef = useRef<HTMLDivElement>(null);
 
-  const hotkeyManager =  useMemo(() => new HotkeyManager(flowRef), []);
+  const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
   const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
 

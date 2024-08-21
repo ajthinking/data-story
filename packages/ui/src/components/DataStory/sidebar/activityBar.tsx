@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import { Activity } from '../types';
 
-export const ActivityBar = ({
+export const ActivityBarComponent = ({
   setActiveKey,
   onClose,
   activeKey,
@@ -63,3 +63,5 @@ export const ActivityBar = ({
     </aside>
   );
 };
+
+export const ActivityBar = React.memo(ActivityBarComponent)

@@ -16,7 +16,7 @@ import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
 import { JsClientV2 } from './clients/JsClientV2';
 import { Tree } from './clients/Tree';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -158,6 +158,7 @@ export type StoreSchema = {
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   tree?: Tree;
   activeBar?: string;
+  setDiagramKey: Dispatch<SetStateAction<string | undefined>> ;
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
