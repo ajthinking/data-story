@@ -1,13 +1,25 @@
-import { Diagram, get, NodeDescription } from '@data-story/core';
+import { core, Diagram, multiline, NodeDescription, nodes } from '@data-story/core';
 import { WorkspacesApi } from './WorkspacesApi';
-import { parseDiagramTree } from './parseDiagramTree';
+
+export const createDiagram = () => {
+  const { Signal, Comment, Ignore } = nodes;
+
+  const diagram = core.getDiagramBuilder()
+    .add({...Signal, label: 'DataSource'}, { period: 200, count: 100})
+    .add({...Ignore, label: 'Storage'})
+    .above('Signal.1').add(Comment, { content:'### Single Diagram 🔥'})
+    .get();
+
+  return diagram;
+}
 
 export class JsClientV2 {
   workspacesApi: WorkspacesApi = {
-    getNodeDescriptions: async ({ path }) => {
+    getNodeDescriptions: async({ path }) => {
       return [] as NodeDescription[]
     },
-    getTree: async ({ path }) => {
+    getTree: async({ path }) => {
+      const mockDiagram = createDiagram();
       // const treeJson = localStorage.getItem(path)
       // console.log('treeJson', treeJson)
       // if(treeJson) return parseDiagramTree(treeJson)
@@ -26,7 +38,7 @@ export class JsClientV2 {
             id: 'main',
             path: '/main',
             type: 'file',
-            content: new Diagram(),
+            content: mockDiagram,
           },
           {
             name: 'dev',
