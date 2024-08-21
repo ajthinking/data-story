@@ -14,7 +14,7 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
-import { JsClientV2 } from './clients/JsClientV2';
+import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 import { Tree } from './clients/Tree';
 import React, { Dispatch, SetStateAction } from 'react';
 
@@ -49,7 +49,7 @@ export type SocketClientOptions = ClientOptions & {
 }
 
 export type DataStoryProps = {
-  client?: JsClientV2,
+  client?: WorkspaceApiClient,
   server?: ServerConfig;
   initDiagram?: Diagram | null;
   hideControls?: boolean
@@ -74,7 +74,7 @@ export type DataStoryCanvasProps = {
 export type StoreInitOptions = {
   rfInstance: ReactFlowInstance<ReactFlowNode, Edge<Record<string, unknown>, string | undefined>>,
   server?: ServerConfig,
-  initDiagram?: Diagram,
+  initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
 }
 

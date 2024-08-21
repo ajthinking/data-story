@@ -13,7 +13,7 @@ export const createDiagram = () => {
   return diagram;
 }
 
-export class JsClientV2 {
+export class WorkspaceApiClient {
   workspacesApi: WorkspacesApi = {
     getNodeDescriptions: async({ path }) => {
       return [] as NodeDescription[]
