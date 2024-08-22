@@ -16,6 +16,7 @@ import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
 import { JsClientV2 } from './clients/JsClientV2';
 import { Tree } from './clients/Tree';
+import React from 'react';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -48,7 +49,7 @@ export type SocketClientOptions = ClientOptions & {
 }
 
 export type DataStoryProps = {
-  clientv2?: JsClientV2,
+  client?: JsClientV2,
   server?: ServerConfig
   initDiagram?: Diagram
   hideControls?: boolean
@@ -156,7 +157,6 @@ export type StoreSchema = {
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   tree?: Tree;
-  treeLoading?: boolean;
   activeBar?: string;
   sidebarKey: string;
   node?: ReactFlowNode;
@@ -164,6 +164,9 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
 };
 
-export type IconProps = {
-  isActive?: boolean;
+export type Activity = {
+  id: string;
+  name: string;
+  icon: React.FC<{}>;
+  position: 'top' | 'bottom';
 };

@@ -20,7 +20,7 @@ export default () => {
   return (
     <div className="w-full h-80 border-gray-400 border-4">
       <DataStory
-        clientv2={clientv2}
+        client={clientv2}
         server={{ type: 'JS', app }}
         onInitialize={(options) => options.run()}
         hideControls={true}

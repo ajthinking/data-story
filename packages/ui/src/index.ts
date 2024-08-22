@@ -9,3 +9,4 @@ export type { DataStoryObservers } from './components/DataStory/types'
 export { Explorer } from './components/DataStory/sidebar/explorer';
 export { default as NodeComponent } from './components/Node/NodeComponent';
 export { JsClientV2 } from './components/DataStory/clients/JsClientV2';
+export type { WorkspacesApi } from './components/DataStory/clients/WorkspacesApi';
