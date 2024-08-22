@@ -6,36 +6,35 @@ import { ConfigIcon } from '../icons/configIcon';
 
 export const path = '/';
 
-export const findFirstFileNode = (tree: Tree): Tree | null => {
-  if (tree.type === 'file') return tree;
-  if (!tree.children || tree?.children?.length === 0) return null;
+export const findFirstFileNode = (tree: Tree[]): Tree | null => {
+  for(const node of tree) {
+    if (node.type === 'file') return node;
 
-  for(const child of tree.children) {
-    if (child.type === 'file') return child;
-    return findFirstFileNode(child);
+    if(node.type === 'folder' && node.children) {
+      const found = findFirstFileNode(node.children);
+      if (found) return found;
+    }
   }
   return null;
 }
 
-export const findNodeById = (tree: Tree, id: string): Tree | null => {
-  if (tree.id === id) {
-    return tree;
-  }
+export const findNodeById = (tree: Tree[], id: string): Tree | null => {
+  for (const node of tree) {
+    if (node.id === id) {
+      return node;
+    }
 
-  if (tree.type === 'folder' && tree.children) {
-    for (const child of tree.children) {
-      const result = findNodeById(child, id);
-      if (result) {
-        return result;
-      }
+    if (node.type === 'folder' && node.children) {
+      const found = findNodeById(node.children, id);
+      if (found) return found;
     }
   }
 
   return null;
 };
 
-export const isSingleFile = (tree: Tree): boolean => {
-  if (tree.type === 'file' && (!tree.children || tree?.children?.length === 0)) return true;
+export const isSingleFile = (trees: Tree[]): boolean => {
+  if (trees.length === 1 && trees[0].type === 'file') return true;
   return false;
 }
 

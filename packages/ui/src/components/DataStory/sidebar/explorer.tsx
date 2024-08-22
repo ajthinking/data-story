@@ -33,9 +33,6 @@ export const Explorer = ({
   tree, setDiagramKey
 }: Pick<NodeSettingsSidebarProps, 'tree' | 'setDiagram' | 'setDiagramKey'>
 ) => {
-  if (!tree || tree.type === 'file') {
-    return <Placeholder content={'No data available'}/>;
-  }
   const handleClick = (node:  NodeApi<Tree>) =>  {
     setDiagramKey(node.id);
   }
@@ -47,7 +44,7 @@ export const Explorer = ({
       </div>
       <div className="px-2 py-2">
         <ArboristTree
-          initialData={[tree]}
+          initialData={tree}
           openByDefault={true}
           width={600}
           height={1000}

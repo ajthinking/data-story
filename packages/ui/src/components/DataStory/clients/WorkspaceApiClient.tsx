@@ -1,13 +1,13 @@
 import { core, Diagram, multiline, NodeDescription, nodes } from '@data-story/core';
 import { WorkspacesApi } from './WorkspacesApi';
 
-export const createDiagram = () => {
+export const createDiagram = (content = 'Diagram') => {
   const { Signal, Comment, Ignore } = nodes;
 
   const diagram = core.getDiagramBuilder()
     .add({...Signal, label: 'DataSource'}, { period: 200, count: 100})
     .add({...Ignore, label: 'Storage'})
-    .above('Signal.1').add(Comment, { content:'### Single Diagram 🔥'})
+    .above('Signal.1').add(Comment, { content: `### ${content} 🔥`})
     .get();
 
   return diagram;
@@ -19,7 +19,6 @@ export class WorkspaceApiClient {
       return [] as NodeDescription[]
     },
     getTree: async({ path }) => {
-      const mockDiagram = createDiagram();
       // const treeJson = localStorage.getItem(path)
       // console.log('treeJson', treeJson)
       // if(treeJson) return parseDiagramTree(treeJson)
@@ -27,7 +26,7 @@ export class WorkspaceApiClient {
       // console.log('No tree found at path', path)
       // If no tree at path
       // For testing purposes: Persist and return a default tree
-      const defaultTree = {
+      const defaultTree = [{
         path: '/',
         type: 'folder',
         name: '/',
@@ -38,7 +37,7 @@ export class WorkspaceApiClient {
             id: 'main',
             path: '/main',
             type: 'file',
-            content: mockDiagram,
+            content: createDiagram('main diagram'),
           },
           {
             name: 'dev',
@@ -48,8 +47,15 @@ export class WorkspaceApiClient {
             content: new Diagram(),
           }
         ],
+      },
+      {
+        path: '/branch',
+        type: 'file',
+        id: 'branch',
+        name: 'branch',
+        content: createDiagram(' branch diagram'),
       }
-
+      ];
       // localStorage.setItem(path, JSON.stringify(defaultTree))
       return defaultTree
     },

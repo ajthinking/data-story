@@ -50,7 +50,7 @@ export const DataStoryComponent = (
   }, [diagramKey, tree]);
 
   useEffect(() => {
-    if (!tree || isSingleFile(tree)) {
+    if (!tree?.length || isSingleFile(tree)) {
       setActivityGroups(ActivityGroups.filter((activity) => activity.id !== 'explorer'));
     } else {
       setActivityGroups(ActivityGroups);

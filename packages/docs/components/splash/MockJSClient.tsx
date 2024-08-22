@@ -13,14 +13,14 @@ export class JSClient {
       return [] as NodeDescription[]
     },
     getTree: async({ path }) => {
-      return Promise.resolve({
+      return Promise.resolve([{
         path: '/',
         type: 'file',
         content: this.diagram,
         id: 'root',
         name: '/',
         children: [],
-      });
+      }]);
     }
   } as WorkspacesApi;
 }

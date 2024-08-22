@@ -156,7 +156,7 @@ export type StoreSchema = {
   setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
-  tree?: Tree;
+  tree?: Tree[];
   activeBar?: string;
   setDiagramKey: Dispatch<SetStateAction<string | undefined>>;
   sidebarKey: string;
