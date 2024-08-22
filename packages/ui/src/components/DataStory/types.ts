@@ -59,7 +59,6 @@ export type DataStoryProps = {
   onSave?: () => void;
   hideSidebar?: boolean;
   hideActivityBar?: boolean;
-  mode?: 'Workspace' | 'Single';
 }
 
 export type DataStoryCanvasProps = {

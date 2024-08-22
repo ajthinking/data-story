@@ -25,9 +25,7 @@ export default () => {
         client={client}
         server={{ type: 'JS', app }}
         hideControls={true}
-        // hideActivityBar={true}
         hideSidebar={true}
-        mode={'Workspace'}
       />
     </div>
   );
