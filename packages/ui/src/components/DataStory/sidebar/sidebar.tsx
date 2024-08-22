@@ -10,7 +10,7 @@ import React from 'react';
 const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
     tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
-    partialStoreRef, setDiagramKey
+    partialStoreRef, setDiagramKey, setDiagram
   } = props;
 
   const renderContent = () => {
@@ -25,7 +25,7 @@ const SidebarComponent = (props: NodeSettingsSidebarProps) => {
           addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
           setSidebarKey={setSidebarKey}/>;
       case 'explorer':
-        return <Explorer tree={tree} setDiagramKey={setDiagramKey} />;
+        return <Explorer tree={tree} setDiagram={setDiagram} setDiagramKey={setDiagramKey} />;
       case 'diagram':
         return <Placeholder content={'todo: show diagram configuration'}/>;
       case 'settings':

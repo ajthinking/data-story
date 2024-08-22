@@ -44,12 +44,6 @@ export const DataStoryComponent = (
   }, [tree]);
 
   useEffect(() => {
-    if (!tree || !diagramKey) return;
-    const node = findNodeById(tree, diagramKey);
-    setDiagram(node?.content ?? null);
-  }, [diagramKey, tree]);
-
-  useEffect(() => {
     if (!tree?.length || isSingleFile(tree)) {
       setActivityGroups(ActivityGroups.filter((activity) => activity.id !== 'explorer'));
     } else {

@@ -3,7 +3,6 @@ import { ChevronRight } from '../icons/chevronRight';
 import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
 import { Tree } from '../clients/Tree';
-import { Placeholder } from '../common/placeholder';
 import { NodeSettingsSidebarProps } from '../types';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
@@ -30,11 +29,12 @@ function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
 }
 
 export const Explorer = ({
-  tree, setDiagramKey
+  tree, setDiagramKey, setDiagram
 }: Pick<NodeSettingsSidebarProps, 'tree' | 'setDiagram' | 'setDiagramKey'>
 ) => {
   const handleClick = (node:  NodeApi<Tree>) =>  {
     setDiagramKey(node.id);
+    setDiagram(node?.data.content ?? null);
   }
 
   return (

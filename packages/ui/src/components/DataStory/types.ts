@@ -163,7 +163,7 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
-  setDiagram?: React.Dispatch<React.SetStateAction<Diagram | null>>
+  setDiagram: React.Dispatch<React.SetStateAction<Diagram | null>>
 };
 
 export type Activity = {
