@@ -10,7 +10,7 @@ import React from 'react';
 const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
     tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
-    partialStoreRef, setDiagramKey, setDiagram
+    partialStoreRef, setDiagramKey, setDiagram, nodeDescriptions
   } = props;
 
   const renderContent = () => {
@@ -21,7 +21,7 @@ const SidebarComponent = (props: NodeSettingsSidebarProps) => {
           setSidebarKey={setSidebarKey}/>;
       case 'addNode':
         return <AddNode
-          availableNodes={partialStoreRef.current?.availableNodes || []}
+          availableNodes={nodeDescriptions || []}
           addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
           setSidebarKey={setSidebarKey}/>;
       case 'explorer':

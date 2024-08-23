@@ -25,7 +25,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   edges: [],
   params: [],
   serverClient: null,
-  availableNodes: [],
   openNodeSidebarId: null,
   observerMap: new Map(),
 
@@ -177,7 +176,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   initServer: (serverConfig: ServerConfig) => {
     if (serverConfig.type === 'JS') {
       const server = new JsClient({
-        setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
         app: serverConfig.app,
       })
@@ -188,7 +186,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     if (serverConfig.type === 'SOCKET') {
       const server = new SocketClient({
-        setAvailableNodes: get().setAvailableNodes,
         updateEdgeCounts: get().updateEdgeCounts,
         serverConfig: serverConfig as WebSocketServerConfig,
       })
@@ -197,9 +194,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       server.init()
     }
   },
-  setAvailableNodes: (availableNodes: NodeDescription[]) => {
-    set({ availableNodes })
-  },
+
   setParams: (params: Param[]) => {
     set({ params })
   },
@@ -252,17 +247,15 @@ export const useGetStore = (ref: Ref<unknown>) => {
   const selector = (state: StoreSchema) => ({
     onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
-    availableNodes: state.availableNodes
   });
-  const { onRun, addNodeFromDescription, availableNodes } = useStore(selector, shallow);
+  const { onRun, addNodeFromDescription } = useStore(selector, shallow);
 
   useImperativeHandle(ref, () => {
     return ({
       onRun,
       addNodeFromDescription,
-      availableNodes
     });
-  }, [availableNodes, onRun, addNodeFromDescription]);
+  }, [onRun, addNodeFromDescription]);
 }
 
 export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {

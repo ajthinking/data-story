@@ -36,7 +36,6 @@ export type ObserverMap = Map<string, {
 }>
 
 type ClientOptions = {
-  setAvailableNodes: (nodes: NodeDescription[]) => void,
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
 };
 
@@ -110,8 +109,8 @@ export type StoreSchema = {
   toDiagram: () => Diagram;
 
   /** Addable Nodes */
-  availableNodes: NodeDescription[],
-  setAvailableNodes: (nodes: NodeDescription[]) => void,
+  // availableNodes: NodeDescription[],
+  // setAvailableNodes: (nodes: NodeDescription[]) => void,
 
   /** The Nodes */
   nodes: ReactFlowNode[];
