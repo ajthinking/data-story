@@ -68,6 +68,7 @@ export type DataStoryCanvasProps = {
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
   treeLoading?: boolean;
+  nodeDescriptions?: NodeDescription[];
 } & DataStoryProps;
 
 export type StoreInitOptions = {
@@ -155,6 +156,7 @@ export type StoreSchema = {
   setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
+  nodeDescriptions?: NodeDescription[];
   tree?: Tree[];
   activeBar?: string;
   setDiagramKey: Dispatch<SetStateAction<string | undefined>>;

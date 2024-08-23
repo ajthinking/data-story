@@ -1,4 +1,4 @@
-import { core, Diagram, multiline, NodeDescription, nodes } from '@data-story/core';
+import { Application, core, coreNodeProvider, Diagram, nodes } from '@data-story/core';
 import { WorkspacesApi } from './WorkspacesApi';
 
 export const createDiagram = (content = 'Diagram') => {
@@ -16,7 +16,11 @@ export const createDiagram = (content = 'Diagram') => {
 export class WorkspaceApiClient {
   workspacesApi: WorkspacesApi = {
     getNodeDescriptions: async({ path }) => {
-      return [] as NodeDescription[]
+      const app = new Application();
+      app.register(coreNodeProvider);
+      app.boot();
+      const nodeDescriptions = app.descriptions();
+      return nodeDescriptions;
     },
     getTree: async({ path }) => {
       // const treeJson = localStorage.getItem(path)

@@ -51,15 +51,16 @@ export const DataStoryComponent = (
     }
   }, [tree]);
 
-  // const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
-  //   return client
-  //     ? await client.workspacesApi.getNodeDescriptions({ path })
-  //     : undefined;
-  // }, {
-  //   refreshDeps: [client], // Will re-fetch if clientv2 changes
-  //   manual: !client, // If clientv2 is not available initially, do not run automatically
-  // });
+  const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
+    return client
+      ? await client.workspacesApi.getNodeDescriptions({ path })
+      : undefined;
+  }, {
+    refreshDeps: [client], // Will re-fetch if clientv2 changes
+    manual: !client, // If clientv2 is not available initially, do not run automatically
+  });
 
+  console.log('nodeDescriptionCollection', nodeDescriptions)
   useEffect(() => {
     if (sidebarKey !== 'node') {
       setSelectedNode(undefined);
@@ -90,6 +91,7 @@ export const DataStoryComponent = (
           <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
             <Sidebar
               tree={tree} setDiagramKey={setDiagramKey}
+              nodeDescriptions={nodeDescriptions}
               setDiagram={setDiagram}
               partialStoreRef={partialStoreRef}
               sidebarKey={sidebarKey}
@@ -100,6 +102,7 @@ export const DataStoryComponent = (
             {
               !treeLoading &&
               <DataStoryCanvas {...props}
+                nodeDescriptions={nodeDescriptions}
                 key={diagramKey}
                 initDiagram={diagram}
                 ref={partialStoreRef}

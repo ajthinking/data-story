@@ -26,6 +26,7 @@ export default () => {
         server={{ type: 'JS', app }}
         hideControls={true}
         hideSidebar={true}
+        hideActivityBar={true}
       />
     </div>
   );
