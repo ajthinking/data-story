@@ -47,6 +47,8 @@ export type SocketClientOptions = ClientOptions & {
   serverConfig: WebSocketServerConfig,
 }
 
+export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
+
 export type DataStoryProps = {
   client?: WorkspaceApiClient,
   server?: ServerConfig;
@@ -57,7 +59,7 @@ export type DataStoryProps = {
   onInitialize?: DataStoryCallback;
   onSave?: () => void;
   hideSidebar?: boolean;
-  hideActivityBar?: boolean;
+  hideActivityBar?: boolean | AcitvityBarType[];
 }
 
 export type DataStoryCanvasProps = {
@@ -167,7 +169,7 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
 };
 
 export type Activity = {
-  id: string;
+  id: AcitvityBarType;
   name: string;
   icon: React.FC<{}>;
   position: 'top' | 'bottom';

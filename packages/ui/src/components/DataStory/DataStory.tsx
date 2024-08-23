@@ -1,6 +1,6 @@
 import './../../styles/globals.css';
 import { Allotment } from 'allotment';
-import { Activity, DataStoryProps, StoreSchema } from './types';
+import { AcitvityBarType, Activity, DataStoryProps, StoreSchema } from './types';
 import 'allotment/dist/style.css';
 import { ActivityBar } from './sidebar/activityBar';
 import { Sidebar } from './sidebar/sidebar';
@@ -44,8 +44,10 @@ export const DataStoryComponent = (
   }, [tree]);
 
   useEffect(() => {
-    if (!tree?.length || isSingleFile(tree)) {
-      setActivityGroups(ActivityGroups.filter((activity) => activity.id !== 'explorer'));
+    if(!tree?.length) {
+      setActivityGroups([]);
+    } else if (Array.isArray(props.hideActivityBar) && props.hideActivityBar.length) {
+      setActivityGroups(ActivityGroups.filter((activity) => !(props.hideActivityBar as AcitvityBarType[])?.includes(activity.id)));
     } else {
       setActivityGroups(ActivityGroups);
     }
@@ -80,7 +82,7 @@ export const DataStoryComponent = (
       <div className="relative h-full w-full">
         {treeLoading && <LoadingMask/>}
         <Allotment className='h-full border-0.5 relative'>
-          <Allotment.Pane visible={!props.hideActivityBar} minSize={44} maxSize={44}>
+          <Allotment.Pane visible={!(props.hideActivityBar === true)} minSize={44} maxSize={44}>
             <ActivityBar
               activityGroups={activityGroups}
               selectedNode={selectedNode}
