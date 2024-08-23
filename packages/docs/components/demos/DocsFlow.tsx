@@ -33,6 +33,7 @@ export default () => {
         client={client}
         onInitialize={(options) => options.run()}
         hideControls={true}
+        hideActivityBar={true}
       />
     </div>
   );
