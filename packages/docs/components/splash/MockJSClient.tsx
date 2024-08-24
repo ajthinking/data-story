@@ -3,14 +3,16 @@ import { WorkspacesApi } from '@data-story/ui';
 
 export class JSClient {
   private diagram: Diagram;
+  private nodeDescriptions: NodeDescription[];
 
-  constructor(diagram: Diagram) {
+  constructor(diagram: Diagram, nodeDescriptions?: NodeDescription[]) {
     this.diagram = diagram;
+    this.nodeDescriptions = nodeDescriptions || [];
   }
 
   workspacesApi: WorkspacesApi = {
     getNodeDescriptions: async({ path }) => {
-      return [] as NodeDescription[]
+      return this.nodeDescriptions;
     },
     getTree: async({ path }) => {
       return Promise.resolve([{
