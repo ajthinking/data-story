@@ -20,23 +20,3 @@ export default function Home() {
 
 > With this basic usage, you will get all available nodes in `@data-story/core` and an inline JS server.
 
-### Usage with NodeJS
-First, also install:
-```bash
-yarn add @data-story/nodejs
-```
-
-Then, when using the component, instruct it to listen on a websocket:
-```tsx
-<DataStory
-  server={{ type: 'SOCKET', url: 'ws://localhost:3300' }}
-/>
-```
-
-Finally, start a server:
-```bash
-npx @data-story/nodejs server
-```
-
-
-

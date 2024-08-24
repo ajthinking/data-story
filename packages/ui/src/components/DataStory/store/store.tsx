@@ -136,10 +136,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
   onInit: (options: StoreInitOptions) => {
     set({
-      serverConfig: options.server || {
-        type: 'SOCKET',
-        url: 'ws://localhost:3100'
-      }
+      serverConfig: options.server
     })
 
     set({ rfInstance: options.rfInstance })

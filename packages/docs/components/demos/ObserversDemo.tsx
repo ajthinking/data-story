@@ -25,9 +25,7 @@ export default ({ mode, observers }:
       <DataStory
         client={client}
         observers={observers}
-        server={mode === 'node'
-          ? { type: 'SOCKET', url: ServerRequest }
-          : { type: 'JS', app }}
+        server={{ type: 'JS', app }}
       />
     </div>
   );
