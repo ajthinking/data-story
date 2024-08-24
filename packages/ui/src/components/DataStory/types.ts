@@ -135,7 +135,7 @@ export type StoreSchema = {
 
   /** The Server and its config */
   serverConfig: ServerConfig;
-  server: null | ServerClient;
+  serverClient: null | ServerClient;
   initServer: StoreInitServer;
 
   /** When DataStory component initializes */
