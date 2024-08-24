@@ -24,7 +24,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   nodes: [],
   edges: [],
   params: [],
-  server: null,
+  serverClient: null,
   availableNodes: [],
   openNodeSidebarId: null,
   observerMap: new Map(),
@@ -146,7 +146,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     if (options.callback) {
       const run = () => {
-        get().server?.run(
+        get().serverClient?.run(
           get().toDiagram(),
           // TODO this does not work?!
           createObservers(get().observerMap)
@@ -169,7 +169,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   onRun: () => {
     const observers = createObservers(get().observerMap);
 
-    get().server!.run(
+    get().serverClient!.run(
       get().toDiagram(),
       observers,
     )
@@ -182,7 +182,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         app: serverConfig.app,
       })
 
-      set({ server })
+      set({ serverClient: server })
       server.init()
     }
 
@@ -193,7 +193,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         serverConfig: serverConfig as WebSocketServerConfig,
       })
 
-      set({ server })
+      set({ serverClient: server })
       server.init()
     }
   },
