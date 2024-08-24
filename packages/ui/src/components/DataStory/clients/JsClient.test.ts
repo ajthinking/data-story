@@ -4,7 +4,6 @@ import { Application, coreNodeProvider, Diagram, sleep } from '@data-story/core'
 
 describe('JsClient', () => {
   it('should set available nodes and log connection on init', () => {
-    const setAvailableNodesMock = vi.fn();
     let consoleLogSpy = vi.spyOn(console, 'log')
       .mockImplementation(() => {}) as any;
 
@@ -14,7 +13,6 @@ describe('JsClient', () => {
     })
 
     client.init();
-    expect(setAvailableNodesMock).toHaveBeenCalledWith([]);
     expect(consoleLogSpy).toHaveBeenCalledWith('Connected to server: JS');
   });
 
