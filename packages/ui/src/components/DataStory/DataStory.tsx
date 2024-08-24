@@ -11,7 +11,11 @@ import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
-import { ActivityGroups, areEqual, findFirstFileNode, findNodeById, isSingleFile, path } from './common/method';
+import { ActivityGroups, areEqual, findFirstFileNode, path } from './common/method';
+
+function handleRequestError(requestError?: Error): void {
+  if (requestError) console.error(`Error fetching : ${requestError?.message}` );
+}
 
 export const DataStoryComponent = (
   props: DataStoryProps
@@ -26,7 +30,7 @@ export const DataStoryComponent = (
   const [diagramKey, setDiagramKey] = useState<string>();
   const [activityGroups, setActivityGroups] = useState<Activity[]>([]);
 
-  const { data: tree, loading: treeLoading } = useRequest(async() => {
+  const { data: tree, loading: treeLoading, error: getTreeError } = useRequest(async() => {
     return client
       ? await client.workspacesApi.getTree({ path })
       : Promise.resolve(undefined);
@@ -34,6 +38,7 @@ export const DataStoryComponent = (
     refreshDeps: [client],
     manual: !client,
   }, []);
+  handleRequestError(getTreeError);
 
   useEffect(() => {
     if (tree) {
@@ -53,16 +58,16 @@ export const DataStoryComponent = (
     }
   }, [tree]);
 
-  const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
+  const { data: nodeDescriptions, loading: nodeDescriptionsLoading, error: getNodeDescriptionsError } = useRequest(async() => {
     return client
       ? await client.workspacesApi.getNodeDescriptions({ path })
       : undefined;
   }, {
-    refreshDeps: [client], // Will re-fetch if clientv2 changes
-    manual: !client, // If clientv2 is not available initially, do not run automatically
+    refreshDeps: [client], // Will re-fetch if client changes
+    manual: !client, // If client is not available initially, do not run automatically
   });
+  handleRequestError(getNodeDescriptionsError);
 
-  console.log('nodeDescriptionCollection', nodeDescriptions)
   useEffect(() => {
     if (sidebarKey !== 'node') {
       setSelectedNode(undefined);
@@ -104,7 +109,6 @@ export const DataStoryComponent = (
             {
               !treeLoading &&
               <DataStoryCanvas {...props}
-                nodeDescriptions={nodeDescriptions}
                 key={diagramKey}
                 initDiagram={diagram}
                 ref={partialStoreRef}

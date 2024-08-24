@@ -20,8 +20,15 @@ export class WorkspaceApiClient {
       app.register(coreNodeProvider);
       app.boot();
       const nodeDescriptions = app.descriptions();
-      return nodeDescriptions;
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(nodeDescriptions);
+          console.log('get nodeDescriptions', nodeDescriptions)
+        }, 5000);
+      });
     },
+
     getTree: async({ path }) => {
       // const treeJson = localStorage.getItem(path)
       // console.log('treeJson', treeJson)
