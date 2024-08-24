@@ -1,12 +1,12 @@
 import { Diagram, NodeDescription } from '@data-story/core';
 import { WorkspacesApi } from '@data-story/ui';
 
-export class JSClient {
+export class MockJSClient {
   private diagram: Diagram;
   private nodeDescriptions: NodeDescription[];
 
-  constructor(diagram: Diagram, nodeDescriptions?: NodeDescription[]) {
-    this.diagram = diagram;
+  constructor(diagram?: Diagram, nodeDescriptions?: NodeDescription[]) {
+    this.diagram = diagram ?? new Diagram();
     this.nodeDescriptions = nodeDescriptions || [];
   }
 

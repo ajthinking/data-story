@@ -2,7 +2,7 @@
 
 import { DataStory } from '@data-story/ui';
 import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
-import { JSClient } from '../../splash/MockJSClient';
+import { MockJSClient } from '../../splash/MockJSClient';
 
 export default () => {
   const customNodeDescription = ['Comment', 'Ignore', 'Signal', 'ConsoleLog', 'Input'];
@@ -19,7 +19,7 @@ export default () => {
     .above('Signal.1').add(Comment, { content:'### Add Node Description 🔥'})
     .get();
 
-  const client = new JSClient(diagram, nodeDescriptions);
+  const client = new MockJSClient(diagram, nodeDescriptions);
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

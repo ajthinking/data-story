@@ -125,4 +125,4 @@ export const DataStoryComponent = (
   )
 }
 
-export const DataStory = React.memo(DataStoryComponent, areEqual);
+export const DataStory = React.memo(DataStoryComponent);

@@ -2,7 +2,7 @@
 
 import { DataStory } from '@data-story/ui';
 import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
-import { JSClient } from '../../splash/MockJSClient';
+import { MockJSClient } from '../../splash/MockJSClient';
 
 export default () => {
   const app = new Application();
@@ -17,7 +17,7 @@ export default () => {
     .above('Signal.1').add(Comment, { content:'### Single Diagram 🔥'})
     .get();
 
-  const client = new JSClient(diagram);
+  const client = new MockJSClient(diagram);
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

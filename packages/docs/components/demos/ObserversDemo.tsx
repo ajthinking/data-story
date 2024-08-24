@@ -2,7 +2,7 @@ import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
 import React from 'react';
 import { DataStory, type DataStoryObservers } from '@data-story/ui';
 import { ServerRequest } from '../../const';
-import { JSClient } from '../splash/MockJSClient';
+import { MockJSClient } from '../splash/MockJSClient';
 
 export default ({ mode, observers }:
 {
@@ -18,7 +18,7 @@ export default ({ mode, observers }:
     .add(Signal, { period: 5, count: 30 })
     .add(Table)
     .get();
-  const client = new JSClient(diagram);
+  const client = new MockJSClient(diagram);
 
   return (
     <div className="w-full" style={{ height: '36vh' }}>
