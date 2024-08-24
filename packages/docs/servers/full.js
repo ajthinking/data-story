@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { Application, coreNodeProvider } from '@data-story/core';
-import { SocketServer, nodeJsProvider } from '@data-story/nodejs';
+import { DirectoryTreeManager, SocketServer, nodeJsProvider } from '@data-story/nodejs';
 import { hubspotProvider } from '@data-story/hubspot';
 import { openAiProvider } from '@data-story/openai';
 
@@ -9,14 +9,15 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.local' });
 
-const app = new Application();
+const app = new Application(
+  new DirectoryTreeManager('/')
+);
 
 app.register([
   coreNodeProvider,
   nodeJsProvider,
   hubspotProvider,
   openAiProvider,
-
 ]);
 
 app.boot();
