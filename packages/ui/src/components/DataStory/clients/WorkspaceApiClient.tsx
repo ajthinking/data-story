@@ -1,13 +1,24 @@
-import { Diagram, get, NodeDescription } from '@data-story/core';
+import { core, Diagram, multiline, NodeDescription, nodes } from '@data-story/core';
 import { WorkspacesApi } from './WorkspacesApi';
-import { parseDiagramTree } from './parseDiagramTree';
 
-export class JsClientV2 {
+export const createDiagram = (content = 'Diagram') => {
+  const { Signal, Comment, Ignore } = nodes;
+
+  const diagram = core.getDiagramBuilder()
+    .add({...Signal, label: 'DataSource'}, { period: 200, count: 100})
+    .add({...Ignore, label: 'Storage'})
+    .above('Signal.1').add(Comment, { content: `### ${content} 🔥`})
+    .get();
+
+  return diagram;
+}
+
+export class WorkspaceApiClient {
   workspacesApi: WorkspacesApi = {
-    getNodeDescriptions: async ({ path }) => {
+    getNodeDescriptions: async({ path }) => {
       return [] as NodeDescription[]
     },
-    getTree: async ({ path }) => {
+    getTree: async({ path }) => {
       // const treeJson = localStorage.getItem(path)
       // console.log('treeJson', treeJson)
       // if(treeJson) return parseDiagramTree(treeJson)
@@ -15,7 +26,7 @@ export class JsClientV2 {
       // console.log('No tree found at path', path)
       // If no tree at path
       // For testing purposes: Persist and return a default tree
-      const defaultTree = {
+      const defaultTree = [{
         path: '/',
         type: 'folder',
         name: '/',
@@ -26,7 +37,7 @@ export class JsClientV2 {
             id: 'main',
             path: '/main',
             type: 'file',
-            content: new Diagram(),
+            content: createDiagram('main diagram'),
           },
           {
             name: 'dev',
@@ -36,8 +47,15 @@ export class JsClientV2 {
             content: new Diagram(),
           }
         ],
+      },
+      {
+        path: '/branch',
+        type: 'file',
+        id: 'branch',
+        name: 'branch',
+        content: createDiagram(' branch diagram'),
       }
-
+      ];
       // localStorage.setItem(path, JSON.stringify(defaultTree))
       return defaultTree
     },

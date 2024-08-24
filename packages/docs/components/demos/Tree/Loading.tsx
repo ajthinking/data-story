@@ -24,7 +24,6 @@ export default () => {
         server={{ type: 'JS', app }}
         onInitialize={(options) => options.run()}
         hideControls={true}
-        mode={'Workspace'}
       />
     </div>
   );

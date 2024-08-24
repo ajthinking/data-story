@@ -14,9 +14,9 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
-import { JsClientV2 } from './clients/JsClientV2';
+import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 import { Tree } from './clients/Tree';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -49,9 +49,9 @@ export type SocketClientOptions = ClientOptions & {
 }
 
 export type DataStoryProps = {
-  client?: JsClientV2,
-  server?: ServerConfig
-  initDiagram?: Diagram
+  client?: WorkspaceApiClient,
+  server?: ServerConfig;
+  initDiagram?: Diagram | null;
   hideControls?: boolean
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
@@ -59,7 +59,6 @@ export type DataStoryProps = {
   onSave?: () => void;
   hideSidebar?: boolean;
   hideActivityBar?: boolean;
-  mode?: 'Workspace' | 'Single';
 }
 
 export type DataStoryCanvasProps = {
@@ -74,7 +73,7 @@ export type DataStoryCanvasProps = {
 export type StoreInitOptions = {
   rfInstance: ReactFlowInstance<ReactFlowNode, Edge<Record<string, unknown>, string | undefined>>,
   server?: ServerConfig,
-  initDiagram?: Diagram,
+  initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
 }
 
@@ -156,12 +155,14 @@ export type StoreSchema = {
   setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
-  tree?: Tree;
+  tree?: Tree[];
   activeBar?: string;
+  setDiagramKey: Dispatch<SetStateAction<string | undefined>>;
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
+  setDiagram: React.Dispatch<React.SetStateAction<Diagram | null>>
 };
 
 export type Activity = {

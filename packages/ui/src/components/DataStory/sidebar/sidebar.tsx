@@ -5,11 +5,12 @@ import { Placeholder } from '../common/placeholder';
 import { NodeDescription } from '@data-story/core';
 import { Run } from './run';
 import { AddNode } from './addNode';
+import React from 'react';
 
-export const Sidebar = (props: NodeSettingsSidebarProps) => {
+const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
     tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
-    partialStoreRef
+    partialStoreRef, setDiagramKey, setDiagram
   } = props;
 
   const renderContent = () => {
@@ -24,7 +25,7 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
           addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
           setSidebarKey={setSidebarKey}/>;
       case 'explorer':
-        return <Explorer tree={tree} />;
+        return <Explorer tree={tree} setDiagram={setDiagram} setDiagramKey={setDiagramKey} />;
       case 'diagram':
         return <Placeholder content={'todo: show diagram configuration'}/>;
       case 'settings':
@@ -44,3 +45,5 @@ export const Sidebar = (props: NodeSettingsSidebarProps) => {
     </div>
   );
 }
+
+export const Sidebar = React.memo(SidebarComponent)
