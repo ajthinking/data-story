@@ -160,7 +160,6 @@ const Flow = ({
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>
-      {/*<NodeSettingsModal showModal={Boolean(openNodeSidebarId)} onClose={close} node={node!} />*/}
     </>
   )
 }

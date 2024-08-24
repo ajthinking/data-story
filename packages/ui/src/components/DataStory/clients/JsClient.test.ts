@@ -9,7 +9,6 @@ describe('JsClient', () => {
       .mockImplementation(() => {}) as any;
 
     const client = new JsClient({
-      setAvailableNodes: setAvailableNodesMock,
       updateEdgeCounts: vi.fn(),
       app: new Application(),
     })
@@ -20,7 +19,6 @@ describe('JsClient', () => {
   });
 
   it('should execute diagram and handle updates on run', async() => {
-    const setAvailableNodesMock = vi.fn();
     const updateEdgeCountsMock = vi.fn();
     let consoleLogSpy = vi.spyOn(console, 'log')
       .mockImplementation(() => {}) as any;
@@ -30,7 +28,6 @@ describe('JsClient', () => {
     app.boot();
 
     const client = new JsClient({
-      setAvailableNodes: setAvailableNodesMock,
       updateEdgeCounts: updateEdgeCountsMock,
       app,
     });
@@ -53,7 +50,6 @@ describe('JsClient', () => {
 
   it('should not throw when save is called', async() => {
     const client = new JsClient({
-      setAvailableNodes: vi.fn(),
       updateEdgeCounts: vi.fn(),
       app: new Application(),
     });

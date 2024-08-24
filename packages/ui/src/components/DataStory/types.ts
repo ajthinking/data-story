@@ -59,6 +59,10 @@ export type DataStoryProps = {
   onInitialize?: DataStoryCallback;
   onSave?: () => void;
   hideSidebar?: boolean;
+  /**
+   * hideActivityBar: true (hide all activity bars)
+   * hideActivityBar: ['node', 'diagram'] (hide node and diagram activity bars)
+   */
   hideActivityBar?: boolean | AcitvityBarType[];
 }
 
@@ -69,7 +73,6 @@ export type DataStoryCanvasProps = {
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
   treeLoading?: boolean;
-  nodeDescriptions?: NodeDescription[];
 } & DataStoryProps;
 
 export type StoreInitOptions = {
@@ -109,10 +112,6 @@ export type StoreSchema = {
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
   toDiagram: () => Diagram;
-
-  /** Addable Nodes */
-  // availableNodes: NodeDescription[],
-  // setAvailableNodes: (nodes: NodeDescription[]) => void,
 
   /** The Nodes */
   nodes: ReactFlowNode[];
