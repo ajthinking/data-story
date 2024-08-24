@@ -6,11 +6,12 @@ import { NodeDescription } from '@data-story/core';
 import { Run } from './run';
 import { AddNode } from './addNode';
 import React from 'react';
+import { LoadingMask } from '../common/loadingMask';
 
 const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
     tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
-    partialStoreRef, setDiagramKey, setDiagram, nodeDescriptions
+    partialStoreRef, setDiagramKey, setDiagram, nodeDescriptions, nodeDescriptionsLoading
   } = props;
 
   const renderContent = () => {
@@ -19,11 +20,14 @@ const SidebarComponent = (props: NodeSettingsSidebarProps) => {
         return <Run
           onRun={() => partialStoreRef.current?.onRun?.()}
           setSidebarKey={setSidebarKey}/>;
-      case 'addNode':
-        return <AddNode
-          availableNodes={nodeDescriptions || []}
-          addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
-          setSidebarKey={setSidebarKey}/>;
+      case 'addNode': {
+        return nodeDescriptionsLoading
+          ? <LoadingMask />
+          : <AddNode
+            availableNodes={nodeDescriptions || []}
+            addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
+            setSidebarKey={setSidebarKey}/>;
+      }
       case 'explorer':
         return <Explorer tree={tree} setDiagram={setDiagram} setDiagramKey={setDiagramKey} />;
       case 'diagram':

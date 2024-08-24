@@ -157,6 +157,7 @@ export type StoreSchema = {
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptions?: NodeDescription[];
+  nodeDescriptionsLoading?: boolean;
   tree?: Tree[];
   activeBar?: string;
   setDiagramKey: Dispatch<SetStateAction<string | undefined>>;

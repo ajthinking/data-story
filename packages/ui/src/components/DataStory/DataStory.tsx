@@ -98,7 +98,7 @@ export const DataStoryComponent = (
           <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
             <Sidebar
               tree={tree} setDiagramKey={setDiagramKey}
-              nodeDescriptions={nodeDescriptions}
+              nodeDescriptions={nodeDescriptions} nodeDescriptionsLoading={nodeDescriptionsLoading}
               setDiagram={setDiagram}
               partialStoreRef={partialStoreRef}
               sidebarKey={sidebarKey}
