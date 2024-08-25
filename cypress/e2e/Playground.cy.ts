@@ -14,6 +14,7 @@ describe('add console.log node to playground', () => {
   it('trigger addNodeModal', () => {
     getEl('add-node-button').click();
 
+    cy.wait(1000);
     getEl('add-node-modal').should('exist');
   });
 
