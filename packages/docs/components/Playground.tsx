@@ -2,7 +2,7 @@
 
 import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React, { useMemo } from 'react';
-import { DataStory, WorkspaceApiClient } from '@data-story/ui';
+import { DataStory, WorkspaceApiClient, WorkspaceSocketClient } from '@data-story/ui';
 import { loadDiagram, LocalStorageKey, SaveComponent } from './Save';
 
 export default Playground;
@@ -15,7 +15,11 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
   const { diagram } = loadDiagram(LocalStorageKey);
   const [initDiagram] = React.useState<Diagram>(diagram);
   const [saveDiagram, setSaveDiagram] = React.useState<() => void>(() => {});
-  const client = useMemo(() => new WorkspaceApiClient(), []);
+  const client = useMemo(() => {
+    if(mode === 'node') return new WorkspaceSocketClient();
+
+    return new WorkspaceApiClient()
+  }, [mode]);
 
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
