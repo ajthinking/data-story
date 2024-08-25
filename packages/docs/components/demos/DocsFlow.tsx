@@ -1,6 +1,6 @@
 import { DataStory } from '@data-story/ui'
 import { Application, core, coreNodeProvider, multiline, nodes, } from '@data-story/core';
-import { JSClient } from '../splash/MockJSClient';
+import { MockJSClient } from '../splash/MockJSClient';
 
 export default () => {
   const app = new Application();
@@ -24,7 +24,7 @@ export default () => {
     `})
     .get()
 
-  const client = new JSClient(diagram);
+  const client = new MockJSClient(diagram);
 
   return (
     <div className="w-full h-1/6">
@@ -33,6 +33,7 @@ export default () => {
         client={client}
         onInitialize={(options) => options.run()}
         hideControls={true}
+        hideActivityBar={true}
       />
     </div>
   );

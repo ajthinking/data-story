@@ -13,16 +13,13 @@ export class SocketClient implements ServerClient {
   protected wsObservable: Observable<any>;
   protected maxReconnectTries = 100;
   protected reconnectTimeoutMs = 1000;
-  private setAvailableNodes: SocketClientOptions['setAvailableNodes'];
   private updateEdgeCounts: SocketClientOptions['updateEdgeCounts'];
   private observers?: ServerClientObservationConfig;
 
   constructor({
-    setAvailableNodes,
     updateEdgeCounts,
     serverConfig,
   }:SocketClientOptions) {
-    this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
 
     this.socket$ = webSocket({
@@ -137,7 +134,8 @@ export class SocketClient implements ServerClient {
     }
 
     if (data.type === 'DescribeResponse') {
-      this.setAvailableNodes(data.availableNodes)
+      // todo: socket client implement availableNodes
+      // this.setAvailableNodes(data.availableNodes)
 
       return;
     }

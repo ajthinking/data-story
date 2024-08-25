@@ -12,7 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { JSClient } from '../splash/MockJSClient';
+import { MockJSClient } from '../splash/MockJSClient';
 
 ChartJS.register(
   CategoryScale,
@@ -61,7 +61,7 @@ export default () => {
       .get();
   }, []);
 
-  const client = useMemo(() =>  new JSClient(diagram), [diagram]);
+  const client = useMemo(() =>  new MockJSClient(diagram), [diagram]);
 
   const mapNode = diagram.nodes.find(n => n.type === 'Map');
   const jsonParam = mapNode.params.find(p => p.name === 'json') as any;

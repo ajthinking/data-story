@@ -36,7 +36,6 @@ export type ObserverMap = Map<string, {
 }>
 
 type ClientOptions = {
-  setAvailableNodes: (nodes: NodeDescription[]) => void,
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
 };
 
@@ -48,6 +47,8 @@ export type SocketClientOptions = ClientOptions & {
   serverConfig: WebSocketServerConfig,
 }
 
+export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
+
 export type DataStoryProps = {
   client?: WorkspaceApiClient,
   server?: ServerConfig;
@@ -58,7 +59,11 @@ export type DataStoryProps = {
   onInitialize?: DataStoryCallback;
   onSave?: () => void;
   hideSidebar?: boolean;
-  hideActivityBar?: boolean;
+  /**
+   * hideActivityBar: true (hide all activity bars)
+   * hideActivityBar: ['node', 'diagram'] (hide node and diagram activity bars)
+   */
+  hideActivityBar?: boolean | AcitvityBarType[];
 }
 
 export type DataStoryCanvasProps = {
@@ -108,10 +113,6 @@ export type StoreSchema = {
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
   toDiagram: () => Diagram;
 
-  /** Addable Nodes */
-  availableNodes: NodeDescription[],
-  setAvailableNodes: (nodes: NodeDescription[]) => void,
-
   /** The Nodes */
   nodes: ReactFlowNode[];
   updateNode: (node: ReactFlowNode) => void;
@@ -155,6 +156,8 @@ export type StoreSchema = {
   setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
+  nodeDescriptions?: NodeDescription[];
+  nodeDescriptionsLoading?: boolean;
   tree?: Tree[];
   activeBar?: string;
   setDiagramKey: Dispatch<SetStateAction<string | undefined>>;
@@ -166,7 +169,7 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
 };
 
 export type Activity = {
-  id: string;
+  id: AcitvityBarType;
   name: string;
   icon: React.FC<{}>;
   position: 'top' | 'bottom';

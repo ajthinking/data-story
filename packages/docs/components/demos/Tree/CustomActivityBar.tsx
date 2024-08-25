@@ -14,7 +14,7 @@ export default () => {
   const diagram = core.getDiagramBuilder()
     .add({...Signal, label: 'DataSource'}, { period: 200, count: 100})
     .add({...Ignore, label: 'Storage'})
-    .above('Signal.1').add(Comment, { content:'### Single Diagram 🔥'})
+    .above('Signal.1').add(Comment, { content:'### Custom Config Activity Bar 🔥'})
     .get();
 
   const client = new MockJSClient(diagram);
@@ -26,7 +26,7 @@ export default () => {
         server={{ type: 'JS', app }}
         hideControls={true}
         hideSidebar={true}
-        hideActivityBar={true}
+        hideActivityBar={['settings', 'explorer']}
       />
     </div>
   );

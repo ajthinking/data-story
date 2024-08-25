@@ -4,23 +4,19 @@ import { Application, coreNodeProvider, Diagram, sleep } from '@data-story/core'
 
 describe('JsClient', () => {
   it('should set available nodes and log connection on init', () => {
-    const setAvailableNodesMock = vi.fn();
     let consoleLogSpy = vi.spyOn(console, 'log')
       .mockImplementation(() => {}) as any;
 
     const client = new JsClient({
-      setAvailableNodes: setAvailableNodesMock,
       updateEdgeCounts: vi.fn(),
       app: new Application(),
     })
 
     client.init();
-    expect(setAvailableNodesMock).toHaveBeenCalledWith([]);
     expect(consoleLogSpy).toHaveBeenCalledWith('Connected to server: JS');
   });
 
   it('should execute diagram and handle updates on run', async() => {
-    const setAvailableNodesMock = vi.fn();
     const updateEdgeCountsMock = vi.fn();
     let consoleLogSpy = vi.spyOn(console, 'log')
       .mockImplementation(() => {}) as any;
@@ -30,7 +26,6 @@ describe('JsClient', () => {
     app.boot();
 
     const client = new JsClient({
-      setAvailableNodes: setAvailableNodesMock,
       updateEdgeCounts: updateEdgeCountsMock,
       app,
     });
@@ -53,7 +48,6 @@ describe('JsClient', () => {
 
   it('should not throw when save is called', async() => {
     const client = new JsClient({
-      setAvailableNodes: vi.fn(),
       updateEdgeCounts: vi.fn(),
       app: new Application(),
     });

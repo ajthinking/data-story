@@ -1,6 +1,6 @@
 import './../../styles/globals.css';
 import { Allotment } from 'allotment';
-import { Activity, DataStoryProps, StoreSchema } from './types';
+import { AcitvityBarType, Activity, DataStoryProps, StoreSchema } from './types';
 import 'allotment/dist/style.css';
 import { ActivityBar } from './sidebar/activityBar';
 import { Sidebar } from './sidebar/sidebar';
@@ -11,7 +11,11 @@ import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
-import { ActivityGroups, areEqual, findFirstFileNode, findNodeById, isSingleFile, path } from './common/method';
+import { ActivityGroups, areEqual, findFirstFileNode, path } from './common/method';
+
+function handleRequestError(requestError?: Error): void {
+  if (requestError) console.error(`Error fetching : ${requestError?.message}` );
+}
 
 export const DataStoryComponent = (
   props: DataStoryProps
@@ -26,7 +30,7 @@ export const DataStoryComponent = (
   const [diagramKey, setDiagramKey] = useState<string>();
   const [activityGroups, setActivityGroups] = useState<Activity[]>([]);
 
-  const { data: tree, loading: treeLoading } = useRequest(async() => {
+  const { data: tree, loading: treeLoading, error: getTreeError } = useRequest(async() => {
     return client
       ? await client.workspacesApi.getTree({ path })
       : Promise.resolve(undefined);
@@ -34,6 +38,7 @@ export const DataStoryComponent = (
     refreshDeps: [client],
     manual: !client,
   }, []);
+  handleRequestError(getTreeError);
 
   useEffect(() => {
     if (tree) {
@@ -44,21 +49,24 @@ export const DataStoryComponent = (
   }, [tree]);
 
   useEffect(() => {
-    if (!tree?.length || isSingleFile(tree)) {
-      setActivityGroups(ActivityGroups.filter((activity) => activity.id !== 'explorer'));
+    if(!tree?.length) {
+      setActivityGroups([]);
+    } else if (Array.isArray(props.hideActivityBar) && props.hideActivityBar.length) {
+      setActivityGroups(ActivityGroups.filter((activity) => !(props.hideActivityBar as AcitvityBarType[])?.includes(activity.id)));
     } else {
       setActivityGroups(ActivityGroups);
     }
   }, [tree]);
 
-  // const { data: nodeDescriptions, loading: nodeDescriptionsLoading } = useRequest(async() => {
-  //   return client
-  //     ? await client.workspacesApi.getNodeDescriptions({ path })
-  //     : undefined;
-  // }, {
-  //   refreshDeps: [client], // Will re-fetch if clientv2 changes
-  //   manual: !client, // If clientv2 is not available initially, do not run automatically
-  // });
+  const { data: nodeDescriptions, loading: nodeDescriptionsLoading, error: getNodeDescriptionsError } = useRequest(async() => {
+    return client
+      ? await client.workspacesApi.getNodeDescriptions({ path })
+      : undefined;
+  }, {
+    refreshDeps: [client], // Will re-fetch if client changes
+    manual: !client, // If client is not available initially, do not run automatically
+  });
+  handleRequestError(getNodeDescriptionsError);
 
   useEffect(() => {
     if (sidebarKey !== 'node') {
@@ -79,7 +87,7 @@ export const DataStoryComponent = (
       <div className="relative h-full w-full">
         {treeLoading && <LoadingMask/>}
         <Allotment className='h-full border-0.5 relative'>
-          <Allotment.Pane visible={!props.hideActivityBar} minSize={44} maxSize={44}>
+          <Allotment.Pane visible={!(props.hideActivityBar === true)} minSize={44} maxSize={44}>
             <ActivityBar
               activityGroups={activityGroups}
               selectedNode={selectedNode}
@@ -90,6 +98,7 @@ export const DataStoryComponent = (
           <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
             <Sidebar
               tree={tree} setDiagramKey={setDiagramKey}
+              nodeDescriptions={nodeDescriptions} nodeDescriptionsLoading={nodeDescriptionsLoading}
               setDiagram={setDiagram}
               partialStoreRef={partialStoreRef}
               sidebarKey={sidebarKey}
@@ -116,4 +125,4 @@ export const DataStoryComponent = (
   )
 }
 
-export const DataStory = React.memo(DataStoryComponent, areEqual);
+export const DataStory = React.memo(DataStoryComponent);

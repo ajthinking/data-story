@@ -1,6 +1,6 @@
 import { DataStory } from '@data-story/ui'
 import { Application, core, coreNodeProvider, nodes, str, } from '@data-story/core';
-import { JSClient } from '../splash/MockJSClient';
+import { MockJSClient } from '../splash/MockJSClient';
 
 // This component is just a place to sketch
 export default () => {
@@ -21,7 +21,7 @@ export default () => {
       help: 'A message to pass on into the execution.',
     })
   ]
-  const client = new JSClient(diagram);
+  const client = new MockJSClient(diagram);
 
   return (
     <div className="w-full h-1/2">
