@@ -65,6 +65,10 @@ export type DataStoryProps = {
    * hideActivityBar: ['node', 'diagram'] (hide node and diagram activity bars)
    */
   hideActivityBar?: boolean | AcitvityBarType[];
+  /**
+   * initSidebarKey: 'explorer' (open the explorer sidebar by default)
+   */
+  initSidebarKey?: string;
 }
 
 export type DataStoryCanvasProps = {

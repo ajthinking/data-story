@@ -25,15 +25,13 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         onSave={saveDiagram}
-        // TODO: avoid re-creating the client on every render
-        // SyntaxError: Cannot use import statement outside a module
-        // clientv2={useCreation(() => new JsClientV2(), [])}
         client={client}
         slotComponents={[
           <SaveComponent setSaveDiagram={setSaveDiagram}/>,
         ]}
         initDiagram={initDiagram}
         server={{ type: 'JS', app }}
+        initSidebarKey="explorer"
       />
     </div>
   );

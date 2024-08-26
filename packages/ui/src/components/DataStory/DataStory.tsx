@@ -22,12 +22,12 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
+  const { client, initSidebarKey } = props
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
-  const [sidebarKey, setSidebarKey] = useState('');
+  const [sidebarKey, setSidebarKey] = useState(initSidebarKey ?? '');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
-  const { client } = props
   const [diagram, setDiagram] = useState<Diagram | null>(null);
   const diagramMapRef = useRef<Map<string, Diagram | null>>(new Map())
   const [diagramKey, setDiagramKey] = useState<string>();
