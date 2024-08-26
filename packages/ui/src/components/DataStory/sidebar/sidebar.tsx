@@ -11,7 +11,7 @@ import { LoadingMask } from '../common/loadingMask';
 const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
     tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey, diagramKey, handleClickExplorerNode,
-    partialStoreRef, setDiagramKey, setDiagram, nodeDescriptions, nodeDescriptionsLoading
+    partialStoreRef, nodeDescriptions, nodeDescriptionsLoading
   } = props;
 
   const renderContent = () => {

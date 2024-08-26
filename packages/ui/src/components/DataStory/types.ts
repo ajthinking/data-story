@@ -165,13 +165,11 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptionsLoading?: boolean;
   tree?: Tree[];
   activeBar?: string;
-  setDiagramKey: Dispatch<SetStateAction<string | undefined>>;
   diagramKey?: string;
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
-  setDiagram: React.Dispatch<React.SetStateAction<Diagram | null>>;
   handleClickExplorerNode: (node: NodeApi<Tree>) => void
 };
 
