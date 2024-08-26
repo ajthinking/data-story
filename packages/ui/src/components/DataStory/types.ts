@@ -17,6 +17,7 @@ import { ServerClient } from './clients/ServerClient';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 import { Tree } from './clients/Tree';
 import React, { Dispatch, SetStateAction } from 'react';
+import { NodeApi } from 'react-arborist';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -166,7 +167,8 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
-  setDiagram: React.Dispatch<React.SetStateAction<Diagram | null>>
+  setDiagram: React.Dispatch<React.SetStateAction<Diagram | null>>;
+  handleClickExplorerNode: (node: NodeApi<Tree>) => void
 };
 
 export type Activity = {

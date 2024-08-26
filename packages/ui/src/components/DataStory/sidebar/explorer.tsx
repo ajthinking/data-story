@@ -29,14 +29,11 @@ function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
 }
 
 export const Explorer = ({
-  tree, setDiagramKey, setDiagram, diagramKey
-}: Pick<NodeSettingsSidebarProps, 'tree' | 'setDiagram' | 'setDiagramKey' | 'diagramKey'>
+  tree, diagramKey, handleClickExplorerNode
+}: Pick<NodeSettingsSidebarProps, 'handleClickExplorerNode' | 'tree' | 'diagramKey'>
 ) => {
   const handleClick = (node:  NodeApi<Tree>) =>  {
-    if (node.isLeaf) {
-      setDiagramKey(node.id);
-      setDiagram(node?.data.content ?? null);
-    }
+    handleClickExplorerNode(node);
   }
 
   return (

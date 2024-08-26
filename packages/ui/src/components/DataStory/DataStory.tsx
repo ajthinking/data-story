@@ -4,7 +4,7 @@ import { AcitvityBarType, Activity, DataStoryProps, StoreSchema } from './types'
 import 'allotment/dist/style.css';
 import { ActivityBar } from './sidebar/activityBar';
 import { Sidebar } from './sidebar/sidebar';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
@@ -12,6 +12,8 @@ import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
 import { ActivityGroups, areEqual, findFirstFileNode, path } from './common/method';
+import { NodeApi } from 'react-arborist';
+import { Tree } from './clients/Tree';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}` );
@@ -27,6 +29,7 @@ export const DataStoryComponent = (
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const { client } = props
   const [diagram, setDiagram] = useState<Diagram | null>(null);
+  const diagramMapRef = useRef<Map<string, Diagram | null>>(new Map())
   const [diagramKey, setDiagramKey] = useState<string>();
   const [activityGroups, setActivityGroups] = useState<Activity[]>([]);
 
@@ -39,6 +42,19 @@ export const DataStoryComponent = (
     manual: !client,
   }, []);
   handleRequestError(getTreeError);
+
+  const handleClickExplorerNode = useCallback((node:  NodeApi<Tree>) => {
+    // store the diagram in the Ref before changing the diagramKey
+    if (diagramKey) {
+      diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
+    };
+
+    if (node.isLeaf) {
+      setDiagramKey(node.id);
+      const newDiagram = diagramMapRef.current.get(node.id) ?? node?.data.content ?? null;
+      setDiagram(newDiagram);
+    }
+  }, [diagramKey]);
 
   useEffect(() => {
     if (tree) {
@@ -98,6 +114,7 @@ export const DataStoryComponent = (
           <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
             <Sidebar
               tree={tree} setDiagram={setDiagram}
+              handleClickExplorerNode={handleClickExplorerNode}
               diagramKey={diagramKey} setDiagramKey={setDiagramKey}
               nodeDescriptions={nodeDescriptions} nodeDescriptionsLoading={nodeDescriptionsLoading}
               partialStoreRef={partialStoreRef}
