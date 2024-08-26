@@ -247,15 +247,17 @@ export const useGetStore = (ref: Ref<unknown>) => {
   const selector = (state: StoreSchema) => ({
     onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
+    toDiagram: state.toDiagram,
   });
-  const { onRun, addNodeFromDescription } = useStore(selector, shallow);
+  const { onRun, addNodeFromDescription, toDiagram } = useStore(selector, shallow);
 
   useImperativeHandle(ref, () => {
     return ({
       onRun,
       addNodeFromDescription,
+      toDiagram,
     });
-  }, [onRun, addNodeFromDescription]);
+  }, [onRun, addNodeFromDescription, toDiagram]);
 }
 
 export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {

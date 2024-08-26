@@ -17,6 +17,7 @@ import { ServerClient } from './clients/ServerClient';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 import { Tree } from './clients/Tree';
 import React, { Dispatch, SetStateAction } from 'react';
+import { NodeApi } from 'react-arborist';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -64,6 +65,10 @@ export type DataStoryProps = {
    * hideActivityBar: ['node', 'diagram'] (hide node and diagram activity bars)
    */
   hideActivityBar?: boolean | AcitvityBarType[];
+  /**
+   * initSidebarKey: 'explorer' (open the explorer sidebar by default)
+   */
+  initSidebarKey?: string;
 }
 
 export type DataStoryCanvasProps = {
@@ -160,12 +165,12 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptionsLoading?: boolean;
   tree?: Tree[];
   activeBar?: string;
-  setDiagramKey: Dispatch<SetStateAction<string | undefined>>;
+  diagramKey?: string;
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
-  setDiagram: React.Dispatch<React.SetStateAction<Diagram | null>>
+  handleClickExplorerNode: (node: NodeApi<Tree>) => void
 };
 
 export type Activity = {

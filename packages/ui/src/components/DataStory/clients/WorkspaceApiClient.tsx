@@ -24,7 +24,6 @@ export class WorkspaceApiClient {
       return new Promise((resolve) => {
         setTimeout(() => {
           resolve(nodeDescriptions);
-          console.log('get nodeDescriptions', nodeDescriptions)
         }, 1000);
       });
     },

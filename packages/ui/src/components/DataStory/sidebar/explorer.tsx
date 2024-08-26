@@ -29,12 +29,11 @@ function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
 }
 
 export const Explorer = ({
-  tree, setDiagramKey, setDiagram
-}: Pick<NodeSettingsSidebarProps, 'tree' | 'setDiagram' | 'setDiagramKey'>
+  tree, diagramKey, handleClickExplorerNode
+}: Pick<NodeSettingsSidebarProps, 'handleClickExplorerNode' | 'tree' | 'diagramKey'>
 ) => {
   const handleClick = (node:  NodeApi<Tree>) =>  {
-    setDiagramKey(node.id);
-    setDiagram(node?.data.content ?? null);
+    handleClickExplorerNode(node);
   }
 
   return (
@@ -44,6 +43,7 @@ export const Explorer = ({
       </div>
       <div className="px-2 py-2">
         <ArboristTree
+          selection={diagramKey}
           initialData={tree}
           openByDefault={true}
           width={600}

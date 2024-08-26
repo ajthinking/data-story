@@ -10,8 +10,8 @@ import { LoadingMask } from '../common/loadingMask';
 
 const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
-    tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
-    partialStoreRef, setDiagramKey, setDiagram, nodeDescriptions, nodeDescriptionsLoading
+    tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey, diagramKey, handleClickExplorerNode,
+    partialStoreRef, nodeDescriptions, nodeDescriptionsLoading
   } = props;
 
   const renderContent = () => {
@@ -29,7 +29,7 @@ const SidebarComponent = (props: NodeSettingsSidebarProps) => {
             setSidebarKey={setSidebarKey}/>;
       }
       case 'explorer':
-        return <Explorer tree={tree} setDiagram={setDiagram} setDiagramKey={setDiagramKey} />;
+        return <Explorer handleClickExplorerNode={handleClickExplorerNode} diagramKey={diagramKey} tree={tree} />;
       case 'diagram':
         return <Placeholder content={'todo: show diagram configuration'}/>;
       case 'settings':

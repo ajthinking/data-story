@@ -3,6 +3,7 @@ import { Activity } from '../types';
 import { NodeIcon } from '../icons/nodeIcon';
 import { DiagramIcon } from '../icons/diagramIcon';
 import { ConfigIcon } from '../icons/configIcon';
+import { ExplorerIcon } from '../icons/explorer';
 
 export const path = '/';
 
@@ -42,7 +43,7 @@ export const ActivityGroups: Activity[] = [
   { id: 'node', name: 'Node Config', icon: NodeIcon, position: 'top' },
   { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon, position: 'top' },
   { id: 'settings', name: 'Settings', icon: ConfigIcon, position: 'top' },
-  { id: 'explorer', name: 'Explorer', icon: ConfigIcon, position: 'top' },
+  { id: 'explorer', name: 'Explorer', icon: ExplorerIcon, position: 'top' },
 ];
 
 // for debugging.
