@@ -161,6 +161,7 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   tree?: Tree[];
   activeBar?: string;
   setDiagramKey: Dispatch<SetStateAction<string | undefined>>;
+  diagramKey?: string;
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
