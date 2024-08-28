@@ -4,6 +4,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 const dummyTree: Tree = {
+  id: '/',
+  name: '/',
   path: '/',
   type: 'folder',
 }
@@ -12,13 +14,18 @@ export async function readTreeFromDirectory(directoryPath: string): Promise<Tree
   async function buildTree(dirPath: string): Promise<Tree> {
     const stat = await fs.promises.stat(dirPath);
     const node: Tree = {
+      id: dirPath,
+      name: path.basename(dirPath),
       path: path.relative(directoryPath, dirPath),
       type: stat.isDirectory() ? 'folder' : 'file',
     };
 
     if (node.type === 'folder') {
       const childrenNames = await fs.promises.readdir(dirPath);
-      const childrenPaths = childrenNames.map(name => path.join(dirPath, name));
+      const childrenPaths = childrenNames
+        .map(name => path.join(dirPath, name))
+        .filter(p => p.endsWith('.json')); // ignore .gitkeep etc
+
       node.children = await Promise.all(childrenPaths.map(buildTree));
     } else {
       const content = await fs.promises.readFile(dirPath, 'utf-8');
@@ -39,8 +46,8 @@ export async function readTreeFromDirectory(directoryPath: string): Promise<Tree
 export class DirectoryTreeManager implements TreeManager {
   constructor(private path: string = '') {}
 
-  async getTree(): Promise<Tree> {
-    return readTreeFromDirectory(this.path);
+  async getTree({ path }: { path: string }): Promise<Tree> {
+    return readTreeFromDirectory(path);
   }
 
   async createTree({ path, tree }: { path: string, tree: Tree }): Promise<Tree> {
