@@ -32,10 +32,8 @@ export const createDiagram = (content = 'Diagram') => {
 export class WorkspaceApiClient {
   private executor: Executor | undefined
   private app: Application
-  constructor() {
-    this.app = new Application();
-    this.app.register(coreNodeProvider);
-    this.app.boot();
+  constructor(app?: Application) {
+    this.app = app || new Application().register(coreNodeProvider).boot();
   }
 
   run = (
