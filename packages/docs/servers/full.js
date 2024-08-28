@@ -24,7 +24,7 @@ app.boot();
 
 const server = new SocketServer({
   app,
-  port: 3300
+  port: 3300,
 })
 
 server.start()
