@@ -2,7 +2,7 @@
 
 import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React, { useMemo } from 'react';
-import { DataStory, WorkspaceApiClient, WorkspaceSocketClient } from '@data-story/ui';
+import { DataStory, DataStoryEvents, eventManager, WorkspaceApiClient, WorkspaceSocketClient } from '@data-story/ui';
 import { loadDiagram, LocalStorageKey, SaveComponent } from './Save';
 
 export default Playground;

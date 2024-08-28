@@ -158,16 +158,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   onRun: () => {
     const observers = createObservers(get().observerMap);
-
     if(get().serverConfig.type === 'SOCKET') {
       get().serverClient!.run(
         get().toDiagram(),
         // @ts-ignore
         observers,
       )
-    }
-    else {
-      console.log('Running diagram: JS',  get()?.testClientRun);
+    } else {
       get()?.testClientRun?.({
         diagram: get().toDiagram(),
         updateEdgeCounts: get().updateEdgeCounts,
@@ -238,16 +235,19 @@ export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
 // https://react.dev/reference/react/useImperativeHandle
 export const useGetStore = (ref: Ref<unknown>) => {
   const selector = (state: StoreSchema) => ({
-    onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
-    updateEdgeCounts: state.updateEdgeCounts,
+    onRun: state.onRun,
   });
-  const storeSelector = useStore(selector, shallow);
+  const {addNodeFromDescription, toDiagram, onRun} = useStore(selector, shallow);
 
   useImperativeHandle(ref, () => {
-    return (storeSelector);
-  }, [storeSelector.onRun, storeSelector.addNodeFromDescription, storeSelector.toDiagram, storeSelector.updateEdgeCounts]);
+    return ({
+      addNodeFromDescription,
+      toDiagram,
+      onRun,
+    });
+  }, [addNodeFromDescription, toDiagram, onRun]);
 }
 
 export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {

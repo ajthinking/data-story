@@ -18,6 +18,7 @@ import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 import { Tree } from '@data-story/core';
 import React from 'react';
 import { NodeApi } from 'react-arborist';
+import { WorkspaceSocketClient } from './clients/WorkspaceSocketClient';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -57,7 +58,7 @@ export interface ClientRunParams {
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 
 export type DataStoryProps = {
-  client?: WorkspaceApiClient,
+  client?: WorkspaceApiClient | WorkspaceSocketClient,
   server?: ServerConfig;
   initDiagram?: Diagram | null;
   hideControls?: boolean

@@ -38,9 +38,9 @@ export class WorkspaceApiClient {
     this.app.boot();
   }
 
-  run(
+  run = (
     { updateEdgeCounts, diagram, observers }: ClientRunParams
-  ) {
+  ) => {
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
@@ -110,7 +110,7 @@ export class WorkspaceApiClient {
 
     // Start the updates
     handleUpdates(execution[Symbol.asyncIterator]());
-  }
+  };
 
   workspacesApi: WorkspacesApi = {
     getNodeDescriptions: async({ path }) => {
