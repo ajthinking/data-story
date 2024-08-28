@@ -13,7 +13,7 @@ import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
 import { ActivityGroups, areEqual, findFirstFileNode, path } from './common/method';
 import { NodeApi } from 'react-arborist';
-import { Tree } from './clients/Tree';
+import { Tree } from '@data-story/core';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}` );

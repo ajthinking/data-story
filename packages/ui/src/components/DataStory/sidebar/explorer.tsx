@@ -2,7 +2,7 @@ import { NodeApi, NodeRendererProps, Tree as ArboristTree } from 'react-arborist
 import { ChevronRight } from '../icons/chevronRight';
 import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
-import { Tree } from '../clients/Tree';
+import { Tree } from '@data-story/core';
 import { NodeSettingsSidebarProps } from '../types';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {

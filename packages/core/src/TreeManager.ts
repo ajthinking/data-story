@@ -11,6 +11,8 @@ export interface TreeManager {
 export class NullTreeManager implements TreeManager {
   async getTree({ path }: { path: string}): Promise<Tree> {
     return {
+      id: '/',
+      name: '/',
       path: '/',
       type: 'folder',
       children: [],
@@ -27,6 +29,8 @@ export class NullTreeManager implements TreeManager {
   }
   async moveTree({ path, newPath }: { path: string, newPath: string}): Promise<Tree> {
     return {
+      id: newPath,
+      name: newPath,
       path: newPath,
       type: 'folder',
     }
