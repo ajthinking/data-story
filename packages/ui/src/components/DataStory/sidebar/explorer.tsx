@@ -4,6 +4,7 @@ import { ChevronDown } from '../icons/chevronDown';
 import { LogoIcon } from '../icons/logoIcon';
 import { Tree } from '@data-story/core';
 import { NodeSettingsSidebarProps } from '../types';
+import React from 'react';
 
 function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
   const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);
@@ -28,11 +29,11 @@ function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
   );
 }
 
-export const Explorer = ({
+export const ExplorerComponent = ({
   tree, diagramKey, handleClickExplorerNode
 }: Pick<NodeSettingsSidebarProps, 'handleClickExplorerNode' | 'tree' | 'diagramKey'>
 ) => {
-  const handleClick = (node:  NodeApi<Tree>) =>  {
+  const handleClick = (node: NodeApi<Tree>) => {
     handleClickExplorerNode(node);
   }
 
@@ -58,3 +59,5 @@ export const Explorer = ({
     </div>
   );
 };
+
+export const Explorer = React.memo(ExplorerComponent);
