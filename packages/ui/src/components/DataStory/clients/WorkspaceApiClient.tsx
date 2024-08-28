@@ -2,14 +2,16 @@ import {
   Application,
   core,
   coreNodeProvider,
-  Diagram, Executor,
+  Diagram,
+  Executor,
   InMemoryStorage,
-  type InputObserver, InputObserverController,
+  type InputObserver,
+  InputObserverController,
   type ItemValue,
   nodes
 } from '@data-story/core';
 import { WorkspacesApi } from './WorkspacesApi';
-import type { JSClientOptions, ServerClientObservationConfig } from '../types';
+import { ClientRunParams } from '../types';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Subject } from 'rxjs';
@@ -19,9 +21,9 @@ export const createDiagram = (content = 'Diagram') => {
   const { Signal, Comment, Ignore } = nodes;
 
   const diagram = core.getDiagramBuilder()
-    .add({...Signal, label: 'DataSource'}, { period: 200, count: 100})
-    .add({...Ignore, label: 'Storage'})
-    .above('Signal.1').add(Comment, { content: `### ${content} 🔥`})
+    .add({ ...Signal, label: 'DataSource' }, { period: 200, count: 100 })
+    .add({ ...Ignore, label: 'Storage' })
+    .above('Signal.1').add(Comment, { content: `### ${content} 🔥` })
     .get();
 
   return diagram;
@@ -29,15 +31,16 @@ export const createDiagram = (content = 'Diagram') => {
 
 export class WorkspaceApiClient {
   private executor: Executor | undefined
+  private app: Application
+  constructor() {
+    this.app = new Application();
+    this.app.register(coreNodeProvider);
+    this.app.boot();
+  }
 
   run(
-    { updateEdgeCounts, app, diagram, observers }:
-    {
-      updateEdgeCounts: JSClientOptions['updateEdgeCounts'],
-      app: JSClientOptions['app'],
-      diagram: Diagram,
-      observers?: ServerClientObservationConfig
-    }) {
+    { updateEdgeCounts, diagram, observers }: ClientRunParams
+  ) {
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
@@ -61,7 +64,7 @@ export class WorkspaceApiClient {
       }
     );
 
-    this.executor = app.getExecutor({
+    this.executor = this.app.getExecutor({
       diagram,
       storage,
       inputObserverController
@@ -79,7 +82,7 @@ export class WorkspaceApiClient {
               if (hook.type === 'CONSOLE_LOG') {
                 console.log(...hook.args)
               } else {
-                const userHook = app.hooks.get(hook.type)
+                const userHook = this.app.hooks.get(hook.type)
 
                 if (userHook) {
                   userHook(...hook.args)
@@ -111,10 +114,7 @@ export class WorkspaceApiClient {
 
   workspacesApi: WorkspacesApi = {
     getNodeDescriptions: async({ path }) => {
-      const app = new Application();
-      app.register(coreNodeProvider);
-      app.boot();
-      const nodeDescriptions = app.descriptions();
+      const nodeDescriptions = this.app.descriptions();
 
       return new Promise((resolve) => {
         setTimeout(() => {

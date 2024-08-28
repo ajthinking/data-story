@@ -16,7 +16,7 @@ import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 import { Tree } from '@data-story/core';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import { NodeApi } from 'react-arborist';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
@@ -46,6 +46,12 @@ export type JSClientOptions = ClientOptions & {
 
 export type SocketClientOptions = ClientOptions & {
   serverConfig: WebSocketServerConfig,
+}
+
+export interface ClientRunParams {
+  updateEdgeCounts: JSClientOptions['updateEdgeCounts'],
+  diagram: Diagram,
+  observers?: ServerClientObservationConfig
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
@@ -85,9 +91,10 @@ export type StoreInitOptions = {
   server?: ServerConfig,
   initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
+  clientRun?: (params: ClientRunParams) => void;
 }
 
-export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig) => void;
+export type StoreInitServer = (serverConfig: ServerConfig, clientRun?: StoreInitOptions['clientRun']) => void;
 
 export type FormCommonProps = {
   node: ReactFlowNode;
@@ -114,6 +121,8 @@ export type NodeSettingsFormProps = {
 }
 
 export type StoreSchema = {
+  testClientRun?: (params: ClientRunParams) => void
+
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
   toDiagram: () => Diagram;
