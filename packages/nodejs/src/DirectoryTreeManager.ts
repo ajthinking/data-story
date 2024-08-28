@@ -1,5 +1,4 @@
 import { Diagram, Tree, TreeManager } from '@data-story/core';
-import { glob } from 'glob';
 import * as fs from 'fs';
 import * as path from 'path';
 
