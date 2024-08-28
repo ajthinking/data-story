@@ -15,7 +15,7 @@ import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
-import { Tree } from './clients/Tree';
+import { Tree } from '@data-story/core';
 import React, { Dispatch, SetStateAction } from 'react';
 import { NodeApi } from 'react-arborist';
 

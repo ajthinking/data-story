@@ -1,4 +1,4 @@
-import { Tree } from '../clients/Tree';
+import { Tree } from '@data-story/core';
 import { Activity } from '../types';
 import { NodeIcon } from '../icons/nodeIcon';
 import { DiagramIcon } from '../icons/diagramIcon';

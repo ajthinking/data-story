@@ -1,5 +1,5 @@
 import { NodeDescription } from '@data-story/core';
-import { Tree } from './Tree';
+import { Tree } from '@data-story/core';
 
 export interface WorkspacesApi {
   getTree: ({ path }) => Promise<Tree[]>

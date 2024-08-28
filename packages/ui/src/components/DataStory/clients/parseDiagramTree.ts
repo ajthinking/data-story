@@ -1,5 +1,5 @@
 import { Diagram, Diagrammable } from '@data-story/core';
-import { Tree } from './Tree';
+import { Tree } from '@data-story/core';
 
 const hydrateTreeNode = (tree: Tree<Diagrammable>): Tree<Diagram> => {
   if (tree.content) {
