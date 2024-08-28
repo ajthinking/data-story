@@ -58,7 +58,7 @@ export interface ClientRunParams {
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 
 export type DataStoryProps = {
-  client?: WorkspaceApiClient | WorkspaceSocketClient,
+  client?: WorkspaceApiClient,
   server?: ServerConfig;
   initDiagram?: Diagram | null;
   hideControls?: boolean
@@ -95,7 +95,7 @@ export type StoreInitOptions = {
   clientRun?: (params: ClientRunParams) => void;
 }
 
-export type StoreInitServer = (serverConfig: ServerConfig, clientRun?: StoreInitOptions['clientRun']) => void;
+export type StoreInitServer = (serverConfig: ServerConfig) => void;
 
 export type FormCommonProps = {
   node: ReactFlowNode;
@@ -122,7 +122,7 @@ export type NodeSettingsFormProps = {
 }
 
 export type StoreSchema = {
-  testClientRun?: (params: ClientRunParams) => void
+  clientRun?: (params: ClientRunParams) => void
 
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;

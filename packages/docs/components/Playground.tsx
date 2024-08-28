@@ -25,7 +25,7 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         onSave={saveDiagram}
-        client={client}
+        client={client as WorkspaceApiClient}
         slotComponents={[
           <SaveComponent setSaveDiagram={setSaveDiagram}/>,
         ]}

@@ -24,7 +24,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   serverClient: null,
   openNodeSidebarId: null,
   observerMap: new Map(),
-  testClientRun: (params: ClientRunParams) => {},
+  clientRun: (params: ClientRunParams) => {
+  },
 
   // METHODS
   toDiagram: () => {
@@ -137,13 +138,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     })
 
     set({ rfInstance: options.rfInstance })
-    get().initServer(get().serverConfig, options.clientRun)
-    set({ testClientRun: options.clientRun })
+    get().initServer(get().serverConfig)
+    set({ clientRun: options.clientRun })
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
     if (options.callback) {
-      options.callback({ run:  get().onRun })
+      options.callback({ run: get().onRun })
     }
   },
   updateDiagram: (diagram: Diagram) => {
@@ -158,21 +159,21 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   onRun: () => {
     const observers = createObservers(get().observerMap);
-    if(get().serverConfig.type === 'SOCKET') {
+    if (get().serverConfig.type === 'SOCKET') {
       get().serverClient!.run(
         get().toDiagram(),
         // @ts-ignore
         observers,
       )
     } else {
-      get()?.testClientRun?.({
+      get()?.clientRun?.({
         diagram: get().toDiagram(),
         updateEdgeCounts: get().updateEdgeCounts,
         observers
       })
     }
   },
-  initServer: (serverConfig: ServerConfig, clientRun: StoreInitOptions['clientRun']) => {
+  initServer: (serverConfig: ServerConfig) => {
     if (serverConfig.type === 'SOCKET') {
       const server = new SocketClient({
         updateEdgeCounts: get().updateEdgeCounts,
@@ -216,7 +217,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
   setObservers(observerId: string, observers?: DataStoryObservers) {
     get().observerMap.set(observerId, (observers || {
-      inputObservers: [], onDataChange: () => {}
+      inputObservers: [], onDataChange: () => {
+      }
     }) as DataStoryObservers);
   },
 
@@ -239,7 +241,7 @@ export const useGetStore = (ref: Ref<unknown>) => {
     toDiagram: state.toDiagram,
     onRun: state.onRun,
   });
-  const {addNodeFromDescription, toDiagram, onRun} = useStore(selector, shallow);
+  const { addNodeFromDescription, toDiagram, onRun } = useStore(selector, shallow);
 
   useImperativeHandle(ref, () => {
     return ({
