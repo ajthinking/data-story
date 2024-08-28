@@ -30,7 +30,7 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
           <SaveComponent setSaveDiagram={setSaveDiagram}/>,
         ]}
         initDiagram={initDiagram}
-        server={{ type: 'JS', app }}
+        server={{ type: 'JS', app: null }}
         initSidebarKey="explorer"
       />
     </div>
