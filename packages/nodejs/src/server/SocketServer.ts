@@ -18,7 +18,7 @@ export class SocketServer {
   constructor({
     app,
     messageHandlers = defaultMessageHandlers,
-    port = 3100
+    port = 3300
   }: SocketServerOptions) {
     this.app = app;
     this.port = port;
@@ -27,6 +27,7 @@ export class SocketServer {
 
   start() {
     this.wsServer = new WebSocket.Server({ port: this.port });
+    console.log('Server started on port ' + this.port);
 
     this.wsServer.on('connection', (ws) => {
       const storage = new InMemoryStorage();

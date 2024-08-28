@@ -10,7 +10,6 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 
 const root = path.resolve('./tree');
-console.log({ root });
 
 const app = new Application(
   new DirectoryTreeManager(root)

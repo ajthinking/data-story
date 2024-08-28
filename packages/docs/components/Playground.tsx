@@ -16,10 +16,10 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
   const [initDiagram] = React.useState<Diagram>(diagram);
   const [saveDiagram, setSaveDiagram] = React.useState<() => void>(() => {});
   const client = useMemo(() => {
-    if(mode === 'node') return new WorkspaceSocketClient();
+    // if(mode === 'node') return new WorkspaceSocketClient();
 
     return new WorkspaceApiClient()
-  }, [mode]);
+  }, []);
 
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
