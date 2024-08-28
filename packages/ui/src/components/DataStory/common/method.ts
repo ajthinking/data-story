@@ -41,8 +41,6 @@ export const isSingleFile = (trees: Tree[]): boolean => {
 
 export const ActivityGroups: Activity[] = [
   { id: 'explorer', name: 'Explorer', icon: ExplorerIcon, position: 'top' },
-  { id: 'node', name: 'Node Config', icon: NodeIcon, position: 'top' },
-  { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon, position: 'top' },
   { id: 'settings', name: 'Settings', icon: ConfigIcon, position: 'top' },
 ];
 
