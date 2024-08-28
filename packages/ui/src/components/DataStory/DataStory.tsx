@@ -43,6 +43,16 @@ export const DataStoryComponent = (
   }, []);
   handleRequestError(getTreeError);
 
+  const { data: nodeDescriptions, loading: nodeDescriptionsLoading, error: getNodeDescriptionsError } = useRequest(async() => {
+    return client
+      ? await client.workspacesApi.getNodeDescriptions({ path })
+      : undefined;
+  }, {
+    refreshDeps: [client], // Will re-fetch if client changes
+    manual: !client, // If client is not available initially, do not run automatically
+  });
+  handleRequestError(getNodeDescriptionsError);
+
   const handleClickExplorerNode = useCallback((node:  NodeApi<Tree>) => {
     // store the diagram in the Ref before changing the diagramKey
     if (diagramKey) {
@@ -73,16 +83,6 @@ export const DataStoryComponent = (
       setActivityGroups(ActivityGroups);
     }
   }, [tree]);
-
-  const { data: nodeDescriptions, loading: nodeDescriptionsLoading, error: getNodeDescriptionsError } = useRequest(async() => {
-    return client
-      ? await client.workspacesApi.getNodeDescriptions({ path })
-      : undefined;
-  }, {
-    refreshDeps: [client], // Will re-fetch if client changes
-    manual: !client, // If client is not available initially, do not run automatically
-  });
-  handleRequestError(getNodeDescriptionsError);
 
   useEffect(() => {
     if (sidebarKey !== 'node') {

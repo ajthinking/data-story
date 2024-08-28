@@ -1,5 +1,19 @@
-import { Application, core, coreNodeProvider, Diagram, nodes } from '@data-story/core';
+import {
+  Application,
+  core,
+  coreNodeProvider,
+  Diagram, Executor,
+  InMemoryStorage,
+  type InputObserver, InputObserverController,
+  type ItemValue,
+  nodes
+} from '@data-story/core';
 import { WorkspacesApi } from './WorkspacesApi';
+import type { JSClientOptions, ServerClientObservationConfig } from '../types';
+import { eventManager } from '../events/eventManager';
+import { DataStoryEvents } from '../events/dataStoryEventType';
+import { Subject } from 'rxjs';
+import { clientBuffer } from './ClientBuffer';
 
 export const createDiagram = (content = 'Diagram') => {
   const { Signal, Comment, Ignore } = nodes;
@@ -14,6 +28,87 @@ export const createDiagram = (content = 'Diagram') => {
 }
 
 export class WorkspaceApiClient {
+  private executor: Executor | undefined
+
+  run(
+    { updateEdgeCounts, app, diagram, observers }:
+    {
+      updateEdgeCounts: JSClientOptions['updateEdgeCounts'],
+      app: JSClientOptions['app'],
+      diagram: Diagram,
+      observers?: ServerClientObservationConfig
+    }) {
+    eventManager.emit({
+      type: DataStoryEvents.RUN_START
+    });
+
+    const storage = new InMemoryStorage();
+    const notifyObservers$: Subject<{items: ItemValue[], inputObservers: InputObserver[]}> = new Subject();
+
+    notifyObservers$.pipe(
+      clientBuffer(50)
+    ).subscribe((data) => {
+      observers?.onDataChange(
+        data.items,
+        data.inputObservers
+      )
+    });
+
+    const inputObserverController = new InputObserverController(
+      observers?.inputObservers || [],
+      (items: ItemValue[], inputObservers: InputObserver[]) => {
+        notifyObservers$.next({ items, inputObservers });
+      }
+    );
+
+    this.executor = app.getExecutor({
+      diagram,
+      storage,
+      inputObserverController
+    })
+
+    const execution = this.executor.execute();
+
+    // For each update run this function
+    const handleUpdates = (iterator: AsyncIterator<any>) => {
+      iterator.next()
+        .then(({ value: update, done }) => {
+          if (!done) {
+            updateEdgeCounts(update.counts)
+            for(const hook of update.hooks) {
+              if (hook.type === 'CONSOLE_LOG') {
+                console.log(...hook.args)
+              } else {
+                const userHook = app.hooks.get(hook.type)
+
+                if (userHook) {
+                  userHook(...hook.args)
+                }
+              }
+            }
+
+            // Then wait for the next one
+            handleUpdates(iterator);
+          } else {
+            console.log('Execution complete 💫');
+            eventManager.emit({
+              type: DataStoryEvents.RUN_SUCCESS
+            });
+          }
+        })
+        .catch((error: any) => {
+          eventManager.emit({
+            type: DataStoryEvents.RUN_ERROR,
+            payload: error
+          });
+          console.log('Error', error)
+        })
+    }
+
+    // Start the updates
+    handleUpdates(execution[Symbol.asyncIterator]());
+  }
+
   workspacesApi: WorkspacesApi = {
     getNodeDescriptions: async({ path }) => {
       const app = new Application();
