@@ -1,7 +1,7 @@
 import { Tree } from './Tree';
 
 export interface TreeManager {
-  getTree(): Promise<Tree>;
+  getTree({ path }: { path: string}): Promise<Tree>;
   createTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>;
   updateTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>
   destroyTree: ({ path }: { path: string }) => Promise<void>
@@ -9,10 +9,11 @@ export interface TreeManager {
 }
 
 export class NullTreeManager implements TreeManager {
-  async getTree(): Promise<Tree> {
+  async getTree({ path }: { path: string}): Promise<Tree> {
     return {
       path: '/',
       type: 'folder',
+      children: [],
     }
   }
   async createTree({ path, tree }: { path: string, tree: Tree }): Promise<Tree> {
