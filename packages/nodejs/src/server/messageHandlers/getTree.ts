@@ -9,6 +9,8 @@ export const getTree: MessageHandler<GetTreeMessage> = async (
   app: Application
 ) => {
   const response = {
+    id: data.id,
+    awaited: data.awaited,
     type: 'GetTreeResponse',
     tree: app.getTreeManager().getTree({
       path: data.path,
