@@ -1,4 +1,4 @@
-import { Application, core, coreNodeProvider, DiagramBuilder, nodes } from '@data-story/core';
+import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
 import React, { useMemo } from 'react';
 import { DataStory  } from '@data-story/ui';
 import {
@@ -47,7 +47,7 @@ export default () => {
     return new Application()
       .register(coreNodeProvider)
       .boot();
-  }, []);
+  }, [Application]);
   const { Signal, Table, Map, Create, Request, ConsoleLog } = nodes;
 
   const diagram = useMemo(() => {
@@ -59,7 +59,7 @@ export default () => {
       .add(Map, { json: '{ y: Math.cos(${x}/4) }' })
       .add(Table)
       .get();
-  }, []);
+  }, [core]);
 
   const client = useMemo(() =>  new MockJSClient(diagram), [diagram]);
 
