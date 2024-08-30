@@ -114,7 +114,7 @@ export const SaveComponent = ({setSaveDiagram}: {
 
   useEffect(() => {
     setSaveDiagram(() => handleSave);
-  }, [handleSave]);
+  }, [handleSave, setSaveDiagram]);
 
   return (
     <>

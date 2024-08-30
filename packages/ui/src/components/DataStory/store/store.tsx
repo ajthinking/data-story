@@ -4,7 +4,6 @@ import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeC
 import { SocketClient } from '../clients/SocketClient';
 import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
-import { JsClient } from '../clients/JsClient';
 import { ServerConfig, WebSocketServerConfig } from '../clients/ServerConfig';
 import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
@@ -12,7 +11,7 @@ import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
 import { createObservers } from './createObservers';
-import { DataStoryObservers, StoreInitOptions, StoreSchema } from '../types';
+import { ClientRunParams, DataStoryObservers, StoreInitOptions, StoreSchema } from '../types';
 import { shallow } from 'zustand/shallow';
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -25,6 +24,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   serverClient: null,
   openNodeSidebarId: null,
   observerMap: new Map(),
+  clientRun: (params: ClientRunParams) => {
+  },
 
   // METHODS
   toDiagram: () => {
@@ -138,19 +139,12 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     set({ rfInstance: options.rfInstance })
     get().initServer(get().serverConfig)
+    set({ clientRun: options.clientRun })
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
     if (options.callback) {
-      const run = () => {
-        get().serverClient?.run(
-          get().toDiagram(),
-          // TODO this does not work?!
-          createObservers(get().observerMap)
-        )
-      }
-
-      options.callback({ run })
+      options.callback({ run: get().onRun })
     }
   },
   updateDiagram: (diagram: Diagram) => {
@@ -165,29 +159,28 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   onRun: () => {
     const observers = createObservers(get().observerMap);
-
-    get().serverClient!.run(
-      get().toDiagram(),
-      observers,
-    )
+    if (get().serverConfig.type === 'SOCKET') {
+      get().serverClient!.run(
+        get().toDiagram(),
+        // @ts-ignore
+        observers,
+      )
+    } else {
+      get()?.clientRun?.({
+        diagram: get().toDiagram(),
+        updateEdgeCounts: get().updateEdgeCounts,
+        observers
+      })
+    }
   },
   initServer: (serverConfig: ServerConfig) => {
-    if (serverConfig.type === 'JS') {
-      const server = new JsClient({
-        updateEdgeCounts: get().updateEdgeCounts,
-        app: serverConfig.app,
-      })
-
-      set({ serverClient: server })
-      server.init()
-    }
-
     if (serverConfig.type === 'SOCKET') {
       const server = new SocketClient({
         updateEdgeCounts: get().updateEdgeCounts,
         serverConfig: serverConfig as WebSocketServerConfig,
-      })
+      });
 
+      // @ts-ignore
       set({ serverClient: server })
       server.init()
     }
@@ -224,7 +217,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
   setObservers(observerId: string, observers?: DataStoryObservers) {
     get().observerMap.set(observerId, (observers || {
-      inputObservers: [], onDataChange: () => {}
+      inputObservers: [], onDataChange: () => {
+      }
     }) as DataStoryObservers);
   },
 
@@ -243,19 +237,19 @@ export const useStore: UseBoundStore<StoreApi<StoreSchema>> = (...params) => {
 // https://react.dev/reference/react/useImperativeHandle
 export const useGetStore = (ref: Ref<unknown>) => {
   const selector = (state: StoreSchema) => ({
-    onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
+    onRun: state.onRun,
   });
-  const { onRun, addNodeFromDescription, toDiagram } = useStore(selector, shallow);
+  const { addNodeFromDescription, toDiagram, onRun } = useStore(selector, shallow);
 
   useImperativeHandle(ref, () => {
     return ({
-      onRun,
       addNodeFromDescription,
       toDiagram,
+      onRun,
     });
-  }, [onRun, addNodeFromDescription, toDiagram]);
+  }, [addNodeFromDescription, toDiagram, onRun]);
 }
 
 export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {

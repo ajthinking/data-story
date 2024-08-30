@@ -1,11 +1,12 @@
-import { Diagram, NodeDescription } from '@data-story/core';
-import { WorkspacesApi } from '@data-story/ui';
+import { Application, Diagram, NodeDescription } from '@data-story/core';
+import { WorkspaceApiClient, WorkspacesApi } from '@data-story/ui';
 
-export class MockJSClient {
+export class MockJSClient extends WorkspaceApiClient {
   private diagram: Diagram;
   private nodeDescriptions: NodeDescription[];
 
-  constructor(diagram?: Diagram, nodeDescriptions?: NodeDescription[]) {
+  constructor(diagram?: Diagram, app?: Application, nodeDescriptions?: NodeDescription[]) {
+    super(app);
     this.diagram = diagram ?? new Diagram();
     this.nodeDescriptions = nodeDescriptions || [];
   }

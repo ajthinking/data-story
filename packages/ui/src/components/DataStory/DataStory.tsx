@@ -11,12 +11,12 @@ import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram } from '@data-story/core';
-import { ActivityGroups, areEqual, findFirstFileNode, path } from './common/method';
+import { ActivityGroups, findFirstFileNode, path } from './common/method';
 import { NodeApi } from 'react-arborist';
 import { Tree } from '@data-story/core';
 
 function handleRequestError(requestError?: Error): void {
-  if (requestError) console.error(`Error fetching : ${requestError?.message}` );
+  if (requestError) console.error(`Error fetching : ${requestError?.message}`);
 }
 
 export const DataStoryComponent = (
@@ -36,18 +36,33 @@ export const DataStoryComponent = (
   const { data: tree, loading: treeLoading, error: getTreeError } = useRequest(async() => {
     return client
       ? await client.workspacesApi.getTree({ path })
-      : Promise.resolve(undefined);
+      : Promise.resolve([]);
   }, {
     refreshDeps: [client],
     manual: !client,
   }, []);
   handleRequestError(getTreeError);
 
-  const handleClickExplorerNode = useCallback((node:  NodeApi<Tree>) => {
+  const {
+    data: nodeDescriptions,
+    loading: nodeDescriptionsLoading,
+    error: getNodeDescriptionsError
+  } = useRequest(async() => {
+    return client
+      ? await client.workspacesApi.getNodeDescriptions({ path })
+      : undefined;
+  }, {
+    refreshDeps: [client], // Will re-fetch if client changes
+    manual: !client, // If client is not available initially, do not run automatically
+  });
+  handleRequestError(getNodeDescriptionsError);
+
+  const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
     // store the diagram in the Ref before changing the diagramKey
     if (diagramKey) {
       diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
-    };
+    }
+    ;
 
     if (node.isLeaf) {
       setDiagramKey(node.id);
@@ -65,7 +80,7 @@ export const DataStoryComponent = (
   }, [tree]);
 
   useEffect(() => {
-    if(!tree?.length) {
+    if (!tree?.length) {
       setActivityGroups([]);
     } else if (Array.isArray(props.hideActivityBar) && props.hideActivityBar.length) {
       setActivityGroups(ActivityGroups.filter((activity) => !(props.hideActivityBar as AcitvityBarType[])?.includes(activity.id)));
@@ -73,16 +88,6 @@ export const DataStoryComponent = (
       setActivityGroups(ActivityGroups);
     }
   }, [tree]);
-
-  const { data: nodeDescriptions, loading: nodeDescriptionsLoading, error: getNodeDescriptionsError } = useRequest(async() => {
-    return client
-      ? await client.workspacesApi.getNodeDescriptions({ path })
-      : undefined;
-  }, {
-    refreshDeps: [client], // Will re-fetch if client changes
-    manual: !client, // If client is not available initially, do not run automatically
-  });
-  handleRequestError(getNodeDescriptionsError);
 
   useEffect(() => {
     if (sidebarKey !== 'node') {
@@ -101,42 +106,42 @@ export const DataStoryComponent = (
   return (
     <DataStoryCanvasProvider>
       <div className="relative h-full w-full">
-        {treeLoading && <LoadingMask/>}
-        <Allotment className='h-full border-0.5 relative'>
-          <Allotment.Pane visible={!(props.hideActivityBar === true)} minSize={44} maxSize={44}>
-            <ActivityBar
-              activityGroups={activityGroups}
-              selectedNode={selectedNode}
-              setActiveKey={setSidebarKey}
-              activeKey={sidebarKey}
-              onClose={setIsSidebarClose}/>
-          </Allotment.Pane>
-          <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
-            <Sidebar
-              tree={tree}
-              handleClickExplorerNode={handleClickExplorerNode}
-              diagramKey={diagramKey}
-              nodeDescriptions={nodeDescriptions} nodeDescriptionsLoading={nodeDescriptionsLoading}
-              partialStoreRef={partialStoreRef}
-              sidebarKey={sidebarKey}
-              setSidebarKey={setSidebarKey} node={selectedNode}
-              onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
-          </Allotment.Pane>
-          <Allotment.Pane minSize={300}>
-            {
-              !treeLoading &&
-              <DataStoryCanvas {...props}
-                key={diagramKey}
-                initDiagram={diagram}
-                ref={partialStoreRef}
-                setSidebarKey={setSidebarKey}
-                sidebarKey={sidebarKey}
-                selectedNode={selectedNode}
-                selectedNodeData={updateSelectedNodeData}
-                onNodeSelected={setSelectedNode}/>
-            }
-          </Allotment.Pane>
-        </Allotment>
+        {
+          (treeLoading && !tree)
+            ? <LoadingMask/>
+            : <Allotment className='h-full border-0.5 relative'>
+              <Allotment.Pane visible={!(props.hideActivityBar === true)} minSize={44} maxSize={44}>
+                <ActivityBar
+                  activityGroups={activityGroups}
+                  selectedNode={selectedNode}
+                  setActiveKey={setSidebarKey}
+                  activeKey={sidebarKey}
+                  onClose={setIsSidebarClose}/>
+              </Allotment.Pane>
+              <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
+                <Sidebar
+                  tree={tree}
+                  handleClickExplorerNode={handleClickExplorerNode}
+                  diagramKey={diagramKey}
+                  nodeDescriptions={nodeDescriptions} nodeDescriptionsLoading={nodeDescriptionsLoading}
+                  partialStoreRef={partialStoreRef}
+                  sidebarKey={sidebarKey}
+                  setSidebarKey={setSidebarKey} node={selectedNode}
+                  onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
+              </Allotment.Pane>
+              <Allotment.Pane minSize={300}>
+                <DataStoryCanvas {...props}
+                  key={diagramKey}
+                  initDiagram={diagram}
+                  ref={partialStoreRef}
+                  setSidebarKey={setSidebarKey}
+                  sidebarKey={sidebarKey}
+                  selectedNode={selectedNode}
+                  selectedNodeData={updateSelectedNodeData}
+                  onNodeSelected={setSelectedNode}/>
+              </Allotment.Pane>
+            </Allotment>
+        }
       </div>
     </DataStoryCanvasProvider>
   )

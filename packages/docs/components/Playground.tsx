@@ -2,7 +2,7 @@
 
 import { Application, coreNodeProvider, Diagram } from '@data-story/core';
 import React, { useMemo } from 'react';
-import { DataStory, WorkspaceApiClient, WorkspaceSocketClient } from '@data-story/ui';
+import { DataStory, DataStoryEvents, eventManager, WorkspaceApiClient, WorkspaceSocketClient } from '@data-story/ui';
 import { loadDiagram, LocalStorageKey, SaveComponent } from './Save';
 
 export default Playground;
@@ -25,12 +25,12 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         onSave={saveDiagram}
-        client={client}
+        client={client as WorkspaceApiClient}
         slotComponents={[
           <SaveComponent setSaveDiagram={setSaveDiagram}/>,
         ]}
         initDiagram={initDiagram}
-        server={{ type: 'JS', app }}
+        server={{ type: 'JS', app: null }}
         initSidebarKey="explorer"
       />
     </div>

@@ -50,7 +50,8 @@ const Flow = ({
   onNodeSelected,
   selectedNodeData,
   selectedNode,
-  onSave
+  onSave,
+  client
 }: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -137,6 +138,7 @@ const Flow = ({
             server,
             initDiagram,
             callback: onInitialize,
+            clientRun: client?.run,
           });
           setIsExecutePostRenderEffect(true);
         }}

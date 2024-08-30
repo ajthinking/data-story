@@ -19,7 +19,7 @@ export default () => {
     .above('Signal.1').add(Comment, { content:'### Add Node Description 🔥'})
     .get();
 
-  const client = new MockJSClient(diagram, nodeDescriptions);
+  const client = new MockJSClient(diagram, undefined, nodeDescriptions);
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">
