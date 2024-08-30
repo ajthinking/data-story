@@ -138,7 +138,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     })
 
     set({ rfInstance: options.rfInstance })
-    get().initServer(get().serverConfig)
     set({ clientRun: options.clientRun })
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
@@ -159,31 +158,11 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   onRun: () => {
     const observers = createObservers(get().observerMap);
-    if (get().serverConfig.type === 'SOCKET') {
-      get().serverClient!.run(
-        get().toDiagram(),
-        // @ts-ignore
-        observers,
-      )
-    } else {
-      get()?.clientRun?.({
-        diagram: get().toDiagram(),
-        updateEdgeCounts: get().updateEdgeCounts,
-        observers
-      })
-    }
-  },
-  initServer: (serverConfig: ServerConfig) => {
-    if (serverConfig.type === 'SOCKET') {
-      const server = new SocketClient({
-        updateEdgeCounts: get().updateEdgeCounts,
-        serverConfig: serverConfig as WebSocketServerConfig,
-      });
-
-      // @ts-ignore
-      set({ serverClient: server })
-      server.init()
-    }
+    get()?.clientRun?.({
+      diagram: get().toDiagram(),
+      updateEdgeCounts: get().updateEdgeCounts,
+      observers
+    })
   },
 
   setParams: (params: Param[]) => {

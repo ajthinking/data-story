@@ -2,6 +2,30 @@ import { Diagram, Tree, TreeManager } from '@data-story/core';
 import * as fs from 'fs';
 import * as path from 'path';
 
+export class DirectoryTreeManager implements TreeManager {
+  constructor(private path: string = '') {}
+
+  async getTree({ path }: { path: string }): Promise<Tree> {
+    return readTreeFromDirectory(path);
+  }
+
+  async createTree({ path, tree }: { path: string, tree: Tree }): Promise<Tree> {
+    return dummyTree;
+  }
+
+  async updateTree({ path, tree }: { path: string, tree: Tree }): Promise<Tree> {
+    return dummyTree;
+  }
+
+  async destroyTree({ path }: { path: string }): Promise<void> {
+    return;
+  }
+
+  async moveTree({ path, newPath }: { path: string, newPath: string}): Promise<Tree> {
+    return dummyTree
+  }
+}
+
 const dummyTree: Tree = {
   id: '/',
   name: '/',
@@ -40,28 +64,4 @@ export async function readTreeFromDirectory(directoryPath: string): Promise<Tree
   }
 
   return buildTree(directoryPath);
-}
-
-export class DirectoryTreeManager implements TreeManager {
-  constructor(private path: string = '') {}
-
-  async getTree({ path }: { path: string }): Promise<Tree> {
-    return readTreeFromDirectory(path);
-  }
-
-  async createTree({ path, tree }: { path: string, tree: Tree }): Promise<Tree> {
-    return dummyTree;
-  }
-
-  async updateTree({ path, tree }: { path: string, tree: Tree }): Promise<Tree> {
-    return dummyTree;
-  }
-
-  async destroyTree({ path }: { path: string }): Promise<void> {
-    return;
-  }
-
-  async moveTree({ path, newPath }: { path: string, newPath: string}): Promise<Tree> {
-    return dummyTree
-  }
 }

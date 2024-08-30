@@ -19,6 +19,7 @@ import { Tree } from '@data-story/core';
 import React from 'react';
 import { NodeApi } from 'react-arborist';
 import { WorkspaceSocketClient } from './clients/WorkspaceSocketClient';
+import { WorkspaceApiClientInterface } from './clients/WorkspaceApiClientInterface';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -58,7 +59,7 @@ export interface ClientRunParams {
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 
 export type DataStoryProps = {
-  client?: WorkspaceApiClient,
+  client?: WorkspaceApiClientInterface,
   server?: ServerConfig;
   initDiagram?: Diagram | null;
   hideControls?: boolean
@@ -94,8 +95,6 @@ export type StoreInitOptions = {
   callback?: DataStoryCallback,
   clientRun?: (params: ClientRunParams) => void;
 }
-
-export type StoreInitServer = (serverConfig: ServerConfig) => void;
 
 export type FormCommonProps = {
   node: ReactFlowNode;
@@ -152,7 +151,6 @@ export type StoreSchema = {
   /** The Server and its config */
   serverConfig: ServerConfig;
   serverClient: null | ServerClient;
-  initServer: StoreInitServer;
 
   /** When DataStory component initializes */
   onInit: (options: StoreInitOptions) => void;
