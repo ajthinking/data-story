@@ -1,7 +1,7 @@
 import { Application, Diagram, NodeDescription } from '@data-story/core';
-import { WorkspaceApiClient, WorkspacesApi } from '@data-story/ui';
+import { WorkspaceApiJSClient, WorkspacesApi } from '@data-story/ui';
 
-export class MockJSClient extends WorkspaceApiClient {
+export class MockJSClient extends WorkspaceApiJSClient {
   private diagram: Diagram;
   private nodeDescriptions: NodeDescription[];
 

@@ -2,10 +2,10 @@ import { createDataStoryId, Diagram, NodeDescription, Tree } from '@data-story/c
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { catchError, filter, firstValueFrom, Observable, retry, timeout } from 'rxjs';
 import { ClientRunParams } from '../types';
-import { WorkspaceApiClientInterface } from './WorkspaceApiClientInterface';
+import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { WorkspacesApi } from './WorkspacesApi';
 
-export class WorkspaceSocketClient implements WorkspaceApiClientInterface {
+export class WorkspaceSocketClient implements WorkspaceApiClient {
   private socket$: WebSocketSubject<any>;
   private wsObservable: Observable<any>;
   private maxReconnectTries = 100;

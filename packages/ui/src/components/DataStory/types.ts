@@ -14,12 +14,12 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
-import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
+import { WorkspaceApiJSClient } from './clients/WorkspaceApiJSClient';
 import { Tree } from '@data-story/core';
 import React from 'react';
 import { NodeApi } from 'react-arborist';
 import { WorkspaceSocketClient } from './clients/WorkspaceSocketClient';
-import { WorkspaceApiClientInterface } from './clients/WorkspaceApiClientInterface';
+import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -59,7 +59,7 @@ export interface ClientRunParams {
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 
 export type DataStoryProps = {
-  client?: WorkspaceApiClientInterface,
+  client?: WorkspaceApiClient,
   server?: ServerConfig;
   initDiagram?: Diagram | null;
   hideControls?: boolean

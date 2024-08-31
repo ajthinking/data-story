@@ -1,6 +1,6 @@
 'use client'
 
-import { DataStory, WorkspaceApiClient } from '@data-story/ui';
+import { DataStory, WorkspaceApiJSClient } from '@data-story/ui';
 import { Application, coreNodeProvider, nodes } from '@data-story/core';
 import { useMemo } from 'react';
 
@@ -9,7 +9,7 @@ export default () => {
   app.register(coreNodeProvider);
   app.boot();
 
-  const client = useMemo(() =>  new WorkspaceApiClient(), []);
+  const client = useMemo(() =>  new WorkspaceApiJSClient(), []);
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

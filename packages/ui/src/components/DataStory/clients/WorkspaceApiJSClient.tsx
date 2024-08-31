@@ -29,7 +29,7 @@ export const createDiagram = (content = 'Diagram') => {
   return diagram;
 }
 
-export class WorkspaceApiClient {
+export class WorkspaceApiJSClient {
   private executor: Executor | undefined
   private app: Application
   constructor(app?: Application) {
