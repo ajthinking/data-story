@@ -57,12 +57,32 @@ export const DataStoryComponent = (
   });
   handleRequestError(getNodeDescriptionsError);
 
+  const saveTree = useCallback(async() => {
+    if (diagramKey) {
+      diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
+    }
+    const newTree = structuredClone(tree) ?? [];
+    const updateTree = (tree: Tree[]) => {
+      for(const node of newTree) {
+        if (node.type === 'file' && diagramMapRef.current.has(node.id)) {
+          node.content = diagramMapRef.current.get(node.id) as Diagram;
+        };
+
+        if(node.type === 'folder' && node.children) {
+          updateTree(node.children);
+        }
+      }
+    }
+    updateTree(newTree);
+
+    client?.workspacesApi.updateTree({ path, tree: newTree });
+  }, [diagramKey, tree]);
+
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
     // store the diagram in the Ref before changing the diagramKey
     if (diagramKey) {
       diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
     }
-    ;
 
     if (node.isLeaf) {
       setDiagramKey(node.id);

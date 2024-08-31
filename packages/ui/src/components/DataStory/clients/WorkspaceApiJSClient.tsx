@@ -8,7 +8,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue,
-  nodes
+  nodes, Tree
 } from '@data-story/core';
 import { WorkspacesApi } from './WorkspacesApi';
 import { ClientRunParams } from '../types';
@@ -16,6 +16,7 @@ import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Subject } from 'rxjs';
 import { clientBuffer } from './ClientBuffer';
+import { parseDiagramTree } from './parseDiagramTree';
 
 export const createDiagram = (content = 'Diagram') => {
   const { Signal, Comment, Ignore } = nodes;
@@ -122,11 +123,10 @@ export class WorkspaceApiJSClient {
     },
 
     getTree: async({ path }) => {
-      // const treeJson = localStorage.getItem(path)
-      // console.log('treeJson', treeJson)
-      // if(treeJson) return parseDiagramTree(treeJson)
+      const treeJson = localStorage.getItem(path)
+      console.log('treeJson', treeJson)
+      if(treeJson) return parseDiagramTree(treeJson)
 
-      // console.log('No tree found at path', path)
       // If no tree at path
       // For testing purposes: Persist and return a default tree
       const defaultTree = [{
@@ -162,5 +162,10 @@ export class WorkspaceApiJSClient {
       // localStorage.setItem(path, JSON.stringify(defaultTree))
       return defaultTree
     },
-  } as WorkspacesApi
+    updateTree: async({ path, tree }) => {
+      console.log('Updating tree at path', path)
+      console.log('New tree', tree)
+      return tree
+    },
+  } as unknown as WorkspacesApi
 }
