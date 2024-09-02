@@ -5,7 +5,7 @@ import { DiagramIcon } from '../icons/diagramIcon';
 import { ConfigIcon } from '../icons/configIcon';
 import { ExplorerIcon } from '../icons/explorer';
 
-export const path = '/';
+export const LocalStorage_Tree_Path = '/';
 
 export const findFirstFileNode = (tree: Tree[]): Tree | null => {
   for(const node of tree) {
