@@ -18,7 +18,7 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
   const client = useMemo(() => {
     if(mode === 'node') return new WorkspaceSocketClient();
 
-    return new WorkspaceApiJSClient()
+    return new WorkspaceApiJSClient(app)
   }, [mode]);
 
   return (

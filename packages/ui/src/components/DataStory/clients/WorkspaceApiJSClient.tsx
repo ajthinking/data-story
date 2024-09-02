@@ -10,13 +10,13 @@ import {
   type ItemValue,
   nodes, Tree
 } from '@data-story/core';
-import { WorkspacesApi } from './WorkspacesApi';
+import { UpdateTreeParam, WorkspacesApi } from './WorkspacesApi';
 import { ClientRunParams } from '../types';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Subject } from 'rxjs';
 import { clientBuffer } from './ClientBuffer';
-import { parseDiagramTree } from './parseDiagramTree';
+import { parseDiagramTreeInfo } from './parseDiagramTreeInfo';
 
 export const createDiagram = (content = 'Diagram') => {
   const { Signal, Comment, Ignore } = nodes;
@@ -29,6 +29,33 @@ export const createDiagram = (content = 'Diagram') => {
 
   return diagram;
 }
+
+export interface LocalTree {
+  type: 'load' | 'save';
+  version: string;
+  name: string;
+  trees: Tree[];
+}
+
+const getCoreVersion = () => {
+  const { version } = require('@data-story/core/package.json');
+  return version;
+}
+
+const saveTrees = (key: string, trees: Tree[]) => {
+  try {
+    const treeJSON = JSON.stringify({
+      type: 'save',
+      version: getCoreVersion(),
+      name: key,
+      trees: trees
+    } as LocalTree);
+
+    localStorage?.setItem(key, treeJSON);
+  } catch(e) {
+    console.error(e);
+  }
+};
 
 export class WorkspaceApiJSClient {
   private executor: Executor | undefined
@@ -122,10 +149,9 @@ export class WorkspaceApiJSClient {
       });
     },
 
-    getTree: async({ path }) => {
+    getTree: async({ path }: {path: string}) => {
       const treeJson = localStorage.getItem(path)
-      console.log('treeJson', treeJson)
-      if(treeJson) return parseDiagramTree(treeJson)
+      if(treeJson) return parseDiagramTreeInfo(treeJson)
 
       // If no tree at path
       // For testing purposes: Persist and return a default tree
@@ -158,14 +184,12 @@ export class WorkspaceApiJSClient {
         name: 'branch',
         content: createDiagram(' branch diagram'),
       }
-      ];
-      // localStorage.setItem(path, JSON.stringify(defaultTree))
+      ] as Tree[];
+      saveTrees(path, defaultTree);
       return defaultTree
     },
-    updateTree: async({ path, tree }) => {
-      console.log('Updating tree at path', path)
-      console.log('New tree', tree)
-      return tree
+    updateTree: async({ path, tree }: UpdateTreeParam) => {
+      saveTrees(path, tree);
     },
   } as unknown as WorkspacesApi
 }
