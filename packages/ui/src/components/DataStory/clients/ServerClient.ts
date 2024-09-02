@@ -8,9 +8,9 @@ export interface ServerClient {
   run: (diagram: Diagram, observers?: ServerClientObservationConfig) => void;
   save: (name: string, diagram: Diagram) => {}
   itemsApi?: () => ItemsApi
-  getTree: ({ path }) => Promise<Tree[]>
-  createTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree[]>;
-  updateTree: ({ path, tree }: UpdateTreeParam) => Promise<Tree[]>
-  destroyTree: ({ path }: { path: string }) => Promise<void>
-  moveTree: ({ path, newPath }: { path: string, newPath: string}) => Promise<Tree[]>
+  getTree?: ({ path }) => Promise<Tree[]>
+  createTree?: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree[]>;
+  updateTree?: ({ path, tree }: UpdateTreeParam) => Promise<Tree[]>
+  destroyTree?: ({ path }: { path: string }) => Promise<void>
+  moveTree?: ({ path, newPath }: { path: string, newPath: string}) => Promise<Tree[]>
 }

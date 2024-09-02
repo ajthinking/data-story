@@ -59,6 +59,21 @@ const saveTrees = (key: string, trees: Tree[]) => {
   }
 };
 
+const loadTrees = (key: string): Tree[] => {
+  const initTreeInfo: LocalTree = {
+    type: 'load',
+    version: getCoreVersion(),
+    name: key,
+    trees: []
+  }
+
+  if (typeof window === 'undefined' || !localStorage?.getItem(key)) {
+    return initTreeInfo.trees;
+  }
+
+  return parseDiagramTreeInfo(localStorage?.getItem(key) || '');
+}
+
 export class WorkspaceApiJSClient implements WorkspaceApiClient {
   private executor: Executor | undefined
   private app: Application
@@ -152,8 +167,8 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
   };
 
   getTree = async({ path }: {path: string}) => {
-    const treeJson = localStorage.getItem(path)
-    if (treeJson) return parseDiagramTreeInfo(treeJson)
+    const trees = loadTrees(path);
+    if (trees) return trees;
 
     // If no tree at path
     // For testing purposes: Persist and return a default tree
