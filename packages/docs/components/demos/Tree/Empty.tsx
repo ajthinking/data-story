@@ -6,7 +6,7 @@ import { MockJSClient } from '../../splash/MockJSClient';
 
 export default () => {
   const client = new MockJSClient();
-  client.workspacesApi.getTree = async ({ path }) => {
+  client.getTree = async({ path }) => {
     return Promise.resolve(null);
   };
 

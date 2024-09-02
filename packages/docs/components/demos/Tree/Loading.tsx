@@ -1,12 +1,12 @@
 'use client'
 
 import { DataStory } from '@data-story/ui';
-import { Application, core, coreNodeProvider } from '@data-story/core';
+import { Application, coreNodeProvider } from '@data-story/core';
 import { MockJSClient } from '../../splash/MockJSClient';
 
 export default () => {
   const client = new MockJSClient();
-  client.workspacesApi.getTree = async ({ path }) => new Promise((resolve, reject) => {
+  client.getTree = async({ path }) => new Promise((resolve, reject) => {
     // Please ensure that this request is never terminated.
   })
 
