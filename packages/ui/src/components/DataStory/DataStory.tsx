@@ -11,7 +11,7 @@ import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram, Tree } from '@data-story/core';
-import { ActivityGroups, findFirstFileNode, LocalStorage_Tree_Path } from './common/method';
+import { ActivityGroups, findFirstFileNode, LocalStorageKey } from './common/method';
 import { NodeApi } from 'react-arborist';
 
 function handleRequestError(requestError?: Error): void {
@@ -34,7 +34,7 @@ export const DataStoryComponent = (
 
   const { data: tree, loading: treeLoading, error: getTreeError } = useRequest(async() => {
     return client
-      ? await client.getTree({ path: LocalStorage_Tree_Path })
+      ? await client.getTree({ path: LocalStorageKey })
       : Promise.resolve([]);
   }, {
     refreshDeps: [client],
@@ -48,7 +48,7 @@ export const DataStoryComponent = (
     error: getNodeDescriptionsError
   } = useRequest(async() => {
     return client
-      ? await client.getNodeDescriptions({ path: LocalStorage_Tree_Path })
+      ? await client.getNodeDescriptions({ path: LocalStorageKey })
       : undefined;
   }, {
     refreshDeps: [client], // Will re-fetch if client changes
@@ -74,7 +74,7 @@ export const DataStoryComponent = (
     }
     updateTree(newTree);
 
-    client?.updateTree({ path: LocalStorage_Tree_Path, tree: newTree });
+    client?.updateTree({ path: LocalStorageKey, tree: newTree });
   }, [diagramKey, tree]);
 
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {

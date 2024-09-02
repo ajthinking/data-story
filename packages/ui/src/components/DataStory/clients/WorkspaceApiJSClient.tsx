@@ -168,7 +168,7 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
 
   getTree = async({ path }: {path: string}) => {
     const trees = loadTrees(path);
-    if (trees) return trees;
+    if (trees && trees.length) return trees;
 
     // If no tree at path
     // For testing purposes: Persist and return a default tree

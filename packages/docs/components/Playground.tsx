@@ -17,7 +17,6 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
 
     return new WorkspaceApiJSClient(app)
   }, [mode]);
-
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
