@@ -27,8 +27,8 @@ export const DataStoryComponent = (
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState(initSidebarKey ?? '');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
-  const [diagram, setDiagram] = useState<Diagram|null>(null);
-  const diagramMapRef = useRef<Map<string, Diagram|null>>(new Map())
+  const [diagram, setDiagram] = useState<Diagram | null>(null);
+  const diagramMapRef = useRef<Map<string, Diagram | null>>(new Map())
   const [diagramKey, setDiagramKey] = useState<string>();
   const [activityGroups, setActivityGroups] = useState<Activity[]>([]);
 
@@ -57,7 +57,6 @@ export const DataStoryComponent = (
   handleRequestError(getNodeDescriptionsError);
 
   const saveTree = useCallback(async() => {
-    console.log('coming saveTree')
     if (diagramKey) {
       diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
     }
@@ -67,7 +66,6 @@ export const DataStoryComponent = (
         if (node.type === 'file' && diagramMapRef.current.has(node.id)) {
           node.content = diagramMapRef.current.get(node.id) as Diagram;
         }
-        ;
 
         if (node.type === 'folder' && node.children) {
           updateTree(node.children);
@@ -76,7 +74,6 @@ export const DataStoryComponent = (
     }
     updateTree(newTree);
 
-    console.log('save workspace', newTree);
     client?.updateTree({ path, tree: newTree });
   }, [diagramKey, tree]);
 

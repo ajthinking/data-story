@@ -11,3 +11,4 @@ export { default as NodeComponent } from './components/Node/NodeComponent';
 export { WorkspaceApiJSClient } from './components/DataStory/clients/WorkspaceApiJSClient';
 export { WorkspaceSocketClient } from './components/DataStory/clients/WorkspaceSocketClient';
 export type { ServerConfig } from './components/DataStory/clients/ServerConfig';
+export type { DataStoryControlsType } from './components/DataStory/dataStoryControls';

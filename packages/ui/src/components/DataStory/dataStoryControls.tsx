@@ -4,12 +4,12 @@ import { AddNodeIcon } from './icons/addNodeIcon';
 import { Diagram } from '@data-story/core';
 import { useStore } from './store/store';
 import React, { useMemo } from 'react';
-import { DataStoryProps, StoreSchema } from './types';
+import { DataStoryCanvasProps, StoreSchema } from './types';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
   updateDiagram: (diagram: Diagram) => void;
-  onSave?: DataStoryProps['onSave'];
+  onSave?: DataStoryCanvasProps['onSave'];
 };
 
 const DataStoryControlsContext = React.createContext<DataStoryControlsType>(null as unknown as DataStoryControlsType);
@@ -33,7 +33,7 @@ export function DataStoryControls({
   setShowRun: (showRun: boolean) => void;
   setShowAddNode: (showAddNode: boolean) => void;
   slotComponents?: React.ReactNode[];
-  onSave?: DataStoryProps['onSave'];
+  onSave?: DataStoryCanvasProps['onSave'];
 }) {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,

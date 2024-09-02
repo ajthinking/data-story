@@ -1,6 +1,13 @@
 import { ControlButton } from '@xyflow/react';
 import React, { useCallback } from 'react';
-import { DataStoryEvents, DataStoryEventType, SaveIcon, useDataStoryControls, useDataStoryEvent } from '@data-story/ui';
+import {
+  type DataStoryControlsType,
+  DataStoryEvents,
+  DataStoryEventType,
+  SaveIcon,
+  useDataStoryControls,
+  useDataStoryEvent
+} from '@data-story/ui';
 import { Bounce, toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -35,11 +42,17 @@ const initToast = (event: DataStoryEventType) => {
 };
 
 export const SaveComponent = () => {
-  const { onSave } = useDataStoryControls();
+  const { onSave } = useDataStoryControls() as DataStoryControlsType;
+
   useDataStoryEvent(initToast);
 
-  const handleSave = useCallback(() => {
-    onSave?.();
+  const handleSave = useCallback(async() => {
+    try {
+      await onSave?.();
+      successToast('Diagram saved successfully!');
+    } catch (error) {
+      errorToast('Diagram save failed!');
+    }
   }, [onSave]);
 
   return (

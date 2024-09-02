@@ -66,7 +66,6 @@ export type DataStoryProps = {
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: DataStoryCallback;
-  onSave?: () => void;
   hideSidebar?: boolean;
   /**
    * hideActivityBar: true (hide all activity bars)
@@ -86,6 +85,7 @@ export type DataStoryCanvasProps = {
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
   treeLoading?: boolean;
+  onSave?:  () => Promise<void>;
 } & DataStoryProps;
 
 export type StoreInitOptions = {
