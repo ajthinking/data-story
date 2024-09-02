@@ -8,14 +8,17 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue,
-  nodes
+  NodeDescription,
+  nodes,
+  Tree
 } from '@data-story/core';
-import { WorkspacesApi } from './WorkspacesApi';
 import { ClientRunParams } from '../types';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Subject } from 'rxjs';
 import { clientBuffer } from './ClientBuffer';
+import { parseDiagramTreeInfo } from './parseDiagramTreeInfo';
+import { UpdateTreeParam, WorkspaceApiClient } from './WorkspaceApiClient';
 
 export const createDiagram = (content = 'Diagram') => {
   const { Signal, Comment, Ignore } = nodes;
@@ -29,9 +32,52 @@ export const createDiagram = (content = 'Diagram') => {
   return diagram;
 }
 
-export class WorkspaceApiClient {
+export interface LocalTree {
+  type: 'load' | 'save';
+  version: string;
+  name: string;
+  trees: Tree[];
+}
+
+const getCoreVersion = () => {
+  const { version } = require('@data-story/core/package.json');
+  return version;
+}
+
+const saveTrees = (key: string, trees: Tree[]) => {
+  try {
+    const treeJSON = JSON.stringify({
+      type: 'save',
+      version: getCoreVersion(),
+      name: key,
+      trees: trees
+    } as LocalTree);
+
+    localStorage?.setItem(key, treeJSON);
+  } catch(e) {
+    console.error(e);
+  }
+};
+
+const loadTrees = (key: string): Tree[] => {
+  const initTreeInfo: LocalTree = {
+    type: 'load',
+    version: getCoreVersion(),
+    name: key,
+    trees: []
+  }
+
+  if (typeof window === 'undefined' || !localStorage?.getItem(key)) {
+    return initTreeInfo.trees;
+  }
+
+  return parseDiagramTreeInfo(localStorage?.getItem(key) || '');
+}
+
+export class WorkspaceApiJSClient implements WorkspaceApiClient {
   private executor: Executor | undefined
   private app: Application
+
   constructor(app?: Application) {
     this.app = app || new Application().register(coreNodeProvider).boot();
   }
@@ -110,57 +156,72 @@ export class WorkspaceApiClient {
     handleUpdates(execution[Symbol.asyncIterator]());
   };
 
-  workspacesApi: WorkspacesApi = {
-    getNodeDescriptions: async({ path }) => {
-      const nodeDescriptions = this.app.descriptions();
+  getNodeDescriptions = async({ path }): Promise<NodeDescription[]> => {
+    const nodeDescriptions = this.app.descriptions();
 
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(nodeDescriptions);
-        }, 1000);
-      });
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(nodeDescriptions);
+      }, 1000);
+    });
+  };
+
+  getTree = async({ path }: {path: string}) => {
+    const trees = loadTrees(path);
+    if (trees && trees.length) return trees;
+
+    // If no tree at path
+    // For testing purposes: Persist and return a default tree
+    const defaultTree = [{
+      path: '/',
+      type: 'folder',
+      name: '/',
+      id: 'root',
+      children: [
+        {
+          name: 'main',
+          id: 'main',
+          path: '/main',
+          type: 'file',
+          content: createDiagram('main diagram'),
+        },
+        {
+          name: 'dev',
+          id: 'dev',
+          path: '/dev',
+          type: 'file',
+          content: new Diagram(),
+        }
+      ],
     },
+    {
+      path: '/branch',
+      type: 'file',
+      id: 'branch',
+      name: 'branch',
+      content: createDiagram(' branch diagram'),
+    }
+    ] as Tree[];
+    saveTrees(path, defaultTree);
+    return defaultTree
+  };
 
-    getTree: async({ path }) => {
-      // const treeJson = localStorage.getItem(path)
-      // console.log('treeJson', treeJson)
-      // if(treeJson) return parseDiagramTree(treeJson)
+  updateTree = async({ path, tree }: UpdateTreeParam) => {
+    saveTrees(path, tree);
+    return tree;
+  };
 
-      // console.log('No tree found at path', path)
-      // If no tree at path
-      // For testing purposes: Persist and return a default tree
-      const defaultTree = [{
-        path: '/',
-        type: 'folder',
-        name: '/',
-        id: 'root',
-        children: [
-          {
-            name: 'main',
-            id: 'main',
-            path: '/main',
-            type: 'file',
-            content: createDiagram('main diagram'),
-          },
-          {
-            name: 'dev',
-            id: 'dev',
-            path: '/dev',
-            type: 'file',
-            content: new Diagram(),
-          }
-        ],
-      },
-      {
-        path: '/branch',
-        type: 'file',
-        id: 'branch',
-        name: 'branch',
-        content: createDiagram(' branch diagram'),
-      }
-      ];
-      // localStorage.setItem(path, JSON.stringify(defaultTree))
-      return defaultTree
-    },
-  } as WorkspacesApi
+  async createTree() {
+    console.log('Creating tree from WorkspaceSocketClient')
+    return [] as Tree[]
+  }
+
+  async destroyTree() {
+    console.log('Destroying tree from WorkspaceSocketClient')
+  }
+
+  async moveTree() {
+    console.log('Moving tree from WorkspaceSocketClient')
+    return [] as Tree[]
+  }
 }

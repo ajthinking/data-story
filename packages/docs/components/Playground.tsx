@@ -1,9 +1,9 @@
 'use client'
 
-import { Application, coreNodeProvider, Diagram } from '@data-story/core';
+import { Application, coreNodeProvider } from '@data-story/core';
 import React, { useMemo } from 'react';
-import { DataStory, DataStoryEvents, eventManager, WorkspaceApiClient, WorkspaceSocketClient } from '@data-story/ui';
-import { loadDiagram, LocalStorageKey, SaveComponent } from './Save';
+import { DataStory, WorkspaceApiJSClient, WorkspaceSocketClient } from '@data-story/ui';
+import { SaveComponent } from './Save';
 
 export default Playground;
 
@@ -12,24 +12,18 @@ const app = new Application()
   .boot();
 
 function Playground({ mode }: {mode?: 'js' | 'node'}) {
-  const { diagram } = loadDiagram(LocalStorageKey);
-  const [initDiagram] = React.useState<Diagram>(diagram);
-  const [saveDiagram, setSaveDiagram] = React.useState<() => void>(() => {});
   const client = useMemo(() => {
-    if(mode === 'node') return new WorkspaceSocketClient();
+    if (mode === 'node') return new WorkspaceSocketClient();
 
-    return new WorkspaceApiClient()
+    return new WorkspaceApiJSClient(app)
   }, [mode]);
-
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
-        onSave={saveDiagram}
         client={client}
         slotComponents={[
-          <SaveComponent setSaveDiagram={setSaveDiagram}/>,
+          <SaveComponent/>,
         ]}
-        initDiagram={initDiagram}
         server={{ type: 'JS', app: null }}
         initSidebarKey="explorer"
       />

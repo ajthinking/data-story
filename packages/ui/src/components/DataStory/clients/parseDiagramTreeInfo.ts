@@ -1,5 +1,6 @@
 import { Diagram, Diagrammable } from '@data-story/core';
 import { Tree } from '@data-story/core';
+import { LocalTree } from './WorkspaceApiJSClient';
 
 const hydrateTreeNode = (tree: Tree<Diagrammable>): Tree<Diagram> => {
   if (tree.content) {
@@ -17,8 +18,8 @@ const hydrateTreeNode = (tree: Tree<Diagrammable>): Tree<Diagram> => {
   return tree as Tree<Diagram>;
 };
 
-export function parseDiagramTree(treeable: Tree<Diagrammable> | string) {
+export function parseDiagramTreeInfo(treeable: LocalTree | string) {
   const treeData = typeof treeable === 'string' ? JSON.parse(treeable) : treeable;
 
-  return hydrateTreeNode(treeData);
+  return treeData.trees;
 }

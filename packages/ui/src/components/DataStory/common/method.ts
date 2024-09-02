@@ -1,17 +1,15 @@
 import { Tree } from '@data-story/core';
 import { Activity } from '../types';
-import { NodeIcon } from '../icons/nodeIcon';
-import { DiagramIcon } from '../icons/diagramIcon';
 import { ConfigIcon } from '../icons/configIcon';
 import { ExplorerIcon } from '../icons/explorer';
 
-export const path = '/';
+export const LocalStorageKey = 'data-story-tree';
 
 export const findFirstFileNode = (tree: Tree[]): Tree | null => {
   for(const node of tree) {
     if (node.type === 'file') return node;
 
-    if(node.type === 'folder' && node.children) {
+    if (node.type === 'folder' && node.children) {
       const found = findFirstFileNode(node.children);
       if (found) return found;
     }
@@ -20,7 +18,7 @@ export const findFirstFileNode = (tree: Tree[]): Tree | null => {
 }
 
 export const findNodeById = (tree: Tree[], id: string): Tree | null => {
-  for (const node of tree) {
+  for(const node of tree) {
     if (node.id === id) {
       return node;
     }

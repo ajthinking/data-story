@@ -1,7 +1,7 @@
-import { Application, Diagram, NodeDescription } from '@data-story/core';
-import { WorkspaceApiClient, WorkspacesApi } from '@data-story/ui';
+import { Application, Diagram, NodeDescription, Tree } from '@data-story/core';
+import { WorkspaceApiJSClient } from '@data-story/ui';
 
-export class MockJSClient extends WorkspaceApiClient {
+export class MockJSClient extends WorkspaceApiJSClient {
   private diagram: Diagram;
   private nodeDescriptions: NodeDescription[];
 
@@ -11,19 +11,17 @@ export class MockJSClient extends WorkspaceApiClient {
     this.nodeDescriptions = nodeDescriptions || [];
   }
 
-  workspacesApi: WorkspacesApi = {
-    getNodeDescriptions: async({ path }) => {
-      return this.nodeDescriptions;
-    },
-    getTree: async({ path }) => {
-      return Promise.resolve([{
-        path: '/',
-        type: 'file',
-        content: this.diagram,
-        id: 'root',
-        name: '/',
-        children: [],
-      }]);
-    }
-  } as WorkspacesApi;
+  getNodeDescriptions = async({ path }) => {
+    return this.nodeDescriptions;
+  };
+  getTree = async({ path }) => {
+    return Promise.resolve([{
+      path: '/',
+      type: 'file',
+      content: this.diagram,
+      id: 'root',
+      name: '/',
+      children: [],
+    }] as Tree[]);
+  }
 }

@@ -155,6 +155,7 @@ const Flow = ({
         )}
       >
         <DataStoryControls
+          onSave={onSave}
           slotComponents={slotComponents}
           hideControls={hideControls}
           setShowRun={setShowRun}

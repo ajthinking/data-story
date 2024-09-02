@@ -10,10 +10,9 @@ import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
-import { Diagram } from '@data-story/core';
-import { ActivityGroups, findFirstFileNode, path } from './common/method';
+import { Diagram, Tree } from '@data-story/core';
+import { ActivityGroups, findFirstFileNode, LocalStorageKey } from './common/method';
 import { NodeApi } from 'react-arborist';
-import { Tree } from '@data-story/core';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}`);
@@ -35,7 +34,7 @@ export const DataStoryComponent = (
 
   const { data: tree, loading: treeLoading, error: getTreeError } = useRequest(async() => {
     return client
-      ? await client.workspacesApi.getTree({ path })
+      ? await client.getTree({ path: LocalStorageKey })
       : Promise.resolve([]);
   }, {
     refreshDeps: [client],
@@ -49,7 +48,7 @@ export const DataStoryComponent = (
     error: getNodeDescriptionsError
   } = useRequest(async() => {
     return client
-      ? await client.workspacesApi.getNodeDescriptions({ path })
+      ? await client.getNodeDescriptions({ path: LocalStorageKey })
       : undefined;
   }, {
     refreshDeps: [client], // Will re-fetch if client changes
@@ -57,12 +56,32 @@ export const DataStoryComponent = (
   });
   handleRequestError(getNodeDescriptionsError);
 
+  const saveTree = useCallback(async() => {
+    if (diagramKey) {
+      diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
+    }
+    const newTree = structuredClone(tree) ?? [];
+    const updateTree = (tree: Tree[]) => {
+      for(const node of tree) {
+        if (node.type === 'file' && diagramMapRef.current.has(node.id)) {
+          node.content = diagramMapRef.current.get(node.id) as Diagram;
+        }
+
+        if (node.type === 'folder' && node.children) {
+          updateTree(node.children);
+        }
+      }
+    }
+    updateTree(newTree);
+
+    client?.updateTree({ path: LocalStorageKey, tree: newTree });
+  }, [diagramKey, tree]);
+
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
     // store the diagram in the Ref before changing the diagramKey
     if (diagramKey) {
       diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
     }
-    ;
 
     if (node.isLeaf) {
       setDiagramKey(node.id);
@@ -130,7 +149,9 @@ export const DataStoryComponent = (
                   onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
               </Allotment.Pane>
               <Allotment.Pane minSize={300}>
-                <DataStoryCanvas {...props}
+                <DataStoryCanvas
+                  {...props}
+                  onSave={saveTree}
                   key={diagramKey}
                   initDiagram={diagram}
                   ref={partialStoreRef}
@@ -138,7 +159,8 @@ export const DataStoryComponent = (
                   sidebarKey={sidebarKey}
                   selectedNode={selectedNode}
                   selectedNodeData={updateSelectedNodeData}
-                  onNodeSelected={setSelectedNode}/>
+                  onNodeSelected={setSelectedNode}
+                />
               </Allotment.Pane>
             </Allotment>
         }

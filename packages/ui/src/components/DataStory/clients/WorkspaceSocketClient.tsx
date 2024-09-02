@@ -1,11 +1,10 @@
-import { createDataStoryId, Diagram, NodeDescription, Tree } from '@data-story/core';
+import { createDataStoryId, NodeDescription, Tree } from '@data-story/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { catchError, filter, firstValueFrom, Observable, retry, timeout } from 'rxjs';
 import { ClientRunParams } from '../types';
-import { WorkspaceApiClientInterface } from './WorkspaceApiClientInterface';
-import { WorkspacesApi } from './WorkspacesApi';
+import { WorkspaceApiClient } from './WorkspaceApiClient';
 
-export class WorkspaceSocketClient implements WorkspaceApiClientInterface {
+export class WorkspaceSocketClient implements WorkspaceApiClient {
   private socket$: WebSocketSubject<any>;
   private wsObservable: Observable<any>;
   private maxReconnectTries = 100;
@@ -49,17 +48,8 @@ export class WorkspaceSocketClient implements WorkspaceApiClientInterface {
 
   run = (
     { updateEdgeCounts, diagram, observers }: ClientRunParams
-  ) => {}
-
-  // TODO this should be flattened
-  workspacesApi = {
-    getTree: this.getTree.bind(this),
-    getNodeDescriptions: this.getNodeDescriptions.bind(this),
-    // createTree: this.createTree.bind(this),
-    // updateTree: this.updateTree.bind(this),
-    // destroyTree: this.destroyTree.bind(this),
-    // moveTree: this.moveTree.bind(this),
-  } as WorkspacesApi
+  ) => {
+  }
 
   // getTree: ({ path }) => Promise<Tree[]>
   // createTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>;
@@ -67,36 +57,36 @@ export class WorkspaceSocketClient implements WorkspaceApiClientInterface {
   // destroyTree: ({ path }: { path: string }) => Promise<void>
   // moveTree: ({ path, newPath }: { path: string, newPath: string}) => Promise<Tree>
 
-  async getTree({ path }: { path: string}) {
+  async getTree({ path }: {path: string}) {
     console.log('Getting tree from WorkspaceSocketClient')
     const response = await this.sendAwaitable({
       type: 'getTree',
       path,
-    }) as { tree: Tree[] };
+    }) as {tree: Tree[]};
 
     console.log('Got tree from WorkspaceSocketClient', response.tree)
 
     return response.tree
   }
 
-  // async createTree() {
-  //   console.log('Creating tree from WorkspaceSocketClient')
-  //   return [] as Tree[]
-  // }
+  async createTree() {
+    console.log('Creating tree from WorkspaceSocketClient')
+    return [] as Tree[]
+  }
 
-  // async updateTree() {
-  //   console.log('Updating tree from WorkspaceSocketClient')
-  //   return [] as Tree[]
-  // }
+  async updateTree() {
+    console.log('Updating tree from WorkspaceSocketClient')
+    return [] as Tree[]
+  }
 
-  // async destroyTree() {
-  //   console.log('Destroying tree from WorkspaceSocketClient')
-  // }
+  async destroyTree() {
+    console.log('Destroying tree from WorkspaceSocketClient')
+  }
 
-  // async moveTree() {
-  //   console.log('Moving tree from WorkspaceSocketClient')
-  //   return [] as Tree[]
-  // }
+  async moveTree() {
+    console.log('Moving tree from WorkspaceSocketClient')
+    return [] as Tree[]
+  }
 
   async getNodeDescriptions({ path }) {
     console.log('Getting node descriptions from WorkspaceSocketClient')
@@ -128,7 +118,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClientInterface {
 
   private handleMessage(data: Record<string, any>) {
     // If message is awaited, we expect user to handle at call site
-    if(data.awaited ) return;
+    if (data.awaited) return;
 
     // ...If message is non-transactional, handle it
   }

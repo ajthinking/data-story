@@ -8,7 +8,7 @@ export { DataStoryEvents, type DataStoryEventType } from './components/DataStory
 export type { DataStoryObservers, DataStoryProps } from './components/DataStory/types'
 export { Explorer } from './components/DataStory/sidebar/explorer';
 export { default as NodeComponent } from './components/Node/NodeComponent';
-export { WorkspaceApiClient } from './components/DataStory/clients/WorkspaceApiClient';
+export { WorkspaceApiJSClient } from './components/DataStory/clients/WorkspaceApiJSClient';
 export { WorkspaceSocketClient } from './components/DataStory/clients/WorkspaceSocketClient';
-export type { WorkspacesApi } from './components/DataStory/clients/WorkspacesApi';
 export type { ServerConfig } from './components/DataStory/clients/ServerConfig';
+export type { DataStoryControlsType } from './components/DataStory/dataStoryControls';
