@@ -32,7 +32,7 @@ export class SocketClient implements ServerClient {
       },
       closeObserver: {
         next: () => {
-          console.log('WebSocket closed.');
+          console.log('WebSocket  closed.');
         }
       }
     });

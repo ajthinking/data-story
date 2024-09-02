@@ -21,7 +21,7 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey, onSave } = props
+  const { client, initSidebarKey } = props
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
@@ -79,11 +79,6 @@ export const DataStoryComponent = (
     console.log('save workspace', newTree);
     client?.updateTree({ path, tree: newTree });
   }, [diagramKey, tree]);
-
-  const handleSaveWorkspace = useCallback(() => {
-    saveTree();
-    onSave?.();
-  }, [saveTree, onSave]);
 
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
     // store the diagram in the Ref before changing the diagramKey
@@ -159,7 +154,7 @@ export const DataStoryComponent = (
               <Allotment.Pane minSize={300}>
                 <DataStoryCanvas
                   {...props}
-                  onSave={handleSaveWorkspace}
+                  onSave={saveTree}
                   key={diagramKey}
                   initDiagram={diagram}
                   ref={partialStoreRef}
