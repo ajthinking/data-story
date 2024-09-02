@@ -8,15 +8,17 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue,
-  nodes, Tree
+  NodeDescription,
+  nodes,
+  Tree
 } from '@data-story/core';
-import { UpdateTreeParam, WorkspacesApi } from './WorkspacesApi';
 import { ClientRunParams } from '../types';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Subject } from 'rxjs';
 import { clientBuffer } from './ClientBuffer';
 import { parseDiagramTreeInfo } from './parseDiagramTreeInfo';
+import { UpdateTreeParam, WorkspaceApiClient } from './WorkspaceApiClient';
 
 export const createDiagram = (content = 'Diagram') => {
   const { Signal, Comment, Ignore } = nodes;
@@ -57,9 +59,10 @@ const saveTrees = (key: string, trees: Tree[]) => {
   }
 };
 
-export class WorkspaceApiJSClient {
+export class WorkspaceApiJSClient implements WorkspaceApiClient {
   private executor: Executor | undefined
   private app: Application
+
   constructor(app?: Application) {
     this.app = app || new Application().register(coreNodeProvider).boot();
   }
@@ -138,58 +141,72 @@ export class WorkspaceApiJSClient {
     handleUpdates(execution[Symbol.asyncIterator]());
   };
 
-  workspacesApi: WorkspacesApi = {
-    getNodeDescriptions: async({ path }) => {
-      const nodeDescriptions = this.app.descriptions();
+  getNodeDescriptions = async({ path }): Promise<NodeDescription[]> => {
+    const nodeDescriptions = this.app.descriptions();
 
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(nodeDescriptions);
-        }, 1000);
-      });
-    },
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(nodeDescriptions);
+      }, 1000);
+    });
+  };
 
-    getTree: async({ path }: {path: string}) => {
-      const treeJson = localStorage.getItem(path)
-      if(treeJson) return parseDiagramTreeInfo(treeJson)
+  getTree = async({ path }: {path: string}) => {
+    const treeJson = localStorage.getItem(path)
+    if (treeJson) return parseDiagramTreeInfo(treeJson)
 
-      // If no tree at path
-      // For testing purposes: Persist and return a default tree
-      const defaultTree = [{
-        path: '/',
-        type: 'folder',
-        name: '/',
-        id: 'root',
-        children: [
-          {
-            name: 'main',
-            id: 'main',
-            path: '/main',
-            type: 'file',
-            content: createDiagram('main diagram'),
-          },
-          {
-            name: 'dev',
-            id: 'dev',
-            path: '/dev',
-            type: 'file',
-            content: new Diagram(),
-          }
-        ],
-      },
-      {
-        path: '/branch',
-        type: 'file',
-        id: 'branch',
-        name: 'branch',
-        content: createDiagram(' branch diagram'),
-      }
-      ] as Tree[];
-      saveTrees(path, defaultTree);
-      return defaultTree
+    // If no tree at path
+    // For testing purposes: Persist and return a default tree
+    const defaultTree = [{
+      path: '/',
+      type: 'folder',
+      name: '/',
+      id: 'root',
+      children: [
+        {
+          name: 'main',
+          id: 'main',
+          path: '/main',
+          type: 'file',
+          content: createDiagram('main diagram'),
+        },
+        {
+          name: 'dev',
+          id: 'dev',
+          path: '/dev',
+          type: 'file',
+          content: new Diagram(),
+        }
+      ],
     },
-    updateTree: async({ path, tree }: UpdateTreeParam) => {
-      saveTrees(path, tree);
-    },
-  } as unknown as WorkspacesApi
+    {
+      path: '/branch',
+      type: 'file',
+      id: 'branch',
+      name: 'branch',
+      content: createDiagram(' branch diagram'),
+    }
+    ] as Tree[];
+    saveTrees(path, defaultTree);
+    return defaultTree
+  };
+
+  updateTree = async({ path, tree }: UpdateTreeParam) => {
+    saveTrees(path, tree);
+    return tree;
+  };
+
+  async createTree() {
+    console.log('Creating tree from WorkspaceSocketClient')
+    return [] as Tree[]
+  }
+
+  async destroyTree() {
+    console.log('Destroying tree from WorkspaceSocketClient')
+  }
+
+  async moveTree() {
+    console.log('Moving tree from WorkspaceSocketClient')
+    return [] as Tree[]
+  }
 }

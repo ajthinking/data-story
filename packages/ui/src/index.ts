@@ -10,5 +10,4 @@ export { Explorer } from './components/DataStory/sidebar/explorer';
 export { default as NodeComponent } from './components/Node/NodeComponent';
 export { WorkspaceApiJSClient } from './components/DataStory/clients/WorkspaceApiJSClient';
 export { WorkspaceSocketClient } from './components/DataStory/clients/WorkspaceSocketClient';
-export type { WorkspacesApi } from './components/DataStory/clients/WorkspacesApi';
 export type { ServerConfig } from './components/DataStory/clients/ServerConfig';

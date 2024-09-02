@@ -109,6 +109,7 @@ export const SaveComponent = ({setSaveDiagram}: {
 
   const handleSave = useCallback (() => {
     const diagram = getDiagram();
+    console.log('save diagram', diagram);
     saveDiagram(LocalStorageKey, diagram);
   }, [getDiagram]);
 

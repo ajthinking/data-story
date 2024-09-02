@@ -10,10 +10,9 @@ import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
-import { Diagram } from '@data-story/core';
+import { Diagram, Tree } from '@data-story/core';
 import { ActivityGroups, findFirstFileNode, path } from './common/method';
 import { NodeApi } from 'react-arborist';
-import { Tree } from '@data-story/core';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}`);
@@ -22,20 +21,20 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey } = props
+  const { client, initSidebarKey, onSave } = props
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState(initSidebarKey ?? '');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
-  const [diagram, setDiagram] = useState<Diagram | null>(null);
-  const diagramMapRef = useRef<Map<string, Diagram | null>>(new Map())
+  const [diagram, setDiagram] = useState<Diagram|null>(null);
+  const diagramMapRef = useRef<Map<string, Diagram|null>>(new Map())
   const [diagramKey, setDiagramKey] = useState<string>();
   const [activityGroups, setActivityGroups] = useState<Activity[]>([]);
 
   const { data: tree, loading: treeLoading, error: getTreeError } = useRequest(async() => {
     return client
-      ? await client.workspacesApi.getTree({ path })
+      ? await client.getTree({ path })
       : Promise.resolve([]);
   }, {
     refreshDeps: [client],
@@ -49,7 +48,7 @@ export const DataStoryComponent = (
     error: getNodeDescriptionsError
   } = useRequest(async() => {
     return client
-      ? await client.workspacesApi.getNodeDescriptions({ path })
+      ? await client.getNodeDescriptions({ path })
       : undefined;
   }, {
     refreshDeps: [client], // Will re-fetch if client changes
@@ -58,25 +57,33 @@ export const DataStoryComponent = (
   handleRequestError(getNodeDescriptionsError);
 
   const saveTree = useCallback(async() => {
+    console.log('coming saveTree')
     if (diagramKey) {
       diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
     }
     const newTree = structuredClone(tree) ?? [];
     const updateTree = (tree: Tree[]) => {
-      for(const node of newTree) {
+      for(const node of tree) {
         if (node.type === 'file' && diagramMapRef.current.has(node.id)) {
           node.content = diagramMapRef.current.get(node.id) as Diagram;
-        };
+        }
+        ;
 
-        if(node.type === 'folder' && node.children) {
+        if (node.type === 'folder' && node.children) {
           updateTree(node.children);
         }
       }
     }
     updateTree(newTree);
 
-    client?.workspacesApi.updateTree({ path, tree: newTree });
+    console.log('save workspace', newTree);
+    client?.updateTree({ path, tree: newTree });
   }, [diagramKey, tree]);
+
+  const handleSaveWorkspace = useCallback(() => {
+    saveTree();
+    onSave?.();
+  }, [saveTree, onSave]);
 
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
     // store the diagram in the Ref before changing the diagramKey
@@ -150,7 +157,9 @@ export const DataStoryComponent = (
                   onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
               </Allotment.Pane>
               <Allotment.Pane minSize={300}>
-                <DataStoryCanvas {...props}
+                <DataStoryCanvas
+                  {...props}
+                  onSave={handleSaveWorkspace}
                   key={diagramKey}
                   initDiagram={diagram}
                   ref={partialStoreRef}
@@ -158,7 +167,8 @@ export const DataStoryComponent = (
                   sidebarKey={sidebarKey}
                   selectedNode={selectedNode}
                   selectedNodeData={updateSelectedNodeData}
-                  onNodeSelected={setSelectedNode}/>
+                  onNodeSelected={setSelectedNode}
+                />
               </Allotment.Pane>
             </Allotment>
         }
