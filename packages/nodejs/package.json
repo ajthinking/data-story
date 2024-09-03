@@ -15,7 +15,8 @@
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "yarn run -T vitest",
     "build": "tsc",
-    "release": "yarn run -T release-it"
+    "release": "yarn run -T release-it",
+    "test:server": "nodemon"
   },
   "release-it": {
     "git": false,
