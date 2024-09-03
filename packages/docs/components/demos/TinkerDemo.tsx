@@ -1,16 +1,6 @@
 import { DataStory } from '@data-story/ui'
-import {
-  Application,
-  DiagramBuilder,
-  coreNodeProvider,
-  nodes,
-  multiline,
-  str,
-  UnfoldedDiagramFactory,
-  core,
-} from '@data-story/core';
-
-import useWindowDimensions from '../../hooks/useWindowDimensions';
+import { Application, core, coreNodeProvider, nodes, str, } from '@data-story/core';
+import { MockJSClient } from '../splash/MockJSClient';
 
 // This component is just a place to sketch
 export default () => {
@@ -31,12 +21,13 @@ export default () => {
       help: 'A message to pass on into the execution.',
     })
   ]
+  const client = new MockJSClient(diagram);
 
   return (
     <div className="w-full h-1/2">
       <DataStory
         server={{ type: 'JS', app }}
-        initDiagram={diagram}
+        client={client}
       />
     </div>
   );

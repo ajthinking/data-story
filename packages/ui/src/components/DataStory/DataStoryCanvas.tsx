@@ -1,5 +1,5 @@
 import { DataStoryControls } from './dataStoryControls';
-import { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Background, BackgroundVariant, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
@@ -7,13 +7,14 @@ import { shallow } from 'zustand/shallow';
 import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
 import TableNodeComponent from '../Node/TableNodeComponent';
-import { DataStoryProps, StoreInitOptions, StoreSchema } from './types';
+import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDragOver, onDrop } from './onDrop';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { useSelectedNodeSettings } from './Form/useSelectedNodeSettings';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
+import { Placeholder } from './common/placeholder';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -23,17 +24,20 @@ const nodeTypes = {
   tableNodeComponent: TableNodeComponent,
 };
 
-export const DataStoryCanvas = forwardRef((props: DataStoryProps, ref) => {
+const DataStoryCanvasComponent = forwardRef((props: DataStoryCanvasProps, ref) => {
   useGetStore(ref);
+  const showPlaceholder = !props.initDiagram;
 
   return (
     <>
       <ReactFlowProvider>
-        <Flow {...props}/>
+        {showPlaceholder ? <Placeholder content={'No diagram found'}/> : <Flow {...props}/>}
       </ReactFlowProvider>
     </>
   );
 });
+
+export const DataStoryCanvas = React.memo(DataStoryCanvasComponent);
 
 const Flow = ({
   server,
@@ -46,8 +50,9 @@ const Flow = ({
   onNodeSelected,
   selectedNodeData,
   selectedNode,
-  onSave
-}: DataStoryProps) => {
+  onSave,
+  client
+}: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
     edges: state.edges,
@@ -98,7 +103,7 @@ const Flow = ({
 
   const flowRef = useRef<HTMLDivElement>(null);
 
-  const hotkeyManager =  useMemo(() => new HotkeyManager(flowRef), []);
+  const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
   const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
 
@@ -133,6 +138,7 @@ const Flow = ({
             server,
             initDiagram,
             callback: onInitialize,
+            clientRun: client?.run,
           });
           setIsExecutePostRenderEffect(true);
         }}
@@ -149,6 +155,7 @@ const Flow = ({
         )}
       >
         <DataStoryControls
+          onSave={onSave}
           slotComponents={slotComponents}
           hideControls={hideControls}
           setShowRun={setShowRun}
@@ -156,7 +163,6 @@ const Flow = ({
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>
-      {/*<NodeSettingsModal showModal={Boolean(openNodeSidebarId)} onClose={close} node={node!} />*/}
     </>
   )
 }

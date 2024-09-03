@@ -1,33 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
-import { DiagramIcon } from '../icons/diagramIcon';
-import { ConfigIcon } from '../icons/configIcon';
-import { NodeIcon } from '../icons/nodeIcon';
+import { Activity } from '../types';
 
-type Activity = {
-  id: string;
-  name: string;
-  icon: React.FC<{}>;
-  position: 'top' | 'bottom';
-};
-
-const activityGroups: Activity[] = [
-  { id: 'node', name: 'Node Config', icon: NodeIcon, position: 'top' },
-  { id: 'diagram', name: 'Diagram Config', icon: DiagramIcon, position: 'top' },
-  { id: 'settings', name: 'Settings', icon: ConfigIcon, position: 'top' },
-  { id: 'experiment', name: 'Experiment', icon: ConfigIcon, position: 'top' },
-]
-
-export const ActivityBar = ({
+export const ActivityBarComponent = ({
   setActiveKey,
   onClose,
   activeKey,
   selectedNode,
+  activityGroups,
 }: {
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   setActiveKey: (activity: string) => void;
   activeKey: string;
   selectedNode?: ReactFlowNode;
+  activityGroups: Activity[];
 }) => {
   const handleActivityClick = (id: string) => {
     // 1. when click the same activity, switch sidebar status
@@ -77,3 +63,5 @@ export const ActivityBar = ({
     </aside>
   );
 };
+
+export const ActivityBar = React.memo(ActivityBarComponent)

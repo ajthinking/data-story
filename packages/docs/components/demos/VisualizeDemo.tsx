@@ -1,5 +1,5 @@
-import { Application, core, coreNodeProvider, DiagramBuilder, nodes } from '@data-story/core';
-import React from 'react';
+import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
+import React, { useMemo } from 'react';
 import { DataStory  } from '@data-story/ui';
 import {
   Chart as ChartJS,
@@ -12,6 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { MockJSClient } from '../splash/MockJSClient';
 
 ChartJS.register(
   CategoryScale,
@@ -42,19 +43,25 @@ export const options = {
 export default () => {
   const [points, setPoints] = React.useState([]);
 
-  const app = new Application()
-    .register(coreNodeProvider)
-    .boot();
+  const app = useMemo(() => {
+    return new Application()
+      .register(coreNodeProvider)
+      .boot();
+  }, [Application]);
   const { Signal, Table, Map, Create, Request, ConsoleLog } = nodes;
 
-  const diagram = core.getDiagramBuilder()
-    .add(Signal, {
-      period: 100,
-      count: 100,
-      expression: '{ x: ${i} }' })
-    .add(Map, { json: '{ y: Math.cos(${x}/4) }' })
-    .add(Table)
-    .get();
+  const diagram = useMemo(() => {
+    return core.getDiagramBuilder()
+      .add(Signal, {
+        period: 100,
+        count: 100,
+        expression: '{ x: ${i} }' })
+      .add(Map, { json: '{ y: Math.cos(${x}/4) }' })
+      .add(Table)
+      .get();
+  }, [core]);
+
+  const client = useMemo(() =>  new MockJSClient(diagram), [diagram]);
 
   const mapNode = diagram.nodes.find(n => n.type === 'Map');
   const jsonParam = mapNode.params.find(p => p.name === 'json') as any;
@@ -100,7 +107,7 @@ export default () => {
             setPoints([])
             run()
           }}
-          initDiagram={diagram}
+          client={client}
           observers={{
             inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
             onDataChange: (items) => {

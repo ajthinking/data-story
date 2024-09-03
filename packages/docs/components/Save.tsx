@@ -1,7 +1,13 @@
 import { ControlButton } from '@xyflow/react';
-import React, { useCallback, useEffect } from 'react';
-import { DataStoryEvents, DataStoryEventType, SaveIcon, useDataStoryControls, useDataStoryEvent } from '@data-story/ui';
-import { Diagram } from '@data-story/core';
+import React, { useCallback } from 'react';
+import {
+  type DataStoryControlsType,
+  DataStoryEvents,
+  DataStoryEventType,
+  SaveIcon,
+  useDataStoryControls,
+  useDataStoryEvent
+} from '@data-story/ui';
 import { Bounce, toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -25,45 +31,6 @@ export function successToast(content: string): void {
   toast.success(content, toastConfig);
 }
 
-export interface LocalDiagram {
-  type: 'load' | 'save';
-  version: string;
-  name: string;
-  diagram: Diagram;
-}
-
-const getCoreVersion = () => {
-  const { version } = require('@data-story/core/package.json');
-  return version;
-}
-const saveDiagram = (key: string, diagram: Diagram) => {
-  try {
-    // There's no need to save the diagram's `link label` and `link labelBgStyle`
-    const links = diagram.links.map(link => {
-      const { label, labelBgStyle, ...rest } = link;
-      return rest;
-    });
-
-    const savedDiagram = {
-      ...diagram,
-      links
-    };
-
-    const diagramJSON = JSON.stringify({
-      type: 'save',
-      version: getCoreVersion(),
-      name: key,
-      diagram: savedDiagram
-    } as LocalDiagram);
-
-    localStorage?.setItem(key, diagramJSON);
-    successToast('Diagram saved successfully!');
-  } catch(e) {
-    errorToast('Could not save diagram!');
-    console.error(e);
-  }
-};
-
 const initToast = (event: DataStoryEventType) => {
   if (event.type === DataStoryEvents.RUN_SUCCESS) {
     successToast('Diagram executed successfully!');
@@ -74,47 +41,19 @@ const initToast = (event: DataStoryEventType) => {
   }
 };
 
-export const loadDiagram = (key: string): LocalDiagram => {
-  const initDiagram: LocalDiagram = {
-    type: 'load',
-    version: getCoreVersion(),
-    name: key,
-    diagram: null
-  }
+export const SaveComponent = () => {
+  const { onSave } = useDataStoryControls() as DataStoryControlsType;
 
-  if (typeof window === 'undefined' || !localStorage?.getItem(key)) {
-    return initDiagram;
-  }
-
-  const json = localStorage?.getItem(key);
-  const { name, diagram } = JSON.parse(json);
-
-  initDiagram.diagram = new Diagram({
-    nodes: diagram.nodes,
-    links: diagram.links
-  });
-
-  initDiagram.name = name;
-
-  return initDiagram;
-}
-
-export const LocalStorageKey = 'data-story-diagram';
-
-export const SaveComponent = ({setSaveDiagram}: {
-  setSaveDiagram:  React.Dispatch<React.SetStateAction<() => void>>
-}) => {
-  const { getDiagram } = useDataStoryControls();
   useDataStoryEvent(initToast);
 
-  const handleSave = useCallback (() => {
-    const diagram = getDiagram();
-    saveDiagram(LocalStorageKey, diagram);
-  }, [getDiagram]);
-
-  useEffect(() => {
-    setSaveDiagram(() => handleSave);
-  }, [handleSave]);
+  const handleSave = useCallback(async() => {
+    try {
+      await onSave?.();
+      successToast('Diagram saved successfully!');
+    } catch (error) {
+      errorToast('Diagram save failed!');
+    }
+  }, [onSave]);
 
   return (
     <>

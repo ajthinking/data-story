@@ -3,6 +3,11 @@ import { Link } from './types/Link'
 import { Node } from './types/Node'
 import { Param } from './Param'
 
+// This is what a serialized Diagram looks like
+export type Diagrammable = {
+  [K in keyof Diagram as Diagram[K] extends (...args: any[]) => any ? never : K]: Diagram[K];
+};
+
 export class Diagram {
   nodes: Node[]
   links: Link[]

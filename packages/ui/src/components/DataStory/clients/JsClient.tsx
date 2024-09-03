@@ -1,7 +1,6 @@
 import {
   Diagram,
   Executor,
-  ExecutorFactory,
   InMemoryStorage,
   type InputObserver,
   InputObserverController,
@@ -16,17 +15,14 @@ import { Subject } from 'rxjs';
 import { clientBuffer } from './ClientBuffer';
 
 export class JsClient implements ServerClient {
-  private setAvailableNodes: JSClientOptions['setAvailableNodes'];
   private updateEdgeCounts: JSClientOptions['updateEdgeCounts'];
   private app: JSClientOptions['app'];
   private executor: Executor | undefined
 
   constructor({
-    setAvailableNodes,
     updateEdgeCounts,
     app,
   }: JSClientOptions) {
-    this.setAvailableNodes = setAvailableNodes;
     this.updateEdgeCounts = updateEdgeCounts;
     this.app = app;
   }
@@ -51,9 +47,7 @@ export class JsClient implements ServerClient {
   };
 
   init() {
-    this.setAvailableNodes(this.app.descriptions())
-
-    console.log('Connected to server: JS')
+    console.log('Connected to server: JS');
   }
 
   run(diagram: Diagram, observers?: ServerClientObservationConfig) {

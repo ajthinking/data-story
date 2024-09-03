@@ -14,8 +14,12 @@ import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
-import { JsClientV2 } from './clients/JsClientV2';
-import { Tree } from './clients/Tree';
+import { WorkspaceApiJSClient } from './clients/WorkspaceApiJSClient';
+import { Tree } from '@data-story/core';
+import React from 'react';
+import { NodeApi } from 'react-arborist';
+import { WorkspaceSocketClient } from './clients/WorkspaceSocketClient';
+import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -35,7 +39,6 @@ export type ObserverMap = Map<string, {
 }>
 
 type ClientOptions = {
-  setAvailableNodes: (nodes: NodeDescription[]) => void,
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
 };
 
@@ -47,30 +50,51 @@ export type SocketClientOptions = ClientOptions & {
   serverConfig: WebSocketServerConfig,
 }
 
+export interface ClientRunParams {
+  updateEdgeCounts: JSClientOptions['updateEdgeCounts'],
+  diagram: Diagram,
+  observers?: ServerClientObservationConfig
+}
+
+export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
+
 export type DataStoryProps = {
-  clientv2?: JsClientV2,
-  server?: ServerConfig
-  initDiagram?: Diagram
+  client?: WorkspaceApiClient,
+  server?: ServerConfig;
+  initDiagram?: Diagram | null;
   hideControls?: boolean
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: DataStoryCallback;
+  hideSidebar?: boolean;
+  /**
+   * hideActivityBar: true (hide all activity bars)
+   * hideActivityBar: ['node', 'diagram'] (hide node and diagram activity bars)
+   */
+  hideActivityBar?: boolean | AcitvityBarType[];
+  /**
+   * initSidebarKey: 'explorer' (open the explorer sidebar by default)
+   */
+  initSidebarKey?: string;
+}
+
+export type DataStoryCanvasProps = {
   selectedNodeData?: ReactFlowNode['data'];
   onNodeSelected?: (node?: ReactFlowNode) => void;
   selectedNode?: ReactFlowNode;
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
-  onSave?: () => void;
-}
+  treeLoading?: boolean;
+  onSave?:  () => Promise<void>;
+} & DataStoryProps;
 
 export type StoreInitOptions = {
   rfInstance: ReactFlowInstance<ReactFlowNode, Edge<Record<string, unknown>, string | undefined>>,
   server?: ServerConfig,
-  initDiagram?: Diagram,
+  initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
+  clientRun?: (params: ClientRunParams) => void;
 }
-
-export type StoreInitServer = (serverConfig: ServerConfig, observers?: ServerClientObservationConfig) => void;
 
 export type FormCommonProps = {
   node: ReactFlowNode;
@@ -97,13 +121,11 @@ export type NodeSettingsFormProps = {
 }
 
 export type StoreSchema = {
+  clientRun?: (params: ClientRunParams) => void
+
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
   toDiagram: () => Diagram;
-
-  /** Addable Nodes */
-  availableNodes: NodeDescription[],
-  setAvailableNodes: (nodes: NodeDescription[]) => void,
 
   /** The Nodes */
   nodes: ReactFlowNode[];
@@ -128,8 +150,7 @@ export type StoreSchema = {
 
   /** The Server and its config */
   serverConfig: ServerConfig;
-  server: null | ServerClient;
-  initServer: StoreInitServer;
+  serverClient: null | ServerClient;
 
   /** When DataStory component initializes */
   onInit: (options: StoreInitOptions) => void;
@@ -148,14 +169,21 @@ export type StoreSchema = {
   setObservers: (key: string, observers?: DataStoryObservers) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
-  tree?: Tree;
+  nodeDescriptions?: NodeDescription[];
+  nodeDescriptionsLoading?: boolean;
+  tree?: Tree[];
   activeBar?: string;
+  diagramKey?: string;
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
+  handleClickExplorerNode: (node: NodeApi<Tree>) => void
 };
 
-export type IconProps = {
-  isActive?: boolean;
+export type Activity = {
+  id: AcitvityBarType;
+  name: string;
+  icon: React.FC<{}>;
+  position: 'top' | 'bottom';
 };

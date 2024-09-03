@@ -8,6 +8,7 @@ import {
   str,
   core,
 } from '@data-story/core';
+import { MockJSClient } from '../splash/MockJSClient';
 
 export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
   const { Create, Table, Input, Map, Output, ConsoleLog } = nodes;
@@ -63,6 +64,10 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
     nestedNodes
   ).unfold();
 
+  const mainClient = new MockJSClient(diagram, app);
+  const mainUnfoldedClient = new MockJSClient(unfolded.diagram, app);
+  const nestedNodeClient = new MockJSClient(nestedNode, app);
+
   // *************************************
   // Render requested part
   // *************************************
@@ -71,17 +76,15 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => 
       {part === 'MAIN' && <DataStory
         server={{ type: 'JS', app }}
         onInitialize={({ run }) => run()}
-        initDiagram={diagram}
+        client={mainClient}
       />}
       {part === 'NESTED_NODE' && <DataStory
         server={{ type: 'JS', app }}
-        initDiagram={nestedNode}
+        client={nestedNodeClient}
       />}
       {part === 'MAIN_UNFOLDED' && <DataStory
         server={{ type: 'JS', app }}
-        initDiagram={
-          unfolded.diagram
-        }
+        client={mainUnfoldedClient}
       />}
     </div>
   );

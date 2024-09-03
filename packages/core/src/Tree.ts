@@ -1,6 +1,8 @@
-import { Diagram } from '@data-story/core';
+import { Diagram } from './Diagram';
 
 export interface Tree<TreeNodeType = Diagram> {
+  id: string;
+  name: string;
   path: string;
   type: 'file' | 'folder';
   content?: TreeNodeType;
