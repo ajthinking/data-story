@@ -1,0 +1,58 @@
+{
+  "nodes": [
+    {
+      "id": "Signal.1",
+      "label": "DataSource",
+      "type": "Signal",
+      "inputs": [],
+      "outputs": [
+        []
+      ],
+      "params": [
+        []
+      ],
+      "position": [
+        {}
+      ]
+    },
+    {
+      "id": "Ignore.1",
+      "label": "Storage",
+      "type": "Ignore",
+      "inputs": [
+        []
+      ],
+      "outputs": [],
+      "params": [],
+      "position": [
+        {}
+      ]
+    },
+    {
+      "id": "Comment.1",
+      "label": "Comment",
+      "type": "Comment",
+      "inputs": [],
+      "outputs": [],
+      "params": [
+        []
+      ],
+      "position": [
+        {}
+      ]
+    }
+  ],
+  "links": [
+    {
+      "id": "ip95VttRFq",
+      "sourcePortId": "Signal.1.output",
+      "targetPortId": "Ignore.1.input"
+    }
+  ],
+  "params": [],
+  "viewport": {
+    "x": 0,
+    "y": 0,
+    "zoom": 1
+  }
+}
