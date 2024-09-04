@@ -5,7 +5,7 @@ import { ServiceProvider } from './types/ServiceProvider';
  * Register nodes from the application tree
  */
 export const treeNodeProvider: ServiceProvider = {
-  register: (app: Application) => {
+  boot: (app: Application) => {
     const treeManager = app.getTreeManager()
     const path = treeManager.rootPath
 

@@ -29,7 +29,7 @@ export class Application {
 
   boot() {
     this.providers.forEach(provider => {
-      provider.register(this);
+      provider.boot(this);
     });
 
     return this;
