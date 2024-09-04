@@ -5,6 +5,4 @@ export const openAiProvider: ServiceProvider = {
   register: (app: Application) => {
     app.addComputers(Object.values(computers));
   },
-
-  boot: (app: Application) => {}
 }

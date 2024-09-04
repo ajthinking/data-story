@@ -6,8 +6,6 @@ export const hubspotProvider: ServiceProvider = {
     const configs = Object.values(computers as {[key: string]: Computer})
     app.addComputers(configs);
   },
-
-  boot: (app: Application) => {}
 }
 
 // Contacts.getAll

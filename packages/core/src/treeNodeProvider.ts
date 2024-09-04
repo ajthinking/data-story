@@ -12,6 +12,4 @@ export const treeNodeProvider: ServiceProvider = {
     // getTree returns a promise - register needs to be async!
     // const tree = treeManager.getTree({ path })
   },
-
-  boot: (app: Application) => {}
 }
