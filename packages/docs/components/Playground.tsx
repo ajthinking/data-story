@@ -9,7 +9,7 @@ export default Playground;
 
 const app = new Application()
   .register(coreNodeProvider)
-  .boot();
+  .bootSync();
 
 function Playground({ mode }: {mode?: 'js' | 'node'}) {
   const client = useMemo(() => {

@@ -12,6 +12,8 @@ import { ServiceProvider } from './types/ServiceProvider';
 import { Storage } from './types/Storage';
 
 export class Application {
+  hasBooted = false;
+
   constructor(private treeManager: TreeManager = new NullTreeManager()
   ) {}
 
@@ -27,10 +29,26 @@ export class Application {
     return this;
   }
 
-  boot() {
+  /**
+   *
+   * @deprecated Use boot instead
+   */
+  bootSync() {
     this.providers.forEach(provider => {
       provider.boot(this);
     });
+
+    this.hasBooted = true;
+
+    return this;
+  }
+
+  async boot() {
+    this.providers.forEach(provider => {
+      provider.boot(this);
+    });
+
+    this.hasBooted = true;
 
     return this;
   }
@@ -90,4 +108,8 @@ export class Application {
   getTreeManager() {
     return this.treeManager
   }
+}
+
+export type BootedApplication = Application & {
+  hasBooted: true;
 }

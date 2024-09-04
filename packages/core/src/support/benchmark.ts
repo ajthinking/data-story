@@ -20,7 +20,7 @@ import { coreNodeProvider } from '../coreNodeProvider';
     coreNodeProvider,
   ]);
 
-  app.boot();
+  await app.boot();
 
   const diagram = core.getDiagramBuilder()
     .add(Create, {json: JSON.stringify(data)})

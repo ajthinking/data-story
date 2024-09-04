@@ -38,8 +38,8 @@ describe('register', () => {
   })
 })
 
-describe('boot', () => {
-  it('runs register and boot on all providers', () => {
+describe('bootAsync', () => {
+  it('runs register and boot on all providers', async () => {
     const app = new Application()
 
     const provider1: ServiceProvider = {
@@ -52,7 +52,7 @@ describe('boot', () => {
 
     app.register([provider1, provider2])
 
-    app.boot()
+    await app.boot()
 
     expect(provider1.boot).toHaveBeenCalledWith(app)
     expect(provider2.boot).toHaveBeenCalledWith(app)
