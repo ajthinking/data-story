@@ -10,13 +10,14 @@ export const getTree: MessageHandler<GetTreeMessage> = async(
 ) => {
   const tree = await app.getTreeManager().getTree({
     path: data.path,
-  })
-  console.log('tree', tree);
+  });
+
   const response = {
     id: data.id,
     awaited: data.awaited,
     type: 'GetTreeResponse',
     tree: [tree],
   }
+
   ws.send(JSON.stringify(response))
 }

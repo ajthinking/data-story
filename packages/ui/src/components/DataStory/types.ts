@@ -8,17 +8,15 @@ import {
   type NotifyObserversCallback,
   Param,
   RepeatableParam,
-  type ReportCallback
+  type ReportCallback,
+  Tree
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import { Direction } from './getNodesWithNewSelection';
 import { ServerClient } from './clients/ServerClient';
-import { WorkspaceApiJSClient } from './clients/WorkspaceApiJSClient';
-import { Tree } from '@data-story/core';
 import React from 'react';
 import { NodeApi } from 'react-arborist';
-import { WorkspaceSocketClient } from './clients/WorkspaceSocketClient';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
@@ -187,3 +185,19 @@ export type Activity = {
   icon: React.FC<{}>;
   position: 'top' | 'bottom';
 };
+
+export type GetTreeMessage = {
+  id: string,
+  awaited: boolean,
+  type: 'getTree',
+  path: string,
+}
+export type GetTreeResponse = {
+  id: string,
+  awaited: boolean,
+  type: 'GetTreeResponse',
+  tree: Tree[],
+}
+
+export type TreeMessage = GetTreeMessage
+export type TreeResponse = GetTreeResponse
