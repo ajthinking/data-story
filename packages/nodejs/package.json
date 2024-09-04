@@ -16,7 +16,7 @@
     "test": "yarn run -T vitest",
     "build": "tsc",
     "release": "yarn run -T release-it",
-    "test:server": "nodemon"
+    "watch:server": "nodemon"
   },
   "release-it": {
     "git": false,
