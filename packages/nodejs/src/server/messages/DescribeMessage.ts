@@ -1,3 +1,4 @@
 export type DescribeMessage = {
-  type: 'describe'
+  type: 'describe',
+  id: string,
 }

@@ -1,8 +1,9 @@
 import { createDataStoryId, NodeDescription, Tree } from '@data-story/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { catchError, filter, firstValueFrom, Observable, retry, timeout } from 'rxjs';
-import { ClientRunParams } from '../types';
+import { Observable, retry } from 'rxjs';
+import { ClientRunParams, DescribeResponse, GetTreeResponse, TreeMessage, TreeResponse } from '../types';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
+import { processWaitingResponse, waitForResponse } from './WebSocketHandleResponseMiddleware';
 
 export class WorkspaceSocketClient implements WorkspaceApiClient {
   private socket$: WebSocketSubject<any>;
@@ -30,7 +31,9 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     )
 
     this.wsObservable.subscribe({
-      next: (message) => this.handleMessage(message),
+      next: (message) => {
+        this.handleMessage(message);
+      },
       // Called if at any point WebSocket API signals some kind of error
       error: (err) => console.log('WebSocket error: ', err),
     });
@@ -51,22 +54,13 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   ) => {
   }
 
-  // getTree: ({ path }) => Promise<Tree[]>
-  // createTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>;
-  // updateTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>
-  // destroyTree: ({ path }: { path: string }) => Promise<void>
-  // moveTree: ({ path, newPath }: { path: string, newPath: string}) => Promise<Tree>
-
   async getTree({ path }: {path: string}) {
-    console.log('Getting tree from WorkspaceSocketClient')
     const response = await this.sendAwaitable({
       type: 'getTree',
       path,
-    }) as {tree: Tree[]};
+    }) as GetTreeResponse;
 
-    console.log('Got tree from WorkspaceSocketClient', response.tree)
-
-    return response.tree
+    return response.tree;
   }
 
   async createTree() {
@@ -89,35 +83,39 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   }
 
   async getNodeDescriptions({ path }) {
-    console.log('Getting node descriptions from WorkspaceSocketClient')
-    return [] as NodeDescription[]
+    const response = await this.sendAwaitable({
+      type: 'describe',
+      path,
+    }) as DescribeResponse;
+
+    console.log('Getting node descriptions from WorkspaceSocketClient', response)
+    return response.availableNodes ?? [] as NodeDescription[]
   }
 
-  private socketSendMsg(message: Record<string, unknown>) {
+  private socketSendMsg(message: TreeMessage) {
     this.socket$!.next(message);
   }
 
-  private async sendAwaitable(message) {
+  private async sendAwaitable(message: {
+    type: string,
+    [key: string]: any,
+  }) {
     const msgId = createDataStoryId();
-    message['id'] = msgId;
-    message['awaited'] = true;
+    const awaitableMessage = {
+      ...message,
+      id: msgId,
+      awaited: true,
+    } as TreeMessage;
 
-    console.log('Sending awaitable message', message);
-    this.socketSendMsg(message);
-
+    this.socketSendMsg(awaitableMessage);
     // Wait for response and return it in an awaitable way!
-    return firstValueFrom(this.wsObservable.pipe(
-      filter((msg: any) => msg.id === msgId),
-      timeout(10000),
-      catchError((err) => {
-        console.error('Error in sendAwaitable', err);
-        throw err;
-      })
-    ));
+    const result = await waitForResponse(awaitableMessage);
+    return result;
   }
 
-  private handleMessage(data: Record<string, any>) {
-    // If message is awaited, we expect user to handle at call site
+  private handleMessage(data: TreeResponse) {
+    processWaitingResponse(data);
+
     if (data.awaited) return;
 
     // ...If message is non-transactional, handle it

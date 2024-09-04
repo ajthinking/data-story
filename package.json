@@ -17,6 +17,7 @@
     "tn": "yarn workspace @data-story/nodejs run tinker",
     "tui": "yarn workspace @data-story/ui run tinker",
     "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && yarn build && turbo dev --parallel",
+    "watch:server": "yarn workspace @data-story/nodejs run watch:server",
     "kill": "kill-port 3000 3300",
     "build": "turbo build",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
