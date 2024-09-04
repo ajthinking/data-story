@@ -1,7 +1,7 @@
 import { createDataStoryId, NodeDescription, Tree } from '@data-story/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, retry } from 'rxjs';
-import { ClientRunParams, GetTreeResponse, TreeMessage, TreeResponse } from '../types';
+import { ClientRunParams, DescribeResponse, GetTreeResponse, TreeMessage, TreeResponse } from '../types';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { processWaitingResponse, waitForResponse } from './WebSocketHandleResponseMiddleware';
 
@@ -83,21 +83,29 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   }
 
   async getNodeDescriptions({ path }) {
-    console.log('Getting node descriptions from WorkspaceSocketClient')
-    return [] as NodeDescription[]
+    const response = await this.sendAwaitable({
+      type: 'describe',
+      path,
+    }) as DescribeResponse;
+
+    console.log('Getting node descriptions from WorkspaceSocketClient', response)
+    return response.availableNodes ?? [] as NodeDescription[]
   }
 
   private socketSendMsg(message: TreeMessage) {
     this.socket$!.next(message);
   }
 
-  private async sendAwaitable(message: Pick<TreeMessage, 'path'|'type'>) {
+  private async sendAwaitable(message: {
+    type: string,
+    [key: string]: any,
+  }) {
     const msgId = createDataStoryId();
     const awaitableMessage = {
       ...message,
       id: msgId,
       awaited: true,
-    }
+    } as TreeMessage;
 
     this.socketSendMsg(awaitableMessage);
     // Wait for response and return it in an awaitable way!

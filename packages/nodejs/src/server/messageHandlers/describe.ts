@@ -9,6 +9,7 @@ export const describe: MessageHandler<DescribeMessage> = async (
   app: Application
 ) => {
   const response = {
+    ...data,
     type: 'DescribeResponse',
     availableNodes: app.descriptions(),
   }

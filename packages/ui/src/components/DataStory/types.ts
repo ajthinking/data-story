@@ -199,5 +199,12 @@ export type GetTreeResponse = {
   tree: Tree[],
 }
 
+export type DescribeResponse = {
+  id: string,
+  awaited: boolean,
+  type: 'DescribeResponse',
+  availableNodes: NodeDescription[],
+}
+
 export type TreeMessage = GetTreeMessage
-export type TreeResponse = GetTreeResponse
+export type TreeResponse = GetTreeResponse | DescribeResponse
