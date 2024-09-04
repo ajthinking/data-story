@@ -46,7 +46,7 @@ export default () => {
   const app = useMemo(() => {
     return new Application()
       .register(coreNodeProvider)
-      .boot();
+      .bootSync();
   }, [Application]);
   const { Signal, Table, Map, Create, Request, ConsoleLog } = nodes;
 
