@@ -6,6 +6,4 @@ export const coreNodeProvider: ServiceProvider = {
   register: (app: Application) => {
     app.addComputers(Object.values(computers));
   },
-
-  boot: (app: Application) => {}
 }

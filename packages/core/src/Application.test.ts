@@ -9,7 +9,6 @@ describe('register', () => {
 
     const provider: ServiceProvider = {
       register: (app) => {},
-      boot: (app) => {},
     }
 
     app.register(provider)
@@ -24,12 +23,10 @@ describe('register', () => {
 
     const provider1: ServiceProvider = {
       register: (app) => {},
-      boot: (app) => {},
     }
 
     const provider2: ServiceProvider = {
       register: (app) => {},
-      boot: (app) => {},
     }
 
     app.register([provider1, provider2])
@@ -47,12 +44,10 @@ describe('boot', () => {
 
     const provider1: ServiceProvider = {
       register: vi.fn(),
-      boot: vi.fn(),
     }
 
     const provider2: ServiceProvider = {
       register: vi.fn(),
-      boot: vi.fn(),
     }
 
     app.register([provider1, provider2])
@@ -60,10 +55,7 @@ describe('boot', () => {
     app.boot()
 
     expect(provider1.register).toHaveBeenCalledWith(app)
-    expect(provider1.boot).toHaveBeenCalledWith(app)
-
     expect(provider2.register).toHaveBeenCalledWith(app)
-    expect(provider2.boot).toHaveBeenCalledWith(app)
   })
 })
 

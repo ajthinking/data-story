@@ -5,6 +5,4 @@ export const nodeJsProvider: ServiceProvider = {
   register: (app: Application) => {
     app.addComputers(Object.values(computers));
   },
-
-  boot: (app: Application) => {}
 }
