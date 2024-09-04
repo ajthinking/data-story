@@ -1,6 +1,7 @@
 import { Tree } from './Tree';
 
 export interface TreeManager {
+  readonly rootPath: string;
   getTree({ path }: { path: string}): Promise<Tree>;
   createTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>;
   updateTree: ({ path, tree }: { path: string, tree: Tree }) => Promise<Tree>
@@ -9,6 +10,7 @@ export interface TreeManager {
 }
 
 export class NullTreeManager implements TreeManager {
+  readonly rootPath: string = '/';
   async getTree({ path }: { path: string}): Promise<Tree> {
     return {
       id: '/',
