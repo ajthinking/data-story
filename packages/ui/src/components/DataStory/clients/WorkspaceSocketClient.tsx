@@ -3,7 +3,20 @@ import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { catchError, filter, firstValueFrom, Observable, retry, timeout } from 'rxjs';
 import { ClientRunParams } from '../types';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
+import { initListener, sendRequest } from './WSMiddleware';
+export type GetTreeMessage = {
+  id: string,
+  awaited: boolean,
+  type: 'getTree',
+  path: string,
+}
 
+export type GetTreeResponse = {
+  id: string,
+  awaited: boolean,
+  type: 'GetTreeResponse',
+  tree: Tree[],
+}
 export class WorkspaceSocketClient implements WorkspaceApiClient {
   private socket$: WebSocketSubject<any>;
   private wsObservable: Observable<any>;
@@ -30,7 +43,10 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     )
 
     this.wsObservable.subscribe({
-      next: (message) => this.handleMessage(message),
+      next: (message) => {
+        this.handleMessage(message);
+        initListener(message);
+      },
       // Called if at any point WebSocket API signals some kind of error
       error: (err) => console.log('WebSocket error: ', err),
     });
@@ -58,15 +74,12 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   // moveTree: ({ path, newPath }: { path: string, newPath: string}) => Promise<Tree>
 
   async getTree({ path }: {path: string}) {
-    console.log('Getting tree from WorkspaceSocketClient')
     const response = await this.sendAwaitable({
       type: 'getTree',
       path,
-    }) as {tree: Tree[]};
+    }) as  GetTreeResponse;
 
-    console.log('Got tree from WorkspaceSocketClient', response.tree)
-
-    return response.tree
+    return response.tree;
   }
 
   async createTree() {
@@ -97,26 +110,23 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     this.socket$!.next(message);
   }
 
-  private async sendAwaitable(message) {
+  private async sendAwaitable(message: Pick<GetTreeMessage, 'path' | 'type'>) {
     const msgId = createDataStoryId();
-    message['id'] = msgId;
-    message['awaited'] = true;
+    const newMessage = {
+      ...message,
+      id: msgId,
+      awaited: true,
+    }
 
-    console.log('Sending awaitable message', message);
-    this.socketSendMsg(message);
+    // this.socketSendMsg(message);
 
+    const result = await sendRequest(this.socket$, newMessage);
     // Wait for response and return it in an awaitable way!
-    return firstValueFrom(this.wsObservable.pipe(
-      filter((msg: any) => msg.id === msgId),
-      timeout(10000),
-      catchError((err) => {
-        console.error('Error in sendAwaitable', err);
-        throw err;
-      })
-    ));
+    return result;
   }
 
   private handleMessage(data: Record<string, any>) {
+    // console.log('Handling message', data);
     // If message is awaited, we expect user to handle at call site
     if (data.awaited) return;
 

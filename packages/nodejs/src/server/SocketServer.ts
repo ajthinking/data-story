@@ -6,7 +6,7 @@ import * as defaultMessageHandlers from './messageHandlers';
 interface SocketServerOptions {
   app: Application;
   port?: number;
-  messageHandlers: Record<string, MessageHandler<any>>;
+  messageHandlers?: Record<string, MessageHandler<any>>;
 }
 
 export class SocketServer {
