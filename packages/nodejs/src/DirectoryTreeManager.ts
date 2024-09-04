@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export class DirectoryTreeManager implements TreeManager {
-  constructor(private path: string = '') {}
+  constructor(readonly rootPath: string = '') {}
 
   async getTree({ path }: { path: string }): Promise<Tree> {
     return readTreeFromDirectory(path);
