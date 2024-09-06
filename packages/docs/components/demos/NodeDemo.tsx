@@ -17,7 +17,7 @@ export default ({ nodeName }: { nodeName: string}) => {
   return (<div>
     <div className="w-full" style={{ height: '36vh' }}>
       <DataStory
-        server={{ type: 'JS', app }}
+        server={{ type: 'JS' }}
         client={client}
         initDiagram={diagram}
         hideControls={true}

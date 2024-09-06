@@ -114,7 +114,7 @@ export default () => {
               ].slice(-100))
             },
           }}
-          server={{ type: 'JS', app }}
+          server={{ type: 'JS'}}
         />
       </div>
 
