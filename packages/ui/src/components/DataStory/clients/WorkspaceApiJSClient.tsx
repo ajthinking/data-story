@@ -79,7 +79,7 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
   private app: Application
 
   constructor(app?: Application) {
-    this.app = app || new Application().register(coreNodeProvider).bootSync();
+    this.app = app || new Application().register(coreNodeProvider).boot();
   }
 
   run = (

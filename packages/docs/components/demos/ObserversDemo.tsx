@@ -11,7 +11,7 @@ export default ({ mode, observers }:
 }) => {
   const app = new Application()
     .register(coreNodeProvider)
-    .bootSync();
+    .boot();
   const { Signal, Table } = nodes;
 
   const diagram = core.getDiagramBuilder()

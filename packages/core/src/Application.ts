@@ -29,21 +29,7 @@ export class Application {
     return this;
   }
 
-  /**
-   *
-   * @deprecated Use boot instead
-   */
-  bootSync() {
-    this.providers.forEach(provider => {
-      provider.boot(this);
-    });
-
-    this.hasBooted = true;
-
-    return this;
-  }
-
-  async boot() {
+  boot() {
     this.providers.forEach(provider => {
       provider.boot(this);
     });
