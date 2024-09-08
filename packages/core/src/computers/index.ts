@@ -1,3 +1,4 @@
+export { Aggregate } from './Aggregate';
 export { Comment } from './Comment';
 // export { Concatenate } from './Concatenate';
 export { ConsoleLog } from './ConsoleLog'
