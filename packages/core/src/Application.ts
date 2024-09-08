@@ -29,13 +29,23 @@ export class Application {
     return this;
   }
 
-  boot() {
+  async boot() {
     this.providers.forEach(provider => {
       provider.boot(this);
     });
 
+    const mockDelayPromise = new Promise<number>((resolve) => {
+      setTimeout(() => {
+        console.log('mock delay');
+        resolve(1);
+      }, 1000);
+    });
+
+    const num = await mockDelayPromise;
+
     this.hasBooted = true;
 
+    console.log('booted get resolved num:', num, 'start to return this');
     return this;
   }
 
