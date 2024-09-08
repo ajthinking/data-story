@@ -33,12 +33,9 @@ export const DataStoryComponent = (
   const [activityGroups, setActivityGroups] = useState<Activity[]>([]);
 
   const { data: tree, loading: treeLoading, error: getTreeError } = useRequest(async() => {
-    return client
-      ? await client.getTree({ path: LocalStorageKey })
-      : Promise.resolve([]);
+    return await client.getTree({ path: LocalStorageKey });
   }, {
     refreshDeps: [client],
-    manual: !client,
   }, []);
   handleRequestError(getTreeError);
 
@@ -47,12 +44,9 @@ export const DataStoryComponent = (
     loading: nodeDescriptionsLoading,
     error: getNodeDescriptionsError
   } = useRequest(async() => {
-    return client
-      ? await client.getNodeDescriptions({ path: LocalStorageKey })
-      : undefined;
+    return client.getNodeDescriptions({ path: LocalStorageKey })
   }, {
     refreshDeps: [client], // Will re-fetch if client changes
-    manual: !client, // If client is not available initially, do not run automatically
   });
   handleRequestError(getNodeDescriptionsError);
 
@@ -74,7 +68,7 @@ export const DataStoryComponent = (
     }
     updateTree(newTree);
 
-    client?.updateTree({ path: LocalStorageKey, tree: newTree });
+    client.updateTree({ path: LocalStorageKey, tree: newTree });
   }, [diagramKey, tree]);
 
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
