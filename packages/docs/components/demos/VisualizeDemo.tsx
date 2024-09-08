@@ -1,15 +1,15 @@
-import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
+import { core, nodes } from '@data-story/core';
 import React, { useMemo } from 'react';
-import { DataStory  } from '@data-story/ui';
+import { DataStory } from '@data-story/ui';
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
   LinearScale,
-  PointElement,
   LineElement,
+  PointElement,
   Title,
   Tooltip,
-  Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { MockJSClient } from '../splash/MockJSClient';
@@ -40,17 +40,14 @@ export const options = {
   },
 };
 
-const app = new Application()
-  .register(coreNodeProvider)
-  .boot();
-
 const { Signal, Table, Map, Create, Request, ConsoleLog } = nodes;
 
-const diagram =  core.getDiagramBuilder()
+const diagram = core.getDiagramBuilder()
   .add(Signal, {
     period: 100,
     count: 100,
-    expression: '{ x: ${i} }' })
+    expression: '{ x: ${i} }'
+  })
   .add(Map, { json: '{ y: Math.cos(${x}/4) }' })
   .add(Table)
   .get();
@@ -58,7 +55,7 @@ const diagram =  core.getDiagramBuilder()
 export default () => {
   const [points, setPoints] = React.useState([]);
 
-  const client = useMemo(() =>  new MockJSClient(diagram), [diagram]);
+  const client = useMemo(() => new MockJSClient(diagram), [diagram]);
 
   const mapNode = diagram.nodes.find(n => n.type === 'Map');
   const jsonParam = mapNode.params.find(p => p.name === 'json') as any;
@@ -97,7 +94,7 @@ export default () => {
             backgroundColor: 'blue',
           },
         ],
-      }} />
+      }}/>
       <div className={'h-1/2'}>
         <DataStory
           onInitialize={({ run }) => {
@@ -106,7 +103,7 @@ export default () => {
           }}
           client={client}
           observers={{
-            inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
+            inputObservers: [{ nodeId: 'Table.1', portId: 'input' }],
             onDataChange: (items) => {
               setPoints([
                 ...points,
@@ -114,7 +111,7 @@ export default () => {
               ].slice(-100))
             },
           }}
-          server={{ type: 'JS'}}
+          server={{ type: 'JS' }}
         />
       </div>
 

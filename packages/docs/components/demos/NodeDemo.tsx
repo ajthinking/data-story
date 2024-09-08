@@ -1,14 +1,8 @@
 import { DataStory } from '@data-story/ui'
-import { Application, nodes, coreNodeProvider, core } from '@data-story/core';
+import { core, nodes } from '@data-story/core';
 import { MockJSClient } from '../splash/MockJSClient';
 
-export default ({ nodeName }: { nodeName: string}) => {
-  const app = new Application();
-
-  app.register(coreNodeProvider);
-
-  app.boot();
-
+export default ({ nodeName }: {nodeName: string}) => {
   const diagram = core.getDiagramBuilder()
     .add(nodes[nodeName])
     .get()

@@ -6,12 +6,10 @@ import useRequest from 'ahooks/lib/useRequest';
 
 export default Playground;
 
-const appAsync = new Application()
-  .register(coreNodeProvider)
-  .boot();
-
 function Playground({ mode }: {mode?: 'js' | 'node'}) {
-  const {data: app, loading} = useRequest(async () => appAsync);
+  const {data: app, loading} = useRequest(async () => new Application()
+    .register(coreNodeProvider)
+    .boot());
 
   const client = useMemo(() => {
     if (mode === 'node') return new WorkspaceSocketClient();

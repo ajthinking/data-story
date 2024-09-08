@@ -1,7 +1,6 @@
 'use client'
 
 import { DataStory } from '@data-story/ui';
-import { Application, coreNodeProvider } from '@data-story/core';
 import { MockJSClient } from '../../splash/MockJSClient';
 
 export default () => {
@@ -9,10 +8,6 @@ export default () => {
   client.getTree = async({ path }) => {
     return Promise.resolve(null);
   };
-
-  const app = new Application();
-  app.register(coreNodeProvider);
-  app.boot();
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

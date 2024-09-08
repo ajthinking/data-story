@@ -36,16 +36,14 @@ export class Application {
 
     const mockDelayPromise = new Promise<number>((resolve) => {
       setTimeout(() => {
-        console.log('mock delay');
         resolve(1);
-      }, 1000);
+      }, 100);
     });
 
-    const num = await mockDelayPromise;
+    await mockDelayPromise;
 
     this.hasBooted = true;
 
-    console.log('booted get resolved num:', num, 'start to return this');
     return this;
   }
 

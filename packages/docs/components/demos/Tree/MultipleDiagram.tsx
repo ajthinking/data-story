@@ -1,14 +1,9 @@
 'use client'
 
 import { DataStory, WorkspaceApiJSClient } from '@data-story/ui';
-import { Application, coreNodeProvider, nodes } from '@data-story/core';
 import { useMemo } from 'react';
 
 export default () => {
-  const app = new Application();
-  app.register(coreNodeProvider);
-  app.boot();
-
   const client = useMemo(() =>  new WorkspaceApiJSClient(), []);
 
   return (

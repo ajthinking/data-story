@@ -12,7 +12,7 @@ import {
   nodes,
   Tree
 } from '@data-story/core';
-import { ClientRunParams } from '../types';
+import { ClientRunParams, LocalTree } from '../types';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Subject } from 'rxjs';
@@ -30,13 +30,6 @@ export const createDiagram = (content = 'Diagram') => {
     .get();
 
   return diagram;
-}
-
-export interface LocalTree {
-  type: 'load' | 'save';
-  version: string;
-  name: string;
-  trees: Tree[];
 }
 
 const getCoreVersion = () => {
@@ -72,6 +65,21 @@ const loadTrees = (key: string): Tree[] => {
   }
 
   return parseDiagramTreeInfo(localStorage?.getItem(key) || '');
+}
+
+class ManualPromise {
+  readonly promise: Promise<void>;
+  private resolve!: () => void;
+
+  constructor() {
+    this.promise = new Promise<void>((resolve) => {
+      this.resolve = resolve;
+    });
+  }
+
+  complete() {
+    this.resolve();
+  }
 }
 
 export class WorkspaceApiJSClient implements WorkspaceApiClient {
@@ -256,20 +264,5 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
   async moveTree() {
     console.log('Moving tree from WorkspaceSocketClient')
     return [] as Tree[]
-  }
-}
-
-class ManualPromise {
-  readonly promise: Promise<void>;
-  private resolve!: () => void;
-
-  constructor() {
-    this.promise = new Promise<void>((resolve) => {
-      this.resolve = resolve;
-    });
-  }
-
-  complete() {
-    this.resolve();
   }
 }

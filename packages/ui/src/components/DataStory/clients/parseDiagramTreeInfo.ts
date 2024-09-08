@@ -1,6 +1,5 @@
-import { Diagram, Diagrammable } from '@data-story/core';
-import { Tree } from '@data-story/core';
-import { LocalTree } from './WorkspaceApiJSClient';
+import { Diagram, Diagrammable, Tree } from '@data-story/core';
+import { LocalTree } from '../types';
 
 const hydrateTreeNode = (tree: Tree<Diagrammable>): Tree<Diagram> => {
   if (tree.content) {

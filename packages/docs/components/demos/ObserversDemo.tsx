@@ -1,4 +1,4 @@
-import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
+import { core, nodes } from '@data-story/core';
 import React from 'react';
 import { DataStory, type DataStoryObservers } from '@data-story/ui';
 import { MockJSClient } from '../splash/MockJSClient';
@@ -8,9 +8,6 @@ export default ({ mode, observers }:
   mode?: 'js' | 'node',
   observers?: DataStoryObservers
 }) => {
-  const app = new Application()
-    .register(coreNodeProvider)
-    .boot();
   const { Signal, Table } = nodes;
 
   const diagram = core.getDiagramBuilder()

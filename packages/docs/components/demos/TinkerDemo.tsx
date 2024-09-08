@@ -1,16 +1,9 @@
 import { DataStory } from '@data-story/ui'
-import { Application, core, coreNodeProvider, nodes, str, } from '@data-story/core';
+import { core, str, } from '@data-story/core';
 import { MockJSClient } from '../splash/MockJSClient';
 
 // This component is just a place to sketch
 export default () => {
-  const { Create, Table, Input, Map, Output, ConsoleLog } = nodes;
-
-  const app = new Application();
-  app.register(coreNodeProvider);
-
-  app.boot();
-
   const diagram = core.getDiagramBuilderV3()
     .add('Create')
     .get()
