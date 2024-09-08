@@ -1,15 +1,18 @@
-import { createDataStoryId, NodeDescription, Tree } from '@data-story/core';
+import { createDataStoryId, Hook, NodeDescription, Tree } from '@data-story/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, retry } from 'rxjs';
 import { ClientRunParams, DescribeResponse, GetTreeResponse, TreeMessage, TreeResponse } from '../types';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { processWaitingResponse, waitForResponse } from './WebSocketHandleResponseMiddleware';
+import { DataStoryEvents } from '../events/dataStoryEventType';
+import { eventManager } from '../events/eventManager';
 
 export class WorkspaceSocketClient implements WorkspaceApiClient {
   private socket$: WebSocketSubject<any>;
   private wsObservable: Observable<any>;
   private maxReconnectTries = 100;
   private reconnectTimeoutMs = 1000;
+  private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
 
   constructor() {
     this.socket$ = webSocket({
@@ -52,6 +55,14 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   run = (
     { updateEdgeCounts, diagram, observers }: ClientRunParams
   ) => {
+    this.updateEdgeCounts = updateEdgeCounts;
+    const message = {
+      type: 'run',
+      diagram,
+      inputObservers: observers?.inputObservers || [],
+    };
+
+    this.socketSendMsg(message);
   }
 
   async getTree({ path }: {path: string}) {
@@ -92,7 +103,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     return response.availableNodes ?? [] as NodeDescription[]
   }
 
-  private socketSendMsg(message: TreeMessage) {
+  private socketSendMsg(message: TreeMessage | any) {
     this.socket$!.next(message);
   }
 
@@ -113,11 +124,55 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     return result;
   }
 
-  private handleMessage(data: TreeResponse) {
+  private handleMessage(data: TreeResponse | any) {
     processWaitingResponse(data);
 
     if (data.awaited) return;
 
     // ...If message is non-transactional, handle it
+    if (data.type === 'ExecutionUpdate') {
+      this.updateEdgeCounts!(data.counts)
+
+      for(const hook of data.hooks as Hook[]) {
+        if (hook.type === 'CONSOLE_LOG') {
+          console.log(...hook.args)
+        } else if (hook.type === 'UPDATES') {
+          const providedCallback = (...data: any) => {
+            console.log('THIS IS THE UPDATE HOOK!')
+            console.log('DataPassed', data)
+          }
+
+          providedCallback(...hook.args)
+        }
+      }
+      return;
+    }
+
+    if (data.type === 'ExecutionResult') {
+      console.log('Execution complete 💫')
+      eventManager.emit({
+        type: DataStoryEvents.RUN_SUCCESS
+      });
+      return
+    }
+
+    if (data.type === 'ExecutionFailure') {
+      console.error('Execution failed: ', {
+        history: data.history,
+      })
+
+      eventManager.emit({
+        type: DataStoryEvents.RUN_ERROR,
+        payload: data
+      });
+
+      return
+    }
+
+    if (data.type === 'UpdateStorage' || data.type === 'NotifyObservers') {
+      return;
+    }
+
+    throw ('Unknown message type (client): ' + data.type)
   }
 }
