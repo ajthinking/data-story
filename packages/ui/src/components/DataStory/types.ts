@@ -57,7 +57,7 @@ export interface ClientRunParams {
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 
 export type DataStoryProps = {
-  client?: WorkspaceApiClient,
+  client: WorkspaceApiClient,
   server?: ServerConfig;
   initDiagram?: Diagram | null;
   hideControls?: boolean
