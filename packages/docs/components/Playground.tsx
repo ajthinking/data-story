@@ -1,22 +1,26 @@
-'use client'
-
 import { Application, coreNodeProvider } from '@data-story/core';
 import React, { useMemo } from 'react';
 import { DataStory, WorkspaceApiJSClient, WorkspaceSocketClient } from '@data-story/ui';
 import { SaveComponent } from './Save';
+import useRequest from 'ahooks/lib/useRequest';
 
 export default Playground;
 
-const app = new Application()
-  .register(coreNodeProvider)
-  .boot();
-
 function Playground({ mode }: {mode?: 'js' | 'node'}) {
+  const appAsync = new Application()
+    .register(coreNodeProvider)
+    .boot();
+
+  const {data: app, loading} = useRequest(async () => appAsync, {
+    manual: false,
+  }, []);
+  console.log('11111111', app, loading);
+
   const client = useMemo(() => {
     if (mode === 'node') return new WorkspaceSocketClient();
-
-    return new WorkspaceApiJSClient(app)
-  }, [mode]);
+    if (loading) return null;
+    return new WorkspaceApiJSClient(app);
+  }, [mode, app, loading]);
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
@@ -24,7 +28,7 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
         slotComponents={[
           <SaveComponent/>,
         ]}
-        server={{ type: 'JS', app: null }}
+        server={{ type: 'JS' }}
         initSidebarKey="explorer"
       />
     </div>
