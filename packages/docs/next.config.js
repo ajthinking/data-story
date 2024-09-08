@@ -25,12 +25,13 @@ module.exports = {
       });
       baseConfig.ignoreWarnings = [/Failed to parse source map/];
     }
-    if (!context.isServer) {
+
+    if (!context.isServer && process.env.ANALYZE_ENV === 'true') {
       config.plugins.push(new BundleAnalyzerPlugin({
         analyzerMode: 'static',
         analyzerPort: context.isServer ? 8888 : 8889,
         reportFilename: './analyze/server.html',
-        openAnalyzer: process.env.ANALYZER === 'true',
+        openAnalyzer: process.env.ANALYZE_ENV === 'true',
       }));
     }
 
