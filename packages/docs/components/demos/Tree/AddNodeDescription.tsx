@@ -13,7 +13,7 @@ export default () => {
     .boot());
 
   const nodeDescriptions = useMemo(() => {
-    if (!loading) {
+    if (!loading && app) {
       return app.descriptions().filter((node) => customNodeDescription.includes(node.name));
     }
     return [];
@@ -27,7 +27,11 @@ export default () => {
     .above('Signal.1').add(Comment, { content:'### Add Node Description 🔥'})
     .get();
 
-  const client = useMemo(() => new MockJSClient(diagram, app, nodeDescriptions), [diagram, app, nodeDescriptions]);
+  const client = useMemo(() => {
+    return new MockJSClient({diagram, app, nodeDescriptions});
+  }, [diagram, app, nodeDescriptions]);
+
+  if (!client) return null;
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

@@ -2,12 +2,17 @@
 
 import { DataStory } from '@data-story/ui';
 import { MockJSClient } from '../../splash/MockJSClient';
+import { useRequestApp } from '../../hooks/useRequestApp';
 
 export default () => {
-  const client = new MockJSClient();
+  const { app, loading } = useRequestApp();
+
+  const client: MockJSClient | null = new MockJSClient({ app });
   client.getTree = async({ path }) => {
     return Promise.resolve(null);
   };
+
+  if (loading || !client) return null;
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

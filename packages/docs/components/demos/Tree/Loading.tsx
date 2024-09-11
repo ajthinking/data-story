@@ -2,9 +2,13 @@
 
 import { DataStory } from '@data-story/ui';
 import { MockJSClient } from '../../splash/MockJSClient';
+import { useRequestApp } from '../../hooks/useRequestApp';
 
 export default () => {
-  const client = new MockJSClient();
+  const { app, loading } = useRequestApp();
+  if(loading) return null;
+
+  const client = new MockJSClient({app});
   client.getTree = async({ path }) => new Promise((resolve, reject) => {
     // Please ensure that this request is never terminated.
   })
