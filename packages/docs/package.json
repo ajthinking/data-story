@@ -38,7 +38,6 @@
     "@types/react": "*",
     "autoprefixer": "^10.4.16",
     "cross-env": "^7.0.3",
-    "nodemon": "^3.0.2",
     "postcss": "^8.4.31",
     "source-map-loader": "^4.0.1",
     "tailwindcss": "^3.3.3",
