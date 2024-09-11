@@ -79,8 +79,14 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     return [] as Tree[]
   }
 
-  async updateTree() {
+  async updateTree({ path, tree }: any) {
     console.log('Updating tree from WorkspaceSocketClient')
+    const response = await this.sendAwaitable({
+      type: 'updateTree',
+      path: 'x',
+      tree,
+    });
+
     return [] as Tree[]
   }
 
@@ -99,7 +105,6 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
       path,
     }) as DescribeResponse;
 
-    console.log('Getting node descriptions from WorkspaceSocketClient', response)
     return response.availableNodes ?? [] as NodeDescription[]
   }
 
