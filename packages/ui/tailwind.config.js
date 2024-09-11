@@ -14,6 +14,9 @@ module.exports = {
         128: '32rem',
       },
       colors: {
+        trueGray: {
+          50: '#FAFAFA',
+        },
         vsCodeWarmGray: {
           900: '#1E1E1E'
         }

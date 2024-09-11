@@ -44,7 +44,7 @@ const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   };
 
   return (
-    <div className='h-full bg-white text-gray-500'>
+    <div className='h-full bg-trueGray-50 text-gray-500'>
       {renderContent()}
     </div>
   );

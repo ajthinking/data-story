@@ -57,7 +57,7 @@ export const ActivityBarComponent = ({
     <aside
       aria-label="ActivityBar"
       id="default-activity-bar"
-      className="bg-gray-50 text-gray-800 flex flex-col items-center h-full"
+      className="bg-trueGray-50 text-gray-800 flex flex-col items-center h-full"
     >
       <div className="col-start">{renderActivityButtons('top')}</div>
     </aside>

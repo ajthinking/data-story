@@ -14,7 +14,7 @@ function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
     <div
       className={`
         flex text-xs text-gray-900
-        ${node.isSelected ? 'bg-gray-200 border-blue-500 border' : ''}
+        ${node.isSelected ? 'bg-gray-100 border-blue-500 border' : ''}
         ${isActualRoot ? 'font-bold uppercase' : ''}
       `}
       style={style}
