@@ -66,10 +66,11 @@ export default ({ part }: {part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
     nestedNodes
   ).unfold();
 
-  const mainClient = new MockJSClient(diagram, app);
-  const mainUnfoldedClient = new MockJSClient(unfolded.diagram, app);
-  const nestedNodeClient = new MockJSClient(nestedNode, app);
+  const mainClient = new MockJSClient({ diagram: diagram, app: app });
+  const mainUnfoldedClient = new MockJSClient({ diagram: unfolded.diagram, app: app });
+  const nestedNodeClient = new MockJSClient({ diagram: nestedNode, app: app });
 
+  if (loading || !mainClient) return null;
   // *************************************
   // Render requested part
   // *************************************
