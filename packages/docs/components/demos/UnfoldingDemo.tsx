@@ -76,16 +76,13 @@ export default ({ part }: {part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
   return (
     <div className="w-full h-1/4">
       {part === 'MAIN' && <DataStory
-        server={{ type: 'JS' }}
         onInitialize={({ run }) => run()}
         client={mainClient}
       />}
       {part === 'NESTED_NODE' && <DataStory
-        server={{ type: 'JS' }}
         client={nestedNodeClient}
       />}
       {part === 'MAIN_UNFOLDED' && <DataStory
-        server={{ type: 'JS' }}
         client={mainUnfoldedClient}
       />}
     </div>

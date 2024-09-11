@@ -48,7 +48,6 @@ export default () => {
   return (
     <div className="w-full h-1/2 sm:h-screen">
       <DataStory
-        server={{ type: 'JS' }}
         client={client}
         initDiagram={isSmallScreen ? smallDiagram : bigDiagram}
         onInitialize={(options) => options.run()}

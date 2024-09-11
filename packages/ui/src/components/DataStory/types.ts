@@ -210,7 +210,7 @@ export type TreeMessage = GetTreeMessage
 export type TreeResponse = GetTreeResponse | DescribeResponse
 
 export interface LocalTree {
-  type: 'load'|'save';
+  type: 'load' | 'save';
   version: string;
   name: string;
   trees: Tree[];

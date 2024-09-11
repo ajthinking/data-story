@@ -21,7 +21,6 @@ export default ({ mode, observers }:
       <DataStory
         client={client}
         observers={observers}
-        server={{ type: 'JS' }}
       />
     </div>
   );

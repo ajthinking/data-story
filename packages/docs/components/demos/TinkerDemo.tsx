@@ -19,7 +19,6 @@ export default () => {
   return (
     <div className="w-full h-1/2">
       <DataStory
-        server={{ type: 'JS' }}
         client={client}
       />
     </div>

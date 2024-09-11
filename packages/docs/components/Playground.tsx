@@ -24,7 +24,6 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
         slotComponents={[
           <SaveComponent/>,
         ]}
-        server={{ type: 'JS' }}
         initSidebarKey="explorer"
       />
     </div>

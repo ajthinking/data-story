@@ -13,7 +13,6 @@ export default () => {
     <div className="w-full h-80 border-gray-400 border-4">
       <DataStory
         client={client}
-        server={{ type: 'JS' }}
         onInitialize={(options) => options.run()}
         hideControls={true}
       />
