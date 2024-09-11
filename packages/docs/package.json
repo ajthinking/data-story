@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "analyze": "cross-env ANALYZE_ENV=true next build",
-    "watch:server": "nodemon -x 'node --experimental-default-type=module ./servers/full.js'"
+    "analyze": "cross-env ANALYZE_ENV=true next build"
   },
   "repository": {
     "type": "git",
