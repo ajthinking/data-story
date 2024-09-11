@@ -29,24 +29,18 @@ export class Application {
     return this;
   }
 
-  /**
-   *
-   * @deprecated Use boot instead
-   */
-  bootSync() {
-    this.providers.forEach(provider => {
-      provider.boot(this);
-    });
-
-    this.hasBooted = true;
-
-    return this;
-  }
-
   async boot() {
     this.providers.forEach(provider => {
       provider.boot(this);
     });
+
+    const mockDelayPromise = new Promise<number>((resolve) => {
+      setTimeout(() => {
+        resolve(1);
+      }, 100);
+    });
+
+    await mockDelayPromise;
 
     this.hasBooted = true;
 

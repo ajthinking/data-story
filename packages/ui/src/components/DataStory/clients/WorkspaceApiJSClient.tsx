@@ -12,7 +12,7 @@ import {
   nodes,
   Tree
 } from '@data-story/core';
-import { ClientRunParams } from '../types';
+import { ClientRunParams, LocalTree } from '../types';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Subject } from 'rxjs';
@@ -30,13 +30,6 @@ export const createDiagram = (content = 'Diagram') => {
     .get();
 
   return diagram;
-}
-
-export interface LocalTree {
-  type: 'load' | 'save';
-  version: string;
-  name: string;
-  trees: Tree[];
 }
 
 const getCoreVersion = () => {
@@ -74,12 +67,42 @@ const loadTrees = (key: string): Tree[] => {
   return parseDiagramTreeInfo(localStorage?.getItem(key) || '');
 }
 
+class ManualPromise {
+  readonly promise: Promise<void>;
+  private resolve!: () => void;
+
+  constructor() {
+    this.promise = new Promise<void>((resolve) => {
+      this.resolve = resolve;
+    });
+  }
+
+  complete() {
+    this.resolve();
+  }
+}
+
 export class WorkspaceApiJSClient implements WorkspaceApiClient {
   private executor: Executor | undefined
-  private app: Application
+  private app?: Application;
+  private appInitialized = new ManualPromise();
 
   constructor(app?: Application) {
-    this.app = app || new Application().register(coreNodeProvider).bootSync();
+    this.initApp(app)
+  }
+
+  initApp = async(application?: Application) => {
+    if (application) {
+      this.app = application;
+      this.appInitialized.complete();
+      return
+    }
+
+    const app = new Application()
+      .register(coreNodeProvider)
+    await app.boot();
+    this.app = app;
+    this.appInitialized.complete();
   }
 
   run = (
@@ -89,7 +112,6 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
       type: DataStoryEvents.RUN_START
     });
 
-    const storage = new InMemoryStorage();
     const notifyObservers$: Subject<{items: ItemValue[], inputObservers: InputObserver[]}> = new Subject();
 
     notifyObservers$.pipe(
@@ -108,13 +130,31 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
       }
     );
 
-    this.executor = this.app.getExecutor({
+    this.executionDiagram({
+      updateEdgeCounts,
+      diagram,
+      inputObserverController
+    });
+  };
+
+  private async executionDiagram({
+    updateEdgeCounts,
+    diagram,
+    inputObserverController
+  }: Pick<ClientRunParams, 'updateEdgeCounts' | 'diagram'> & {
+    inputObserverController: InputObserverController
+  }
+  ) {
+    const storage = new InMemoryStorage();
+    await this.appInitialized.promise;
+
+    this.executor = this.app!.getExecutor({
       diagram,
       storage,
       inputObserverController
     })
 
-    const execution = this.executor.execute();
+    const execution = this.executor?.execute();
 
     // For each update run this function
     const handleUpdates = (iterator: AsyncIterator<any>) => {
@@ -126,7 +166,7 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
               if (hook.type === 'CONSOLE_LOG') {
                 console.log(...hook.args)
               } else {
-                const userHook = this.app.hooks.get(hook.type)
+                const userHook = this.app!.hooks.get(hook.type)
 
                 if (userHook) {
                   userHook(...hook.args)
@@ -153,15 +193,16 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
     }
 
     // Start the updates
-    handleUpdates(execution[Symbol.asyncIterator]());
-  };
+    handleUpdates(execution![Symbol.asyncIterator]());
+  }
 
   getNodeDescriptions = async({ path }): Promise<NodeDescription[]> => {
-    const nodeDescriptions = this.app.descriptions();
+    await this.appInitialized.promise;
+    const nodeDescriptions = this.app!.descriptions();
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(nodeDescriptions);
+        resolve(nodeDescriptions!);
       }, 1000);
     });
   };

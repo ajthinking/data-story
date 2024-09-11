@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "analyze": "cross-env ANALYZE_ENV=true next build",
     "watch:server": "nodemon -x 'node --experimental-default-type=module ./servers/full.js'"
   },
   "repository": {
@@ -37,6 +38,7 @@
     "@types/node": "*",
     "@types/react": "*",
     "autoprefixer": "^10.4.16",
+    "cross-env": "^7.0.3",
     "nodemon": "^3.0.2",
     "postcss": "^8.4.31",
     "source-map-loader": "^4.0.1",

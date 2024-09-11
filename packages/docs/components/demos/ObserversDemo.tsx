@@ -1,7 +1,6 @@
-import { Application, core, coreNodeProvider, nodes } from '@data-story/core';
+import { core, nodes } from '@data-story/core';
 import React from 'react';
 import { DataStory, type DataStoryObservers } from '@data-story/ui';
-import { ServerRequest } from '../../const';
 import { MockJSClient } from '../splash/MockJSClient';
 
 export default ({ mode, observers }:
@@ -9,9 +8,6 @@ export default ({ mode, observers }:
   mode?: 'js' | 'node',
   observers?: DataStoryObservers
 }) => {
-  const app = new Application()
-    .register(coreNodeProvider)
-    .bootSync();
   const { Signal, Table } = nodes;
 
   const diagram = core.getDiagramBuilder()
@@ -25,7 +21,7 @@ export default ({ mode, observers }:
       <DataStory
         client={client}
         observers={observers}
-        server={{ type: 'JS', app }}
+        server={{ type: 'JS' }}
       />
     </div>
   );

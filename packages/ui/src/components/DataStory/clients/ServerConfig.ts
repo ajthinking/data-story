@@ -7,7 +7,6 @@ export type WebSocketServerConfig = {
 
 export type JsServerConfig = {
   type: 'JS';
-  app: Application;
 }
 
 export type ServerConfig = WebSocketServerConfig | JsServerConfig
