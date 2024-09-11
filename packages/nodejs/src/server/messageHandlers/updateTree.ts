@@ -2,27 +2,31 @@ import { Application, core, nodes } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
 import WebSocket from 'ws';
 
-export type GetTreeMessage = {
+import { Tree } from '@data-story/core'
+
+export type UpdateTreeMessage = {
   id: string,
   awaited: boolean,
-  type: 'getTree',
+  type: 'updateTree',
   path: string,
+  tree: Tree,
 }
 
-export const getTree: MessageHandler<GetTreeMessage> = async(
+export const updateTree: MessageHandler<UpdateTreeMessage> = async(
   ws: WebSocket,
-  data: GetTreeMessage,
+  data: UpdateTreeMessage,
   app: Application
 ) => {
-  const tree = await app.getTreeManager().getTree({
+  const updatedTree = await app.getTreeManager().updateTree({
+    tree: data.tree,
     path: data.path,
   });
 
   const response = {
     id: data.id,
     awaited: data.awaited,
-    type: 'GetTreeResponse',
-    tree: [tree],
+    type: 'UpdateTreeResponse',
+    tree: [updatedTree],
   }
 
   ws.send(JSON.stringify(response))

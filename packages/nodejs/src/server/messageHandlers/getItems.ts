@@ -1,7 +1,15 @@
 import WebSocket from 'ws';
 import { Application, InMemoryStorage } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
-import { GetItemsMessage } from '../messages/GetItemsMessage';
+
+export type GetItemsMessage = {
+  type: 'getItems',
+  atNodeId: string,
+  id: string,
+  offset?: number,
+  limit?: number,
+  total?: number,
+}
 
 export const getItems:  MessageHandler<GetItemsMessage> = async (
   ws: WebSocket,

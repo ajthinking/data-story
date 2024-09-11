@@ -1,5 +1,4 @@
 import WebSocket from 'ws';
-import { RunMessage } from '../messages/RunMessage';
 import { MessageHandler } from '../MessageHandler';
 import {
   Application,
@@ -11,6 +10,14 @@ import {
   InputObserverController,
   type ReportCallback
 } from '@data-story/core';
+
+import { type InputObserver } from '@data-story/core'
+
+export type RunMessage = {
+  type: 'run'
+  diagram: Diagram,
+  inputObservers: InputObserver[],
+}
 
 export const run: MessageHandler<RunMessage> = async(
   ws: WebSocket,

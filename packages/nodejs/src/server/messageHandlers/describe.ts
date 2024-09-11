@@ -1,7 +1,11 @@
 import { Application } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
-import { DescribeMessage } from '../messages/DescribeMessage';
 import WebSocket from 'ws';
+
+export type DescribeMessage = {
+  type: 'describe',
+  id: string,
+}
 
 export const describe: MessageHandler<DescribeMessage> = async (
   ws: WebSocket,
