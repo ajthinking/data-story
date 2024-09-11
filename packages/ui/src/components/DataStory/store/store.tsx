@@ -1,10 +1,8 @@
 import { StoreApi, UseBoundStore } from 'zustand';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeChange, } from '@xyflow/react';
-import { SocketClient } from '../clients/SocketClient';
 import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
-import { ServerConfig, WebSocketServerConfig } from '../clients/ServerConfig';
 import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
@@ -15,8 +13,6 @@ import { ClientRunParams, DataStoryObservers, StoreInitOptions, StoreSchema } fr
 import { shallow } from 'zustand/shallow';
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
-  // DEFAULTS
-  serverConfig: { type: 'SOCKET', url: 'ws://localhost:3100' },
   rfInstance: undefined,
   nodes: [],
   edges: [],
@@ -133,10 +129,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
 
   onInit: (options: StoreInitOptions) => {
-    set({
-      serverConfig: options.server
-    })
-
     set({ rfInstance: options.rfInstance })
     set({ clientRun: options.clientRun })
 
