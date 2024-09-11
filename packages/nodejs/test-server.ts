@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv';
 import { hubspotProvider } from '@data-story/hubspot';
 import { openAiProvider } from '@data-story/openai';
 
-const root = path.resolve('./tree');
+const root = path.resolve('./data-story-tree');
 dotenv.config({ path: '.env.local' });
 
 const app = new Application(

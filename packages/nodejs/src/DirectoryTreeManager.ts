@@ -1,6 +1,6 @@
 import { Diagram, Tree, TreeManager } from '@data-story/core';
 import * as fs from 'fs';
-import * as path from 'path';
+import * as nodePath from 'path';
 
 export class DirectoryTreeManager implements TreeManager {
   constructor(readonly rootPath: string = '') {}
@@ -14,6 +14,17 @@ export class DirectoryTreeManager implements TreeManager {
   }
 
   async updateTree({ path, tree }: { path: string, tree: Tree }): Promise<Tree> {
+    console.log('Updating tree from DirectoryTreeManager.')
+
+    console.log('Gonna run treeToDirectory')
+    console.log({ tree })
+    console.log({ rootPath: this.rootPath })
+
+    // TODO FIX THIS
+    const [ treeRoot ] = tree as unknown as Tree[];
+
+    await treeToDirectory(treeRoot, this.rootPath);
+
     return dummyTree;
   }
 
@@ -33,20 +44,37 @@ const dummyTree: Tree = {
   type: 'folder',
 }
 
+export async function treeToDirectory(tree: Tree, directoryPath: string): Promise<void> {
+  async function buildDirectory(node: Tree): Promise<void> {
+    const itemPath = nodePath.join(directoryPath, node.path);
+    console.log({ itemPath })
+
+    if (node.type === 'folder') {
+      await fs.promises.mkdir(itemPath, { recursive: true });
+      await Promise.all((node.children || []).map(buildDirectory));
+    } else {
+      const content = JSON.stringify(node.content, null, 2);
+      await fs.promises.writeFile(itemPath, content);
+    }
+  }
+
+  await buildDirectory(tree);
+}
+
 export async function readTreeFromDirectory(directoryPath: string): Promise<Tree> {
   async function buildTree(dirPath: string): Promise<Tree> {
     const stat = await fs.promises.stat(dirPath);
     const node: Tree = {
       id: dirPath,
-      name: path.basename(dirPath),
-      path: path.relative(directoryPath, dirPath),
+      name: nodePath.basename(dirPath),
+      path: nodePath.relative(directoryPath, dirPath),
       type: stat.isDirectory() ? 'folder' : 'file',
     };
 
     if (node.type === 'folder') {
       const childrenNames = await fs.promises.readdir(dirPath);
       const childrenPaths = childrenNames
-        .map(name => path.join(dirPath, name))
+        .map(name => nodePath.join(dirPath, name))
         .filter(p => p.endsWith('.json')); // ignore .gitkeep etc
 
       node.children = await Promise.all(childrenPaths.map(buildTree));

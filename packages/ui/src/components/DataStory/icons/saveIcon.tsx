@@ -1,5 +1,3 @@
-import React from 'react';
-
 export const SaveIcon: React.FC = () => {
   return (
     <svg
@@ -8,7 +6,7 @@ export const SaveIcon: React.FC = () => {
       viewBox="0 0 24 24"
       strokeWidth={2.0}
       stroke="currentColor"
-      className={'w-6 h-6 '}
+      className={'w-6 h-6 text-gray-700'}  // Add the color class here
     >
       <path
         strokeLinecap="round"

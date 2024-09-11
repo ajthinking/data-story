@@ -17,6 +17,8 @@ export const updateTree: MessageHandler<UpdateTreeMessage> = async(
   data: UpdateTreeMessage,
   app: Application
 ) => {
+  console.log('Updating tree from updateTree on server')
+
   const updatedTree = await app.getTreeManager().updateTree({
     tree: data.tree,
     path: data.path,
@@ -26,7 +28,7 @@ export const updateTree: MessageHandler<UpdateTreeMessage> = async(
     id: data.id,
     awaited: data.awaited,
     type: 'UpdateTreeResponse',
-    tree: [updatedTree],
+    tree: [],
   }
 
   ws.send(JSON.stringify(response))
