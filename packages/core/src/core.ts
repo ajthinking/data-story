@@ -8,6 +8,4 @@ core.register([
   coreNodeProvider,
 ]);
 
-core.boot();
-
 export { core };

@@ -84,25 +84,10 @@ class ManualPromise {
 
 export class WorkspaceApiJSClient implements WorkspaceApiClient {
   private executor: Executor | undefined
-  private app?: Application;
-  private appInitialized = new ManualPromise();
+  private app: Application;
 
-  constructor(app?: Application) {
-    this.initApp(app)
-  }
-
-  initApp = async(application?: Application) => {
-    if (application) {
-      this.app = application;
-      this.appInitialized.complete();
-      return
-    }
-
-    const app = new Application()
-      .register(coreNodeProvider)
-    await app.boot();
+  constructor(app: Application) {
     this.app = app;
-    this.appInitialized.complete();
   }
 
   run = (
@@ -146,7 +131,6 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
   }
   ) {
     const storage = new InMemoryStorage();
-    await this.appInitialized.promise;
 
     this.executor = this.app!.getExecutor({
       diagram,
@@ -197,7 +181,6 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
   }
 
   getNodeDescriptions = async({ path }): Promise<NodeDescription[]> => {
-    await this.appInitialized.promise;
     const nodeDescriptions = this.app!.descriptions();
 
     return new Promise((resolve) => {

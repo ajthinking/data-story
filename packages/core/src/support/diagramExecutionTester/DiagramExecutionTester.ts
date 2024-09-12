@@ -19,6 +19,7 @@ export class DiagramExecutionTester {
   constructor(public diagram: Diagram) {}
 
   async ok() {
+    await core.boot()
     const executor = ExecutorFactory.create({
       diagram: this.diagram,
       registry: core.getRegistry(),

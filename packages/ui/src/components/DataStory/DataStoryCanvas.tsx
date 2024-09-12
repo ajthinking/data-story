@@ -40,7 +40,6 @@ const DataStoryCanvasComponent = forwardRef((props: DataStoryCanvasProps, ref) =
 export const DataStoryCanvas = React.memo(DataStoryCanvasComponent);
 
 const Flow = ({
-  server,
   initDiagram,
   hideControls = false,
   slotComponents,
@@ -135,7 +134,6 @@ const Flow = ({
         onInit={(rfInstance: StoreInitOptions['rfInstance']) => {
           onInit({
             rfInstance,
-            server,
             initDiagram,
             callback: onInitialize,
             clientRun: client?.run,

@@ -13,6 +13,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { MockJSClient } from '../splash/MockJSClient';
+import { useRequestApp } from '../hooks/useRequestApp';
 
 ChartJS.register(
   CategoryScale,
@@ -54,8 +55,9 @@ const diagram = core.getDiagramBuilder()
 
 export default () => {
   const [points, setPoints] = React.useState([]);
+  const { app, loading } = useRequestApp();
 
-  const client = useMemo(() => new MockJSClient(diagram), [diagram]);
+  const client = useMemo(() => new MockJSClient({ diagram, app }), [diagram, app]);
 
   const mapNode = diagram.nodes.find(n => n.type === 'Map');
   const jsonParam = mapNode.params.find(p => p.name === 'json') as any;
@@ -75,6 +77,10 @@ export default () => {
     .add(ConsoleLog)
     .add(Table)
     .get();
+
+  if (loading || !client) {
+    return null;
+  }
 
   return (
     <div className="w-full" style={{ height: '60vh' }}>
@@ -97,7 +103,7 @@ export default () => {
       }}/>
       <div className={'h-1/2'}>
         <DataStory
-          onInitialize={({ run }) => {
+          onInitialize={async({ run }) => {
             setPoints([])
             run()
           }}
@@ -111,10 +117,8 @@ export default () => {
               ].slice(-100))
             },
           }}
-          server={{ type: 'JS' }}
         />
       </div>
-
     </div>
   );
 };

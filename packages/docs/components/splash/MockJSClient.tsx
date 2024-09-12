@@ -5,7 +5,11 @@ export class MockJSClient extends WorkspaceApiJSClient {
   private diagram: Diagram;
   private nodeDescriptions: NodeDescription[];
 
-  constructor(diagram?: Diagram, app?: Application, nodeDescriptions?: NodeDescription[]) {
+  constructor({ diagram, app, nodeDescriptions }: {
+    app: Application,
+    diagram?: Diagram,
+    nodeDescriptions?: NodeDescription[]
+  }) {
     super(app);
     this.diagram = diagram ?? new Diagram();
     this.nodeDescriptions = nodeDescriptions || [];

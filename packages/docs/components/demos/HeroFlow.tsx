@@ -3,6 +3,7 @@ import { core, multiline, nodes, } from '@data-story/core';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import { MockJSClient } from '../splash/MockJSClient';
 import { useMemo } from 'react';
+import { useRequestApp } from '../hooks/useRequestApp';
 
 const { Signal, Pass, Comment, Ignore } = nodes;
 
@@ -39,16 +40,18 @@ const smallDiagram = core.getDiagramBuilder()
 
 export default () => {
   const { height, width } = useWindowDimensions();
+  const { app, loading } = useRequestApp();
+
   const isSmallScreen = useMemo(() => width < 768, [width]);
 
   const client = useMemo(() =>
-    isSmallScreen ? new MockJSClient(smallDiagram) : new MockJSClient(bigDiagram)
-  , [isSmallScreen, bigDiagram, smallDiagram]);
+    isSmallScreen ? new MockJSClient({ diagram: smallDiagram, app }) : new MockJSClient({ diagram: bigDiagram, app }),
+  [isSmallScreen, bigDiagram, smallDiagram, app]);
 
+  if (loading || !client) return null;
   return (
     <div className="w-full h-1/2 sm:h-screen">
       <DataStory
-        server={{ type: 'JS' }}
         client={client}
         initDiagram={isSmallScreen ? smallDiagram : bigDiagram}
         onInitialize={(options) => options.run()}

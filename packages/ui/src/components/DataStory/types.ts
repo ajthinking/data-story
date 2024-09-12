@@ -1,4 +1,4 @@
-import { ServerConfig, WebSocketServerConfig } from './clients/ServerConfig';
+import { WebSocketServerConfig } from './clients/ServerConfig';
 import {
   Application,
   Diagram,
@@ -58,7 +58,6 @@ export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 
 export type DataStoryProps = {
   client: WorkspaceApiClient,
-  server?: ServerConfig;
   initDiagram?: Diagram | null;
   hideControls?: boolean
   slotComponents?: React.ReactNode[];
@@ -88,7 +87,6 @@ export type DataStoryCanvasProps = {
 
 export type StoreInitOptions = {
   rfInstance: ReactFlowInstance<ReactFlowNode, Edge<Record<string, unknown>, string | undefined>>,
-  server?: ServerConfig,
   initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
   clientRun?: (params: ClientRunParams) => void;
@@ -147,7 +145,6 @@ export type StoreSchema = {
   setParams: (params: Param[]) => void;
 
   /** The Server and its config */
-  serverConfig: ServerConfig;
   serverClient: null | ServerClient;
 
   /** When DataStory component initializes */
@@ -210,7 +207,7 @@ export type TreeMessage = GetTreeMessage
 export type TreeResponse = GetTreeResponse | DescribeResponse
 
 export interface LocalTree {
-  type: 'load'|'save';
+  type: 'load' | 'save';
   version: string;
   name: string;
   trees: Tree[];
