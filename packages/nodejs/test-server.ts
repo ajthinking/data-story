@@ -8,21 +8,30 @@ import { openAiProvider } from '@data-story/openai';
 const root = path.resolve('./tree');
 dotenv.config({ path: '.env.local' });
 
-const app = new Application(
-  new DirectoryTreeManager(root)
-);
-app.register([
-  coreNodeProvider,
-  nodeJsProvider,
-  hubspotProvider,
-  openAiProvider,
-]);
+const startServer = async() => {
+  const app = new Application(
+    new DirectoryTreeManager(root)
+  );
+  app.register([
+    coreNodeProvider,
+    nodeJsProvider,
+    hubspotProvider,
+    openAiProvider,
+  ]);
 
-app.boot();
+  await app.boot();
 
-const server = new SocketServer({
-  app,
-  port: 3300,
-})
+  const server = new SocketServer({
+    app,
+    port: 3300,
+  })
 
-server.start()
+  server.start()
+};
+
+startServer()
+  .then(() => {
+    console.log('Server started');
+  }).catch((e) => {
+    console.error('Error starting server', e);
+  });

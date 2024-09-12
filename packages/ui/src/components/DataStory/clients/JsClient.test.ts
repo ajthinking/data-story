@@ -23,7 +23,7 @@ describe('JsClient', () => {
 
     const app = new Application();
     app.register(coreNodeProvider);
-    app.boot();
+    await app.boot();
 
     const client = new JsClient({
       updateEdgeCounts: updateEdgeCountsMock,

@@ -32,10 +32,10 @@ export default ({ part }: {part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
   // *************************************
 
   const { data: app, loading } = useRequest(async() => {
-    const app = new Application();
+    let app = new Application();
     app.register(coreNodeProvider);
     app.addNestedNode('FooBarStamper', nestedNode);
-    app.boot();
+    app = await app.boot();
     return app;
   });
 
