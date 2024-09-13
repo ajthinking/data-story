@@ -24,7 +24,7 @@ export default () => {
         client={client}
         hideControls={true}
         hideSidebar={true}
-        hideActivityBar={['settings', 'explorer']}
+        hideActivityBar={['settings']}
       />
     </div>
   );
