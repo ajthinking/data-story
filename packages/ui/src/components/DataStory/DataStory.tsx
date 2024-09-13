@@ -131,7 +131,7 @@ export const DataStoryComponent = (
                   activeKey={sidebarKey}
                   onClose={setIsSidebarClose}/>
               </Allotment.Pane>
-              <Allotment.Pane visible={!isSidebarClose} snap maxSize={500}>
+              <Allotment.Pane visible={!isSidebarClose} snap maxSize={500} preferredSize={300}>
                 <Sidebar
                   tree={tree}
                   handleClickExplorerNode={handleClickExplorerNode}
@@ -142,7 +142,9 @@ export const DataStoryComponent = (
                   setSidebarKey={setSidebarKey} node={selectedNode}
                   onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
               </Allotment.Pane>
-              <Allotment.Pane minSize={300}>
+              {/*The Allotment.Pane will recalculate the width and height of the child components.*/}
+              {/*The className is used to address the ReactFlow warning.*/}
+              <Allotment.Pane minSize={300} className="h-full w-96">
                 <DataStoryCanvas
                   {...props}
                   onSave={saveTree}

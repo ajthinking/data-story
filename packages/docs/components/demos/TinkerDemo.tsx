@@ -2,7 +2,6 @@ import { DataStory } from '@data-story/ui'
 import { core, str, } from '@data-story/core';
 import { MockJSClient } from '../splash/MockJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
-import { useMemo } from 'react';
 import useRequest from 'ahooks/lib/useRequest';
 
 // This component is just a place to sketch
