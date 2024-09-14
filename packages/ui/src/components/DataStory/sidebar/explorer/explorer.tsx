@@ -1,32 +1,17 @@
 import { NodeApi, NodeRendererProps, Tree as ArboristTree } from 'react-arborist';
-import { ChevronRight } from '../icons/chevronRight';
-import { ChevronDown } from '../icons/chevronDown';
-import { LogoIcon } from '../icons/logoIcon';
+import { ChevronRight } from '../../icons/chevronRight';
+import { ChevronDown } from '../../icons/chevronDown';
+import { LogoIcon } from '../../icons/logoIcon';
 import { Tree } from '@data-story/core';
-import { NodeSettingsSidebarProps } from '../types';
+import { NodeSettingsSidebarProps } from '../../types';
 import React from 'react';
+import { FileNode } from './file';
+import { FolderNode } from './folder';
 
-function Node({ node, style, dragHandle }: NodeRendererProps<Tree>) {
-  const Icon = node.isOpen ? ChevronDown : (node.isLeaf ? LogoIcon : ChevronRight);
-  const isActualRoot = node.data.id === 'fake-project';
-
-  return (
-    <div
-      className={`
-        flex text-xs text-gray-900
-        ${node.isSelected ? 'bg-gray-100 border-blue-500 border' : ''}
-        ${isActualRoot ? 'font-bold uppercase' : ''}
-      `}
-      style={style}
-      ref={dragHandle}
-      onClick={() => node.toggle()}
-    >
-      <div className="scale-0.5">
-        <Icon/>
-      </div>
-      <div className="ml-2">{node.data.name}</div>
-    </div>
-  );
+function TreeNode(props: NodeRendererProps<Tree>) {
+  return props.node.isLeaf
+    ? <FileNode {...props} />
+    : <FolderNode {...props} />
 }
 
 export const ExplorerComponent = ({
@@ -53,7 +38,7 @@ export const ExplorerComponent = ({
           rowHeight={24}
           onActivate={handleClick}
         >
-          {Node}
+          {TreeNode}
         </ArboristTree>
       </div>
     </div>
