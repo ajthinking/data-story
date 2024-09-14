@@ -19,10 +19,11 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
-        toastSlotComponent={<ToastComponent />}
         client={client}
         initSidebarKey="explorer"
-      />
+      >
+        <ToastComponent />
+      </DataStory>
     </div>
   );
 };

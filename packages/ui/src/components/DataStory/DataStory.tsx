@@ -23,7 +23,7 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey, toastSlotComponent } = props
+  const { client, initSidebarKey, children } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
@@ -132,7 +132,7 @@ export const DataStoryComponent = (
   return (
     <DataStoryCanvasProvider>
       <div className="relative h-full w-full">
-        {toastSlotComponent}
+        { children }
         {
           (treeLoading && !tree)
             ? <LoadingMask/>

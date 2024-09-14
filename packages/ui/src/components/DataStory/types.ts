@@ -57,15 +57,11 @@ export interface ClientRunParams {
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 type ControlsType = 'run' | 'addNode' | 'save';
 export type DataStoryProps = {
+  children?: React.ReactNode;
   client: WorkspaceApiClient,
   initDiagram?: Diagram | null;
   hideControls?: boolean | ControlsType[];
   slotComponents?: React.ReactNode[];
-  /**
-   * toastSlotComponent: <ToastComponent />
-   * custom toast component
-   */
-  toastSlotComponent?: React.ReactNode;
   observers?: DataStoryObservers;
   onInitialize?: DataStoryCallback;
   hideSidebar?: boolean;
