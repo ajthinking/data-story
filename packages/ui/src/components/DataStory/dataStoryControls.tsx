@@ -3,8 +3,11 @@ import { RunIcon } from './icons/runIcon';
 import { AddNodeIcon } from './icons/addNodeIcon';
 import { Diagram } from '@data-story/core';
 import { useStore } from './store/store';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { DataStoryCanvasProps, StoreSchema } from './types';
+import { SaveIcon } from './icons/saveIcon';
+import { eventManager } from './events/eventManager';
+import { DataStoryEvents } from './events/dataStoryEventType';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -52,6 +55,20 @@ export function DataStoryControls({
     onSave: onSave
   }), [updateDiagram, toDiagram]);
 
+  const handleSave = useCallback(async() => {
+    try {
+      await onSave?.();
+      eventManager.emit({
+        type: DataStoryEvents.SAVE_SUCCESS
+      });
+    } catch(error) {
+      eventManager.emit({
+        type: DataStoryEvents.SAVE_ERROR,
+        payload: error
+      });
+    }
+  }, [onSave]);
+
   if (hideControls) return null;
 
   return <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
@@ -69,6 +86,13 @@ export function DataStoryControls({
       aria-label="Add Node"
     >
       <AddNodeIcon/>
+    </ControlButton>
+
+    <ControlButton
+      title="Save"
+      aria-label="Save"
+      onClick={handleSave}>
+      <SaveIcon/>
     </ControlButton>
 
     <DataStoryControlsContext.Provider value={context}>
