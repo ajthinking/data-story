@@ -34,7 +34,12 @@ export const Signal: Computer = {
       name: 'expression',
       label: 'Template expression',
       help: 'Use this field to customize the signal. ${i} is available as a variable.',
-      value: Hjson.stringify({id: '${i}'}),
+      // Avoid Hjson bug
+      value: [
+        '{',
+        '  id: ${i}',
+        '}',
+      ].join('\n'),
       evaluations: [
         { ...hjsonEvaluation, selected: true },
         jsonEvaluation,
