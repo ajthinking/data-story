@@ -24,6 +24,7 @@ export default ({ mode, observers }:
       <DataStory
         client={client}
         observers={observers}
+        hideControls={['save']}
       />
     </div>
   );

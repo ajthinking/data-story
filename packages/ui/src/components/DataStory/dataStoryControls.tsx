@@ -38,6 +38,7 @@ export function DataStoryControls({
   slotComponents?: React.ReactNode[];
   onSave?: DataStoryCanvasProps['onSave'];
 }) {
+  console.log(hideControls, 'hideControls');
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     updateDiagram: state.updateDiagram,
@@ -75,6 +76,7 @@ export function DataStoryControls({
     {[<ControlButton
       title="Run"
       aria-label="run"
+      key="run"
       onClick={() => setShowRun(true)}
     >
       <RunIcon/>
@@ -83,6 +85,7 @@ export function DataStoryControls({
       onClick={() => setShowAddNode(true)}
       title="Add Node"
       data-cy="add-node-button"
+      key="addNode"
       aria-label="addNode"
     >
       <AddNodeIcon/>
@@ -90,6 +93,7 @@ export function DataStoryControls({
     <ControlButton
       title="Save"
       aria-label="save"
+      key="save"
       onClick={handleSave}>
       <SaveIcon/>
     </ControlButton>].filter((ControlButton) => {

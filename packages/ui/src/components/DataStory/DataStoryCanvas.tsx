@@ -41,7 +41,7 @@ export const DataStoryCanvas = React.memo(DataStoryCanvasComponent);
 
 const Flow = ({
   initDiagram,
-  hideControls = false,
+  hideControls,
   slotComponents,
   observers,
   onInitialize,
