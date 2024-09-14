@@ -6,8 +6,6 @@ import { useStore } from './store/store';
 import React, { useCallback, useMemo } from 'react';
 import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from './types';
 import { SaveIcon } from './icons/saveIcon';
-import { eventManager } from './events/eventManager';
-import { DataStoryEvents } from './events/dataStoryEventType';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -56,18 +54,8 @@ export function DataStoryControls({
     onSave: onSave
   }), [updateDiagram, toDiagram]);
 
-  const handleSave = useCallback(async() => {
-    try {
-      await onSave?.();
-      eventManager.emit({
-        type: DataStoryEvents.SAVE_SUCCESS
-      });
-    } catch(error) {
-      eventManager.emit({
-        type: DataStoryEvents.SAVE_ERROR,
-        payload: error
-      });
-    }
+  const handleSave = useCallback(() => {
+    onSave?.();
   }, [onSave]);
 
   if (hideControls === true) return null;
