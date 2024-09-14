@@ -1,6 +1,6 @@
 import { NodeSettingsForm } from '../Form/nodeSettingsForm';
 import { NodeSettingsSidebarProps } from '../types';
-import { Explorer } from './explorer';
+import { Explorer } from './explorer/explorer';
 import { Placeholder } from '../common/placeholder';
 import { NodeDescription } from '@data-story/core';
 import { Run } from './run';
