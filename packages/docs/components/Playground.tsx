@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { DataStory, WorkspaceApiJSClient, WorkspaceSocketClient } from '@data-story/ui';
-import { SaveComponent } from './Save';
 import { useRequestApp } from './hooks/useRequestApp';
+import { ToastComponent } from './Toast';
 
 export default Playground;
 
@@ -19,10 +19,8 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
+        toastSlotComponent={<ToastComponent />}
         client={client}
-        slotComponents={[
-          <SaveComponent/>,
-        ]}
         initSidebarKey="explorer"
       />
     </div>

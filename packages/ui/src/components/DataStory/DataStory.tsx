@@ -21,7 +21,7 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey } = props
+  const { client, initSidebarKey, toastSlotComponent } = props
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
@@ -68,7 +68,9 @@ export const DataStoryComponent = (
     }
     updateTree(newTree);
 
-    client.updateTree({ path: LocalStorageKey, tree: newTree });
+    client.updateTree({ path: LocalStorageKey, tree: newTree })
+      .then(() => console.log('Tree saved successfully'))
+      .catch((error) => console.error('Error saving tree', error));
   }, [diagramKey, tree]);
 
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
@@ -119,6 +121,7 @@ export const DataStoryComponent = (
   return (
     <DataStoryCanvasProvider>
       <div className="relative h-full w-full">
+        { toastSlotComponent }
         {
           (treeLoading && !tree)
             ? <LoadingMask/>
