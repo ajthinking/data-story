@@ -36,7 +36,6 @@ export function DataStoryControls({
   slotComponents?: React.ReactNode[];
   onSave?: DataStoryCanvasProps['onSave'];
 }) {
-  console.log(hideControls, 'hideControls');
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     updateDiagram: state.updateDiagram,
