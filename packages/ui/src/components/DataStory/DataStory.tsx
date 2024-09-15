@@ -13,6 +13,8 @@ import { LoadingMask } from './common/loadingMask';
 import { Diagram, Tree } from '@data-story/core';
 import { ActivityGroups, findFirstFileNode, LocalStorageKey } from './common/method';
 import { NodeApi } from 'react-arborist';
+import { DataStoryEvents } from './events/dataStoryEventType';
+import { eventManager } from './events/eventManager';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}`);
@@ -21,7 +23,7 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey } = props
+  const { client, initSidebarKey, children } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
@@ -68,7 +70,18 @@ export const DataStoryComponent = (
     }
     updateTree(newTree);
 
-    client.updateTree({ path: LocalStorageKey, tree: newTree });
+    client.updateTree({ path: LocalStorageKey, tree: newTree })
+      .then(() => {
+        eventManager.emit({
+          type: DataStoryEvents.SAVE_SUCCESS
+        });
+      })
+      .catch((error) => {
+        eventManager.emit({
+          type: DataStoryEvents.SAVE_ERROR,
+          payload: error
+        });
+      });
   }, [diagramKey, tree]);
 
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
@@ -119,6 +132,7 @@ export const DataStoryComponent = (
   return (
     <DataStoryCanvasProvider>
       <div className="relative h-full w-full">
+        { children }
         {
           (treeLoading && !tree)
             ? <LoadingMask/>

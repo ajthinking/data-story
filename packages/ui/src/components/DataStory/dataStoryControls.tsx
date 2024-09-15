@@ -3,8 +3,9 @@ import { RunIcon } from './icons/runIcon';
 import { AddNodeIcon } from './icons/addNodeIcon';
 import { Diagram } from '@data-story/core';
 import { useStore } from './store/store';
-import React, { useMemo } from 'react';
-import { DataStoryCanvasProps, StoreSchema } from './types';
+import React, { useCallback, useMemo } from 'react';
+import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from './types';
+import { SaveIcon } from './icons/saveIcon';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -29,7 +30,7 @@ export function DataStoryControls({
   slotComponents,
   onSave,
 }: {
-  hideControls?: boolean;
+  hideControls?: DataStoryProps['hideControls'];
   setShowRun: (showRun: boolean) => void;
   setShowAddNode: (showAddNode: boolean) => void;
   slotComponents?: React.ReactNode[];
@@ -52,24 +53,42 @@ export function DataStoryControls({
     onSave: onSave
   }), [updateDiagram, toDiagram]);
 
-  if (hideControls) return null;
+  const handleSave = useCallback(() => {
+    onSave?.();
+  }, [onSave]);
+
+  if (hideControls === true) return null;
 
   return <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
-    <ControlButton
+    {[<ControlButton
       title="Run"
-      aria-label="Run"
+      aria-label="run"
+      key="run"
       onClick={() => setShowRun(true)}
     >
       <RunIcon/>
-    </ControlButton>
+    </ControlButton>,
     <ControlButton
       onClick={() => setShowAddNode(true)}
       title="Add Node"
       data-cy="add-node-button"
-      aria-label="Add Node"
+      key="addNode"
+      aria-label="addNode"
     >
       <AddNodeIcon/>
-    </ControlButton>
+    </ControlButton>,
+    <ControlButton
+      title="Save"
+      aria-label="save"
+      key="save"
+      onClick={handleSave}>
+      <SaveIcon/>
+    </ControlButton>].filter((ControlButton) => {
+      if (Array.isArray(hideControls)) {
+        return !hideControls.includes(ControlButton.props['aria-label']);
+      }
+      return true;
+    })}
 
     <DataStoryControlsContext.Provider value={context}>
       {(slotComponents || []).map((component, index) => (

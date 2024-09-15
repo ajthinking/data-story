@@ -55,11 +55,12 @@ export interface ClientRunParams {
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
-
+type ControlsType = 'run' | 'addNode' | 'save';
 export type DataStoryProps = {
+  children?: React.ReactNode;
   client: WorkspaceApiClient,
   initDiagram?: Diagram | null;
-  hideControls?: boolean
+  hideControls?: boolean | ControlsType[];
   slotComponents?: React.ReactNode[];
   observers?: DataStoryObservers;
   onInitialize?: DataStoryCallback;

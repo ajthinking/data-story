@@ -107,6 +107,7 @@ export default () => {
             setPoints([])
             run()
           }}
+          hideControls={['save']}
           client={client}
           observers={{
             inputObservers: [{ nodeId: 'Table.1', portId: 'input' }],
