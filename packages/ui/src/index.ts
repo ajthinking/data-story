@@ -1,5 +1,6 @@
 export { DataStory } from './components/DataStory';
 export { DataStoryCanvas } from './components/DataStory/DataStoryCanvas';
+export { DataStoryCanvasProvider } from './components/DataStory/store/store';
 export { DropDown } from './components/DropDown';
 export { SaveIcon } from './components/DataStory/icons/saveIcon'
 export { OpenIcon } from './components/DataStory/icons/openIcon'
