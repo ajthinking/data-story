@@ -167,14 +167,10 @@ export type StoreSchema = {
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptions?: NodeDescription[];
   nodeDescriptionsLoading?: boolean;
-  tree?: Tree[];
-  activeBar?: string;
-  diagramKey?: string;
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
-  handleClickExplorerNode: (node: NodeApi<Tree>) => void
 };
 
 export type Activity = {
