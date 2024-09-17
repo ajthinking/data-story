@@ -1,4 +1,4 @@
-import { Application, coreNodeProvider, Diagram, ExecutionResult, InMemoryStorage } from '@data-story/core';
+import { Application, coreNodeProvider, Diagram, ExecutionResult, InMemoryStorage, InputObserverController, ReportCallback } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
 
 export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
@@ -6,34 +6,30 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
   app.register(coreNodeProvider)
   await app.boot();
 
+  const storage = new InMemoryStorage();
+
   const diagram = new Diagram({
     nodes: event.diagram.nodes,
     links: event.diagram.links,
   })
 
-  // webviewPanel.webview.postMessage({});
-  // const diagram = new Diagram({
-  //   nodes: data.diagram.nodes,
-  //   links: data.diagram.links,
-  // })
+  const sendMsg: ReportCallback = (items, inputObservers) => {
+    webviewPanel.webview.postMessage(JSON.stringify({
+      type: 'NotifyObservers',
+      inputObservers,
+      items
+    }))
+  }
 
-  // const sendMsg: ReportCallback = (items, inputObservers) => {
-  //   ws.send(JSON.stringify({
-  //     type: 'NotifyObservers',
-  //     inputObservers,
-  //     items
-  //   }))
-  // }
-
-  // const inputObserverController = new InputObserverController(
-  //   data.inputObservers,
-  //   sendMsg
-  // );
+  const inputObserverController = new InputObserverController(
+    event.inputObservers || [],
+    sendMsg
+  );
 
   const executor = app.getExecutor({
     diagram,
     storage: new InMemoryStorage(),
-    // inputObserverController
+    inputObserverController
   });
 
   const execution = executor.execute()

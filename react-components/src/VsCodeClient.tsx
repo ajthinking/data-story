@@ -3,6 +3,7 @@ import { WorkspaceApiClient } from "@data-story/ui/dist/src/components/DataStory
 import { ClientRunParams } from "@data-story/ui/dist/src/components/DataStory/types";
 
 export class VsCodeClient implements WorkspaceApiClient {
+  updateEdgeCounts: any;
   private vscode: any;
 
   constructor(vscode: any) {
@@ -18,9 +19,7 @@ export class VsCodeClient implements WorkspaceApiClient {
   }
 
   run = async ({ diagram, updateEdgeCounts, observers }: ClientRunParams): Promise<void> => {
-    console.log("RUNNING DIAGRAM", diagram);
-
-    // this.updateEdgeCounts = updateEdgeCounts;
+    this.updateEdgeCounts = updateEdgeCounts;
     const message = {
       type: 'run',
       diagram,
@@ -64,7 +63,7 @@ export class VsCodeClient implements WorkspaceApiClient {
 
     // ...If message is non-transactional, handle it
     if (data.type === 'ExecutionUpdate') {
-      // this.updateEdgeCounts!(data.counts)
+      this.updateEdgeCounts!(data.counts)
 
       for(const hook of data.hooks as Hook[]) {
         if (hook.type === 'CONSOLE_LOG') {
