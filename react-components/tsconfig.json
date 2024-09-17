@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node", // Ensures TypeScript can resolve node_modules correctly
+    "module": "esnext",
+    "target": "es6",
+    "lib": ["dom", "es6"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

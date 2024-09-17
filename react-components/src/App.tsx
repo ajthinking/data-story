@@ -2,7 +2,16 @@ import { Application, Diagram } from '@data-story/core';
 import { DataStory, DataStoryCanvas, DataStoryCanvasProvider, WorkspaceApiJSClient } from '@data-story/ui';
 import { useEffect, useState } from 'react';
 
+declare global {
+  interface Window {
+    initialData: any;
+    vscode: any
+  }
+}
+
 export default function MyComponent() {
+  if(!window.initialData) throw new Error('No initial data found');
+
   const { fileUri, diagramData } = window.initialData;
   const [responseData, setResponseData] = useState(null); // To store the response from the extension
   const { nodes, links } = JSON.parse(diagramData);
@@ -15,7 +24,7 @@ export default function MyComponent() {
     window.vscode.postMessage({ type: 'ready' });
 
     // Listen for messages from the backend
-    const handleMessage = (event) => {
+    const handleMessage = (event: any) => {
       const message = event.data;
       if (message.type === 'init') {
         console.log('Received response from extension:', message.data);
@@ -37,17 +46,18 @@ export default function MyComponent() {
       <DataStoryCanvasProvider>
         <DataStoryCanvas
           client={new WorkspaceApiJSClient(new Application())}
-          // initDiagram?: Diagram | null;
           onInitialize={()=>{}}
           hideSidebar={true}
           hideActivityBar={true}
           initSidebarKey={undefined}
-          onSave={()=>{}}
+          onSave={()=> new Promise(
+            () => console.log('Save')
+          )}
           key={'abc'}
           initDiagram={diagram}
           ref={undefined}
           setSidebarKey={() => {}}
-          sidebarKey={() => {}}
+          sidebarKey={undefined}
           selectedNode={undefined}
           selectedNodeData={undefined}
           onNodeSelected={() => {}}          
