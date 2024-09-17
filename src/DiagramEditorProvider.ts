@@ -3,7 +3,7 @@ import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
 import fs from 'fs';
 import { MessageHandler } from './MessageHandler';
-import { onReady } from './messageHandlers/onReady';
+import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
@@ -40,7 +40,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
       // Handle messages from the webview
       webviewPanel.webview.onDidReceiveMessage(event => {
         const handlers: Record<string, MessageHandler> = {
-          ready: onReady,
+          run: onRun,
           getNodeDescriptions: onGetNodeDescriptions,
         };
         

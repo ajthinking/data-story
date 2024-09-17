@@ -84,7 +84,7 @@ const vscode = __importStar(__webpack_require__(1));
 const DiagramDocument_1 = __webpack_require__(3);
 const path_1 = __importDefault(__webpack_require__(4));
 const fs_1 = __importDefault(__webpack_require__(5));
-const onReady_1 = __webpack_require__(6);
+const onRun_1 = __webpack_require__(6);
 const onGetNodeDescriptions_1 = __webpack_require__(7);
 class DiagramEditorProvider {
     context;
@@ -109,7 +109,7 @@ class DiagramEditorProvider {
         // Handle messages from the webview
         webviewPanel.webview.onDidReceiveMessage(event => {
             const handlers = {
-                ready: onReady_1.onReady,
+                run: onRun_1.onRun,
                 getNodeDescriptions: onGetNodeDescriptions_1.onGetNodeDescriptions,
             };
             const handler = handlers[event.type];
@@ -276,22 +276,55 @@ module.exports = require("fs");
 
 /***/ }),
 /* 6 */
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.onReady = void 0;
-const onReady = ({ webviewPanel }) => {
-    webviewPanel.webview.postMessage({
-        type: 'init',
-        data: {
-            message: 'Hello from the extension!',
-            additionalInfo: 'This is the initial data from the extension.'
-        }
+exports.onRun = void 0;
+const core_1 = __webpack_require__(8);
+const onRun = async ({ event, webviewPanel }) => {
+    const app = new core_1.Application();
+    app.register(core_1.coreNodeProvider);
+    await app.boot();
+    const diagram = new core_1.Diagram({
+        nodes: event.diagram.nodes,
+        links: event.diagram.links,
     });
+    // webviewPanel.webview.postMessage({});
+    // const diagram = new Diagram({
+    //   nodes: data.diagram.nodes,
+    //   links: data.diagram.links,
+    // })
+    // const sendMsg: ReportCallback = (items, inputObservers) => {
+    //   ws.send(JSON.stringify({
+    //     type: 'NotifyObservers',
+    //     inputObservers,
+    //     items
+    //   }))
+    // }
+    // const inputObserverController = new InputObserverController(
+    //   data.inputObservers,
+    //   sendMsg
+    // );
+    const executor = app.getExecutor({
+        diagram,
+        storage: new core_1.InMemoryStorage(),
+        // inputObserverController
+    });
+    const execution = executor.execute();
+    try {
+        for await (const update of execution) {
+            webviewPanel.webview.postMessage(update);
+        }
+        webviewPanel.webview.postMessage(new core_1.ExecutionResult());
+    }
+    catch (error) {
+        console.log("SOME ERROR IN onRun!");
+        throw error;
+    }
 };
-exports.onReady = onReady;
+exports.onRun = onRun;
 
 
 /***/ }),

@@ -12,14 +12,22 @@ export class VsCodeClient implements WorkspaceApiClient {
   }
 
   async getNodeDescriptions() {
-    const response = await this.sendAwaitable({ type: 'getNodeDescriptions' });
-    console.log('awaitable getNodeDescriptions response', response);
+    const { availableNodes } = await this.sendAwaitable({ type: 'getNodeDescriptions' });
 
-    return response.availableNodes;
+    return availableNodes;
   }
 
-  async run({ diagram, updateEdgeCounts, observers }: ClientRunParams): Promise<void> {
+  run = async ({ diagram, updateEdgeCounts, observers }: ClientRunParams): Promise<void> => {
     console.log("RUNNING DIAGRAM", diagram);
+
+    // this.updateEdgeCounts = updateEdgeCounts;
+    const message = {
+      type: 'run',
+      diagram,
+      inputObservers: observers?.inputObservers || [],
+    };
+
+    this.sendMessage(message);
   }
   
   getTree = (async () => {}) as any;
@@ -28,7 +36,7 @@ export class VsCodeClient implements WorkspaceApiClient {
   destroyTree = (async () => {}) as any;
   moveTree = (async () => {}) as any;
 
-  private socketSendMsg(message: any) {
+  private sendMessage(message: any) {
     this.vscode.postMessage(message);
   }
 
@@ -43,7 +51,7 @@ export class VsCodeClient implements WorkspaceApiClient {
       awaited: true,
     };
 
-    this.socketSendMsg(awaitableMessage);
+    this.sendMessage(awaitableMessage);
     // Wait for response and return it in an awaitable way!
     const result = await waitForResponse(awaitableMessage);
     return result;
@@ -98,7 +106,7 @@ export class VsCodeClient implements WorkspaceApiClient {
       return;
     }
 
-    throw ('Unknown message type (client): ' + data.type)
+    throw ('Unknown message type (client): ' + JSON.stringify(data));
   }  
 }
 
