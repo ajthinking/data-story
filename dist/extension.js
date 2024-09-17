@@ -116,15 +116,15 @@ class DiagramEditorProvider {
     }
     getWebviewContent(webview, document) {
         const diagramData = Buffer.from(document.data).toString('utf8');
-        const manifestPath = path_1.default.join(this.context.extensionPath, 'my-react-app', 'build', 'asset-manifest.json');
+        const manifestPath = path_1.default.join(this.context.extensionPath, 'react-components', 'build', 'asset-manifest.json');
         // Read the manifest file
         const manifest = JSON.parse(fs_1.default.readFileSync(manifestPath, 'utf8'));
         // Get the correct JS and CSS file paths from the manifest
         const mainScript = manifest['files']['main.js'];
         const mainStyle = manifest['files']['main.css'];
         // Resolve URIs for the React app's main.js and main.css
-        const scriptUri = webview.asWebviewUri(vscode.Uri.file(path_1.default.join(this.context.extensionPath, 'my-react-app', 'build', mainScript)));
-        const styleUri = webview.asWebviewUri(vscode.Uri.file(path_1.default.join(this.context.extensionPath, 'my-react-app', 'build', mainStyle)));
+        const scriptUri = webview.asWebviewUri(vscode.Uri.file(path_1.default.join(this.context.extensionPath, 'react-components', 'build', mainScript)));
+        const styleUri = webview.asWebviewUri(vscode.Uri.file(path_1.default.join(this.context.extensionPath, 'react-components', 'build', mainStyle)));
         // Inject file URI and diagram data into the window object
         const fileUri = webview.asWebviewUri(document.uri);
         // Return HTML content for the Webview

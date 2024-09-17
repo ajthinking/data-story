@@ -1,3 +1,11 @@
+# WIP INSTALLATION
+* clone repo
+* open repo with VS Code
+* In "Run and Debug" tab, click "Run Extension"
+* This opens a new instance of VS Code
+* With the new instance, open a directory
+* Create a *.diagram.json file
+
 # ds-ext README
 
 This is the README for your extension "ds-ext". After writing up a brief description, we recommend including the following sections.

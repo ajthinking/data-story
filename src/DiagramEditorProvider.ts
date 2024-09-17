@@ -52,7 +52,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private getWebviewContent(webview: vscode.Webview, document: DiagramDocument): string {
     const diagramData = Buffer.from(document.data).toString('utf8');
 
-    const manifestPath = path.join(this.context.extensionPath, 'my-react-app', 'build', 'asset-manifest.json');
+    const manifestPath = path.join(this.context.extensionPath, 'react-components', 'build', 'asset-manifest.json');
 
     // Read the manifest file
     const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
@@ -64,13 +64,13 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     // Resolve URIs for the React app's main.js and main.css
     const scriptUri = webview.asWebviewUri(
         vscode.Uri.file(
-            path.join(this.context.extensionPath, 'my-react-app', 'build', mainScript)
+            path.join(this.context.extensionPath, 'react-components', 'build', mainScript)
         )
     );
 
     const styleUri = webview.asWebviewUri(
         vscode.Uri.file(
-            path.join(this.context.extensionPath, 'my-react-app', 'build', mainStyle)
+            path.join(this.context.extensionPath, 'react-components', 'build', mainStyle)
         )
     );
 

@@ -39,10 +39,10 @@
     {
       "type": "npm",
       "script": "build",
-      "path": "my-react-app",
+      "path": "react-components",
       "group": "build",
       "problemMatcher": [],
-      "label": "npm: build - my-react-app",
+      "label": "npm: build - react-components",
       "detail": "react-scripts build"
     }
   ]
