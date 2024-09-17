@@ -28,8 +28,12 @@
     "languages": [
       {
         "id": "diagramJson",
-        "aliases": ["Diagram JSON"],
-        "extensions": [".diagram.json"],
+        "aliases": [
+          "Diagram JSON"
+        ],
+        "extensions": [
+          ".diagram.json"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -38,7 +42,9 @@
         "viewType": "ds-ext.diagramEditor",
         "displayName": "Diagram Editor",
         "selector": [
-          { "filenamePattern": "*.diagram.json" }
+          {
+            "filenamePattern": "*.diagram.json"
+          }
         ]
       }
     ],
@@ -65,7 +71,7 @@
           "name": "Node Details"
         }
       ]
-    }    
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
@@ -92,5 +98,7 @@
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@data-story/core": "^0.0.89"
+  }
 }

@@ -1,6 +1,7 @@
 import { Application, Diagram } from '@data-story/core';
 import { DataStory, DataStoryCanvas, DataStoryCanvasProvider, WorkspaceApiJSClient } from '@data-story/ui';
 import { useEffect, useState } from 'react';
+import { VsCodeClient } from './VsCodeClient';
 
 declare global {
   interface Window {
@@ -17,12 +18,7 @@ export default function MyComponent() {
   const { nodes, links } = JSON.parse(diagramData);
   const diagram = new Diagram({ nodes, links });
 
-  console.log({ fileUri, diagramData });
-
   useEffect(() => {
-    // Send a 'ready' message to the backend
-    window.vscode.postMessage({ type: 'ready' });
-
     // Listen for messages from the backend
     const handleMessage = (event: any) => {
       const message = event.data;
@@ -43,11 +39,21 @@ export default function MyComponent() {
 
   return (
     <div style={{ width: '100%', height: '100vh' }}>
-      <DataStoryCanvasProvider>
-        <DataStoryCanvas
-          client={new WorkspaceApiJSClient(new Application())}
+        <DataStory
+          client={new VsCodeClient(window.vscode)}
           onInitialize={()=>{}}
-          hideSidebar={true}
+          hideSidebar={false}
+          hideActivityBar={true}
+          initSidebarKey={undefined}
+          key={'abc'}
+          initDiagram={diagram}
+        />
+
+      {/* <DataStoryCanvasProvider>
+        <DataStoryCanvas
+          client={new VsCodeClient()}
+          onInitialize={()=>{}}
+          hideSidebar={false}
           hideActivityBar={true}
           initSidebarKey={undefined}
           onSave={()=> new Promise(
@@ -56,13 +62,15 @@ export default function MyComponent() {
           key={'abc'}
           initDiagram={diagram}
           ref={undefined}
-          setSidebarKey={() => {}}
+          setSidebarKey={(e) => {
+            console.log(e)
+          }}
           sidebarKey={undefined}
           selectedNode={undefined}
           selectedNodeData={undefined}
           onNodeSelected={() => {}}          
         />
-      </DataStoryCanvasProvider>
+      </DataStoryCanvasProvider> */}
     </div>
   );
 }

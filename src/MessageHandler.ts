@@ -5,4 +5,4 @@ export type MessageHandlerArgs = {
   event: any;
 };
 
-export type MessageHandler = (args: MessageHandlerArgs) => void;
+export type MessageHandler = (args: MessageHandlerArgs) => Promise<void>;

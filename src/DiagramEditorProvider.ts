@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import { MessageHandler } from './MessageHandler';
 import { onReady } from './messageHandlers/onReady';
+import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -40,6 +41,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
       webviewPanel.webview.onDidReceiveMessage(event => {
         const handlers: Record<string, MessageHandler> = {
           ready: onReady,
+          getNodeDescriptions: onGetNodeDescriptions,
         };
         
         const handler = handlers[event.type];
