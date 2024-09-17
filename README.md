@@ -1,5 +1,7 @@
-# WIP INSTALLATION
+# Development Installation
 * clone repo
+* in root, run `yarn watch`
+* in react-components, also run `yarn watch`
 * open repo with VS Code
 * In "Run and Debug" tab, click "Run Extension"
 * This opens a new instance of VS Code
