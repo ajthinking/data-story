@@ -1,4 +1,5 @@
 import { createDataStoryId, Hook } from "@data-story/core";
+import { DataStoryEvents, eventManager } from "@data-story/ui";
 import { WorkspaceApiClient } from "@data-story/ui/dist/src/components/DataStory/clients/WorkspaceApiClient";
 import { ClientRunParams } from "@data-story/ui/dist/src/components/DataStory/types";
 
@@ -82,9 +83,9 @@ export class VsCodeClient implements WorkspaceApiClient {
 
     if (data.type === 'ExecutionResult') {
       console.log('Execution complete 💫')
-      // eventManager.emit({
-      //   type: DataStoryEvents.RUN_SUCCESS
-      // });
+      eventManager.emit({
+        type: DataStoryEvents.RUN_SUCCESS
+      });
       return
     }
 
@@ -93,10 +94,10 @@ export class VsCodeClient implements WorkspaceApiClient {
         history: data.history,
       })
 
-      // eventManager.emit({
-      //   type: DataStoryEvents.RUN_ERROR,
-      //   payload: data
-      // });
+      eventManager.emit({
+        type: DataStoryEvents.RUN_ERROR,
+        payload: data
+      });
 
       return
     }
