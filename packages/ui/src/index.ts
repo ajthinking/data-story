@@ -8,7 +8,6 @@ export { useDataStoryControls } from './components/DataStory/dataStoryControls';
 export { eventManager, useDataStoryEvent } from './components/DataStory/events/eventManager'
 export { DataStoryEvents, type DataStoryEventType } from './components/DataStory/events/dataStoryEventType'
 export type { DataStoryObservers, DataStoryProps } from './components/DataStory/types'
-export { Explorer } from './components/DataStory/sidebar/explorer/explorer';
 export { default as NodeComponent } from './components/Node/NodeComponent';
 export { WorkspaceApiJSClient } from './components/DataStory/clients/WorkspaceApiJSClient';
 export { WorkspaceSocketClient } from './components/DataStory/clients/WorkspaceSocketClient';

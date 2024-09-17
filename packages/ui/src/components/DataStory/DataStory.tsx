@@ -23,13 +23,13 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey, children } = props;
+  const { client, initSidebarKey, children, initDiagram } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const [sidebarKey, setSidebarKey] = useState(initSidebarKey ?? '');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
-  const [diagram, setDiagram] = useState<Diagram | null>(null);
+  const [diagram, setDiagram] = useState<Diagram | null>(initDiagram || new Diagram());
   const diagramMapRef = useRef<Map<string, Diagram | null>>(new Map())
   const [diagramKey, setDiagramKey] = useState<string>();
   const [activityGroups, setActivityGroups] = useState<Activity[]>([]);
@@ -52,38 +52,6 @@ export const DataStoryComponent = (
   });
   handleRequestError(getNodeDescriptionsError);
 
-  const saveTree = useCallback(async() => {
-    if (diagramKey) {
-      diagramMapRef.current.set(diagramKey, partialStoreRef?.current?.toDiagram?.() ?? null)
-    }
-    const newTree = structuredClone(tree) ?? [];
-    const updateTree = (tree: Tree[]) => {
-      for(const node of tree) {
-        if (node.type === 'file' && diagramMapRef.current.has(node.id)) {
-          node.content = diagramMapRef.current.get(node.id) as Diagram;
-        }
-
-        if (node.type === 'folder' && node.children) {
-          updateTree(node.children);
-        }
-      }
-    }
-    updateTree(newTree);
-
-    client.updateTree({ path: LocalStorageKey, tree: newTree })
-      .then(() => {
-        eventManager.emit({
-          type: DataStoryEvents.SAVE_SUCCESS
-        });
-      })
-      .catch((error) => {
-        eventManager.emit({
-          type: DataStoryEvents.SAVE_ERROR,
-          payload: error
-        });
-      });
-  }, [diagramKey, tree]);
-
   const handleClickExplorerNode = useCallback((node: NodeApi<Tree>) => {
     // store the diagram in the Ref before changing the diagramKey
     if (diagramKey) {
@@ -96,24 +64,6 @@ export const DataStoryComponent = (
       setDiagram(newDiagram);
     }
   }, [diagramKey]);
-
-  useEffect(() => {
-    if (tree) {
-      const firstFileNode = findFirstFileNode(tree);
-      setDiagram(firstFileNode?.content ?? null);
-      setDiagramKey(firstFileNode?.id);
-    }
-  }, [tree]);
-
-  useEffect(() => {
-    if (!tree?.length) {
-      setActivityGroups([]);
-    } else if (Array.isArray(props.hideActivityBar) && props.hideActivityBar.length) {
-      setActivityGroups(ActivityGroups.filter((activity) => !(props.hideActivityBar as AcitvityBarType[])?.includes(activity.id)));
-    } else {
-      setActivityGroups(ActivityGroups);
-    }
-  }, [tree]);
 
   useEffect(() => {
     if (sidebarKey !== 'node') {
@@ -129,6 +79,13 @@ export const DataStoryComponent = (
     }
   }, [sidebarKey]);
 
+  useEffect(() => {
+    if (selectedNode) {
+      setSidebarKey('node');
+      setIsSidebarClose(false);
+    }
+  }, [selectedNode]);
+
   return (
     <DataStoryCanvasProvider>
       <div className="relative h-full w-full">
@@ -137,23 +94,14 @@ export const DataStoryComponent = (
           (treeLoading && !tree)
             ? <LoadingMask/>
             : <Allotment className='h-full border-0.5 relative'>
-              <Allotment.Pane visible={!(props.hideActivityBar === true)} minSize={44} maxSize={44}>
-                <ActivityBar
-                  activityGroups={activityGroups}
-                  selectedNode={selectedNode}
-                  setActiveKey={setSidebarKey}
-                  activeKey={sidebarKey}
-                  onClose={setIsSidebarClose}/>
-              </Allotment.Pane>
               <Allotment.Pane visible={!isSidebarClose} snap maxSize={500} preferredSize={300}>
                 <Sidebar
-                  tree={tree}
-                  handleClickExplorerNode={handleClickExplorerNode}
-                  diagramKey={diagramKey}
-                  nodeDescriptions={nodeDescriptions} nodeDescriptionsLoading={nodeDescriptionsLoading}
+                  nodeDescriptions={nodeDescriptions}
+                  nodeDescriptionsLoading={nodeDescriptionsLoading}
                   partialStoreRef={partialStoreRef}
                   sidebarKey={sidebarKey}
-                  setSidebarKey={setSidebarKey} node={selectedNode}
+                  setSidebarKey={setSidebarKey}
+                  node={selectedNode}
                   onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
               </Allotment.Pane>
               {/*The Allotment.Pane will recalculate the width and height of the child components.*/}
@@ -161,7 +109,7 @@ export const DataStoryComponent = (
               <Allotment.Pane minSize={300} className="h-full w-96">
                 <DataStoryCanvas
                   {...props}
-                  onSave={saveTree}
+                  onSave={() => new Promise(r => r)}
                   key={diagramKey}
                   initDiagram={diagram}
                   ref={partialStoreRef}

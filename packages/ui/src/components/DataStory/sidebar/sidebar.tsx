@@ -1,6 +1,5 @@
 import { NodeSettingsForm } from '../Form/nodeSettingsForm';
 import { NodeSettingsSidebarProps } from '../types';
-import { Explorer } from './explorer/explorer';
 import { Placeholder } from '../common/placeholder';
 import { NodeDescription } from '@data-story/core';
 import { Run } from './run';
@@ -10,7 +9,7 @@ import { LoadingMask } from '../common/loadingMask';
 
 const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
-    tree, node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey, diagramKey, handleClickExplorerNode,
+    node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey,
     partialStoreRef, nodeDescriptions, nodeDescriptionsLoading
   } = props;
 
@@ -28,12 +27,6 @@ const SidebarComponent = (props: NodeSettingsSidebarProps) => {
             addNodeFromDescription={(nodeDescription: NodeDescription) => partialStoreRef.current?.addNodeFromDescription?.(nodeDescription)}
             setSidebarKey={setSidebarKey}/>;
       }
-      case 'explorer':
-        return <Explorer handleClickExplorerNode={handleClickExplorerNode} diagramKey={diagramKey} tree={tree} />;
-      case 'diagram':
-        return <Placeholder content={'todo: show diagram configuration'}/>;
-      case 'settings':
-        return <Placeholder content={'todo: show diagram settings, including run and add modal features'}/>;
       case 'node':
         return node?.id && node?.data
           ? <NodeSettingsForm node={node} onClose={onClose} onUpdateNodeData={onUpdateNodeData}/>
