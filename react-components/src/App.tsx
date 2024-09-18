@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-export default function MyComponent() {
+export default function App() {
   if(!window.initialData) throw new Error('No initial data found');
 
   const { fileUri, diagramData } = window.initialData;
