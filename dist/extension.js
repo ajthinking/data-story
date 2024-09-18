@@ -86,6 +86,7 @@ const path_1 = __importDefault(__webpack_require__(4));
 const fs_1 = __importDefault(__webpack_require__(5));
 const onRun_1 = __webpack_require__(6);
 const onGetNodeDescriptions_1 = __webpack_require__(132);
+const onUpdateDiagram_1 = __webpack_require__(133);
 class DiagramEditorProvider {
     context;
     _onDidChangeCustomDocument = new vscode.EventEmitter();
@@ -111,11 +112,12 @@ class DiagramEditorProvider {
             const handlers = {
                 run: onRun_1.onRun,
                 getNodeDescriptions: onGetNodeDescriptions_1.onGetNodeDescriptions,
+                updateDiagram: onUpdateDiagram_1.onUpdateDiagram
             };
             const handler = handlers[event.type];
             if (!handler)
                 throw Error(`No handler found for event type: ${event.type}`);
-            handler({ webviewPanel, event });
+            handler({ webviewPanel, event, document });
         });
     }
     getWebviewContent(webview, document) {
@@ -13664,6 +13666,22 @@ const onGetNodeDescriptions = async ({ event, webviewPanel }) => {
     });
 };
 exports.onGetNodeDescriptions = onGetNodeDescriptions;
+
+
+/***/ }),
+/* 133 */
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.onUpdateDiagram = void 0;
+const onUpdateDiagram = async ({ event, document, }) => {
+    console.log("In onUpdateDiagram: attempting update of diagram.");
+    const { fileUri, diagramData } = event;
+    document.update(diagramData);
+};
+exports.onUpdateDiagram = onUpdateDiagram;
 
 
 /***/ })

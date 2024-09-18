@@ -15,17 +15,17 @@ export default function MyComponent() {
 
   const { fileUri, diagramData } = window.initialData;
   const [responseData, setResponseData] = useState(null); // To store the response from the extension
-  const { nodes, links } = JSON.parse(diagramData);
+  const { nodes, links } = (() => {
+    if(!diagramData) return { nodes: [], links: [] };
+    return JSON.parse(diagramData);
+  })();
+
   const diagram = new Diagram({ nodes, links });
 
   useEffect(() => {
     // Listen for messages from the backend
     const handleMessage = (event: any) => {
       const message = event.data;
-      if (message.type === 'init') {
-        console.log('Received response from extension:', message.data);
-        setResponseData(message.data);  // Store the response data in state
-      }
     };
 
     // Attach the message listener
@@ -37,6 +37,23 @@ export default function MyComponent() {
     };
   }, []);
 
+  const handleChange = useCallback(
+    debounce(async (diagram: Diagram) => {
+      console.log('Sending updated diagram to the VS Code extension.');
+
+      // Construct the message payload with updated diagram data
+      const updatedData = {
+        type: 'updateDiagram',
+        fileUri, // Include the file URI to specify the target file
+        diagramData: JSON.stringify(diagram),
+      };
+
+      // Send the message to VS Code extension
+      window.vscode.postMessage(updatedData);
+    }, 100), // Debounced with 100ms delay
+    [fileUri]
+  );  
+
   return (
     <div style={{ width: '100%', height: '100vh' }}>
         <DataStory
@@ -47,42 +64,8 @@ export default function MyComponent() {
           initSidebarKey={undefined}
           key={'abc'}
           initDiagram={diagram}
-          onChange={useCallback(
-            debounce(async (diagram: Diagram) => {
-              console.log('TODO: send signal to *update* diagram! Note not *save* - we are only to persist the unsaved changes at this point.');
-              console.warn('TODO: this does not react to changes of node configurations :/')
-            }, 100),
-            []
-          )}
+          onChange={handleChange}
         />
-
-      {/* <DataStoryCanvasProvider>
-        <DataStoryCanvas
-          client={new VsCodeClient()}
-          onInitialize={()=>{}}
-          hideSidebar={false}
-          hideActivityBar={true}
-          initSidebarKey={undefined}
-          onSave={()=> new Promise(
-            () => console.log('Save')
-          )}
-          key={'abc'}
-          initDiagram={diagram}
-          ref={undefined}
-          setSidebarKey={(e) => {
-            console.log(e)
-          }}
-          sidebarKey={undefined}
-          selectedNode={undefined}
-          selectedNodeData={undefined}
-          onNodeSelected={() => {}}          
-        />
-      </DataStoryCanvasProvider> */}
     </div>
   );
 }
-
-
-// client={new WorkspaceApiJSClient(new Application())}
-// hideActivityBar={true}
-// hideStatusBar={true}

@@ -5,6 +5,7 @@ import fs from 'fs';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
+import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -42,12 +43,13 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         const handlers: Record<string, MessageHandler> = {
           run: onRun,
           getNodeDescriptions: onGetNodeDescriptions,
+          updateDiagram: onUpdateDiagram
         };
         
         const handler = handlers[event.type];
         if(!handler) throw Error(`No handler found for event type: ${event.type}`);
     
-        handler({ webviewPanel, event });
+        handler({ webviewPanel, event, document });
       });
   }
 
