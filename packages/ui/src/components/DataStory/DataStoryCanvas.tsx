@@ -1,6 +1,6 @@
 import { DataStoryControls } from './dataStoryControls';
 import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Background, BackgroundVariant, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
+import { Background, BackgroundVariant, EdgeChange, NodeChange, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
@@ -50,7 +50,8 @@ const Flow = ({
   selectedNodeData,
   selectedNode,
   onSave,
-  client
+  client,
+  onChange,
 }: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -64,6 +65,7 @@ const Flow = ({
     addNodeFromDescription: state.addNodeFromDescription,
     setOpenNodeSidebarId: state.setOpenNodeSidebarId,
     traverseNodes: state.traverseNodes,
+    toDiagram: state.toDiagram,
   });
 
   const {
@@ -77,7 +79,8 @@ const Flow = ({
     setObservers,
     addNodeFromDescription,
     setOpenNodeSidebarId,
-    traverseNodes
+    traverseNodes,
+    toDiagram,
   } = useStore(selector, shallow);
 
   useSelectedNodeSettings({
@@ -128,8 +131,14 @@ const Flow = ({
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes as NodeTypes}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
+        onNodesChange={(changes: NodeChange[]) => {
+          onNodesChange(changes);
+          if(onChange) onChange(toDiagram())
+        }}
+        onEdgesChange={(changes: EdgeChange[]) => {
+          onEdgesChange(changes);
+          if(onChange) onChange(toDiagram())
+        }}
         onConnect={connect}
         onInit={(rfInstance: StoreInitOptions['rfInstance']) => {
           onInit({
