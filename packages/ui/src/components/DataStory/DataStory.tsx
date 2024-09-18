@@ -9,7 +9,7 @@ import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
-import { Diagram } from '@data-story/core';
+import { debounce, Diagram,  } from '@data-story/core';
 import { LocalStorageKey } from './common/method';
 
 function handleRequestError(requestError?: Error): void {
@@ -19,7 +19,7 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey, children, initDiagram } = props;
+  const { client, initSidebarKey, children, initDiagram, onChange } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
@@ -92,6 +92,7 @@ export const DataStoryComponent = (
                   selectedNode={selectedNode}
                   selectedNodeData={updateSelectedNodeData}
                   onNodeSelected={setSelectedNode}
+                  onChange={onChange}
                 />
               </Allotment.Pane>
             </Allotment>

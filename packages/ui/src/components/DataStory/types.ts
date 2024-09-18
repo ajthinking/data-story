@@ -73,6 +73,7 @@ export type DataStoryProps = {
    * initSidebarKey: 'explorer' (open the explorer sidebar by default)
    */
   initSidebarKey?: string;
+  onChange?: (diagram: Diagram) => Promise<void>
 }
 
 export type DataStoryCanvasProps = {
@@ -82,6 +83,7 @@ export type DataStoryCanvasProps = {
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
   onSave?:  () => Promise<void>;
+  onChange?: (diagram: Diagram) => Promise<void>
 } & DataStoryProps;
 
 export type StoreInitOptions = {
