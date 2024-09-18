@@ -8,9 +8,6 @@ export default () => {
   const { app, loading } = useRequestApp();
 
   const client: MockJSClient | null = new MockJSClient({ app });
-  client.getTree = async({ path }) => {
-    return Promise.resolve(null);
-  };
 
   if (loading || !client) return null;
 

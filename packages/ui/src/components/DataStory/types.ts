@@ -9,7 +9,6 @@ import {
   Param,
   RepeatableParam,
   type ReportCallback,
-  Tree
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
@@ -82,7 +81,6 @@ export type DataStoryCanvasProps = {
   selectedNode?: ReactFlowNode;
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
-  treeLoading?: boolean;
   onSave?:  () => Promise<void>;
 } & DataStoryProps;
 
@@ -180,32 +178,9 @@ export type Activity = {
   position: 'top' | 'bottom';
 };
 
-export type GetTreeMessage = {
-  id: string,
-  awaited: boolean,
-  type: 'getTree',
-  path: string,
-}
-export type GetTreeResponse = {
-  id: string,
-  awaited: boolean,
-  type: 'GetTreeResponse',
-  tree: Tree[],
-}
-
 export type DescribeResponse = {
   id: string,
   awaited: boolean,
   type: 'DescribeResponse',
   availableNodes: NodeDescription[],
-}
-
-export type TreeMessage = GetTreeMessage
-export type TreeResponse = GetTreeResponse | DescribeResponse
-
-export interface LocalTree {
-  type: 'load' | 'save';
-  version: string;
-  name: string;
-  trees: Tree[];
 }

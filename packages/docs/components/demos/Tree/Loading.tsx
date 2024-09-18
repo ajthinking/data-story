@@ -9,9 +9,6 @@ export default () => {
   if(loading) return null;
 
   const client = new MockJSClient({app});
-  client.getTree = async({ path }) => new Promise((resolve, reject) => {
-    // Please ensure that this request is never terminated.
-  })
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

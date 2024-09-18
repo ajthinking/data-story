@@ -1,7 +1,7 @@
-import { createDataStoryId, Hook, NodeDescription, Tree } from '@data-story/core';
+import { createDataStoryId, Hook, NodeDescription } from '@data-story/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, retry } from 'rxjs';
-import { ClientRunParams, DescribeResponse, GetTreeResponse, TreeMessage, TreeResponse } from '../types';
+import { ClientRunParams, DescribeResponse } from '../types';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { processWaitingResponse, waitForResponse } from './WebSocketHandleResponseMiddleware';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -65,40 +65,6 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     this.socketSendMsg(message);
   }
 
-  async getTree({ path }: {path: string}) {
-    const response = await this.sendAwaitable({
-      type: 'getTree',
-      path,
-    }) as GetTreeResponse;
-
-    return response.tree;
-  }
-
-  async createTree() {
-    console.log('Creating tree from WorkspaceSocketClient')
-    return [] as Tree[]
-  }
-
-  async updateTree({ path, tree }: any) {
-    console.log('Updating tree from WorkspaceSocketClient')
-    const response = await this.sendAwaitable({
-      type: 'updateTree',
-      path: 'x',
-      tree,
-    });
-
-    return [] as Tree[]
-  }
-
-  async destroyTree() {
-    console.log('Destroying tree from WorkspaceSocketClient')
-  }
-
-  async moveTree() {
-    console.log('Moving tree from WorkspaceSocketClient')
-    return [] as Tree[]
-  }
-
   async getNodeDescriptions({ path }) {
     const response = await this.sendAwaitable({
       type: 'describe',
@@ -108,7 +74,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     return response.availableNodes ?? [] as NodeDescription[]
   }
 
-  private socketSendMsg(message: TreeMessage | any) {
+  private socketSendMsg(message: any) {
     this.socket$!.next(message);
   }
 
@@ -121,7 +87,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
       ...message,
       id: msgId,
       awaited: true,
-    } as TreeMessage;
+    } as any;
 
     this.socketSendMsg(awaitableMessage);
     // Wait for response and return it in an awaitable way!
@@ -129,7 +95,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     return result;
   }
 
-  private handleMessage(data: TreeResponse | any) {
+  private handleMessage(data: any) {
     processWaitingResponse(data);
 
     if (data.awaited) return;

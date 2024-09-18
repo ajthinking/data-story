@@ -25,12 +25,7 @@ export const run: MessageHandler<RunMessage> = async(
   app: Application,
   storage: InMemoryStorage
 ) => {
-  // const diagram = DiagramFactory.fromReactFlow(
-  //   data.reactFlow
-  // )
-
   storage.itemsMap.clear();
-  // TODO: Implement deserialize method
   const diagram = new Diagram({
     nodes: data.diagram.nodes,
     links: data.diagram.links,

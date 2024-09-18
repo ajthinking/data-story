@@ -5,17 +5,12 @@ import { ExecutorFactory } from './ExecutorFactory';
 import { InputObserverController } from './InputObserverController';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
-import { Tree } from './Tree';
-import { NullTreeManager, TreeManager } from './TreeManager';
 import { Computer } from './types/Computer';
 import { ServiceProvider } from './types/ServiceProvider';
 import { Storage } from './types/Storage';
 
 export class Application {
   hasBooted = false;
-
-  constructor(private treeManager: TreeManager = new NullTreeManager()
-  ) {}
 
   providers: ServiceProvider[] = [];
   hooks = new Map<string, Function>();
@@ -97,10 +92,6 @@ export class Application {
 
   getRegistry() {
     return this.registry;
-  }
-
-  getTreeManager() {
-    return this.treeManager
   }
 }
 
