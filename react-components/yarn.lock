@@ -1336,10 +1336,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-2.2.0.tgz#2cbcf822bf3764c9658c4d2e568bd0c0cb748016"
   integrity sha512-+OJ9konv95ClSTOJCmMZqpd5+YGsB2S+x6w3E1oaM8UuR5j8nTNHYSz8c9BEPGDOCMQYIEEGlVPj/VY64iTbGw==
 
-"@data-story/core@0.0.89", "@data-story/core@^0.0.89":
-  version "0.0.89"
-  resolved "https://registry.yarnpkg.com/@data-story/core/-/core-0.0.89.tgz#577c0a88582b3ac8e1ae80cd3d57525ed53f31bc"
-  integrity sha512-zdM9ZMYGad16nhPyQPPtWmB95goaBtN+WPtFW3CZ0zqxUa/9bUa3/kGFrTHuW7XmTV935o1Y8eLCdiLbXejTTg==
+"@data-story/core@0.0.90", "@data-story/core@^0.0.90":
+  version "0.0.90"
+  resolved "https://registry.yarnpkg.com/@data-story/core/-/core-0.0.90.tgz#21600f76a6688dd32d2480edb8c8aa59a2c8afaf"
+  integrity sha512-1ciWwkjnTTihzbR0+fMHgQohzKbrms4EjcsopaO7rO+K90w64GdOzmWjIuWmDNPtu+dO/7nQn5184nCnHy9jfQ==
   dependencies:
     "@data-story/hjson" "0.0.2"
     axios "^1.3.4"
@@ -1351,13 +1351,13 @@
   resolved "https://registry.yarnpkg.com/@data-story/hjson/-/hjson-0.0.2.tgz#bc252c31fa40859e3ce97f9f2db377d68034e9cc"
   integrity sha512-MpZm6wYly6YuWNzytAkPg6eYEL/ioqn2XoJ8QEhbsW4eAJvLI3njyrw+Rbq2PfkxrBp5iK/j3RArJ9GWboj4Zw==
 
-"@data-story/ui@^0.0.89":
-  version "0.0.89"
-  resolved "https://registry.yarnpkg.com/@data-story/ui/-/ui-0.0.89.tgz#452d500b0051b2110e653c5794cce7a4598460a0"
-  integrity sha512-nN2kskOehWx81BWKbqtn7Svf0509qSCLkNto+HjOZ7VgKgiB30tnFthttLeDY/taiNjoSwLhJx8oIRlicdz70w==
+"@data-story/ui@^0.0.90":
+  version "0.0.90"
+  resolved "https://registry.yarnpkg.com/@data-story/ui/-/ui-0.0.90.tgz#cfa73f2291fa284d23e908dafc9345410bc502a2"
+  integrity sha512-wwRVvF5fh52iTok5KhRoH7aW4T6fktJeM6gfoRQO+fTkpbHh8JhvR2tzFDvzsvKRGPyoB7ZT1i26ORPhSmz4Sg==
   dependencies:
     "@codemirror/autocomplete" "^6.16.2"
-    "@data-story/core" "0.0.89"
+    "@data-story/core" "0.0.90"
     "@floating-ui/react" "^0.26.10"
     "@tanstack/react-table" "^8.11.7"
     "@tanstack/react-virtual" "^3.5.0"

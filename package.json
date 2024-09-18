@@ -99,6 +99,6 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@data-story/core": "^0.0.89"
+    "@data-story/core": "^0.0.90"
   }
 }

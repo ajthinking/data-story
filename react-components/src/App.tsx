@@ -1,6 +1,6 @@
-import { Application, Diagram } from '@data-story/core';
+import { Application, debounce, Diagram } from '@data-story/core';
 import { DataStory, DataStoryCanvas, DataStoryCanvasProvider, WorkspaceApiJSClient } from '@data-story/ui';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { VsCodeClient } from './VsCodeClient';
 
 declare global {
@@ -47,6 +47,13 @@ export default function MyComponent() {
           initSidebarKey={undefined}
           key={'abc'}
           initDiagram={diagram}
+          onChange={useCallback(
+            debounce(async (diagram: Diagram) => {
+              console.log('TODO: send signal to *update* diagram! Note not *save* - we are only to persist the unsaved changes at this point.');
+              console.warn('TODO: this does not react to changes of node configurations :/')
+            }, 100),
+            []
+          )}
         />
 
       {/* <DataStoryCanvasProvider>
