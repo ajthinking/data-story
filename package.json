@@ -6,7 +6,6 @@
     "packages/ui",
     "packages/docs",
     "packages/nodejs",
-    "packages/hjson",
     "packages/openai",
     "packages/hubspot",
     "packages/private/*"

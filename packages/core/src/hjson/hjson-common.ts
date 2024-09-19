@@ -1,4 +1,4 @@
-function tryParseNumber(text, stopAtNext) {
+function tryParseNumber(text: string , stopAtNext: any) {
   // try to parse a number
 
   var number, string = '', leadingZeros = 0, testLeading = true;
@@ -15,6 +15,7 @@ function tryParseNumber(text, stopAtNext) {
     string = '-';
     next();
   }
+  // @ts-ignore
   while (ch >= '0' && ch <= '9') {
     if (testLeading) {
       if (ch == '0') leadingZeros++;
@@ -56,19 +57,22 @@ function tryParseNumber(text, stopAtNext) {
   else return number;
 }
 
-function createComment(value, comment) {
+function createComment(value: any, comment: any) {
   if (Object.defineProperty) Object.defineProperty(value, '__COMMENTS__', { enumerable: false, writable: true });
   return (value.__COMMENTS__ = comment || {});
 }
 
+// @ts-ignore
 function removeComment(value) {
   Object.defineProperty(value, '__COMMENTS__', { value: undefined });
 }
 
+// @ts-ignore
 function getComment(value) {
   return value.__COMMENTS__;
 }
 
+// @ts-ignore
 function forceComment(text) {
   if (!text) return '';
   var a = text.split('\n');

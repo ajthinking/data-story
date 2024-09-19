@@ -1,39 +1,40 @@
-import common from './hjson-common.js';
-import dsf from './hjson-dsf.js';
+import common from './hjson-common';
+import dsf from './hjson-dsf';
 
-export default function(source, opt) {
-  var text;
-  var at;   // The index of the current character
-  var ch;   // The current character
-  var escapee = {
+export default function(source: string, opt?: any) {
+  var text: string;
+  var at: number;   // The index of the current character
+  var ch: string;   // The current character
+  var escapee: {[key: string]: string} = {
     '"': '"',
     '\'': '\'',
     '\\': '\\',
     '/': '/',
-    b:  '\b',
-    f:  '\f',
-    n:  '\n',
-    r:  '\r',
-    t:  '\t'
+    b: '\b',
+    f: '\f',
+    n: '\n',
+    r: '\r',
+    t: '\t'
   };
 
-  var keepComments;
-  var runDsf; // domain specific formats
+  var keepComments: boolean;
+  var runDsf: any; // domain specific formats
 
   function resetAt() {
     at = 0;
     ch = ' ';
   }
 
-  function isPunctuatorChar(c) {
+  function isPunctuatorChar(c: string) {
     return c === '{' || c === '}' || c === '[' || c === ']' || c === ',' || c === ':';
   }
 
   // Call error when something is wrong.
-  function error(m) {
+  function error(m: string) {
     var i, col = 0, line = 1;
-    for (i = at - 1; i > 0 && text[i] !== '\n'; i--, col++) {}
-    for (; i > 0; i--) if (text[i] === '\n') line++;
+    for(i = at - 1; i > 0 && text[i] !== '\n'; i--, col++) {
+    }
+    for(; i > 0; i--) if (text[i] === '\n') line++;
     throw new Error(m + ' at line ' + line + ',' + col + ' >>>' + text.substr(at - col, 20) + ' ...');
   }
 
@@ -44,19 +45,19 @@ export default function(source, opt) {
     return ch;
   }
 
-  function peek(offs) {
+  function peek(offs: number) {
     // range check is not required
     return text.charAt(at + offs);
   }
 
-  function string(allowML) {
+  function string(allowML: boolean) {
     // Parse a string value.
     // callers make sure that (ch === '"' || ch === "'")
     var string = '';
 
     // When parsing for string values, we must look for "/' and \ characters.
     var exitCh = ch;
-    while (next()) {
+    while(next()) {
       if (ch === exitCh) {
         next();
         if (allowML && exitCh === '\'' && ch === '\'' && string.length === 0) {
@@ -67,15 +68,18 @@ export default function(source, opt) {
       }
       if (ch === '\\') {
         next();
+        // @ts-ignore
         if (ch === 'u') {
           var uffff = 0;
-          for (var i = 0; i < 4; i++) {
+          for(var i = 0; i < 4; i++) {
             next();
+            // @ts-ignore
             var c = ch.charCodeAt(0), hex;
             if (ch >= '0' && ch <= '9') hex = c - 48;
             else if (ch >= 'a' && ch <= 'f') hex = c - 97 + 0xa;
             else if (ch >= 'A' && ch <= 'F') hex = c - 65 + 0xa;
             else error('Bad \\u char ' + ch);
+            // @ts-ignore
             uffff = uffff * 16 + hex;
           }
           string += String.fromCharCode(uffff);
@@ -97,7 +101,7 @@ export default function(source, opt) {
 
     // we are at ''' +1 - get indent
     var indent = 0;
-    for (;;) {
+    for(; ;) {
       var c = peek(-indent - 5);
       if (!c || c === '\n') break;
       indent++;
@@ -105,15 +109,18 @@ export default function(source, opt) {
 
     function skipIndent() {
       var skip = indent;
-      while (ch && ch <= ' ' && ch !== '\n' && skip-- > 0) next();
+      while(ch && ch <= ' ' && ch !== '\n' && skip-- > 0) next();
     }
 
     // skip white/to (newline)
-    while (ch && ch <= ' ' && ch !== '\n') next();
-    if (ch === '\n') { next(); skipIndent(); }
+    while(ch && ch <= ' ' && ch !== '\n') next();
+    if (ch === '\n') {
+      next();
+      skipIndent();
+    }
 
     // When parsing multiline string values, we must look for ' characters.
-    for (;;) {
+    for(; ;) {
       if (!ch) {
         error('Bad multiline string');
       } else if (ch === '\'') {
@@ -124,7 +131,7 @@ export default function(source, opt) {
           return string;
         } else continue;
       } else {
-        while (triple > 0) {
+        while(triple > 0) {
           string += '\'';
           triple--;
         }
@@ -147,10 +154,13 @@ export default function(source, opt) {
     if (ch === '"' || ch === '\'') return string(false);
 
     var name = '', start = at, space = -1;
-    for (;;) {
+    for(; ;) {
       if (ch === ':') {
         if (!name) error('Found \':\' but no key name (for an empty key name use quotes)');
-        else if (space >= 0 && space !== name.length) { at = start + space; error('Found whitespace in your key name (use quotes to include)'); }
+        else if (space >= 0 && space !== name.length) {
+          at = start + space;
+          error('Found whitespace in your key name (use quotes to include)');
+        }
         return name;
       } else if (ch <= ' ') {
         if (!ch) error('Found EOF while looking for a key name (check your syntax)');
@@ -165,16 +175,22 @@ export default function(source, opt) {
   }
 
   function white() {
-    while (ch) {
+    while(ch) {
       // Skip whitespace.
-      while (ch && ch <= ' ') next();
+      while(ch && ch <= ' ') next();
       // Hjson allows comments
       if (ch === '#' || ch === '/' && peek(0) === '/') {
-        while (ch && ch !== '\n') next();
+        // @ts-ignore
+        while(ch && ch !== '\n') next();
       } else if (ch === '/' && peek(0) === '*') {
-        next(); next();
-        while (ch && !(ch === '*' && peek(0) === '/')) next();
-        if (ch) { next(); next(); }
+        next();
+        next();
+        // @ts-ignore
+        while(ch && !(ch === '*' && peek(0) === '/')) next();
+        if (ch) {
+          next();
+          next();
+        }
       } else break;
     }
   }
@@ -186,7 +202,7 @@ export default function(source, opt) {
     if (isPunctuatorChar(ch))
       error('Found a punctuator character \'' + ch + '\' when expecting a quoteless string (check your syntax)');
 
-    for(;;) {
+    for(; ;) {
       next();
       // (detection of ml strings was moved to string())
       var isEol = ch === '\r' || ch === '\n' || ch === '';
@@ -199,12 +215,19 @@ export default function(source, opt) {
         // followed by { ',' | '}' | ']' | '#' | '//' | '/*' }
         // which needs to be parsed as the specified value
         var chf = value[0];
-        switch (chf) {
-          case 'f': if (value.trim() === 'false') return false; break;
-          case 'n': if (value.trim() === 'null') return null; break;
-          case 't': if (value.trim() === 'true') return true; break;
+        switch(chf) {
+          case 'f':
+            if (value.trim() === 'false') return false;
+            break;
+          case 'n':
+            if (value.trim() === 'null') return null;
+            break;
+          case 't':
+            if (value.trim() === 'true') return true;
+            break;
           default:
             if (chf === '-' || chf >= '0' && chf <= '9') {
+              // @ts-ignore
               var n = common.tryParseNumber(value);
               if (n !== undefined) return n;
             }
@@ -220,17 +243,17 @@ export default function(source, opt) {
     }
   }
 
-  function getComment(cAt, first) {
+  function getComment(cAt: number, first?: boolean) {
     var i;
     cAt--;
     // remove trailing whitespace
     // but only up to EOL
-    for (i = at - 2; i > cAt && text[i] <= ' ' && text[i] !== '\n'; i--);
+    for(i = at - 2; i > cAt && text[i] <= ' ' && text[i] !== '\n'; i--) ;
     if (text[i] === '\n') i--;
     if (text[i] === '\r') i--;
     var res = text.substr(cAt, i - cAt + 1);
     // return if we find anything other than whitespace
-    for (i = 0; i < res.length; i++) {
+    for(i = 0; i < res.length; i++) {
       if (res[i] > ' ') {
         var j = res.indexOf('\n');
         if (j >= 0) {
@@ -243,20 +266,21 @@ export default function(source, opt) {
     return [];
   }
 
-  function errorClosingHint(value) {
-    function search(value, ch) {
+  function errorClosingHint(value: any) {
+    // @ts-ignore
+    function search(value: any, ch: string) {
       var i, k, length, res;
-      switch (typeof value) {
+      switch(typeof value) {
         case 'string':
           if (value.indexOf(ch) >= 0) res = value;
           break;
         case 'object':
           if (Object.prototype.toString.apply(value) === '[object Array]') {
-            for (i = 0, length = value.length; i < length; i++) {
+            for(i = 0, length = value.length; i < length; i++) {
               res = search(value[i], ch) || res;
             }
           } else {
-            for (k in value) {
+            for(k in value) {
               if (!Object.prototype.hasOwnProperty.call(value, k)) continue;
               res = search(value[k], ch) || res;
             }
@@ -265,7 +289,7 @@ export default function(source, opt) {
       return res;
     }
 
-    function report(ch) {
+    function report(ch: string) {
       var possibleErr = search(value, ch);
       if (possibleErr) {
         return 'found \'' + ch + '\' in a string value, your mistake could be with:\n' +
@@ -277,11 +301,12 @@ export default function(source, opt) {
     return report('}') || report(']');
   }
 
+  // @ts-ignore
   function array() {
     // Parse an array value.
     // assuming ch === '['
 
-    var array = [];
+    var array: any[] = [];
     var comments, cAt, nextComment;
     try {
       if (keepComments) comments = common.createComment(array, { a: [] });
@@ -296,13 +321,17 @@ export default function(source, opt) {
         return array;  // empty array
       }
 
-      while (ch) {
+      while(ch) {
         array.push(value());
         cAt = at;
         white();
         // in Hjson the comma is optional and trailing commas are allowed
         // note that we do not keep comments before the , if there are any
-        if (ch === ',') { next(); cAt = at; white(); }
+        if (ch === ',') {
+          next();
+          cAt = at;
+          white();
+        }
         if (comments) {
           var c = getComment(cAt);
           comments.a.push([nextComment || '', c[0] || '']);
@@ -317,20 +346,21 @@ export default function(source, opt) {
       }
 
       error('End of input while parsing an array (missing \']\')');
-    } catch (e) {
+    } catch(e) {
+      // @ts-ignore
       e.hint = e.hint || errorClosingHint(array);
       throw e;
     }
   }
 
-  function object(withoutBraces) {
+  function object(withoutBraces: boolean) {
     // Parse an object value.
 
     var key = '', object = {};
     var comments, cAt, nextComment;
 
     try {
-      if (keepComments) comments = common.createComment(object, { c: {}, o: []  });
+      if (keepComments) comments = common.createComment(object, { c: {}, o: [] });
 
       if (!withoutBraces) {
         // assuming ch === '{'
@@ -345,19 +375,26 @@ export default function(source, opt) {
         next();
         return object;  // empty object
       }
-      while (ch) {
+      while(ch) {
+        // @ts-ignore
         key = keyname();
         white();
         if (ch !== ':') error('Expected \':\' instead of \'' + ch + '\'');
         next();
         // duplicate keys overwrite the previous value
+        // @ts-ignore
         object[key] = value();
         cAt = at;
         white();
         // in Hjson the comma is optional and trailing commas are allowed
         // note that we do not keep comments before the , if there are any
-        if (ch === ',') { next(); cAt = at; white(); }
+        if (ch === ',') {
+          next();
+          cAt = at;
+          white();
+        }
         if (comments) {
+          // @ts-ignore
           var c = getComment(cAt);
           comments.c[key] = [nextComment || '', c[0] || ''];
           nextComment = c[1];
@@ -373,7 +410,8 @@ export default function(source, opt) {
 
       if (withoutBraces) return object;
       else error('End of input while parsing an object (missing \'}\')');
-    } catch (e) {
+    } catch(e) {
+      // @ts-ignore
       e.hint = e.hint || errorClosingHint(object);
       throw e;
     }
@@ -383,20 +421,25 @@ export default function(source, opt) {
     // Parse a Hjson value. It could be an object, an array, a string, a number or a word.
 
     white();
-    switch (ch) {
-      case '{': return object();
-      case '[': return array();
+    switch(ch) {
+      case '{':
+        return object(false);
+      case '[':
+        return array();
       case '\'':
-      case '"': return string(true);
-      default: return tfnns();
+      case '"':
+        return string(true);
+      default:
+        return tfnns();
     }
   }
 
-  function checkTrailing(v, c) {
+  function checkTrailing(v: any, c: any) {
     var cAt = at;
     white();
     if (ch) error('Syntax error, found trailing characters');
     if (keepComments) {
+      // @ts-ignore
       var b = c.join('\n'), a = getComment(cAt).join('\n');
       if (a || b) {
         var comments = common.createComment(v, common.getComment(v));
@@ -409,10 +452,13 @@ export default function(source, opt) {
   function rootValue() {
     white();
     var c = keepComments ? getComment(1) : null;
-    switch (ch) {
-      case '{': return checkTrailing(object(), c);
-      case '[': return checkTrailing(array(), c);
-      default: return checkTrailing(value(), c);
+    switch(ch) {
+      case '{':
+        return checkTrailing(object(false), c);
+      case '[':
+        return checkTrailing(array(), c);
+      default:
+        return checkTrailing(value(), c);
     }
   }
 
@@ -420,19 +466,24 @@ export default function(source, opt) {
     // Braces for the root object are optional
     white();
     var c = keepComments ? getComment(1) : null;
-    switch (ch) {
-      case '{': return checkTrailing(object(), c);
-      case '[': return checkTrailing(array(), c);
+    switch(ch) {
+      case '{':
+        return checkTrailing(object(false), c);
+      case '[':
+        return checkTrailing(array(), c);
     }
 
     try {
       // assume we have a root object without braces
       return checkTrailing(object(true), c);
-    } catch (e) {
+    } catch(e) {
       // test if we are dealing with a single JSON value instead (true/false/null/num/"")
       resetAt();
-      try { return checkTrailing(value(), c); }
-      catch (e2) { throw e; } // throw original error
+      try {
+        return checkTrailing(value(), c);
+      } catch(e2) {
+        throw e;
+      } // throw original error
     }
   }
 
