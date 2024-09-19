@@ -6,7 +6,6 @@
   "types": "dist/main/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/main/index.js",
       "require": "./dist/main/index.js"
     },
     "./test-tools": {
@@ -36,7 +35,8 @@
     "demo": "npx ts-node ./src/V2/old/demo.ts",
     "test": "yarn run -T vitest run",
     "watch:test": "yarn run -T vitest",
-    "build": "tsc -p tsconfig.build.json && yarn build-vite",
+    "build:cjs": "tsc -p tsconfig.build.json",
+    "build": "yarn build:cjs && yarn build-vite",
     "release": "yarn run -T release-it"
   },
   "release-it": {
