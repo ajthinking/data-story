@@ -270,15 +270,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@data-story/hjson@workspace:packages/hjson":
-  version: 0.0.0-use.local
-  resolution: "@data-story/hjson@workspace:packages/hjson"
-  dependencies:
-    webpack: "npm:^5.89.0"
-    webpack-cli: "npm:^5.1.4"
-  languageName: unknown
-  linkType: soft
-
 "@data-story/hubspot@workspace:*, @data-story/hubspot@workspace:packages/hubspot":
   version: 0.0.0-use.local
   resolution: "@data-story/hubspot@workspace:packages/hubspot"
@@ -13466,7 +13457,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.88.1, webpack@npm:^5.89.0":
+"webpack@npm:^5.88.1":
   version: 5.91.0
   resolution: "webpack@npm:5.91.0"
   dependencies:
