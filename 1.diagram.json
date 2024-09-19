@@ -1,0 +1,164 @@
+{
+    "nodes": [
+      {
+        "id": "Signal.1",
+        "label": "DataSource",
+        "type": "Signal",
+        "inputs": [],
+        "outputs": [
+          {
+            "name": "output",
+            "schema": {
+              "id": "any"
+            },
+            "id": "Signal.1.output"
+          }
+        ],
+        "params": [
+          {
+            "name": "period",
+            "type": "StringableParam",
+            "label": "period",
+            "help": "How many ms between each signal?",
+            "multiline": false,
+            "canInterpolate": true,
+            "interpolate": true,
+            "casts": [
+              {
+                "type": "numberCast",
+                "label": "Number"
+              }
+            ],
+            "value": {
+              "value": 200,
+              "Cast": "numberCast"
+            }
+          },
+          {
+            "name": "count",
+            "type": "StringableParam",
+            "label": "count",
+            "help": "How many times to send the signal?",
+            "multiline": false,
+            "canInterpolate": true,
+            "interpolate": true,
+            "casts": [
+              {
+                "type": "numberCast",
+                "label": "Number"
+              }
+            ],
+            "value": {
+              "value": 100,
+              "Cast": "numberCast"
+            }
+          },
+          {
+            "name": "expression",
+            "type": "StringableParam",
+            "label": "Template expression",
+            "help": "Use this field to customize the signal. ${i} is available as a variable.",
+            "multiline": true,
+            "canInterpolate": true,
+            "interpolate": true,
+            "evaluations": [
+              {
+                "type": "HJSON",
+                "label": "HJSON",
+                "selected": true
+              },
+              {
+                "type": "JSON",
+                "label": "JSON"
+              },
+              {
+                "type": "JS_FUNCTION",
+                "label": "JS Function"
+              },
+              {
+                "type": "JS_EXPRESSION",
+                "label": "JS Expression"
+              }
+            ],
+            "casts": [
+              {
+                "type": "numberCast",
+                "label": "Number"
+              },
+              {
+                "type": "stringCast",
+                "label": "String"
+              }
+            ],
+            "value": {
+              "value": "{\n  id: ${i}\n}",
+              "Evaluation": "HJSON"
+            }
+          }
+        ],
+        "position": {
+          "x": 75,
+          "y": 50
+        }
+      },
+      {
+        "id": "Ignore.1",
+        "label": "Storage",
+        "type": "Ignore",
+        "inputs": [
+          {
+            "name": "input",
+            "schema": {},
+            "id": "Ignore.1.input"
+          }
+        ],
+        "outputs": [],
+        "params": [],
+        "position": {
+          "x": 275,
+          "y": 50
+        }
+      },
+      {
+        "id": "Comment.1",
+        "label": "Comment",
+        "type": "Comment",
+        "inputs": [],
+        "outputs": [],
+        "params": [
+          {
+            "name": "content",
+            "type": "StringableParam",
+            "label": "Content",
+            "help": "Markdown content",
+            "multiline": true,
+            "canInterpolate": false,
+            "interpolate": false,
+            "evaluations": [],
+            "casts": [],
+            "value": {
+              "value": "### main diagram 🔥"
+            }
+          }
+        ],
+        "position": {
+          "x": 75,
+          "y": -150
+        }
+      }
+    ],
+    "links": [
+      {
+        "id": "vmDqsr8g4H",
+        "sourcePortId": "Signal.1.output",
+        "targetPortId": "Ignore.1.input"
+      }
+    ],
+    "params": [],
+    "viewport": {
+      "x": 0,
+      "y": 0,
+      "zoom": 1
+    }
+  }
+  
