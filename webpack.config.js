@@ -54,7 +54,7 @@ const extensionConfig = {
  * reactConfig
  */
 const reactConfig = {
-  entry: './src/App/App.tsx', // Vite 的入口文件
+  entry: './src/App/App.tsx',
   mode: 'development',
   output: {
     path: path.resolve(__dirname, 'dist'), // 输出目录
