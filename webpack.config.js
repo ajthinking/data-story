@@ -10,7 +10,7 @@ const path = require('path');
 /** @type WebpackConfig */
 const extensionConfig = {
   target: 'node', // VS Code extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
-	mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
+  mode: 'development', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
 
   entry: './src/extension.ts', // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
   output: {
@@ -31,7 +31,10 @@ const extensionConfig = {
     rules: [
       {
         test: /\.ts$/,
-        exclude: /node_modules/,
+        exclude: [
+          /src\/App\/.*/, // 排除 src/App 目录下的所有文件
+          /node_modules/,   // 排除 node_modules 目录
+        ],
         use: [
           {
             loader: 'ts-loader'
@@ -45,4 +48,44 @@ const extensionConfig = {
     level: "log", // enables logging required for problem matchers
   },
 };
-module.exports = [ extensionConfig ];
+
+
+/**
+ * reactConfig
+ */
+const reactConfig = {
+  entry: './src/App/App.tsx', // Vite 的入口文件
+  mode: 'development',
+  output: {
+    path: path.resolve(__dirname, 'dist'), // 输出目录
+    filename: 'app.cjs',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.tsx$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader'
+          }
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader']
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js'],
+  },
+  devtool: 'source-map',
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'), // 静态文件目录
+    compress: true,
+    port: 3000, // 开发服务器端口
+  },
+};
+
+module.exports = [extensionConfig, reactConfig];

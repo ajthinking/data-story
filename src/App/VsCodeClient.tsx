@@ -1,6 +1,8 @@
 import { createDataStoryId, Hook } from "@data-story/core";
 import { DataStoryEvents, eventManager } from "@data-story/ui";
+// @ts-ignore
 import { WorkspaceApiClient } from "@data-story/ui/dist/src/components/DataStory/clients/WorkspaceApiClient";
+// @ts-ignore
 import { ClientRunParams } from "@data-story/ui/dist/src/components/DataStory/types";
 
 export class VsCodeClient implements WorkspaceApiClient {
