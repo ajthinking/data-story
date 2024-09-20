@@ -1,14 +1,10 @@
 {
 	"compilerOptions": {
-		"jsx": "react-jsx",
-		"moduleResolution": "Node16",
 		"module": "Node16",
 		"target": "ES2022",
 		"lib": [
-			"DOM",
 			"ES2022"
 		],
-		"esModuleInterop": true,
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true   /* enable all strict type-checking options */
@@ -18,7 +14,7 @@
 		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
 	},
   "exclude": [
-    "react-components",
-	"node_modules"  // Separate build for react-components
+	"src/app/**/*",
+	"node_modules"
   ]
 }

@@ -32,8 +32,8 @@ const extensionConfig = {
       {
         test: /\.ts$/,
         exclude: [
-          /src\/App\/.*/, // 排除 src/App 目录下的所有文件
-          /node_modules/,   // 排除 node_modules 目录
+          /src\/app\/.*/,
+          /node_modules/,
         ],
         use: [
           {
@@ -49,43 +49,4 @@ const extensionConfig = {
   },
 };
 
-
-/**
- * reactConfig
- */
-const reactConfig = {
-  entry: './src/App/App.tsx',
-  mode: 'development',
-  output: {
-    path: path.resolve(__dirname, 'dist'), // 输出目录
-    filename: 'app.cjs',
-  },
-  module: {
-    rules: [
-      {
-        test: /\.tsx$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'ts-loader'
-          }
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
-      }
-    ]
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
-  },
-  devtool: 'source-map',
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'), // 静态文件目录
-    compress: true,
-    port: 3000, // 开发服务器端口
-  },
-};
-
-module.exports = [extensionConfig, reactConfig];
+module.exports = [extensionConfig];

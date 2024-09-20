@@ -1,6 +1,5 @@
 # Node.js
 node_modules/
-react-components/node_modules
 npm-debug.log
 yarn-error.log
 
