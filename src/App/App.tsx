@@ -3,6 +3,7 @@ import { Application, debounce, Diagram } from '@data-story/core';
 import { DataStory, DataStoryCanvas, DataStoryCanvasProvider, WorkspaceApiJSClient } from '@data-story/ui';
 import { useCallback, useEffect, useState } from 'react';
 import { VsCodeClient } from './VsCodeClient';
+import { VsCodeToast } from './VsCodeToast';
 
 export default function App() {
   if (!window.initialData) throw new Error('No initial data found');
@@ -60,6 +61,8 @@ export default function App() {
         initDiagram={diagram}
         onChange={handleChange}
       />
+      <VsCodeToast />
+
     </div>
   );
 }
