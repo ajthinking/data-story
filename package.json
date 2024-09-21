@@ -3,6 +3,7 @@
   "displayName": "ds-ext",
   "description": "",
   "version": "0.0.1",
+  "publisher": "ajthinking",
   "engines": {
     "vscode": "^1.93.0"
   },
