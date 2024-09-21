@@ -5,9 +5,8 @@ export const onUpdateDiagram: MessageHandler = async ({
   event,
   document,
 }) => {
-  console.log("In onUpdateDiagram: attempting update of diagram.")
-
   const { fileUri, diagramData } = event;
     
-  document.update(diagramData)
+  document.update(new TextEncoder().encode(diagramData)) // has no effect on the file system??!
+  await document.save();
 }
