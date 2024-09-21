@@ -14,6 +14,8 @@ export const onDrop = (event, addNodeFromDescription) => {
 
   if (files.length === 0) {
     console.error('You dragged and dropped something not supported yet.');
+    console.log(event)
+    console.log(JSON.stringify(event))
     return
   }
 
