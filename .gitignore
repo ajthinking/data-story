@@ -1,2 +1,52 @@
-node_modules
-react-components/node_modules
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist/
+build/
+out/
+tmp/
+temp/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+
+# Logs
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Package files
+package-lock.json
+yarn.lock
+
+# TypeScript
+*.tsbuildinfo
+
+# SASS
+.sass-cache/
+
+# Other
+*.bak
+*.tmp
+*.orig
+*.swp
+*.swo

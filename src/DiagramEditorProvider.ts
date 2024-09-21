@@ -6,6 +6,7 @@ import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
+import { log } from 'console';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -56,27 +57,12 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private getWebviewContent(webview: vscode.Webview, document: DiagramDocument): string {
     const diagramData = Buffer.from(document.data).toString('utf8');
 
-    const manifestPath = path.join(this.context.extensionPath, 'react-components', 'build', 'asset-manifest.json');
+    const mainScript = path.join(this.context.extensionPath, 'dist', 'app', 'app.mjs');
 
-    // Read the manifest file
-    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-    
-    // Get the correct JS and CSS file paths from the manifest
-    const mainScript = manifest['files']['main.js'];
-    const mainStyle = manifest['files']['main.css'];
-
-    // Resolve URIs for the React app's main.js and main.css
     const scriptUri = webview.asWebviewUri(
-        vscode.Uri.file(
-            path.join(this.context.extensionPath, 'react-components', 'build', mainScript)
-        )
+        vscode.Uri.file(mainScript)
     );
 
-    const styleUri = webview.asWebviewUri(
-        vscode.Uri.file(
-            path.join(this.context.extensionPath, 'react-components', 'build', mainStyle)
-        )
-    );
 
     // Inject file URI and diagram data into the window object
     const fileUri = webview.asWebviewUri(document.uri);
@@ -89,11 +75,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>React App</title>
-            <link href="${styleUri}" rel="stylesheet">
         </head>
         <body>
             <div id="root"></div>
-            <script src="${scriptUri}"></script>
+            <script type="module" src="${scriptUri}"></script>
             <script>
                 // Provide the VS Code API and initial data (file URI and diagram content)
                 window.vscode = acquireVsCodeApi();

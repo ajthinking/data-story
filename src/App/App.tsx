@@ -1,22 +1,16 @@
+import React from 'react';
 import { Application, debounce, Diagram } from '@data-story/core';
 import { DataStory, DataStoryCanvas, DataStoryCanvasProvider, WorkspaceApiJSClient } from '@data-story/ui';
 import { useCallback, useEffect, useState } from 'react';
 import { VsCodeClient } from './VsCodeClient';
 
-declare global {
-  interface Window {
-    initialData: any;
-    vscode: any
-  }
-}
-
 export default function App() {
-  if(!window.initialData) throw new Error('No initial data found');
+  if (!window.initialData) throw new Error('No initial data found');
 
   const { fileUri, diagramData } = window.initialData;
   const [responseData, setResponseData] = useState(null); // To store the response from the extension
   const { nodes, links } = (() => {
-    if(!diagramData) return { nodes: [], links: [] };
+    if (!diagramData) return { nodes: [], links: [] };
     return JSON.parse(diagramData);
   })();
 
@@ -52,20 +46,20 @@ export default function App() {
       window.vscode.postMessage(updatedData);
     }, 100), // Debounced with 100ms delay
     [fileUri]
-  );  
+  );
 
   return (
     <div style={{ width: '100%', height: '100vh' }}>
-        <DataStory
-          client={new VsCodeClient(window.vscode)}
-          onInitialize={()=>{}}
-          hideSidebar={false}
-          hideActivityBar={true}
-          initSidebarKey={undefined}
-          key={'abc'}
-          initDiagram={diagram}
-          onChange={handleChange}
-        />
+      <DataStory
+        client={new VsCodeClient(window.vscode)}
+        onInitialize={() => { }}
+        hideSidebar={false}
+        hideActivityBar={true}
+        initSidebarKey={undefined}
+        key={'abc'}
+        initDiagram={diagram}
+        onChange={handleChange}
+      />
     </div>
   );
 }

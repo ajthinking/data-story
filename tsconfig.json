@@ -14,6 +14,7 @@
 		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
 	},
   "exclude": [
-    "react-components"  // Separate build for react-components
+	"src/app/**/*",
+	"node_modules"
   ]
 }
