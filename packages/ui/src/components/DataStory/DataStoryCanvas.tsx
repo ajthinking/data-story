@@ -9,7 +9,7 @@ import InputNodeComponent from '../Node/InputNodeComponent';
 import TableNodeComponent from '../Node/TableNodeComponent';
 import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
-import { onDragOver, onDrop } from './onDrop';
+import { onDropDefault } from './onDropDefault';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { useSelectedNodeSettings } from './Form/useSelectedNodeSettings';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
@@ -50,6 +50,7 @@ const Flow = ({
   selectedNodeData,
   selectedNode,
   onSave,
+  onDrop,
   client,
   onChange,
 }: DataStoryCanvasProps) => {
@@ -155,11 +156,17 @@ const Flow = ({
         fitViewOptions={{
           padding: 0.25,
         }}
-        onDragOver={useCallback(onDragOver, [])}
-        onDrop={useCallback(
-          (e) => onDrop(e, addNodeFromDescription),
-          [addNodeFromDescription]
-        )}
+        onDragOver={useCallback((event) => {
+          event.preventDefault();
+          event.dataTransfer.dropEffect = 'move';
+        }, [])}
+        onDrop={
+          useCallback((event) => {
+            const handler = onDrop || onDropDefault;
+
+            handler(event, addNodeFromDescription)
+          }, [addNodeFromDescription]
+          )}
       >
         <DataStoryControls
           onSave={onSave}
