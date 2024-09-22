@@ -1,9 +1,13 @@
 import { Application, coreNodeProvider } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
+import { vsCodeNodeProvider } from './vsCodeNodeProvider';
 
 export const onGetNodeDescriptions: MessageHandler = async ({ event, webviewPanel }) => {
   const app = new Application();
-  app.register(coreNodeProvider)
+  app.register([
+    coreNodeProvider,
+    vsCodeNodeProvider,
+  ]);
   await app.boot();
 
   webviewPanel.webview.postMessage({
