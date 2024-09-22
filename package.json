@@ -8,6 +8,7 @@
     "packages/nodejs",
     "packages/openai",
     "packages/hubspot",
+    "packages/extension",
     "packages/private/*"
   ],
   "scripts": {

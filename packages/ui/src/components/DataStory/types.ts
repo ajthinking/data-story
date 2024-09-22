@@ -64,6 +64,7 @@ export type DataStoryProps = {
   observers?: DataStoryObservers;
   onInitialize?: DataStoryCallback;
   hideSidebar?: boolean;
+  onDrop?: (event: any, addNodeFromDescription: any) => void;
   /**
    * hideActivityBar: true (hide all activity bars)
    * hideActivityBar: ['node', 'diagram'] (hide node and diagram activity bars)

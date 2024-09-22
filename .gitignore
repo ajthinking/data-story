@@ -15,20 +15,67 @@
 # and uncomment the following lines
 .pnp.*
 
-
-node_modules
-.env
 .turbo
-.idea
 
 notes
 notes.*
 
 packages/private
 
-.env.local
-.env
-
 # Cypress artifacts
 cypress/screenshots/
 cypress/videos/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist/
+build/
+out/
+tmp/
+temp/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDEs and editors
+.vscode/
+.vscode-test/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+
+# Logs
+logs/
+*.log
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+coverage/
+*.lcov
+
+# Package files
+package-lock.json
+yarn.lock
+
+# TypeScript
+*.tsbuildinfo
+
+# SASS
+.sass-cache/
+
+# Other
+*.bak
+*.tmp
+*.orig
+*.swp
+*.swo
