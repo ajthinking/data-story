@@ -5,8 +5,6 @@ export const onUpdateDiagram: MessageHandler = async ({
   event,
   document,
 }) => {
-  const { fileUri, diagram } = event;
-
-  document.update(new TextEncoder().encode(diagram))
+  document.update(new TextEncoder().encode(event.diagram))
   await document.save();
 }

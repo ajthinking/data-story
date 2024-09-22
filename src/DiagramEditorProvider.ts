@@ -15,7 +15,16 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
       const provider = new DiagramEditorProvider(context);
-      return vscode.window.registerCustomEditorProvider('ds-ext.diagramEditor', provider);
+      return vscode.window.registerCustomEditorProvider(
+        'ds-ext.diagramEditor',
+        provider,
+        {
+          webviewOptions: {
+            retainContextWhenHidden: true, // Keep the webview loaded when not visible
+          },
+          supportsMultipleEditorsPerDocument: false,
+        }       
+      );
   }
 
   constructor(private readonly context: vscode.ExtensionContext) {}
