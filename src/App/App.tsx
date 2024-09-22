@@ -38,8 +38,6 @@ export default function App() {
 
   const handleChange = useCallback(
     debounce(async (diagram: Diagram) => {
-      console.log('Sending updated diagram to the VS Code extension.');
-
       // Construct the message payload with updated diagram data
       const updatedData = {
         type: 'updateDiagram',
