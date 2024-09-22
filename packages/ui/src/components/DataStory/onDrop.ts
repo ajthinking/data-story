@@ -10,6 +10,15 @@ import {
 export const onDrop = (event, addNodeFromDescription) => {
   event.preventDefault();
 
+  const everything = JSON.stringify({
+    'dataTransfer.types': Array.from(event.dataTransfer.types),
+    'dataTransfer.getData(text/uri-list)': event.dataTransfer.getData('text/uri-list'),
+    'dataTransfer.getData(text/plain)': event.dataTransfer.getData('text/plain'),
+    'dataTransfer.files.0.name': event.dataTransfer.files.item(0)?.name,
+  }, null, 2);
+
+  console.log('Dropped:', everything);
+
   const files = event.dataTransfer.files;
 
   if (files.length === 0) {
