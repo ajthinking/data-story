@@ -7,6 +7,7 @@ import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { log } from 'console';
+import { onGetDirtyFileContent } from './messageHandlers/onGetDirtyFileContent';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -44,11 +45,12 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         const handlers: Record<string, MessageHandler> = {
           run: onRun,
           getNodeDescriptions: onGetNodeDescriptions,
-          updateDiagram: onUpdateDiagram
+          updateDiagram: onUpdateDiagram,
+          getDirtyFileContent: onGetDirtyFileContent,
         };
         
         const handler = handlers[event.type];
-        if(!handler) throw Error(`No handler found for event type: ${event.type}`);
+        if(!handler) throw Error(`No handler found for event type: ${event.type}. Available handlers: ${Object.keys(handlers).join(', ')}`);
     
         handler({ webviewPanel, event, document });
       });
@@ -84,7 +86,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
                 window.vscode = acquireVsCodeApi();
                 window.initialData = {
                     fileUri: "${fileUri}",  // Pass file URI
-                    diagramData: ${JSON.stringify(diagramData)}  // Pass the diagram data as a JSON string
                 };
             </script>
         </body>

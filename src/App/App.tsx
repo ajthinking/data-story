@@ -1,29 +1,33 @@
-import React from 'react';
-import { Application, debounce, Diagram } from '@data-story/core';
-import { DataStory, DataStoryCanvas, DataStoryCanvasProvider, WorkspaceApiJSClient } from '@data-story/ui';
-import { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { debounce, Diagram } from '@data-story/core';
+import { DataStory } from '@data-story/ui';
 import { VsCodeClient } from './VsCodeClient';
 import { VsCodeToast } from './VsCodeToast';
 
+const fileUri = window.initialData.fileUri;
+
 export default function App() {
-  if (!window.initialData) throw new Error('No initial data found');
-
-  const { fileUri, diagramData } = window.initialData;
-  const [responseData, setResponseData] = useState(null); // To store the response from the extension
-  const { nodes, links } = (() => {
-    if (!diagramData) return { nodes: [], links: [] };
-    return JSON.parse(diagramData);
-  })();
-
-  const diagram = new Diagram({ nodes, links });
+  const [diagram, setDiagram] = useState<Diagram | undefined>();
 
   useEffect(() => {
-    // Listen for messages from the backend
+    if (window.vscode) {
+      window.vscode.postMessage({
+        type: 'getDirtyFileContent',
+      });
+    }
+
     const handleMessage = (event: any) => {
       const message = event.data;
+
+      if (message.type === 'dirtyFileContent') {
+        setDiagram(
+          message.fileContent
+            ? new Diagram(JSON.parse(message.fileContent))
+            : new Diagram()
+        );
+      }
     };
 
-    // Attach the message listener
     window.addEventListener('message', handleMessage);
 
     // Cleanup the listener on unmount
@@ -40,7 +44,7 @@ export default function App() {
       const updatedData = {
         type: 'updateDiagram',
         fileUri, // Include the file URI to specify the target file
-        diagramData: JSON.stringify(diagram),
+        diagram: JSON.stringify(diagram),
       };
 
       // Send the message to VS Code extension
@@ -49,11 +53,16 @@ export default function App() {
     [fileUri]
   );
 
+  // Only render DataStory if diagramData is available
+  if (!diagram) {
+    return <div>Loading diagram...</div>;
+  }
+
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <DataStory
         client={new VsCodeClient(window.vscode)}
-        onInitialize={() => { }}
+        onInitialize={() => {}}
         hideSidebar={false}
         hideActivityBar={true}
         initSidebarKey={undefined}
@@ -62,7 +71,6 @@ export default function App() {
         onChange={handleChange}
       />
       <VsCodeToast />
-
     </div>
   );
 }
