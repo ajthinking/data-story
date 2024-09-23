@@ -1,28 +1,40 @@
 import React from 'react';
 import { DataStoryEvents, DataStoryEventType, useDataStoryEvent } from '@data-story/ui';
 
-export function VsCodeToast() {
+export function VsCodeToast({ postMessage }: {
+  postMessage: (message: {
+    type: string;
+    message?: string;
+    [key: string]: any;
+  }) => void
+}) {
+
   useDataStoryEvent((event: DataStoryEventType) => {
+    const info = {
+      type: 'toast',
+      message: '',
+      status: 'success',
+    }
     switch (event.type) {
       case DataStoryEvents.RUN_SUCCESS:
-        console.log('Diagram executed successfully!');
+        info.message = 'Diagram executed successfully!';
         break;
       case DataStoryEvents.RUN_ERROR:
-        console.error(event.payload);
-        console.log('Diagram execution failed!');
+        info.message = 'Diagram execution failed!';
+        info.status = 'error';
         break;
       case DataStoryEvents.SAVE_SUCCESS:
-        console.log('Diagram saved successfully!');
+        info.message = 'Diagram saved successfully!';
         break;
       case DataStoryEvents.SAVE_ERROR:
         console.error(event.payload);
-        console.log('Diagram save failed!');
+        info.message = 'Diagram save failed!';
+        info.status = 'error';
     }
+    postMessage(info);
   });
 
   return (
-    <div>
-      <h1>VS Code Toast</h1>
-    </div>
+    <div></div>
   );
 }

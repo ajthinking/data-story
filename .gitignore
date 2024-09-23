@@ -17,6 +17,7 @@ temp/
 
 # IDEs and editors
 .vscode/
+.vscode-test/
 .idea/
 *.sublime-project
 *.sublime-workspace
@@ -43,6 +44,11 @@ yarn.lock
 
 # SASS
 .sass-cache/
+
+# Yarn
+.yarn/cache/
+.yarn/unplugged/
+.yarn/build-state.yml
 
 # Other
 *.bak
