@@ -1,12 +1,10 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import fs from 'fs';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
-import { log } from 'console';
 import { onGetDirtyFileContent } from './messageHandlers/onGetDirtyFileContent';
 import { onToast } from './messageHandlers/onToast';
 
