@@ -17,6 +17,7 @@ temp/
 
 # IDEs and editors
 .vscode/
+.vscode-test/
 .idea/
 *.sublime-project
 *.sublime-workspace

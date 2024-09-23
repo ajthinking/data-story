@@ -8,6 +8,7 @@ import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { log } from 'console';
 import { onGetDirtyFileContent } from './messageHandlers/onGetDirtyFileContent';
+import { onToast } from './messageHandlers/onToast';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -56,6 +57,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
           getNodeDescriptions: onGetNodeDescriptions,
           updateDiagram: onUpdateDiagram,
           getDirtyFileContent: onGetDirtyFileContent,
+          toast: onToast,
         };
         
         const handler = handlers[event.type];

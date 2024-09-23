@@ -68,7 +68,7 @@ export default function App() {
         initDiagram={diagram}
         onChange={handleChange}
       />
-      <VsCodeToast />
+      <VsCodeToast postMessage={window.vscode.postMessage}/>
     </div>
   );
 }
