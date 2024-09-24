@@ -10,6 +10,19 @@
       "cache": false,
       "persistent": true
     },
+    "ext:dev": {
+      "dependsOn": ["watch:extension", "watch:app"],
+      "cache": false,
+      "persistent": true
+    },
+    "watch:extension": {
+      "cache": false,
+      "persistent": true
+    },
+    "watch:app": {
+      "cache": false,
+      "persistent": true
+    },
     "watch:tsc": {
       "cache": false,
       "persistent": true

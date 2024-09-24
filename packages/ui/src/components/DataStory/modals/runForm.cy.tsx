@@ -4,9 +4,10 @@ import * as store from '../store/store';
 
 function mountRunModal(): void {
   cy.mount(
-    <DataStoryCanvasProvider>
-      {/*<RunModal showModal={true} setShowModal={(show) => show}/>*/}
-    </DataStoryCanvasProvider>
+    <></>
+    // <DataStoryCanvasProvider>
+    // {/*<RunModal showModal={true} setShowModal={(show) => show}/>*/}
+    // </DataStoryCanvasProvider>
   )
 }
 
