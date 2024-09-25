@@ -8,7 +8,7 @@
     "packages/nodejs",
     "packages/openai",
     "packages/hubspot",
-    "packages/extension",
+    "packages/vscode-extension",
     "packages/private/*"
   ],
   "scripts": {

@@ -1,5 +1,5 @@
 {
-  "name": "@data-story/extension",
+  "name": "@data-story/vscode-extension",
   "displayName": "ds-ext",
   "description": "",
   "version": "0.0.1",
@@ -14,7 +14,7 @@
     "onCommand:ds-ext.showReactApp",
     "onCommand:ds-ext.openAsJson"
   ],
-  "main": "./dist/extension.js",
+  "main": "",
   "contributes": {
     "commands": [
       {
