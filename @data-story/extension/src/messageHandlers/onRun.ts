@@ -8,7 +8,7 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
     coreNodeProvider,
     vsCodeNodeProvider,
   ]);
-  
+
   await app.boot();
 
   const storage = new InMemoryStorage();
@@ -45,9 +45,8 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
     }
 
     webviewPanel.webview.postMessage(new ExecutionResult());
-
   } catch(error: any) {
-    console.log("SOME ERROR IN onRun!")
+    console.log('SOME ERROR IN onRun!')
     throw error;
-  }  
+  }
 }

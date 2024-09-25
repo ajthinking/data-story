@@ -1,4 +1,4 @@
-import { ServiceProvider, Application, Computer } from "@data-story/core";
+import { ServiceProvider, Application, Computer } from '@data-story/core';
 
 const CustomPass: Computer = {
   name: 'CustomPass',

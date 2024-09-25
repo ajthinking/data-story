@@ -8,7 +8,6 @@ export function VsCodeToast({ postMessage }: {
     [key: string]: any;
   }) => void
 }) {
-
   useDataStoryEvent((event: DataStoryEventType) => {
     const info = {
       type: 'toast',

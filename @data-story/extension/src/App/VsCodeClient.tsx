@@ -1,9 +1,9 @@
-import { createDataStoryId, Hook } from "@data-story/core";
-import { DataStoryEvents, eventManager } from "@data-story/ui";
+import { createDataStoryId, Hook } from '@data-story/core';
+import { DataStoryEvents, eventManager } from '@data-story/ui';
 // @ts-ignore
-import { WorkspaceApiClient } from "@data-story/ui/dist/src/components/DataStory/clients/WorkspaceApiClient";
+import { WorkspaceApiClient } from '@data-story/ui/dist/src/components/DataStory/clients/WorkspaceApiClient';
 // @ts-ignore
-import { ClientRunParams } from "@data-story/ui/dist/src/components/DataStory/types";
+import { ClientRunParams } from '@data-story/ui/dist/src/components/DataStory/types';
 
 export class VsCodeClient implements WorkspaceApiClient {
   updateEdgeCounts: any;
@@ -31,7 +31,7 @@ export class VsCodeClient implements WorkspaceApiClient {
 
     this.sendMessage(message);
   }
-  
+
   getTree = (async () => {}) as any;
   createTree = (async () => {}) as any;
   updateTree = (async () => {}) as any;
@@ -58,7 +58,7 @@ export class VsCodeClient implements WorkspaceApiClient {
     const result = await waitForResponse(awaitableMessage);
     return result;
   }
-  
+
   private handleMessage(data: any) {
     processWaitingResponse(data);
 
@@ -109,7 +109,7 @@ export class VsCodeClient implements WorkspaceApiClient {
     }
 
     throw ('Unknown message type (client): ' + JSON.stringify(data));
-  }  
+  }
 }
 
 const pendingResponses: Map<string, {resolve: Function; reject: Function}> = new Map();

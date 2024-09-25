@@ -519,35 +519,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@data-story/extension@workspace:packages/extension":
-  version: 0.0.0-use.local
-  resolution: "@data-story/extension@workspace:packages/extension"
-  dependencies:
-    "@data-story/core": "npm:^0.0.92"
-    "@data-story/ui": "npm:^0.0.92"
-    "@types/mocha": "npm:^10.0.7"
-    "@types/node": "npm:20.x"
-    "@types/react": "npm:^18"
-    "@types/react-dom": "npm:^18"
-    "@types/vscode": "npm:^1.93.0"
-    "@typescript-eslint/eslint-plugin": "npm:^8.3.0"
-    "@typescript-eslint/parser": "npm:^8.3.0"
-    "@vitejs/plugin-react": "npm:^4.3.1"
-    "@vscode/test-cli": "npm:^0.0.10"
-    "@vscode/test-electron": "npm:^2.4.1"
-    autoprefixer: "npm:^10.4.20"
-    eslint: "npm:^9.9.1"
-    postcss: "npm:^8.4.47"
-    react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
-    ts-loader: "npm:^9.5.1"
-    typescript: "npm:^5.5.4"
-    vite: "npm:^5.4.7"
-    webpack: "npm:^5.94.0"
-    webpack-cli: "npm:^5.1.4"
-  languageName: unknown
-  linkType: soft
-
 "@data-story/hubspot@workspace:*, @data-story/hubspot@workspace:packages/hubspot":
   version: 0.0.0-use.local
   resolution: "@data-story/hubspot@workspace:packages/hubspot"
@@ -685,6 +656,35 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
     react-dom: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
+"@data-story/vscode-extension@workspace:packages/vscode-extension":
+  version: 0.0.0-use.local
+  resolution: "@data-story/vscode-extension@workspace:packages/vscode-extension"
+  dependencies:
+    "@data-story/core": "npm:^0.0.92"
+    "@data-story/ui": "npm:^0.0.92"
+    "@types/mocha": "npm:^10.0.7"
+    "@types/node": "npm:20.x"
+    "@types/react": "npm:^18"
+    "@types/react-dom": "npm:^18"
+    "@types/vscode": "npm:^1.93.0"
+    "@typescript-eslint/eslint-plugin": "npm:^8.3.0"
+    "@typescript-eslint/parser": "npm:^8.3.0"
+    "@vitejs/plugin-react": "npm:^4.3.1"
+    "@vscode/test-cli": "npm:^0.0.10"
+    "@vscode/test-electron": "npm:^2.4.1"
+    autoprefixer: "npm:^10.4.20"
+    eslint: "npm:^9.9.1"
+    postcss: "npm:^8.4.47"
+    react: "npm:^18.3.1"
+    react-dom: "npm:^18.3.1"
+    ts-loader: "npm:^9.5.1"
+    typescript: "npm:^5.5.4"
+    vite: "npm:^5.4.7"
+    webpack: "npm:^5.94.0"
+    webpack-cli: "npm:^5.1.4"
   languageName: unknown
   linkType: soft
 

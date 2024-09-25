@@ -14,5 +14,5 @@ if (rootElement) {
     </React.StrictMode>
   );
 } else {
-  console.error("Failed to find the root element. App cannot render.");
+  console.error('Failed to find the root element. App cannot render.');
 }

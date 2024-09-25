@@ -6,7 +6,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerCustomEditorProvider(
       'ds-ext.diagramEditor',
       new DiagramEditorProvider(context)
-  )
+    )
   );
 }
 
