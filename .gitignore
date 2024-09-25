@@ -44,7 +44,13 @@ temp/
 .env.*.local
 
 # IDEs and editors
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/extensions.json
+
+
 .vscode-test/
 .idea/
 *.sublime-project
