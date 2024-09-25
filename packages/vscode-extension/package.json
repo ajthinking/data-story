@@ -14,7 +14,7 @@
     "onCommand:ds-ext.showReactApp",
     "onCommand:ds-ext.openAsJson"
   ],
-  "main": "",
+  "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
