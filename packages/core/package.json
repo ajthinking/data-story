@@ -4,9 +4,10 @@
   "main": "dist/main/index.js",
   "type": "commonjs",
   "types": "dist/main/index.d.ts",
+  "module": "dist/esm/index.js",
   "exports": {
     ".": {
-      "import": "./dist/main/index.js",
+      "import": "./dist/esm/index.js",
       "require": "./dist/main/index.js"
     },
     "./test-tools": {
@@ -38,7 +39,7 @@
     "watch:test": "yarn run -T vitest",
     "build:esm": "tsc -p tsconfig.build.esm.json",
     "build:cjs": "tsc -p tsconfig.build.json",
-    "build": "yarn build:cjs && yarn build-vite",
+    "build": "yarn build:esm && yarn build:cjs && yarn build-vite",
     "release": "yarn run -T release-it"
   },
   "release-it": {
