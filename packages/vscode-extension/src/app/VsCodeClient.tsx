@@ -1,9 +1,6 @@
 import { createDataStoryId, Hook } from '@data-story/core';
 import { DataStoryEvents, eventManager } from '@data-story/ui';
-// @ts-ignore
-import { WorkspaceApiClient } from '@data-story/ui/dist/src/components/DataStory/clients/WorkspaceApiClient';
-// @ts-ignore
-import { ClientRunParams, ServerClientObservationConfig } from '@data-story/ui/dist/src/components/DataStory/types';
+import type { WorkspaceApiClient, ClientRunParams, ServerClientObservationConfig } from '@data-story/ui';
 
 export class VsCodeClient implements WorkspaceApiClient {
   updateEdgeCounts: any;

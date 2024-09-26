@@ -106,8 +106,8 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@data-story/core": "^0.0.92",
-    "@data-story/ui": "^0.0.92",
+    "@data-story/core": "workspace:*",
+    "@data-story/ui": "workspace:*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "ts-loader": "^9.5.1"
