@@ -36,6 +36,7 @@
     "demo": "npx ts-node ./src/V2/old/demo.ts",
     "test": "yarn run -T vitest run",
     "watch:test": "yarn run -T vitest",
+    "build:esm": "tsc -p tsconfig.build.esm.json",
     "build:cjs": "tsc -p tsconfig.build.json",
     "build": "yarn build:cjs && yarn build-vite",
     "release": "yarn run -T release-it"
