@@ -3,12 +3,12 @@ import { DataStoryEvents, eventManager } from '@data-story/ui';
 // @ts-ignore
 import { WorkspaceApiClient } from '@data-story/ui/dist/src/components/DataStory/clients/WorkspaceApiClient';
 // @ts-ignore
-import { ClientRunParams } from '@data-story/ui/dist/src/components/DataStory/types';
+import { ClientRunParams, ServerClientObservationConfig } from '@data-story/ui/dist/src/components/DataStory/types';
 
 export class VsCodeClient implements WorkspaceApiClient {
   updateEdgeCounts: any;
   private vscode: any;
-
+  private observers: ServerClientObservationConfig | undefined;
   constructor(vscode: any) {
     this.vscode = vscode;
 
@@ -22,6 +22,7 @@ export class VsCodeClient implements WorkspaceApiClient {
   }
 
   run = async ({ diagram, updateEdgeCounts, observers }: ClientRunParams): Promise<void> => {
+    this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
     const message = {
       type: 'run',
@@ -83,6 +84,11 @@ export class VsCodeClient implements WorkspaceApiClient {
       return;
     }
 
+    if (data.type === 'NotifyObservers') {
+      this?.observers?.onDataChange(data.items, data.inputObservers);
+      return;
+    }
+
     if (data.type === 'ExecutionResult') {
       console.log('Execution complete 💫')
       eventManager.emit({
@@ -104,7 +110,7 @@ export class VsCodeClient implements WorkspaceApiClient {
       return
     }
 
-    if (data.type === 'UpdateStorage' || data.type === 'NotifyObservers') {
+    if (data.type === 'UpdateStorage') {
       return;
     }
 
