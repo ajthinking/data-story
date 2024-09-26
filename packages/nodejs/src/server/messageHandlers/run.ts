@@ -10,7 +10,6 @@ import {
   InputObserverController,
   type ReportCallback
 } from '@data-story/core';
-
 import { type InputObserver } from '@data-story/core'
 
 export type RunMessage = {

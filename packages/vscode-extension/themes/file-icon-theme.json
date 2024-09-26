@@ -1,0 +1,12 @@
+{
+  "iconDefinitions": {
+    "diagramIcon": {
+      "iconPath": "./icon.png"
+    }
+  },
+  "fileExtensions": {
+    "diagram.json": "diagramIcon"
+  },
+  "fileNames": {},
+  "languageIds": {}
+}
