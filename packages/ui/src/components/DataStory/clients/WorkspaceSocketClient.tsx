@@ -1,11 +1,12 @@
 import { createDataStoryId, Hook, NodeDescription } from '@data-story/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { Observable, retry } from 'rxjs';
-import { ClientRunParams, DescribeResponse } from '../types';
+import { filter, Observable, retry } from 'rxjs';
+import { ClientRunParams, DescribeResponse, ServerClientObservationConfig } from '../types';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { processWaitingResponse, waitForResponse } from './WebSocketHandleResponseMiddleware';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { eventManager } from '../events/eventManager';
+import { clientBuffer } from './ClientBuffer';
 
 export class WorkspaceSocketClient implements WorkspaceApiClient {
   private socket$: WebSocketSubject<any>;
@@ -13,6 +14,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   private maxReconnectTries = 100;
   private reconnectTimeoutMs = 1000;
   private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
+  private observers: ServerClientObservationConfig | undefined;
 
   constructor() {
     this.socket$ = webSocket({
@@ -41,20 +43,21 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
       error: (err) => console.log('WebSocket error: ', err),
     });
 
-    // this.wsObservable.pipe(
-    //   filter(data => data.type === 'NotifyObservers'),
-    //   clientBuffer()
-    // ).subscribe((data) => {
-    //   this?.observers?.onDataChange(
-    //     data.items,
-    //     data.inputObservers,
-    //   );
-    // });
+    this.wsObservable.pipe(
+      filter(data => data.type === 'NotifyObservers'),
+      clientBuffer()
+    ).subscribe((data) => {
+      this?.observers?.onDataChange(
+        data.items,
+        data.inputObservers,
+      );
+    });
   }
 
   run = (
     { updateEdgeCounts, diagram, observers }: ClientRunParams
   ) => {
+    this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
     const message = {
       type: 'run',
