@@ -14,7 +14,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   private maxReconnectTries = 100;
   private reconnectTimeoutMs = 1000;
   private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
-  private observers: ServerClientObservationConfig | undefined;
+  private observers: ServerClientObservationConfig|undefined;
 
   constructor() {
     this.socket$ = webSocket({
@@ -47,6 +47,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
       filter(data => data.type === 'NotifyObservers'),
       clientBuffer()
     ).subscribe((data) => {
+      console.log('workspaceSocketClient: NotifyObservers', data);
       this?.observers?.onDataChange(
         data.items,
         data.inputObservers,
@@ -64,6 +65,10 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
       diagram,
       inputObservers: observers?.inputObservers || [],
     };
+
+    eventManager.emit({
+      type: DataStoryEvents.RUN_START
+    });
 
     this.socketSendMsg(message);
   }

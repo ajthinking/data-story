@@ -27,6 +27,10 @@ export class VsCodeClient implements WorkspaceApiClient {
       inputObservers: observers?.inputObservers || [],
     };
 
+    eventManager.emit({
+      type: DataStoryEvents.RUN_START
+    });
+
     this.sendMessage(message);
   }
 
