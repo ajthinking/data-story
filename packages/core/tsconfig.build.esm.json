@@ -1,0 +1,43 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "lib": [
+        "esnext"
+      ],
+      "allowJs": true,
+      "checkJs": false,
+      "skipLibCheck": true,
+      "strict": true,
+      "forceConsistentCasingInFileNames": true,
+      "outDir": "dist/esm",
+      "esModuleInterop": true,
+      "module": "ESNext",
+      "sourceMap": true,
+      "moduleResolution": "node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "incremental": true,
+      "noImplicitAny": true,
+      "types": [
+        "vitest/globals"
+      ],
+      "declaration": true
+    },
+    "ts-node": {
+      "compilerOptions": {
+        "module": "ESNext"
+      }
+    },
+    "include": [
+      "./src/**/*.ts",
+      "global.d.ts"
+    ],
+    "exclude": [
+      "./node_modules",
+      "./src/**/*.spec.ts",
+      "./src/**/*.test.ts",
+      "./src/**/*.cy.ts",
+      "./src/**/*.d.ts",
+    ]
+  }
+  

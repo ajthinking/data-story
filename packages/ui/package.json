@@ -3,6 +3,7 @@
   "version": "0.0.93",
   "main": "./dist/bundle.js",
   "types": "./dist/src/index.d.ts",
+  "module": "./dist/bundle.mjs",
   "exports": {
     "./data-story.css": "./dist/data-story.css",
     ".": {

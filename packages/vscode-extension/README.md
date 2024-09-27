@@ -1,6 +1,6 @@
 # Development Installation
 * clone repo
-* in root, also run `yarn`
+* in root, also run `yarn` and `yarn build`
 * open repo with VS Code
 * In "Run and Debug" tab, click "Run Extension"
 * This opens a new instance of VS Code

@@ -1,6 +1,5 @@
 import { nodeJsProvider, SocketServer } from './src';
 import { Application, coreNodeProvider } from '@data-story/core';
-import * as path from 'node:path';
 import * as dotenv from 'dotenv';
 import { hubspotProvider } from '@data-story/hubspot';
 import { openAiProvider } from '@data-story/openai';

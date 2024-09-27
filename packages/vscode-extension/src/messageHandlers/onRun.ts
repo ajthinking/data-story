@@ -19,11 +19,11 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
   })
 
   const sendMsg: ReportCallback = (items, inputObservers) => {
-    webviewPanel.webview.postMessage(JSON.stringify({
+    webviewPanel.webview.postMessage({
       type: 'NotifyObservers',
       inputObservers,
       items
-    }))
+    })
   }
 
   const inputObserverController = new InputObserverController(
