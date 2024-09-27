@@ -469,6 +469,7 @@ __metadata:
     ts-node: "npm:^10.9.1"
     typescript: "npm:4.9.5"
     vite: "npm:^5.0.10"
+    vite-plugin-externalize-deps: "npm:^0.8.0"
     webpack: "npm:^5.88.1"
     webpack-cli: "npm:^5.1.4"
     webpack-shebang-plugin: "npm:^1.1.8"
@@ -14929,6 +14930,15 @@ __metadata:
   bin:
     vite-node: vite-node.mjs
   checksum: 10/40230598c3c285cf65f407ac50b1c7753ab2dfa960de76ec1a95a0ce0ff963919d065c29ba538d9fb2fba3e0703a051d49d1ad6486001ba2f90616cc706ddc3d
+  languageName: node
+  linkType: hard
+
+"vite-plugin-externalize-deps@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "vite-plugin-externalize-deps@npm:0.8.0"
+  peerDependencies:
+    vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: 10/a87b7bc44c810e5ef16314d76ccdd442d27018ea3fae531d22fc6bd803c20e0de4268d981bfc5db604ceb382cd9f646804da84df5a77dac98914be8ddc15b6ec
   languageName: node
   linkType: hard
 
