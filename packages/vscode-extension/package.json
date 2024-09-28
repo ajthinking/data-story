@@ -2,7 +2,7 @@
   "name": "@data-story/vscode-extension",
   "displayName": "ds-ext",
   "description": "",
-  "version": "0.0.94",
+  "version": "0.0.95",
   "publisher": "ajthinking",
   "engines": {
     "vscode": "^1.93.0"

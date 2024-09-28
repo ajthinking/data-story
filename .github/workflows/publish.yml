@@ -162,9 +162,6 @@ jobs:
         with:
           node-version: '18.x'
 
-      - name: Install vsce
-        run: npm install -g vsce
-
       - name: Check VS Code extension version
         id: check_vscode
         run: |
@@ -191,8 +188,16 @@ jobs:
       - name: Install dependencies
         if: env.VERSION_EXISTS == 'false'
         run: |
-          cd packages/vscode-extension
           yarn install --frozen-lockfile
+
+      - name: Build Dependencies
+        if: env.VERSION_EXISTS == 'false'
+        run: |
+          yarn build
+
+      - name: Install vsce
+        if: env.VERSION_EXISTS == 'false'
+        run: npm install -g vsce
 
       - name: Build VS Code Extension
         if: env.VERSION_EXISTS == 'false'
