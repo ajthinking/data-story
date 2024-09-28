@@ -168,7 +168,7 @@ jobs:
       - name: Check VS Code extension version
         id: check_vscode
         run: |
-          PACKAGE_VERSION=$(node -p "require('./packages/vscode-extension/package.json').version")
+          PACKAGE_VERSION=$(node -p "require('./packages/ds-ext/package.json').version")
           echo "Version: $PACKAGE_VERSION"
           HTTP_STATUS=$(curl -X POST \
             -H "Accept: */*;api-version=7.2-preview.1;excludeUrls=true" \
@@ -191,17 +191,17 @@ jobs:
       - name: Install dependencies
         if: env.VERSION_EXISTS == 'false'
         run: |
-          cd packages/vscode-extension
+          cd packages/ds-ext
           yarn install --frozen-lockfile
 
       - name: Build VS Code Extension
         if: env.VERSION_EXISTS == 'false'
         run: |
-          cd packages/vscode-extension
+          cd packages/ds-ext
           yarn build
 
       - name: Publish VS Code Extension
         if: env.VERSION_EXISTS == 'false'
         run: |
-          cd packages/vscode-extension
+          cd packages/ds-ext
           vsce publish --pat ${{ secrets.VSCE_TOKEN }} --yarn

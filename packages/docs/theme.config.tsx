@@ -9,7 +9,7 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/ajthinking/data-story/blob/main/packages/docs',
   footer: {
-    text: 'Built with Nextra',
+    // text: 'Built with Nextra',
   },
 }
 

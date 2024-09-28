@@ -1,5 +1,5 @@
 {
-  "name": "@data-story/vscode-extension",
+  "name": "ds-ext",
   "displayName": "ds-ext",
   "description": "",
   "version": "0.0.94",

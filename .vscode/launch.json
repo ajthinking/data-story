@@ -7,10 +7,10 @@
         "request": "launch",
         "runtimeExecutable": "${execPath}",
         "args": [
-          "--extensionDevelopmentPath=${workspaceFolder}/packages/vscode-extension"
+          "--extensionDevelopmentPath=${workspaceFolder}/packages/ds-ext"
         ],
         "outFiles": [
-          "${workspaceFolder}/packages/vscode-extension/dist/**/*.js"
+          "${workspaceFolder}/packages/ds-ext/dist/**/*.js"
         ],
         "preLaunchTask": "${defaultBuildTask}"
       }
