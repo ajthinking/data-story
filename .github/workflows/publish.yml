@@ -191,17 +191,18 @@ jobs:
       - name: Install dependencies
         if: env.VERSION_EXISTS == 'false'
         run: |
-          cd packages/ds-ext
+          # cd packages/ds-ext
           yarn install --frozen-lockfile
 
       - name: Build VS Code Extension
         if: env.VERSION_EXISTS == 'false'
         run: |
-          cd packages/ds-ext
+          # cd packages/ds-ext
           yarn build
 
       - name: Publish VS Code Extension
         if: env.VERSION_EXISTS == 'false'
         run: |
           cd packages/ds-ext
-          vsce publish --pat ${{ secrets.VSCE_TOKEN }} --yarn
+          vsce package --yarn
+          vsce publish --pat ${{ secrets.AZURE_ACCESS_TOKEN }} --yarn
