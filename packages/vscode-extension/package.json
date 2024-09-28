@@ -2,7 +2,7 @@
   "name": "@data-story/vscode-extension",
   "displayName": "ds-ext",
   "description": "",
-  "version": "0.0.93",
+  "version": "0.0.94",
   "publisher": "ajthinking",
   "engines": {
     "vscode": "^1.93.0"
@@ -85,7 +85,7 @@
     "pretest": "yarn run compile-tests && yarn run build && yarn run lint",
     "lint": "eslint src",
     "test": "vscode-test",
-    "release": "release-it"    
+    "release": "release-it"
   },
   "release-it": {
     "git": false,
@@ -96,7 +96,7 @@
         "--workspaces-update=false"
       ]
     }
-  },  
+  },
   "devDependencies": {
     "@types/mocha": "^10.0.7",
     "@types/node": "20.x",
