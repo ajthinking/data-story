@@ -204,5 +204,5 @@ jobs:
         if: env.VERSION_EXISTS == 'false'
         run: |
           cd packages/ds-ext
-          vsce package
-          vsce publish --pat ${{ secrets.AZURE_ACCESS_TOKEN }}
+          vsce package --no-yarn
+          vsce publish --pat ${{ secrets.AZURE_ACCESS_TOKEN }} --no-yarn
