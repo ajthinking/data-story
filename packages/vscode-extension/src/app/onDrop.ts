@@ -26,7 +26,7 @@ export const onDrop = (event: any, addNodeFromDescription: any) => {
         value: path,
       })
     ],
-  }
+  };
 
   addNodeFromDescription(description);
-}
+};

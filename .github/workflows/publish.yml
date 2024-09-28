@@ -149,3 +149,59 @@ jobs:
           yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
           yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
           cd packages/nodejs && yarn npm publish --access public
+
+  publish_vscode_extension:
+    needs: [publish_ui, publish_nodejs]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Install vsce
+        run: npm install -g vsce
+
+      - name: Check VS Code extension version
+        id: check_vscode
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./packages/vscode-extension/package.json').version")
+          echo "Version: $PACKAGE_VERSION"
+          HTTP_STATUS=$(curl -X POST \
+            -H "Accept: */*;api-version=7.2-preview.1;excludeUrls=true" \
+            -H "Accept-Encoding: gzip, deflate, br, zstd" \
+            -H "Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,sv;q=0.7" \
+            -H "Content-Length: 0" \
+            -o /dev/null \
+            -w "%{http_code}" \
+            --silent \
+            "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ajthinking/extensions/ds-ext/$PACKAGE_VERSION/stats?statType=pageview")
+          
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "Version $PACKAGE_VERSION already exists. Skipping build and publish."
+            echo "VERSION_EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "Version does not exist. Proceeding to build and publish."
+            echo "VERSION_EXISTS=false" >> $GITHUB_ENV
+          fi
+
+      - name: Install dependencies
+        if: env.VERSION_EXISTS == 'false'
+        run: |
+          cd packages/vscode-extension
+          yarn install --frozen-lockfile
+
+      - name: Build VS Code Extension
+        if: env.VERSION_EXISTS == 'false'
+        run: |
+          cd packages/vscode-extension
+          yarn build
+
+      - name: Publish VS Code Extension
+        if: env.VERSION_EXISTS == 'false'
+        run: |
+          cd packages/vscode-extension
+          vsce publish --pat ${{ secrets.VSCE_TOKEN }} --yarn
