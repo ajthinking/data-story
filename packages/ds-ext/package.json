@@ -2,7 +2,7 @@
   "name": "ds-ext",
   "displayName": "ds-ext",
   "description": "",
-  "version": "0.0.94",
+  "version": "0.0.101",
   "publisher": "ajthinking",
   "engines": {
     "vscode": "^1.93.0"
