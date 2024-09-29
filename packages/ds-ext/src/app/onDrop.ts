@@ -13,18 +13,31 @@ export const onDrop = (event: any, addNodeFromDescription: any) => {
   }
 
   const description: NodeDescription = {
-    name: 'JsonFile',
+    name: 'JsonFile.read',
     label: filename,
     inputs: [],
-    outputs: [{
-      name: 'output',
-      schema: {}
-    }],
+    outputs: [
+      {
+        name: 'output',
+        schema: {},
+      },
+      {
+        name: 'errors',
+        schema: {},
+      },
+    ],
     params: [
       str({
-        name: 'uri',
+        name: 'file_path',
+        label: 'File path',
+        help: 'File path',
         value: path,
-      })
+      }),
+      str({
+        name: 'items_path',
+        label: 'Items Path',
+        help: 'Items path',
+      }),
     ],
   };
 

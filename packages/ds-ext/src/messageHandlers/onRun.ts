@@ -1,12 +1,12 @@
 import { Application, coreNodeProvider, Diagram, ExecutionResult, InMemoryStorage, InputObserverController, ReportCallback } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
-import { vsCodeNodeProvider } from './vsCodeNodeProvider';
+import { nodeJsProvider } from '@data-story/nodejs';
 
 export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
   const app = new Application();
   app.register([
     coreNodeProvider,
-    vsCodeNodeProvider,
+    nodeJsProvider,
   ]);
 
   await app.boot();
@@ -16,15 +16,15 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
   const diagram = new Diagram({
     nodes: event.diagram.nodes,
     links: event.diagram.links,
-  })
+  });
 
   const sendMsg: ReportCallback = (items, inputObservers) => {
     webviewPanel.webview.postMessage({
       type: 'NotifyObservers',
       inputObservers,
       items
-    })
-  }
+    });
+  };
 
   const inputObserverController = new InputObserverController(
     event.inputObservers || [],
@@ -37,7 +37,7 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
     inputObserverController
   });
 
-  const execution = executor.execute()
+  const execution = executor.execute();
 
   try {
     for await(const update of execution) {
@@ -46,7 +46,7 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
 
     webviewPanel.webview.postMessage(new ExecutionResult());
   } catch(error: any) {
-    console.log('SOME ERROR IN onRun!')
+    console.log('SOME ERROR IN onRun!');
     throw error;
   }
-}
+};
