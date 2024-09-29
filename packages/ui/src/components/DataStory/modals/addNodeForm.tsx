@@ -48,7 +48,7 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
       <div data-cy="add-node-modal" className="m-2">
         <input
           data-cy='add-node-modal-input'
-          className='w-full bg-white text-gray-500 font-mono text-sm border border-gray-100 rounded p-4'
+          className='w-full bg-white text-gray-500 font-mono text-xs border border-gray-100 rounded p-4'
           placeholder={'Type format, action, resource ...'}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
@@ -66,7 +66,7 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
                 'flex justify-between items-center px-4 py-2',
                 'text-base font-bold text-gray-400 cursor-pointer',
                 'border border-gray-300 shadow',
-                'bg-gray-100 hover:bg-slate-200 h-14',
+                'bg-gray-100 hover:bg-slate-200',
                 {
                   'mr-1': index % 2 !== 0,
                   'ml-2': index % 2 === 0,
@@ -75,7 +75,7 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}
             >
-              <div className='text-gray-500 text-sm overflow-hidden'>
+              <div className='text-gray-500 text-xs overflow-hidden'>
                 <span className='text-indigo-500 font-mono'>{nodeDescription.category || 'Core'}::</span>
                 {nodeDescription.label || nodeDescription.name}
               </div>
