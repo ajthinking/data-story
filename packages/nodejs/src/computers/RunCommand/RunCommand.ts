@@ -1,6 +1,6 @@
 import { promisify } from 'util';
 import { exec as execCallback } from 'child_process';
-import { Computer, createDefaultStringable } from '@data-story/core';
+import { Computer, str } from '@data-story/core';
 
 const exec = promisify(execCallback);
 
@@ -39,22 +39,18 @@ export const RunCommand: Computer = {
     },
   ],
   params: [
-    createDefaultStringable({
+    str({
       name: 'command',
-      label: 'Command',
-      help: 'Command to run',
-      multiline: true,
-      canInterpolate: false,
-      interpolate: false,
-      evaluations: [],
-      casts: [],
       value: 'say "Hello World"',
+      help: 'Command to run',
+      canInterpolate: true,
     })
   ],
 
-  async *run({ input, output, params }) {
+  async *run({ input, output }) {
     while(true) {
       const [ incoming ] = input.pull(1)
+
       const command = incoming.params.command as string
 
       const { stdout, stderr, error } = await awaitableExec(command);
@@ -80,7 +76,7 @@ export const RunCommand: Computer = {
         continue;
       }
 
-      throw new Error('Unknown exec result!')
+      yield;
     }
   },
 };
