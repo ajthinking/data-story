@@ -5610,6 +5610,7 @@ __metadata:
   resolution: "ds-ext@workspace:packages/ds-ext"
   dependencies:
     "@data-story/core": "workspace:*"
+    "@data-story/nodejs": "workspace:*"
     "@data-story/ui": "workspace:*"
     "@types/mocha": "npm:^10.0.7"
     "@types/node": "npm:20.x"
