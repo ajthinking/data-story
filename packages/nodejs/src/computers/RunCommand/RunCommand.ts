@@ -23,6 +23,7 @@ async function awaitableExec(command: string): Promise<{
 export const RunCommand: Computer = {
   name: 'RunCommand',
   label: 'RunCommand',
+  category: 'NodeJs',
   inputs: [{
     name: 'input',
     schema: {},

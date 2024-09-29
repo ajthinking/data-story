@@ -5,6 +5,7 @@ import * as nodePath from 'path'
 export const ListFiles: Computer = {
   name: 'ListFiles',
   label: 'ListFiles',
+  category: 'NodeJs',
   inputs: [{
     name: 'input',
     schema: {},
