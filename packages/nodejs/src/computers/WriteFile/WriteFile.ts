@@ -4,6 +4,7 @@ import { Computer, str } from '@data-story/core';
 export const WriteFile: Computer = {
   name: 'WriteFile',
   label: 'WriteFile',
+  category: 'NodeJs',
   inputs: [{
     name: 'input',
     schema: {}
