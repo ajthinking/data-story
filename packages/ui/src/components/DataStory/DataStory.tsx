@@ -23,7 +23,7 @@ export const DataStoryComponent = (
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
-  const [sidebarKey, setSidebarKey] = useState(initSidebarKey ?? '');
+  const [sidebarKey, setSidebarKey] = useState(initSidebarKey ?? 'addNode');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const [diagram, setDiagram] = useState<Diagram | null>(initDiagram || new Diagram());
   const [diagramKey, setDiagramKey] = useState<string>();
@@ -85,7 +85,7 @@ export const DataStoryComponent = (
                   onChange={onChange}
                 />
               </Allotment.Pane>
-              <Allotment.Pane visible={!isSidebarClose} snap maxSize={500} preferredSize={300}>
+              <Allotment.Pane visible={!isSidebarClose} snap maxSize={800} preferredSize={400}>
                 <Sidebar
                   nodeDescriptions={nodeDescriptions}
                   nodeDescriptionsLoading={nodeDescriptionsLoading}
