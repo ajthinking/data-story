@@ -163,7 +163,7 @@ jobs:
           node-version: '18.x'
 
       - name: Install vsce
-        run: npm install -g vsce@3.1.0
+        run: npm install -g @vscode/vsce@3.1.0
 
       - name: Check VS Code extension version
         id: check_vscode
