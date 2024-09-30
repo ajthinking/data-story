@@ -1,15 +1,15 @@
 import './../../styles/globals.css';
 import { Allotment } from 'allotment';
-import { AcitvityBarType, Activity, DataStoryProps, StoreSchema } from './types';
+import { DataStoryProps, StoreSchema } from './types';
 import 'allotment/dist/style.css';
 import { Sidebar } from './sidebar/sidebar';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
-import { debounce, Diagram,  } from '@data-story/core';
+import { Diagram, } from '@data-story/core';
 import { LocalStorageKey } from './common/method';
 
 function handleRequestError(requestError?: Error): void {
@@ -63,21 +63,11 @@ export const DataStoryComponent = (
   return (
     <DataStoryCanvasProvider>
       <div className="relative h-full w-full">
-        { children }
+        {children}
         {
           (false) // TODO isLoading?
             ? <LoadingMask/>
             : <Allotment className='h-full border-0.5 relative'>
-              <Allotment.Pane visible={!isSidebarClose} snap maxSize={500} preferredSize={300}>
-                <Sidebar
-                  nodeDescriptions={nodeDescriptions}
-                  nodeDescriptionsLoading={nodeDescriptionsLoading}
-                  partialStoreRef={partialStoreRef}
-                  sidebarKey={sidebarKey}
-                  setSidebarKey={setSidebarKey}
-                  node={selectedNode}
-                  onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
-              </Allotment.Pane>
               {/*The Allotment.Pane will recalculate the width and height of the child components.*/}
               {/*The className is used to address the ReactFlow warning.*/}
               <Allotment.Pane minSize={300} className="h-full w-96">
@@ -94,6 +84,16 @@ export const DataStoryComponent = (
                   onNodeSelected={setSelectedNode}
                   onChange={onChange}
                 />
+              </Allotment.Pane>
+              <Allotment.Pane visible={!isSidebarClose} snap maxSize={500} preferredSize={300}>
+                <Sidebar
+                  nodeDescriptions={nodeDescriptions}
+                  nodeDescriptionsLoading={nodeDescriptionsLoading}
+                  partialStoreRef={partialStoreRef}
+                  sidebarKey={sidebarKey}
+                  setSidebarKey={setSidebarKey}
+                  node={selectedNode}
+                  onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
               </Allotment.Pane>
             </Allotment>
         }
