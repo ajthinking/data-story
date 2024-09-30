@@ -126,5 +126,9 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "ts-loader": "^9.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajthinking/data-story.git"
   }
 }
