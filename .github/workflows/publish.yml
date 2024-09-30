@@ -163,7 +163,7 @@ jobs:
           node-version: '18.x'
 
       - name: Install vsce
-        run: npm install -g vsce
+        run: npm install -g @vscode/vsce@3.1.0
 
       - name: Check VS Code extension version
         id: check_vscode
@@ -204,5 +204,5 @@ jobs:
         if: env.VERSION_EXISTS == 'false'
         run: |
           cd packages/ds-ext
-          vsce package --no-yarn
+          vsce package --no-yarn --skip-license
           vsce publish --pat ${{ secrets.AZURE_ACCESS_TOKEN }} --no-yarn

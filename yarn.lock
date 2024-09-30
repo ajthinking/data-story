@@ -2561,7 +2561,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/vscode@npm:^1.93.0":
+"@types/vscode@npm:^1.80.0":
   version: 1.93.0
   resolution: "@types/vscode@npm:1.93.0"
   checksum: 10/d11367aabe04ceaa4ebb07b61871434f4294a80c71916afb19fedfce86b8f94cebb95d39c1b714ea792f2daeac04367cb0c25fb9a5271dd9b5ce89eea29c0ed5
@@ -5616,7 +5616,7 @@ __metadata:
     "@types/node": "npm:20.x"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
-    "@types/vscode": "npm:^1.93.0"
+    "@types/vscode": "npm:^1.80.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.3.0"
     "@typescript-eslint/parser": "npm:^8.3.0"
     "@vitejs/plugin-react": "npm:^4.3.1"

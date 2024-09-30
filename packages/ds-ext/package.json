@@ -5,7 +5,7 @@
   "version": "0.0.104",
   "publisher": "ajthinking",
   "engines": {
-    "vscode": "^1.93.0"
+    "vscode": "^1.80.0"
   },
   "categories": [
     "Other"
@@ -74,6 +74,9 @@
       ]
     }
   },
+  "vsce": {
+    "dependencies": false
+  },
   "scripts": {
     "vscode:prepublish": "yarn run package",
     "build": "webpack && vite build",
@@ -102,7 +105,7 @@
     "@types/node": "20.x",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "@types/vscode": "^1.93.0",
+    "@types/vscode": "^1.80.0",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
     "@vitejs/plugin-react": "^4.3.1",
@@ -123,5 +126,9 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "ts-loader": "^9.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ajthinking/data-story.git"
   }
 }
