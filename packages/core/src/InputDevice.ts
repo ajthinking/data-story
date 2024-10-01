@@ -38,7 +38,12 @@ export class InputDevice {
     for(const link of links) {
       const batch = this.memory.pullLinkItems(link.id, remaining)
 
-      pulled.push(...batch)
+      if(batch.length < 1000) {
+        pulled.push.apply(pulled, batch)
+      } else {
+        for(const item of batch) pulled.push(item)
+      }
+
       remaining -= batch.length
       if(remaining === 0) break
     }
