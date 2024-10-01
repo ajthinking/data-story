@@ -59,7 +59,7 @@ export function DataStoryControls({
 
   if (hideControls === true) return null;
 
-  return <Controls position={'top-right'} showInteractive={false} showZoom={false} showFitView={false}>
+  return <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
     {[<ControlButton
       title="Run"
       aria-label="run"
