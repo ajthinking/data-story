@@ -13,11 +13,11 @@ export const Clone: Computer = {
   ],
   outputs: [
     {
-      name: 'original',
+      name: 'clones',
       schema: {}
     },
     {
-      name: 'clones',
+      name: 'original',
       schema: {}
     },
   ],
