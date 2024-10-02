@@ -85,7 +85,7 @@ export const DataStoryComponent = (
                   onChange={onChange}
                 />
               </Allotment.Pane>
-              <Allotment.Pane visible={!isSidebarClose} snap maxSize={800} preferredSize={400}>
+              <Allotment.Pane visible={!isSidebarClose} snap maxSize={800} minSize={300} preferredSize={400}>
                 <Sidebar
                   nodeDescriptions={nodeDescriptions}
                   nodeDescriptionsLoading={nodeDescriptionsLoading}
