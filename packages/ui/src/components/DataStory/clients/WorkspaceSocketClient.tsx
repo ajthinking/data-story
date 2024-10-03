@@ -53,11 +53,13 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
         data.inputObservers,
       );
     });
+
+    this.run = this.run.bind(this);
   }
 
-  run = (
+  run (
     { updateEdgeCounts, diagram, observers }: ClientRunParams
-  ) => {
+  ) {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
     const message = {

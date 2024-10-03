@@ -5,11 +5,13 @@ import type { WorkspaceApiClient, ClientRunParams, ServerClientObservationConfig
 export class VsCodeClient implements WorkspaceApiClient {
   updateEdgeCounts: any;
   private vscode: any;
-  private observers: ServerClientObservationConfig | undefined;
+  private observers: ServerClientObservationConfig|undefined;
+
   constructor(vscode: any) {
     this.vscode = vscode;
 
     window.addEventListener('message', (event) => this.handleMessage(event.data));
+    this.run = this.run.bind(this);
   }
 
   async getNodeDescriptions() {
@@ -18,7 +20,7 @@ export class VsCodeClient implements WorkspaceApiClient {
     return availableNodes;
   }
 
-  run = async ({ diagram, updateEdgeCounts, observers }: ClientRunParams): Promise<void> => {
+  async run ({ diagram, updateEdgeCounts, observers }: ClientRunParams): Promise<void> {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
     const message = {
@@ -34,11 +36,11 @@ export class VsCodeClient implements WorkspaceApiClient {
     this.sendMessage(message);
   }
 
-  getTree = (async () => {}) as any;
-  createTree = (async () => {}) as any;
-  updateTree = (async () => {}) as any;
-  destroyTree = (async () => {}) as any;
-  moveTree = (async () => {}) as any;
+  async getTree() {}
+  async createTree() {}
+  async updateTree() {}
+  async destroyTree() {}
+  async moveTree() {}
 
   private sendMessage(message: any) {
     this.vscode.postMessage(message);

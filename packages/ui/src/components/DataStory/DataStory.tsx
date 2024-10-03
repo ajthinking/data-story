@@ -23,10 +23,14 @@ export const DataStoryComponent = (
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
-  const [sidebarKey, setSidebarKey] = useState(initSidebarKey ?? 'addNode');
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
   const [diagram, setDiagram] = useState<Diagram | null>(initDiagram || new Diagram());
   const [diagramKey, setDiagramKey] = useState<string>();
+  const [sidebarKey, setSidebarKey] = useState(() => {
+    // If initDiagram isn't provided, default to 'addNode' to show the sidebar
+    const defaultKey = initDiagram ? '' : 'addNode';
+    return initSidebarKey ?? defaultKey;
+  });
 
   const {
     data: nodeDescriptions,
