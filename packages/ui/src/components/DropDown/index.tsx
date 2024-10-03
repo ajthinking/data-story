@@ -117,10 +117,9 @@ function DropDownOperator(props: {
   const { getValues } = useFormField();
   const value = useMemo(getValues, [getValues]);
 
-  return <div className="flex flex-row justify-between">
-    {/*create the tag show the selected option*/}
-    <div className="flex items-center">
-      {Object.keys(value ?? {}).map((key) => {
+  function getContent(): (JSX.Element|string)[]|JSX.Element {
+    const pills = Object.keys(value ?? {})
+      .map((key) => {
         return ((key === 'Evaluation' || key === 'Cast') && getLabelFromType(value[key]))
           ? (<div key={key}
             className="rounded-md p-0.5 scale-75 text-white w-20 text-center"
@@ -130,7 +129,25 @@ function DropDownOperator(props: {
             }}>
             {getLabelFromType(value[key])}
           </div>)
-          : ''})}
+          : ''
+      }).filter((pill) => pill !== '');
+
+    const placeholderElement = () => {
+      return (<div className="scale-75 text-slate-400"
+        style={{
+          fontSize: '12px',
+        }}>
+        Please select an option
+      </div>)
+    }
+
+    return pills.length > 0 ? pills : placeholderElement();
+  }
+
+  return <div className="flex flex-row justify-between">
+    {/*create the tag show the selected option*/}
+    <div className="flex items-center">
+      {getContent()}
     </div>
     <div>
       <button
@@ -183,7 +200,7 @@ export const DropDown = ({
 
   return (
     <div className="sticky right-0 top-0">
-      <div className="ml-1 relative bg-gray-50">
+      <div className="relative bg-gray-50">
         <DropDownOperator refs={refs} referenceProps={getReferenceProps()}/>
 
         <FloatingPortal>
