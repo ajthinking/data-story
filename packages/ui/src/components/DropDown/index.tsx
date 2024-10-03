@@ -117,9 +117,9 @@ function DropDownOperator(props: {
   const { getValues } = useFormField();
   const value = useMemo(getValues, [getValues]);
 
-  return <div className="flex flex-row">
+  return <div className="flex flex-row justify-between">
     {/*create the tag show the selected option*/}
-    <div className="flex flex-col items-center">
+    <div className="flex items-center">
       {Object.keys(value ?? {}).map((key) => {
         return ((key === 'Evaluation' || key === 'Cast') && getLabelFromType(value[key]))
           ? (<div key={key}
@@ -182,7 +182,7 @@ export const DropDown = ({
   ]);
 
   return (
-    <div>
+    <div className="sticky right-0 top-0">
       <div className="ml-1 relative bg-gray-50">
         <DropDownOperator refs={refs} referenceProps={getReferenceProps()}/>
 
