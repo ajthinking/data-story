@@ -91,7 +91,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         {/* ***** CONTENT ***** */}
         <div
           style={{height: 'calc(100vh - 350px)'}}
-          className="overflow-y-scroll relative pb-6 pt-4 px-6 flex-auto space-y-1 text-sm text-gray-800">
+          className="overflow-y-auto relative pb-6 pt-4 px-6 flex-auto space-y-1 text-sm text-gray-800">
           <TabComponent node={node} register={form.register} form={form}/>
         </div>
 
