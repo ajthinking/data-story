@@ -1,5 +1,6 @@
 import React from 'react';
 import { DataStoryEvents, DataStoryEventType, useDataStoryEvent } from '@data-story/ui';
+import { multiline } from '@data-story/core';
 
 export function VsCodeToast({ postMessage }: {
   postMessage: (message: {
@@ -16,10 +17,13 @@ export function VsCodeToast({ postMessage }: {
     }
     switch (event.type) {
       case DataStoryEvents.RUN_SUCCESS:
-        info.message = 'Diagram executed successfully!';
+        info.message = multiline`
+          Diagram executed successfully!
+          Execution time: ${event.payload.time} ms
+        `
         break;
       case DataStoryEvents.RUN_ERROR:
-        info.message = 'Diagram execution failed!';
+        info.message = `Diagram execution failed! Error was: ${event.payload.error}`;
         info.status = 'error';
         break;
       case DataStoryEvents.SAVE_SUCCESS:

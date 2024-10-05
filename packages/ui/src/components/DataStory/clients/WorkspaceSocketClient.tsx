@@ -14,7 +14,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   private maxReconnectTries = 100;
   private reconnectTimeoutMs = 1000;
   private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
-  private observers: ServerClientObservationConfig|undefined;
+  private observers: ServerClientObservationConfig | undefined;
 
   constructor() {
     this.socket$ = webSocket({
@@ -132,7 +132,8 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
     if (data.type === 'ExecutionResult') {
       console.log('Execution complete 💫')
       eventManager.emit({
-        type: DataStoryEvents.RUN_SUCCESS
+        type: DataStoryEvents.RUN_SUCCESS,
+        payload: data
       });
       return
     }

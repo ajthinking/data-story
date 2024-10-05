@@ -1,3 +1,4 @@
-export class ExecutionResult {
-  type = 'ExecutionResult'
+export type ExecutionResult = {
+  type: 'ExecutionResult'
+  time: number
 }
