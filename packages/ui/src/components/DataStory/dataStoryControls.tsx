@@ -39,9 +39,10 @@ export function DataStoryControls({
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     updateDiagram: state.updateDiagram,
+    onRun: state.onRun,
   });
 
-  const { toDiagram, updateDiagram } = useStore(selector);
+  const { toDiagram, updateDiagram, onRun } = useStore(selector);
 
   const context: DataStoryControlsType = useMemo(() => ({
     getDiagram: () => {
@@ -64,7 +65,14 @@ export function DataStoryControls({
       title="Run"
       aria-label="run"
       key="run"
-      onClick={() => setShowRun(true)}
+      onClick={() => {
+        // If no parameters are present, run the diagram immediately
+        onRun();
+
+        // // TODO
+        // // If parameters is present, do show the run modal
+        // setShowRun(true)
+      }}
     >
       <RunIcon/>
     </ControlButton>,
