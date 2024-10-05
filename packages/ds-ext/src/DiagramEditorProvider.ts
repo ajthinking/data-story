@@ -59,7 +59,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
       };
 
       const handler = handlers[event.type];
-      if(!handler) throw Error(`No handler found for event type: ${event.type}. Available handlers: ${Object.keys(handlers).join(', ')}`);
+      if(!handler) {throw Error(`No handler found for event type: ${event.type}. Available handlers: ${Object.keys(handlers).join(', ')}`);}
 
       handler({ webviewPanel, event, document });
     });

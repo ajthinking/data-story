@@ -16,4 +16,4 @@ export const onToast: MessageHandler = async ({ event }) => {
     console.error(toastEvent.message);
     window.showErrorMessage(toastEvent.message);
   }
-}
+};

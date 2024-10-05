@@ -5,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import importPlugin from 'eslint-plugin-import';
 
 export default {
-  files: ['*.ts', '*.tsx', '*.js', '*.jsx'],
+  files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
   plugins: {
     '@typescript-eslint': typescriptEslint,
     '@stylistic': stylistic,
@@ -36,7 +36,7 @@ export default {
       'single'
     ],
     '@stylistic/eol-last': 'off',
-    '@stylistic/space-infix-ops': [ 'error', { 'int32Hint': false }],
+    '@stylistic/space-infix-ops': [ 'warn', { 'int32Hint': false }],
     '@typescript-eslint/naming-convention': [ 'warn', {
       selector: 'import',
       format: [ 'camelCase', 'PascalCase' ],

@@ -13,7 +13,7 @@ export function VsCodeToast({ postMessage }: {
       type: 'toast',
       message: '',
       status: 'success',
-    }
+    };
     switch (event.type) {
       case DataStoryEvents.RUN_SUCCESS:
         info.message = 'Diagram executed successfully!';

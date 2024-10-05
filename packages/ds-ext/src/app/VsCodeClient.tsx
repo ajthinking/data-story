@@ -5,7 +5,7 @@ import type { WorkspaceApiClient, ClientRunParams, ServerClientObservationConfig
 export class VsCodeClient implements WorkspaceApiClient {
   updateEdgeCounts: any;
   private vscode: any;
-  private observers: ServerClientObservationConfig|undefined;
+  private observers: ServerClientObservationConfig | undefined;
 
   constructor(vscode: any) {
     this.vscode = vscode;
@@ -66,22 +66,22 @@ export class VsCodeClient implements WorkspaceApiClient {
   private handleMessage(data: any) {
     processWaitingResponse(data);
 
-    if (data.awaited) return;
+    if (data.awaited) {return;}
 
     // ...If message is non-transactional, handle it
     if (data.type === 'ExecutionUpdate') {
-      this.updateEdgeCounts!(data.counts)
+      this.updateEdgeCounts!(data.counts);
 
       for(const hook of data.hooks as Hook[]) {
         if (hook.type === 'CONSOLE_LOG') {
-          console.log(...hook.args)
+          console.log(...hook.args);
         } else if (hook.type === 'UPDATES') {
           const providedCallback = (...data: any) => {
-            console.log('THIS IS THE UPDATE HOOK!')
-            console.log('DataPassed', data)
-          }
+            console.log('THIS IS THE UPDATE HOOK!');
+            console.log('DataPassed', data);
+          };
 
-          providedCallback(...hook.args)
+          providedCallback(...hook.args);
         }
       }
       return;
@@ -93,24 +93,24 @@ export class VsCodeClient implements WorkspaceApiClient {
     }
 
     if (data.type === 'ExecutionResult') {
-      console.log('Execution complete 💫')
+      console.log('Execution complete 💫');
       eventManager.emit({
         type: DataStoryEvents.RUN_SUCCESS
       });
-      return
+      return;
     }
 
     if (data.type === 'ExecutionFailure') {
       console.error('Execution failed: ', {
         history: data.history,
-      })
+      });
 
       eventManager.emit({
         type: DataStoryEvents.RUN_ERROR,
         payload: data
       });
 
-      return
+      return;
     }
 
     if (data.type === 'UpdateStorage') {
@@ -132,7 +132,7 @@ export const processWaitingResponse = (message: any) => {
     pending.resolve(response);
     pendingResponses.delete(response.id);
   }
-}
+};
 
 // send a message and wait for the response
 export async function waitForResponse(params: any): Promise<any> {
