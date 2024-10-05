@@ -4,7 +4,6 @@ import {
   Application,
   Diagram,
   ExecutionFailure,
-  ExecutionResult,
   ExecutorFactory,
   InMemoryStorage,
   InputObserverController,
@@ -57,9 +56,10 @@ export const run: MessageHandler<RunMessage> = async(
     }
 
     ws.send(
-      JSON.stringify(
-        new ExecutionResult()
-      )
+      JSON.stringify({
+        type: 'ExecutionResult',
+        time: Date.now()
+      })
     )
   } catch(error: any) {
     if (ws.readyState === WebSocket.OPEN) {

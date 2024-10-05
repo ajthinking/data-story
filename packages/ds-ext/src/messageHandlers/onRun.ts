@@ -37,6 +37,7 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
     inputObserverController
   });
 
+  const startTime = Date.now();
   const execution = executor.execute();
 
   try {
@@ -44,9 +45,18 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
       webviewPanel.webview.postMessage(update);
     }
 
-    webviewPanel.webview.postMessage(new ExecutionResult());
+    const endTime = Date.now();
+    webviewPanel.webview.postMessage({
+      type: 'ExecutionResult',
+      time: endTime - startTime
+    });
   } catch(error: any) {
-    console.log('SOME ERROR IN onRun!');
-    throw error;
+    webviewPanel.webview.postMessage({
+      type: 'ExecutionFailure',
+      error: error.message
+    });
+
+    console.log('Error in onRun!');
+    console.error(error);
   }
 };

@@ -95,7 +95,8 @@ export class VsCodeClient implements WorkspaceApiClient {
     if (data.type === 'ExecutionResult') {
       console.log('Execution complete 💫')
       eventManager.emit({
-        type: DataStoryEvents.RUN_SUCCESS
+        type: DataStoryEvents.RUN_SUCCESS,
+        payload: data,
       });
       return
     }
