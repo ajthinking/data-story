@@ -32,3 +32,7 @@
     @apply outline-none !important;
   }
 }
+
+.ͼ1.cm-focused {
+    outline: none !important;
+}

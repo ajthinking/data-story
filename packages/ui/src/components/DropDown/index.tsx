@@ -209,7 +209,7 @@ export const DropDown = ({
             {...getFloatingProps()}
             style={floatingStyles}
             // If the float nesting becomes more complex moving forward, we might need to consider using a floatingTree
-            className="max-h-128 overflow-scroll z-[100] w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+            className="max-h-128 overflow-auto z-[100] w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
             {optionGroups.map((optionGroup) => {
               return (
                 <div className="mb-2" key={optionGroup.label}>
