@@ -51,10 +51,25 @@ export const Signal: Computer = {
     const period = Number(params.period)
     const count = Number(params.count)
 
-    let i = 1;
+    // If period is 0, send all signals at once
+    if(period === 0) {
+      const shapedBatch: Object[] = []
 
+      for(let i = 1; i <= count; i++) {
+        const [ spawned ] = input.pullNew({ i })
+        const shaped = spawned.params.expression as Object
+        shapedBatch.push(shaped)
+      }
+
+      output.push(shapedBatch)
+      yield;
+      return;
+    }
+
+    // If period is > 0, send signals one by one
+    let i = 1;
     while(i <= count) {
-      await sleep(period)
+      if(period > 0) await sleep(period)
 
       const [ spawned ] = input.pullNew({ i })
       const shaped = spawned.params.expression as Object
