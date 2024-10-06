@@ -26,3 +26,13 @@
     background: #adabab;
   }
 }
+
+@layer components {
+  .ͼ1.cm-focused {
+    @apply outline-none !important;
+  }
+}
+
+.ͼ1.cm-focused {
+    outline: none !important;
+}

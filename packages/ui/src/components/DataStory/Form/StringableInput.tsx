@@ -51,7 +51,7 @@ export function StringableInputComponent({
   }, [setValue]);
 
   return (
-    <div className="flex w-full text-gray-500 h-full">
+    <div className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
       <CodeMirror
         className="text-xs h-full w-full bg-white font-mono"
         value={(getValues() ?? '').toString()}

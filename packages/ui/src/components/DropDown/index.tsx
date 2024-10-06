@@ -2,6 +2,7 @@ import '../../styles/globals.css';
 import { useCallback, useMemo, useState } from 'react';
 import {
   autoUpdate,
+  type ExtendedRefs,
   flip,
   FloatingPortal,
   offset,
@@ -10,11 +11,17 @@ import {
   useDismiss,
   useFloating,
   useInteractions,
-  useRole,
-  type ExtendedRefs
+  useRole
 } from '@floating-ui/react';
 import { FormFieldWrapper, useFormField } from '../DataStory/Form/UseFormField';
-import { stringCast, numberCast, hjsonEvaluation, jsExpressionEvaluation, jsFunctionEvaluation, jsonEvaluation } from '@data-story/core';
+import {
+  hjsonEvaluation,
+  jsExpressionEvaluation,
+  jsFunctionEvaluation,
+  jsonEvaluation,
+  numberCast,
+  stringCast
+} from '@data-story/core';
 
 export type Option = {
   label: string
@@ -117,10 +124,9 @@ function DropDownOperator(props: {
   const { getValues } = useFormField();
   const value = useMemo(getValues, [getValues]);
 
-  return <div className="flex flex-row">
-    {/*create the tag show the selected option*/}
-    <div className="flex flex-col items-center">
-      {Object.keys(value ?? {}).map((key) => {
+  function getContent(): (JSX.Element | string)[] | JSX.Element {
+    const pills = Object.keys(value ?? {})
+      .map((key) => {
         return ((key === 'Evaluation' || key === 'Cast') && getLabelFromType(value[key]))
           ? (<div key={key}
             className="rounded-md p-0.5 scale-75 text-white w-20 text-center"
@@ -130,12 +136,31 @@ function DropDownOperator(props: {
             }}>
             {getLabelFromType(value[key])}
           </div>)
-          : ''})}
+          : ''
+      }).filter((pill) => pill !== '');
+
+    const placeholderElement = () => {
+      return (<div className="scale-75 text-slate-400"
+        style={{
+          fontSize: '12px',
+        }}>
+        Please select an option
+      </div>)
+    }
+
+    return pills.length > 0 ? pills : placeholderElement();
+  }
+
+  return <div
+    ref={props.refs.setReference}
+    {...props.referenceProps}
+    className="flex flex-row justify-between cursor-pointer">
+    {/*create the tag show the selected option*/}
+    <div className="flex items-center">
+      {getContent()}
     </div>
     <div>
       <button
-        ref={props.refs.setReference}
-        {...props.referenceProps}
         className="px-2 py-1 text-gray-200 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
@@ -182,8 +207,8 @@ export const DropDown = ({
   ]);
 
   return (
-    <div>
-      <div className="ml-1 relative bg-gray-50">
+    <div className="sticky right-0 top-0">
+      <div className="relative bg-gray-50">
         <DropDownOperator refs={refs} referenceProps={getReferenceProps()}/>
 
         <FloatingPortal>
@@ -192,7 +217,7 @@ export const DropDown = ({
             {...getFloatingProps()}
             style={floatingStyles}
             // If the float nesting becomes more complex moving forward, we might need to consider using a floatingTree
-            className="max-h-128 overflow-scroll z-[100] w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+            className="max-h-128 overflow-auto z-[100] w-44 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5">
             {optionGroups.map((optionGroup) => {
               return (
                 <div className="mb-2" key={optionGroup.label}>

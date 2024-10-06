@@ -5,4 +5,4 @@ export const onGetDirtyFileContent: MessageHandler = async ({ event, webviewPane
     type: 'dirtyFileContent',
     fileContent: new TextDecoder().decode(document.data),
   });
-}
+};
