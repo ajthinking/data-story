@@ -14,7 +14,7 @@ export class WorkspaceSocketClient implements WorkspaceApiClient {
   private maxReconnectTries = 100;
   private reconnectTimeoutMs = 1000;
   private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
-  private observers: ServerClientObservationConfig|undefined;
+  private observers: ServerClientObservationConfig | undefined;
 
   constructor() {
     this.socket$ = webSocket({
