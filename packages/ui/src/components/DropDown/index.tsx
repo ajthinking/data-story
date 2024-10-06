@@ -2,6 +2,7 @@ import '../../styles/globals.css';
 import { useCallback, useMemo, useState } from 'react';
 import {
   autoUpdate,
+  type ExtendedRefs,
   flip,
   FloatingPortal,
   offset,
@@ -10,11 +11,17 @@ import {
   useDismiss,
   useFloating,
   useInteractions,
-  useRole,
-  type ExtendedRefs
+  useRole
 } from '@floating-ui/react';
 import { FormFieldWrapper, useFormField } from '../DataStory/Form/UseFormField';
-import { stringCast, numberCast, hjsonEvaluation, jsExpressionEvaluation, jsFunctionEvaluation, jsonEvaluation } from '@data-story/core';
+import {
+  hjsonEvaluation,
+  jsExpressionEvaluation,
+  jsFunctionEvaluation,
+  jsonEvaluation,
+  numberCast,
+  stringCast
+} from '@data-story/core';
 
 export type Option = {
   label: string
@@ -117,7 +124,7 @@ function DropDownOperator(props: {
   const { getValues } = useFormField();
   const value = useMemo(getValues, [getValues]);
 
-  function getContent(): (JSX.Element|string)[]|JSX.Element {
+  function getContent(): (JSX.Element | string)[] | JSX.Element {
     const pills = Object.keys(value ?? {})
       .map((key) => {
         return ((key === 'Evaluation' || key === 'Cast') && getLabelFromType(value[key]))
@@ -144,15 +151,16 @@ function DropDownOperator(props: {
     return pills.length > 0 ? pills : placeholderElement();
   }
 
-  return <div className="flex flex-row justify-between">
+  return <div
+    ref={props.refs.setReference}
+    {...props.referenceProps}
+    className="flex flex-row justify-between cursor-pointer">
     {/*create the tag show the selected option*/}
     <div className="flex items-center">
       {getContent()}
     </div>
     <div>
       <button
-        ref={props.refs.setReference}
-        {...props.referenceProps}
         className="px-2 py-1 text-gray-200 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
