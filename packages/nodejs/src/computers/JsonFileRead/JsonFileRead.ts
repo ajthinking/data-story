@@ -33,18 +33,20 @@ export const JsonFileRead: Computer = {
   async *run({ output, params }) {
     const pathPattern = params.file_path as string;
     const itemsPath = params.items_path as string;
-
-    console.log('PATH PATTERN', pathPattern);
     try {
       // Use glob to get all matching file paths
-      const files = glob.sync(pathPattern);
-      console.log({ files })
+      const files = glob.sync(pathPattern, {
+        cwd: process.env.WORKSPACE_FOLDER_PATH,
+        ignore: ['**/node_modules/**'],
+        root: process.env.WORKSPACE_FOLDER_PATH,
+        absolute: true,
+      });
+
+      console.log('files:', files)
 
       for (const file of files) {
         try {
           const content = fs.readFileSync(file, 'utf-8');
-          console.log('CONTENT', content);
-
           const data = JSON.parse(content);
           const items = get(data, itemsPath);
           output.push(items);
