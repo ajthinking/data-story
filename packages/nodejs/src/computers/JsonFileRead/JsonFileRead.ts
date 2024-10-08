@@ -1,4 +1,4 @@
-import glob from 'glob';
+import * as glob from 'glob';
 import fs from 'fs';
 import { Computer, get, serializeError, str } from '@data-story/core';
 
