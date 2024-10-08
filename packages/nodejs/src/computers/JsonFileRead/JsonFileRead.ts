@@ -1,6 +1,6 @@
-import glob from 'glob';
+import * as glob from 'glob';
 import fs from 'fs';
-import { Computer, get, serializeError, str, stringifyError } from '@data-story/core';
+import { Computer, get, serializeError, str } from '@data-story/core';
 
 export const JsonFileRead: Computer = {
   name: 'JsonFile.read',
@@ -20,29 +20,45 @@ export const JsonFileRead: Computer = {
   params: [
     str({
       name: 'file_path',
-      label: 'File path',
-      help: 'File path',
+      label: 'File path (supports glob patterns)',
+      help: 'File path, e.g., **/*.json',
     }),
     str({
       name: 'items_path',
       label: 'Items Path',
-      help: 'Items path',
+      help: 'Path to the items within the JSON structure',
     }),
   ],
 
   async *run({ output, params }) {
-    const path = params.file_path as string
-    const itemsPath = params.items_path as string
-
+    const pathPattern = params.file_path as string;
+    const itemsPath = params.items_path as string;
     try {
-      const content = fs.readFileSync(path, 'utf-8')
-      console.log('CONTENT', content)
+      // Use glob to get all matching file paths
+      const files = glob.sync(pathPattern, {
+        cwd: process.env.WORKSPACE_FOLDER_PATH,
+        ignore: ['**/node_modules/**'],
+        root: process.env.WORKSPACE_FOLDER_PATH,
+        absolute: true,
+      });
 
-      const data = JSON.parse(content)
-      const items = get(data, itemsPath)
-      output.push(items)
+      console.log('files:', files)
+
+      for (const file of files) {
+        try {
+          const content = fs.readFileSync(file, 'utf-8');
+          const data = JSON.parse(content);
+          const items = get(data, itemsPath);
+          output.push(items);
+        } catch (fileError: any) {
+          output.pushTo('errors', [serializeError(fileError)]);
+        }
+      }
+
+      yield;
     } catch (error: any) {
-      output.pushTo('errors', [serializeError(error)])
+      output.pushTo('errors', [serializeError(error)]);
+      yield;
     }
   },
 };
