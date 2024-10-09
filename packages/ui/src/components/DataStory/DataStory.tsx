@@ -57,12 +57,11 @@ export const DataStoryComponent = (
     }
   }, [sidebarKey]);
 
-  useEffect(() => {
-    if (selectedNode) {
-      setSidebarKey('node');
-      setIsSidebarClose(false);
-    }
-  }, [selectedNode]);
+  const handleNodeClick = (node: ReactFlowNode) => {
+    setSidebarKey('node');
+    setSelectedNode(node);
+    setIsSidebarClose(false);
+  }
 
   return (
     <DataStoryCanvasProvider>
@@ -87,6 +86,7 @@ export const DataStoryComponent = (
                   selectedNodeData={updateSelectedNodeData}
                   onNodeSelected={setSelectedNode}
                   onChange={onChange}
+                  onNodeDoubleClick={handleNodeClick}
                 />
               </Allotment.Pane>
               <Allotment.Pane visible={!isSidebarClose} snap maxSize={800} minSize={300} preferredSize={400}>

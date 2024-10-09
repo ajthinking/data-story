@@ -56,6 +56,7 @@ export interface ClientRunParams {
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 type ControlsType = 'run' | 'addNode' | 'save';
 export type DataStoryProps = {
+  onNodeDoubleClick?: (node: ReactFlowNode) => void,
   children?: React.ReactNode;
   client: WorkspaceApiClient,
   initDiagram?: Diagram | null;
@@ -83,7 +84,7 @@ export type DataStoryCanvasProps = {
   selectedNode?: ReactFlowNode;
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
-  onSave?:  () => Promise<void>;
+  onSave?: () => Promise<void>;
   onChange?: (diagram: Diagram) => Promise<void>
 } & DataStoryProps;
 

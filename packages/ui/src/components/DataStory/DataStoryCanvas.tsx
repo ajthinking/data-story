@@ -53,7 +53,7 @@ const Flow = ({
   onDrop,
   client,
   onChange,
-  onNodeClick1
+  onNodeDoubleClick
 }: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -112,7 +112,7 @@ const Flow = ({
   useHotkeys({
     nodes,
     setShowRun,
-    setSelectedNode: onNodeClick1,
+    setSelectedNode: onNodeDoubleClick,
     traverseNodes,
     setShowAddNode,
     hotkeyManager,
@@ -136,7 +136,7 @@ const Flow = ({
           if(onChange) onChange(toDiagram())
         }}
         onNodeDoubleClick={(_, node) => {
-          onNodeClick1?.(node);
+          onNodeDoubleClick?.(node);
         }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);
