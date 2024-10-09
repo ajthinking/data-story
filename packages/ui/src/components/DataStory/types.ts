@@ -114,6 +114,7 @@ export type NodeSettingsFormProps = {
   node: ReactFlowNode;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   onUpdateNodeData: (data: ReactFlowNode['data']) => void;
+  onSave?: () => Promise<void>;
 }
 
 export type StoreSchema = {
@@ -167,6 +168,7 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptions?: NodeDescription[];
   nodeDescriptionsLoading?: boolean;
   sidebarKey: string;
+  onSave?: () => Promise<void>;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;

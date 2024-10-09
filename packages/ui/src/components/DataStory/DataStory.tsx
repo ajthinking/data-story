@@ -76,7 +76,7 @@ export const DataStoryComponent = (
               <Allotment.Pane minSize={300} className="h-full w-96">
                 <DataStoryCanvas
                   {...props}
-                  onSave={() => new Promise(r => r)}
+                  onSave={client.updateTree}
                   key={diagramKey}
                   initDiagram={diagram}
                   ref={partialStoreRef}
@@ -94,6 +94,7 @@ export const DataStoryComponent = (
                   sidebarKey={sidebarKey}
                   setSidebarKey={setSidebarKey}
                   node={selectedNode}
+                  onSave={client.updateTree}
                   onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
               </Allotment.Pane>
             </Allotment>
