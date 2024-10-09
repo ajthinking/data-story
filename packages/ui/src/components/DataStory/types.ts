@@ -79,9 +79,6 @@ export type DataStoryProps = {
 }
 
 export type DataStoryCanvasProps = {
-  selectedNodeData?: ReactFlowNode['data'];
-  onNodeSelected?: (node?: ReactFlowNode) => void;
-  selectedNode?: ReactFlowNode;
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
   onSave?: () => Promise<void>;

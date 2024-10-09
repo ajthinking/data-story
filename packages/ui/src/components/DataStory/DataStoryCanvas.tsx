@@ -11,7 +11,6 @@ import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDropDefault } from './onDropDefault';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
-import { useSelectedNodeSettings } from './Form/useSelectedNodeSettings';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { Placeholder } from './common/placeholder';
@@ -46,9 +45,6 @@ const Flow = ({
   observers,
   onInitialize,
   setSidebarKey,
-  onNodeSelected,
-  selectedNodeData,
-  selectedNode,
   onSave,
   onDrop,
   client,
@@ -82,12 +78,6 @@ const Flow = ({
     traverseNodes,
     toDiagram,
   } = useStore(selector, shallow);
-
-  // useSelectedNodeSettings({
-  //   onSelectedNode: onNodeSelected,
-  //   selectedNodeData: selectedNodeData,
-  //   selectedNode: selectedNode,
-  // });
 
   const id = useId()
   const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);

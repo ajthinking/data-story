@@ -3,7 +3,7 @@ import { Allotment } from 'allotment';
 import { DataStoryProps, StoreSchema } from './types';
 import 'allotment/dist/style.css';
 import { Sidebar } from './sidebar/sidebar';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
@@ -57,11 +57,11 @@ export const DataStoryComponent = (
     }
   }, [sidebarKey]);
 
-  const handleNodeClick = (node: ReactFlowNode) => {
+  const handleNodeClick = useCallback((node: ReactFlowNode) => {
     setSidebarKey('node');
     setSelectedNode(node);
     setIsSidebarClose(false);
-  }
+  }, [setSidebarKey, setSelectedNode, setIsSidebarClose]);
 
   return (
     <DataStoryCanvasProvider>
@@ -82,9 +82,6 @@ export const DataStoryComponent = (
                   ref={partialStoreRef}
                   setSidebarKey={setSidebarKey}
                   sidebarKey={sidebarKey}
-                  selectedNode={selectedNode}
-                  selectedNodeData={updateSelectedNodeData}
-                  onNodeSelected={setSelectedNode}
                   onChange={onChange}
                   onNodeDoubleClick={handleNodeClick}
                 />
