@@ -39,7 +39,7 @@ export class HotkeyManager {
 export function useHotkeys({
   nodes,
   setShowRun,
-  setOpenNodeSidebarId,
+  setSelectedNode,
   traverseNodes,
   setShowAddNode,
   hotkeyManager,
@@ -47,10 +47,10 @@ export function useHotkeys({
 }: {
   nodes: ReactFlowNode[],
   setShowRun: (show: boolean) => void,
-  setOpenNodeSidebarId: (id: string | null) => void,
   traverseNodes: (direction: Direction) => void,
   setShowAddNode: (show: boolean) => void,
   hotkeyManager: HotkeyManager,
+  setSelectedNode?: (node: ReactFlowNode) => void,
   onSave?: () => void,
 }) {
   useEffect(() => {
@@ -110,11 +110,13 @@ export function useHotkeys({
 
         return selectedNodes.at(0);
       })()
-      if (openable) setOpenNodeSidebarId(openable.id);
+      if (openable) {
+        setSelectedNode?.(openable)
+      }
     }
 
     hotkeyManager.register('Enter', handleEnterPress);
 
     return () => hotkeyManager.unregister('Enter');
-  }, [nodes, setOpenNodeSidebarId]);
+  }, [nodes, setSelectedNode, hotkeyManager]);
 }

@@ -53,6 +53,7 @@ const Flow = ({
   onDrop,
   client,
   onChange,
+  onNodeClick1
 }: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -64,7 +65,6 @@ const Flow = ({
     onRun: state.onRun,
     setObservers: state.setObservers,
     addNodeFromDescription: state.addNodeFromDescription,
-    setOpenNodeSidebarId: state.setOpenNodeSidebarId,
     traverseNodes: state.traverseNodes,
     toDiagram: state.toDiagram,
   });
@@ -79,16 +79,15 @@ const Flow = ({
     onRun,
     setObservers,
     addNodeFromDescription,
-    setOpenNodeSidebarId,
     traverseNodes,
     toDiagram,
   } = useStore(selector, shallow);
 
-  useSelectedNodeSettings({
-    onSelectedNode: onNodeSelected,
-    selectedNodeData: selectedNodeData,
-    selectedNode: selectedNode,
-  });
+  // useSelectedNodeSettings({
+  //   onSelectedNode: onNodeSelected,
+  //   selectedNodeData: selectedNodeData,
+  //   selectedNode: selectedNode,
+  // });
 
   const id = useId()
   const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
@@ -113,7 +112,7 @@ const Flow = ({
   useHotkeys({
     nodes,
     setShowRun,
-    setOpenNodeSidebarId,
+    setSelectedNode: onNodeClick1,
     traverseNodes,
     setShowAddNode,
     hotkeyManager,
@@ -135,6 +134,9 @@ const Flow = ({
         onNodesChange={(changes: NodeChange[]) => {
           onNodesChange(changes);
           if(onChange) onChange(toDiagram())
+        }}
+        onNodeDoubleClick={(_, node) => {
+          onNodeClick1?.(node);
         }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);
