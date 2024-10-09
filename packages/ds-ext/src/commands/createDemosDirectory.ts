@@ -1,0 +1,45 @@
+import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as demos from './demos';
+
+export function createDemosDirectory() {
+  const workspaceFolders = vscode.workspace.workspaceFolders;
+  if (!workspaceFolders) {
+    vscode.window.showErrorMessage('No workspace folder is open.');
+    return;
+  }
+
+  const workspaceRoot = workspaceFolders[0].uri.fsPath;
+  const demosDir = path.join(workspaceRoot, 'demos');
+
+  try {
+    // Nuke directory if it already exists
+    if (fs.existsSync(demosDir)) {
+      fs.rmSync(demosDir, { recursive: true });
+    }
+
+    // Create the directory
+    fs.mkdirSync(demosDir);
+
+    // Create a demo data directory
+    fs.mkdirSync(path.join(demosDir, 'data'));
+
+    // Add a todos.json in the data directory
+    fs.writeFileSync(path.join(demosDir, 'data', 'todos.json'), JSON.stringify([
+      { id: 1, title: 'Learn DataStory', completed: true },
+      { id: 2, title: 'Build a DataStory extension', completed: false },
+      { id: 3, title: 'Profit', completed: false },
+    ], null, 2));
+
+    // Loop through each demo imported from the `demos` index file
+    Object.entries(demos).forEach(([moduleName, demoContent]) => {
+      const filePath = path.join(demosDir, `${moduleName}.diagram.json`);
+      fs.writeFileSync(filePath, JSON.stringify(demoContent, null, 2));
+    });
+
+    vscode.window.showInformationMessage('Created DataStory demos directory.');
+  } catch (error: any) {
+    vscode.window.showErrorMessage(`Error creating demo files: ${error.message}`);
+  }
+}
