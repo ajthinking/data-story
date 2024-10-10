@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Direction } from './getNodesWithNewSelection';
+import { DataStoryCanvasProps } from './types';
+import { Diagram } from '@data-story/core';
 
 export class HotkeyManager {
   private hotkeys: {};
@@ -44,6 +46,7 @@ export function useHotkeys({
   setShowAddNode,
   hotkeyManager,
   onSave,
+  toDiagram,
 }: {
   nodes: ReactFlowNode[],
   setShowRun: (show: boolean) => void,
@@ -51,7 +54,8 @@ export function useHotkeys({
   setShowAddNode: (show: boolean) => void,
   hotkeyManager: HotkeyManager,
   setSelectedNode?: (node: ReactFlowNode) => void,
-  onSave?: () => void,
+  onSave?: DataStoryCanvasProps['onSave'],
+  toDiagram: () => Diagram
 }) {
   useEffect(() => {
     hotkeyManager.addEvent();
@@ -73,8 +77,8 @@ export function useHotkeys({
   }, [hotkeyManager, setShowRun]);
 
   useEffect(() => {
-    hotkeyManager.register('Ctrl+KeyS', () => onSave?.());
-    hotkeyManager.register('Cmd+KeyS', () => onSave?.());
+    hotkeyManager.register('Ctrl+KeyS', () => onSave?.(toDiagram?.()));
+    hotkeyManager.register('Cmd+KeyS', () => onSave?.(toDiagram?.()));
     return () => {
       hotkeyManager.unregister('Ctrl+KeyS');
       hotkeyManager.unregister('Cmd+KeyS');

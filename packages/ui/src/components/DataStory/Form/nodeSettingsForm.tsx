@@ -2,7 +2,8 @@ import { InputSchemas, OutputSchemas, Params } from '../modals/nodeSettingsModal
 import { useEffect, useMemo, useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 import { FormProvider, useForm } from 'react-hook-form';
-import { NodeSettingsFormProps } from '../types';
+import { NodeSettingsFormProps, StoreSchema } from '../types';
+import { useStore } from '../store/store';
 
 type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas';
 const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
@@ -11,8 +12,14 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   OutputSchemas: OutputSchemas,
 };
 
-export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClose, onUpdateNodeData }) => {
+export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClose, onUpdateNodeData, onSave }) => {
   const [tab, setTab] = useState<TabKey>('Params');
+  const selector = (state: StoreSchema) => ({
+    toDiagram: state.toDiagram,
+    updateNode: state.updateNode
+  });
+
+  const { updateNode, toDiagram } = useStore(selector);
 
   const defaultValues = useMemo(() => {
     return  {
@@ -50,9 +57,13 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         if (param.hasOwnProperty('value')) param.value = value;
       }
 
-      onUpdateNodeData(newData);
+      updateNode({
+        ...node,
+        data: newData
+      })
     })()
 
+    onSave?.(toDiagram());
     onClose(true);
   }
 

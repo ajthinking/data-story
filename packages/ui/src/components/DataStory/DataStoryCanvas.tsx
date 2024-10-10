@@ -107,6 +107,7 @@ const Flow = ({
     setShowAddNode,
     hotkeyManager,
     onSave,
+    toDiagram,
   });
 
   useEscapeKey(() => setSidebarKey!(''), flowRef);

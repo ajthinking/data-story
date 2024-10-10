@@ -81,7 +81,7 @@ export type DataStoryProps = {
 export type DataStoryCanvasProps = {
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
-  onSave?: () => Promise<void>;
+  onSave?: (diagram: Diagram) => Promise<void>;
   onChange?: (diagram: Diagram) => Promise<void>
 } & DataStoryProps;
 
@@ -114,7 +114,7 @@ export type NodeSettingsFormProps = {
   node: ReactFlowNode;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
   onUpdateNodeData: (data: ReactFlowNode['data']) => void;
-  onSave?: () => Promise<void>;
+  onSave?: (diagram: Diagram) => Promise<void>;
 }
 
 export type StoreSchema = {
@@ -168,7 +168,6 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptions?: NodeDescription[];
   nodeDescriptionsLoading?: boolean;
   sidebarKey: string;
-  onSave?: () => Promise<void>;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
   partialStoreRef: React.RefObject<Partial<StoreSchema>>;
