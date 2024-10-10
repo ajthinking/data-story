@@ -42,8 +42,6 @@ export const JsonFileRead: Computer = {
         absolute: true,
       });
 
-      console.log('files:', files)
-
       for (const file of files) {
         try {
           const content = fs.readFileSync(file, 'utf-8');
