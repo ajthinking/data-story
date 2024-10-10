@@ -45,7 +45,6 @@ export class VsCodeClient implements WorkspaceApiClient {
   async updateTree(diagram: Diagram) {
     const message = {
       type: 'updateDiagram',
-      // todo: implement this
       fileUri,
       diagram: JSON.stringify(diagram),
     };

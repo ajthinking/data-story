@@ -61,9 +61,10 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         ...node,
         data: newData
       })
+
+      onSave?.(toDiagram());
     })()
 
-    onSave?.(toDiagram());
     onClose(true);
   }
 
