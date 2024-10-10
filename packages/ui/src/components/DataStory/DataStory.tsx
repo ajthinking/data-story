@@ -22,10 +22,8 @@ export const DataStoryComponent = (
   const { client, initSidebarKey, children, initDiagram, onChange } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
-  const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
-  const [diagram, setDiagram] = useState<Diagram | null>(initDiagram || new Diagram());
-  const [diagramKey, setDiagramKey] = useState<string>();
+  const [diagram] = useState<Diagram | null>(initDiagram || new Diagram());
   const [sidebarKey, setSidebarKey] = useState(() => {
     // If initDiagram isn't provided, default to 'addNode' to show the sidebar
     const defaultKey = initDiagram ? '' : 'addNode';
@@ -77,7 +75,7 @@ export const DataStoryComponent = (
                 <DataStoryCanvas
                   {...props}
                   onSave={client.updateTree}
-                  key={diagramKey}
+                  key={'data-story-canvas'}
                   initDiagram={diagram}
                   ref={partialStoreRef}
                   setSidebarKey={setSidebarKey}
@@ -95,7 +93,7 @@ export const DataStoryComponent = (
                   setSidebarKey={setSidebarKey}
                   node={selectedNode}
                   onSave={client.updateTree}
-                  onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
+                  onClose={setIsSidebarClose}/>
               </Allotment.Pane>
             </Allotment>
         }

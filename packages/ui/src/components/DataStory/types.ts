@@ -113,7 +113,6 @@ export interface FormComponent<TParams extends Param> {
 export type NodeSettingsFormProps = {
   node: ReactFlowNode;
   onClose: React.Dispatch<React.SetStateAction<boolean>>;
-  onUpdateNodeData: (data: ReactFlowNode['data']) => void;
   onSave?: (diagram: Diagram) => Promise<void>;
 }
 

@@ -12,7 +12,7 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   OutputSchemas: OutputSchemas,
 };
 
-export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClose, onUpdateNodeData, onSave }) => {
+export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClose, onSave }) => {
   const [tab, setTab] = useState<TabKey>('Params');
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
@@ -38,7 +38,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
 
   useEffect(() => {
     form.reset(defaultValues);
-  }, [node, defaultValues]);
+  }, [defaultValues, form]);
 
   const saveAndClose = () => {
     form.handleSubmit((submitted: {
@@ -81,7 +81,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
           />
           <div className="flex">
             {form.getValues('label') !== node.data?.computer && <div
-              className="flex flex-col pr-4 my-2 mt-3 italic flex flex-col align-center justify-center text-sm text-gray-400 font-base tracking widest">
+              className="flex flex-col pr-4 my-2 mt-3 italic align-center justify-center text-sm text-gray-400 font-base tracking widest">
               renamed from {node.data?.computer}
             </div>}
           </div>

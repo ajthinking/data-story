@@ -9,7 +9,7 @@ import { LoadingMask } from '../common/loadingMask';
 
 const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
-    node, onClose, onUpdateNodeData, sidebarKey, setSidebarKey, onSave,
+    node, onClose, sidebarKey, setSidebarKey, onSave,
     partialStoreRef, nodeDescriptions, nodeDescriptionsLoading
   } = props;
 
@@ -29,7 +29,7 @@ const SidebarComponent = (props: NodeSettingsSidebarProps) => {
       }
       case 'node':
         return node?.id && node?.data
-          ? <NodeSettingsForm node={node} onClose={onClose} onSave={onSave} onUpdateNodeData={onUpdateNodeData}/>
+          ? <NodeSettingsForm node={node} onClose={onClose} onSave={onSave}/>
           : <Placeholder content={'Click on a node to see its configuration'}/>;
       default:
         return null;
