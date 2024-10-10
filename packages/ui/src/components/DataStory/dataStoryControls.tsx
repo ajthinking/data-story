@@ -55,7 +55,7 @@ export function DataStoryControls({
   }), [updateDiagram, toDiagram]);
 
   const handleSave = useCallback(() => {
-    onSave?.();
+    onSave?.(toDiagram());
   }, [onSave]);
 
   if (hideControls === true) return null;

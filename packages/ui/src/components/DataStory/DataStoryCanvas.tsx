@@ -11,7 +11,6 @@ import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDropDefault } from './onDropDefault';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
-import { useSelectedNodeSettings } from './Form/useSelectedNodeSettings';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { Placeholder } from './common/placeholder';
@@ -46,13 +45,11 @@ const Flow = ({
   observers,
   onInitialize,
   setSidebarKey,
-  onNodeSelected,
-  selectedNodeData,
-  selectedNode,
   onSave,
   onDrop,
   client,
   onChange,
+  onNodeDoubleClick
 }: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -64,7 +61,6 @@ const Flow = ({
     onRun: state.onRun,
     setObservers: state.setObservers,
     addNodeFromDescription: state.addNodeFromDescription,
-    setOpenNodeSidebarId: state.setOpenNodeSidebarId,
     traverseNodes: state.traverseNodes,
     toDiagram: state.toDiagram,
   });
@@ -79,16 +75,9 @@ const Flow = ({
     onRun,
     setObservers,
     addNodeFromDescription,
-    setOpenNodeSidebarId,
     traverseNodes,
     toDiagram,
   } = useStore(selector, shallow);
-
-  useSelectedNodeSettings({
-    onSelectedNode: onNodeSelected,
-    selectedNodeData: selectedNodeData,
-    selectedNode: selectedNode,
-  });
 
   const id = useId()
   const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
@@ -113,11 +102,12 @@ const Flow = ({
   useHotkeys({
     nodes,
     setShowRun,
-    setOpenNodeSidebarId,
+    setSelectedNode: onNodeDoubleClick,
     traverseNodes,
     setShowAddNode,
     hotkeyManager,
     onSave,
+    toDiagram,
   });
 
   useEscapeKey(() => setSidebarKey!(''), flowRef);
@@ -135,6 +125,9 @@ const Flow = ({
         onNodesChange={(changes: NodeChange[]) => {
           onNodesChange(changes);
           if(onChange) onChange(toDiagram())
+        }}
+        onNodeDoubleClick={(_, node) => {
+          onNodeDoubleClick?.(node);
         }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);

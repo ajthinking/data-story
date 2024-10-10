@@ -1,7 +1,6 @@
 import {
   Application,
   core,
-  coreNodeProvider,
   Diagram,
   Executor,
   InMemoryStorage,
@@ -157,4 +156,9 @@ export class WorkspaceApiJSClient implements WorkspaceApiClient {
       }, 1000);
     });
   };
+
+  updateTree = async(diagram: Diagram) => {
+    // save the diagram in localStorage ?
+    console.log(diagram, 'diagram');
+  }
 }
