@@ -1,6 +1,8 @@
-import { createDataStoryId, Hook } from '@data-story/core';
+import { createDataStoryId, Diagram, Hook } from '@data-story/core';
 import { DataStoryEvents, eventManager } from '@data-story/ui';
 import type { WorkspaceApiClient, ClientRunParams, ServerClientObservationConfig } from '@data-story/ui';
+
+export const fileUri = window.initialData.fileUri;
 
 export class VsCodeClient implements WorkspaceApiClient {
   updateEdgeCounts: any;
@@ -12,6 +14,7 @@ export class VsCodeClient implements WorkspaceApiClient {
 
     window.addEventListener('message', (event) => this.handleMessage(event.data));
     this.run = this.run.bind(this);
+    this.updateTree = this.updateTree.bind(this);
   }
 
   async getNodeDescriptions() {
@@ -20,7 +23,7 @@ export class VsCodeClient implements WorkspaceApiClient {
     return availableNodes;
   }
 
-  async run ({ diagram, updateEdgeCounts, observers }: ClientRunParams): Promise<void> {
+  async run({ diagram, updateEdgeCounts, observers }: ClientRunParams): Promise<void> {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
     const message = {
@@ -36,11 +39,20 @@ export class VsCodeClient implements WorkspaceApiClient {
     this.sendMessage(message);
   }
 
-  async getTree() {}
-  async createTree() {}
-  async updateTree() {}
-  async destroyTree() {}
-  async moveTree() {}
+  async getTree() { }
+  async createTree() { }
+
+  async updateTree(diagram: Diagram) {
+    const message = {
+      type: 'updateDiagram',
+      fileUri,
+      diagram: JSON.stringify(diagram),
+    };
+    this.sendMessage(message);
+  }
+
+  async destroyTree() { }
+  async moveTree() { }
 
   private sendMessage(message: any) {
     this.vscode.postMessage(message);
@@ -66,13 +78,13 @@ export class VsCodeClient implements WorkspaceApiClient {
   private handleMessage(data: any) {
     processWaitingResponse(data);
 
-    if (data.awaited) {return;}
+    if (data.awaited) { return; }
 
     // ...If message is non-transactional, handle it
     if (data.type === 'ExecutionUpdate') {
       this.updateEdgeCounts!(data.counts);
 
-      for(const hook of data.hooks as Hook[]) {
+      for (const hook of data.hooks as Hook[]) {
         if (hook.type === 'CONSOLE_LOG') {
           console.log(...hook.args);
         } else if (hook.type === 'UPDATES') {
@@ -122,7 +134,7 @@ export class VsCodeClient implements WorkspaceApiClient {
   }
 }
 
-const pendingResponses: Map<string, {resolve: Function; reject: Function}> = new Map();
+const pendingResponses: Map<string, { resolve: Function; reject: Function }> = new Map();
 
 export const processWaitingResponse = (message: any) => {
   const response: any = message;

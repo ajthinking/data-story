@@ -8,7 +8,7 @@ export const NodeSettingsModalContent = (props: NodeSettingsFormProps) => {
   return <>
     <div className="flex justify-center overflow-x-hidden fixed inset-0 z-50 outline-none focus:outline-none">
       <div className="relative w-full max-w-4xl my-8 mx-auto px-8">
-        <NodeSettingsForm node={node} onClose={onClose} onUpdateNodeData={props.onUpdateNodeData}/>
+        <NodeSettingsForm node={node} onClose={onClose} />
       </div>
     </div>
     <div className="opacity-25 fixed inset-0 z-40 bg-black"/>

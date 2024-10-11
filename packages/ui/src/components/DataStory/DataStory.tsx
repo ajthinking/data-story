@@ -3,7 +3,7 @@ import { Allotment } from 'allotment';
 import { DataStoryProps, StoreSchema } from './types';
 import 'allotment/dist/style.css';
 import { Sidebar } from './sidebar/sidebar';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
@@ -22,10 +22,8 @@ export const DataStoryComponent = (
   const { client, initSidebarKey, children, initDiagram, onChange } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
-  const [updateSelectedNodeData, setUpdateSelectedNodeData] = useState<ReactFlowNode['data']>();
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
-  const [diagram, setDiagram] = useState<Diagram | null>(initDiagram || new Diagram());
-  const [diagramKey, setDiagramKey] = useState<string>();
+  const [diagram] = useState<Diagram | null>(initDiagram || new Diagram());
   const [sidebarKey, setSidebarKey] = useState(() => {
     // If initDiagram isn't provided, default to 'addNode' to show the sidebar
     const defaultKey = initDiagram ? '' : 'addNode';
@@ -57,12 +55,11 @@ export const DataStoryComponent = (
     }
   }, [sidebarKey]);
 
-  useEffect(() => {
-    if (selectedNode) {
-      setSidebarKey('node');
-      setIsSidebarClose(false);
-    }
-  }, [selectedNode]);
+  const handleNodeClick = useCallback((node: ReactFlowNode) => {
+    setSidebarKey('node');
+    setSelectedNode(node);
+    setIsSidebarClose(false);
+  }, [setSidebarKey, setSelectedNode, setIsSidebarClose]);
 
   return (
     <DataStoryCanvasProvider>
@@ -77,16 +74,14 @@ export const DataStoryComponent = (
               <Allotment.Pane minSize={300} className="h-full w-96">
                 <DataStoryCanvas
                   {...props}
-                  onSave={() => new Promise(r => r)}
-                  key={diagramKey}
+                  onSave={client.updateTree}
+                  key={'data-story-canvas'}
                   initDiagram={diagram}
                   ref={partialStoreRef}
                   setSidebarKey={setSidebarKey}
                   sidebarKey={sidebarKey}
-                  selectedNode={selectedNode}
-                  selectedNodeData={updateSelectedNodeData}
-                  onNodeSelected={setSelectedNode}
                   onChange={onChange}
+                  onNodeDoubleClick={handleNodeClick}
                 />
               </Allotment.Pane>
               <Allotment.Pane visible={!isSidebarClose} snap maxSize={800} minSize={300} preferredSize={400}>
@@ -97,7 +92,8 @@ export const DataStoryComponent = (
                   sidebarKey={sidebarKey}
                   setSidebarKey={setSidebarKey}
                   node={selectedNode}
-                  onUpdateNodeData={setUpdateSelectedNodeData} onClose={setIsSidebarClose}/>
+                  onSave={client.updateTree}
+                  onClose={setIsSidebarClose}/>
               </Allotment.Pane>
             </Allotment>
         }

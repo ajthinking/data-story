@@ -2,7 +2,8 @@ import { InputSchemas, OutputSchemas, Params } from '../modals/nodeSettingsModal
 import { useEffect, useMemo, useState } from 'react';
 import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
 import { FormProvider, useForm } from 'react-hook-form';
-import { NodeSettingsFormProps } from '../types';
+import { NodeSettingsFormProps, StoreSchema } from '../types';
+import { useStore } from '../store/store';
 
 type TabKey = 'Params' | 'InputSchemas' | 'OutputSchemas';
 const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
@@ -11,8 +12,14 @@ const TAB_COMPONENTS: Record<TabKey, React.ComponentType<any>> = {
   OutputSchemas: OutputSchemas,
 };
 
-export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClose, onUpdateNodeData }) => {
+export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClose, onSave }) => {
   const [tab, setTab] = useState<TabKey>('Params');
+  const selector = (state: StoreSchema) => ({
+    toDiagram: state.toDiagram,
+    updateNode: state.updateNode
+  });
+
+  const { updateNode, toDiagram } = useStore(selector);
 
   const defaultValues = useMemo(() => {
     return  {
@@ -31,7 +38,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
 
   useEffect(() => {
     form.reset(defaultValues);
-  }, [node, defaultValues]);
+  }, [defaultValues, form]);
 
   const saveAndClose = () => {
     form.handleSubmit((submitted: {
@@ -50,7 +57,12 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         if (param.hasOwnProperty('value')) param.value = value;
       }
 
-      onUpdateNodeData(newData);
+      updateNode({
+        ...node,
+        data: newData
+      })
+
+      onSave?.(toDiagram());
     })()
 
     onClose(true);
@@ -70,7 +82,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
           />
           <div className="flex">
             {form.getValues('label') !== node.data?.computer && <div
-              className="flex flex-col pr-4 my-2 mt-3 italic flex flex-col align-center justify-center text-sm text-gray-400 font-base tracking widest">
+              className="flex flex-col pr-4 my-2 mt-3 italic align-center justify-center text-sm text-gray-400 font-base tracking widest">
               renamed from {node.data?.computer}
             </div>}
           </div>

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Direction } from './getNodesWithNewSelection';
+import { DataStoryCanvasProps } from './types';
+import { Diagram } from '@data-story/core';
 
 export class HotkeyManager {
   private hotkeys: {};
@@ -39,19 +41,21 @@ export class HotkeyManager {
 export function useHotkeys({
   nodes,
   setShowRun,
-  setOpenNodeSidebarId,
+  setSelectedNode,
   traverseNodes,
   setShowAddNode,
   hotkeyManager,
   onSave,
+  toDiagram,
 }: {
   nodes: ReactFlowNode[],
   setShowRun: (show: boolean) => void,
-  setOpenNodeSidebarId: (id: string | null) => void,
   traverseNodes: (direction: Direction) => void,
   setShowAddNode: (show: boolean) => void,
   hotkeyManager: HotkeyManager,
-  onSave?: () => void,
+  setSelectedNode?: (node: ReactFlowNode) => void,
+  onSave?: DataStoryCanvasProps['onSave'],
+  toDiagram: () => Diagram
 }) {
   useEffect(() => {
     hotkeyManager.addEvent();
@@ -73,8 +77,8 @@ export function useHotkeys({
   }, [hotkeyManager, setShowRun]);
 
   useEffect(() => {
-    hotkeyManager.register('Ctrl+KeyS', () => onSave?.());
-    hotkeyManager.register('Cmd+KeyS', () => onSave?.());
+    hotkeyManager.register('Ctrl+KeyS', () => onSave?.(toDiagram?.()));
+    hotkeyManager.register('Cmd+KeyS', () => onSave?.(toDiagram?.()));
     return () => {
       hotkeyManager.unregister('Ctrl+KeyS');
       hotkeyManager.unregister('Cmd+KeyS');
@@ -110,11 +114,13 @@ export function useHotkeys({
 
         return selectedNodes.at(0);
       })()
-      if (openable) setOpenNodeSidebarId(openable.id);
+      if (openable) {
+        setSelectedNode?.(openable)
+      }
     }
 
     hotkeyManager.register('Enter', handleEnterPress);
 
     return () => hotkeyManager.unregister('Enter');
-  }, [nodes, setOpenNodeSidebarId]);
+  }, [nodes, setSelectedNode, hotkeyManager]);
 }
