@@ -1,5 +1,5 @@
 import { createDataStoryId, Diagram, Hook } from '@data-story/core';
-import { DataStoryEvents, eventManager } from '@data-story/ui';
+import { DataStoryEvents, eventManager, processWaitingResponse, waitForResponse } from '@data-story/ui';
 import type { WorkspaceApiClient, ClientRunParams, ServerClientObservationConfig } from '@data-story/ui';
 
 export const fileUri = window.initialData.fileUri;
@@ -132,34 +132,4 @@ export class VsCodeClient implements WorkspaceApiClient {
 
     throw ('Unknown message type (client): ' + JSON.stringify(data));
   }
-}
-
-const pendingResponses: Map<string, { resolve: Function; reject: Function }> = new Map();
-
-export const processWaitingResponse = (message: any) => {
-  const response: any = message;
-
-  // check if there is a response pending for this id
-  const pending = pendingResponses.get(response.id);
-  if (pending) {
-    pending.resolve(response);
-    pendingResponses.delete(response.id);
-  }
-};
-
-// send a message and wait for the response
-export async function waitForResponse(params: any): Promise<any> {
-  const { id } = params;
-
-  return new Promise((resolve, reject) => {
-    pendingResponses.set(id, { resolve, reject });
-
-    // config 10s timeout for the rejection
-    setTimeout(() => {
-      if (pendingResponses.has(id)) {
-        pendingResponses.delete(id);
-        reject(new Error('Request timed out'));
-      }
-    }, 10000);
-  });
 }
