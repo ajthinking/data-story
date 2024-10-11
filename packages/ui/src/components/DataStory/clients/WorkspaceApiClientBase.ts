@@ -5,17 +5,18 @@ import { processWaitingResponse, waitForResponse } from './WebSocketHandleRespon
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
-export abstract class WorkspaceApiClientBase implements WorkspaceApiClient {
+export abstract class WorkspaceApiClientBase {
   private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
   private observers: ServerClientObservationConfig | undefined;
 
   protected constructor() {
-    this.run = this.run.bind(this);
     this.initialize();
+    this.run = this.run.bind(this);
   }
 
   abstract sendMessage(message: any): void;
   abstract initialize(): void;
+  // abstract run(params: ClientRunParams): void;
 
   async getNodeDescriptions() {
     const response = await this.sendAwaitable({
@@ -39,7 +40,6 @@ export abstract class WorkspaceApiClientBase implements WorkspaceApiClient {
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
-
     this.sendMessage(message);
   }
 
@@ -104,7 +104,7 @@ export abstract class WorkspaceApiClientBase implements WorkspaceApiClient {
     throw ('Unknown message type (client): ' + data.type)
   }
 
-  private async sendAwaitable(message: {
+  protected async sendAwaitable(message: {
     type: string,
     [key: string]: any,
   }) {

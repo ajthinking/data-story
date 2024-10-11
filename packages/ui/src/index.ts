@@ -14,3 +14,4 @@ export { WorkspaceSocketClient } from './components/DataStory/clients/WorkspaceS
 export type { DataStoryControlsType } from './components/DataStory/dataStoryControls';
 export type { WorkspaceApiClient } from './components/DataStory/clients/WorkspaceApiClient';
 export { processWaitingResponse, waitForResponse } from './components/DataStory/clients/WebSocketHandleResponseMiddleware';
+export { WorkspaceApiClientBase } from './components/DataStory/clients/WorkspaceApiClientBase';
