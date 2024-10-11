@@ -17,7 +17,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   nodes: [],
   edges: [],
   params: [],
-  serverClient: null,
   openNodeSidebarId: null,
   observerMap: new Map(),
   clientRun: (params: ClientRunParams) => {
