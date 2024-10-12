@@ -1,15 +1,16 @@
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { ClientRunParams, ServerClientObservationConfig } from '../types';
 import { filter, Observable, Subject } from 'rxjs';
-import { Diagram, Hook, NodeDescription } from '@data-story/core';
+import { Hook, NodeDescription } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
 export interface Transport {
-  sendAndReceive<T>(params: unknown): Promise<T>;
+  sendAndReceive<T>(params: Record<string, any>): Promise<T>;
 
-  streaming<T>(params: unknown): Observable<T>;
+  streaming<T>(params: Record<string, any>): Observable<T>;
 }
+
 const matchMsgType = (type: string) => it => it.type === type;
 
 export class WorkspaceApiClientBaseV2 implements WorkspaceApiClient {
@@ -24,6 +25,10 @@ export class WorkspaceApiClientBaseV2 implements WorkspaceApiClient {
     this.handleExecutionResult();
     this.handleExecutionFailure();
     this.handleUpdateStorage();
+    this.receivedMsg$.subscribe((data) => {
+      console.log('Received message:', data);
+    });
+    this.run = this.run.bind(this);
   }
 
   //<editor-fold desc="Message handler">
@@ -95,10 +100,12 @@ export class WorkspaceApiClientBaseV2 implements WorkspaceApiClient {
     return this.transport.sendAndReceive({
       type: 'describe',
       path,
+    }).then((data) => {
+      return (data as {msgId: string, availableNodes: any[], [key: string]: any})?.availableNodes ?? [];
     });
   }
 
-  updateTree(diagram: Diagram): Promise<void> {
+  updateTree({ diagram }): Promise<void> {
     return this.transport.sendAndReceive({
       type: 'updateDiagram',
       diagram
@@ -108,13 +115,13 @@ export class WorkspaceApiClientBaseV2 implements WorkspaceApiClient {
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
+
     const msg$ = this.transport.streaming({
       type: 'run',
       diagram,
       inputObservers: observers?.inputObservers || [],
     });
     msg$.subscribe(this.receivedMsg$);
-
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });

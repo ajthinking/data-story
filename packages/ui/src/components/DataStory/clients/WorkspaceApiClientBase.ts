@@ -1,4 +1,3 @@
-import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { ClientRunParams, DescribeResponse, ServerClientObservationConfig } from '../types';
 import { createDataStoryId, Hook, NodeDescription } from '@data-story/core';
 import { processWaitingResponse, waitForResponse } from './WebSocketHandleResponseMiddleware';

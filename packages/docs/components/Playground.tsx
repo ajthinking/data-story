@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { DataStory, WorkspaceApiJSClient, createSocketClient } from '@data-story/ui';
+import React, { useEffect, useState } from 'react';
+import { createSocketClient, DataStory, WorkspaceApiJSClient } from '@data-story/ui';
 import { useRequestApp } from './hooks/useRequestApp';
 import { ToastComponent } from './Toast';
 
@@ -7,21 +7,31 @@ export default Playground;
 
 function Playground({ mode }: {mode?: 'js' | 'node'}) {
   const { app, loading } = useRequestApp();
+  const [client, setClient] = useState(null);
 
-  const client = useMemo(() => {
-    if (mode === 'node') return createSocketClient();
-    if (!loading) return new WorkspaceApiJSClient(app);
-    return null;
+  useEffect(() => {
+    if (mode === 'node') {
+      const { client, dispose } = createSocketClient();
+      setClient(client);
+      return dispose;
+    }
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode === 'js' && !loading) {
+      const client = new WorkspaceApiJSClient(app);
+      setClient(client);
+    }
   }, [mode, app, loading]);
 
-  if(loading || !client) return null;
+  if (loading || !client) return null;
 
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         client={client}
       >
-        <ToastComponent />
+        <ToastComponent/>
       </DataStory>
     </div>
   );
