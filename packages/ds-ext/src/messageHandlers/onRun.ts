@@ -36,8 +36,10 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
     links: event.diagram.links,
   });
 
+  const msgId = event.msgId;
   const sendMsg: ReportCallback = (items, inputObservers) => {
     webviewPanel.webview.postMessage({
+      msgId,
       type: 'NotifyObservers',
       inputObservers,
       items
@@ -62,16 +64,21 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
 
   try {
     for await(const update of execution) {
-      webviewPanel.webview.postMessage(update);
+      webviewPanel.webview.postMessage({
+        msgId,
+        ...update
+      });
     }
 
     const endTime = Date.now();
     webviewPanel.webview.postMessage({
+      msgId,
       type: 'ExecutionResult',
       time: endTime - startTime
     });
   } catch(error: any) {
     webviewPanel.webview.postMessage({
+      msgId,
       type: 'ExecutionFailure',
       error: error.message
     });
