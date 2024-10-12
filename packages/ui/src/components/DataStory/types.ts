@@ -163,6 +163,6 @@ export type Activity = {
 export type DescribeResponse = {
   id: string,
   awaited: boolean,
-  type: 'DescribeResponse',
+  type: 'getNodeDescriptions',
   availableNodes: NodeDescription[],
 }

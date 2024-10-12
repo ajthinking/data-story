@@ -16,3 +16,5 @@ export type { WorkspaceApiClient } from './components/DataStory/clients/Workspac
 export { processWaitingResponse, waitForResponse } from './components/DataStory/clients/WebSocketHandleResponseMiddleware';
 export { WorkspaceApiClientBase } from './components/DataStory/clients/WorkspaceApiClientBase';
 export { createSocketClient } from './components/DataStory/clients/createSocketClient';
+export { createTransport, type TransportConfig } from './components/DataStory/clients/createTransport';
+export { WorkspaceApiClientBaseV2 } from './components/DataStory/clients/WorkspaceApiClientBaseV1';

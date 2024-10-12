@@ -1,7 +1,7 @@
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { ClientRunParams, ServerClientObservationConfig } from '../types';
 import { filter, Observable, Subject } from 'rxjs';
-import { Hook, NodeDescription } from '@data-story/core';
+import { Diagram, Hook, NodeDescription } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
@@ -98,14 +98,14 @@ export class WorkspaceApiClientBaseV2 implements WorkspaceApiClient {
 
   getNodeDescriptions({ path }: {path: any}): Promise<NodeDescription[]> {
     return this.transport.sendAndReceive({
-      type: 'describe',
+      type: 'getNodeDescriptions',
       path,
     }).then((data) => {
       return (data as {msgId: string, availableNodes: any[], [key: string]: any})?.availableNodes ?? [];
     });
   }
 
-  updateTree({ diagram }): Promise<void> {
+  updateTree(diagram: Diagram): Promise<void> {
     return this.transport.sendAndReceive({
       type: 'updateDiagram',
       diagram
