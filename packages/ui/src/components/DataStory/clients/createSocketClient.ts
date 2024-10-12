@@ -1,5 +1,5 @@
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { Observable, retry } from 'rxjs';
+import { Observable, retry, share } from 'rxjs';
 import { createTransport, TransportConfig } from './createTransport';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { WorkspaceApiClientBaseV2 } from './WorkspaceApiClientBaseV1';
@@ -7,25 +7,23 @@ import { WorkspaceApiClientBaseV2 } from './WorkspaceApiClientBaseV1';
 function createSocketTransport(socket: WebSocketSubject<any>) {
   const maxReconnectTries = 100;
   const reconnectTimeoutMs = 1000;
+  let messages$: Observable<{msgId: string; [p: string]: unknown}> = socket.pipe(
+    retry({ count: maxReconnectTries, delay: reconnectTimeoutMs }),
+    share()
+  );
   const config: TransportConfig = {
     postMessage: (msg) => {
-      socket.next(msg)
+      socket.next(msg);
     },
-    messages$: new Observable<{msgId: string; [p: string]: unknown}>((subscriber) => {
-      socket.pipe(
-        retry({ count: maxReconnectTries, delay: reconnectTimeoutMs }),
-      ).subscribe({
-        next: (message) => {
-          subscriber.next(message);
-        },
-        error: (err) => console.log('WebSocket error: ', err),
-      });
-    })
+    messages$: messages$
   }
   return createTransport(config);
 }
 
-export const createSocketClient = (): WorkspaceApiClient => {
+export const createSocketClient = (): {
+  client: WorkspaceApiClient,
+  dispose: () => void
+} => {
   const socket$ = webSocket({
     url: 'ws://localhost:3300',
     openObserver: {
@@ -39,6 +37,15 @@ export const createSocketClient = (): WorkspaceApiClient => {
       }
     }
   });
+
+  const socketKeepAlive = socket$.subscribe();
+
   const transport = createSocketTransport(socket$);
-  return new WorkspaceApiClientBaseV2(transport);
+  return {
+    client: new WorkspaceApiClientBaseV2(transport),
+    dispose: () => {
+      socketKeepAlive.unsubscribe();
+      socket$.complete();
+    }
+  }
 }
