@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { DataStory, WorkspaceApiJSClient, WorkspaceSocketClient } from '@data-story/ui';
+import { DataStory, WorkspaceApiJSClient, createSocketClient } from '@data-story/ui';
 import { useRequestApp } from './hooks/useRequestApp';
 import { ToastComponent } from './Toast';
 
@@ -9,7 +9,7 @@ function Playground({ mode }: {mode?: 'js' | 'node'}) {
   const { app, loading } = useRequestApp();
 
   const client = useMemo(() => {
-    if (mode === 'node') return new WorkspaceSocketClient();
+    if (mode === 'node') return createSocketClient();
     if (!loading) return new WorkspaceApiJSClient(app);
     return null;
   }, [mode, app, loading]);
