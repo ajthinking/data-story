@@ -1,21 +1,25 @@
-import { Application, coreNodeProvider, Diagram, NodeDescription } from '@data-story/core';
-import { WorkspaceApiJSClient } from '@data-story/ui';
+import { Application, Diagram, NodeDescription } from '@data-story/core';
+import { createJSClient, WorkspaceApiClient, WorkspaceApiClientBase } from '@data-story/ui';
 
-export class MockJSClient extends WorkspaceApiJSClient {
-  private diagram: Diagram;
+export class MockJSClient implements WorkspaceApiClient {
   private nodeDescriptions: NodeDescription[];
+  private jsClient: WorkspaceApiClientBase;
 
   constructor({ diagram, app, nodeDescriptions }: {
     app: Application,
     diagram?: Diagram,
     nodeDescriptions?: NodeDescription[]
   }) {
-    super(app);
-    this.diagram = diagram ?? new Diagram();
+    this.jsClient = createJSClient(app);
     this.nodeDescriptions = nodeDescriptions || [];
   }
 
   getNodeDescriptions = async({ path }) => {
     return this.nodeDescriptions;
   };
+
+  run = (params) => {
+    this.jsClient.run(params);
+  };
+
 }

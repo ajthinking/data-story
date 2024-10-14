@@ -102,7 +102,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     });
   }
 
-  updateTree(diagram: Diagram): Promise<void> {
+  updateDiagram(diagram: Diagram): Promise<void> {
     return this.transport.sendAndReceive({
       type: 'updateDiagram',
       diagram
