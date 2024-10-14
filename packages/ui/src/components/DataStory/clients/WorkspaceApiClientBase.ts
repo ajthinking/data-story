@@ -1,122 +1,126 @@
-import { ClientRunParams, DescribeResponse, ServerClientObservationConfig } from '../types';
-import { createDataStoryId, Hook, NodeDescription } from '@data-story/core';
-import { processWaitingResponse, waitForResponse } from './WebSocketHandleResponseMiddleware';
+import { WorkspaceApiClient } from './WorkspaceApiClient';
+import { ClientRunParams, ServerClientObservationConfig } from '../types';
+import { filter, Observable, Subject } from 'rxjs';
+import { Diagram, Hook, NodeDescription } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
-export abstract class WorkspaceApiClientBase {
-  private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
-  private observers: ServerClientObservationConfig | undefined;
+export interface Transport {
+  sendAndReceive<T>(params: Record<string, any>): Promise<T>;
 
-  protected constructor() {
-    this.initialize();
+  streaming<T>(params: Record<string, any>): Observable<T>;
+}
+
+const matchMsgType = (type: string) => it => it.type === type;
+
+export class WorkspaceApiClientBase implements WorkspaceApiClient {
+
+  private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
+  private observers?: ServerClientObservationConfig;
+  private receivedMsg$ = new Subject();
+
+  constructor(private transport: Transport) {
+    this.handleExecutionUpdate();
+    this.handleNotifyObservers();
+    this.handleExecutionResult();
+    this.handleExecutionFailure();
+    this.handleUpdateStorage();
     this.run = this.run.bind(this);
   }
 
-  abstract sendMessage(message: any): void;
-  abstract initialize(): void;
-  // abstract run(params: ClientRunParams): void;
+  //<editor-fold desc="Message handler">
+  handleExecutionUpdate() {
+    return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
+      .subscribe((data: any) => {
+        this.updateEdgeCounts!(data.counts)
 
-  async getNodeDescriptions() {
-    const response = await this.sendAwaitable({
-      type: 'describe',
-    }) as DescribeResponse;
+        for(const hook of data.hooks as Hook[]) {
+          if (hook.type === 'CONSOLE_LOG') {
+            console.log(...hook.args)
+          } else if (hook.type === 'UPDATES') {
+            const providedCallback = (...data: any) => {
+              console.log('THIS IS THE UPDATE HOOK!')
+              console.log('DataPassed', data)
+            }
 
-    return response.availableNodes ?? [] as NodeDescription[]
+            providedCallback(...hook.args)
+          }
+        }
+      })
   }
 
-  run(
-    { updateEdgeCounts, diagram, observers }: ClientRunParams
-  ) {
+  handleNotifyObservers() {
+    return this.receivedMsg$.pipe(filter(matchMsgType('NotifyObservers')))
+      .subscribe((data: any) => {
+        this?.observers?.onDataChange(
+          data.items,
+          data.inputObservers,
+        );
+      })
+  }
+
+  handleExecutionResult() {
+    return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionResult')))
+      .subscribe((data: any) => {
+        console.log('Execution complete 💫')
+        eventManager.emit({
+          type: DataStoryEvents.RUN_SUCCESS,
+          payload: data
+        });
+      })
+  }
+
+  handleExecutionFailure() {
+    return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionFailure')))
+      .subscribe((data: any) => {
+        console.error('Execution failed: ', {
+          history: data.history,
+        })
+
+        eventManager.emit({
+          type: DataStoryEvents.RUN_ERROR,
+          payload: data
+        });
+      })
+  }
+
+  handleUpdateStorage() {
+    return this.receivedMsg$.pipe(filter(matchMsgType('UpdateStorage')))
+      .subscribe((data: any) => {
+        return;
+      })
+  }
+
+  //</editor-fold>
+
+  getNodeDescriptions({ path }: {path: any}): Promise<NodeDescription[]> {
+    return this.transport.sendAndReceive({
+      type: 'getNodeDescriptions',
+      path,
+    }).then((data) => {
+      return (data as {msgId: string, availableNodes: any[], [key: string]: any})?.availableNodes ?? [];
+    });
+  }
+
+  updateTree(diagram: Diagram): Promise<void> {
+    return this.transport.sendAndReceive({
+      type: 'updateDiagram',
+      diagram
+    });
+  }
+
+  run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
-    const message = {
+
+    const msg$ = this.transport.streaming({
       type: 'run',
       diagram,
       inputObservers: observers?.inputObservers || [],
-    };
-
+    });
+    msg$.subscribe(this.receivedMsg$);
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
-    this.sendMessage(message);
-  }
-
-  handleMessage(data: any) {
-    processWaitingResponse(data);
-
-    if (data.awaited) return;
-
-    // ...If message is non-transactional, handle it
-    if (data.type === 'ExecutionUpdate') {
-      this.updateEdgeCounts!(data.counts)
-
-      for(const hook of data.hooks as Hook[]) {
-        if (hook.type === 'CONSOLE_LOG') {
-          console.log(...hook.args)
-        } else if (hook.type === 'UPDATES') {
-          const providedCallback = (...data: any) => {
-            console.log('THIS IS THE UPDATE HOOK!')
-            console.log('DataPassed', data)
-          }
-
-          providedCallback(...hook.args)
-        }
-      }
-      return;
-    }
-
-    if (data.type === 'NotifyObservers') {
-      this?.observers?.onDataChange(
-        data.items,
-        data.inputObservers,
-      );
-      return;
-    }
-
-    if (data.type === 'ExecutionResult') {
-      console.log('Execution complete 💫')
-      eventManager.emit({
-        type: DataStoryEvents.RUN_SUCCESS,
-        payload: data
-      });
-      return
-    }
-
-    if (data.type === 'ExecutionFailure') {
-      console.error('Execution failed: ', {
-        history: data.history,
-      })
-
-      eventManager.emit({
-        type: DataStoryEvents.RUN_ERROR,
-        payload: data
-      });
-
-      return
-    }
-
-    if (data.type === 'UpdateStorage') {
-      return;
-    }
-
-    throw ('Unknown message type (client): ' + data.type)
-  }
-
-  protected async sendAwaitable(message: {
-    type: string,
-    [key: string]: any,
-  }) {
-    const msgId = createDataStoryId();
-    const awaitableMessage = {
-      ...message,
-      id: msgId,
-      awaited: true,
-    } as any;
-
-    this.sendMessage(awaitableMessage);
-    // Wait for response and return it in an awaitable way!
-    const result = await waitForResponse(awaitableMessage);
-    return result;
   }
 }

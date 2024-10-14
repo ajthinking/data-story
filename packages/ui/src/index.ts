@@ -9,12 +9,10 @@ export { eventManager, useDataStoryEvent } from './components/DataStory/events/e
 export { DataStoryEvents, type DataStoryEventType } from './components/DataStory/events/dataStoryEventType'
 export type { DataStoryObservers, DataStoryProps, ClientRunParams, ServerClientObservationConfig } from './components/DataStory/types'
 export { default as NodeComponent } from './components/Node/NodeComponent';
-export { WorkspaceApiJSClient } from './components/DataStory/clients/WorkspaceApiJSClient';
-export { WorkspaceSocketClient } from './components/DataStory/clients/WorkspaceSocketClient';
+export { WorkspaceApiJSClient, createJSClient } from './components/DataStory/clients/WorkspaceApiJSClient';
 export type { DataStoryControlsType } from './components/DataStory/dataStoryControls';
 export type { WorkspaceApiClient } from './components/DataStory/clients/WorkspaceApiClient';
 export { processWaitingResponse, waitForResponse } from './components/DataStory/clients/WebSocketHandleResponseMiddleware';
-export { WorkspaceApiClientBase } from './components/DataStory/clients/WorkspaceApiClientBase';
 export { createSocketClient } from './components/DataStory/clients/createSocketClient';
 export { createTransport, type TransportConfig } from './components/DataStory/clients/createTransport';
-export { WorkspaceApiClientBaseV2 } from './components/DataStory/clients/WorkspaceApiClientBaseV1';
+export { WorkspaceApiClientBase } from './components/DataStory/clients/WorkspaceApiClientBase';
