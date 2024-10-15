@@ -29,7 +29,7 @@ type MessageHandlers = {
 const JSDefaultMsgHandlers = (app: Application) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
-    const { msgId, diagram, inputObservers } = data as RunMessage;
+    const { diagram, inputObservers } = data as RunMessage;
 
     const inputObserverController = new InputObserverController(
       inputObservers || [],
@@ -62,7 +62,6 @@ const JSDefaultMsgHandlers = (app: Application) => {
       sendEvent(executionResult);
     } catch(error: any) {
       const failure: ExecutionFailure = {
-        msgId,
         type: 'ExecutionFailure',
         message: error?.message,
         history: executor.memory.getHistory()

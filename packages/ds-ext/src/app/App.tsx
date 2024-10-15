@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { debounce, Diagram } from '@data-story/core';
 import { DataStory } from '@data-story/ui';
-import { fileUri } from './VsCodeClient';
 import { VsCodeToast } from './VsCodeToast';
 import { onDrop } from './onDrop';
 import { createVsCodeClient } from './createVsCodeClient';
+
+export const fileUri = window.initialData.fileUri;
 
 export default function App() {
   const [diagram, setDiagram] = useState<Diagram | undefined>();
