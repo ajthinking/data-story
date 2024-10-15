@@ -1,5 +1,7 @@
 import {
-  Application, Diagram, ExecutionFailure,
+  Application,
+  Diagram,
+  ExecutionFailure,
   InMemoryStorage,
   type InputObserver,
   InputObserverController,
@@ -16,16 +18,27 @@ type RunMessage = {
 
 type HandlerParam = {data: unknown, sendEvent: (msg: Record<string, any>) => void}
 type Message = {type: string} & Record<string, unknown>;
+type Handler = (params: HandlerParam) => Promise<unknown>;
+type MessageHandlers = {
+  run: Handler,
+  getNodeDescriptions: Handler,
+  updateDiagram: Handler,
+  [key: string]: Handler,
+};
 
 const JSDefaultMsgHandlers = (app: Application) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
-    const notifyObservers$: Subject<{items: ItemValue[], inputObservers: InputObserver[]}> = new Subject();
     const { msgId, diagram, inputObservers } = data as RunMessage;
+
     const inputObserverController = new InputObserverController(
       inputObservers || [],
       (items: ItemValue[], inputObservers: InputObserver[]) => {
-        notifyObservers$.next({ items, inputObservers });
+        sendEvent({
+          type: 'NotifyObservers',
+          items,
+          inputObservers
+        });
       }
     );
 
@@ -39,12 +52,10 @@ const JSDefaultMsgHandlers = (app: Application) => {
       const execution = executor?.execute();
 
       for await(const executionUpdate of execution) {
-        console.log(executionUpdate);
         sendEvent(executionUpdate);
       }
 
       const executionResult = {
-        msgId,
         type: 'ExecutionResult',
         time: Date.now(),
       }
@@ -83,19 +94,12 @@ const JSDefaultMsgHandlers = (app: Application) => {
 }
 
 export class MockJSServer {
-  private messageHandlers = {};
   chanel: Subject<any> = new Subject();
+  private messageHandlers = {};
 
-  constructor(app: Application) {
-    this.messageHandlers = JSDefaultMsgHandlers(app);
+  constructor({ app, messageHandlers }: {app: Application, messageHandlers?: MessageHandlers}) {
+    this.messageHandlers = messageHandlers ?? JSDefaultMsgHandlers(app);
     this.start();
-  }
-
-  start() {
-    this.chanel.subscribe((msg: Message) => {
-      console.log('Client connected 💓');
-      this.handleMessage(msg);
-    });
   }
 
   handleMessage = async(message: Message) => {
@@ -103,10 +107,10 @@ export class MockJSServer {
     const handler = this.messageHandlers[message.type] as (params: HandlerParam) => Promise<void>;
     if (!handler) throw new Error('Unknown message type (server): ' + message.type);
     const sendEvent = (msg: Record<string, any>) => {
-      console.log('sendEvent', msg);
       this.chanel.next({
         ...msg,
-        status: 'server-post'
+        status: 'server-post',
+        msgId: message.msgId
       });
     }
 
@@ -114,5 +118,12 @@ export class MockJSServer {
       data: message,
       sendEvent
     });
+  }
+
+  private start() {
+    this.chanel.subscribe((msg: Message) => {
+      this.handleMessage(msg);
+    });
+    console.log('Client connected 💓');
   }
 }

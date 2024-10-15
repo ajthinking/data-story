@@ -26,6 +26,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     this.handleExecutionFailure();
     this.handleUpdateStorage();
     this.run = this.run.bind(this);
+    this.updateDiagram = this.updateDiagram.bind(this);
   }
 
   //<editor-fold desc="Message handler">

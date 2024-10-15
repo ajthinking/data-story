@@ -1,5 +1,10 @@
 import { Observable } from 'rxjs';
-import { createTransport, type TransportConfig, type WorkspaceApiClient, WorkspaceApiClientBaseV2 } from '@data-story/ui';
+import {
+  createTransport,
+  type TransportConfig,
+  type WorkspaceApiClient,
+  WorkspaceApiClientBase,
+} from '@data-story/ui';
 
 function createVsCodeTransport(vscode: any) {
   const config: TransportConfig = {
@@ -19,5 +24,5 @@ function createVsCodeTransport(vscode: any) {
 
 export const createVsCodeClient = (vscode: any): WorkspaceApiClient => {
   const transport = createVsCodeTransport(vscode);
-  return new WorkspaceApiClientBaseV2(transport);
+  return new WorkspaceApiClientBase(transport);
 };
