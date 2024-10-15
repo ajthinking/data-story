@@ -9,7 +9,7 @@ export { eventManager, useDataStoryEvent } from './components/DataStory/events/e
 export { DataStoryEvents, type DataStoryEventType } from './components/DataStory/events/dataStoryEventType'
 export type { DataStoryObservers, DataStoryProps, ClientRunParams, ServerClientObservationConfig } from './components/DataStory/types'
 export { default as NodeComponent } from './components/Node/NodeComponent';
-export { createJSClient } from './components/DataStory/clients/WorkspaceApiJSClient';
+export { createJSClient } from './components/DataStory/clients/createJSClient';
 export type { DataStoryControlsType } from './components/DataStory/dataStoryControls';
 export type { WorkspaceApiClient } from './components/DataStory/clients/WorkspaceApiClient';
 export { processWaitingResponse, waitForResponse } from './components/DataStory/clients/WebSocketHandleResponseMiddleware';
