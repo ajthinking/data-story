@@ -4,7 +4,6 @@ import {
   Application,
   Diagram,
   ExecutionFailure,
-  ExecutorFactory,
   InMemoryStorage,
   InputObserverController,
   type ReportCallback
