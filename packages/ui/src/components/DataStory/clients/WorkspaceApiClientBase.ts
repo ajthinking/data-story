@@ -29,6 +29,49 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     this.updateDiagram = this.updateDiagram.bind(this);
   }
 
+  async getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
+    const data = await this.transport.sendAndReceive({
+      type: 'getNodeDescriptions',
+      path,
+    });
+    return (data as {msgId: string; availableNodes: any[]; [key: string]: any;})?.availableNodes ?? [];
+  }
+
+  updateDiagram(diagram: Diagram): Promise<void> {
+    return this.transport.sendAndReceive({
+      type: 'updateDiagram',
+      diagram
+    });
+  }
+
+  async getDiagram({ path }: {path?: string}): Promise<Diagram> {
+    try {
+      const data = await this.transport.sendAndReceive({
+        type: 'getDiagram',
+        path
+      });
+      return (data as {msgId: string; diagram: Diagram; [key: string]: any;})?.diagram;
+    } catch(e) {
+      console.error('Error getting diagram', e);
+      throw e;
+    }
+  }
+
+  run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
+    this.observers = observers;
+    this.updateEdgeCounts = updateEdgeCounts;
+
+    const msg$ = this.transport.streaming({
+      type: 'run',
+      diagram,
+      inputObservers: observers?.inputObservers || [],
+    });
+    msg$.subscribe(this.receivedMsg$);
+    eventManager.emit({
+      type: DataStoryEvents.RUN_START
+    });
+  }
+
   //<editor-fold desc="Message handler">
   private initExecutionUpdateHandler() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
@@ -93,35 +136,4 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   }
 
   //</editor-fold>
-
-  getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
-    return this.transport.sendAndReceive({
-      type: 'getNodeDescriptions',
-      path,
-    }).then((data) => {
-      return (data as {msgId: string, availableNodes: any[], [key: string]: any})?.availableNodes ?? [];
-    });
-  }
-
-  updateDiagram(diagram: Diagram): Promise<void> {
-    return this.transport.sendAndReceive({
-      type: 'updateDiagram',
-      diagram
-    });
-  }
-
-  run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
-    this.observers = observers;
-    this.updateEdgeCounts = updateEdgeCounts;
-
-    const msg$ = this.transport.streaming({
-      type: 'run',
-      diagram,
-      inputObservers: observers?.inputObservers || [],
-    });
-    msg$.subscribe(this.receivedMsg$);
-    eventManager.emit({
-      type: DataStoryEvents.RUN_START
-    });
-  }
 }

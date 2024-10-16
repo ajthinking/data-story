@@ -8,12 +8,12 @@ function createJSTransport(app: Application) {
   const jsServer = new MockJSServer({ app });
   const config: TransportConfig = {
     postMessage: (msg) => {
-      jsServer.chanel.next({
+      jsServer.channel.next({
         ...msg,
         status: 'client-post'
       });
     },
-    messages$: jsServer.chanel.pipe(
+    messages$: jsServer.channel.pipe(
       filter((msg) => msg.status === 'server-post')
     ),
   };

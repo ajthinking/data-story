@@ -40,3 +40,28 @@ export const saveDiagram = (key: string, diagram: Diagram) => {
     console.error(e);
   }
 };
+
+export const loadDiagram = (key: string): LocalDiagram => {
+  const initDiagram: LocalDiagram = {
+    type: 'load',
+    version: getCoreVersion(),
+    name: key,
+    diagram: null
+  }
+
+  if (typeof window === 'undefined' || !localStorage?.getItem(key)) {
+    return initDiagram;
+  }
+
+  const json = localStorage?.getItem(key);
+  const { name, diagram } = JSON.parse(json!);
+
+  initDiagram.diagram = new Diagram({
+    nodes: diagram.nodes,
+    links: diagram.links
+  });
+
+  initDiagram.name = name;
+
+  return initDiagram;
+}
