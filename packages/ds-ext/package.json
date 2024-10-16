@@ -4,6 +4,7 @@
   "description": "",
   "version": "0.0.106",
   "publisher": "ajthinking",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.80.0"
   },
