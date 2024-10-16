@@ -22,11 +22,8 @@ export const DataStoryComponent = (
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
-  const [diagram] = useState<Diagram | null>(initDiagram || new Diagram());
   const [sidebarKey, setSidebarKey] = useState(() => {
-    // If initDiagram isn't provided, default to 'addNode' to show the sidebar
-    const defaultKey = initDiagram ? '' : 'addNode';
-    return initSidebarKey ?? defaultKey;
+    return initSidebarKey ?? '';
   });
 
   const {
@@ -39,6 +36,17 @@ export const DataStoryComponent = (
     refreshDeps: [client], // Will re-fetch if client changes
   });
   handleRequestError(getNodeDescriptionsError);
+
+  const {
+    data: diagramData,
+    loading: diagramDataLoading,
+    error: diagramDataError
+  } = useRequest(async() => {
+    return client?.getDiagram?.({});
+  }, {
+    refreshDeps: [client], // Will re-fetch if client changes
+  });
+  handleRequestError(diagramDataError);
 
   useEffect(() => {
     if (sidebarKey !== 'node') {
@@ -65,7 +73,7 @@ export const DataStoryComponent = (
       <div className="relative h-full w-full">
         {children}
         {
-          (false) // TODO isLoading?
+          (diagramDataLoading || nodeDescriptionsLoading) // TODO isLoading?
             ? <LoadingMask/>
             : <Allotment className='h-full border-0.5 relative'>
               {/*The Allotment.Pane will recalculate the width and height of the child components.*/}
@@ -75,7 +83,7 @@ export const DataStoryComponent = (
                   {...props}
                   onSave={client.updateDiagram}
                   key={'data-story-canvas'}
-                  initDiagram={diagram}
+                  initDiagram={diagramData || new Diagram()}
                   ref={partialStoreRef}
                   setSidebarKey={setSidebarKey}
                   sidebarKey={sidebarKey}
