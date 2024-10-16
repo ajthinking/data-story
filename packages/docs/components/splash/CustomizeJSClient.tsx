@@ -1,25 +1,26 @@
 import { Application, Diagram, NodeDescription } from '@data-story/core';
-import { createJSClient, WorkspaceApiClient, WorkspaceApiClientBase } from '@data-story/ui';
+import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientBase } from '@data-story/ui';
 
-export class MockJSClient implements WorkspaceApiClient {
+export class CustomizeJSClient implements WorkspaceApiClient {
   private nodeDescriptions: NodeDescription[];
-  private jsClient: WorkspaceApiClientBase;
+  private app: Application;
 
   constructor({ diagram, app, nodeDescriptions }: {
     app: Application,
     diagram?: Diagram,
     nodeDescriptions?: NodeDescription[]
   }) {
-    this.jsClient = createJSClient(app);
     this.nodeDescriptions = nodeDescriptions || [];
+    this.app = app;
   }
 
   getNodeDescriptions = async({ path }) => {
     return this.nodeDescriptions;
   };
 
-  run = (params) => {
-    this.jsClient.run(params);
+  run = (params:  ClientRunParams) => {
+    const jsClient = createJSClient(this.app);
+    jsClient.run(params);
   };
 
 }

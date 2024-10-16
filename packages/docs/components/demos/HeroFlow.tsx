@@ -1,7 +1,7 @@
 import { DataStory } from '@data-story/ui'
 import { core, multiline, nodes, } from '@data-story/core';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
-import { MockJSClient } from '../splash/MockJSClient';
+import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useMemo } from 'react';
 import { useRequestApp } from '../hooks/useRequestApp';
 
@@ -45,7 +45,7 @@ export default () => {
   const isSmallScreen = useMemo(() => width < 768, [width]);
 
   const client = useMemo(() =>
-    isSmallScreen ? new MockJSClient({ diagram: smallDiagram, app }) : new MockJSClient({ diagram: bigDiagram, app }),
+    isSmallScreen ? new CustomizeJSClient({ diagram: smallDiagram, app }) : new CustomizeJSClient({ diagram: bigDiagram, app }),
   [isSmallScreen, bigDiagram, smallDiagram, app]);
 
   if (loading || !client) return null;

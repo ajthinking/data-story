@@ -1,14 +1,14 @@
 'use client'
 
 import { DataStory } from '@data-story/ui';
-import { MockJSClient } from '../../splash/MockJSClient';
+import { CustomizeJSClient } from '../../splash/CustomizeJSClient';
 import { useRequestApp } from '../../hooks/useRequestApp';
 
 export default () => {
   const { app, loading } = useRequestApp();
   if(loading) return null;
 
-  const client = new MockJSClient({app});
+  const client = new CustomizeJSClient({app});
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

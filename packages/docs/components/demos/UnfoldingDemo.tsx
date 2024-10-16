@@ -1,6 +1,6 @@
 import { DataStory } from '@data-story/ui'
 import { Application, core, coreNodeProvider, nodes, str, UnfoldedDiagramFactory, } from '@data-story/core';
-import { MockJSClient } from '../splash/MockJSClient';
+import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import useRequest from 'ahooks/lib/useRequest';
 
 export default ({ part }: {part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
@@ -66,9 +66,9 @@ export default ({ part }: {part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
     nestedNodes
   ).unfold();
 
-  const mainClient = new MockJSClient({ diagram: diagram, app: app });
-  const mainUnfoldedClient = new MockJSClient({ diagram: unfolded.diagram, app: app });
-  const nestedNodeClient = new MockJSClient({ diagram: nestedNode, app: app });
+  const mainClient = new CustomizeJSClient({ diagram: diagram, app: app });
+  const mainUnfoldedClient = new CustomizeJSClient({ diagram: unfolded.diagram, app: app });
+  const nestedNodeClient = new CustomizeJSClient({ diagram: nestedNode, app: app });
 
   if (loading || !mainClient) return null;
   // *************************************

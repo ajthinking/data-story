@@ -1,6 +1,6 @@
 import { DataStory } from '@data-story/ui'
 import { core, str, } from '@data-story/core';
-import { MockJSClient } from '../splash/MockJSClient';
+import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
 import useRequest from 'ahooks/lib/useRequest';
 
@@ -23,7 +23,7 @@ export default () => {
     return diagram;
   });
 
-  const client = new MockJSClient({ diagram, app });
+  const client = new CustomizeJSClient({ diagram, app });
 
   if (appLoading || !client || diagramLoading) return null;
   return (

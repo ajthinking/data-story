@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { MockJSClient } from '../splash/MockJSClient';
+import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
 
 ChartJS.register(
@@ -57,7 +57,7 @@ export default () => {
   const [points, setPoints] = React.useState([]);
   const { app, loading } = useRequestApp();
 
-  const client = useMemo(() => new MockJSClient({ diagram, app }), [diagram, app]);
+  const client = useMemo(() => new CustomizeJSClient({ diagram, app }), [diagram, app]);
 
   const mapNode = diagram.nodes.find(n => n.type === 'Map');
   const jsonParam = mapNode.params.find(p => p.name === 'json') as any;

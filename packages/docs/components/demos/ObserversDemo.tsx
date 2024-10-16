@@ -1,7 +1,7 @@
 import { core, nodes } from '@data-story/core';
 import React from 'react';
 import { DataStory, type DataStoryObservers } from '@data-story/ui';
-import { MockJSClient } from '../splash/MockJSClient';
+import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
 
 export default ({ mode, observers }:
@@ -16,7 +16,7 @@ export default ({ mode, observers }:
     .get();
 
   const { app, loading } = useRequestApp();
-  const client = new MockJSClient({ diagram: diagram, app });
+  const client = new CustomizeJSClient({ diagram: diagram, app });
 
   if (loading || !client) return null;
   return (
