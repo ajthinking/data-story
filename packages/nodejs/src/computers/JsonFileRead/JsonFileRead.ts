@@ -1,5 +1,6 @@
 import * as glob from 'glob';
 import fs from 'fs';
+import path from 'path'; // Import path module
 import { Computer, get, serializeError, str } from '@data-story/core';
 
 export const JsonFileRead: Computer = {
@@ -33,15 +34,31 @@ export const JsonFileRead: Computer = {
   async *run({ output, params }) {
     const pathPattern = params.file_path as string;
     const itemsPath = params.items_path as string;
-    try {
-      // Use glob to get all matching file paths
-      const files = glob.sync(pathPattern, {
-        cwd: process.env.WORKSPACE_FOLDER_PATH,
-        ignore: ['**/node_modules/**'],
-        root: process.env.WORKSPACE_FOLDER_PATH,
-        absolute: true,
-      });
 
+    // Check if the provided path is absolute
+    const isAbsolutePath = path.isAbsolute(pathPattern);
+
+    let files: string[] = [];
+    try {
+      if (isAbsolutePath) {
+        // If it's an absolute path, use it directly with glob
+        files = glob.sync(pathPattern, {
+          ignore: ['**/node_modules/**'],
+          absolute: true,
+        });
+      } else {
+        // If it's a relative path, resolve using the workspace folder
+        const cwd = process.env.WORKSPACE_FOLDER_PATH as string;
+        files = glob.sync(pathPattern, {
+          cwd, // Resolve relative paths from the workspace folder
+          ignore: ['**/node_modules/**'],
+          absolute: true,
+        });
+      }
+
+      console.log({ files }); // Debug output
+
+      // Process each file found by glob
       for (const file of files) {
         try {
           const content = fs.readFileSync(file, 'utf-8');
