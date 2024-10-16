@@ -12,7 +12,7 @@ const getCoreVersion = () => {
   return version;
 }
 
-const saveDiagram = (key: string, diagram: Diagram) => {
+export const saveDiagram = (key: string, diagram: Diagram) => {
   try {
     // There's no need to save the diagram's `link label` and `link labelBgStyle`
     const links = diagram.links.map(link => {

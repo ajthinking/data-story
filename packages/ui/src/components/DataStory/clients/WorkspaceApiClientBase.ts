@@ -94,7 +94,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
 
   //</editor-fold>
 
-  getNodeDescriptions({ path }: {path: string}): Promise<NodeDescription[]> {
+  getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
     return this.transport.sendAndReceive({
       type: 'getNodeDescriptions',
       path,
@@ -110,7 +110,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     });
   }
 
-  getDiagram({path}: {path: string}): Promise<Diagram> {
+  getDiagram({path}: {path?: string}): Promise<Diagram> {
     return this.transport.sendAndReceive({
       type: 'getDiagram',
       path

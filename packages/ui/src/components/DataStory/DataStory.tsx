@@ -10,7 +10,6 @@ import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
 import { Diagram, } from '@data-story/core';
-import { LocalStorageKey } from './common/method';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}`);
@@ -35,7 +34,7 @@ export const DataStoryComponent = (
     loading: nodeDescriptionsLoading,
     error: getNodeDescriptionsError
   } = useRequest(async() => {
-    return client.getNodeDescriptions({ path: LocalStorageKey })
+    return client.getNodeDescriptions({})
   }, {
     refreshDeps: [client], // Will re-fetch if client changes
   });
