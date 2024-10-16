@@ -20,7 +20,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   private receivedMsg$ = new Subject();
 
   constructor(private transport: Transport) {
-    this.handleExecutionUpdate();
+    this.initExecutionUpdateHandler();
     this.handleNotifyObservers();
     this.handleExecutionResult();
     this.handleExecutionFailure();
@@ -30,7 +30,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   }
 
   //<editor-fold desc="Message handler">
-  handleExecutionUpdate() {
+  private initExecutionUpdateHandler() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
       .subscribe((data: any) => {
         this.updateEdgeCounts!(data.counts)
@@ -50,7 +50,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       })
   }
 
-  handleNotifyObservers() {
+  private handleNotifyObservers() {
     return this.receivedMsg$.pipe(filter(matchMsgType('NotifyObservers')))
       .subscribe((data: any) => {
         this?.observers?.onDataChange(
@@ -60,7 +60,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       })
   }
 
-  handleExecutionResult() {
+  private handleExecutionResult() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionResult')))
       .subscribe((data: any) => {
         console.log('Execution complete 💫')
@@ -71,7 +71,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       })
   }
 
-  handleExecutionFailure() {
+  private handleExecutionFailure() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionFailure')))
       .subscribe((data: any) => {
         console.error('Execution failed: ', {
@@ -85,7 +85,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       })
   }
 
-  handleUpdateStorage() {
+  private handleUpdateStorage() {
     return this.receivedMsg$.pipe(filter(matchMsgType('UpdateStorage')))
       .subscribe((data: any) => {
         return;
