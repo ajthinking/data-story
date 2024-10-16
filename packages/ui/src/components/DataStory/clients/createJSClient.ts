@@ -2,7 +2,7 @@ import { Application, } from '@data-story/core';
 import { filter } from 'rxjs';
 import { createTransport, TransportConfig } from './createTransport';
 import { WorkspaceApiClientBase } from './WorkspaceApiClientBase';
-import { MockJSServer } from '../mockJSServer';
+import { MockJSServer } from '../mockJSServer/index';
 
 function createJSTransport(app: Application) {
   const jsServer = new MockJSServer({ app });

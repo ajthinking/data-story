@@ -110,13 +110,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     });
   }
 
-  getDiagram({path}: {path?: string}): Promise<Diagram> {
-    return this.transport.sendAndReceive({
-      type: 'getDiagram',
-      path
-    });
-  }
-
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;

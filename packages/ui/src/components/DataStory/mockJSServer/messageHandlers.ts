@@ -7,7 +7,7 @@ import {
   InputObserverController,
   type ItemValue
 } from '@data-story/core';
-import { loadDiagram, saveDiagram } from './storeDiagram';
+import { saveDiagram } from './storeDiagram';
 
 type RunMessage = {
   msgId: string,
@@ -87,18 +87,9 @@ export const getDefaultMsgHandlers = (app: Application) => {
     saveDiagram(LocalStorageKey, (data as {diagram: Diagram}).diagram);
   }
 
-  const getDiagram = async({ data, sendEvent }: HandlerParam) => {
-    const diagramInfo = loadDiagram(LocalStorageKey);
-    sendEvent({
-      ...data as Record<string, unknown>,
-      diagram: diagramInfo.diagram
-    });
-  }
-
   return {
     run,
     getNodeDescriptions,
     updateDiagram,
-    getDiagram
   }
 }

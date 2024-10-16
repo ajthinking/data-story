@@ -30,6 +30,7 @@ export default () => {
     <div className="w-full h-1/6">
       <DataStory
         client={client}
+        initDiagram={diagram}
         onInitialize={(options) => options.run()}
         hideControls={true}
         hideActivityBar={true}
