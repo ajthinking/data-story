@@ -7,7 +7,6 @@ import {
   InputObserverController,
   type ItemValue
 } from '@data-story/core';
-import { Subject } from 'rxjs';
 
 type RunMessage = {
   msgId: string,
@@ -16,17 +15,18 @@ type RunMessage = {
   inputObservers: InputObserver[],
 }
 
-type HandlerParam = {data: unknown, sendEvent: (msg: Record<string, any>) => void}
-type Message = {type: string} & Record<string, unknown>;
+export type HandlerParam = {data: unknown, sendEvent: (msg: Record<string, any>) => void};
+export type Message = {type: string} & Record<string, unknown>;
+
 type Handler = (params: HandlerParam) => Promise<unknown>;
-type MessageHandlers = {
+export type MessageHandlers = {
   run: Handler,
   getNodeDescriptions: Handler,
   updateDiagram: Handler,
   [key: string]: Handler,
 };
 
-const JSDefaultMsgHandlers = (app: Application) => {
+export const getDefaultMsgHandlers = (app: Application) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
     const { diagram, inputObservers } = data as RunMessage;
@@ -85,44 +85,12 @@ const JSDefaultMsgHandlers = (app: Application) => {
     console.log((data as {diagram: Diagram}).diagram, 'diagram');
   }
 
+  const getDiagram = async({ data, sendEvent }: HandlerParam) => {
+    // get the diagram from localStorage
+  }
   return {
     run,
     getNodeDescriptions,
     updateDiagram,
-  }
-}
-
-export class MockJSServer {
-  chanel: Subject<any> = new Subject();
-  private messageHandlers = {};
-
-  constructor({ app, messageHandlers }: {app: Application, messageHandlers?: MessageHandlers}) {
-    this.messageHandlers = messageHandlers ?? JSDefaultMsgHandlers(app);
-    this.start();
-  }
-
-  handleMessage = async(message: Message) => {
-    if (message.status !== 'client-post') return;
-    const handler = this.messageHandlers[message.type] as (params: HandlerParam) => Promise<void>;
-    if (!handler) throw new Error('Unknown message type (server): ' + message.type);
-    const sendEvent = (msg: Record<string, any>) => {
-      this.chanel.next({
-        ...msg,
-        status: 'server-post',
-        msgId: message.msgId
-      });
-    }
-
-    await handler({
-      data: message,
-      sendEvent
-    });
-  }
-
-  private start() {
-    this.chanel.subscribe((msg: Message) => {
-      this.handleMessage(msg);
-    });
-    console.log('Client connected 💓');
   }
 }

@@ -5,5 +5,5 @@ export interface WorkspaceApiClient {
   run(params: ClientRunParams): void;
   getNodeDescriptions: ({ path }: { path: string}) => Promise<NodeDescription[]>
   updateDiagram?: (diagram: Diagram) => Promise<void>;
-
+  getDiagram?: ({ path }: { path: string}) => Promise<Diagram>;
 }
