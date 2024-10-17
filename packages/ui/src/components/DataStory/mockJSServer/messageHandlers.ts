@@ -83,7 +83,6 @@ export const getDefaultMsgHandlers = (app: Application) => {
   };
 
   const updateDiagram = async({ data, sendEvent }: HandlerParam) => {
-    console.log((data as {diagram: Diagram}).diagram, 'diagram');
     saveDiagram(LocalStorageKey, (data as {diagram: Diagram}).diagram);
   }
 
