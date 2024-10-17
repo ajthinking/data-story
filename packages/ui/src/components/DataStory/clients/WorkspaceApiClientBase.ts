@@ -38,10 +38,20 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   }
 
   updateDiagram(diagram: Diagram): Promise<void> {
-    return this.transport.sendAndReceive({
-      type: 'updateDiagram',
-      diagram
-    });
+    try {
+      eventManager.emit({
+        type: DataStoryEvents.SAVE_SUCCESS
+      });
+      return this.transport.sendAndReceive({
+        type: 'updateDiagram',
+        diagram
+      });
+    } catch(e) {
+      eventManager.emit({
+        type: DataStoryEvents.SAVE_ERROR
+      });
+      throw e;
+    }
   }
 
   async getDiagram({ path }: {path?: string}): Promise<Diagram> {
@@ -50,6 +60,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
         type: 'getDiagram',
         path
       });
+
       return (data as {msgId: string; diagram: Diagram; [key: string]: any;})?.diagram;
     } catch(e) {
       console.error('Error getting diagram', e);
