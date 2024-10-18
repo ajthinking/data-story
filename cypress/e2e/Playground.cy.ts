@@ -12,6 +12,7 @@ describe('add console.log node to playground', () => {
   });
 
   it('trigger addNodeModal', () => {
+    cy.wait(500);
     getEl('add-node-button').click();
 
     cy.wait(1000);

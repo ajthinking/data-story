@@ -11,11 +11,15 @@ export const createTransport = (config: TransportConfig): Transport => {
   async function sendAndReceive<T>(params: Record<string, any>): Promise<T> {
     const id = createDataStoryId();
     const message = { msgId: id, ...params };
-    config.postMessage(message);
-    return await firstValueFrom(config.messages$.pipe(
+    const resp = firstValueFrom(config.messages$.pipe(
       filter(it => it.msgId === id),
-      map(it => it as T),
-    ))
+      map(it => {
+        return it as T;
+      }),
+    ));
+
+    config.postMessage(message);
+    return resp;
   }
 
   function streaming<T>(params: Record<string, any>): Observable<T> {

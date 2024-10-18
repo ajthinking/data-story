@@ -51,7 +51,6 @@ export const run: MessageHandler<RunMessage> = async(
 
   const execution = executor.execute()
 
-  console.log('sendMsg', sendMsg);
   try {
     for await(const update of execution) {
       ws.send(JSON.stringify({

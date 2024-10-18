@@ -1,9 +1,3 @@
-import { Activity } from '../types';
-import { ConfigIcon } from '../icons/configIcon';
-import { ExplorerIcon } from '../icons/explorer';
-
-export const LocalStorageKey = 'data-story-tree';
-
 // for debugging.
 export const areEqual = (prevProps, nextProps) => {
   Object.entries(nextProps).forEach(([key, val]) => {

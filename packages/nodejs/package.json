@@ -16,7 +16,7 @@
     "test": "yarn run -T vitest",
     "build": "tsc",
     "release": "yarn run -T release-it",
-    "watch:server": "nodemon"
+    "watch:server": "pm2 start ./test-server.ts --watch --no-daemon"
   },
   "release-it": {
     "git": false,

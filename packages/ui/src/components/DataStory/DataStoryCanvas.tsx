@@ -13,7 +13,6 @@ import { onDropDefault } from './onDropDefault';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
-import { Placeholder } from './common/placeholder';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -25,12 +24,11 @@ const nodeTypes = {
 
 const DataStoryCanvasComponent = forwardRef((props: DataStoryCanvasProps, ref) => {
   useGetStore(ref);
-  const showPlaceholder = !props.initDiagram;
 
   return (
     <>
       <ReactFlowProvider>
-        {showPlaceholder ? <Placeholder content={'No diagram found'}/> : <Flow {...props}/>}
+        <Flow {...props}/>
       </ReactFlowProvider>
     </>
   );

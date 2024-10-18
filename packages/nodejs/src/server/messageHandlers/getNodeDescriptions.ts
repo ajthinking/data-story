@@ -4,7 +4,7 @@ import WebSocket from 'ws';
 
 export type DescribeMessage = {
   type: 'getNodeDescriptions',
-  id: string,
+  msgId: string;
 }
 
 export const getNodeDescriptions: MessageHandler<DescribeMessage> = async (
