@@ -9,7 +9,6 @@ import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
-import { Diagram, } from '@data-story/core';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}`);
@@ -47,7 +46,6 @@ export const DataStoryComponent = (
     refreshDeps: [client], // Will re-fetch if client changes
   });
   handleRequestError(diagramDataError);
-
   useEffect(() => {
     if (sidebarKey !== 'node') {
       setSelectedNode(undefined);
@@ -83,7 +81,7 @@ export const DataStoryComponent = (
                   {...props}
                   onSave={client.updateDiagram}
                   key={'data-story-canvas'}
-                  initDiagram={diagramData || new Diagram()}
+                  initDiagram={diagramData}
                   ref={partialStoreRef}
                   setSidebarKey={setSidebarKey}
                   sidebarKey={sidebarKey}

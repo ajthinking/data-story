@@ -77,9 +77,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
       vscode.Uri.file(mainScript)
     );
 
-    // Inject file URI and diagram data into the window object
-    const fileUri = webview.asWebviewUri(document.uri);
-
     // Return HTML content for the Webview
     return `
         <!DOCTYPE html>
@@ -95,9 +92,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
             <script>
                 // Provide the VS Code API and initial data (file URI and diagram content)
                 window.vscode = acquireVsCodeApi();
-                window.initialData = {
-                    fileUri: "${fileUri}",  // Pass file URI
-                };
             </script>
         </body>
         </html>
