@@ -60,8 +60,8 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
         type: 'getDiagram',
         path
       });
-
-      return (data as {msgId: string; diagram: Diagram; [key: string]: any;})?.diagram;
+      const diagram = (data as {msgId: string; diagram: Diagram; [key: string]: any;})?.diagram;
+      return diagram;
     } catch(e) {
       console.error('Error getting diagram', e);
       throw e;

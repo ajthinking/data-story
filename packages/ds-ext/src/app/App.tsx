@@ -9,17 +9,9 @@ export default function App() {
   const client = createVsCodeClient(window.vscode);
   const handleChange = useCallback(
     debounce(async (diagram: Diagram) => {
-      // Construct the message payload with updated diagram data
-      const updatedData = {
-        type: 'updateDiagram',
-        diagram: diagram,
-      };
-
-      // Send the message to VS Code extension
-      window.vscode.postMessage(updatedData);
-      // client?.updateDiagram?.(diagram);
+      client?.updateDiagram?.(diagram);
     }, 100), // Debounced with 100ms delay
-    []);
+    [client]);
 
   return (
     <div style={{ width: '100%', height: '100vh' }}>
@@ -31,6 +23,7 @@ export default function App() {
         key={'abc'}
         onChange={handleChange}
         onDrop={onDrop}
+        hideControls={['save']}
       />
       <VsCodeToast postMessage={window.vscode.postMessage} />
     </div>
