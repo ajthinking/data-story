@@ -53,7 +53,10 @@ export class SocketServer {
     const parsed: { type: string } & Record<string, any> = JSON.parse(message);
 
     const handler = this.messageHandlers[parsed.type];
-    if (!handler) throw new Error('Unknown message type (server): ' + parsed.type);
+    if (!handler) {
+      console.warn('Unknown message type (server): ' + parsed.type);
+      return;
+    }
 
     await handler(ws, parsed, this.app, storage);
   }

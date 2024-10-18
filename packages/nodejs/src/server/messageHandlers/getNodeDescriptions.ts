@@ -12,7 +12,6 @@ export const getNodeDescriptions: MessageHandler<DescribeMessage> = async (
   data: DescribeMessage,
   app: Application
 ) => {
-  console.log('getNodeDescriptions3', data)
   const response = {
     ...data,
     availableNodes: app.descriptions(),
