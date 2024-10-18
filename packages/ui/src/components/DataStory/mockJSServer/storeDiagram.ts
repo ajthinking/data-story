@@ -34,9 +34,7 @@ export const saveDiagram = (key: string, diagram: Diagram) => {
     } as LocalDiagram);
 
     localStorage?.setItem(key, diagramJSON);
-    // successToast('Diagram saved successfully!');
   } catch(e) {
-    // errorToast('Could not save diagram!');
     console.error(e);
   }
 };
@@ -54,7 +52,7 @@ export const loadDiagram = (key: string): LocalDiagram => {
   }
 
   const json = localStorage?.getItem(key);
-  const { name, diagram } = JSON.parse(json!);
+  const { name, diagram = new Diagram() } = JSON.parse(json!);
 
   initDiagram.diagram = new Diagram({
     nodes: diagram.nodes,
