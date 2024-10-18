@@ -21,10 +21,10 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
 
   constructor(private transport: Transport) {
     this.initExecutionUpdateHandler();
-    this.handleNotifyObservers();
-    this.handleExecutionResult();
-    this.handleExecutionFailure();
-    this.handleUpdateStorage();
+    this.initNotifyObservers();
+    this.initExecutionResult();
+    this.initExecutionFailure();
+    this.initUpdateStorage();
     this.run = this.run.bind(this);
     this.updateDiagram = this.updateDiagram.bind(this);
   }
@@ -83,7 +83,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     });
   }
 
-  //<editor-fold desc="Message handler">
+  //<editor-fold desc="Message init">
   private initExecutionUpdateHandler() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
       .subscribe((data: any) => {
@@ -104,7 +104,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       })
   }
 
-  private handleNotifyObservers() {
+  private initNotifyObservers() {
     return this.receivedMsg$.pipe(filter(matchMsgType('NotifyObservers')))
       .subscribe((data: any) => {
         this?.observers?.onDataChange(
@@ -114,7 +114,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       })
   }
 
-  private handleExecutionResult() {
+  private initExecutionResult() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionResult')))
       .subscribe((data: any) => {
         console.log('Execution complete 💫')
@@ -125,7 +125,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       })
   }
 
-  private handleExecutionFailure() {
+  private initExecutionFailure() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionFailure')))
       .subscribe((data: any) => {
         console.error('Execution failed: ', {
@@ -139,7 +139,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       })
   }
 
-  private handleUpdateStorage() {
+  private initUpdateStorage() {
     return this.receivedMsg$.pipe(filter(matchMsgType('UpdateStorage')))
       .subscribe((data: any) => {
         return;
