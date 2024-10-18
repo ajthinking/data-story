@@ -46,6 +46,7 @@ export const DataStoryComponent = (
     refreshDeps: [client], // Will re-fetch if client changes
   });
   handleRequestError(diagramDataError);
+
   useEffect(() => {
     if (sidebarKey !== 'node') {
       setSelectedNode(undefined);
