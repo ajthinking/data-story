@@ -8,35 +8,6 @@ import { createVsCodeClient } from './createVsCodeClient';
 export const fileUri = window.initialData.fileUri;
 
 export default function App() {
-  const [diagram, setDiagram] = useState<Diagram | undefined>();
-
-  useEffect(() => {
-    if (window.vscode) {
-      window.vscode.postMessage({
-        type: 'getDirtyFileContent',
-      });
-    }
-
-    const handleMessage = (event: any) => {
-      const message = event.data;
-
-      if (message.type === 'dirtyFileContent') {
-        setDiagram(
-          message.fileContent
-            ? new Diagram(JSON.parse(message.fileContent))
-            : new Diagram()
-        );
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-
-    // Cleanup the listener on unmount
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, []);
-
   const handleChange = useCallback(
     debounce(async (diagram: Diagram) => {
       // Construct the message payload with updated diagram data
@@ -53,10 +24,6 @@ export default function App() {
   );
 
   const client = createVsCodeClient(window.vscode);
-  // Only render DataStory if diagramData is available
-  if (!diagram) {
-    return <div>Loading diagram...</div>;
-  }
 
   return (
     <div style={{ width: '100%', height: '100vh' }}>
@@ -66,7 +33,6 @@ export default function App() {
         hideActivityBar={true}
         initSidebarKey={undefined}
         key={'abc'}
-        initDiagram={diagram}
         onChange={handleChange}
         onDrop={onDrop}
       />
