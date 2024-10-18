@@ -1,6 +1,6 @@
 import { DataStory } from '@data-story/ui'
 import { core, nodes } from '@data-story/core';
-import { MockJSClient } from '../splash/MockJSClient';
+import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
 
 export default ({ nodeName }: {nodeName: string}) => {
@@ -9,7 +9,7 @@ export default ({ nodeName }: {nodeName: string}) => {
     .get()
 
   const { app, loading } = useRequestApp();
-  const client = new MockJSClient({ diagram: diagram, app });
+  const client = new CustomizeJSClient({ diagram: diagram, app });
 
   if (loading || !client) return null;
   return (<div>

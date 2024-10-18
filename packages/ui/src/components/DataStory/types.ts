@@ -1,6 +1,4 @@
-import { WebSocketServerConfig } from './clients/ServerConfig';
 import {
-  Application,
   Diagram,
   type InputObserveConfig,
   type InputObserver,
@@ -13,9 +11,7 @@ import {
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import { Direction } from './getNodesWithNewSelection';
-import { ServerClient } from './clients/ServerClient';
 import React from 'react';
-import { NodeApi } from 'react-arborist';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
@@ -35,20 +31,8 @@ export type ObserverMap = Map<string, {
   onDataChange: NotifyObserversCallback,
 }>
 
-type ClientOptions = {
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
-};
-
-export type JSClientOptions = ClientOptions & {
-  app: Application,
-}
-
-export type SocketClientOptions = ClientOptions & {
-  serverConfig: WebSocketServerConfig,
-}
-
 export interface ClientRunParams {
-  updateEdgeCounts: JSClientOptions['updateEdgeCounts'],
+  updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
   diagram: Diagram,
   observers?: ServerClientObservationConfig
 }
@@ -144,9 +128,6 @@ export type StoreSchema = {
   params: Param[],
   setParams: (params: Param[]) => void;
 
-  /** The Server and its config */
-  serverClient: null | ServerClient;
-
   /** When DataStory component initializes */
   onInit: (options: StoreInitOptions) => void;
 
@@ -182,6 +163,6 @@ export type Activity = {
 export type DescribeResponse = {
   id: string,
   awaited: boolean,
-  type: 'DescribeResponse',
+  type: 'getNodeDescriptions',
   availableNodes: NodeDescription[],
 }

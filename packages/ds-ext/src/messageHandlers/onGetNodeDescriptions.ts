@@ -11,9 +11,8 @@ export const onGetNodeDescriptions: MessageHandler = async ({ event, webviewPane
   await app.boot();
 
   webviewPanel.webview.postMessage({
-    id: event.id,
+    ...event,
     awaited: true,
-    type: 'nodeDescriptions',
     availableNodes: app.descriptions(),
   });
 };

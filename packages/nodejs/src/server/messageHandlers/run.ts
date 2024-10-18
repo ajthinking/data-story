@@ -4,7 +4,6 @@ import {
   Application,
   Diagram,
   ExecutionFailure,
-  ExecutorFactory,
   InMemoryStorage,
   InputObserverController,
   type ReportCallback
@@ -12,7 +11,8 @@ import {
 import { type InputObserver } from '@data-story/core'
 
 export type RunMessage = {
-  type: 'run'
+  msgId: string,
+  type: 'run',
   diagram: Diagram,
   inputObservers: InputObserver[],
 }
@@ -31,9 +31,10 @@ export const run: MessageHandler<RunMessage> = async(
 
   const sendMsg: ReportCallback = (items, inputObservers) => {
     ws.send(JSON.stringify({
+      msgId: data.msgId,
       type: 'NotifyObservers',
       inputObservers,
-      items
+      items,
     }))
   }
 
@@ -50,13 +51,18 @@ export const run: MessageHandler<RunMessage> = async(
 
   const execution = executor.execute()
 
+  console.log('sendMsg', sendMsg);
   try {
     for await(const update of execution) {
-      ws.send(JSON.stringify(update))
+      ws.send(JSON.stringify({
+        ...update,
+        msgId: data.msgId,
+      }))
     }
 
     ws.send(
       JSON.stringify({
+        msgId: data.msgId,
         type: 'ExecutionResult',
         time: Date.now()
       })
@@ -67,6 +73,7 @@ export const run: MessageHandler<RunMessage> = async(
       console.log(error)
 
       const failure: ExecutionFailure = {
+        msgId: data.msgId,
         type: 'ExecutionFailure',
         message: error.message,
         history: executor.memory.getHistory()

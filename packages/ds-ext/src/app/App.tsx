@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { debounce, Diagram } from '@data-story/core';
 import { DataStory } from '@data-story/ui';
-import { fileUri, VsCodeClient } from './VsCodeClient';
 import { VsCodeToast } from './VsCodeToast';
 import { onDrop } from './onDrop';
+import { createVsCodeClient } from './createVsCodeClient';
+
+export const fileUri = window.initialData.fileUri;
 
 export default function App() {
   const [diagram, setDiagram] = useState<Diagram | undefined>();
@@ -50,6 +52,7 @@ export default function App() {
     [fileUri]
   );
 
+  const client = createVsCodeClient(window.vscode);
   // Only render DataStory if diagramData is available
   if (!diagram) {
     return <div>Loading diagram...</div>;
@@ -58,8 +61,7 @@ export default function App() {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <DataStory
-        client={new VsCodeClient(window.vscode)}
-        onInitialize={() => {}}
+        client={client}
         hideSidebar={false}
         hideActivityBar={true}
         initSidebarKey={undefined}
@@ -68,7 +70,7 @@ export default function App() {
         onChange={handleChange}
         onDrop={onDrop}
       />
-      <VsCodeToast postMessage={window.vscode.postMessage}/>
+      <VsCodeToast postMessage={window.vscode.postMessage} />
     </div>
   );
 }

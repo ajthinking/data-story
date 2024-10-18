@@ -1,13 +1,13 @@
 'use client'
 
-import { DataStory, WorkspaceApiJSClient } from '@data-story/ui';
+import { createJSClient, DataStory } from '@data-story/ui';
 import { useMemo } from 'react';
 import { useRequestApp } from '../../hooks/useRequestApp';
 
 export default () => {
   const { app, loading } = useRequestApp();
   const client = useMemo(() =>  {
-    if (!loading) return new WorkspaceApiJSClient(app);
+    if (!loading) return createJSClient(app);
     return null;
   }, [app, loading]);
 

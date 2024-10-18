@@ -2,7 +2,7 @@
 
 import { DataStory } from '@data-story/ui';
 import { core, nodes } from '@data-story/core';
-import { MockJSClient } from '../../splash/MockJSClient';
+import { CustomizeJSClient } from '../../splash/CustomizeJSClient';
 import { useMemo } from 'react';
 import { useRequestApp } from '../../hooks/useRequestApp';
 
@@ -26,7 +26,7 @@ export default () => {
     .get();
 
   const client = useMemo(() => {
-    return new MockJSClient({ diagram, app, nodeDescriptions });
+    return new CustomizeJSClient({ diagram, app, nodeDescriptions });
   }, [diagram, app, nodeDescriptions]);
 
   if (!client) return null;

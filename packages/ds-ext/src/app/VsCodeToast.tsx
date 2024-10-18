@@ -20,7 +20,7 @@ export function VsCodeToast({ postMessage }: {
         info.message = multiline`
           Diagram executed successfully!
           Execution time: ${event.payload.time} ms
-        `
+        `;
         break;
       case DataStoryEvents.RUN_ERROR:
         info.message = `Diagram execution failed! Error was: ${event.payload.error}`;
