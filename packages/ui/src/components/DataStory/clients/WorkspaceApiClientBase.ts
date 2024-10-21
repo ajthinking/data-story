@@ -20,7 +20,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   private receivedMsg$ = new Subject();
 
   constructor(private transport: Transport) {
-    this.initExecutionUpdateHandler();
+    this.initExecutionUpdates();
     this.initNotifyObservers();
     this.initExecutionResult();
     this.initExecutionFailure();
@@ -84,7 +84,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   }
 
   //<editor-fold desc="Message init">
-  private initExecutionUpdateHandler() {
+  private initExecutionUpdates() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
       .subscribe((data: any) => {
         this.updateEdgeCounts!(data.counts)

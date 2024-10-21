@@ -41,7 +41,7 @@ export const DataStoryComponent = (
     loading: diagramDataLoading,
     error: diagramDataError
   } = useRequest(async() => {
-    return client?.getDiagram?.({});
+    return client.getDiagram?.({});
   }, {
     refreshDeps: [client], // Will re-fetch if client changes
   });

@@ -9,7 +9,7 @@ export default function App() {
   const client = createVsCodeClient(window.vscode);
   const handleChange = useCallback(
     debounce(async (diagram: Diagram) => {
-      client?.updateDiagram?.(diagram);
+      client!.updateDiagram?.(diagram);
     }, 100), // Debounced with 100ms delay
     [client]);
 
