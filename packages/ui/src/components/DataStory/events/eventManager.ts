@@ -20,9 +20,8 @@ class EventManager {
    * subscribe event
    */
   on(handler: EventHandler) {
-    return this.subject.pipe(
-      observeOn(asyncScheduler)
-    ).subscribe(handler as unknown as ((value: unknown) => void));
+    // need to call the listener handler synchronously, as the data from MockJSServer is synchronous
+    return this.subject.subscribe(handler as unknown as ((value: unknown) => void));
   }
 }
 

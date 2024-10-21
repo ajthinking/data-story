@@ -72,15 +72,15 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
 
+    eventManager.emit({
+      type: DataStoryEvents.RUN_START
+    });
     const msg$ = this.transport.streaming({
       type: 'run',
       diagram,
       inputObservers: observers?.inputObservers || [],
     });
     msg$.subscribe(this.receivedMsg$);
-    eventManager.emit({
-      type: DataStoryEvents.RUN_START
-    });
   }
 
   //<editor-fold desc="Message init">
