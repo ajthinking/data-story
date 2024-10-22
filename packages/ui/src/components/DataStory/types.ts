@@ -74,6 +74,7 @@ export type StoreInitOptions = {
   initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
   clientRun?: (params: ClientRunParams) => void;
+  focusOnFlow?: StoreSchema['focusOnFlow'];
 }
 
 export type FormCommonProps = {
@@ -106,6 +107,7 @@ export type StoreSchema = {
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
   toDiagram: () => Diagram;
+  focusOnFlow: () => void;
 
   /** The Nodes */
   nodes: ReactFlowNode[];

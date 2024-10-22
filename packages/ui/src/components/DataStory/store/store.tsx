@@ -19,8 +19,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   params: [],
   openNodeSidebarId: null,
   observerMap: new Map(),
-  clientRun: (params: ClientRunParams) => {
-  },
+  focusOnFlow: () => void 0,
+  clientRun: (params: ClientRunParams) => {},
 
   // METHODS
   toDiagram: () => {
@@ -97,6 +97,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     setTimeout(() => {
       get().rfInstance?.fitView();
+      get().focusOnFlow();
     }, 1);
   },
   selectNode(nodeId: string) {
@@ -130,6 +131,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   onInit: (options: StoreInitOptions) => {
     set({ rfInstance: options.rfInstance })
     set({ clientRun: options.clientRun })
+    set({ focusOnFlow: options.focusOnFlow })
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 

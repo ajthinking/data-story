@@ -93,6 +93,13 @@ const Flow = ({
 
   const flowRef = useRef<HTMLDivElement>(null);
 
+  const focusOnFlow = useCallback(() => {
+    if (flowRef.current) {
+      console.log('focus');
+      flowRef.current.focus();
+    }
+  }, [flowRef]);
+
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
   const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
@@ -106,6 +113,7 @@ const Flow = ({
     hotkeyManager,
     onSave,
     toDiagram,
+    focusOnFlow: focusOnFlow
   });
 
   useEscapeKey(() => setSidebarKey!(''), flowRef);
@@ -122,14 +130,21 @@ const Flow = ({
         nodeTypes={nodeTypes as NodeTypes}
         onNodesChange={(changes: NodeChange[]) => {
           onNodesChange(changes);
-          if(onChange) onChange(toDiagram())
+          if (onChange) onChange(toDiagram())
         }}
         onNodeDoubleClick={(_, node) => {
           onNodeDoubleClick?.(node);
         }}
+        // onNodeMouseEnter={(event, node) => {
+        //   console.log('node mouse enter', node);
+        // }}
+        // // todo: enter key
+        // onKeyDown={(event) => {
+        //   console.log('keydown', event.key);
+        // }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);
-          if(onChange) onChange(toDiagram())
+          if (onChange) onChange(toDiagram())
         }}
         onConnect={connect}
         onInit={(rfInstance: StoreInitOptions['rfInstance']) => {
@@ -138,6 +153,7 @@ const Flow = ({
             initDiagram,
             callback: onInitialize,
             clientRun: client?.run,
+            focusOnFlow,
           });
           setIsExecutePostRenderEffect(true);
         }}
