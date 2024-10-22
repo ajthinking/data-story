@@ -27,7 +27,7 @@ export function VsCodeToast({ postMessage }: {
         info.status = 'error';
         break;
       case DataStoryEvents.SAVE_SUCCESS:
-        info.message = 'Diagram saved successfully!';
+        // info.message = 'Diagram saved successfully!';
         break;
       case DataStoryEvents.SAVE_ERROR:
         console.error(event.payload);

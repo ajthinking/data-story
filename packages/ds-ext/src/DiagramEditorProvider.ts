@@ -5,7 +5,7 @@ import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
-import { onGetDirtyFileContent } from './messageHandlers/onGetDirtyFileContent';
+import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
@@ -55,13 +55,15 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         run: onRun,
         getNodeDescriptions: onGetNodeDescriptions,
         updateDiagram: onUpdateDiagram,
-        getDirtyFileContent: onGetDirtyFileContent,
+        getDiagram: getDiagram,
         toast: onToast,
       };
 
       const handler = handlers[event.type];
-      if(!handler) throw Error(`No handler found for event type: ${event.type}. Available handlers: ${Object.keys(handlers).join(', ')}`);
-
+      if (!handler) {
+        console.error(`No handler found for event type: ${event.type}. Available handlers: ${Object.keys(handlers).join(', ')}`);
+        return;
+      }
       handler({ webviewPanel, event, document });
     });
   }
@@ -74,9 +76,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     const scriptUri = webview.asWebviewUri(
       vscode.Uri.file(mainScript)
     );
-
-    // Inject file URI and diagram data into the window object
-    const fileUri = webview.asWebviewUri(document.uri);
 
     // Return HTML content for the Webview
     return `
@@ -93,9 +92,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
             <script>
                 // Provide the VS Code API and initial data (file URI and diagram content)
                 window.vscode = acquireVsCodeApi();
-                window.initialData = {
-                    fileUri: "${fileUri}",  // Pass file URI
-                };
             </script>
         </body>
         </html>
