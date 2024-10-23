@@ -152,7 +152,6 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
-  partialStoreRef: React.RefObject<Partial<StoreSchema>>;
 };
 
 export type Activity = {
