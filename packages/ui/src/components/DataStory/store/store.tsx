@@ -88,11 +88,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     )
 
     const link = new LinkGuesser(diagram).guess(node)
-    diagram.add(node)
+    diagram.add(node);
     if (link) diagram.connect(link)
 
     get().updateDiagram(diagram)
-
     get().selectNode(node.id)
 
     setTimeout(() => {

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { NodeDescription } from '@data-story/core';
 import clsx from 'clsx';
 import { StoreSchema } from '../types';
+import { keyManager } from '../keyManager';
 
 export interface AddNodeModalContentProps {
   setSidebarKey: (show: string) => void;
@@ -15,7 +16,12 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    inputReference?.current?.focus();
+    const subscription = keyManager.subject.subscribe((activeKeys) => {
+      if (activeKeys.length === 0) {
+        inputReference.current?.focus();
+        subscription.unsubscribe();
+      }
+    });
   }, []);
 
   const doAddNode = (nodeDescription: NodeDescription) => {

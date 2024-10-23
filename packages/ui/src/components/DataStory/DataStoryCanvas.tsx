@@ -13,6 +13,7 @@ import { onDropDefault } from './onDropDefault';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
+import { keyManager } from './keyManager';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -100,6 +101,13 @@ const Flow = ({
     }
   }, [flowRef]);
 
+  useEffect(() => {
+    keyManager.initEventListeners();
+    return () => {
+      keyManager.removeEventListeners();
+    }
+  }, []);
+
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
   const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
@@ -113,7 +121,6 @@ const Flow = ({
     hotkeyManager,
     onSave,
     toDiagram,
-    focusOnFlow: focusOnFlow
   });
 
   useEscapeKey(() => setSidebarKey!(''), flowRef);
@@ -135,13 +142,6 @@ const Flow = ({
         onNodeDoubleClick={(_, node) => {
           onNodeDoubleClick?.(node);
         }}
-        // onNodeMouseEnter={(event, node) => {
-        //   console.log('node mouse enter', node);
-        // }}
-        // // todo: enter key
-        // onKeyDown={(event) => {
-        //   console.log('keydown', event.key);
-        // }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);
           if (onChange) onChange(toDiagram())
