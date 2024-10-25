@@ -102,6 +102,10 @@ const Flow = ({
   }, [flowRef]);
 
   useEffect(() => {
+    focusOnFlow();
+  }, [focusOnFlow]);
+
+  useEffect(() => {
     keyManager.initEventListeners();
     return () => {
       keyManager.removeEventListeners();

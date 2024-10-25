@@ -22,26 +22,21 @@ export class KeyManager {
   }
 
   private resetHandler(): void {
-    console.log('KeyManager Resetting active keys');
     this.activeKeys.clear();
   }
 
   private handleKeyDown(event: KeyboardEvent): void {
     const keys = this.getKeys(event);
     keys.forEach(key => this.activeKeys.add(key));
-
-    console.log('KeyManager Key down:',keys, 'activeKeys', Array.from(this.activeKeys));
   }
 
   private handleKeyUp(event: KeyboardEvent): void {
-    console.log('KeyManager Key up event:', event);
     const keys = this.getUpKeys(event);
     keys.forEach(key => {
       this.activeKeys.delete(key);
     });
 
     this.subject.next(Array.from(this.activeKeys));
-    console.log('KeyManager Key up:', keys, 'activeKeys',Array.from(this.activeKeys));
   }
 
   private getKeys(event: KeyboardEvent): string[] {
