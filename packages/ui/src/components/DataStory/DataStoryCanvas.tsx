@@ -1,6 +1,6 @@
 import { DataStoryControls } from './dataStoryControls';
 import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Background, BackgroundVariant, EdgeChange, NodeChange, ReactFlow, ReactFlowProvider, } from '@xyflow/react';
+import { Background, BackgroundVariant, EdgeChange, NodeChange, ReactFlow, ReactFlowProvider, useStoreApi } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
@@ -14,6 +14,7 @@ import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
+import { getNodesWithNewSelection } from './getNodesWithNewSelection';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -60,7 +61,6 @@ const Flow = ({
     onRun: state.onRun,
     setObservers: state.setObservers,
     addNodeFromDescription: state.addNodeFromDescription,
-    traverseNodes: state.traverseNodes,
     toDiagram: state.toDiagram,
   });
 
@@ -74,12 +74,13 @@ const Flow = ({
     onRun,
     setObservers,
     addNodeFromDescription,
-    traverseNodes,
     toDiagram,
   } = useStore(selector, shallow);
 
   const id = useId()
   const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
+  const reactFlowStore = useStoreApi();
+  const { addSelectedNodes, setNodes } = reactFlowStore.getState();
 
   useEffect(() => {
     setObservers('workbench', observers);
@@ -115,6 +116,11 @@ const Flow = ({
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
   const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
+
+  const traverseNodes = useCallback((direction) => {
+    const selectedNode = getNodesWithNewSelection(direction, nodes);
+    addSelectedNodes([selectedNode?.id]);
+  }, [nodes]);
 
   useHotkeys({
     nodes,

@@ -85,7 +85,7 @@ export function useHotkeys({
       hotkeyManager.unregister('Ctrl+KeyS');
       hotkeyManager.unregister('Cmd+KeyS');
     }
-  }, [hotkeyManager, onSave]);
+  }, [hotkeyManager, onSave, toDiagram]);
 
   useEffect(() => {
     const actionMap = {

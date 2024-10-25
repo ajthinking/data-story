@@ -117,7 +117,6 @@ export type StoreSchema = {
   onNodesChange: OnNodesChange;
   setNodes: (nodes: ReactFlowNode[]) => void;
   selectNode: (nodeId: string) => void;
-  traverseNodes: (direction: Direction) => void;
 
   /** The Edges */
   edges: Edge[];

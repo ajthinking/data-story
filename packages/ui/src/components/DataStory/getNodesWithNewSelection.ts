@@ -5,16 +5,15 @@ export type Direction = 'up' | 'down' | 'left' | 'right'
 export const getNodesWithNewSelection = (
   direction: Direction,
   nodes: ReactFlowNode[],
-): ReactFlowNode[] => {
+): ReactFlowNode => {
   const selectedNodes = nodes.filter(node => node.selected);
-
   if (selectedNodes.length !== 1) {
     if (selectedNodes.length === 0 && nodes.length > 0) {
       // If no nodes are selected, select the first node
       nodes[0].selected = true;
     }
     // Return early if no selection change is possible
-    return nodes;
+    return nodes[0];
   }
 
   // There is only one selected node
@@ -40,5 +39,5 @@ export const getNodesWithNewSelection = (
     closestNode.selected = true;
   }
 
-  return nodes;
+  return closestNode!;
 };
