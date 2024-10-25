@@ -150,6 +150,10 @@ const Flow = ({
           onEdgesChange(changes);
           if (onChange) onChange(toDiagram())
         }}
+        onNodesDelete={() => {
+          // focus on the diagram after node deletion to enhance hotkey usage
+          focusOnFlow();
+        }}
         onConnect={connect}
         onInit={(rfInstance: StoreInitOptions['rfInstance']) => {
           onInit({

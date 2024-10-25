@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { debounce, Diagram } from '@data-story/core';
 import { DataStory } from '@data-story/ui';
 import { VsCodeToast } from './VsCodeToast';
@@ -7,6 +7,7 @@ import { createVsCodeClient } from './createVsCodeClient';
 
 export default function App() {
   const client = createVsCodeClient(window.vscode);
+
   const handleChange = useCallback(
     debounce(async (diagram: Diagram) => {
       client!.updateDiagram?.(diagram);

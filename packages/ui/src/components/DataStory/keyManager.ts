@@ -26,7 +26,7 @@ export class KeyManager {
   }
 
   private handleKeyDown(event: KeyboardEvent): void {
-    const keys = this.getKeys(event);
+    const keys = this.getDownKeys(event);
     keys.forEach(key => this.activeKeys.add(key));
   }
 
@@ -39,7 +39,7 @@ export class KeyManager {
     this.subject.next(Array.from(this.activeKeys));
   }
 
-  private getKeys(event: KeyboardEvent): string[] {
+  private getDownKeys(event: KeyboardEvent): string[] {
     const keys: string[] = [];
 
     if (event.shiftKey) keys.push('Shift');
