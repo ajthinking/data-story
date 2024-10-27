@@ -202,17 +202,6 @@ const TableNodeComponent = ({ id, data }: {
       <div
         ref={tableRef}
         className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xxxs"
-        onDoubleClick={() => {
-          const blob = new Blob([
-            JSON.stringify(tableInstance.options.data, null, 2)
-          ], { type: 'application/json' });
-
-          const url = URL.createObjectURL(blob);
-
-          if (typeof window !== 'undefined') {
-            const handle = window.open(url, '_blank');
-          }
-        }}
       >
         <CustomHandle id={input.id} isConnectable={true} isInput={true} />
 
