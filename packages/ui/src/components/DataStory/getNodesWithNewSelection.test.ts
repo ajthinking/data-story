@@ -3,10 +3,10 @@ import { getNodesWithNewSelection } from './getNodesWithNewSelection'
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 
 it('returns empty array when no nodes are passed', () => {
-  expect(getNodesWithNewSelection('up', [])).toMatchObject([])
-  expect(getNodesWithNewSelection('down', [])).toMatchObject([])
-  expect(getNodesWithNewSelection('left', [])).toMatchObject([])
-  expect(getNodesWithNewSelection('right', [])).toMatchObject([])
+  expect(getNodesWithNewSelection('up', [])).toBeUndefined()
+  expect(getNodesWithNewSelection('down', [])).toBeUndefined()
+  expect(getNodesWithNewSelection('left', [])).toBeUndefined()
+  expect(getNodesWithNewSelection('right', [])).toBeUndefined()
 })
 
 it('selects the first node when no node is selected', () => {
@@ -16,11 +16,9 @@ it('selects the first node when no node is selected', () => {
     { id: '3', position: { x: 3, y: 3 }, selected: false },
   ] as ReactFlowNode[]
 
-  expect(getNodesWithNewSelection('up', nodes)).toMatchObject([
+  expect(getNodesWithNewSelection('up', nodes)).toMatchObject(
     { id: '1', position: { x: 1, y: 1 }, selected: true },
-    { id: '2', position: { x: 2, y: 2 }, selected: false },
-    { id: '3', position: { x: 3, y: 3 }, selected: false },
-  ])
+  )
 })
 
 it('selects the same node if it is uttermost in direction', () => {
@@ -30,11 +28,9 @@ it('selects the same node if it is uttermost in direction', () => {
     { id: '3', position: { x: 3, y: 3 }, selected: false },
   ] as ReactFlowNode[]
 
-  expect(getNodesWithNewSelection('left', nodes)).toMatchObject([
-    { id: '1', position: { x: 1, y: 1 }, selected: true },
-    { id: '2', position: { x: 2, y: 2 }, selected: false },
-    { id: '3', position: { x: 3, y: 3 }, selected: false },
-  ])
+  expect(getNodesWithNewSelection('left', nodes)).toMatchObject(
+    { id: '1', position: { x: 1, y: 1 }, selected: true }
+  )
 })
 
 it('selects new closest node in up direction', () => {
@@ -44,11 +40,9 @@ it('selects new closest node in up direction', () => {
     { id: '3', position: { x: 3, y: 3 }, selected: false },
   ] as ReactFlowNode[]
 
-  expect(getNodesWithNewSelection('up', nodes)).toMatchObject([
-    { id: '1', position: { x: 1, y: 1 }, selected: true },
-    { id: '2', position: { x: 2, y: 2 }, selected: false },
-    { id: '3', position: { x: 3, y: 3 }, selected: false },
-  ])
+  expect(getNodesWithNewSelection('up', nodes)).toMatchObject(
+    { id: '1', position: { x: 1, y: 1 }, selected: true }
+  )
 })
 
 it('selects new closest node in down direction', () => {
@@ -58,11 +52,9 @@ it('selects new closest node in down direction', () => {
     { id: '3', position: { x: 3, y: 3 }, selected: false },
   ] as ReactFlowNode[]
 
-  expect(getNodesWithNewSelection('down', nodes)).toMatchObject([
-    { id: '1', position: { x: 1, y: 1 }, selected: false },
-    { id: '2', position: { x: 2, y: 2 }, selected: false },
-    { id: '3', position: { x: 3, y: 3 }, selected: true },
-  ])
+  expect(getNodesWithNewSelection('down', nodes)).toMatchObject(
+    { id: '3', position: { x: 3, y: 3 }, selected: true }
+  )
 })
 
 it('selects new closest node in left direction', () => {
@@ -72,11 +64,9 @@ it('selects new closest node in left direction', () => {
     { id: '3', position: { x: 3, y: 3 }, selected: false },
   ] as ReactFlowNode[]
 
-  expect(getNodesWithNewSelection('left', nodes)).toMatchObject([
-    { id: '1', position: { x: 1, y: 1 }, selected: true },
-    { id: '2', position: { x: 2, y: 2 }, selected: false },
-    { id: '3', position: { x: 3, y: 3 }, selected: false },
-  ])
+  expect(getNodesWithNewSelection('left', nodes)).toMatchObject(
+    { id: '1', position: { x: 1, y: 1 }, selected: true }
+  )
 })
 
 it('selects new closest node in right direction', () => {
@@ -86,9 +76,7 @@ it('selects new closest node in right direction', () => {
     { id: '3', position: { x: 3, y: 3 }, selected: false },
   ] as ReactFlowNode[]
 
-  expect(getNodesWithNewSelection('right', nodes)).toMatchObject([
-    { id: '1', position: { x: 1, y: 1 }, selected: false },
-    { id: '2', position: { x: 2, y: 2 }, selected: false },
-    { id: '3', position: { x: 3, y: 3 }, selected: true },
-  ])
+  expect(getNodesWithNewSelection('right', nodes)).toMatchObject(
+    { id: '3', position: { x: 3, y: 3 }, selected: true }
+  )
 })
