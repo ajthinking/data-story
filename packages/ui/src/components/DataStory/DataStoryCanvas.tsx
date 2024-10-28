@@ -97,7 +97,6 @@ const Flow = ({
 
   const focusOnFlow = useCallback(() => {
     if (flowRef.current) {
-      console.log('focus');
       flowRef.current.focus();
     }
   }, [flowRef]);
@@ -119,7 +118,7 @@ const Flow = ({
 
   const traverseNodes = useCallback((direction) => {
     const selectedNode = getNodesWithNewSelection(direction, nodes);
-    addSelectedNodes([selectedNode?.id]);
+    if (selectedNode)  addSelectedNodes([selectedNode.id]);
   }, [nodes]);
 
   useHotkeys({
