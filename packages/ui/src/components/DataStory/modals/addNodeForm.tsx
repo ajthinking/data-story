@@ -3,6 +3,7 @@ import { NodeDescription } from '@data-story/core';
 import clsx from 'clsx';
 import { StoreSchema } from '../types';
 import { keyManager } from '../keyManager';
+import { filter, take } from 'rxjs';
 
 export interface AddNodeModalContentProps {
   setSidebarKey: (show: string) => void;
@@ -16,12 +17,15 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    const subscription = keyManager.subject.subscribe((activeKeys) => {
-      if (activeKeys.length === 0) {
-        inputReference.current?.focus();
-        subscription.unsubscribe();
-      }
-    });
+    const isKeyTrigger = keyManager.activeKeys.size > 0;
+    if (isKeyTrigger) {
+      keyManager.subject.pipe(
+        filter((activeKeys) => activeKeys.length === 0),
+        take(1)
+      ).subscribe(() => inputReference.current?.focus());
+    } else {
+      inputReference.current?.focus();
+    }
   }, []);
 
   const doAddNode = (nodeDescription: NodeDescription) => {
