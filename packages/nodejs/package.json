@@ -1,6 +1,6 @@
 {
   "name": "@data-story/nodejs",
-  "version": "0.0.105",
+  "version": "0.0.107",
   "main": "dist/index.js",
   "type": "commonjs",
   "types": "dist/index.d.ts",

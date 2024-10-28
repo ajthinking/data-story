@@ -20,20 +20,32 @@ export const JsonFileWrite: Computer = {
   ],
 
   canRun({ input }) {
-    return input.haveAllItemsAtInput('input')
+    return input.haveAllItemsAtInput('input');
   },
 
   async *run({ input, params }) {
-    const incoming = input.pull()
+    const incoming = input.pull();
+    const filePath = params.file_path as string;
+    const content = JSON.stringify(incoming.map(i => i.value), null, 2);
 
-    const filePath = params.file_path as string
-    const content = JSON.stringify(incoming.map(i => i.value), null, 2)
+    // Determine if the path is absolute
+    const isAbsolutePath = path.isAbsolute(filePath);
 
-    const root = process.env.WORKSPACE_FOLDER_PATH;
-    if(!root) throw new Error('WORKSPACE_FOLDER_PATH not set')
+    // Resolve the full path based on whether it's absolute or relative
+    const fullPath = isAbsolutePath
+      ? filePath // Use the absolute path directly
+      : path.join(process.env.WORKSPACE_FOLDER_PATH as string, filePath); // Prepend the workspace root for relative paths
 
-    const fullPath = path.join(root, filePath)
-    await fs.mkdir(path.dirname(fullPath), { recursive: true })
-    await fs.writeFile(fullPath, content, 'utf-8')
+    console.log({ fullPath }); // Debug output to check resolved path
+
+    try {
+      // Create the directory recursively if it doesn't exist
+      await fs.mkdir(path.dirname(fullPath), { recursive: true });
+      // Write the file content
+      await fs.writeFile(fullPath, content, 'utf-8');
+    } catch (error: any) {
+      console.error('Error writing file:', error);
+      throw new Error(`Failed to write file: ${error.message}`);
+    }
   },
 };
