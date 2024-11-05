@@ -94,7 +94,6 @@ export const DataStoryComponent = (
                 <Sidebar
                   nodeDescriptions={nodeDescriptions}
                   nodeDescriptionsLoading={nodeDescriptionsLoading}
-                  partialStoreRef={partialStoreRef}
                   sidebarKey={sidebarKey}
                   setSidebarKey={setSidebarKey}
                   node={selectedNode}

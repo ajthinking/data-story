@@ -1,13 +1,12 @@
 import { StoreApi, UseBoundStore } from 'zustand';
 import { createWithEqualityFn } from 'zustand/traditional';
-import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeChange, } from '@xyflow/react';
+import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeChange } from '@xyflow/react';
 import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
-import { Direction, getNodesWithNewSelection } from '../getNodesWithNewSelection';
 import { createObservers } from './createObservers';
 import { ClientRunParams, DataStoryObservers, StoreInitOptions, StoreSchema } from '../types';
 import { shallow } from 'zustand/shallow';
@@ -19,8 +18,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   params: [],
   openNodeSidebarId: null,
   observerMap: new Map(),
-  clientRun: (params: ClientRunParams) => {
-  },
+  focusOnFlow: () => void 0,
+  clientRun: (params: ClientRunParams) => {},
 
   // METHODS
   toDiagram: () => {
@@ -88,15 +87,15 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     )
 
     const link = new LinkGuesser(diagram).guess(node)
-    diagram.add(node)
+    diagram.add(node);
     if (link) diagram.connect(link)
 
     get().updateDiagram(diagram)
-
     get().selectNode(node.id)
 
     setTimeout(() => {
       get().rfInstance?.fitView();
+      get().focusOnFlow();
     }, 1);
   },
   selectNode(nodeId: string) {
@@ -130,6 +129,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   onInit: (options: StoreInitOptions) => {
     set({ rfInstance: options.rfInstance })
     set({ clientRun: options.clientRun })
+    set({ focusOnFlow: options.focusOnFlow })
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
@@ -139,7 +139,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   updateDiagram: (diagram: Diagram) => {
     const reactFlowObject = ReactFlowFactory.fromDiagram(diagram)
-
     // Node<any, string|undefined>[]
     get().setNodes(reactFlowObject.nodes as ReactFlowNode[]);
     get().setEdges(reactFlowObject.edges);
@@ -173,18 +172,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setOpenNodeSidebarId: (id: string | null) => {
     set({ openNodeSidebarId: id })
   },
-  traverseNodes: (direction: Direction) => {
-    // This is an UI only operation
-    set({
-      nodes: [
-        ...getNodesWithNewSelection(
-          direction,
-          get().nodes,
-        )
-      ]
-    });
-  },
-
   setObservers(observerId: string, observers?: DataStoryObservers) {
     get().observerMap.set(observerId, (observers || {
       inputObservers: [], onDataChange: () => {

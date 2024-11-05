@@ -74,6 +74,7 @@ export type StoreInitOptions = {
   initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
   clientRun?: (params: ClientRunParams) => void;
+  focusOnFlow?: StoreSchema['focusOnFlow'];
 }
 
 export type FormCommonProps = {
@@ -106,6 +107,7 @@ export type StoreSchema = {
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
   toDiagram: () => Diagram;
+  focusOnFlow: () => void;
 
   /** The Nodes */
   nodes: ReactFlowNode[];
@@ -115,7 +117,6 @@ export type StoreSchema = {
   onNodesChange: OnNodesChange;
   setNodes: (nodes: ReactFlowNode[]) => void;
   selectNode: (nodeId: string) => void;
-  traverseNodes: (direction: Direction) => void;
 
   /** The Edges */
   edges: Edge[];
@@ -150,7 +151,6 @@ export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   sidebarKey: string;
   node?: ReactFlowNode;
   setSidebarKey: React.Dispatch<React.SetStateAction<string>>;
-  partialStoreRef: React.RefObject<Partial<StoreSchema>>;
 };
 
 export type Activity = {

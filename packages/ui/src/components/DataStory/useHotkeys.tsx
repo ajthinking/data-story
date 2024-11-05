@@ -7,6 +7,7 @@ import { Diagram } from '@data-story/core';
 export class HotkeyManager {
   private hotkeys: {};
   private element: React.RefObject<HTMLElement>;
+
   constructor(element: React.RefObject<HTMLElement>) {
     this.hotkeys = {};
     this.element = element;
@@ -30,7 +31,8 @@ export class HotkeyManager {
 
   handleKeyDown(event: KeyboardEvent) {
     const isCtrlOrCmd = event.ctrlKey || event.metaKey;
-    const keyCombination = `${event.shiftKey ? 'Shift+' : ''}${isCtrlOrCmd ? (event.ctrlKey ? 'Ctrl+' : 'Cmd+') : ''}${event.code}`;    if (this.hotkeys[keyCombination]) {
+    const keyCombination = `${event.shiftKey ? 'Shift+' : ''}${isCtrlOrCmd ? (event.ctrlKey ? 'Ctrl+' : 'Cmd+') : ''}${event.code}`;
+    if (this.hotkeys[keyCombination]) {
       event.stopPropagation();
       event.preventDefault();
       this.hotkeys[keyCombination](event);
@@ -83,7 +85,7 @@ export function useHotkeys({
       hotkeyManager.unregister('Ctrl+KeyS');
       hotkeyManager.unregister('Cmd+KeyS');
     }
-  }, [hotkeyManager, onSave]);
+  }, [hotkeyManager, onSave, toDiagram]);
 
   useEffect(() => {
     const actionMap = {
