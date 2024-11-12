@@ -104,6 +104,7 @@ export class Executor {
           type: 'ExecutionUpdate',
           counts: mapToRecord(this.memory.getLinkCounts()),
           hooks: this.memory.pullHooks(),
+          state: 'running',
         }
       }
     }
@@ -117,6 +118,7 @@ export class Executor {
       type: 'ExecutionUpdate',
       counts: mapToRecord(this.memory.getLinkCounts()),
       hooks: this.memory.pullHooks(),
+      state: 'complete',
     }
   }
 
