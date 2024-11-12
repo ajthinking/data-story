@@ -54,9 +54,28 @@ export const getDefaultMsgHandlers = (app: Application) => {
       const execution = executor?.execute();
 
       for await(const executionUpdate of execution) {
+        sendEvent({
+          // todo: linkInfo 展开
+          // linkIds: executionUpdate.counts.keys(),
+          // linksInfo: Object.keys(executionUpdate.counts).map((key) => {
+          //   return {
+          //     linkId: key,
+          //     count: executionUpdate.counts[key]
+          //   }
+          // }),
+          counts: executionUpdate.counts,
+          hooks: executionUpdate.hooks,
+          edgeStatus: 'running',
+          type: 'LinkCountsObserver'
+        })
         sendEvent(executionUpdate);
       }
 
+      sendEvent({
+        counts: Object.fromEntries(executor.memory.getLinkCounts().entries()),
+        edgeStatus: 'complete',
+        type: 'LinkCountsObserver'
+      });
       const executionResult = {
         type: 'ExecutionResult',
         time: Date.now(),

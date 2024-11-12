@@ -1,6 +1,14 @@
 import { DataStoryControls } from './dataStoryControls';
 import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Background, BackgroundVariant, EdgeChange, NodeChange, ReactFlow, ReactFlowProvider, useStoreApi } from '@xyflow/react';
+import {
+  Background,
+  BackgroundVariant,
+  EdgeChange,
+  NodeChange,
+  ReactFlow,
+  ReactFlowProvider,
+  useStoreApi
+} from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
@@ -118,7 +126,7 @@ const Flow = ({
 
   const traverseNodes = useCallback((direction) => {
     const selectedNode = getNodesWithNewSelection(direction, nodes);
-    if (selectedNode)  addSelectedNodes([selectedNode.id]);
+    if (selectedNode) addSelectedNodes([selectedNode.id]);
   }, [nodes]);
 
   useHotkeys({
@@ -136,6 +144,15 @@ const Flow = ({
 
   return (
     <>
+      <style>
+        {`
+          @keyframes dash {
+            to {
+              stroke-dashoffset: -10;
+            }
+          }
+        `}
+      </style>
       <ReactFlow
         tabIndex={0}
         ref={flowRef}
