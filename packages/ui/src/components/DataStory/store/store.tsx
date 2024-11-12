@@ -160,14 +160,27 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setParams: (params: Param[]) => {
     set({ params })
   },
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => {
-    const updatedEdges = get().edges.map(edge => ({
-      ...edge,
-      ...(edgeCounts[edge.id] !== undefined && {
-        label: edgeCounts[edge.id],
-        labelBgStyle: { opacity: 0.6 },
-      }),
-    }));
+  updateEdgeCounts: ({edgeCounts, status} :{edgeCounts: Record<string, number>, status: 'running' | 'complete'}) => {
+    let updatedEdges: Edge[] = [];
+    if (status === 'complete') {
+      updatedEdges = get().edges.map(edge => ({
+        ...edge,
+        ...(edgeCounts[edge.id] !== undefined && {
+          label: edgeCounts[edge.id],
+          labelBgStyle: { opacity: 0.6 },
+          style: {}
+        }),
+      }));
+    } else {
+      updatedEdges = get().edges.map(edge => ({
+        ...edge,
+        ...(edgeCounts[edge.id] !== undefined && {
+          label: edgeCounts[edge.id],
+          labelBgStyle: { opacity: 0.6 },
+          style: { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' }
+        }),
+      }));
+    }
 
     get().setEdges(updatedEdges);
   },

@@ -32,7 +32,7 @@ export type ObserverMap = Map<string, {
 }>
 
 export interface ClientRunParams {
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+  updateEdgeCounts: StoreSchema['updateEdgeCounts'],
   diagram: Diagram,
   observers?: ServerClientObservationConfig
 }
@@ -121,7 +121,7 @@ export type StoreSchema = {
   /** The Edges */
   edges: Edge[];
   onEdgesChange: OnEdgesChange;
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
+  updateEdgeCounts: (params: {edgeCounts: Record<string, number>, status: 'running' | 'complete'}) => void;
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
 
