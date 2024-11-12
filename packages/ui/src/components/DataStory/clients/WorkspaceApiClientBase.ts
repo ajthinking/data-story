@@ -108,12 +108,12 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
         throttleMs?: number,
         onReceive: (count: number) => void,
         counts: Record<string, number>,
-        edgeStatus: 'running' | 'complete',
+        state: 'running' | 'complete',
       }) => {
         console.log('LinkCountsObserver', data);
         this.updateEdgeCounts!({
           edgeCounts: data.counts,
-          status: data.edgeStatus,
+          state: data.state,
         })
       })
   }

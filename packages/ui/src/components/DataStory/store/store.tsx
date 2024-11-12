@@ -160,9 +160,9 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setParams: (params: Param[]) => {
     set({ params })
   },
-  updateEdgeCounts: ({edgeCounts, status} :{edgeCounts: Record<string, number>, status: 'running' | 'complete'}) => {
+  updateEdgeCounts: ({edgeCounts, state}) => {
     let updatedEdges: Edge[] = [];
-    if (status === 'complete') {
+    if (state === 'complete') {
       updatedEdges = get().edges.map(edge => ({
         ...edge,
         ...(edgeCounts[edge.id] !== undefined && {
