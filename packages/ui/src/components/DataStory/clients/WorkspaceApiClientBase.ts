@@ -25,7 +25,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     this.initExecutionResult();
     this.initExecutionFailure();
     this.initUpdateStorage();
-    this.initReceivedMsg();
     this.initLinkCountsObserver();
     this.run = this.run.bind(this);
     this.updateDiagram = this.updateDiagram.bind(this);
@@ -81,36 +80,17 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       type: 'run',
       diagram,
       inputObservers: observers?.inputObservers || [],
-      // todo: add onlyFirstNItems, throttleMs
     });
     msg$.subscribe(this.receivedMsg$);
   }
 
   //<editor-fold desc="Message init">
-  private initReceivedMsg() {
-    return this.receivedMsg$.subscribe((data: any) => {
-      console.log('Received message1111', data);
-    })
-  }
-
-  // type LinkCountsObserver = {
-  //   type: 'LinkCountsObserver',
-  //   linkIds: string[],
-  //   throttleMs?: number,
-  //   onReceive: (count: number) => void,
-  // }
-
   private initLinkCountsObserver() {
     return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
       .subscribe((data: {
-        linkIds: string[],
-        linkCount: number[],
-        throttleMs?: number,
-        onReceive: (count: number) => void,
         counts: Record<string, number>,
         state: 'running' | 'complete',
       }) => {
-        console.log('LinkCountsObserver', data);
         this.updateEdgeCounts!({
           edgeCounts: data.counts,
           state: data.state,

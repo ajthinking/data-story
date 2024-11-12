@@ -36,7 +36,6 @@ export const getDefaultMsgHandlers = (app: Application) => {
     const inputObserverController = new InputObserverController(
       inputObservers || [],
       (items: ItemValue[], inputObservers: InputObserver[]) => {
-        console.log('onDataChange items', items, 'input observers:', inputObservers);
         sendEvent({
           type: 'NotifyObservers',
           items,
@@ -55,7 +54,6 @@ export const getDefaultMsgHandlers = (app: Application) => {
       const execution = executor?.execute();
 
       for await(const executionUpdate of execution) {
-        console.log('executionUpdate', executionUpdate);
         sendEvent({
           ...executionUpdate,
           type: 'LinkCountsObserver'
