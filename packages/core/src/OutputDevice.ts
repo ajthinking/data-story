@@ -4,6 +4,7 @@ import { PortId } from './types/PortId'
 import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams, isItemWithParams } from './ItemWithParams'
 import { PortName } from './types/Port'
+import { Node } from './types/Node';
 
 type LinkItems = Record<LinkId, ItemValue[]>
 
@@ -30,6 +31,7 @@ export class OutputDevice {
   constructor(
     private portLinkMap: PortLinkMap = {},
     private memory: ExecutionMemory,
+    private node: Node
   ) {}
 
   getPortNames(): string[] {
@@ -46,6 +48,7 @@ export class OutputDevice {
     // When outputting we should not be in a params infused ItemWithParams
     const items = itemable.map(i => isItemWithParams(i) ? i.value : i)
 
+    console.log('node', this.node, 'connectedLinks', connectedLinks, 'items', items);
     for(const linkId of connectedLinks) {
       const formattedItems =  formatItems(items);
       // Update items on link
@@ -54,10 +57,10 @@ export class OutputDevice {
         // Clone items to ensure induvidual mutation per branch
         formattedItems
       )
-
+      // console.log('OutputDevice pushTo linkId:', linkId, 'formattedItems', formattedItems);
       // Update link counts
       const count = this.memory.getLinkCount(linkId)!
-      this.memory.setLinkCount(linkId, count + items.length)
+      this.memory.setLinkCount(linkId, count + items.length);
     }
   }
 
