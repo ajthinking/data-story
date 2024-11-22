@@ -17,7 +17,7 @@ export class InputObserverController {
   /**
    * Determines if a report should be sent for a given inputObserver ( nodeId and portId )
    */
-  isReport = (inputObserver: InputObserveConfig): InputObserver[] => {
+  private isReport = (inputObserver: InputObserveConfig): InputObserver[] => {
     return this.inputObservers.filter(
       ({ nodeId, portId }) => {
         if (portId === undefined) {

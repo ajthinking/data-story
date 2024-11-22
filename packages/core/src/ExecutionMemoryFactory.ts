@@ -100,7 +100,7 @@ export class ExecutionMemoryFactory {
       map[output.name] = connectedLinks.map(link => link.id);
     }
 
-    return new OutputDevice(map, memory)
+    return new OutputDevice(map, memory, node)
   }
 
   protected makeParamsDevice(node: Node, memory: ExecutionMemory) {
