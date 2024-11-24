@@ -32,14 +32,19 @@ export const getDefaultMsgHandlers = (app: Application) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
     const { diagram, inputObservers } = data as RunMessage;
+    console.log('server run inputObservers:', inputObservers);
 
     const inputObserverController = new InputObserverController(
       inputObservers || [],
-      (items: ItemValue[], inputObservers: InputObserver[]) => {
+      ({ items }: {
+        items: ItemValue[],
+        // inputObservers: InputObserver[],
+        // inputObserver: InputObserver,
+      }) => {
         sendEvent({
           type: 'NotifyObservers',
           items,
-          inputObservers
+          // inputObservers
         });
       }
     );

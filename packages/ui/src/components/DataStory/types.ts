@@ -10,9 +10,9 @@ import {
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
-import { Direction } from './getNodesWithNewSelection';
 import React from 'react';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
+import { RequestObserverType } from '@data-story/core/src';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -26,15 +26,41 @@ export type DataStoryObservers = {
   onDataChange: NotifyObserversCallback,
 }
 
-export type ObserverMap = Map<string, {
-  inputObservers: Array<InputObserveConfig & {observerId?: string}>,
-  onDataChange: NotifyObserversCallback,
-}>
+export type ItemsObserver = {
+  type: RequestObserverType.ItemsObserver,
+  linkIds: string[],
+  observerId?: string,
+  direction?: 'pull' | 'push',
+  onlyFirstNItems?: number,
+  throttleMs?: number,
+  onReceive: NotifyObserversCallback,
+}
+
+export type LinkCountsObserver = {
+  type: RequestObserverType.LinkCountsObserver,
+  linkIds: string[],
+  observerId?: string,
+  throttleMs?: number,
+  onReceive: (count: number) => void,
+}
+
+type NodeObserver = {
+  type: 'NodeObserver',
+  nodeId: string,
+  onlyStatuses: string[],
+  onlyOncePerStatus?: boolean,
+  throttleMs?: number,
+  onReceive: (data: any) => void,
+}
+
+export type ExecutionObserver = ItemsObserver | LinkCountsObserver;
+
+export type ObserverMap = Map<string, ExecutionObserver>
 
 export interface ClientRunParams {
   updateEdgeCounts: StoreSchema['updateEdgeCounts'],
   diagram: Diagram,
-  observers?: ServerClientObservationConfig
+  observers:ExecutionObserver[]
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
@@ -143,7 +169,7 @@ export type StoreSchema = {
 
   /** observerMap are used to monitor data changes in the node */
   observerMap: ObserverMap;
-  setObservers: (key: string, observers?: DataStoryObservers) => void;
+  setObservers: (key: string, observers?: ExecutionObserver) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptions?: NodeDescription[];

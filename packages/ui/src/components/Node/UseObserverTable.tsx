@@ -1,6 +1,6 @@
 import { useStore } from '../DataStory/store/store';
-import { DataStoryObservers, StoreSchema } from '../DataStory/types';
-import { createDataStoryId } from '@data-story/core';
+import { DataStoryObservers, ExecutionObserver, ItemsObserver, StoreSchema } from '../DataStory/types';
+import { createDataStoryId, RequestObserverType } from '@data-story/core';
 import { useMount, useUnmount } from 'ahooks';
 import { useRef } from 'react';
 import { shallow } from 'zustand/shallow';
@@ -14,9 +14,10 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
   const selector = (state: StoreSchema) => ({
     observerMap: state.observerMap,
     setObservers: state.setObservers,
+    toDiagram: state.toDiagram,
   });
 
-  const { observerMap, setObservers } = useStore(selector, shallow);
+  const { observerMap, setObservers, toDiagram } = useStore(selector, shallow);
 
   const observerId = useRef(createDataStoryId());
   // Add the node to the inputObservers when the node is mounted
@@ -26,9 +27,12 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
       return;
     }
 
-    const tableObserver: DataStoryObservers = {
-      inputObservers: [{ nodeId: id, portId: 'input' }],
-      onDataChange: (batchedItems, inputObserver) => {
+    const linkId = toDiagram().getLinkIdFromNodeId(id, 'input');
+
+    const tableObserver: ItemsObserver = {
+      linkIds: [linkId],
+      type: RequestObserverType.ItemsObserver,
+      onReceive: (batchedItems) => {
         if (!observerMap?.get(observerId.current)) {
           console.error('observer unmounted');
           return;
@@ -41,6 +45,7 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
       }
     }
 
+    // 重新设计 observerMap 的数据结构， 需要包含 ItemObserver, LinkObserver, NodeObserver
     setObservers(observerId.current, tableObserver);
   });
 

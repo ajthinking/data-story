@@ -31,6 +31,7 @@ export class ExecutionMemoryFactory {
       linkCounts: new Map<LinkId, number>(),
       inputDevices: new Map<NodeId, InputDevice>(),
       outputDevices: new Map<NodeId, OutputDevice>(),
+      inputObserverController: this.inputObserverController,
     })
 
     // Configure the memory's initial state

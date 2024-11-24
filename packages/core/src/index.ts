@@ -31,7 +31,7 @@ export { type ExecutionResult } from './ExecutionResult'
 export { InputObserverController } from './InputObserverController'
 export type { ExecutionFailure } from './types/ExecutionFailure'
 export { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
-export type { InputObserveConfig } from './types/InputObserveConfig';
+export { type InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';
 export type { InputObserver } from './types/InputObserver';
 export type { NotifyObserversCallback } from './types/NotifyObserversCallback';
 export type { ReportCallback } from './types/ReportCallback';

@@ -1,5 +1,5 @@
 import { WorkspaceApiClient } from './WorkspaceApiClient';
-import { ClientRunParams, ServerClientObservationConfig } from '../types';
+import { ClientRunParams, ItemsObserver, LinkCountsObserver, ServerClientObservationConfig } from '../types';
 import { filter, Observable, Subject } from 'rxjs';
 import { Diagram, Hook, NodeDescription } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
@@ -16,7 +16,7 @@ const matchMsgType = (type: string) => it => it.type === type;
 export class WorkspaceApiClientBase implements WorkspaceApiClient {
 
   private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
-  private observers?: ServerClientObservationConfig;
+  private observers?: ClientRunParams['observers'];
   private receivedMsg$ = new Subject();
 
   constructor(private transport: Transport) {
@@ -69,6 +69,14 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     }
   }
 
+  linkCountsObserver(params: LinkCountsObserver): Observable<number> {
+    return this.transport.streaming(params);
+  }
+
+  itemsObserver(params: ItemsObserver): Observable<any> {
+    return this.transport.streaming(params);
+  }
+
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
@@ -79,7 +87,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     const msg$ = this.transport.streaming({
       type: 'run',
       diagram,
-      inputObservers: observers?.inputObservers || [],
+      // inputObservers: observers?.inputObservers || [],
     });
     msg$.subscribe(this.receivedMsg$);
   }
@@ -89,7 +97,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
       .subscribe((data: {
         counts: Record<string, number>,
-        state: 'running' | 'complete',
+        state: 'running'|'complete',
       }) => {
         this.updateEdgeCounts!({
           edgeCounts: data.counts,
@@ -119,10 +127,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   private initNotifyObservers() {
     return this.receivedMsg$.pipe(filter(matchMsgType('NotifyObservers')))
       .subscribe((data: any) => {
-        this?.observers?.onDataChange(
-          data.items,
-          data.inputObservers,
-        );
+        // this?.observers?.onDataChange({ items: data.items });
       })
   }
 
