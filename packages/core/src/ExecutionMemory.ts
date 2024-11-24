@@ -5,7 +5,7 @@ import { ItemValue } from './types/ItemValue'
 import { Hook } from './types/Hook'
 import { InputDevice } from './InputDevice'
 import { OutputDevice } from './OutputDevice'
-import { InputObserverController } from './InputObserverController'
+import { InputObserverController, inputObserverControllerMock } from './InputObserverController'
 import { RequestObserverType } from './types/InputObserveConfig';
 
 type MemoryValues = {
@@ -88,6 +88,13 @@ export class ExecutionMemory {
       nodeId: linkId,
       type: RequestObserverType.ItemsObserver
     }, items)
+
+    inputObserverControllerMock.reportItems({
+      linkId,
+      type: RequestObserverType.ItemsObserver,
+      items
+    })
+
     this.history.push(`Pushed ${items.length} items to link ${linkId}`)
   }
 

@@ -1,7 +1,8 @@
 import { ItemValue } from './types/ItemValue';
-import { InputObserveConfig } from './types/InputObserveConfig';
+import { InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';
 import { InputObserver } from './types/InputObserver';
 import { ReportCallback } from './types/ReportCallback';
+import { ItemsObserver } from '@data-story/ui/dist/src/components/DataStory/types';
 
 export class InputObserverController {
 
@@ -20,12 +21,12 @@ export class InputObserverController {
   private isReport = (inputObserver: InputObserveConfig): InputObserver[] => {
     if ('linkId' in inputObserver) {
       return this.inputObservers.filter(
-      // @ts-ignore
+        // @ts-ignore
         ({ linkId }) => linkId === inputObserver.linkId
       );
     }
     return this.inputObservers.filter(
-    // @ts-ignore
+      // @ts-ignore
       ({ nodeId, portId }) => {
         if (portId === undefined) {
           return nodeId === inputObserver.nodeId;
@@ -45,3 +46,45 @@ export class InputObserverController {
     }
   }
 }
+
+type MemoryItemObserver = {
+  type: RequestObserverType;
+  linkId: string;
+  items: ItemValue[];
+}
+
+export class InputObserverController1 {
+
+  public executionObservers: ItemsObserver[] = [];
+
+  /**
+   * Constructs an instance of InputObserverController
+   */
+  constructor() {
+  }
+
+  /**
+   * Determines if a report should be sent for a given inputObserver ( nodeId and portId )
+   */
+  private isReport = (inputObserver: MemoryItemObserver): ItemsObserver[] => {
+    return this.executionObservers.filter((executionObserver) => {
+      executionObserver.linkIds.includes(inputObserver.linkId);
+    })
+  }
+
+  /**
+   * When we invoke `reportItems`, it triggers the `notifyObservers` callback and forwards the `items` and `inputObserver` parameters
+   */
+  reportItems(memoryObserver: MemoryItemObserver): void {
+    const inputObservers = this.isReport(memoryObserver);
+    inputObservers.map((inputObserver) => {
+      inputObserver.onReceive(memoryObserver.items, inputObserver as unknown as InputObserver);
+    })
+  }
+
+  pushExecutionObserver(observer: ItemsObserver): void {
+    this.executionObservers.push(observer);
+  }
+}
+
+export const inputObserverControllerMock = new InputObserverController1();
