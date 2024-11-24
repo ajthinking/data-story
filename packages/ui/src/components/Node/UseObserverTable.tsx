@@ -15,9 +15,10 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
     observerMap: state.observerMap,
     setObservers: state.setObservers,
     toDiagram: state.toDiagram,
+    client: state.client,
   });
 
-  const { observerMap, setObservers, toDiagram } = useStore(selector, shallow);
+  const { observerMap, setObservers, toDiagram, client } = useStore(selector, shallow);
 
   const observerId = useRef(createDataStoryId());
   // Add the node to the inputObservers when the node is mounted
@@ -27,7 +28,7 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
       return;
     }
 
-    const linkId = toDiagram().getLinkIdFromNodeId(id, 'input');
+    const linkId = toDiagram()?.getLinkIdFromNodeId(id, 'input');
 
     const tableObserver: ItemsObserver = {
       linkIds: [linkId],
@@ -44,7 +45,8 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
         setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
       }
     }
-
+    client?.itemsObserver?.(tableObserver);
+    // todo: observer Items request : client.
     // 重新设计 observerMap 的数据结构， 需要包含 ItemObserver, LinkObserver, NodeObserver
     setObservers(observerId.current, tableObserver);
   });

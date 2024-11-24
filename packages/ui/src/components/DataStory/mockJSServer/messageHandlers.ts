@@ -32,7 +32,6 @@ export const getDefaultMsgHandlers = (app: Application) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
     const { diagram, inputObservers } = data as RunMessage;
-    console.log('server run inputObservers:', inputObservers);
 
     const inputObserverController = new InputObserverController(
       inputObservers || [],
@@ -81,6 +80,17 @@ export const getDefaultMsgHandlers = (app: Application) => {
     }
   };
 
+  const LinkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
+    console.log('LinkCountsObserver', data);
+  }
+
+  const ItemsObserver = ({ data, sendEvent }: HandlerParam) => {
+    console.log('ItemsObserver', data);
+  }
+
+  const NotifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
+    console.log('NotifyDataUpdate', data);
+  }
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
     const nodeDescriptions = app!.descriptions();
     setTimeout(() => {
@@ -108,6 +118,9 @@ export const getDefaultMsgHandlers = (app: Application) => {
     run,
     getNodeDescriptions,
     updateDiagram,
-    getDiagram
+    getDiagram,
+    LinkCountsObserver,
+    ItemsObserver,
+    NotifyDataUpdate
   }
 }

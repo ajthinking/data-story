@@ -18,7 +18,14 @@ export class InputObserverController {
    * Determines if a report should be sent for a given inputObserver ( nodeId and portId )
    */
   private isReport = (inputObserver: InputObserveConfig): InputObserver[] => {
+    if ('linkId' in inputObserver) {
+      return this.inputObservers.filter(
+      // @ts-ignore
+        ({ linkId }) => linkId === inputObserver.linkId
+      );
+    }
     return this.inputObservers.filter(
+    // @ts-ignore
       ({ nodeId, portId }) => {
         if (portId === undefined) {
           return nodeId === inputObserver.nodeId;
@@ -34,7 +41,7 @@ export class InputObserverController {
   reportItems(inputObserver: InputObserveConfig, items: ItemValue[]): void {
     const inputObservers = this.isReport(inputObserver);
     if (inputObservers.length > 0) {
-      this.notifyObservers(items, inputObservers);
+      // this.notifyObservers({items, inputObserver, inputObservers});
     }
   }
 }

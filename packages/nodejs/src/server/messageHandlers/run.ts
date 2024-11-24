@@ -29,7 +29,7 @@ export const run: MessageHandler<RunMessage> = async(
     links: data.diagram.links,
   })
 
-  const sendMsg: ReportCallback = (items, inputObservers) => {
+  const sendMsg: ReportCallback = ({items, inputObservers}) => {
     ws.send(JSON.stringify({
       msgId: data.msgId,
       type: 'NotifyObservers',

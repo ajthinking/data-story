@@ -48,7 +48,6 @@ export class OutputDevice {
     // When outputting we should not be in a params infused ItemWithParams
     const items = itemable.map(i => isItemWithParams(i) ? i.value : i)
 
-    console.log('node', this.node, 'connectedLinks', connectedLinks, 'items', items);
     for(const linkId of connectedLinks) {
       const formattedItems =  formatItems(items);
       // Update items on link

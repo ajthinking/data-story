@@ -101,6 +101,7 @@ export type StoreInitOptions = {
   callback?: DataStoryCallback,
   clientRun?: (params: ClientRunParams) => void;
   focusOnFlow?: StoreSchema['focusOnFlow'];
+  client?: WorkspaceApiClient;
 }
 
 export type FormCommonProps = {
@@ -128,7 +129,8 @@ export type NodeSettingsFormProps = {
 }
 
 export type StoreSchema = {
-  clientRun?: (params: ClientRunParams) => void
+  clientRun?: (params: ClientRunParams) => void;
+  client?: WorkspaceApiClient;
 
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
