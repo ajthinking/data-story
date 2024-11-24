@@ -6,6 +6,7 @@ import { ItemValue } from './types/ItemValue'
 import { PortName } from './types/Port'
 import { InputObserverController } from './InputObserverController';
 import { UnfoldedDiagram } from './UnfoldedDiagram'
+import { RequestObserverType } from './types/InputObserveConfig';
 
 export type PortLinkMap = Record<PortName, LinkId[]>
 
@@ -50,7 +51,8 @@ export class InputDevice {
 
     this.inputObserverController?.reportItems({
       nodeId: this.node.id,
-      portId: name
+      portId: name,
+      type: RequestObserverType.ItemsObserver
     }, pulled);
 
     // Enhance ItemValue to ItemWithParams

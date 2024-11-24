@@ -7,7 +7,6 @@ import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
-import { createObservers } from './createObservers';
 import { ClientRunParams, DataStoryObservers, ExecutionObserver, StoreInitOptions, StoreSchema } from '../types';
 import { shallow } from 'zustand/shallow';
 
@@ -130,6 +129,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ rfInstance: options.rfInstance })
     set({ clientRun: options.clientRun })
     set({ focusOnFlow: options.focusOnFlow })
+    set({ client: options.client })
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 

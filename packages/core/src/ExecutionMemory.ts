@@ -6,6 +6,7 @@ import { Hook } from './types/Hook'
 import { InputDevice } from './InputDevice'
 import { OutputDevice } from './OutputDevice'
 import { InputObserverController } from './InputObserverController'
+import { RequestObserverType } from './types/InputObserveConfig';
 
 type MemoryValues = {
   nodeStatuses?: Map<NodeId, NodeStatus>,
@@ -41,7 +42,7 @@ export class ExecutionMemory {
     this.inputObserverController = values.inputObserverController;
   }
 
-  getNodeStatus(nodeId: NodeId): NodeStatus|undefined {
+  getNodeStatus(nodeId: NodeId): NodeStatus | undefined {
     return this.nodeStatuses.get(nodeId)
   }
 
@@ -55,7 +56,7 @@ export class ExecutionMemory {
     return this.nodeStatuses
   }
 
-  getNodeRunner(nodeId: NodeId): AsyncGenerator<undefined, void, void>|undefined {
+  getNodeRunner(nodeId: NodeId): AsyncGenerator<undefined, void, void> | undefined {
     return this.nodeRunners.get(nodeId)
   }
 
@@ -65,7 +66,7 @@ export class ExecutionMemory {
     this.nodeRunners.set(nodeId, status)
   }
 
-  getLinkItems(linkId: LinkId): ItemValue[]|undefined {
+  getLinkItems(linkId: LinkId): ItemValue[] | undefined {
     return this.linkItems.get(linkId)
   }
 
@@ -82,18 +83,26 @@ export class ExecutionMemory {
     const linkItems = this.linkItems.get(linkId)!
     this.linkItems.set(linkId, linkItems.concat(items))
 
-    this.inputObserverController?.reportItems({ linkId, nodeId: linkId }, items)
+    this.inputObserverController?.reportItems({
+      linkId,
+      nodeId: linkId,
+      type: RequestObserverType.ItemsObserver
+    }, items)
     this.history.push(`Pushed ${items.length} items to link ${linkId}`)
   }
 
   setLinkItems(linkId: LinkId, items: ItemValue[]) {
     this.history.push(`Setting link ${linkId} items: ${JSON.stringify(items)}`)
-    this.inputObserverController?.reportItems({ linkId, nodeId: linkId }, items)
+    this.inputObserverController?.reportItems({
+      linkId,
+      nodeId: linkId,
+      type: RequestObserverType.LinkCountsObserver
+    }, items)
 
     this.linkItems.set(linkId, items)
   }
 
-  getLinkCount(linkId: LinkId): number|undefined {
+  getLinkCount(linkId: LinkId): number | undefined {
     return this.linkCounts.get(linkId)
   }
 
@@ -108,7 +117,7 @@ export class ExecutionMemory {
     this.linkCounts.set(linkId, count)
   }
 
-  getInputDevice(nodeId: NodeId): InputDevice|undefined {
+  getInputDevice(nodeId: NodeId): InputDevice | undefined {
     return this.inputDevices.get(nodeId)
   }
 

@@ -74,7 +74,10 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   }
 
   itemsObserver(params: ItemsObserver): Observable<any> {
-    return this.transport.streaming(params);
+    console.log('frontend itemsObserver', params);
+    const msg$ = this.transport.streaming(params);
+    msg$.subscribe(this.receivedMsg$);
+    return this.receivedMsg$;
   }
 
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {

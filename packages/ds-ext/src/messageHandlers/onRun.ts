@@ -37,7 +37,7 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
   });
 
   const msgId = event.msgId;
-  const sendMsg: ReportCallback = (items, inputObservers) => {
+  const sendMsg: ReportCallback = ({items, inputObservers, inputObserver}) => {
     webviewPanel.webview.postMessage({
       msgId,
       type: 'NotifyObservers',
