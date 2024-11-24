@@ -8,7 +8,7 @@ import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
 import { createObservers } from './createObservers';
-import { ClientRunParams, DataStoryObservers, StoreInitOptions, StoreSchema } from '../types';
+import { ClientRunParams, DataStoryObservers, ExecutionObserver, StoreInitOptions, StoreSchema } from '../types';
 import { shallow } from 'zustand/shallow';
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -147,11 +147,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   onRun: () => {
-    const observers = createObservers(get().observerMap);
+    // const ExecutionObserver = createObservers(get().observerMap);
+    // 将 ObserverMap 转换为 ExecutionObserver[]
+    const ObserverArray = Array.from(get().observerMap.values());
     get()?.clientRun?.({
       diagram: get().toDiagram(),
       updateEdgeCounts: get().updateEdgeCounts,
-      observers
+      observers: ObserverArray
     })
   },
 
@@ -185,13 +187,12 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setOpenNodeSidebarId: (id: string | null) => {
     set({ openNodeSidebarId: id })
   },
-  setObservers(observerId: string, observers?: DataStoryObservers) {
-    get().observerMap.set(observerId, (observers || {
-      inputObservers: [], onDataChange: () => {
-      }
-    }) as DataStoryObservers);
+  setObservers(observerId: string, executionObserver?: ExecutionObserver) {
+    if (!executionObserver) {
+      return;
+    }
+    get().observerMap.set(observerId, executionObserver);
   },
-
 }));
 
 export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);
