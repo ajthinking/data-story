@@ -5,10 +5,10 @@ import {
   InMemoryStorage,
   type InputObserver,
   InputObserverController,
-  type ItemValue, RequestObserverType
+  type ItemValue, RequestObserverType,
+  type ItemsObserver
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
-import { ItemsObserver } from '../types';
 
 type RunMessage = {
   msgId: string,
@@ -77,12 +77,10 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
         sendEvent({
           items,
           inputObserver,
-          type: RequestObserverType.ItemsObserver
+          type: RequestObserverType.itemsObserver
         })
       }
     } as ItemsObserver);
-
-    console.log('ItemsObserver', data as ItemsObserver);
   }
 
   const NotifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {

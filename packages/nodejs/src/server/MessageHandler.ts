@@ -1,10 +1,13 @@
-import { Application, InMemoryStorage } from '@data-story/core';
+import { Application, InMemoryStorage, InputObserverController } from '@data-story/core';
 import { Message } from './Message';
 import WebSocket from 'ws';
 
-export type MessageHandler<MessageType extends Message> = (
-  ws: WebSocket,
-  message: MessageType,
-  app: Application,
-  storage: InMemoryStorage
-) => Promise<void>
+export interface MessageHandlerParams<MessageType extends Message> {
+  ws: WebSocket;
+  data: MessageType;
+  app: Application;
+  storage: InMemoryStorage;
+  inputObserverController: InputObserverController;
+}
+
+export type MessageHandler<MessageType extends Message> = (params: MessageHandlerParams<MessageType>) => Promise<void>

@@ -1,6 +1,6 @@
 import { useStore } from '../DataStory/store/store';
-import { ItemsObserver, StoreSchema } from '../DataStory/types';
-import { RequestObserverType } from '@data-story/core';
+import { StoreSchema } from '../DataStory/types';
+import { ItemsObserver, RequestObserverType } from '@data-story/core';
 import { useMount, useUnmount } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { Subscription } from 'rxjs';
@@ -29,7 +29,7 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
 
     const tableObserver: ItemsObserver = {
       linkIds: [linkId],
-      type: RequestObserverType.ItemsObserver,
+      type: RequestObserverType.itemsObserver,
       onReceive: (batchedItems) => {
         if (!isDataFetched) {
           setIsDataFetched(true);
