@@ -7,7 +7,7 @@ export { OpenIcon } from './components/DataStory/icons/openIcon'
 export { useDataStoryControls } from './components/DataStory/dataStoryControls';
 export { eventManager, useDataStoryEvent } from './components/DataStory/events/eventManager'
 export { DataStoryEvents, type DataStoryEventType } from './components/DataStory/events/dataStoryEventType'
-export type { ExecutionObserver, DataStoryProps, ClientRunParams, ServerClientObservationConfig, ItemsObserver, LinkCountsObserver } from './components/DataStory/types'
+export type { DataStoryProps, ClientRunParams, ServerClientObservationConfig } from './components/DataStory/types'
 export { default as NodeComponent } from './components/Node/NodeComponent';
 export { createJSClient } from './components/DataStory/clients/createJSClient';
 export type { DataStoryControlsType } from './components/DataStory/dataStoryControls';
