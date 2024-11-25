@@ -53,6 +53,12 @@ type MemoryItemObserver = {
   items: ItemValue[];
 }
 
+/**
+ * todo:
+ * 1. 将 InputObserverController1 模仿 InputObserverController 的传参进入 ExecutionMemory
+ * 2. 走通 type: RequestObserverType.ItemsObserver 的流程
+ * 3. 使用 type: RequestObserverType.ItemsObserver 替代 NotifyObservers
+ */
 export class InputObserverController1 {
 
   public executionObservers: ItemsObserver[] = [];
@@ -68,7 +74,7 @@ export class InputObserverController1 {
    */
   private isReport = (inputObserver: MemoryItemObserver): ItemsObserver[] => {
     return this.executionObservers.filter((executionObserver) => {
-      executionObserver.linkIds.includes(inputObserver.linkId);
+      return executionObserver.linkIds.includes(inputObserver.linkId);
     })
   }
 
@@ -86,5 +92,3 @@ export class InputObserverController1 {
     this.executionObservers.push(observer);
   }
 }
-
-export const inputObserverControllerMock = new InputObserverController1();

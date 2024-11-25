@@ -30,8 +30,7 @@ export type MessageHandlers = {
 };
 const LocalStorageKey = 'data-story-tree';
 
-export const getDefaultMsgHandlers = (app: Application) => {
-  const inputObserverControllerMock = new InputObserverController1();
+export const getDefaultMsgHandlers = (app: Application, inputObserverControllerMock: InputObserverController1 ) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
     const { diagram, inputObservers } = data as RunMessage;
