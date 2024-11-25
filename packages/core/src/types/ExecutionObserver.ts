@@ -1,5 +1,5 @@
-import type { NotifyObserversCallback } from '@data-story/core';
 import { RequestObserverType } from './InputObserveConfig';
+import { NotifyObserversCallback } from './NotifyObserversCallback';
 
 export type ItemsObserver = {
   type: RequestObserverType.itemsObserver,
