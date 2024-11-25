@@ -1,9 +1,9 @@
 import { useStore } from '../DataStory/store/store';
-import { DataStoryObservers, ExecutionObserver, ItemsObserver, StoreSchema } from '../DataStory/types';
-import { createDataStoryId, RequestObserverType } from '@data-story/core';
+import { ItemsObserver, StoreSchema } from '../DataStory/types';
+import { RequestObserverType } from '@data-story/core';
 import { useMount, useUnmount } from 'ahooks';
-import { useRef } from 'react';
 import { shallow } from 'zustand/shallow';
+import { Subscription } from 'rxjs';
 
 export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems }: {
   id: string,
@@ -12,19 +12,16 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
   setItems: (value: any) => void
 }): void {
   const selector = (state: StoreSchema) => ({
-    observerMap: state.observerMap,
-    setObservers: state.setObservers,
     toDiagram: state.toDiagram,
     client: state.client,
   });
 
-  const { observerMap, setObservers, toDiagram, client } = useStore(selector, shallow);
+  const { toDiagram, client } = useStore(selector, shallow);
 
-  const observerId = useRef(createDataStoryId());
+  let tableSubscription: Subscription;
   // Add the node to the inputObservers when the node is mounted
   useMount(() => {
-    if (observerMap?.get(observerId.current)) {
-      console.error('observers already exist');
+    if (!client?.itemsObserver) {
       return;
     }
 
@@ -33,12 +30,7 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
     const tableObserver: ItemsObserver = {
       linkIds: [linkId],
       type: RequestObserverType.ItemsObserver,
-      // todo: ue设计成出参
       onReceive: (batchedItems) => {
-        if (!observerMap?.get(observerId.current)) {
-          console.error('observer unmounted');
-          return;
-        }
         if (!isDataFetched) {
           setIsDataFetched(true);
         }
@@ -46,18 +38,11 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
         setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
       }
     }
-    client?.itemsObserver?.(tableObserver)?.subscribe((data: {
-      items: any[],
-      inputObserver: any,
-    }) => tableObserver.onReceive(data.items, data.inputObserver));
-    // todo: observer Items request : client.
-    // 重新设计 observerMap 的数据结构， 需要包含 ItemObserver, LinkObserver, NodeObserver
-    setObservers(observerId.current, tableObserver);
+
+    tableSubscription = client?.itemsObserver?.(tableObserver);
   });
 
   useUnmount(() => {
-    if (observerMap && !observerMap?.get(observerId.current)) {
-      observerMap.delete(observerId.current);
-    }
+    tableSubscription?.unsubscribe();
   });
 }
