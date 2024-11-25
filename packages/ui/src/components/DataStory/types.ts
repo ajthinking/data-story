@@ -1,18 +1,16 @@
 import {
   Diagram,
-  type InputObserveConfig,
   type InputObserver,
   NodeDescription,
-  type NotifyObserversCallback,
   Param,
   RepeatableParam,
   type ReportCallback,
+  type ExecutionObserver
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import React from 'react';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
-import { RequestObserverType } from '@data-story/core/src';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -20,35 +18,6 @@ export type ServerClientObservationConfig = {
   inputObservers: InputObserver[],
   onDataChange: ReportCallback,
 }
-
-export type ItemsObserver = {
-  type: RequestObserverType.ItemsObserver,
-  linkIds: string[],
-  observerId?: string,
-  direction?: 'pull' | 'push',
-  onlyFirstNItems?: number,
-  throttleMs?: number,
-  onReceive: NotifyObserversCallback,
-}
-
-export type LinkCountsObserver = {
-  type: RequestObserverType.LinkCountsObserver,
-  linkIds: string[],
-  observerId?: string,
-  throttleMs?: number,
-  onReceive: (count: number) => void,
-}
-
-type NodeObserver = {
-  type: 'NodeObserver',
-  nodeId: string,
-  onlyStatuses: string[],
-  onlyOncePerStatus?: boolean,
-  throttleMs?: number,
-  onReceive: (data: any) => void,
-}
-
-export type ExecutionObserver = ItemsObserver | LinkCountsObserver;
 
 export type ObserverMap = Map<string, ExecutionObserver>
 

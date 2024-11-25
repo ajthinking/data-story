@@ -1,5 +1,5 @@
-import { ClientRunParams, ItemsObserver, LinkCountsObserver } from '../types';
-import { Diagram, NodeDescription } from '@data-story/core';
+import { ClientRunParams } from '../types';
+import { Diagram, ItemsObserver, LinkCountsObserver, NodeDescription } from '@data-story/core';
 import { Subscription } from 'rxjs';
 
 export interface WorkspaceApiClient {

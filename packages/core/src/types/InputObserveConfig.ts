@@ -1,8 +1,7 @@
 export enum RequestObserverType {
-  // 'LinkCountsObserver' | 'ItemsObserver' | 'NotifyDataUpdate'
-  LinkCountsObserver = 'LinkCountsObserver',
-  ItemsObserver = 'ItemsObserver',
-  NotifyDataUpdate = 'NotifyDataUpdate',
+  linkCountsObserver = 'linkCountsObserver',
+  itemsObserver = 'itemsObserver',
+  notifyDataUpdate = 'notifyDataUpdate',
 }
 export type InputObserveConfig = {nodeId: string, portId?: string, type: RequestObserverType}
 | {linkId: string, type: RequestObserverType};

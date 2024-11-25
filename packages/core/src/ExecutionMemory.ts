@@ -85,7 +85,7 @@ export class ExecutionMemory {
 
     this.inputObserverController?.reportItems({
       linkId,
-      type: RequestObserverType.ItemsObserver,
+      type: RequestObserverType.itemsObserver,
       items
     })
 
@@ -96,7 +96,7 @@ export class ExecutionMemory {
     this.history.push(`Setting link ${linkId} items: ${JSON.stringify(items)}`)
     this.inputObserverController?.reportItems({
       linkId,
-      type: RequestObserverType.ItemsObserver,
+      type: RequestObserverType.itemsObserver,
       items
     })
 

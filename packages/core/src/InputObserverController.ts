@@ -1,7 +1,7 @@
 import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
 import { InputObserver } from './types/InputObserver';
-import { ItemsObserver } from '@data-story/ui/dist/src/components/DataStory/types';
+import { ItemsObserver } from './types/ExecutionObserver';
 
 type MemoryItemObserver = {
   type: RequestObserverType;
