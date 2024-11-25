@@ -1,7 +1,15 @@
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { ClientRunParams, ItemsObserver, LinkCountsObserver, ServerClientObservationConfig } from '../types';
-import { filter, Observable, Subject } from 'rxjs';
-import { Diagram, Hook, InputObserver, ItemValue, NodeDescription, RequestObserverType } from '@data-story/core';
+import { filter, Observable, Subject, Subscription } from 'rxjs';
+import {
+  Diagram,
+  Hook,
+  InputObserveConfig,
+  InputObserver,
+  ItemValue,
+  NodeDescription,
+  RequestObserverType
+} from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
@@ -73,18 +81,12 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     return this.transport.streaming(params);
   }
 
-  // @ts-ignore
-  itemsObserver(params: ItemsObserver) {
-    console.log('frontend itemsObserver', params);
+  itemsObserver(params: ItemsObserver): Subscription {
     const msg$ = this.transport.streaming(params);
-    msg$.subscribe(this.receivedMsg$);
-    return this.receivedMsg$.pipe(filter(matchMsgType(RequestObserverType.ItemsObserver)))
-    // .subscribe((data: {
-    //   items: ItemValue[],
-    //   inputObserver: InputObserver,
-    // }) => {
-    //   params.onReceive(data.items, data.inputObserver);
-    // })
+    return msg$.subscribe((data) => {
+      const { items, inputObserver } = data as { items: ItemValue[], inputObserver: InputObserveConfig };
+      params.onReceive(items, inputObserver);
+    });
   }
 
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
@@ -108,6 +110,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       console.log('Received message:', data);
     });
   }
+
   private initLinkCountsObserver() {
     return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
       .subscribe((data: {
