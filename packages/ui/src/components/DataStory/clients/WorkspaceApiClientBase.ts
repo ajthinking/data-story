@@ -29,7 +29,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
 
   constructor(private transport: Transport) {
     this.initExecutionUpdates();
-    this.initNotifyObservers();
     this.initExecutionResult();
     this.initExecutionFailure();
     this.initUpdateStorage();
@@ -139,13 +138,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
             providedCallback(...hook.args)
           }
         }
-      })
-  }
-
-  private initNotifyObservers() {
-    return this.receivedMsg$.pipe(filter(matchMsgType('NotifyObservers')))
-      .subscribe((data: any) => {
-        // this?.observers?.onDataChange({ items: data.items });
       })
   }
 

@@ -28,7 +28,7 @@ export type { Hook } from './types/Hook'
 export type { ItemValue } from './types/ItemValue'
 export { coreNodeProvider } from './coreNodeProvider'
 export { type ExecutionResult } from './ExecutionResult'
-export { InputObserverController, InputObserverController1} from './InputObserverController'
+export { InputObserverController} from './InputObserverController'
 export type { ExecutionFailure } from './types/ExecutionFailure'
 export { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
 export { type InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';

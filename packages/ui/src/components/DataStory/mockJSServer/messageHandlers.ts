@@ -5,7 +5,6 @@ import {
   InMemoryStorage,
   type InputObserver,
   InputObserverController,
-  InputObserverController1,
   type ItemValue, RequestObserverType
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
@@ -30,31 +29,15 @@ export type MessageHandlers = {
 };
 const LocalStorageKey = 'data-story-tree';
 
-export const getDefaultMsgHandlers = (app: Application, inputObserverControllerMock: InputObserverController1 ) => {
+export const getDefaultMsgHandlers = (app: Application, inputObserverController: InputObserverController ) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
-    const { diagram, inputObservers } = data as RunMessage;
-
-    const inputObserverController = new InputObserverController(
-      inputObservers || [],
-      ({ items }: {
-        items: ItemValue[],
-        // inputObservers: InputObserver[],
-        // inputObserver: InputObserver,
-      }) => {
-        sendEvent({
-          type: 'NotifyObservers',
-          items,
-          // inputObservers
-        });
-      }
-    );
+    const { diagram } = data as RunMessage;
 
     const executor = app!.getExecutor({
       diagram,
       storage,
       inputObserverController,
-      inputObserverControllerMock
     });
 
     try {
@@ -88,7 +71,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverControllerM
   }
 
   const ItemsObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverControllerMock.pushExecutionObserver({
+    inputObserverController.pushExecutionObserver({
       ...data as ItemsObserver,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
         sendEvent({

@@ -1,4 +1,4 @@
-import { Application, InputObserverController1 } from '@data-story/core';
+import { Application, InputObserverController } from '@data-story/core';
 import { Subject } from 'rxjs';
 import { HandlerParam, getDefaultMsgHandlers, Message, MessageHandlers } from './messageHandlers';
 
@@ -7,9 +7,9 @@ export class MockJSServer {
   private messageHandlers = {};
 
   constructor({ app, messageHandlers }: {app: Application, messageHandlers?: MessageHandlers}) {
-    const inputObserverControllerMock = new InputObserverController1();
+    const inputObserverController = new InputObserverController();
 
-    this.messageHandlers = messageHandlers ?? getDefaultMsgHandlers(app, inputObserverControllerMock);
+    this.messageHandlers = messageHandlers ?? getDefaultMsgHandlers(app, inputObserverController);
     this.start();
   }
 

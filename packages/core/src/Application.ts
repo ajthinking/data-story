@@ -2,7 +2,7 @@ import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
 import { DiagramBuilderV3 } from './DiagramBuilderV3';
 import { ExecutorFactory } from './ExecutorFactory';
-import { InputObserverController, InputObserverController1 } from './InputObserverController';
+import { InputObserverController } from './InputObserverController';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
 import { Computer } from './types/Computer';
@@ -77,18 +77,16 @@ export class Application {
     );
   }
 
-  getExecutor({ diagram, storage, inputObserverController, inputObserverControllerMock}: {
+  getExecutor({ diagram, storage, inputObserverController}: {
     diagram: Diagram;
     storage: Storage;
     inputObserverController?: InputObserverController;
-    inputObserverControllerMock?: InputObserverController1;
   }) {
     return ExecutorFactory.create({
       diagram,
       registry: this.registry,
       storage,
-      inputObserverController,
-      inputObserverControllerMock
+      inputObserverController
     })
   }
 
