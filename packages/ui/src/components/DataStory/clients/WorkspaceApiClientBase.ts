@@ -1,7 +1,7 @@
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { ClientRunParams, ItemsObserver, LinkCountsObserver, ServerClientObservationConfig } from '../types';
 import { filter, Observable, Subject } from 'rxjs';
-import { Diagram, Hook, NodeDescription, RequestObserverType } from '@data-story/core';
+import { Diagram, Hook, InputObserver, ItemValue, NodeDescription, RequestObserverType } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
@@ -73,11 +73,18 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     return this.transport.streaming(params);
   }
 
-  itemsObserver(params: ItemsObserver): Observable<any> {
+  // @ts-ignore
+  itemsObserver(params: ItemsObserver) {
     console.log('frontend itemsObserver', params);
     const msg$ = this.transport.streaming(params);
     msg$.subscribe(this.receivedMsg$);
-    return this.receivedMsg$.pipe(filter(matchMsgType(RequestObserverType.ItemsObserver)));
+    return this.receivedMsg$.pipe(filter(matchMsgType(RequestObserverType.ItemsObserver)))
+    // .subscribe((data: {
+    //   items: ItemValue[],
+    //   inputObserver: InputObserver,
+    // }) => {
+    //   params.onReceive(data.items, data.inputObserver);
+    // })
   }
 
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
@@ -96,11 +103,16 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   }
 
   //<editor-fold desc="Message init">
+  private initReceiveMsg() {
+    return this.receivedMsg$.subscribe((data: any) => {
+      console.log('Received message:', data);
+    });
+  }
   private initLinkCountsObserver() {
     return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
       .subscribe((data: {
         counts: Record<string, number>,
-        state: 'running'|'complete',
+        state: 'running' | 'complete',
       }) => {
         this.updateEdgeCounts!({
           edgeCounts: data.counts,

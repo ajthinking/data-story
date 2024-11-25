@@ -33,6 +33,7 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
     const tableObserver: ItemsObserver = {
       linkIds: [linkId],
       type: RequestObserverType.ItemsObserver,
+      // todo: ue设计成出参
       onReceive: (batchedItems) => {
         if (!observerMap?.get(observerId.current)) {
           console.error('observer unmounted');
@@ -45,7 +46,10 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
         setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
       }
     }
-    client?.itemsObserver?.(tableObserver);
+    client?.itemsObserver?.(tableObserver)?.subscribe((data: {
+      items: any[],
+      inputObserver: any,
+    }) => tableObserver.onReceive(data.items, data.inputObserver));
     // todo: observer Items request : client.
     // 重新设计 observerMap 的数据结构， 需要包含 ItemObserver, LinkObserver, NodeObserver
     setObservers(observerId.current, tableObserver);

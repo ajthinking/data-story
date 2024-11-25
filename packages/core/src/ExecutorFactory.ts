@@ -4,7 +4,6 @@ import { Executor } from './Executor';
 import {
   InputObserverController,
   InputObserverController1,
-  inputObserverControllerMock
 } from './InputObserverController';
 import { Registry } from './Registry';
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
@@ -15,7 +14,8 @@ export const ExecutorFactory = {
     diagram,
     registry,
     storage,
-    inputObserverController
+    inputObserverController,
+    inputObserverControllerMock
   }: {
     diagram: Diagram;
     registry: Registry;
