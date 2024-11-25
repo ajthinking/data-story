@@ -1,5 +1,5 @@
-import { Application, Diagram, NodeDescription } from '@data-story/core';
-import { ItemsObserver, ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientBase } from '@data-story/ui';
+import { Application, Diagram, NodeDescription,ItemsObserver } from '@data-story/core';
+import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientBase } from '@data-story/ui';
 
 export class CustomizeJSClient implements WorkspaceApiClient {
   private nodeDescriptions: NodeDescription[];
