@@ -2,7 +2,7 @@ import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
-import { InputObserverController } from './InputObserverController'
+import { InputObserverController, InputObserverController1 } from './InputObserverController'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
 import { Param } from './Param'
@@ -20,6 +20,7 @@ export class ExecutionMemoryFactory {
     public registry: Registry,
     public storage: Storage,
     public inputObserverController?: InputObserverController,
+    public inputObserverControllerMock?: InputObserverController1,
   ) {}
 
   create() {
@@ -32,6 +33,7 @@ export class ExecutionMemoryFactory {
       inputDevices: new Map<NodeId, InputDevice>(),
       outputDevices: new Map<NodeId, OutputDevice>(),
       inputObserverController: this.inputObserverController,
+      inputObserverControllerMock: this.inputObserverControllerMock
     })
 
     // Configure the memory's initial state

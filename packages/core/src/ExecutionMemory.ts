@@ -5,7 +5,10 @@ import { ItemValue } from './types/ItemValue'
 import { Hook } from './types/Hook'
 import { InputDevice } from './InputDevice'
 import { OutputDevice } from './OutputDevice'
-import { InputObserverController, inputObserverControllerMock } from './InputObserverController'
+import {
+  InputObserverController,
+  InputObserverController1,
+} from './InputObserverController'
 import { RequestObserverType } from './types/InputObserveConfig';
 
 type MemoryValues = {
@@ -17,6 +20,7 @@ type MemoryValues = {
   outputDevices?: Map<NodeId, OutputDevice>,
   hooks?: any[],
   inputObserverController?: InputObserverController,
+  inputObserverControllerMock?: InputObserverController1,
 }
 
 export class ExecutionMemory {
@@ -28,6 +32,7 @@ export class ExecutionMemory {
   outputDevices: Map<NodeId, OutputDevice>
   hooks: Hook[]
   inputObserverController?: InputObserverController
+  inputObserverControllerMock?: InputObserverController1
 
   history: string[] = []
 
@@ -40,6 +45,7 @@ export class ExecutionMemory {
     this.outputDevices = values.outputDevices || new Map()
     this.hooks = values.hooks || [];
     this.inputObserverController = values.inputObserverController;
+    this.inputObserverControllerMock = values.inputObserverControllerMock;
   }
 
   getNodeStatus(nodeId: NodeId): NodeStatus | undefined {
@@ -89,7 +95,7 @@ export class ExecutionMemory {
       type: RequestObserverType.ItemsObserver
     }, items)
 
-    inputObserverControllerMock.reportItems({
+    this.inputObserverControllerMock?.reportItems({
       linkId,
       type: RequestObserverType.ItemsObserver,
       items

@@ -9,7 +9,7 @@ interface ObserverParams {
 function groupNotifications(data: ObserverParams[]) {
   const getNotifyObserverKey = (items: ItemValue[], inputObservers: InputObserver[]) => {
     return inputObservers.map((inputObserver) => {
-      return inputObserver.observerId;
+      return inputObserver.type;
     }).sort().join(',');
   }
 
