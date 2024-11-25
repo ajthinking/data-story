@@ -1,7 +1,7 @@
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { ClientRunParams, ItemsObserver, LinkCountsObserver, ServerClientObservationConfig } from '../types';
 import { filter, Observable, Subject } from 'rxjs';
-import { Diagram, Hook, NodeDescription } from '@data-story/core';
+import { Diagram, Hook, NodeDescription, RequestObserverType } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
@@ -77,7 +77,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     console.log('frontend itemsObserver', params);
     const msg$ = this.transport.streaming(params);
     msg$.subscribe(this.receivedMsg$);
-    return this.receivedMsg$;
+    return this.receivedMsg$.pipe(filter(matchMsgType(RequestObserverType.ItemsObserver)));
   }
 
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
