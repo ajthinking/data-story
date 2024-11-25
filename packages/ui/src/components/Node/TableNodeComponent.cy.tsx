@@ -6,7 +6,7 @@ import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './
 import { eventManager } from '../DataStory/events/eventManager';
 import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
 import { InputObserver, ItemValue, multiline } from '@data-story/core';
-import { DataStoryObservers } from '../DataStory/types';
+import { ExecutionObserver } from '../DataStory/types';
 
 const data = {
   'params': [],
@@ -50,10 +50,10 @@ const mockGetItems = (items: unknown[]): void => {
   const observerMap = new Map();
   cy.stub(store, 'createStore').returns(() => {
     return {
-      setObservers: (observerId: string, observers?: DataStoryObservers) => {
-        observerMap.set(observerId, (observers || {}) as DataStoryObservers);
-        observers?.onDataChange(items as ItemValue[], observers?.inputObservers[0] as InputObserver);
-      },
+      // setObservers: (observerId: string, observers?: ExecutionObserver) => {
+      //   observerMap.set(observerId, (observers || {}) as ExecutionObserver);
+      //   observers?.onDataChange(items as ItemValue[], observers?.inputObservers[0] as InputObserver);
+      // },
       observerMap: observerMap,
     }
   });

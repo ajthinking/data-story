@@ -1,11 +1,9 @@
-import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
-import { InputObserverController, InputObserverController1 } from './InputObserverController'
+import { InputObserverController } from './InputObserverController'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
-import { Param } from './Param'
 import { Registry } from './Registry'
 import { UnfoldedDiagram } from './UnfoldedDiagram'
 import { Hook } from './types/Hook'
@@ -20,7 +18,6 @@ export class ExecutionMemoryFactory {
     public registry: Registry,
     public storage: Storage,
     public inputObserverController?: InputObserverController,
-    public inputObserverControllerMock?: InputObserverController1,
   ) {}
 
   create() {
@@ -32,8 +29,7 @@ export class ExecutionMemoryFactory {
       linkCounts: new Map<LinkId, number>(),
       inputDevices: new Map<NodeId, InputDevice>(),
       outputDevices: new Map<NodeId, OutputDevice>(),
-      inputObserverController: this.inputObserverController,
-      inputObserverControllerMock: this.inputObserverControllerMock
+      inputObserverController: this.inputObserverController
     })
 
     // Configure the memory's initial state
@@ -91,7 +87,6 @@ export class ExecutionMemoryFactory {
       node,
       this.unfoldedDiagram,
       memory,
-      this.inputObserverController,
     )
   }
 
