@@ -21,11 +21,6 @@ export type ServerClientObservationConfig = {
   onDataChange: ReportCallback,
 }
 
-export type DataStoryObservers = {
-  inputObservers: Array<InputObserveConfig & {observerId?: string}>,
-  onDataChange: NotifyObserversCallback,
-}
-
 export type ItemsObserver = {
   type: RequestObserverType.ItemsObserver,
   linkIds: string[],
@@ -72,7 +67,7 @@ export type DataStoryProps = {
   initDiagram?: Diagram | null;
   hideControls?: boolean | ControlsType[];
   slotComponents?: React.ReactNode[];
-  observers?: DataStoryObservers;
+  observers?: ExecutionObserver;
   onInitialize?: DataStoryCallback;
   hideSidebar?: boolean;
   onDrop?: (event: any, addNodeFromDescription: any) => void;
