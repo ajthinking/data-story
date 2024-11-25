@@ -66,11 +66,11 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     }
   };
 
-  const LinkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
+  const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
     console.log('LinkCountsObserver', data);
   }
 
-  const ItemsObserver = ({ data, sendEvent }: HandlerParam) => {
+  const itemsObserver = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.pushExecutionObserver({
       ...data as ItemsObserver,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
@@ -83,7 +83,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     } as ItemsObserver);
   }
 
-  const NotifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
+  const notifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
     console.log('NotifyDataUpdate', data);
   }
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
@@ -114,8 +114,8 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     getNodeDescriptions,
     updateDiagram,
     getDiagram,
-    LinkCountsObserver,
-    ItemsObserver,
-    NotifyDataUpdate
+    linkCountsObserver,
+    itemsObserver,
+    notifyDataUpdate
   }
 }

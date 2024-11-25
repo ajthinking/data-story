@@ -5,8 +5,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
 import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
-import { InputObserver, ItemValue, multiline } from '@data-story/core';
-import { ExecutionObserver } from '../DataStory/types';
+import { ItemsObserver, multiline } from '@data-story/core';
 
 const data = {
   'params': [],
@@ -47,17 +46,19 @@ function runSuccess(): void {
 }
 
 const mockGetItems = (items: unknown[]): void => {
-  const observerMap = new Map();
-  cy.stub(store, 'createStore').returns(() => {
-    return {
-      // setObservers: (observerId: string, observers?: ExecutionObserver) => {
-      //   observerMap.set(observerId, (observers || {}) as ExecutionObserver);
-      //   observers?.onDataChange(items as ItemValue[], observers?.inputObservers[0] as InputObserver);
-      // },
-      observerMap: observerMap,
+  cy.stub(store, 'createStore').returns(function() {
+    return  {
+      toDiagram: cy.spy().as('toDiagram'),
+      client:{
+        itemsObserver: (observer: ItemsObserver) => {
+          console.log('itemsObserver:', observer)
+          // @ts-ignore
+          observer.onReceive(items);
+        }
+      }
     }
   });
-};
+}
 
 describe('test TableNodeComponent for tooltip', () => {
   it('render tooltip with normal data', () => {
@@ -78,7 +79,7 @@ describe('test TableNodeComponent for tooltip', () => {
     cy.dataCy('data-story-table-tooltip').should('have.text', longKey);
 
     // click on the table to close the tooltip
-    cy.dataCy('data-story-table').click({ force: true});
+    cy.dataCy('data-story-table').click({ force: true });
 
     // test long value on tooltip
     const longValue = oversize['long_property'];
