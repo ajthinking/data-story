@@ -98,7 +98,7 @@ export default () => {
           client={client}
           observers={{
             linkIds: [diagram.links[1].id],
-            type: RequestObserverType.ItemsObserver,
+            type: RequestObserverType.itemsObserver,
             onReceive: (items) => {
               setPoints([
                 ...points,

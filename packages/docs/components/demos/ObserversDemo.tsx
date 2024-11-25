@@ -20,7 +20,7 @@ export default () => {
       <DataStory
         client={client}
         observers={{
-          type: RequestObserverType.ItemsObserver,
+          type: RequestObserverType.itemsObserver,
           // set the linkIds that you want to observe
           linkIds: [diagram.links[0]?.id],
           onReceive: (items, inputObserver) => {

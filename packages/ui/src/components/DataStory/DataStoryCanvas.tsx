@@ -91,10 +91,8 @@ const Flow = ({
   const reactFlowStore = useStoreApi();
   const { addSelectedNodes, setNodes } = reactFlowStore.getState();
 
-  // todo: 关于第三方订阅 observer 的逻辑
   useEffect(() => {
     if (client?.itemsObserver && observers) {
-      console.log('observers Flow 2222', observers);
       client?.itemsObserver?.(observers as ItemsObserver)
     }
   }, [observers, client.itemsObserver]);
@@ -206,7 +204,6 @@ const Flow = ({
         onDrop={
           useCallback((event) => {
             const handler = onDrop || onDropDefault;
-
             handler(event, addNodeFromDescription)
           }, [addNodeFromDescription]
           )}
