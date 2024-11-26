@@ -7,6 +7,6 @@ export interface WorkspaceApiClient {
   getNodeDescriptions: ({ path }: {path?: string}) => Promise<NodeDescription[]>
   updateDiagram?: (diagram: Diagram) => Promise<void>;
   getDiagram?: ({ path }: {path?: string}) => Promise<Diagram>;
-  linkCountsObserver?:(params: LinkCountsObserver) => void;
+  linksCountObserver?:(params: LinkCountsObserver) => void;
   itemsObserver?: (params: ItemsObserver) => Subscription;
 }

@@ -30,7 +30,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     this.initExecutionResult();
     this.initExecutionFailure();
     this.initUpdateStorage();
-    this.initLinkCountsObserver();
+    // this.initLinkCountsObserver();
     this.run = this.run.bind(this);
     this.updateDiagram = this.updateDiagram.bind(this);
   }
@@ -74,16 +74,32 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     }
   }
 
-  linkCountsObserver(params: LinkCountsObserver): Observable<number> {
-    return this.transport.streaming(params);
-  }
-
   itemsObserver(params: ItemsObserver): Subscription {
     const msg$ = this.transport.streaming(params);
     return msg$.subscribe((data) => {
-      const { items, inputObserver } = data as { items: ItemValue[], inputObserver: InputObserveConfig };
+      const { items, inputObserver } = data as {items: ItemValue[], inputObserver: InputObserveConfig};
       params.onReceive(items, inputObserver);
     });
+  }
+
+  linksCountObserver(params: LinkCountsObserver): Subscription {
+    console.log('LinkCountsObserver request params:', params)
+    const msg$ = this.transport.streaming(params);
+    return msg$.subscribe((data) => {
+      const { counts } = data as {counts: Record<string, number>, state: 'running'|'complete',};
+      console.log('LinkCountsObserver data:', data);
+      params.onReceive(counts);
+    });
+    // return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
+    //   .subscribe((data: {
+    //     counts: Record<string, number>,
+    //     state: 'running'|'complete',
+    //   }) => {
+    //     this.updateEdgeCounts!({
+    //       edgeCounts: data.counts,
+    //       state: data.state,
+    //     })
+    //   })
   }
 
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
@@ -108,23 +124,25 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     });
   }
 
-  private initLinkCountsObserver() {
-    return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
-      .subscribe((data: {
-        counts: Record<string, number>,
-        state: 'running' | 'complete',
-      }) => {
-        this.updateEdgeCounts!({
-          edgeCounts: data.counts,
-          state: data.state,
-        })
-      })
-  }
-
+  // private initLinkCountsObserver() {
+  //   return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
+  //     .subscribe((data: {
+  //       counts: Record<string, number>,
+  //       state: 'running' | 'complete',
+  //     }) => {
+  //       console.log('LinkCountsObserver data:', data);
+  //       this.updateEdgeCounts!({
+  //         edgeCounts: data.counts,
+  //         state: data.state,
+  //       })
+  //     })
+  // }
+  //
   private initExecutionUpdates() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
       .subscribe((data: any) => {
         for(const hook of data.hooks as Hook[]) {
+          // todo-stone: 使用 itemsObserver replace ExecutionUpdate hook
           if (hook.type === 'CONSOLE_LOG') {
             console.log(...hook.args)
           } else if (hook.type === 'UPDATES') {
