@@ -6,17 +6,28 @@ export type ItemsObserver = {
   linkIds: string[],
   onReceive: NotifyObserversCallback,
   observerId?: string,
-  direction?: 'pull' | 'push',
+  direction?: 'pull'|'push',
   onlyFirstNItems?: number,
   throttleMs?: number,
   msgId?: string;
 }
+
+export interface LinkCountInfo {
+  count: number;
+  linkId: string;
+  state?: 'running'|'complete';
+}
+
 export type LinkCountsObserver = {
   type: RequestObserverType.linkCountsObserver,
   linkIds: string[],
+  state?: 'running'|'complete',
   observerId?: string,
   throttleMs?: number,
-  onReceive: (count: any) => void,
+  onReceive: (params:{
+    links: LinkCountInfo[],
+    // type: RequestObserverType.linkCountsObserver,
+  }) => void,
 }
 export type NodeObserver = {
   type: 'NodeObserver',
@@ -26,4 +37,4 @@ export type NodeObserver = {
   throttleMs?: number,
   onReceive: (data: any) => void,
 }
-export type ExecutionObserver = ItemsObserver | LinkCountsObserver;
+export type ExecutionObserver = ItemsObserver|LinkCountsObserver;

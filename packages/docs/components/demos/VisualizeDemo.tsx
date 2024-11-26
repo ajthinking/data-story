@@ -54,6 +54,14 @@ const diagram = core.getDiagramBuilder()
   .add(Table)
   .get();
 
+const linksCountObserver = {
+  type: RequestObserverType.linkCountsObserver as const,
+  linkIds: [diagram.links[1].id],
+  onReceive: (count) => {
+    console.log('Link count', count);
+  }
+}
+
 export default () => {
   const [points, setPoints] = React.useState([]);
   const { app, loading } = useRequestApp();
@@ -106,13 +114,7 @@ export default () => {
               ].slice(-100));
             }
           }}
-          linksCountObserver={{
-            type: RequestObserverType.linkCountsObserver,
-            linkIds: [diagram.links[1].id],
-            onReceive: (count) => {
-              console.log('Link count', count);
-            }
-          }}
+          linksCountObserver={linksCountObserver}
         />
       </div>
     </div>

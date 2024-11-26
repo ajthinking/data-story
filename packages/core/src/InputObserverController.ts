@@ -48,7 +48,11 @@ export class InputObserverController {
     inputObservers.map((inputObserver) => {
       // todo: replace the items.length with the actual count of the links count
       inputObserver.onReceive({
-        [memoryObserver.linkId]: memoryObserver.count
+        links: [{
+          linkId: memoryObserver.linkId,
+          count: memoryObserver.count,
+          state: 'complete',
+        }]
       });
     })
   }
