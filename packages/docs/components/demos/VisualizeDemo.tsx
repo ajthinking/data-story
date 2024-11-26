@@ -96,7 +96,7 @@ export default () => {
           }}
           hideControls={['save']}
           client={client}
-          observers={{
+          itemsObserver={{
             linkIds: [diagram.links[1].id],
             type: RequestObserverType.observeLinkItems,
             onReceive: (items) => {
@@ -104,6 +104,13 @@ export default () => {
                 ...points,
                 ...items,
               ].slice(-100));
+            }
+          }}
+          linksCountObserver={{
+            type: RequestObserverType.linkCountsObserver,
+            linkIds: [diagram.links[1].id],
+            onReceive: (count) => {
+              console.log('Link count', count);
             }
           }}
         />
