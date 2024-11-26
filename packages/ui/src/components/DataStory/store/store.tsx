@@ -143,9 +143,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     if (options.callback) {
       options.callback({ run: get().onRun })
     }
-    if (options.client?.linksCountObserver) {
-      get().linkCountsObserver();
-    }
   },
   updateDiagram: (diagram: Diagram) => {
     const reactFlowObject = ReactFlowFactory.fromDiagram(diagram)
@@ -159,7 +156,11 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   onRun: () => {
     get()?.client?.run({
       diagram: get().toDiagram(),
-    })
+    });
+    // update the diagram edges with the link counts
+    if (get().client?.linksCountObserver) {
+      get().linkCountsObserver();
+    }
   },
 
   setParams: (params: Param[]) => {

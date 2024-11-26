@@ -14,6 +14,7 @@ export class SocketServer {
   private port: number;
   private messageHandlers: Record<string, MessageHandler<any>>;
   private wsServer?: WebSocket.Server;
+  private inputObserverController: InputObserverController;
 
   constructor({
     app,
@@ -23,6 +24,7 @@ export class SocketServer {
     this.app = app;
     this.port = port;
     this.messageHandlers = messageHandlers;
+    this.inputObserverController = new InputObserverController();
   }
 
   start() {
@@ -52,7 +54,6 @@ export class SocketServer {
   ) {
     const parsed: { type: string } & Record<string, any> = JSON.parse(message);
     const handler = this.messageHandlers[parsed.type];
-    const inputObserverController = new InputObserverController();
 
     if (!handler) {
       console.warn('Unknown message type (server): ' + parsed.type);
@@ -64,7 +65,7 @@ export class SocketServer {
       data: parsed,
       app: this.app,
       storage,
-      inputObserverController
+      inputObserverController: this.inputObserverController
     });
   }
 }
