@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ItemsObserver
+  type ItemsObserver, LinkCountsObserver
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 
@@ -44,10 +44,11 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       const execution = executor?.execute();
 
       for await(const executionUpdate of execution) {
-        sendEvent({
-          ...executionUpdate,
-          type: 'LinkCountsObserver'
-        })
+        // 在这里更新 links count 无法使用 throttle，因为都是用的执行的最新状态
+        // sendEvent({
+        //   ...executionUpdate,
+        //   type: 'LinkCountsObserver'
+        // })
         sendEvent(executionUpdate);
       }
 
@@ -68,6 +69,15 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
   const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
     console.log('LinkCountsObserver', data);
+    inputObserverController.pushExecutionObserver({
+      ...data as LinkCountsObserver,
+      onReceive: (counts: Record<string, number>) => {
+        sendEvent({
+          counts,
+          type: RequestObserverType.linkCountsObserver
+        })
+      }
+    })
   }
 
   const itemsObserver = ({ data, sendEvent }: HandlerParam) => {

@@ -16,7 +16,7 @@ export type LinkCountsObserver = {
   linkIds: string[],
   observerId?: string,
   throttleMs?: number,
-  onReceive: (count: number) => void,
+  onReceive: (count: any) => void,
 }
 export type NodeObserver = {
   type: 'NodeObserver',

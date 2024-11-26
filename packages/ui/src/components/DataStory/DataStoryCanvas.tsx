@@ -52,6 +52,7 @@ const Flow = ({
   hideControls,
   slotComponents,
   itemsObserver,
+  linksCountObserver,
   onInitialize,
   setSidebarKey,
   onSave,
@@ -96,6 +97,12 @@ const Flow = ({
       client?.itemsObserver?.(itemsObserver as ItemsObserver)
     }
   }, [itemsObserver, client.itemsObserver]);
+
+  useEffect(() => {
+    if (client?.linksCountObserver && linksCountObserver) {
+      client?.linksCountObserver?.(linksCountObserver);
+    }
+  }, [client?.linksCountObserver, linksCountObserver]);
 
   useEffect(() => {
     if (onInitialize && onRun && isExecutePostRenderEffect) {
