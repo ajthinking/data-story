@@ -46,7 +46,6 @@ export class InputObserverController {
   reportLinksCount(memoryObserver: MemoryLinksCountObserver): void {
     const inputObservers = this.isReport(memoryObserver, RequestObserverType.linkCountsObserver) as LinkCountsObserver[];
     inputObservers.map((inputObserver) => {
-      // todo: replace the items.length with the actual count of the links count
       inputObserver.onReceive({
         links: [{
           linkId: memoryObserver.linkId,

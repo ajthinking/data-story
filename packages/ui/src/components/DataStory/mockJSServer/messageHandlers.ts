@@ -44,11 +44,6 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       const execution = executor?.execute();
 
       for await(const executionUpdate of execution) {
-        // 在这里更新 links count 无法使用 throttle，因为都是用的执行的最新状态
-        // sendEvent({
-        //   ...executionUpdate,
-        //   type: 'LinkCountsObserver'
-        // })
         sendEvent(executionUpdate);
       }
 
