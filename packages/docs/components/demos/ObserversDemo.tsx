@@ -19,7 +19,7 @@ export default () => {
     <div className="w-full" style={{ height: '36vh' }}>
       <DataStory
         client={client}
-        observers={{
+        itemsObserver={{
           type: RequestObserverType.itemsObserver,
           // set the linkIds that you want to observe
           linkIds: [diagram.links[0]?.id],

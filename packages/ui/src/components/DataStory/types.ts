@@ -5,7 +5,7 @@ import {
   Param,
   RepeatableParam,
   type ReportCallback,
-  type ExecutionObserver
+  type ExecutionObserver, ItemsObserver, LinkCountsObserver
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
@@ -36,7 +36,8 @@ export type DataStoryProps = {
   initDiagram?: Diagram | null;
   hideControls?: boolean | ControlsType[];
   slotComponents?: React.ReactNode[];
-  observers?: ExecutionObserver;
+  itemsObserver?: ItemsObserver;
+  linksCountObserver?: LinkCountsObserver;
   onInitialize?: DataStoryCallback;
   hideSidebar?: boolean;
   onDrop?: (event: any, addNodeFromDescription: any) => void;
