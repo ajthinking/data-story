@@ -11,11 +11,11 @@ export const linkCountsObserver: MessageHandler<LinkCountsObserver> = async({
 }: MessageHandlerParams<LinkCountsObserver>) => {
   inputObserverController.pushExecutionObserver({
     ...data,
-    onReceive: ({ links, msgId }) => {
+    onReceive: ({ links }) => {
       ws.send(JSON.stringify({
         links: links,
         type: RequestObserverType.linkCountsObserver,
-        msgId,
+        msgId: data.msgId
       }))
     }
   } as LinkCountsObserver);
