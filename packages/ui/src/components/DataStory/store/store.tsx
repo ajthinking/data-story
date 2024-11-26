@@ -8,7 +8,7 @@ import {
   LinkGuesser,
   Node,
   NodeDescription,
-  Param
+  Param, RequestObserverType
 } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import React, { Ref, useImperativeHandle, useState } from 'react';
@@ -26,7 +26,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   openNodeSidebarId: null,
   observerMap: new Map(),
   focusOnFlow: () => void 0,
-  clientRun: (params: ClientRunParams) => {},
+  clientRun: (params: ClientRunParams) => {
+  },
 
   // METHODS
   toDiagram: () => {
@@ -144,6 +145,9 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     if (options.callback) {
       options.callback({ run: get().onRun })
     }
+    if (options.client?.linksCountObserver) {
+      get().linkCountsObserver();
+    }
   },
   updateDiagram: (diagram: Diagram) => {
     const reactFlowObject = ReactFlowFactory.fromDiagram(diagram)
@@ -167,7 +171,23 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   setParams: (params: Param[]) => {
     set({ params })
   },
-  updateEdgeCounts: ({edgeCounts, state}) => {
+  // todo-stone: 使用 linkCountsObserver 来更新边的数量
+  linkCountsObserver: () => {
+    const allLinkIds = get().edges.map(edge => edge.id);
+    get().client?.linksCountObserver?.({
+      linkIds: allLinkIds,
+      type: RequestObserverType.linkCountsObserver,
+      onReceive: ({ links }) => {
+        console.log('linkCountsObserver', links);
+        if (!links || links.length === 0) return;
+        get().updateEdgeCounts({
+          edgeCounts: { [links[0].linkId]: links[0].count },
+          state: links[0].state || 'running',
+        })
+      }
+    })
+  },
+  updateEdgeCounts: ({ edgeCounts, state }) => {
     let updatedEdges: Edge[] = [];
     if (state === 'complete') {
       updatedEdges = get().edges.map(edge => ({

@@ -68,12 +68,11 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
-    console.log('LinkCountsObserver', data);
     inputObserverController.pushExecutionObserver({
       ...data as LinkCountsObserver,
-      onReceive: (counts: Record<string, number>) => {
+      onReceive: ({links}) => {
         sendEvent({
-          counts,
+          links: links,
           type: RequestObserverType.linkCountsObserver
         })
       }
