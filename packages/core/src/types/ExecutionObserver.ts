@@ -26,6 +26,7 @@ export type LinkCountsObserver = {
   throttleMs?: number,
   onReceive: (params:{
     links: LinkCountInfo[],
+    msgId?: string,
     // type: RequestObserverType.linkCountsObserver,
   }) => void,
 }
