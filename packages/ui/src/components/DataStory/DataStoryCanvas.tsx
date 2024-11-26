@@ -69,7 +69,6 @@ const Flow = ({
     connect: state.connect,
     onInit: state.onInit,
     onRun: state.onRun,
-    setObservers: state.setObservers,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
   });
@@ -82,7 +81,6 @@ const Flow = ({
     onEdgesChange,
     onInit,
     onRun,
-    setObservers,
     addNodeFromDescription,
     toDiagram,
   } = useStore(selector, shallow);
@@ -192,7 +190,6 @@ const Flow = ({
             rfInstance,
             initDiagram,
             callback: onInitialize,
-            clientRun: client?.run,
             focusOnFlow,
             client
           });

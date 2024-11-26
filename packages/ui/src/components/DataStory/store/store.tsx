@@ -15,7 +15,7 @@ import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
-import { ClientRunParams, StoreInitOptions, StoreSchema } from '../types';
+import { StoreInitOptions, StoreSchema } from '../types';
 import { shallow } from 'zustand/shallow';
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -24,10 +24,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   edges: [],
   params: [],
   openNodeSidebarId: null,
-  observerMap: new Map(),
   focusOnFlow: () => void 0,
-  clientRun: (params: ClientRunParams) => {
-  },
 
   // METHODS
   toDiagram: () => {
@@ -136,7 +133,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
   onInit: (options: StoreInitOptions) => {
     set({ rfInstance: options.rfInstance })
-    set({ clientRun: options.clientRun })
     set({ focusOnFlow: options.focusOnFlow })
     set({ client: options.client })
 
@@ -159,19 +155,15 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   onRun: () => {
-    // 将 ObserverMap 转换为 ExecutionObserver[]
-    const ObserverArray = Array.from(get().observerMap.values());
-    get()?.clientRun?.({
+    get()?.client?.run({
       diagram: get().toDiagram(),
-      updateEdgeCounts: get().updateEdgeCounts,
-      observers: ObserverArray
     })
   },
 
   setParams: (params: Param[]) => {
     set({ params })
   },
-  // todo-stone: 使用 linkCountsObserver 来更新边的数量
+
   linkCountsObserver: () => {
     const allLinkIds = get().edges.map(edge => edge.id);
     get().client?.linksCountObserver?.({
@@ -182,7 +174,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         if (!links || links.length === 0) return;
         get().updateEdgeCounts({
           edgeCounts: { [links[0].linkId]: links[0].count },
-          state: links[0].state || 'running',
+          state: links[0].state || 'complete',
         })
       }
     })
@@ -213,13 +205,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   },
   setOpenNodeSidebarId: (id: string | null) => {
     set({ openNodeSidebarId: id })
-  },
-  setObservers(observerId: string, executionObserver?: ExecutionObserver) {
-    if (!executionObserver) {
-      return;
-    }
-    get().observerMap.set(observerId, executionObserver);
-  },
+  }
 }));
 
 export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);

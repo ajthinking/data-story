@@ -22,9 +22,7 @@ export type ServerClientObservationConfig = {
 export type ObserverMap = Map<string, ExecutionObserver>
 
 export interface ClientRunParams {
-  updateEdgeCounts: StoreSchema['updateEdgeCounts'],
   diagram: Diagram,
-  observers:ExecutionObserver[]
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
@@ -64,7 +62,6 @@ export type StoreInitOptions = {
   rfInstance: ReactFlowInstance<ReactFlowNode, Edge<Record<string, unknown>, string | undefined>>,
   initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
-  clientRun?: (params: ClientRunParams) => void;
   focusOnFlow?: StoreSchema['focusOnFlow'];
   client?: WorkspaceApiClient;
 }
@@ -94,7 +91,6 @@ export type NodeSettingsFormProps = {
 }
 
 export type StoreSchema = {
-  clientRun?: (params: ClientRunParams) => void;
   client?: WorkspaceApiClient;
   linkCountsObserver: () => void;
 
@@ -134,10 +130,6 @@ export type StoreSchema = {
   /** Sidebar */
   openNodeSidebarId: string | null;
   setOpenNodeSidebarId: (id: string | null) => void;
-
-  /** observerMap are used to monitor data changes in the node */
-  observerMap: ObserverMap;
-  setObservers: (key: string, observers?: ExecutionObserver) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptions?: NodeDescription[];

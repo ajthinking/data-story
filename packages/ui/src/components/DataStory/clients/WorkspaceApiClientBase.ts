@@ -90,7 +90,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     });
   }
 
-  run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
+  run({ diagram }: ClientRunParams): void {
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
