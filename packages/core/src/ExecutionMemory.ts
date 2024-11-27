@@ -113,7 +113,6 @@ export class ExecutionMemory {
 
   setLinkCount(linkId: LinkId, count: number) {
     this.history.push(`Setting link ${linkId} count to ${count}`)
-    // this.inputObserverController?.reportItems({ linkId, nodeId: linkId }, count)
     this.inputObserverController?.reportLinksCount({
       linkId,
       type: RequestObserverType.linkCountsObserver,

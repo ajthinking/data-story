@@ -167,13 +167,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ params })
   },
 
+  // Since linkCountsObserver is working with real-time data, it receive one data point at a time. Once throttling is implemented, we will switch to batch transmission.
   linkCountsObserver: () => {
     const allLinkIds = get().edges.map(edge => edge.id);
     get().client?.linksCountObserver?.({
       linkIds: allLinkIds,
       type: RequestObserverType.linkCountsObserver,
       onReceive: ({ links }) => {
-        console.log('linkCountsObserver', links);
         if (!links || links.length === 0) return;
         get().updateEdgeCounts({
           edgeCounts: { [links[0].linkId]: links[0].count },
@@ -182,6 +182,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       }
     })
   },
+
   updateEdgeCounts: ({ edgeCounts, state }) => {
     let updatedEdges: Edge[] = [];
     if (state === 'complete') {
@@ -239,7 +240,7 @@ export const useGetStore = (ref: Ref<unknown>) => {
   }, [addNodeFromDescription, toDiagram, onRun]);
 }
 
-export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {
+export const DataStoryCanvasProvider = ({ children }: { children: React.ReactNode }) => {
   const [useLocalStore] = useState(() => createStore());
 
   return <DataStoryContext.Provider value={useLocalStore}>
