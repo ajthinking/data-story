@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { Application, InMemoryStorage } from '@data-story/core';
+import { Application, InMemoryStorage, InputObserverController } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
 
@@ -51,13 +51,20 @@ export class SocketServer {
     storage: InMemoryStorage
   ) {
     const parsed: { type: string } & Record<string, any> = JSON.parse(message);
-
     const handler = this.messageHandlers[parsed.type];
+    const inputObserverController = new InputObserverController();
+
     if (!handler) {
       console.warn('Unknown message type (server): ' + parsed.type);
       return;
     }
 
-    await handler(ws, parsed, this.app, storage);
+    await handler({
+      ws,
+      data: parsed,
+      app: this.app,
+      storage,
+      inputObserverController
+    });
   }
 }

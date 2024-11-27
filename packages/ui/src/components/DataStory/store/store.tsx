@@ -1,14 +1,21 @@
 import { StoreApi, UseBoundStore } from 'zustand';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeChange } from '@xyflow/react';
-import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
+import {
+  createDataStoryId,
+  Diagram,
+  ExecutionObserver,
+  LinkGuesser,
+  Node,
+  NodeDescription,
+  Param
+} from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
-import { createObservers } from './createObservers';
-import { ClientRunParams, DataStoryObservers, StoreInitOptions, StoreSchema } from '../types';
+import { ClientRunParams, StoreInitOptions, StoreSchema } from '../types';
 import { shallow } from 'zustand/shallow';
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -130,6 +137,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ rfInstance: options.rfInstance })
     set({ clientRun: options.clientRun })
     set({ focusOnFlow: options.focusOnFlow })
+    set({ client: options.client })
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
@@ -147,38 +155,51 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   onRun: () => {
-    const observers = createObservers(get().observerMap);
+    // 将 ObserverMap 转换为 ExecutionObserver[]
+    const ObserverArray = Array.from(get().observerMap.values());
     get()?.clientRun?.({
       diagram: get().toDiagram(),
       updateEdgeCounts: get().updateEdgeCounts,
-      observers
+      observers: ObserverArray
     })
   },
 
   setParams: (params: Param[]) => {
     set({ params })
   },
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => {
-    const updatedEdges = get().edges.map(edge => ({
-      ...edge,
-      ...(edgeCounts[edge.id] !== undefined && {
-        label: edgeCounts[edge.id],
-        labelBgStyle: { opacity: 0.6 },
-      }),
-    }));
+  updateEdgeCounts: ({edgeCounts, state}) => {
+    let updatedEdges: Edge[] = [];
+    if (state === 'complete') {
+      updatedEdges = get().edges.map(edge => ({
+        ...edge,
+        ...(edgeCounts[edge.id] !== undefined && {
+          label: edgeCounts[edge.id],
+          labelBgStyle: { opacity: 0.6 },
+          style: {}
+        }),
+      }));
+    } else {
+      updatedEdges = get().edges.map(edge => ({
+        ...edge,
+        ...(edgeCounts[edge.id] !== undefined && {
+          label: edgeCounts[edge.id],
+          labelBgStyle: { opacity: 0.6 },
+          style: { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' }
+        }),
+      }));
+    }
 
     get().setEdges(updatedEdges);
   },
   setOpenNodeSidebarId: (id: string | null) => {
     set({ openNodeSidebarId: id })
   },
-  setObservers(observerId: string, observers?: DataStoryObservers) {
-    get().observerMap.set(observerId, (observers || {
-      inputObservers: [], onDataChange: () => {
-      }
-    }) as DataStoryObservers);
+  setObservers(observerId: string, executionObserver?: ExecutionObserver) {
+    if (!executionObserver) {
+      return;
+    }
+    get().observerMap.set(observerId, executionObserver);
   },
-
 }));
 
 export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);

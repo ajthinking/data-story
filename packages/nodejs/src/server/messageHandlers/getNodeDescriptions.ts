@@ -1,16 +1,15 @@
-import { Application } from '@data-story/core';
-import { MessageHandler } from '../MessageHandler';
-import WebSocket from 'ws';
+import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 
 export type DescribeMessage = {
   type: 'getNodeDescriptions',
   msgId: string;
 }
 
-export const getNodeDescriptions: MessageHandler<DescribeMessage> = async (
-  ws: WebSocket,
-  data: DescribeMessage,
-  app: Application
+export const getNodeDescriptions: MessageHandler<DescribeMessage> = async ({
+  ws,
+  data,
+  app,
+}: MessageHandlerParams<DescribeMessage>
 ) => {
   const response = {
     ...data,

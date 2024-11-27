@@ -259,7 +259,7 @@ export class ComputerTester {
       map[output.name] = connectedLinkIds
     }
 
-    return new OutputDevice(map, this.memory!)
+    return new OutputDevice(map, this.memory!, this.node!)
   }
 
   protected makeParams(): Param[] {

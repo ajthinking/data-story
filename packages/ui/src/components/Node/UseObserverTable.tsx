@@ -1,9 +1,9 @@
 import { useStore } from '../DataStory/store/store';
-import { DataStoryObservers, StoreSchema } from '../DataStory/types';
-import { createDataStoryId } from '@data-story/core';
+import { StoreSchema } from '../DataStory/types';
+import { ItemsObserver, RequestObserverType } from '@data-story/core';
 import { useMount, useUnmount } from 'ahooks';
-import { useRef } from 'react';
 import { shallow } from 'zustand/shallow';
+import { Subscription } from 'rxjs';
 
 export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems }: {
   id: string,
@@ -12,27 +12,25 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
   setItems: (value: any) => void
 }): void {
   const selector = (state: StoreSchema) => ({
-    observerMap: state.observerMap,
-    setObservers: state.setObservers,
+    toDiagram: state.toDiagram,
+    client: state.client,
   });
 
-  const { observerMap, setObservers } = useStore(selector, shallow);
+  const { toDiagram, client } = useStore(selector, shallow);
 
-  const observerId = useRef(createDataStoryId());
+  let tableSubscription: Subscription;
   // Add the node to the inputObservers when the node is mounted
   useMount(() => {
-    if (observerMap?.get(observerId.current)) {
-      console.error('observers already exist');
+    if (!client?.itemsObserver) {
       return;
     }
 
-    const tableObserver: DataStoryObservers = {
-      inputObservers: [{ nodeId: id, portId: 'input' }],
-      onDataChange: (batchedItems, inputObserver) => {
-        if (!observerMap?.get(observerId.current)) {
-          console.error('observer unmounted');
-          return;
-        }
+    const linkId = toDiagram()?.getLinkIdFromNodeId(id, 'input');
+
+    const tableObserver: ItemsObserver = {
+      linkIds: [linkId],
+      type: RequestObserverType.itemsObserver,
+      onReceive: (batchedItems) => {
         if (!isDataFetched) {
           setIsDataFetched(true);
         }
@@ -41,12 +39,10 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
       }
     }
 
-    setObservers(observerId.current, tableObserver);
+    tableSubscription = client?.itemsObserver?.(tableObserver);
   });
 
   useUnmount(() => {
-    if (observerMap && !observerMap?.get(observerId.current)) {
-      observerMap.delete(observerId.current);
-    }
+    tableSubscription?.unsubscribe();
   });
 }

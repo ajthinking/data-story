@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { DataStoryNodeData } from './ReactFlowNode';
-import { Handle, Position } from '@xyflow/react';
 import { ItemCollection } from './ItemCollection';
 import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
 import { useDataStoryEvent } from '../DataStory/events/eventManager';
@@ -19,8 +18,6 @@ import {
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { notUndefined, useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
-import { Port } from '@data-story/core';
-import { PortIcon } from '../DataStory/icons/portIcon';
 import CustomHandle from './CustomHandle';
 
 const TRUNCATE_CELL_LENGTH = 50;

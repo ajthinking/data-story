@@ -5,6 +5,8 @@ import { ItemValue } from './types/ItemValue'
 import { Hook } from './types/Hook'
 import { InputDevice } from './InputDevice'
 import { OutputDevice } from './OutputDevice'
+import { InputObserverController } from './InputObserverController'
+import { RequestObserverType } from './types/InputObserveConfig';
 
 type MemoryValues = {
   nodeStatuses?: Map<NodeId, NodeStatus>,
@@ -14,6 +16,7 @@ type MemoryValues = {
   inputDevices?: Map<NodeId, InputDevice>,
   outputDevices?: Map<NodeId, OutputDevice>,
   hooks?: any[],
+  inputObserverController?: InputObserverController,
 }
 
 export class ExecutionMemory {
@@ -24,6 +27,7 @@ export class ExecutionMemory {
   inputDevices: Map<NodeId, InputDevice>
   outputDevices: Map<NodeId, OutputDevice>
   hooks: Hook[]
+  inputObserverController?: InputObserverController
 
   history: string[] = []
 
@@ -34,7 +38,8 @@ export class ExecutionMemory {
     this.linkCounts = values.linkCounts || new Map()
     this.inputDevices = values.inputDevices || new Map()
     this.outputDevices = values.outputDevices || new Map()
-    this.hooks = values.hooks || []
+    this.hooks = values.hooks || [];
+    this.inputObserverController = values.inputObserverController;
   }
 
   getNodeStatus(nodeId: NodeId): NodeStatus | undefined {
@@ -78,11 +83,22 @@ export class ExecutionMemory {
     const linkItems = this.linkItems.get(linkId)!
     this.linkItems.set(linkId, linkItems.concat(items))
 
+    this.inputObserverController?.reportItems({
+      linkId,
+      type: RequestObserverType.itemsObserver,
+      items
+    })
+
     this.history.push(`Pushed ${items.length} items to link ${linkId}`)
   }
 
   setLinkItems(linkId: LinkId, items: ItemValue[]) {
     this.history.push(`Setting link ${linkId} items: ${JSON.stringify(items)}`)
+    this.inputObserverController?.reportItems({
+      linkId,
+      type: RequestObserverType.itemsObserver,
+      items
+    })
 
     this.linkItems.set(linkId, items)
   }
@@ -97,6 +113,7 @@ export class ExecutionMemory {
 
   setLinkCount(linkId: LinkId, count: number) {
     this.history.push(`Setting link ${linkId} count to ${count}`)
+    // this.inputObserverController?.reportItems({ linkId, nodeId: linkId }, count)
 
     this.linkCounts.set(linkId, count)
   }

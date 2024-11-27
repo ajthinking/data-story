@@ -1,16 +1,14 @@
 import {
   Diagram,
-  type InputObserveConfig,
   type InputObserver,
   NodeDescription,
-  type NotifyObserversCallback,
   Param,
   RepeatableParam,
   type ReportCallback,
+  type ExecutionObserver
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
-import { Direction } from './getNodesWithNewSelection';
 import React from 'react';
 import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
 
@@ -21,20 +19,12 @@ export type ServerClientObservationConfig = {
   onDataChange: ReportCallback,
 }
 
-export type DataStoryObservers = {
-  inputObservers: Array<InputObserveConfig & {observerId?: string}>,
-  onDataChange: NotifyObserversCallback,
-}
-
-export type ObserverMap = Map<string, {
-  inputObservers: Array<InputObserveConfig & {observerId?: string}>,
-  onDataChange: NotifyObserversCallback,
-}>
+export type ObserverMap = Map<string, ExecutionObserver>
 
 export interface ClientRunParams {
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => void,
+  updateEdgeCounts: StoreSchema['updateEdgeCounts'],
   diagram: Diagram,
-  observers?: ServerClientObservationConfig
+  observers:ExecutionObserver[]
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
@@ -46,7 +36,7 @@ export type DataStoryProps = {
   initDiagram?: Diagram | null;
   hideControls?: boolean | ControlsType[];
   slotComponents?: React.ReactNode[];
-  observers?: DataStoryObservers;
+  observers?: ExecutionObserver;
   onInitialize?: DataStoryCallback;
   hideSidebar?: boolean;
   onDrop?: (event: any, addNodeFromDescription: any) => void;
@@ -75,6 +65,7 @@ export type StoreInitOptions = {
   callback?: DataStoryCallback,
   clientRun?: (params: ClientRunParams) => void;
   focusOnFlow?: StoreSchema['focusOnFlow'];
+  client?: WorkspaceApiClient;
 }
 
 export type FormCommonProps = {
@@ -102,7 +93,8 @@ export type NodeSettingsFormProps = {
 }
 
 export type StoreSchema = {
-  clientRun?: (params: ClientRunParams) => void
+  clientRun?: (params: ClientRunParams) => void;
+  client?: WorkspaceApiClient;
 
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
@@ -121,7 +113,7 @@ export type StoreSchema = {
   /** The Edges */
   edges: Edge[];
   onEdgesChange: OnEdgesChange;
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
+  updateEdgeCounts: (params: {edgeCounts: Record<string, number>, state: 'running' | 'complete'}) => void;
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
 
@@ -143,7 +135,7 @@ export type StoreSchema = {
 
   /** observerMap are used to monitor data changes in the node */
   observerMap: ObserverMap;
-  setObservers: (key: string, observers?: DataStoryObservers) => void;
+  setObservers: (key: string, observers?: ExecutionObserver) => void;
 };
 export type NodeSettingsSidebarProps = Omit<NodeSettingsFormProps, 'node'> & {
   nodeDescriptions?: NodeDescription[];

@@ -1,16 +1,15 @@
 import { Diagram } from '@data-story/core';
-import WebSocket from 'ws';
-import { MessageHandler } from '../MessageHandler';
+import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 
 interface GetDiagramMessage {
   type: 'getDiagram';
   msgId: string;
 }
 
-export const getDiagram: MessageHandler<GetDiagramMessage> = async(
-  ws: WebSocket,
-  data: GetDiagramMessage,
-) => {
+export const getDiagram: MessageHandler<GetDiagramMessage> = async({
+  ws,
+  data,
+}: MessageHandlerParams<GetDiagramMessage>) => {
   const diagram = new Diagram();
   ws.send(JSON.stringify({
     ...data,

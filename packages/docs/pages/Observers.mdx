@@ -3,30 +3,45 @@
 Configure the `DataStory` component by setting `observers` to monitor changes in the data of the node
 
 ```tsx
-<DataStory observers ={ {
-  // when the portId is not set, monitor all input ports of the node
-  inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
-  onDataChange: (inputObserver, items) => {
-    // open the devtool console to see the data change
-    console.log('onDataChange', inputObserver, items);
-  },
-}}/>
+<DataStory
+  observers={{
+    type: RequestObserverType.ItemsObserver,
+    // set the linkIds that you want to observe
+    linkIds: [diagram.links[0]?.id],
+    onReceive: (items, inputObserver) => {
+      // open the devtool console to see the data change
+      console.log('Observer items', items, 'Observer inputObserver', inputObserver);
+    }
+  }}
+/>
 ```
 
 ## attributes
 
 ```ts
-inputObservers: Array<{ nodeId: string, portId?: string }>
-onDataChange: (inputObserver: InputObserver, items: ItemValue[]) => void
+export type ItemsObserver = {
+  type: RequestObserverType.ItemsObserver,
+  linkIds: string[],
+  observerId?: string,
+  direction?: 'pull' | 'push',
+  onlyFirstNItems?: number,
+  throttleMs?: number,
+  onReceive: NotifyObserversCallback,
+}
+
+export type LinkCountsObserver = {
+  type: RequestObserverType.LinkCountsObserver,
+  linkIds: string[],
+  observerId?: string,
+  throttleMs?: number,
+  onReceive: (count: number) => void,
+}
+
+export type ExecutionObserver = ItemsObserver | LinkCountsObserver;
 ```
 
 ## Demo
 
 import ObserversDemo from '../components/demos/ObserversDemo';
 
-<ObserversDemo observers ={ {
-  inputObservers: [{ nodeId: 'Table.1', portId: 'input'}],
-  onDataChange: (inputObserver, items) => {
-    console.log('onDataChange', inputObserver, items);
-  },
-}}/>
+<ObserversDemo />

@@ -1,7 +1,13 @@
 import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { ClientRunParams, ServerClientObservationConfig } from '../types';
-import { filter, Observable, Subject } from 'rxjs';
-import { Diagram, Hook, NodeDescription } from '@data-story/core';
+import { filter, Observable, Subject, Subscription } from 'rxjs';
+import {
+  Diagram,
+  Hook,
+  InputObserveConfig, ItemsObserver,
+  ItemValue, LinkCountsObserver,
+  NodeDescription,
+} from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 
@@ -16,15 +22,15 @@ const matchMsgType = (type: string) => it => it.type === type;
 export class WorkspaceApiClientBase implements WorkspaceApiClient {
 
   private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
-  private observers?: ServerClientObservationConfig;
+  private observers?: ClientRunParams['observers'];
   private receivedMsg$ = new Subject();
 
   constructor(private transport: Transport) {
     this.initExecutionUpdates();
-    this.initNotifyObservers();
     this.initExecutionResult();
     this.initExecutionFailure();
     this.initUpdateStorage();
+    this.initLinkCountsObserver();
     this.run = this.run.bind(this);
     this.updateDiagram = this.updateDiagram.bind(this);
   }
@@ -68,6 +74,18 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     }
   }
 
+  linkCountsObserver(params: LinkCountsObserver): Observable<number> {
+    return this.transport.streaming(params);
+  }
+
+  itemsObserver(params: ItemsObserver): Subscription {
+    const msg$ = this.transport.streaming(params);
+    return msg$.subscribe((data) => {
+      const { items, inputObserver } = data as { items: ItemValue[], inputObserver: InputObserveConfig };
+      params.onReceive(items, inputObserver);
+    });
+  }
+
   run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
     this.observers = observers;
     this.updateEdgeCounts = updateEdgeCounts;
@@ -78,17 +96,34 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     const msg$ = this.transport.streaming({
       type: 'run',
       diagram,
-      inputObservers: observers?.inputObservers || [],
+      // inputObservers: observers?.inputObservers || [],
     });
     msg$.subscribe(this.receivedMsg$);
   }
 
   //<editor-fold desc="Message init">
+  private initReceiveMsg() {
+    return this.receivedMsg$.subscribe((data: any) => {
+      console.log('Received message:', data);
+    });
+  }
+
+  private initLinkCountsObserver() {
+    return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
+      .subscribe((data: {
+        counts: Record<string, number>,
+        state: 'running' | 'complete',
+      }) => {
+        this.updateEdgeCounts!({
+          edgeCounts: data.counts,
+          state: data.state,
+        })
+      })
+  }
+
   private initExecutionUpdates() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
       .subscribe((data: any) => {
-        this.updateEdgeCounts!(data.counts)
-
         for(const hook of data.hooks as Hook[]) {
           if (hook.type === 'CONSOLE_LOG') {
             console.log(...hook.args)
@@ -101,16 +136,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
             providedCallback(...hook.args)
           }
         }
-      })
-  }
-
-  private initNotifyObservers() {
-    return this.receivedMsg$.pipe(filter(matchMsgType('NotifyObservers')))
-      .subscribe((data: any) => {
-        this?.observers?.onDataChange(
-          data.items,
-          data.inputObservers,
-        );
       })
   }
 

@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import { Application, InMemoryStorage } from '@data-story/core';
-import { MessageHandler } from '../MessageHandler';
+import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 
 export type GetItemsMessage = {
   type: 'getItems',
@@ -11,13 +11,12 @@ export type GetItemsMessage = {
   total?: number,
 }
 
-export const getItems:  MessageHandler<GetItemsMessage> = async (
-  ws: WebSocket,
-  parsed: GetItemsMessage,
-  app: Application,
-  storage: InMemoryStorage
-)  => {
-  const {offset = 0, limit = 10, atNodeId, id} = parsed;
+export const getItems: MessageHandler<GetItemsMessage> = async({
+  ws,
+  data,
+  storage
+}: MessageHandlerParams<GetItemsMessage>) => {
+  const { offset = 0, limit = 10, atNodeId, id } = data;
   const items = storage.itemsMap.get(atNodeId) ?? [];
 
   ws.send(JSON.stringify({

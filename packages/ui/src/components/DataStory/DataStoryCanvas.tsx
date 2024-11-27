@@ -1,6 +1,14 @@
 import { DataStoryControls } from './dataStoryControls';
 import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Background, BackgroundVariant, EdgeChange, NodeChange, ReactFlow, ReactFlowProvider, useStoreApi } from '@xyflow/react';
+import {
+  Background,
+  BackgroundVariant,
+  EdgeChange,
+  NodeChange,
+  ReactFlow,
+  ReactFlowProvider,
+  useStoreApi
+} from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
@@ -15,6 +23,7 @@ import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
 import { getNodesWithNewSelection } from './getNodesWithNewSelection';
+import { ItemsObserver } from '@data-story/core';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -83,8 +92,10 @@ const Flow = ({
   const { addSelectedNodes, setNodes } = reactFlowStore.getState();
 
   useEffect(() => {
-    setObservers('workbench', observers);
-  }, [observers, setObservers]);
+    if (client?.itemsObserver && observers) {
+      client?.itemsObserver?.(observers as ItemsObserver)
+    }
+  }, [observers, client.itemsObserver]);
 
   useEffect(() => {
     if (onInitialize && onRun && isExecutePostRenderEffect) {
@@ -118,7 +129,7 @@ const Flow = ({
 
   const traverseNodes = useCallback((direction) => {
     const selectedNode = getNodesWithNewSelection(direction, nodes);
-    if (selectedNode)  addSelectedNodes([selectedNode.id]);
+    if (selectedNode) addSelectedNodes([selectedNode.id]);
   }, [nodes]);
 
   useHotkeys({
@@ -136,6 +147,15 @@ const Flow = ({
 
   return (
     <>
+      <style>
+        {`
+          @keyframes dash {
+            to {
+              stroke-dashoffset: -10;
+            }
+          }
+        `}
+      </style>
       <ReactFlow
         tabIndex={0}
         ref={flowRef}
@@ -167,6 +187,7 @@ const Flow = ({
             callback: onInitialize,
             clientRun: client?.run,
             focusOnFlow,
+            client
           });
           setIsExecutePostRenderEffect(true);
         }}
@@ -183,7 +204,6 @@ const Flow = ({
         onDrop={
           useCallback((event) => {
             const handler = onDrop || onDropDefault;
-
             handler(event, addNodeFromDescription)
           }, [addNodeFromDescription]
           )}

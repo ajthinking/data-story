@@ -5,7 +5,8 @@ import {
   InMemoryStorage,
   type InputObserver,
   InputObserverController,
-  type ItemValue
+  type ItemValue, RequestObserverType,
+  type ItemsObserver
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 
@@ -28,32 +29,25 @@ export type MessageHandlers = {
 };
 const LocalStorageKey = 'data-story-tree';
 
-export const getDefaultMsgHandlers = (app: Application) => {
+export const getDefaultMsgHandlers = (app: Application, inputObserverController: InputObserverController ) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
-    const { diagram, inputObservers } = data as RunMessage;
-
-    const inputObserverController = new InputObserverController(
-      inputObservers || [],
-      (items: ItemValue[], inputObservers: InputObserver[]) => {
-        sendEvent({
-          type: 'NotifyObservers',
-          items,
-          inputObservers
-        });
-      }
-    );
+    const { diagram } = data as RunMessage;
 
     const executor = app!.getExecutor({
       diagram,
       storage,
-      inputObserverController
+      inputObserverController,
     });
 
     try {
       const execution = executor?.execute();
 
       for await(const executionUpdate of execution) {
+        sendEvent({
+          ...executionUpdate,
+          type: 'LinkCountsObserver'
+        })
         sendEvent(executionUpdate);
       }
 
@@ -72,6 +66,26 @@ export const getDefaultMsgHandlers = (app: Application) => {
     }
   };
 
+  const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
+    console.log('LinkCountsObserver', data);
+  }
+
+  const itemsObserver = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.pushExecutionObserver({
+      ...data as ItemsObserver,
+      onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
+        sendEvent({
+          items,
+          inputObserver,
+          type: RequestObserverType.itemsObserver
+        })
+      }
+    } as ItemsObserver);
+  }
+
+  const notifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
+    console.log('NotifyDataUpdate', data);
+  }
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
     const nodeDescriptions = app!.descriptions();
     setTimeout(() => {
@@ -99,6 +113,9 @@ export const getDefaultMsgHandlers = (app: Application) => {
     run,
     getNodeDescriptions,
     updateDiagram,
-    getDiagram
+    getDiagram,
+    linkCountsObserver,
+    itemsObserver,
+    notifyDataUpdate
   }
 }
