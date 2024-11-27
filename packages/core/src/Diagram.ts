@@ -12,13 +12,13 @@ export class Diagram {
   nodes: Node[]
   links: Link[]
   params: Param[]
-  viewport: {x: number, y: number, zoom: number}
+  viewport: { x: number, y: number, zoom: number }
 
   constructor(options?: {
     nodes?: Node[],
     links?: Link[],
     params?: Param[],
-    viewport?: {x: number, y: number, zoom: number}
+    viewport?: { x: number, y: number, zoom: number }
   }) {
     this.nodes = options?.nodes || []
     this.links = options?.links || []
@@ -86,12 +86,12 @@ export class Diagram {
   getNodeIdAndPortIdFromLinkId(linkId: string): { nodeId: string, portId: string } {
     const link = this.links.find(link => link.id === linkId)
 
-    if(!link) throw new Error(`Link with id ${linkId} not found`)
+    if (!link) throw new Error(`Link with id ${linkId} not found`)
 
     const sourceNode = this.nodeWithOutputPortId(link.sourcePortId)
     const targetNode = this.nodeWithInputPortId(link.targetPortId)
 
-    if(!sourceNode || !targetNode) throw new Error(`Source or target node not found for link ${linkId}`)
+    if (!sourceNode || !targetNode) throw new Error(`Source or target node not found for link ${linkId}`)
 
     return {
       nodeId: targetNode.id,
@@ -99,18 +99,15 @@ export class Diagram {
     }
   }
 
-  getLinkIdFromNodeId(nodeId: string, portName: string): string {
+  getLinkIdFromNodeId(nodeId: string, portName: string): string | undefined {
     const node = this.nodes.find(node => node.id === nodeId)
-
-    if(!node) throw new Error(`Node with id ${nodeId} not found`)
+    if (!node) return;
 
     const port = node.inputs.find(input => input.name === portName)
-
-    if(!port) throw new Error(`Port with name ${portName} not found`)
+    if (!port) return;
 
     const link = this.links.find(link => link.targetPortId === port.id)
-
-    if(!link) throw new Error(`Link with target port id ${port.id} not found`)
+    if (!link) return;
 
     return link.id
   }
