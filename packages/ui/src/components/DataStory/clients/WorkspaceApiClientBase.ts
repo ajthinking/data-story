@@ -37,7 +37,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     this.initUpdateStorage();
     this.run = this.run.bind(this);
     this.updateDiagram = this.updateDiagram.bind(this);
-    this.initReceiveMsg();
+    // this.initReceiveMsg();
   }
 
   async getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
@@ -84,7 +84,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     const msg$ = this.transport.streaming(serializableParams);
     return msg$.subscribe((data) => {
       const { items, inputObserver } = data as {items: ItemValue[], inputObserver: InputObserveConfig};
-      console.log('ItemsObserver data:', data);
       params.onReceive(items, inputObserver);
     });
   }
@@ -94,7 +93,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     const msg$ = this.transport.streaming(serializableParams);
     return msg$.subscribe((data) => {
       const { links } = data as { links: LinkCountInfo[] };
-      console.log('LinkCountsObserver data:', data);
       params.onReceive({ links });
     });
   }
@@ -121,12 +119,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
       .subscribe((data: any) => {
         for(const hook of data.hooks as Hook[]) {
-          // todo-stone: 在ds-ext and socket 中替换 linksCountObserver
-          // todo-stone: 使用 itemsObserver replace ExecutionUpdate hook - console
-          // 1. 将 itemsObserver 在 NodeComponent 中调用，只有 Console node 需要调用。
-          // 2. 将 hooks 中执行后的数据传递给 itemsObserver
-          // 3. 现在只有 console 中存在了 hook，是否需要保留 hook 的逻辑？
-          // 4. 我觉得可以保留，需要在前端回调的内容使用 hook 的数据。 和涛涛讨论一下
           if (hook.type === 'CONSOLE_LOG') {
             console.log(...hook.args)
           } else if (hook.type === 'UPDATES') {

@@ -27,7 +27,7 @@ export class InputObserverController {
   /**
    * Determines if a report should be sent for a given inputObserver ( nodeId and portId )
    */
-  private isReport = (inputObserver: MemoryItemObserver | MemoryLinksCountObserver, type: RequestObserverType): ExecutionObserver[] => {
+  private isReport (inputObserver: MemoryItemObserver | MemoryLinksCountObserver, type: RequestObserverType): ExecutionObserver[] {
     return this.executionObservers.filter((executionObserver) => {
       return executionObserver.linkIds.includes(inputObserver.linkId) && executionObserver.type === type;
     });

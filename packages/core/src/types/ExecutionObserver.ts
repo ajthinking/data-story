@@ -27,7 +27,6 @@ export type LinkCountsObserver = {
   msgId?: string,
   onReceive: (params:{
     links: LinkCountInfo[],
-    // type: RequestObserverType.linkCountsObserver,
   }) => void,
 }
 export type NodeObserver = {
