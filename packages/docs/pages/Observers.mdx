@@ -4,13 +4,20 @@ Configure the `DataStory` component by setting `observers` to monitor changes in
 
 ```tsx
 <DataStory
-  observers={{
+  itemsObserver={{
     type: RequestObserverType.ItemsObserver,
     // set the linkIds that you want to observe
     linkIds: [diagram.links[0]?.id],
     onReceive: (items, inputObserver) => {
       // open the devtool console to see the data change
       console.log('Observer items', items, 'Observer inputObserver', inputObserver);
+    }
+  }}
+  linksCountObserver={{
+    type: RequestObserverType.linkCountsObserver as const,
+    linkIds: [diagram.links[1]?.id],
+    onReceive: (count) => {
+      console.log('Link count', count);
     }
   }}
 />

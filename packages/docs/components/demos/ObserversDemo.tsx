@@ -9,7 +9,13 @@ const diagram = core.getDiagramBuilder()
   .add(Signal, { period: 5, count: 10 })
   .add(Table)
   .get();
-
+const linksCountObserver = {
+  type: RequestObserverType.linkCountsObserver as const,
+  linkIds: [diagram.links[0]?.id],
+  onReceive: (count) => {
+    console.log('Link count', count);
+  }
+}
 export default () => {
   const { app, loading } = useRequestApp();
   const client = new CustomizeJSClient({ diagram: diagram, app });
@@ -28,6 +34,7 @@ export default () => {
             console.log('Observer items', items, 'Observer inputObserver', inputObserver);
           }
         }}
+        linksCountObserver={linksCountObserver}
         hideControls={['save']}
       />
     </div>
