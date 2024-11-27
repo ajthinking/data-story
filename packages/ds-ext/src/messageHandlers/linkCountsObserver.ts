@@ -8,10 +8,11 @@ export const linkCountsObserver: MessageHandler = async({ event, webviewPanel, i
   inputObserverController.pushExecutionObserver({
     ...event,
     onReceive: ({ links }) => {
-      webviewPanel.webview.postMessage(JSON.stringify({
+      webviewPanel.webview.postMessage({
         links: links,
-        type: RequestObserverType.linkCountsObserver
-      }));
+        type: RequestObserverType.linkCountsObserver,
+        msgId: event!.msgId,
+      });
     }
   } as LinkCountsObserver);
 };
