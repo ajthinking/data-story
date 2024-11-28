@@ -1,5 +1,5 @@
 import { WorkspaceApiClient } from './WorkspaceApiClient';
-import { ClientRunParams, ServerClientObservationConfig } from '../types';
+import { ClientRunParams } from '../types';
 import { filter, Observable, Subject, Subscription } from 'rxjs';
 import {
   Diagram,
@@ -31,13 +31,11 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   private receivedMsg$ = new Subject();
 
   constructor(private transport: Transport) {
-    this.initExecutionUpdates();
     this.initExecutionResult();
     this.initExecutionFailure();
     this.initUpdateStorage();
     this.run = this.run.bind(this);
     this.updateDiagram = this.updateDiagram.bind(this);
-    // this.initReceiveMsg();
   }
 
   async getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
@@ -113,24 +111,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     return this.receivedMsg$.subscribe((data: any) => {
       console.log('Received message:', data);
     });
-  }
-
-  private initExecutionUpdates() {
-    return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionUpdate')))
-      .subscribe((data: any) => {
-        for(const hook of data.hooks as Hook[]) {
-          if (hook.type === 'CONSOLE_LOG') {
-            console.log(...hook.args)
-          } else if (hook.type === 'UPDATES') {
-            const providedCallback = (...data: any) => {
-              console.log('THIS IS THE UPDATE HOOK!')
-              console.log('DataPassed', data)
-            }
-
-            providedCallback(...hook.args)
-          }
-        }
-      })
   }
 
   private initExecutionResult() {

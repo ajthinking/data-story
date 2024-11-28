@@ -47,12 +47,7 @@ export const onRun: MessageHandler = async ({ event, webviewPanel, inputObserver
   const execution = executor.execute();
 
   try {
-    for await(const update of execution) {
-      webviewPanel.webview.postMessage({
-        msgId,
-        ...update
-      });
-    }
+    for await(const update of execution) {}
 
     const endTime = Date.now();
     webviewPanel.webview.postMessage({

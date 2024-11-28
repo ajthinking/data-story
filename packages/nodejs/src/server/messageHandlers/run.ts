@@ -33,12 +33,7 @@ export const run: MessageHandler<RunMessage> = async({
   const execution = executor.execute()
 
   try {
-    for await(const update of execution) {
-      ws.send(JSON.stringify({
-        ...update,
-        msgId: data.msgId,
-      }))
-    }
+    for await(const update of execution) {}
 
     ws.send(
       JSON.stringify({
