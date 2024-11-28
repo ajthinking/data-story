@@ -21,12 +21,8 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
   let tableSubscription: Subscription;
   // Add the node to the inputObservers when the node is mounted
   useMount(() => {
-    if (!client?.itemsObserver) {
-      return;
-    }
-
-    const linkId = toDiagram()?.getLinkIdFromNodeId(id, 'input');
-
+    const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
+    if (!client?.itemsObserver || !linkId) return;
     const tableObserver: ItemsObserver = {
       linkIds: [linkId],
       type: RequestObserverType.itemsObserver,

@@ -43,7 +43,7 @@ export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluati
 export { numberCast } from './Param/casts/numberCast'
 export { stringCast } from './Param/casts/stringCast'
 export { core } from './core'
-export type { LinkCountsObserver, ExecutionObserver, ItemsObserver, NodeObserver } from './types/ExecutionObserver'
+export type { LinkCountInfo, LinkCountsObserver, ExecutionObserver, ItemsObserver, NodeObserver } from './types/ExecutionObserver'
 export * as nodes from './computers'
 export * from './Param'
 export { Registry } from './Registry'

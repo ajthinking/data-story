@@ -51,7 +51,8 @@ const Flow = ({
   initDiagram,
   hideControls,
   slotComponents,
-  observers,
+  itemsObserver,
+  linksCountObserver,
   onInitialize,
   setSidebarKey,
   onSave,
@@ -68,7 +69,6 @@ const Flow = ({
     connect: state.connect,
     onInit: state.onInit,
     onRun: state.onRun,
-    setObservers: state.setObservers,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
   });
@@ -81,7 +81,6 @@ const Flow = ({
     onEdgesChange,
     onInit,
     onRun,
-    setObservers,
     addNodeFromDescription,
     toDiagram,
   } = useStore(selector, shallow);
@@ -92,10 +91,16 @@ const Flow = ({
   const { addSelectedNodes, setNodes } = reactFlowStore.getState();
 
   useEffect(() => {
-    if (client?.itemsObserver && observers) {
-      client?.itemsObserver?.(observers as ItemsObserver)
+    if (client?.itemsObserver && itemsObserver) {
+      client?.itemsObserver?.(itemsObserver as ItemsObserver)
     }
-  }, [observers, client.itemsObserver]);
+  }, [itemsObserver, client.itemsObserver]);
+
+  useEffect(() => {
+    if (client?.linksCountObserver && linksCountObserver) {
+      client?.linksCountObserver?.(linksCountObserver);
+    }
+  }, [client?.linksCountObserver, linksCountObserver]);
 
   useEffect(() => {
     if (onInitialize && onRun && isExecutePostRenderEffect) {
@@ -185,7 +190,6 @@ const Flow = ({
             rfInstance,
             initDiagram,
             callback: onInitialize,
-            clientRun: client?.run,
             focusOnFlow,
             client
           });

@@ -11,12 +11,23 @@ export type ItemsObserver = {
   throttleMs?: number,
   msgId?: string;
 }
+
+export interface LinkCountInfo {
+  count: number;
+  linkId: string;
+  state?: 'running' | 'complete';
+}
+
 export type LinkCountsObserver = {
   type: RequestObserverType.linkCountsObserver,
   linkIds: string[],
+  state?: 'running' | 'complete',
   observerId?: string,
   throttleMs?: number,
-  onReceive: (count: number) => void,
+  msgId?: string,
+  onReceive: (params:{
+    links: LinkCountInfo[],
+  }) => void,
 }
 export type NodeObserver = {
   type: 'NodeObserver',

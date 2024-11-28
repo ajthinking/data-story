@@ -5,12 +5,12 @@ export const itemsObserver: MessageHandler = async ({ event, webviewPanel, input
   inputObserverController.pushExecutionObserver({
     ...event,
     onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
-      webviewPanel.webview.postMessage(JSON.stringify({
+      webviewPanel.webview.postMessage({
         items,
         inputObserver,
         type: RequestObserverType.itemsObserver,
         msgId: event!.msgId,
-      }));
+      });
     }
   } as ItemsObserver);
 };

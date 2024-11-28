@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ItemsObserver
+  type ItemsObserver, LinkCountsObserver
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 
@@ -44,10 +44,6 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       const execution = executor?.execute();
 
       for await(const executionUpdate of execution) {
-        sendEvent({
-          ...executionUpdate,
-          type: 'LinkCountsObserver'
-        })
         sendEvent(executionUpdate);
       }
 
@@ -67,7 +63,15 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
-    console.log('LinkCountsObserver', data);
+    inputObserverController.pushExecutionObserver({
+      ...data as LinkCountsObserver,
+      onReceive: ({links}) => {
+        sendEvent({
+          links: links,
+          type: RequestObserverType.linkCountsObserver
+        })
+      }
+    })
   }
 
   const itemsObserver = ({ data, sendEvent }: HandlerParam) => {

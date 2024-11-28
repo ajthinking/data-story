@@ -9,10 +9,12 @@ import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
 import { InputObserverController } from '@data-story/core';
 import { itemsObserver } from './messageHandlers/ItemsObserver';
+import { linkCountsObserver } from './messageHandlers/linkCountsObserver';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
   public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
+  private inputObserverController: InputObserverController;
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new DiagramEditorProvider(context);
@@ -30,6 +32,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   }
 
   constructor(private readonly context: vscode.ExtensionContext) {
+    this.inputObserverController = new InputObserverController();
   }
 
   async openCustomDocument(
@@ -61,6 +64,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         getDiagram: getDiagram,
         toast: onToast,
         itemsObserver: itemsObserver,
+        linkCountsObserver: linkCountsObserver
       };
 
       const handler = handlers[event.type];
@@ -68,8 +72,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         console.error(`No handler found for event type: ${event.type}. Available handlers: ${Object.keys(handlers).join(', ')}`);
         return;
       }
-      const inputObserverController = new InputObserverController();
-      handler({ webviewPanel, event, document, inputObserverController });
+
+      handler({ webviewPanel, event, document, inputObserverController: this.inputObserverController });
     });
   }
 

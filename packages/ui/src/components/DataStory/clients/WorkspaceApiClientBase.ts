@@ -7,6 +7,8 @@ import {
   InputObserveConfig, ItemsObserver,
   ItemValue, LinkCountsObserver,
   NodeDescription,
+  LinkCountInfo,
+  ExecutionObserver
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -18,11 +20,14 @@ export interface Transport {
 }
 
 const matchMsgType = (type: string) => it => it.type === type;
+function removeUnserializable(params: ExecutionObserver): Partial<ExecutionObserver> {
+  const { onReceive, ...serializableParams } = params;
+
+  return JSON.parse(JSON.stringify(serializableParams));
+}
 
 export class WorkspaceApiClientBase implements WorkspaceApiClient {
 
-  private updateEdgeCounts?: ClientRunParams['updateEdgeCounts'];
-  private observers?: ClientRunParams['observers'];
   private receivedMsg$ = new Subject();
 
   constructor(private transport: Transport) {
@@ -30,9 +35,9 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     this.initExecutionResult();
     this.initExecutionFailure();
     this.initUpdateStorage();
-    this.initLinkCountsObserver();
     this.run = this.run.bind(this);
     this.updateDiagram = this.updateDiagram.bind(this);
+    // this.initReceiveMsg();
   }
 
   async getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
@@ -74,29 +79,31 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     }
   }
 
-  linkCountsObserver(params: LinkCountsObserver): Observable<number> {
-    return this.transport.streaming(params);
-  }
-
   itemsObserver(params: ItemsObserver): Subscription {
-    const msg$ = this.transport.streaming(params);
+    const serializableParams = removeUnserializable(params);
+    const msg$ = this.transport.streaming(serializableParams);
     return msg$.subscribe((data) => {
-      const { items, inputObserver } = data as { items: ItemValue[], inputObserver: InputObserveConfig };
+      const { items, inputObserver } = data as {items: ItemValue[], inputObserver: InputObserveConfig};
       params.onReceive(items, inputObserver);
     });
   }
 
-  run({ diagram, observers, updateEdgeCounts }: ClientRunParams): void {
-    this.observers = observers;
-    this.updateEdgeCounts = updateEdgeCounts;
+  linksCountObserver(params: LinkCountsObserver): Subscription {
+    const serializableParams = removeUnserializable(params);
+    const msg$ = this.transport.streaming(serializableParams);
+    return msg$.subscribe((data) => {
+      const { links } = data as { links: LinkCountInfo[] };
+      params.onReceive({ links });
+    });
+  }
 
+  run({ diagram }: ClientRunParams): void {
     eventManager.emit({
       type: DataStoryEvents.RUN_START
     });
     const msg$ = this.transport.streaming({
       type: 'run',
       diagram,
-      // inputObservers: observers?.inputObservers || [],
     });
     msg$.subscribe(this.receivedMsg$);
   }
@@ -106,19 +113,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     return this.receivedMsg$.subscribe((data: any) => {
       console.log('Received message:', data);
     });
-  }
-
-  private initLinkCountsObserver() {
-    return this.receivedMsg$.pipe(filter(matchMsgType('LinkCountsObserver')))
-      .subscribe((data: {
-        counts: Record<string, number>,
-        state: 'running' | 'complete',
-      }) => {
-        this.updateEdgeCounts!({
-          edgeCounts: data.counts,
-          state: data.state,
-        })
-      })
   }
 
   private initExecutionUpdates() {

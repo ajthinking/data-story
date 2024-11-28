@@ -1,6 +1,5 @@
 import TableNodeComponent from './TableNodeComponent';
-import * as store from '../DataStory/store/store';
-import { DataStoryCanvasProvider } from '../DataStory/store/store';
+import { DataStoryContext } from '../DataStory/store/store';
 import { ReactFlowProvider } from '@xyflow/react';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
@@ -22,13 +21,29 @@ const data = {
 };
 const id = 'Table.1';
 
-const mountTableNodeComponent = () => {
+const mountTableNodeComponent = (items: unknown[], client?: () => void) => {
   cy.mount(
-    <DataStoryCanvasProvider>
+    // @ts-ignore
+    <DataStoryContext.Provider value={() => {
+      return ({
+        toDiagram: () => ({
+          getLinkIdFromNodeId: (id: string, port: string) => {
+            return `${id}.${port}`;
+          }
+        }),
+        client: client?.() || {
+          itemsObserver: (observer: ItemsObserver) => {
+            console.log('itemsObserver:', observer)
+            // @ts-ignore
+            observer.onReceive(items);
+          }
+        }
+      })
+    }}>
       <ReactFlowProvider>
         <TableNodeComponent id={id} data={data} selected={false}/>
       </ReactFlowProvider>
-    </DataStoryCanvasProvider>
+    </DataStoryContext.Provider>
   );
 }
 
@@ -45,33 +60,26 @@ function runSuccess(): void {
     });
 }
 
-const mockGetItems = (items: unknown[]): void => {
-  cy.stub(store, 'createStore').returns(function() {
-    return  {
-      toDiagram: cy.spy().as('toDiagram'),
-      client:{
-        itemsObserver: (observer: ItemsObserver) => {
-          console.log('itemsObserver:', observer)
-          // @ts-ignore
-          observer.onReceive(items);
-        }
-      }
-    }
+describe('test TableNodeComponent for awaiting data', () => {
+  it('render component with Awaiting data', () => {
+    mountTableNodeComponent([], () => {
+    });
+
+    cy.get('th').should('have.length', 0);
+    cy.dataCy('data-story-table-await-data').should('contain.text', 'Awaiting data');
   });
-}
+});
 
 describe('test TableNodeComponent for tooltip', () => {
   it('render tooltip with normal data', () => {
-    mockGetItems([normal]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([normal]);
 
     cy.dataCy('data-story-table-th').eq(1).click();
     cy.dataCy('data-story-table-tooltip').should('have.text', 'property_b');
   });
 
   it('render tooltip with oversize data', () => {
-    mockGetItems([oversize]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([oversize]);
 
     // test long key on tooltip
     const longKey = Object.keys(oversize)[3];
@@ -88,8 +96,7 @@ describe('test TableNodeComponent for tooltip', () => {
   });
 
   it('render tooltip with line break data', () => {
-    mockGetItems([nested]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([nested]);
 
     cy.get('[data-cy="data-story-table-row"] > :nth-child(10)').click();
     cy.dataCy('data-story-table-tooltip').should('have.text', multiline`
@@ -100,8 +107,7 @@ describe('test TableNodeComponent for tooltip', () => {
   });
 
   it('render tooltip with formatted data', () => {
-    mockGetItems([nested]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([nested]);
     let jsonString = '[\n  {\n    "id": "123456789",\n    "type": "CONTACT_TO_COMPANY"\n  }\n]';
 
     cy.get('[data-cy="data-story-table-row"] > :nth-child(7)').click();
@@ -111,24 +117,15 @@ describe('test TableNodeComponent for tooltip', () => {
 
 describe('test TableNodeComponent for table', () => {
   it('render component with empty data', () => {
-    mockGetItems([]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([]);
     runSuccess();
 
     cy.dataCy('data-story-table').should('exist');
     cy.dataCy('data-story-table-no-data').should('have.text', 'No data');
   });
 
-  it('render component with Awaiting data', () => {
-    mountTableNodeComponent();
-
-    cy.get('th').should('have.length', 0);
-    cy.dataCy('data-story-table-await-data').should('contain.text', 'Awaiting data');
-  });
-
   it('render component with normal data', () => {
-    mockGetItems([normal]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([normal]);
     runSuccess();
 
     const headerLength = Object.keys(normal).length;
@@ -138,8 +135,7 @@ describe('test TableNodeComponent for table', () => {
   });
 
   it('render component with nested data', () => {
-    mockGetItems([nested]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([nested]);
 
     cy.dataCy('data-story-table-th').eq(0).should('have.text', 'objectId');
     cy.dataCy('data-story-table-th').eq(1).should('have.text', 'properties.firstname');
@@ -147,24 +143,21 @@ describe('test TableNodeComponent for table', () => {
   })
 
   it('render component with oversize key or value data', () => {
-    mockGetItems([oversize]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([oversize]);
 
     cy.dataCy('data-story-table-th').eq(3).should('have.text', 'long_long_long_long_long_long_long_long_long_long_...');
     cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').should('have.text', 'long_long_long_long_long_long_long_long_long_long_...');
   });
 
   it('render component with line break data', () => {
-    mockGetItems([nested]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([nested]);
 
     cy.dataCy('data-story-table-th').eq(9).should('have.text', 'address.street');
     cy.get('[data-cy="data-story-table-row"] > :nth-child(10)').should('have.text', '122 Main St\nSuite 100\nAnytown');
   });
 
   it('render component with boolean data', () => {
-    mockGetItems([nested]);
-    mountTableNodeComponent();
+    mountTableNodeComponent([nested]);
 
     cy.dataCy('data-story-table-th').eq(7).should('have.text', 'booleanFalse');
     cy.get('[data-cy="data-story-table-row"] > :nth-child(8)').should('have.text', 'false');
@@ -174,9 +167,8 @@ describe('test TableNodeComponent for table', () => {
 
   it('render component with 1000 columns data', () => {
     const thousandCols = createLargeColsFn(1000);
-    mockGetItems([thousandCols]);
     const start = performance.now();
-    mountTableNodeComponent();
+    mountTableNodeComponent([thousandCols]);
 
     // https://web.dev/articles/rail
     cy.dataCy('data-story-table-th')
@@ -196,9 +188,8 @@ describe('test TableNodeComponent for table', () => {
   it('render component with 1000 rows data', () => {
     const thousandRows = createLargeRows(1000);
     testPerformanceLimit = thousandRows.length;
-    mockGetItems(thousandRows);
     const start = performance.now();
-    mountTableNodeComponent();
+    mountTableNodeComponent(thousandRows);
 
     cy.dataCy('data-story-table-row')
       .eq(1)
@@ -217,8 +208,7 @@ describe('test TableNodeComponent for table', () => {
     const thousandRows = createLargeRows(1000);
 
     testPerformanceLimit = thousandRows.length;
-    mockGetItems(thousandRows);
-    mountTableNodeComponent();
+    mountTableNodeComponent(thousandRows);
 
     // wait 10ms for data to load
     cy.wait(10);
