@@ -43,9 +43,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     try {
       const execution = executor?.execute();
 
-      for await(const executionUpdate of execution) {
-        sendEvent(executionUpdate);
-      }
+      for await(const executionUpdate of execution) {}
 
       const executionResult = {
         type: 'ExecutionResult',
