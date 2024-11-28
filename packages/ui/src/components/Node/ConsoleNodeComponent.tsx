@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import { DataStoryNodeData } from './ReactFlowNode';
-import { NodeComponent } from '../../index';
+import NodeComponent from './NodeComponent';
 import { useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { Subscription } from 'rxjs';
