@@ -38,24 +38,5 @@ export const ConsoleLog: Computer = {
     })
   ],
 
-  async *run({ input, hooks, params: rawParams }) {
-    console.log('ConsoleLog running')
-    while(true) {
-      const incoming = input.pull() as ItemWithParams[]
-
-      for(const item of incoming) {
-        hooks.register({
-          type: 'CONSOLE_LOG',
-          args: [
-            // If nothing passed log the whole item
-            !rawParams.message
-              ? item.value
-              : item.params.message
-          ]
-        })
-      }
-
-      yield;
-    }
-  },
+  async *run({ input, hooks, params: rawParams }) {},
 };

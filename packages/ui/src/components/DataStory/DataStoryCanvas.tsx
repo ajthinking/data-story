@@ -17,6 +17,7 @@ import InputNodeComponent from '../Node/InputNodeComponent';
 import TableNodeComponent from '../Node/TableNodeComponent';
 import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
+import ConsoleNodeComponent from '../Node/ConsoleNodeComponent';
 import { onDropDefault } from './onDropDefault';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
@@ -31,6 +32,7 @@ const nodeTypes = {
   inputNodeComponent: InputNodeComponent,
   outputNodeComponent: OutputNodeComponent,
   tableNodeComponent: TableNodeComponent,
+  consoleNodeComponent: ConsoleNodeComponent,
 };
 
 const DataStoryCanvasComponent = forwardRef((props: DataStoryCanvasProps, ref) => {

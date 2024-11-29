@@ -25,8 +25,9 @@ export const ReactFlowFactory = {
             if (node.type === 'Input') return 'inputNodeComponent';
             if (node.type === 'Output') return 'outputNodeComponent';
             if (node.type === 'Table') return 'tableNodeComponent';
+            if (node.type === 'ConsoleLog') return 'consoleNodeComponent';
 
-            return 'nodeComponent'
+            return 'nodeComponent';
           })(),
         }
       }),
