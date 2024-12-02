@@ -28,6 +28,7 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
       observerId,
       linkIds: [linkId],
       type: RequestObserverType.itemsObserver,
+      throttleMs: 300,
       onReceive: (batchedItems) => {
         if (!isDataFetched) {
           setIsDataFetched(true);
