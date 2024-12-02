@@ -12,6 +12,7 @@ import {
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
+import { CancelObserver } from '@data-story/core/src';
 
 export interface Transport {
   sendAndReceive<T>(params: Record<string, any>): Promise<T>;
@@ -20,7 +21,7 @@ export interface Transport {
 }
 
 const matchMsgType = (type: string) => it => it.type === type;
-function removeUnserializable(params: ExecutionObserver): Partial<ExecutionObserver> {
+function removeUnserializable(params: Exclude<ExecutionObserver, CancelObserver>): Partial<ExecutionObserver> {
   const { onReceive, ...serializableParams } = params;
 
   return JSON.parse(JSON.stringify(serializableParams));
@@ -93,6 +94,13 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       const { links } = data as { links: LinkCountInfo[] };
       params.onReceive({ links });
     });
+  }
+
+  async cancelObserver(params: ExecutionObserver): Promise<void> {
+    const data = this.transport.sendAndReceive({
+      ...params,
+    });
+    console.log('Cancel observer', data);
   }
 
   run({ diagram }: ClientRunParams): void {

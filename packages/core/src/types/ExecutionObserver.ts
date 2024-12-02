@@ -29,12 +29,19 @@ export type LinkCountsObserver = {
     links: LinkCountInfo[],
   }) => void,
 }
+
 export type NodeObserver = {
-  type: 'NodeObserver',
+  type: RequestObserverType.notifyDataUpdate,
   nodeId: string,
   onlyStatuses: string[],
   onlyOncePerStatus?: boolean,
   throttleMs?: number,
   onReceive: (data: any) => void,
 }
-export type ExecutionObserver = ItemsObserver | LinkCountsObserver;
+
+export type CancelObserver = {
+  type: RequestObserverType.cancelObserver,
+  observerId: string,
+}
+
+export type ExecutionObserver = ItemsObserver | LinkCountsObserver | CancelObserver;
