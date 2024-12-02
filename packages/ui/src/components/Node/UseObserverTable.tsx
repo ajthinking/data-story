@@ -3,7 +3,6 @@ import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemsObserver, RequestObserverType } from '@data-story/core';
 import { useMount, useUnmount } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { Subscription } from 'rxjs';
 
 const observerId = createDataStoryId();
 export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems }: {
@@ -27,7 +26,7 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
       observerId,
       linkIds: [linkId],
       type: RequestObserverType.itemsObserver,
-      throttleMs: 2000,
+      throttleMs: 3000,
       onReceive: (batchedItems) => {
         if (!isDataFetched) {
           setIsDataFetched(true);

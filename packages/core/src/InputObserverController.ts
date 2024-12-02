@@ -16,6 +16,8 @@ type MemoryLinksCountObserver = {
   count: number;
 }
 
+const ThrottleMS: number = 100;
+
 export class InputObserverController {
 
   public executionObservers: ExecutionObserver[] = [];
@@ -48,7 +50,7 @@ export class InputObserverController {
         filter(payload =>  observer.linkIds.includes(payload.linkId)),
         map(payload => payload.items),
         // todo: could implement a timer that doesn't rely on bufferTime.
-        bufferTime(observer.throttleMs ?? 100),
+        bufferTime(observer.throttleMs ?? ThrottleMS),
         filter(it=>it.length > 0),
         map(bufferedItems => bufferedItems.flat(1)),
         tap(items => {
@@ -59,7 +61,7 @@ export class InputObserverController {
       subscription = this.links$.pipe(
         filter(payload => observer.linkIds.includes(payload.linkId)),
         map(payload => payload),
-        bufferTime(observer.throttleMs ?? 100),
+        bufferTime(observer.throttleMs ?? ThrottleMS),
         filter(it=>it.length > 0),
         map(bufferedCounts => bufferedCounts.flat(1)),
         tap(counts => {
