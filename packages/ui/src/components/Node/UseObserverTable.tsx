@@ -5,7 +5,6 @@ import { useMount, useUnmount } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { Subscription } from 'rxjs';
 
-let tableSubscription: Subscription;
 const observerId = createDataStoryId();
 export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems }: {
   id: string,
@@ -28,22 +27,19 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
       observerId,
       linkIds: [linkId],
       type: RequestObserverType.itemsObserver,
-      throttleMs: 300,
+      throttleMs: 2000,
       onReceive: (batchedItems) => {
         if (!isDataFetched) {
           setIsDataFetched(true);
         }
-        console.log('batchedItems', batchedItems);
-
         setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
       }
     }
 
-    tableSubscription = client?.itemsObserver?.(tableObserver);
+    client?.itemsObserver?.(tableObserver);
   });
 
   useUnmount(() => {
-    tableSubscription?.unsubscribe();
     client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
   });
 }

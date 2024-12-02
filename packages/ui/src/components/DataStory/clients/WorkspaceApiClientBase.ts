@@ -21,6 +21,7 @@ export interface Transport {
 }
 
 const matchMsgType = (type: string) => it => it.type === type;
+
 function removeUnserializable(params: Exclude<ExecutionObserver, CancelObserver>): Partial<ExecutionObserver> {
   const { onReceive, ...serializableParams } = params;
 
@@ -30,6 +31,7 @@ function removeUnserializable(params: Exclude<ExecutionObserver, CancelObserver>
 export class WorkspaceApiClientBase implements WorkspaceApiClient {
 
   private receivedMsg$ = new Subject();
+  private observerMap: Map<string, Subscription> = new Map();
 
   constructor(private transport: Transport) {
     this.initExecutionResult();
@@ -81,25 +83,37 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
   itemsObserver(params: ItemsObserver): Subscription {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams);
-    return msg$.subscribe((data) => {
+    const itemsSubscription = msg$.subscribe((data) => {
       const { items, inputObserver } = data as {items: ItemValue[], inputObserver: InputObserveConfig};
       params.onReceive(items, inputObserver);
     });
+
+    this.observerMap.set(params.observerId, itemsSubscription);
+    return itemsSubscription;
   }
 
   linksCountObserver(params: LinkCountsObserver): Subscription {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams);
-    return msg$.subscribe((data) => {
-      const { links } = data as { links: LinkCountInfo[] };
+    const linksSubscription = msg$.subscribe((data) => {
+      const { links } = data as {links: LinkCountInfo[]};
       params.onReceive({ links });
     });
+
+    this.observerMap.set(params.observerId, linksSubscription);
+    return linksSubscription;
   }
 
   async cancelObserver(params: CancelObserver): Promise<void> {
     const data = await this.transport.sendAndReceive({
       ...params,
     });
+
+    const subscription = this.observerMap.get(params.observerId);
+    if (subscription) {
+      subscription.unsubscribe();
+      this.observerMap.delete(params.observerId);
+    }
   }
 
   run({ diagram }: ClientRunParams): void {

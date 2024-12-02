@@ -17,7 +17,6 @@ const ConsoleNodeComponent = ({ id, data, selected }: {
   return <NodeComponent id={id} data={data} selected={selected}/>
 }
 
-let consoleSubscription: Subscription;
 const observerId = createDataStoryId();
 
 const useObserverConsole = ({ id }: {id: string}) => {
@@ -39,12 +38,10 @@ const useObserverConsole = ({ id }: {id: string}) => {
       }
     }
 
-    consoleSubscription = client?.itemsObserver?.(consoleObserver);
+    client?.itemsObserver?.(consoleObserver);
   });
 
   useUnmount(() => {
-    // todo: unsubscribe also moves to workspace
-    consoleSubscription?.unsubscribe();
     client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
   });
 }
