@@ -42,42 +42,35 @@ export class InputObserverController {
   }
 
   pushExecutionObserver(observer: ExecutionObserver): void {
+    let subscription: Subscription | undefined;
     if (observer.type === RequestObserverType.itemsObserver) {
-      const subscription = this.items$.pipe(
-        filter(payload => {
-          const result = observer.linkIds.includes(payload.linkId);
-          return result;
-        }),
+      subscription = this.items$.pipe(
+        filter(payload =>  observer.linkIds.includes(payload.linkId)),
         map(payload => payload.items),
-        bufferTime(observer.throttleMs ?? 1000),
-        filter(it=>it.length>0),
-        // todo: 可以自己实现一个不基于 bufferTime 的 timer
+        // todo: could implement a timer that doesn't rely on bufferTime.
+        bufferTime(observer.throttleMs ?? 100),
+        filter(it=>it.length > 0),
         map(bufferedItems => bufferedItems.flat(1)),
         tap(items => {
           observer.onReceive(items);
         })
       ).subscribe();
-      if (observer?.observerId) this.observerMap.set(observer.observerId, subscription);
     } else if (observer.type === RequestObserverType.linkCountsObserver) {
-      const subscription = this.links$.pipe(
-        filter(payload => {
-          console.log('linkCounts observer: ', observer.linkIds, 'payload linkId', payload);
-          const result = observer.linkIds.includes(payload.linkId);
-          return result;
-        }),
+      subscription = this.links$.pipe(
+        filter(payload => observer.linkIds.includes(payload.linkId)),
         map(payload => payload),
-        bufferTime(observer.throttleMs ?? 1000),
-        filter(it=>it.length>0),
+        bufferTime(observer.throttleMs ?? 100),
+        filter(it=>it.length > 0),
         map(bufferedCounts => bufferedCounts.flat(1)),
         tap(counts => {
-          console.log('counts', counts);
           observer.onReceive({
             links: counts
           });
         })
       ).subscribe();
-      if (observer?.observerId) this.observerMap.set(observer.observerId, subscription);
     }
+
+    if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
   pullExecutionObserver(observer: ExecutionObserver): void {

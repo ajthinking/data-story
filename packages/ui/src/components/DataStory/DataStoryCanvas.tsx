@@ -128,24 +128,25 @@ const Flow = ({
       observerId,
       linkIds: allLinkIds,
       type: RequestObserverType.linkCountsObserver,
-      throttleMs: 50,
       onReceive: ({ links }) => {
         if (!links || links.length === 0) return;
+
         const edgeCounts = links.reduce((acc, link) => {
           acc[link.linkId] = link.count;
           return acc;
         }, {});
+
         updateEdgeCounts({
           edgeCounts: edgeCounts,
           state: links[0].state || 'complete',
         })
       }
     })
-
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
-  }, [client, edges, updateEdgeCounts]);
+  // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
+  }, [client, edges.length, updateEdgeCounts]);
 
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
