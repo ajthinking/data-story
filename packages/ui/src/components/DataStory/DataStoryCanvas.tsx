@@ -124,15 +124,19 @@ const Flow = ({
   useEffect(() => {
     const observerId = createDataStoryId();
     const allLinkIds = edges.map(edge => edge.id);
-    console.log('allLinkIds linksCountObserver observer', observerId);
     client?.linksCountObserver?.({
       observerId,
       linkIds: allLinkIds,
       type: RequestObserverType.linkCountsObserver,
+      throttleMs: 50,
       onReceive: ({ links }) => {
         if (!links || links.length === 0) return;
+        const edgeCounts = links.reduce((acc, link) => {
+          acc[link.linkId] = link.count;
+          return acc;
+        }, {});
         updateEdgeCounts({
-          edgeCounts: { [links[0].linkId]: links[0].count },
+          edgeCounts: edgeCounts,
           state: links[0].state || 'complete',
         })
       }
@@ -140,7 +144,6 @@ const Flow = ({
 
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
-      console.log('allLinkIds linksCountObserver cancel observer', observerId);
     }
   }, [client, edges, updateEdgeCounts]);
 

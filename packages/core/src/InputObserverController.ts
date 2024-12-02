@@ -1,7 +1,7 @@
 import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
 import { ExecutionObserver, LinkCountsObserver } from './types/ExecutionObserver';
-import { bufferTime, Subject, Subscription, takeUntil } from 'rxjs';
+import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 
 type MemoryItemObserver = {
@@ -21,21 +21,13 @@ export class InputObserverController {
   public executionObservers: ExecutionObserver[] = [];
 
   private items$ = new Subject<MemoryItemObserver>();
+  private links$ = new Subject<MemoryLinksCountObserver>();
   private observerMap: Map<string, Subscription> = new Map();
 
   /**
    * Constructs an instance of InputObserverController
    */
   constructor() {
-  }
-
-  /**
-   * Determines if a report should be sent for a given inputObserver ( nodeId and portId )
-   */
-  private findObservers(inputObserver: MemoryItemObserver | MemoryLinksCountObserver, type: RequestObserverType): ExecutionObserver[] {
-    return this.executionObservers.filter((executionObserver) => {
-      // return executionObserver.linkIds.includes(inputObserver.linkId) && executionObserver.type === type;
-    });
   }
 
   /**
@@ -46,34 +38,43 @@ export class InputObserverController {
   }
 
   reportLinksCount(memoryObserver: MemoryLinksCountObserver): void {
-    const inputObservers = this.findObservers(memoryObserver, RequestObserverType.linkCountsObserver) as LinkCountsObserver[];
-    inputObservers.map((inputObserver) => {
-      inputObserver.onReceive({
-        links: [{
-          linkId: memoryObserver.linkId,
-          count: memoryObserver.count,
-          state: 'complete',
-        }]
-      });
-    })
+    this.links$.next(memoryObserver);
   }
 
-  // todo: 添加一个取消订阅的方法
-  /**
-   * 1. 如果想要取消订阅，需要为每个请求的 observer 添加一个 ObserverId
-   * 1.1 后端需要存储一个 Map<ObserverId, Observer>
-   * 2. 取消订阅时，需要重新发送一个请求，将对应的 ObserverId 请求传递给后端，
-   * 2.1 后端根据 ObserverId 找到对应的 Observer，然后取消订阅
-   */
-
   pushExecutionObserver(observer: ExecutionObserver): void {
-    if(observer.type === 'itemsObserver') {
+    if (observer.type === RequestObserverType.itemsObserver) {
       const subscription = this.items$.pipe(
-        filter(payload => observer.linkIds.includes(payload.linkId)),
+        filter(payload => {
+          const result = observer.linkIds.includes(payload.linkId);
+          return result;
+        }),
         map(payload => payload.items),
-        bufferTime(observer.throttleMs ?? 0),
+        bufferTime(observer.throttleMs ?? 1000),
+        filter(it=>it.length>0),
+        // todo: 可以自己实现一个不基于 bufferTime 的 timer
         map(bufferedItems => bufferedItems.flat(1)),
-        tap(items => observer.onReceive(items))
+        tap(items => {
+          observer.onReceive(items);
+        })
+      ).subscribe();
+      if (observer?.observerId) this.observerMap.set(observer.observerId, subscription);
+    } else if (observer.type === RequestObserverType.linkCountsObserver) {
+      const subscription = this.links$.pipe(
+        filter(payload => {
+          console.log('linkCounts observer: ', observer.linkIds, 'payload linkId', payload);
+          const result = observer.linkIds.includes(payload.linkId);
+          return result;
+        }),
+        map(payload => payload),
+        bufferTime(observer.throttleMs ?? 1000),
+        filter(it=>it.length>0),
+        map(bufferedCounts => bufferedCounts.flat(1)),
+        tap(counts => {
+          console.log('counts', counts);
+          observer.onReceive({
+            links: counts
+          });
+        })
       ).subscribe();
       if (observer?.observerId) this.observerMap.set(observer.observerId, subscription);
     }
@@ -83,7 +84,6 @@ export class InputObserverController {
     if (observer?.observerId) {
       const subscription = this.observerMap.get(observer.observerId);
       if (subscription) {
-        console.log('真正需要被取消订阅的 cancel Unsubscribe observer', observer.observerId);
         subscription.unsubscribe();
         this.observerMap.delete(observer.observerId);
       }

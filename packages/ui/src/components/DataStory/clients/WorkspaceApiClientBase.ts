@@ -100,7 +100,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     const data = await this.transport.sendAndReceive({
       ...params,
     });
-    console.log('Cancel observer', data);
   }
 
   run({ diagram }: ClientRunParams): void {
