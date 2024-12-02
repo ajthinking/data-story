@@ -8,11 +8,11 @@ import {
   ItemValue, LinkCountsObserver,
   NodeDescription,
   LinkCountInfo,
-  ExecutionObserver
+  ExecutionObserver,
+  CancelObserver
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
-import { CancelObserver } from '@data-story/core/src';
 
 export interface Transport {
   sendAndReceive<T>(params: Record<string, any>): Promise<T>;
@@ -96,8 +96,8 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     });
   }
 
-  async cancelObserver(params: ExecutionObserver): Promise<void> {
-    const data = this.transport.sendAndReceive({
+  async cancelObserver(params: CancelObserver): Promise<void> {
+    const data = await this.transport.sendAndReceive({
       ...params,
     });
     console.log('Cancel observer', data);
