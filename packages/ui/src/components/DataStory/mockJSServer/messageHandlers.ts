@@ -88,6 +88,10 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
   const cancelObserver = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.pullExecutionObserver(data as ExecutionObserver);
+    sendEvent({
+      ...data as Record<string, unknown>,
+      cancelObserver: true
+    });
   }
 
   const notifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
@@ -123,6 +127,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     getDiagram,
     linkCountsObserver,
     itemsObserver,
-    notifyDataUpdate
+    notifyDataUpdate,
+    cancelObserver
   }
 }

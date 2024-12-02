@@ -1,5 +1,5 @@
 import { ClientRunParams } from '../types';
-import { Diagram, ItemsObserver, LinkCountsObserver, NodeDescription } from '@data-story/core';
+import { CancelObserver, Diagram, ItemsObserver, LinkCountsObserver, NodeDescription } from '@data-story/core';
 import { Subscription } from 'rxjs';
 
 export interface WorkspaceApiClient {
@@ -9,4 +9,5 @@ export interface WorkspaceApiClient {
   getDiagram?: ({ path }: {path?: string}) => Promise<Diagram>;
   linksCountObserver?:(params: LinkCountsObserver) => void;
   itemsObserver?: (params: ItemsObserver) => Subscription;
+  cancelObserver?:(params: CancelObserver) => Promise<void>
 }
