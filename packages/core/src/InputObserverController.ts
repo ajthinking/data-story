@@ -1,9 +1,7 @@
 import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
-import { InputObserver } from './types/InputObserver';
-import { ExecutionObserver, ItemsObserver, LinkCountsObserver } from './types/ExecutionObserver';
-import { bufferTime, fromEvent, Subject, Subscription, takeUntil } from 'rxjs';
-import { itemsObserver } from '@data-story/nodejs/dist/server/messageHandlers';
+import { ExecutionObserver, LinkCountsObserver } from './types/ExecutionObserver';
+import { bufferTime, Subject, Subscription, takeUntil } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 
 type MemoryItemObserver = {
@@ -85,6 +83,7 @@ export class InputObserverController {
     if (observer?.observerId) {
       const subscription = this.observerMap.get(observer.observerId);
       if (subscription) {
+        console.log('真正需要被取消订阅的 cancel Unsubscribe observer', observer.observerId);
         subscription.unsubscribe();
         this.observerMap.delete(observer.observerId);
       }

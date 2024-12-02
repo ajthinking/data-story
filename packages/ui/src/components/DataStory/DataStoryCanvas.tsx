@@ -24,7 +24,7 @@ import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
 import { getNodesWithNewSelection } from './getNodesWithNewSelection';
-import { ItemsObserver } from '@data-story/core';
+import { createDataStoryId, ItemsObserver, RequestObserverType } from '@data-story/core';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -73,6 +73,7 @@ const Flow = ({
     onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
+    updateEdgeCounts: state.updateEdgeCounts
   });
 
   const {
@@ -85,6 +86,7 @@ const Flow = ({
     onRun,
     addNodeFromDescription,
     toDiagram,
+    updateEdgeCounts
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -117,6 +119,30 @@ const Flow = ({
       keyManager.removeEventListeners();
     }
   }, []);
+
+  // when edges change, re-subscribe to linkCountsObserver
+  useEffect(() => {
+    const observerId = createDataStoryId();
+    const allLinkIds = edges.map(edge => edge.id);
+    console.log('allLinkIds linksCountObserver observer', observerId);
+    client?.linksCountObserver?.({
+      observerId,
+      linkIds: allLinkIds,
+      type: RequestObserverType.linkCountsObserver,
+      onReceive: ({ links }) => {
+        if (!links || links.length === 0) return;
+        updateEdgeCounts({
+          edgeCounts: { [links[0].linkId]: links[0].count },
+          state: links[0].state || 'complete',
+        })
+      }
+    })
+
+    return () => {
+      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+      console.log('allLinkIds linksCountObserver cancel observer', observerId);
+    }
+  }, [client, edges, updateEdgeCounts]);
 
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
