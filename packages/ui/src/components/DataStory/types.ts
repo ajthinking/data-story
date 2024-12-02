@@ -92,7 +92,6 @@ export type NodeSettingsFormProps = {
 
 export type StoreSchema = {
   client?: WorkspaceApiClient;
-  linkCountsObserver: () => void;
 
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;

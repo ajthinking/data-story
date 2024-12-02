@@ -155,30 +155,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     get()?.client?.run({
       diagram: get().toDiagram(),
     });
-    // update the diagram edges with the link counts
-    if (get().client?.linksCountObserver) {
-      get().linkCountsObserver();
-    }
   },
 
   setParams: (params: Param[]) => {
     set({ params })
-  },
-
-  // Since linkCountsObserver is working with real-time data, it receive one data point at a time. Once throttling is implemented, we will switch to batch transmission.
-  linkCountsObserver: () => {
-    const allLinkIds = get().edges.map(edge => edge.id);
-    get().client?.linksCountObserver?.({
-      linkIds: allLinkIds,
-      type: RequestObserverType.linkCountsObserver,
-      onReceive: ({ links }) => {
-        if (!links || links.length === 0) return;
-        get().updateEdgeCounts({
-          edgeCounts: { [links[0].linkId]: links[0].count },
-          state: links[0].state || 'complete',
-        })
-      }
-    })
   },
 
   updateEdgeCounts: ({ edgeCounts, state }) => {
