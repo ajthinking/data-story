@@ -2,7 +2,7 @@ import { MessageHandler } from '../MessageHandler';
 import { InputObserver, type ItemsObserver, ItemValue, RequestObserverType } from '@data-story/core';
 
 export const itemsObserver: MessageHandler = async ({ event, webviewPanel, inputObserverController }) => {
-  inputObserverController.pushExecutionObserver({
+  inputObserverController.addItemsObserver({
     ...event,
     onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
       webviewPanel.webview.postMessage({
