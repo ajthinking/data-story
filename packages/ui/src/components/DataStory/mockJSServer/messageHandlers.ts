@@ -62,7 +62,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.pushExecutionObserver({
+    inputObserverController.addLinkCountsObserver({
       ...data as LinkCountsObserver,
       onReceive: ({links}) => {
         sendEvent({
@@ -74,7 +74,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const itemsObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.pushExecutionObserver({
+    inputObserverController.addItemsObserver({
       ...data as ItemsObserver,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
         sendEvent({
@@ -87,7 +87,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const cancelObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.pullExecutionObserver(data as ExecutionObserver);
+    inputObserverController.deleteExecutionObserver(data as ExecutionObserver);
     sendEvent({
       ...data as Record<string, unknown>,
       cancelObserver: true
