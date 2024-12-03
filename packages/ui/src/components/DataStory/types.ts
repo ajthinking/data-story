@@ -34,8 +34,6 @@ export type DataStoryProps = {
   initDiagram?: Diagram | null;
   hideControls?: boolean | ControlsType[];
   slotComponents?: React.ReactNode[];
-  itemsObserver?: ItemsObserver;
-  linksCountObserver?: LinkCountsObserver;
   onInitialize?: DataStoryCallback;
   hideSidebar?: boolean;
   onDrop?: (event: any, addNodeFromDescription: any) => void;
