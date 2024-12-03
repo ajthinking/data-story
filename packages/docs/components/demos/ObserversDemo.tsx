@@ -54,7 +54,6 @@ export default () => {
     <div className="w-full" style={{ height: '36vh' }}>
       <DataStory
         client={client}
-        linksCountObserver={linksCountObserver}
         hideControls={['save']}
       />
     </div>
