@@ -1,5 +1,5 @@
-import { core, createDataStoryId, nodes, RequestObserverType } from '@data-story/core';
-import React, { useMemo } from 'react';
+import { core, createDataStoryId, ItemsObserver, nodes, RequestObserverType } from '@data-story/core';
+import React, { useEffect, useMemo } from 'react';
 import { DataStory } from '@data-story/ui';
 import {
   CategoryScale,
@@ -54,16 +54,6 @@ const diagram = core.getDiagramBuilder()
   .add(Table)
   .get();
 
-const observerId = createDataStoryId();
-const linksCountObserver = {
-  type: RequestObserverType.linkCountsObserver as const,
-  linkIds: [diagram.links[1].id],
-  onReceive: (count) => {
-    console.log('Link count', count);
-  },
-  observerId: createDataStoryId(),
-}
-
 export default () => {
   const [points, setPoints] = React.useState([]);
   const { app, loading } = useRequestApp();
@@ -80,6 +70,44 @@ export default () => {
     label: 'JS_FUNCTION',
     selected: true,
   }]
+
+  useEffect(() => {
+    if (!client) { return; }
+    console.log(client, 'client');
+
+    const observerId = createDataStoryId();
+    const itemsObserver: ItemsObserver = {
+      linkIds: [diagram.links[1].id],
+      type: RequestObserverType.itemsObserver,
+      onReceive: (items) => {
+        setPoints([
+          ...points,
+          ...items,
+        ].slice(-100));
+      },
+      observerId
+    };
+    client.itemsObserver?.(itemsObserver as ItemsObserver)
+
+    return () => {
+      client.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+    }
+  }, [client, points]);
+
+  useEffect(() => {
+    if(!client?.linksCountObserver || !client?.cancelObserver) return;
+
+    const linksCountObserver = {
+      type: RequestObserverType.linkCountsObserver as const,
+      linkIds: [diagram.links[1].id],
+      onReceive: (count) => {
+        console.log('Link count', count);
+      },
+      observerId: createDataStoryId(),
+    }
+    client?.linksCountObserver?.(linksCountObserver);
+    return () => { client?.cancelObserver?.({ observerId: linksCountObserver.observerId, type: RequestObserverType.cancelObserver }) };
+  }, [client]);
 
   if (loading || !client) {
     return null;

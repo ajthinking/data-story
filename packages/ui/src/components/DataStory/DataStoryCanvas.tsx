@@ -53,8 +53,6 @@ const Flow = ({
   initDiagram,
   hideControls,
   slotComponents,
-  itemsObserver,
-  linksCountObserver,
   onInitialize,
   setSidebarKey,
   onSave,
