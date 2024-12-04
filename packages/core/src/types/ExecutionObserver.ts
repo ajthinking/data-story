@@ -8,8 +8,6 @@ export type ItemsObserver = {
   observerId: string,
   direction?: 'pull' | 'push',
   onlyFirstNItems?: number,
-  limit?: number,
-  offset?: number,
   throttleMs?: number,
   msgId?: string;
 }
@@ -41,9 +39,20 @@ export type NodeObserver = {
   onReceive: (data: any) => void,
 }
 
+export type NotifyDataUpdate = {
+  type: RequestObserverType.notifyDataUpdate,
+  linkIds: string[],
+  observerId: string,
+  onReceive: (data: any) => void,
+  throttleMs?: number,
+  msgId?: string,
+  limit?: number,
+  offset?: number,
+}
+
 export type CancelObserver = {
   type: RequestObserverType.cancelObserver,
   observerId: string,
 }
 
-export type ExecutionObserver = ItemsObserver | LinkCountsObserver | CancelObserver;
+export type ExecutionObserver = ItemsObserver | LinkCountsObserver | CancelObserver | NotifyDataUpdate;
