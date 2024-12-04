@@ -24,7 +24,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
 
   const loadMore = useLatest(() => {
     if (pendingRequest.current) return;
-    if (!client?.itemsObserver || !linkId) return;
+    if (!client?.getDataFromStorage || !linkId) return;
     setIsDataFetched(true);
     pendingRequest.current = true;
     return client?.getDataFromStorage?.({
@@ -41,9 +41,9 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
   });
 
   useEffect(() => {
-    if (!client?.itemsObserver || !linkId) return;
+    if (!client?.notifyDataUpdate || !linkId) return;
     const observerId = createDataStoryId();
-    const tableObserver: NotifyDataUpdate = {
+    const tableUpdate: NotifyDataUpdate = {
       observerId,
       linkIds: [linkId],
       type: RequestObserverType.notifyDataUpdate,
@@ -54,7 +54,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
         }
       }
     }
-    client?.notifyDataUpdate?.(tableObserver);
+    client?.notifyDataUpdate?.(tableUpdate);
 
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });

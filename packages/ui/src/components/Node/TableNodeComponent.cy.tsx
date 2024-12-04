@@ -4,7 +4,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
 import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
-import { ItemsObserver, multiline } from '@data-story/core';
+import { ItemValue, multiline, NotifyDataUpdate } from '@data-story/core';
 
 const data = {
   'params': [],
@@ -20,23 +20,30 @@ const data = {
   'outputs': []
 };
 const id = 'Table.1';
+let testPerformanceLimit = 20;
 
 const mountTableNodeComponent = (items: unknown[], client?: () => void) => {
+  let initialScreenCount: number = 1;
   cy.mount(
     // @ts-ignore
     <DataStoryContext.Provider value={() => {
       return ({
         toDiagram: () => ({
           getLinkIdFromNodeId: (id: string, port: string) => {
-            return `${id}.${port}`;
+            return 'tableLinkId';
           }
         }),
         client: client?.() || {
-          itemsObserver: (observer: ItemsObserver) => {
-            console.log('itemsObserver:', observer)
-            // @ts-ignore
-            observer.onReceive(items);
-          }
+          getDataFromStorage: (data:  Record<string, ItemValue[]>) => {
+            initialScreenCount--;
+            return Promise.resolve({ tableLinkId: items });
+          },
+          notifyDataUpdate: (params: NotifyDataUpdate) => {
+            if (initialScreenCount > 0) {
+              params.onReceive(['tableLinkId']);
+            }
+          },
+          cancelObserver: () => {}
         }
       })
     }}>
@@ -46,8 +53,6 @@ const mountTableNodeComponent = (items: unknown[], client?: () => void) => {
     </DataStoryContext.Provider>
   );
 }
-
-let testPerformanceLimit = 20;
 
 function runSuccess(): void {
   cy.dataCy('data-story-table')
