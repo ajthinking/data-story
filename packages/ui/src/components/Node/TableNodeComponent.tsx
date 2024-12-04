@@ -19,6 +19,7 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack
 import { notUndefined, useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import CustomHandle from './CustomHandle';
+import { useWhyDidYouUpdate } from 'ahooks';
 
 const TRUNCATE_CELL_LENGTH = 50;
 
@@ -118,7 +119,9 @@ const TableNodeComponent = ({ id, data }: {
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
-  useObserverTable({ id, isDataFetched, setIsDataFetched, setItems });
+  useWhyDidYouUpdate('TableNodeComponent', { id, data });
+  console.log('TableNodeComponent update 1111');
+  useObserverTable({ id, setIsDataFetched, setItems });
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {

@@ -4,6 +4,7 @@ import { ExecutionObserver, ItemsObserver, LinkCountsObserver, NotifyDataUpdate 
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { LinkId } from './types/Link';
+import { GetDataFromStorage } from './types/GetDataFromStorage';
 
 type MemoryItemObserver = {
   type: RequestObserverType.itemsObserver;
@@ -50,6 +51,19 @@ export class InputObserverController {
     this.linkCountsStorage.set(memoryObserver.linkId, memoryObserver.count);
   }
 
+  getDataFromStorage({
+    linkIds,
+    limit = 100,
+    offset = 0
+  }: GetDataFromStorage): Record<LinkId, ItemValue[]> {
+    const items: Record<LinkId, ItemValue[]> = {};
+    linkIds.map(linkId => {
+      const currentItems = this.linkItemsStorage.get(linkId) ?? [];
+      const storageItems = currentItems.slice(offset, offset + limit);
+      items[linkId] = storageItems;
+    });
+    return items;
+  }
   notifyDataUpdate(observer: NotifyDataUpdate): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),

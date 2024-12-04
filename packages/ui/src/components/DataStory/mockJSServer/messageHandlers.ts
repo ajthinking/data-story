@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate
+  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate, GetDataFromStorage
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 import { ExecutionObserver } from '@data-story/core/src';
@@ -106,6 +106,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       }
     } as NotifyDataUpdate);
   }
+
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
     const nodeDescriptions = app!.descriptions();
     setTimeout(() => {
@@ -129,6 +130,13 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     });
   };
 
+  const getDataFromStorage = async({ data, sendEvent }: HandlerParam) => {
+    const result = inputObserverController.getDataFromStorage( data as GetDataFromStorage);
+    sendEvent(result);
+    console.log('messageHandlers.getDataFromStorage result', result);
+    console.log('messageHandlers.getDataFromStorage data', data);
+  }
+
   return {
     run,
     getNodeDescriptions,
@@ -137,6 +145,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     linkCountsObserver,
     itemsObserver,
     notifyDataUpdate,
-    cancelObserver
+    cancelObserver,
+    getDataFromStorage,
   }
 }
