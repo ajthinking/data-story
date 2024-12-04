@@ -20,6 +20,7 @@ import { notUndefined, useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import CustomHandle from './CustomHandle';
 import { useWhyDidYouUpdate } from 'ahooks';
+import { ItemValue } from '@data-story/core';
 
 const TRUNCATE_CELL_LENGTH = 50;
 
@@ -115,13 +116,13 @@ const TableNodeComponent = ({ id, data }: {
   data: DataStoryNodeData,
   selected: boolean
 }) => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<ItemValue[]>([]);
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
   useWhyDidYouUpdate('TableNodeComponent', { id, data });
   console.log('TableNodeComponent update 1111');
-  useObserverTable({ id, setIsDataFetched, setItems });
+  useObserverTable({ id, setIsDataFetched, setItems, items });
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {
@@ -132,7 +133,6 @@ const TableNodeComponent = ({ id, data }: {
       setIsDataFetched(true);
     }
   }, []);
-
   useDataStoryEvent(dataStoryEvent);
 
   let { headers, rows } = useMemo(() => {
