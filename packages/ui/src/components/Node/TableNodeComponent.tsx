@@ -120,8 +120,6 @@ const TableNodeComponent = ({ id, data }: {
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
 
-  useWhyDidYouUpdate('TableNodeComponent', { id, data });
-  console.log('TableNodeComponent update 1111');
   useObserverTable({ id, setIsDataFetched, setItems, items });
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {

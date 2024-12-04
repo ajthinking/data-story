@@ -48,3 +48,4 @@ export type { GetDataFromStorage } from './types/GetDataFromStorage'
 export * as nodes from './computers'
 export * from './Param'
 export { Registry } from './Registry'
+export type { LinkId } from './types/Link';

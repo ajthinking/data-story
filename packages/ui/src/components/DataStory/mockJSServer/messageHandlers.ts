@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate, GetDataFromStorage
+  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate, GetDataFromStorage, LinkId
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 import { ExecutionObserver } from '@data-story/core/src';
@@ -43,7 +43,6 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
     try {
       const execution = executor?.execute();
-
       for await(const executionUpdate of execution) {}
 
       const executionResult = {
@@ -95,12 +94,11 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const notifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
-    console.log('NotifyDataUpdate', data);
     inputObserverController.notifyDataUpdate({
       ...data as NotifyDataUpdate,
-      onReceive: (data: any) => {
+      onReceive: () => {
         sendEvent({
-          ...data as Record<string, unknown>,
+          linkIds: (data as NotifyDataUpdate).linkIds,
           type: RequestObserverType.notifyDataUpdate
         });
       }
@@ -131,10 +129,8 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const getDataFromStorage = async({ data, sendEvent }: HandlerParam) => {
-    const result = inputObserverController.getDataFromStorage( data as GetDataFromStorage);
+    const result: Record<LinkId, ItemValue[]> = inputObserverController.getDataFromStorage( data as GetDataFromStorage);
     sendEvent(result);
-    console.log('messageHandlers.getDataFromStorage result', result);
-    console.log('messageHandlers.getDataFromStorage data', data);
   }
 
   return {
