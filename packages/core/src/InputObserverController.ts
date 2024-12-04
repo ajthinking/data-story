@@ -25,9 +25,9 @@ export class InputObserverController {
   private links$ = new Subject<MemoryLinksCountObserver>();
   private observerMap: Map<string, Subscription> = new Map();
 
+  // TODO: In the future, consider using indexDB or JSON Lines instead of variables for data storage
   private linkCountsStorage: Map<LinkId, number> = new Map();
   private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map();
-  // 自己再做一个 Storage 存储数据
   /**
    * Constructs an instance of InputObserverController
    */
@@ -64,6 +64,7 @@ export class InputObserverController {
     });
     return items;
   }
+
   notifyDataUpdate(observer: NotifyDataUpdate): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
@@ -72,7 +73,7 @@ export class InputObserverController {
       filter(it=>it.length > 0),
       map(bufferedItems => bufferedItems.flat(1)),
       tap(items => {
-        observer.onReceive(items);
+        observer.onReceive(observer.linkIds);
       })
     ).subscribe();
 
@@ -81,28 +82,11 @@ export class InputObserverController {
 
   addItemsObserver(observer: ItemsObserver ): void {
     const subscription = this.items$.pipe(
-      // filter(payload =>  {
-      //   const currentItems = this.linkItemsStorage.get(payload.linkId) ?? [];
-      //   const { offset = 0 } = observer;
-      //   // 如果现在 storage 存储的 items <= offset, 表示正在更新 items - payloadItems 不可返回，
-      //   // 如果现在 storage 存储的 items > offset, 表示可能正在更新 items 或者已经更新完成 - payloadItems 可以返回
-      //   if (currentItems.length <= offset) return false;
-      //   return true;
-      // }),
-      // filter(payload => {
-      //   const currentItems = this.linkItemsStorage.get(payload.linkId) ?? [];
-      //   const { limit, offset= 0} = observer;
-      //   const storageItems = limit ? currentItems.slice(offset, offset + limit) : currentItems;
-      //   // 如果现在 storage 存储的 items <= offset, 表示正在更新 items - payloadItems 不可返回，
-      //   // 如果现在 storage 存储的 items > offset, 表示可能正在更新 items 或者已经更新完成 - payloadItems 可以返回
-      //   if (currentItems.length <= offset) return false;
-      //   return true;
-      // }),
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),
       // todo: could implement a timer that doesn't rely on bufferTime.
       bufferTime(observer.throttleMs ?? ThrottleMS),
-      // 避免 this.items$.next 没有触发时，bufferTime 会返回一个空数组
+      // To prevent bufferTime from returning an empty array when this.items$.next is not triggered
       filter(it=>it.length > 0),
       map(bufferedItems => bufferedItems.flat(1)),
       tap(items => {
@@ -110,23 +94,7 @@ export class InputObserverController {
       })
     ).subscribe();
 
-    console.log('addItemsObserver', observer?.observerId, subscription);
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
-
-    console.log('addItemsObserver', observer);
-    // Send the initial items, 只有在滚动 table 时才会触发
-    // observer.linkIds.forEach(linkId => {
-    //   const { limit, offset = 0 } = observer;
-    //   const storageItems = this.linkItemsStorage.get(linkId) ?? [];
-    //   console.log('storageItems', storageItems);
-    //   const items = limit ? storageItems.slice(offset, offset + limit) : storageItems;
-    //   if (items.length <= 0) return;
-    //   this.items$.next({
-    //     type: RequestObserverType.itemsObserver,
-    //     linkId,
-    //     items
-    //   })
-    // });
   }
 
   addLinkCountsObserver(observer: LinkCountsObserver): void {

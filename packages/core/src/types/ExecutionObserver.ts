@@ -1,5 +1,6 @@
 import { RequestObserverType } from './InputObserveConfig';
 import { NotifyObserversCallback } from './NotifyObserversCallback';
+import { LinkId } from './Link';
 
 export type ItemsObserver = {
   type: RequestObserverType.itemsObserver,
@@ -43,7 +44,7 @@ export type NotifyDataUpdate = {
   type: RequestObserverType.notifyDataUpdate,
   linkIds: string[],
   observerId: string,
-  onReceive: (data: any) => void,
+  onReceive: (linkIds: LinkId[]) => void,
   throttleMs?: number,
   msgId?: string,
   limit?: number,

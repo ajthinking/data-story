@@ -7,7 +7,8 @@ import {
   LinkCountsObserver,
   NodeDescription,
   NotifyDataUpdate,
-  GetDataFromStorage
+  GetDataFromStorage,
+  LinkId
 } from '@data-story/core';
 import { Subscription } from 'rxjs';
 
@@ -20,5 +21,5 @@ export interface WorkspaceApiClient {
   itemsObserver?: (params: ItemsObserver) => Subscription;
   cancelObserver?:(params: CancelObserver) => Promise<void>;
   notifyDataUpdate?: (params: NotifyDataUpdate) => Subscription;
-  getDataFromStorage?: (params: GetDataFromStorage) => Promise<ItemValue[]>;
+  getDataFromStorage?: (params: GetDataFromStorage) => Promise<Record<LinkId, ItemValue[]>>;
 }

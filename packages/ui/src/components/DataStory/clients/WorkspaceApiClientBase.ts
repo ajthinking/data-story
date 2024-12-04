@@ -2,14 +2,18 @@ import { WorkspaceApiClient } from './WorkspaceApiClient';
 import { ClientRunParams } from '../types';
 import { filter, Observable, Subject, Subscription } from 'rxjs';
 import {
+  CancelObserver,
   Diagram,
-  Hook,
-  InputObserveConfig, ItemsObserver,
-  ItemValue, LinkCountsObserver,
-  NodeDescription,
-  LinkCountInfo,
   ExecutionObserver,
-  CancelObserver, NotifyDataUpdate, GetDataFromStorage
+  GetDataFromStorage,
+  InputObserveConfig,
+  ItemsObserver,
+  ItemValue,
+  LinkCountInfo,
+  LinkCountsObserver,
+  LinkId,
+  NodeDescription,
+  NotifyDataUpdate
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -24,12 +28,10 @@ const matchMsgType = (type: string) => it => it.type === type;
 
 function removeUnserializable(params: Exclude<ExecutionObserver, CancelObserver>): Partial<ExecutionObserver> {
   const { onReceive, ...serializableParams } = params;
-
   return JSON.parse(JSON.stringify(serializableParams));
 }
 
 export class WorkspaceApiClientBase implements WorkspaceApiClient {
-
   private receivedMsg$ = new Subject();
   private observerMap: Map<string, Subscription> = new Map();
 
@@ -72,18 +74,17 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
         type: 'getDiagram',
         path
       });
-      const diagram = (data as {msgId: string; diagram: Diagram; [key: string]: any;})?.diagram;
-      return diagram;
+      return (data as {msgId: string; diagram: Diagram; [key: string]: any;})?.diagram;
     } catch(e) {
       console.error('Error getting diagram', e);
       throw e;
     }
   }
 
-  async  getDataFromStorage (params: GetDataFromStorage): Promise<ItemValue[]> {
+  async getDataFromStorage(params: GetDataFromStorage): Promise<Record<LinkId, ItemValue[]>> {
     try {
       const data = await this.transport.sendAndReceive(params);
-      return data as ItemValue[];
+      return data as Record<LinkId, ItemValue[]>;
     } catch(e) {
       console.error('Error getting diagram', e);
       throw e;
@@ -130,8 +131,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams);
     const linksSubscription = msg$.subscribe((data) => {
-      params.onReceive(data as any);
-      console.log('workspaceApiClientBase notifyDataUpdate', data);
+      params.onReceive((data as {linkIds: LinkId[]}).linkIds);
     });
     this.observerMap.set(params.observerId, linksSubscription);
     return linksSubscription;
