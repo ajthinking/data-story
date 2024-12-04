@@ -5,9 +5,8 @@ import { useMount, useUnmount } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { useEffect } from 'react';
 
-export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems }: {
+export function useObserverTable({ id, setIsDataFetched, setItems }: {
   id: string,
-  isDataFetched: boolean,
   setIsDataFetched: (value: boolean) => void,
   setItems: (value: any) => void
 }): void {
@@ -17,9 +16,9 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
   });
 
   const { toDiagram, client } = useStore(selector, shallow);
+  const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
 
   useEffect(() => {
-    const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
     if (!client?.itemsObserver || !linkId) return;
     const observerId = createDataStoryId();
     const tableObserver: NotifyDataUpdate = {
@@ -35,33 +34,24 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
-  }, [client, id, toDiagram]);
-  // Add the node to the inputObservers when the node is mounted
-  // useMount(() => {
-  //   const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
-  //   if (!client?.itemsObserver || !linkId) return;
-  //   const tableObserver: ItemsObserver = {
-  //     observerId,
-  //     linkIds: [linkId],
-  //     type: RequestObserverType.itemsObserver,
-  //     throttleMs: 300,
-  //     limit: 10,
-  //     offset: 5,
-  //     onReceive: (batchedItems) => {
-  //       if (!isDataFetched) {
-  //         setIsDataFetched(true);
-  //       }
-  //       console.log('batchedItems', batchedItems);
-  //       setItems(prevItems => {
-  //         return [...prevItems, ...batchedItems];
-  //       });
-  //     }
-  //   }
-  //
-  //   client?.itemsObserver?.(tableObserver);
-  // });
-  //
-  // useUnmount(() => {
-  //   client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
-  // });
+  }, [client, id, linkId]);
+
+  console.log('?? useObserverTable', linkId, client?.itemsObserver);
+  // 查看 props 是否有变化
+  useEffect(() => {
+    setTimeout(() => {
+      if (!client?.itemsObserver || !linkId) return;
+
+      console.log('setTimeout')
+      client?.getDataFromStorage?.({
+        type: 'getDataFromStorage',
+        linkIds: [linkId],
+        limit: 10,
+        offset: 5
+      }).then((items) => {
+        setItems(preItems => [...preItems, items]);
+        setIsDataFetched(true);
+      })
+    }, 1000);
+  }, []);
 }

@@ -9,7 +9,7 @@ import {
   NodeDescription,
   LinkCountInfo,
   ExecutionObserver,
-  CancelObserver, NotifyDataUpdate
+  CancelObserver, NotifyDataUpdate, GetDataFromStorage
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -74,6 +74,16 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       });
       const diagram = (data as {msgId: string; diagram: Diagram; [key: string]: any;})?.diagram;
       return diagram;
+    } catch(e) {
+      console.error('Error getting diagram', e);
+      throw e;
+    }
+  }
+
+  async  getDataFromStorage (params: GetDataFromStorage): Promise<ItemValue[]> {
+    try {
+      const data = await this.transport.sendAndReceive(params);
+      return data as ItemValue[];
     } catch(e) {
       console.error('Error getting diagram', e);
       throw e;

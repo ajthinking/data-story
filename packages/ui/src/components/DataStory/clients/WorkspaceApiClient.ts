@@ -1,5 +1,14 @@
 import { ClientRunParams } from '../types';
-import { CancelObserver, Diagram, ItemsObserver, LinkCountsObserver, NodeDescription, NotifyDataUpdate } from '@data-story/core';
+import {
+  CancelObserver,
+  Diagram,
+  ItemsObserver,
+  ItemValue,
+  LinkCountsObserver,
+  NodeDescription,
+  NotifyDataUpdate,
+  GetDataFromStorage
+} from '@data-story/core';
 import { Subscription } from 'rxjs';
 
 export interface WorkspaceApiClient {
@@ -11,4 +20,5 @@ export interface WorkspaceApiClient {
   itemsObserver?: (params: ItemsObserver) => Subscription;
   cancelObserver?:(params: CancelObserver) => Promise<void>;
   notifyDataUpdate?: (params: NotifyDataUpdate) => Subscription;
+  getDataFromStorage?: (params: GetDataFromStorage) => Promise<ItemValue[]>;
 }
