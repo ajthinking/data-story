@@ -26,12 +26,17 @@ export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems
       observerId,
       linkIds: [linkId],
       type: RequestObserverType.itemsObserver,
-      throttleMs: 3000,
+      throttleMs: 300,
+      limit: 10,
+      offset: 5,
       onReceive: (batchedItems) => {
         if (!isDataFetched) {
           setIsDataFetched(true);
         }
-        setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
+        console.log('batchedItems', batchedItems);
+        setItems(prevItems => {
+          return [...prevItems, ...batchedItems];
+        });
       }
     }
 

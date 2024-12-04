@@ -8,6 +8,8 @@ export type ItemsObserver = {
   observerId: string,
   direction?: 'pull' | 'push',
   onlyFirstNItems?: number,
+  limit?: number,
+  offset?: number,
   throttleMs?: number,
   msgId?: string;
 }
