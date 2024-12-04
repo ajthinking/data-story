@@ -9,6 +9,7 @@ import {
   type ItemsObserver, LinkCountsObserver
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
+import { ExecutionObserver } from '@data-story/core/src';
 
 type RunMessage = {
   msgId: string,
@@ -85,6 +86,14 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     } as ItemsObserver);
   }
 
+  const cancelObserver = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.pullExecutionObserver(data as ExecutionObserver);
+    sendEvent({
+      ...data as Record<string, unknown>,
+      cancelObserver: true
+    });
+  }
+
   const notifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
     console.log('NotifyDataUpdate', data);
   }
@@ -118,6 +127,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     getDiagram,
     linkCountsObserver,
     itemsObserver,
-    notifyDataUpdate
+    notifyDataUpdate,
+    cancelObserver
   }
 }

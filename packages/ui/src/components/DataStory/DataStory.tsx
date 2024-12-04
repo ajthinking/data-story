@@ -9,6 +9,7 @@ import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
+import { ItemsObserver } from '@data-story/core';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}`);
@@ -17,7 +18,7 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey, children, initDiagram, onChange } = props;
+  const { client, initSidebarKey, children, initDiagram, onChange, linksCountObserver, itemsObserver} = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
@@ -46,6 +47,18 @@ export const DataStoryComponent = (
     refreshDeps: [client], // Will re-fetch if client changes
   });
   handleRequestError(diagramDataError);
+
+  useEffect(() => {
+    if (client?.itemsObserver && itemsObserver) {
+      client?.itemsObserver?.(itemsObserver as ItemsObserver)
+    }
+  }, [itemsObserver, client.itemsObserver]);
+
+  useEffect(() => {
+    if (client?.linksCountObserver && linksCountObserver) {
+      client?.linksCountObserver?.(linksCountObserver);
+    }
+  }, [client?.linksCountObserver, linksCountObserver]);
 
   useEffect(() => {
     if (sidebarKey !== 'node') {

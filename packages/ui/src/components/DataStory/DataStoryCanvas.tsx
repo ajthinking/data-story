@@ -24,7 +24,7 @@ import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
 import { getNodesWithNewSelection } from './getNodesWithNewSelection';
-import { ItemsObserver } from '@data-story/core';
+import { createDataStoryId, ItemsObserver, RequestObserverType } from '@data-story/core';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -73,6 +73,7 @@ const Flow = ({
     onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
+    updateEdgeCounts: state.updateEdgeCounts
   });
 
   const {
@@ -85,24 +86,13 @@ const Flow = ({
     onRun,
     addNodeFromDescription,
     toDiagram,
+    updateEdgeCounts
   } = useStore(selector, shallow);
 
   const id = useId()
   const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
   const reactFlowStore = useStoreApi();
   const { addSelectedNodes, setNodes } = reactFlowStore.getState();
-
-  useEffect(() => {
-    if (client?.itemsObserver && itemsObserver) {
-      client?.itemsObserver?.(itemsObserver as ItemsObserver)
-    }
-  }, [itemsObserver, client.itemsObserver]);
-
-  useEffect(() => {
-    if (client?.linksCountObserver && linksCountObserver) {
-      client?.linksCountObserver?.(linksCountObserver);
-    }
-  }, [client?.linksCountObserver, linksCountObserver]);
 
   useEffect(() => {
     if (onInitialize && onRun && isExecutePostRenderEffect) {
@@ -129,6 +119,34 @@ const Flow = ({
       keyManager.removeEventListeners();
     }
   }, []);
+
+  // when edges change, re-subscribe to linkCountsObserver
+  useEffect(() => {
+    const observerId = createDataStoryId();
+    const allLinkIds = edges.map(edge => edge.id);
+    client?.linksCountObserver?.({
+      observerId,
+      linkIds: allLinkIds,
+      type: RequestObserverType.linkCountsObserver,
+      onReceive: ({ links }) => {
+        if (!links || links.length === 0) return;
+
+        const edgeCounts = links.reduce((acc, link) => {
+          acc[link.linkId] = link.count;
+          return acc;
+        }, {});
+
+        updateEdgeCounts({
+          edgeCounts: edgeCounts,
+          state: links[0].state || 'complete',
+        })
+      }
+    })
+    return () => {
+      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+    }
+  // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
+  }, [client, edges.length, updateEdgeCounts]);
 
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);

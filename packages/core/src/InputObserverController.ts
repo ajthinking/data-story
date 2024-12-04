@@ -1,7 +1,8 @@
 import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
-import { InputObserver } from './types/InputObserver';
-import { ExecutionObserver, ItemsObserver, LinkCountsObserver } from './types/ExecutionObserver';
+import { ExecutionObserver, LinkCountsObserver } from './types/ExecutionObserver';
+import { bufferTime, Subject, Subscription } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 
 type MemoryItemObserver = {
   type: RequestObserverType.itemsObserver;
@@ -15,48 +16,72 @@ type MemoryLinksCountObserver = {
   count: number;
 }
 
+const ThrottleMS: number = 100;
+
 export class InputObserverController {
 
   public executionObservers: ExecutionObserver[] = [];
 
+  private items$ = new Subject<MemoryItemObserver>();
+  private links$ = new Subject<MemoryLinksCountObserver>();
+  private observerMap: Map<string, Subscription> = new Map();
+
   /**
    * Constructs an instance of InputObserverController
    */
-  constructor() {}
-
-  /**
-   * Determines if a report should be sent for a given inputObserver ( nodeId and portId )
-   */
-  private isReport (inputObserver: MemoryItemObserver | MemoryLinksCountObserver, type: RequestObserverType): ExecutionObserver[] {
-    return this.executionObservers.filter((executionObserver) => {
-      return executionObserver.linkIds.includes(inputObserver.linkId) && executionObserver.type === type;
-    });
+  constructor() {
   }
 
   /**
    * When we invoke `reportItems`, it triggers the `notifyObservers` callback and forwards the `items` and `inputObserver` parameters
    */
   reportItems(memoryObserver: MemoryItemObserver): void {
-    const inputObservers = this.isReport(memoryObserver, RequestObserverType.itemsObserver) as ItemsObserver[];
-    inputObservers.map((inputObserver) => {
-      inputObserver.onReceive(memoryObserver.items, inputObserver as unknown as InputObserver);
-    })
+    this.items$.next(memoryObserver);
   }
 
   reportLinksCount(memoryObserver: MemoryLinksCountObserver): void {
-    const inputObservers = this.isReport(memoryObserver, RequestObserverType.linkCountsObserver) as LinkCountsObserver[];
-    inputObservers.map((inputObserver) => {
-      inputObserver.onReceive({
-        links: [{
-          linkId: memoryObserver.linkId,
-          count: memoryObserver.count,
-          state: 'complete',
-        }]
-      });
-    })
+    this.links$.next(memoryObserver);
   }
 
   pushExecutionObserver(observer: ExecutionObserver): void {
-    this.executionObservers.push(observer);
+    let subscription: Subscription | undefined;
+    if (observer.type === RequestObserverType.itemsObserver) {
+      subscription = this.items$.pipe(
+        filter(payload =>  observer.linkIds.includes(payload.linkId)),
+        map(payload => payload.items),
+        // todo: could implement a timer that doesn't rely on bufferTime.
+        bufferTime(observer.throttleMs ?? ThrottleMS),
+        filter(it=>it.length > 0),
+        map(bufferedItems => bufferedItems.flat(1)),
+        tap(items => {
+          observer.onReceive(items);
+        })
+      ).subscribe();
+    } else if (observer.type === RequestObserverType.linkCountsObserver) {
+      subscription = this.links$.pipe(
+        filter(payload => observer.linkIds.includes(payload.linkId)),
+        map(payload => payload),
+        bufferTime(observer.throttleMs ?? ThrottleMS),
+        filter(it=>it.length > 0),
+        map(bufferedCounts => bufferedCounts.flat(1)),
+        tap(counts => {
+          observer.onReceive({
+            links: counts
+          });
+        })
+      ).subscribe();
+    }
+
+    if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
+  }
+
+  pullExecutionObserver(observer: ExecutionObserver): void {
+    if (observer?.observerId) {
+      const subscription = this.observerMap.get(observer.observerId);
+      if (subscription) {
+        subscription.unsubscribe();
+        this.observerMap.delete(observer.observerId);
+      }
+    }
   }
 }

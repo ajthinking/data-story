@@ -5,7 +5,7 @@ export type ItemsObserver = {
   type: RequestObserverType.itemsObserver,
   linkIds: string[],
   onReceive: NotifyObserversCallback,
-  observerId?: string,
+  observerId: string,
   direction?: 'pull' | 'push',
   onlyFirstNItems?: number,
   throttleMs?: number,
@@ -21,20 +21,27 @@ export interface LinkCountInfo {
 export type LinkCountsObserver = {
   type: RequestObserverType.linkCountsObserver,
   linkIds: string[],
+  observerId: string,
   state?: 'running' | 'complete',
-  observerId?: string,
   throttleMs?: number,
   msgId?: string,
   onReceive: (params:{
     links: LinkCountInfo[],
   }) => void,
 }
+
 export type NodeObserver = {
-  type: 'NodeObserver',
+  type: RequestObserverType.notifyDataUpdate,
   nodeId: string,
   onlyStatuses: string[],
   onlyOncePerStatus?: boolean,
   throttleMs?: number,
   onReceive: (data: any) => void,
 }
-export type ExecutionObserver = ItemsObserver | LinkCountsObserver;
+
+export type CancelObserver = {
+  type: RequestObserverType.cancelObserver,
+  observerId: string,
+}
+
+export type ExecutionObserver = ItemsObserver | LinkCountsObserver | CancelObserver;
