@@ -94,7 +94,9 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     get().selectNode(node.id)
 
     setTimeout(() => {
-      get().rfInstance?.fitView();
+      get().rfInstance?.fitView({
+        maxZoom: 3,
+      });
       get().focusOnFlow();
     }, 1);
   },
