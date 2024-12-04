@@ -1,7 +1,7 @@
 import * as glob from 'glob';
 import fs from 'fs';
 import path from 'path'; // Import path module
-import { Computer, get, serializeError, str } from '@data-story/core';
+import { Computer, get, ItemValue, serializeError, str } from '@data-story/core';
 
 export const JsonFileRead: Computer = {
   name: 'JsonFile.read',
@@ -38,6 +38,10 @@ export const JsonFileRead: Computer = {
     // Check if the provided path is absolute
     const isAbsolutePath = path.isAbsolute(pathPattern);
 
+    console.log({
+      pathPattern
+    })
+
     let files: string[] = [];
     try {
       if (isAbsolutePath) {
@@ -63,7 +67,10 @@ export const JsonFileRead: Computer = {
         try {
           const content = fs.readFileSync(file, 'utf-8');
           const data = JSON.parse(content);
-          const items = get(data, itemsPath);
+          const items = get(data, itemsPath).map((i: ItemValue) => ({
+            ...i,
+            _filePath: file,
+          }));
           output.push(items);
         } catch (fileError: any) {
           output.pushTo('errors', [serializeError(fileError)]);
