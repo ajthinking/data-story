@@ -1,22 +1,44 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
-import { createDataStoryId, ItemsObserver, NotifyDataUpdate, RequestObserverType } from '@data-story/core';
-import { useMount, useUnmount } from 'ahooks';
+import { createDataStoryId, ItemsObserver, ItemValue, NotifyDataUpdate, RequestObserverType } from '@data-story/core';
+import { useLatest, useMount, useUnmount } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
-export function useObserverTable({ id, setIsDataFetched, setItems }: {
+const initialScreenCount: number = 15;
+
+export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
   id: string,
   setIsDataFetched: (value: boolean) => void,
   setItems: (value: any) => void
+  items: ItemValue[];
 }): void {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     client: state.client,
   });
-
   const { toDiagram, client } = useStore(selector, shallow);
+
   const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
+  const pendingRequest = useRef(false);
+
+  const loadMore = useLatest(() => {
+    if (pendingRequest.current) return;
+    if (!client?.itemsObserver || !linkId) return;
+
+    pendingRequest.current = true;
+    return client?.getDataFromStorage?.({
+      type: 'getDataFromStorage',
+      linkIds: [linkId],
+      limit: 10,
+      offset: items.length,
+    }).then((currentItems) => {
+      console.log('getDataFromStorage', currentItems);
+      setItems(preItems => [...preItems, currentItems]);
+    }).finally(() => {
+      pendingRequest.current = false;
+    });
+  });
 
   useEffect(() => {
     if (!client?.itemsObserver || !linkId) return;
@@ -27,31 +49,15 @@ export function useObserverTable({ id, setIsDataFetched, setItems }: {
       type: RequestObserverType.notifyDataUpdate,
       throttleMs: 300,
       onReceive: (batchedItems) => {
-        console.log('batchedItems', batchedItems);
+        // todo: 15 首屏展示的数量
+        if (items.length < initialScreenCount) {
+          loadMore.current();
+        }
       }
     }
     client?.notifyDataUpdate?.(tableObserver);
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
-  }, [client, id, linkId]);
-
-  console.log('?? useObserverTable', linkId, client?.itemsObserver);
-  // 查看 props 是否有变化
-  useEffect(() => {
-    setTimeout(() => {
-      if (!client?.itemsObserver || !linkId) return;
-
-      console.log('setTimeout')
-      client?.getDataFromStorage?.({
-        type: 'getDataFromStorage',
-        linkIds: [linkId],
-        limit: 10,
-        offset: 5
-      }).then((items) => {
-        setItems(preItems => [...preItems, items]);
-        setIsDataFetched(true);
-      })
-    }, 1000);
-  }, []);
+  }, [client, id, items.length, linkId, loadMore]);
 }
