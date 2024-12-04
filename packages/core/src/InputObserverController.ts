@@ -1,6 +1,6 @@
 import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
-import { ExecutionObserver, ItemsObserver, LinkCountsObserver } from './types/ExecutionObserver';
+import { ExecutionObserver, ItemsObserver, LinkCountsObserver, NotifyDataUpdate } from './types/ExecutionObserver';
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { LinkId } from './types/Link';
@@ -37,7 +37,6 @@ export class InputObserverController {
    */
   reportItems(memoryObserver: MemoryItemObserver): void {
     const currentItems = this.linkItemsStorage.get(memoryObserver.linkId) ?? [];
-    console.log('reportItems memoryObserver', memoryObserver, currentItems, memoryObserver.items);
     this.linkItemsStorage.set(memoryObserver.linkId, currentItems.concat(memoryObserver.items));
     this.items$.next(memoryObserver);
   }
@@ -51,16 +50,40 @@ export class InputObserverController {
     this.linkCountsStorage.set(memoryObserver.linkId, memoryObserver.count);
   }
 
+  notifyDataUpdate(observer: NotifyDataUpdate): void {
+    const subscription = this.items$.pipe(
+      filter(payload => observer.linkIds.includes(payload.linkId)),
+      map(payload => payload.items),
+      bufferTime(observer.throttleMs ?? ThrottleMS),
+      filter(it=>it.length > 0),
+      map(bufferedItems => bufferedItems.flat(1)),
+      tap(items => {
+        observer.onReceive(items);
+      })
+    ).subscribe();
+
+    if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
+  }
+
   addItemsObserver(observer: ItemsObserver ): void {
     const subscription = this.items$.pipe(
-      filter(payload =>  {
-        const currentItems = this.linkItemsStorage.get(payload.linkId) ?? [];
-        const { offset = 0 } = observer;
-        // 如果现在 storage 存储的 items <= offset, 表示正在更新 items - payloadItems 不可返回，
-        // 如果现在 storage 存储的 items > offset, 表示可能正在更新 items 或者已经更新完成 - payloadItems 可以返回
-        if (currentItems.length <= offset) return false;
-        return true;
-      }),
+      // filter(payload =>  {
+      //   const currentItems = this.linkItemsStorage.get(payload.linkId) ?? [];
+      //   const { offset = 0 } = observer;
+      //   // 如果现在 storage 存储的 items <= offset, 表示正在更新 items - payloadItems 不可返回，
+      //   // 如果现在 storage 存储的 items > offset, 表示可能正在更新 items 或者已经更新完成 - payloadItems 可以返回
+      //   if (currentItems.length <= offset) return false;
+      //   return true;
+      // }),
+      // filter(payload => {
+      //   const currentItems = this.linkItemsStorage.get(payload.linkId) ?? [];
+      //   const { limit, offset= 0} = observer;
+      //   const storageItems = limit ? currentItems.slice(offset, offset + limit) : currentItems;
+      //   // 如果现在 storage 存储的 items <= offset, 表示正在更新 items - payloadItems 不可返回，
+      //   // 如果现在 storage 存储的 items > offset, 表示可能正在更新 items 或者已经更新完成 - payloadItems 可以返回
+      //   if (currentItems.length <= offset) return false;
+      //   return true;
+      // }),
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),
       // todo: could implement a timer that doesn't rely on bufferTime.
@@ -78,18 +101,18 @@ export class InputObserverController {
 
     console.log('addItemsObserver', observer);
     // Send the initial items, 只有在滚动 table 时才会触发
-    observer.linkIds.forEach(linkId => {
-      const { limit, offset = 0 } = observer;
-      const storageItems = this.linkItemsStorage.get(linkId) ?? [];
-      console.log('storageItems', storageItems);
-      const items = limit ? storageItems.slice(offset, offset + limit) : storageItems;
-      if (items.length <= 0) return;
-      this.items$.next({
-        type: RequestObserverType.itemsObserver,
-        linkId,
-        items
-      })
-    });
+    // observer.linkIds.forEach(linkId => {
+    //   const { limit, offset = 0 } = observer;
+    //   const storageItems = this.linkItemsStorage.get(linkId) ?? [];
+    //   console.log('storageItems', storageItems);
+    //   const items = limit ? storageItems.slice(offset, offset + limit) : storageItems;
+    //   if (items.length <= 0) return;
+    //   this.items$.next({
+    //     type: RequestObserverType.itemsObserver,
+    //     linkId,
+    //     items
+    //   })
+    // });
   }
 
   addLinkCountsObserver(observer: LinkCountsObserver): void {

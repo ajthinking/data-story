@@ -9,7 +9,7 @@ import {
   NodeDescription,
   LinkCountInfo,
   ExecutionObserver,
-  CancelObserver
+  CancelObserver, NotifyDataUpdate
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -114,6 +114,17 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
       subscription.unsubscribe();
       this.observerMap.delete(params.observerId);
     }
+  }
+
+  notifyDataUpdate(params: NotifyDataUpdate): Subscription {
+    const serializableParams = removeUnserializable(params);
+    const msg$ = this.transport.streaming(serializableParams);
+    const linksSubscription = msg$.subscribe((data) => {
+      params.onReceive(data as any);
+      console.log('workspaceApiClientBase notifyDataUpdate', data);
+    });
+    this.observerMap.set(params.observerId, linksSubscription);
+    return linksSubscription;
   }
 
   run({ diagram }: ClientRunParams): void {
