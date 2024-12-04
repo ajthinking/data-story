@@ -1,5 +1,5 @@
 import { DataStory } from '@data-story/ui'
-import { Application, core, coreNodeProvider, nodes, str, UnfoldedDiagramFactory, } from '@data-story/core';
+import { Application, core, coreNodeProvider, multiline, nodes, str, UnfoldedDiagramFactory, } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import useRequest from 'ahooks/lib/useRequest';
 
@@ -19,10 +19,11 @@ export default ({ part }: {part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
     ])
     .add(nodes.Input, { port_name: 'input' })
     .add(nodes.Map, {
-      json: JSON.stringify({
-        foo: 'bar',
-        global_param_access: 'The foo stamp was >>>@{stamp}<<<',
-      })
+      mapper: multiline`
+        item => ({
+          foo: 'bar',
+          global_param_access: 'The foo stamp was >>>@{stamp}<<<',
+        })`
     })
     .add(nodes.Output, { port_name: 'stamped' })
     .get()

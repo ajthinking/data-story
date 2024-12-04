@@ -230,6 +230,50 @@ export const json_ = ({
   }
 }
 
+export const jsFn = ({
+  name,
+  label,
+  help,
+  multiline = true,
+  canInterpolate,
+  interpolate,
+  evaluations,
+  value,
+}: {
+  name: string,
+  label?: string,
+  help?: string,
+  multiline?: boolean,
+  canInterpolate?: boolean,
+  interpolate?: boolean,
+  evaluations?: Evaluation[],
+  value?: string,
+}): Param => {
+  return {
+    name,
+    type: 'StringableParam',
+    label: label ?? name,
+    help: help ?? '',
+    multiline: multiline ?? false,
+    canInterpolate: canInterpolate ?? true,
+    interpolate: interpolate ?? true,
+    evaluations: evaluations ?? [
+      jsonEvaluation,
+      hjsonEvaluation,
+      jsFunctionEvaluation,
+      jsExpressionEvaluation,
+    ],
+    casts: [
+      numberCast,
+      stringCast,
+    ],
+    value: {
+      value: value ?? 0,
+      Evaluation: jsFunctionEvaluation.type,
+    },
+  }
+}
+
 export const hjson = ({
   name,
   label,

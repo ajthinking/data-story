@@ -49,7 +49,8 @@ const diagram = core.getDiagramBuilder()
     count: 100,
     expression: '{ x: ${i} }'
   })
-  .add(Map, { json: '{ y: Math.cos(${x}/4) }' })
+  .add(Map, { mapper: 'item => ({ x: ${x}, y: Math.cos(${x}/4) })' })
+  // .add(Map)
   .add(Table)
   .get();
 
@@ -60,14 +61,14 @@ export default () => {
   const client = useMemo(() => new CustomizeJSClient({ diagram, app }), [diagram, app]);
 
   const mapNode = diagram.nodes.find(n => n.type === 'Map');
-  const jsonParam = mapNode.params.find(p => p.name === 'json') as any;
-  jsonParam.value = {
-    ...jsonParam.value,
-    Evaluation: 'JS_EXPRESSION',
+  const mapperParam = mapNode.params.find(p => p.name === 'mapper') as any;
+  mapperParam.value = {
+    ...mapperParam.value,
+    Evaluation: 'JS_FUNCTION',
   }
-  jsonParam.evaluations = [{
-    type: 'JS_EXPRESSION',
-    label: 'JS Expression',
+  mapperParam.evaluations = [{
+    type: 'JS_FUNCTION',
+    label: 'JS_FUNCTION',
     selected: true,
   }]
 
