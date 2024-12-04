@@ -1,13 +1,15 @@
 import { when } from '../support/computerTester/ComputerTester'
+import { multiline } from '../utils/multiline'
 import { Map } from './Map'
 
-it('replaces items when mode is set to REPLACE', () => {
+it('replaces items with new evaluated value', () => {
   when(Map)
     .hasParams({
-      mode: 'REPLACE',
-      json: `{
-        "newKey": "newValue"
-      }`,
+      mapper: multiline`
+        item => ({
+          ...item,
+          newKey: 'newValue'
+        })`,
     })
     .getsInput([
       {},
@@ -16,43 +18,7 @@ it('replaces items when mode is set to REPLACE', () => {
     .doRun()
     .expectOutput([
       { newKey: 'newValue' },
-      { newKey: 'newValue' },
-    ])
-    .ok()
-})
-
-it('merges items when mode is set to MERGE', () => {
-  when(Map)
-    .hasParams({
-      mode: 'MERGE',
-      json: `{
-        "properties": {
-          "newProp": "newPropValue"
-        }
-      }`
-    })
-    .getsInput([
-      {},
-      {
-        id: 1,
-        properties: {
-          existingProp: 'existingPropValue'
-        }
-      }
-    ])
-    .doRun()
-    .expectOutput([
-      {
-        properties: {
-          newProp: 'newPropValue',
-        }
-      },
-      {
-        properties: {
-          existingProp: 'existingPropValue',
-          newProp: 'newPropValue',
-        }
-      },
+      { existingKey: 'existingValue', newKey: 'newValue' }
     ])
     .ok()
 })

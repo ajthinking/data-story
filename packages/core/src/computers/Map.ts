@@ -1,4 +1,4 @@
-import { json_ } from '../Param';
+import { jsFn, json_ } from '../Param';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
@@ -19,20 +19,13 @@ export const Map: Computer = {
     schema: {}
   }],
   params: [
-    {
-      name: 'mode',
-      label: 'Mode',
-      help: '',
-      type: 'SelectParam',
-      value: 'MERGE',
-      options: [
-        { value: 'MERGE', label: 'MERGE' },
-        { value: 'REPLACE', label: 'REPLACE' },
-      ],
-    },
-    json_({
-      name: 'json',
-      value: '{\n\t"foo": "bar"\n}',
+    jsFn({
+      name: 'mapper',
+      value: multiline`
+        item => ({
+          ...item
+        })
+      `,
       help: '',
     })
   ],
@@ -41,13 +34,7 @@ export const Map: Computer = {
     while(true) {
       const incoming = input.pull()
 
-      const replacers = incoming.map(item => {
-        if(params.mode === 'REPLACE') return item.params.json as ItemValue;
-
-        if(params.mode === 'MERGE') return merge(item.value, item.params.json as Object);
-
-        throw new Error(`Unknown mode: ${params.mode}`)
-      })
+      const replacers = incoming.map(item => item.params.mapper) as ItemValue[]
 
       output.push(replacers)
 
