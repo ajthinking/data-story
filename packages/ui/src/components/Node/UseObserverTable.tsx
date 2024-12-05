@@ -3,7 +3,7 @@ import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, NotifyDataUpdate, RequestObserverType } from '@data-story/core';
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
 
 const initialScreenCount: number = 20;
 
@@ -13,7 +13,9 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   setItems: (value: any) => void
   items: ItemValue[];
   parentRef: React.MutableRefObject<HTMLDivElement | null>;
-}): void {
+}): {
+    loadMore: MutableRefObject<() => Promise<void> | undefined>
+  } {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     client: state.client,
@@ -47,6 +49,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
 
     const handleScroll = () => {
       const { scrollHeight, scrollTop, clientHeight } = currentRef;
+      console.log('scrollHeight', scrollHeight, 'scrollTop', scrollTop, 'clientHeight', clientHeight);
       if (scrollTop + clientHeight >= scrollHeight) {
         loadMore.current();
       }
@@ -78,4 +81,6 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
   }, [client, id, items.length, linkId, loadMore]);
+
+  return { loadMore };
 }
