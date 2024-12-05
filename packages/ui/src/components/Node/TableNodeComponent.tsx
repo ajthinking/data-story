@@ -198,7 +198,7 @@ const TableNodeComponent = ({ id, data }: {
     (
       <div
         ref={tableRef}
-        className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xxxs"
+        className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xs"
       >
         <CustomHandle id={input.id} isConnectable={true} isInput={true} />
 
@@ -249,7 +249,7 @@ const TableNodeComponent = ({ id, data }: {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
                       data-cy={'data-story-table-row'}
-                      className="odd:bg-gray-50 w-full text-xxxs"
+                      className="odd:bg-gray-50 w-full text-xs"
                       key={row.id}
                       style={{
                         width: '100%',
