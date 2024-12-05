@@ -22,7 +22,7 @@ const data = {
 const id = 'Table.1';
 let testPerformanceLimit = 20;
 
-const mountTableNodeComponent = (items: unknown[], client?: () => void) => {
+const mountTableNodeComponent = (items: unknown[], client?: any ) => {
   let initialScreenCount: number = 1;
   cy.mount(
     // @ts-ignore
@@ -33,9 +33,11 @@ const mountTableNodeComponent = (items: unknown[], client?: () => void) => {
             return 'tableLinkId';
           }
         }),
-        client: client?.() || {
+        client: client || {
           getDataFromStorage: (data:  Record<string, ItemValue[]>) => {
+            if (initialScreenCount <= 0) return Promise.resolve({ tableLinkId: [] });
             initialScreenCount--;
+
             return Promise.resolve({ tableLinkId: items });
           },
           notifyDataUpdate: (params: NotifyDataUpdate) => {
@@ -67,8 +69,7 @@ function runSuccess(): void {
 
 describe('test TableNodeComponent for awaiting data', () => {
   it('render component with Awaiting data', () => {
-    mountTableNodeComponent([], () => {
-    });
+    mountTableNodeComponent([], {});
 
     cy.get('th').should('have.length', 0);
     cy.dataCy('data-story-table-await-data').should('contain.text', 'Awaiting data');
@@ -87,8 +88,8 @@ describe('test TableNodeComponent for tooltip', () => {
     mountTableNodeComponent([oversize]);
 
     // test long key on tooltip
-    const longKey = Object.keys(oversize)[3];
-    cy.dataCy('data-story-table-th').eq(3).click();
+    const longKey = Object.keys(oversize)[1];
+    cy.dataCy('data-story-table-th').eq(1).click();
     cy.dataCy('data-story-table-tooltip').should('have.text', longKey);
 
     // click on the table to close the tooltip
@@ -96,7 +97,7 @@ describe('test TableNodeComponent for tooltip', () => {
 
     // test long value on tooltip
     const longValue = oversize['long_property'];
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').click();
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(3)').click();
     cy.dataCy('data-story-table-tooltip').should('have.text', longValue);
   });
 
@@ -150,8 +151,8 @@ describe('test TableNodeComponent for table', () => {
   it('render component with oversize key or value data', () => {
     mountTableNodeComponent([oversize]);
 
-    cy.dataCy('data-story-table-th').eq(3).should('have.text', 'long_long_long_long_long_long_long_long_long_long_...');
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').should('have.text', 'long_long_long_long_long_long_long_long_long_long_...');
+    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'long_long_long_long_long_long_long_long_long_long_...');
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(3)').should('have.text', 'long_long_long_long_long_long_long_long_long_long_...');
   });
 
   it('render component with line break data', () => {
@@ -211,20 +212,38 @@ describe('test TableNodeComponent for table', () => {
 
   it('test table component scroll', () => {
     const thousandRows = createLargeRows(1000);
-
     testPerformanceLimit = thousandRows.length;
-    mountTableNodeComponent(thousandRows);
+    let initialScreenCount1: number = 10;
+    const items = thousandRows.slice(0, initialScreenCount1);
+    const client =  {
+      getDataFromStorage: (data:  Record<string, ItemValue[]>) => {
+        initialScreenCount1--;
+        console.log('initialScreenCount', initialScreenCount1);
+        return Promise.resolve({ tableLinkId: items });
+      },
+      notifyDataUpdate: (params: NotifyDataUpdate) => {
+        if (initialScreenCount1 > 0) {
+          params.onReceive(['tableLinkId']);
+        }
+      },
+      cancelObserver: cy.spy()
+    };
+
+    const getDataSpy = cy.spy(client, 'getDataFromStorage').as('getDataSpy');
+    mountTableNodeComponent(thousandRows, client);
 
     // wait 10ms for data to load
     cy.wait(10);
 
     const start = performance.now();
     cy.dataCy('data-story-table-scroll')
-      .scrollTo('bottom')
+      .scrollTo('bottom', { duration: 300 })
       .then(() => {
         const end = performance.now();
         const scrollTime = end - start;
         cy.log(`cypress scroll Time: ${scrollTime}ms`);
+        expect(getDataSpy).to.have.called;
+        expect(initialScreenCount1).lte(8);
       });
   });
 })

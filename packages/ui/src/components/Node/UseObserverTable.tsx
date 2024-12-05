@@ -28,8 +28,10 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   const loadMore = useLatest(() => {
     if (pendingRequest.current) return;
     if (!client?.getDataFromStorage || !linkId) return;
+
     setIsDataFetched(true);
     pendingRequest.current = true;
+
     return client?.getDataFromStorage?.({
       type: 'getDataFromStorage',
       linkIds: [linkId],
@@ -49,7 +51,6 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
 
     const handleScroll = () => {
       const { scrollHeight, scrollTop, clientHeight } = currentRef;
-      console.log('scrollHeight', scrollHeight, 'scrollTop', scrollTop, 'clientHeight', clientHeight);
       if (scrollTop + clientHeight >= scrollHeight) {
         loadMore.current();
       }
