@@ -119,8 +119,7 @@ const TableNodeComponent = ({ id, data }: {
   const [items, setItems] = useState<ItemValue[]>([]);
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
-
-  useObserverTable({ id, setIsDataFetched, setItems, items });
+  const parentRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {
@@ -132,6 +131,8 @@ const TableNodeComponent = ({ id, data }: {
     }
   }, []);
   useDataStoryEvent(dataStoryEvent);
+
+  useObserverTable({ id, setIsDataFetched, setItems, items, parentRef });
 
   let { headers, rows } = useMemo(() => {
     const itemCollection = new ItemCollection(items);
@@ -171,8 +172,6 @@ const TableNodeComponent = ({ id, data }: {
   });
 
   const { getHeaderGroups, getRowModel } = tableInstance;
-
-  const parentRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 
   const virtualizer = useVirtualizer({
     count: getRowModel().rows.length,
