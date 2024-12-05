@@ -130,6 +130,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
   const getDataFromStorage = async({ data, sendEvent }: HandlerParam) => {
     const result: Record<LinkId, ItemValue[]> = inputObserverController.getDataFromStorage( data as GetDataFromStorage);
+    console.log('load data getDataFromStorage', result);
     sendEvent(result);
   }
 

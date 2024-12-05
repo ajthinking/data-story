@@ -3,15 +3,16 @@ import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, NotifyDataUpdate, RequestObserverType } from '@data-story/core';
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 
 const initialScreenCount: number = 20;
 
-export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
+export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
   id: string,
   setIsDataFetched: (value: boolean) => void,
   setItems: (value: any) => void
   items: ItemValue[];
+  parentRef: React.MutableRefObject<HTMLDivElement | null>;
 }): void {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
@@ -39,6 +40,23 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
       pendingRequest.current = false;
     });
   });
+
+  useLayoutEffect(() => {
+    const currentRef = parentRef.current;
+    if (!currentRef) return;
+
+    const handleScroll = () => {
+      const { scrollHeight, scrollTop, clientHeight } = currentRef;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        loadMore.current();
+      }
+    };
+
+    currentRef?.addEventListener('scroll', handleScroll);
+    return () => {
+      currentRef?.removeEventListener('scroll', handleScroll);
+    };
+  }, [loadMore, parentRef.current]);
 
   useEffect(() => {
     if (!client?.notifyDataUpdate || !linkId) return;
