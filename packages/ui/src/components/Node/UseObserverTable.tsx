@@ -3,16 +3,19 @@ import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, NotifyDataUpdate, RequestObserverType } from '@data-story/core';
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { useEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
 
 const initialScreenCount: number = 20;
 
-export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
+export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
   id: string,
   setIsDataFetched: (value: boolean) => void,
   setItems: (value: any) => void
   items: ItemValue[];
-}): void {
+  parentRef: React.MutableRefObject<HTMLDivElement | null>;
+}): {
+    loadMore: MutableRefObject<() => Promise<void> | undefined>
+  } {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     client: state.client,
@@ -25,8 +28,10 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
   const loadMore = useLatest(() => {
     if (pendingRequest.current) return;
     if (!client?.getDataFromStorage || !linkId) return;
+
     setIsDataFetched(true);
     pendingRequest.current = true;
+
     return client?.getDataFromStorage?.({
       type: 'getDataFromStorage',
       linkIds: [linkId],
@@ -39,6 +44,23 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
       pendingRequest.current = false;
     });
   });
+
+  useLayoutEffect(() => {
+    const currentRef = parentRef.current;
+    if (!currentRef) return;
+
+    const handleScroll = () => {
+      const { scrollHeight, scrollTop, clientHeight } = currentRef;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        loadMore.current();
+      }
+    };
+
+    currentRef?.addEventListener('scroll', handleScroll);
+    return () => {
+      currentRef?.removeEventListener('scroll', handleScroll);
+    };
+  }, [loadMore, parentRef.current]);
 
   useEffect(() => {
     if (!client?.notifyDataUpdate || !linkId) return;
@@ -60,4 +82,6 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
   }, [client, id, items.length, linkId, loadMore]);
+
+  return { loadMore };
 }

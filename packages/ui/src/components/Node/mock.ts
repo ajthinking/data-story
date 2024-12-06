@@ -12,9 +12,9 @@ export const normal = {
 
 export const oversize = {
   normal: 'normal',
+  ['long_'.repeat(20)]: 'normal', // Long key
   long_property: 'long_'.repeat(10000), // Long value
   normal2: 'normal',
-  ['long_'.repeat(20)]: 'normal', // Long key
 }
 
 export const createLargeColsFn = (count: number) => Array.from({ length: count }, (_, index) => ({
