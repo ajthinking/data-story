@@ -13,7 +13,10 @@ import {
   LinkCountsObserver,
   LinkId,
   NodeDescription,
-  NotifyDataUpdate
+  NotifyDataUpdate,
+  NodeId,
+  NodeStatus,
+  NodeStatusObserver
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -113,6 +116,19 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
 
     this.observerMap.set(params.observerId, linksSubscription);
     return linksSubscription;
+  }
+
+  nodeStatusObserver(params: NodeStatusObserver): Subscription {
+    const serializableParams = removeUnserializable(params);
+    const msg$ = this.transport.streaming(serializableParams);
+    const nodeStatusSubscription = msg$.subscribe((data) => {
+      const { nodes } = data as {nodes: {nodeId: NodeId, status: NodeStatus}[]};
+      console.log('workspace api nodeStatusObserver', nodes);
+      params.onReceive({ nodes });
+    });
+
+    this.observerMap.set(params.observerId, nodeStatusSubscription);
+    return nodeStatusSubscription;
   }
 
   async cancelObserver(params: CancelObserver): Promise<void> {

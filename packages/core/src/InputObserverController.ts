@@ -1,10 +1,18 @@
 import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
-import { ExecutionObserver, ItemsObserver, LinkCountsObserver, NotifyDataUpdate } from './types/ExecutionObserver';
+import {
+  ExecutionObserver,
+  ItemsObserver,
+  LinkCountsObserver,
+  NodeStatusObserver,
+  NotifyDataUpdate
+} from './types/ExecutionObserver';
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { LinkId } from './types/Link';
 import { GetDataFromStorage } from './types/GetDataFromStorage';
+import { NodeStatus } from './Executor';
+import { NodeId } from './types/Node';
 
 type MemoryItemObserver = {
   type: RequestObserverType.itemsObserver;
@@ -23,11 +31,13 @@ const ThrottleMS: number = 100;
 export class InputObserverController {
   private items$ = new Subject<MemoryItemObserver>();
   private links$ = new Subject<MemoryLinksCountObserver>();
+  private nodeStatus$ = new Subject<{nodeId: NodeId, status: NodeStatus}>();
   private observerMap: Map<string, Subscription> = new Map();
 
   // TODO: In the future, consider using indexDB or JSON Lines instead of variables for data storage
   private linkCountsStorage: Map<LinkId, number> = new Map();
   private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map();
+  private nodeStatus: Map<NodeId, NodeStatus> = new Map();
   /**
    * Constructs an instance of InputObserverController
    */
@@ -49,6 +59,11 @@ export class InputObserverController {
   reportLinksCount(memoryObserver: MemoryLinksCountObserver): void {
     this.links$.next(memoryObserver);
     this.linkCountsStorage.set(memoryObserver.linkId, memoryObserver.count);
+  }
+
+  reportNodeStatus(nodeId: NodeId, status: NodeStatus): void {
+    this.nodeStatus.set(nodeId, status);
+    this.nodeStatus$.next({nodeId, status});
   }
 
   getDataFromStorage({
@@ -107,6 +122,25 @@ export class InputObserverController {
       tap(counts => {
         observer.onReceive({
           links: counts
+        });
+      })
+    ).subscribe();
+
+    if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
+  }
+
+  addNodeStatusObserver(observer: NodeStatusObserver): void {
+    const subscription = this.nodeStatus$.pipe(
+      bufferTime(observer.throttleMs ?? ThrottleMS),
+      filter(it=>it.length > 0),
+      // 去除重复，只保留最新的状态
+      tap(nodes => {
+        const nodes1: {nodeId: NodeId, status: NodeStatus}[] = observer.nodeIds.map(nodeId => ({
+          nodeId,
+          status: this.nodeStatus.get(nodeId)!
+        }))
+        observer.onReceive({
+          nodes: nodes1
         });
       })
     ).subscribe();
