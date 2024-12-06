@@ -37,4 +37,8 @@ export class CustomizeJSClient implements WorkspaceApiClient {
   linksCountObserver = (params: LinkCountsObserver) => {
     return this.jsClient.linksCountObserver(params);
   }
+
+  cancelObserver = (params) => {
+    return this.jsClient.cancelObserver(params);
+  }
 }

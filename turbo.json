@@ -4,7 +4,7 @@
     "dev": {
       "dependsOn": [
         "watch:webpack",
-        "watch:tsc",
+        "watch",
         "watch:css"
       ],
       "cache": false,
@@ -23,7 +23,7 @@
       "cache": false,
       "persistent": true
     },
-    "watch:tsc": {
+    "watch": {
       "cache": false,
       "persistent": true
     },

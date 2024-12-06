@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ItemsObserver, LinkCountsObserver
+  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate, GetDataFromStorage, LinkId
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 import { ExecutionObserver } from '@data-story/core/src';
@@ -43,7 +43,6 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
     try {
       const execution = executor?.execute();
-
       for await(const executionUpdate of execution) {}
 
       const executionResult = {
@@ -62,9 +61,9 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.pushExecutionObserver({
+    inputObserverController.addLinkCountsObserver({
       ...data as LinkCountsObserver,
-      onReceive: ({links}) => {
+      onReceive: ({ links }) => {
         sendEvent({
           links: links,
           type: RequestObserverType.linkCountsObserver
@@ -74,7 +73,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const itemsObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.pushExecutionObserver({
+    inputObserverController.addItemsObserver({
       ...data as ItemsObserver,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
         sendEvent({
@@ -87,7 +86,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const cancelObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.pullExecutionObserver(data as ExecutionObserver);
+    inputObserverController.deleteExecutionObserver(data as ExecutionObserver);
     sendEvent({
       ...data as Record<string, unknown>,
       cancelObserver: true
@@ -95,8 +94,17 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const notifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
-    console.log('NotifyDataUpdate', data);
+    inputObserverController.notifyDataUpdate({
+      ...data as NotifyDataUpdate,
+      onReceive: () => {
+        sendEvent({
+          linkIds: (data as NotifyDataUpdate).linkIds,
+          type: RequestObserverType.notifyDataUpdate
+        });
+      }
+    } as NotifyDataUpdate);
   }
+
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
     const nodeDescriptions = app!.descriptions();
     setTimeout(() => {
@@ -120,6 +128,11 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     });
   };
 
+  const getDataFromStorage = async({ data, sendEvent }: HandlerParam) => {
+    const result: Record<LinkId, ItemValue[]> = inputObserverController.getDataFromStorage( data as GetDataFromStorage);
+    sendEvent(result);
+  }
+
   return {
     run,
     getNodeDescriptions,
@@ -128,6 +141,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     linkCountsObserver,
     itemsObserver,
     notifyDataUpdate,
-    cancelObserver
+    cancelObserver,
+    getDataFromStorage,
   }
 }

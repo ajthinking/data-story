@@ -5,7 +5,7 @@ import {
 } from '@data-story/core';
 
 export const linkCountsObserver: MessageHandler = async({ event, webviewPanel, inputObserverController }) => {
-  inputObserverController.pushExecutionObserver({
+  inputObserverController.addLinkCountsObserver({
     ...event,
     onReceive: ({ links }) => {
       webviewPanel.webview.postMessage({

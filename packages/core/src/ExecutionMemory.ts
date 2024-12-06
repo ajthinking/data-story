@@ -94,11 +94,7 @@ export class ExecutionMemory {
 
   setLinkItems(linkId: LinkId, items: ItemValue[]) {
     this.history.push(`Setting link ${linkId} items: ${JSON.stringify(items)}`)
-    this.inputObserverController?.reportItems({
-      linkId,
-      type: RequestObserverType.itemsObserver,
-      items
-    })
+    this.inputObserverController?.setItems(linkId, items)
 
     this.linkItems.set(linkId, items)
   }

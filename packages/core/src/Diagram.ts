@@ -1,5 +1,5 @@
 import { PortId } from './types/PortId'
-import { Link } from './types/Link'
+import { Link, LinkId } from './types/Link'
 import { Node } from './types/Node'
 import { Param } from './Param'
 
@@ -99,7 +99,7 @@ export class Diagram {
     }
   }
 
-  getLinkIdFromNodeId(nodeId: string, portName: string): string | undefined {
+  getLinkIdFromNodeId(nodeId: string, portName: string): LinkId | undefined {
     const node = this.nodes.find(node => node.id === nodeId)
     if (!node) return;
 

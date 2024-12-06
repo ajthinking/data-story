@@ -9,7 +9,7 @@ export const linkCountsObserver: MessageHandler<LinkCountsObserver> = async({
   data,
   inputObserverController
 }: MessageHandlerParams<LinkCountsObserver>) => {
-  inputObserverController.pushExecutionObserver({
+  inputObserverController.addLinkCountsObserver({
     ...data,
     onReceive: ({ links }) => {
       ws.send(JSON.stringify({

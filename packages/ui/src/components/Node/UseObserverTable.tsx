@@ -1,44 +1,63 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
-import { createDataStoryId, ItemsObserver, RequestObserverType } from '@data-story/core';
-import { useMount, useUnmount } from 'ahooks';
+import { createDataStoryId, ItemValue, NotifyDataUpdate, RequestObserverType } from '@data-story/core';
+import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
+import { useEffect, useRef } from 'react';
 
-const observerId = createDataStoryId();
-export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems }: {
+const initialScreenCount: number = 20;
+
+export function useObserverTable({ id, setIsDataFetched, setItems, items }: {
   id: string,
-  isDataFetched: boolean,
   setIsDataFetched: (value: boolean) => void,
   setItems: (value: any) => void
+  items: ItemValue[];
 }): void {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     client: state.client,
   });
-
   const { toDiagram, client } = useStore(selector, shallow);
 
-  // Add the node to the inputObservers when the node is mounted
-  useMount(() => {
-    const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
-    if (!client?.itemsObserver || !linkId) return;
-    const tableObserver: ItemsObserver = {
+  const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
+  const pendingRequest = useRef(false);
+
+  const loadMore = useLatest(() => {
+    if (pendingRequest.current) return;
+    if (!client?.getDataFromStorage || !linkId) return;
+    setIsDataFetched(true);
+    pendingRequest.current = true;
+    return client?.getDataFromStorage?.({
+      type: 'getDataFromStorage',
+      linkIds: [linkId],
+      limit: initialScreenCount,
+      offset: items.length,
+    }).then((data) => {
+      const currentItems = data[linkId] ?? [];
+      setItems(preItems => [...preItems, ...currentItems]);
+    }).finally(() => {
+      pendingRequest.current = false;
+    });
+  });
+
+  useEffect(() => {
+    if (!client?.notifyDataUpdate || !linkId) return;
+    const observerId = createDataStoryId();
+    const tableUpdate: NotifyDataUpdate = {
       observerId,
       linkIds: [linkId],
-      type: RequestObserverType.itemsObserver,
-      throttleMs: 3000,
-      onReceive: (batchedItems) => {
-        if (!isDataFetched) {
-          setIsDataFetched(true);
+      type: RequestObserverType.notifyDataUpdate,
+      throttleMs: 300,
+      onReceive: (linkIds) => {
+        if (items.length < initialScreenCount) {
+          loadMore.current();
         }
-        setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
       }
     }
+    client?.notifyDataUpdate?.(tableUpdate);
 
-    client?.itemsObserver?.(tableObserver);
-  });
-
-  useUnmount(() => {
-    client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
-  });
+    return () => {
+      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+    }
+  }, [client, id, items.length, linkId, loadMore]);
 }

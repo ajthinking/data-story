@@ -43,7 +43,9 @@ export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluati
 export { numberCast } from './Param/casts/numberCast'
 export { stringCast } from './Param/casts/stringCast'
 export { core } from './core'
-export type { LinkCountInfo, LinkCountsObserver, ExecutionObserver, ItemsObserver, NodeObserver, CancelObserver } from './types/ExecutionObserver'
+export type { LinkCountInfo, LinkCountsObserver, ExecutionObserver, ItemsObserver, NodeObserver, CancelObserver, NotifyDataUpdate } from './types/ExecutionObserver'
+export type { GetDataFromStorage } from './types/GetDataFromStorage'
 export * as nodes from './computers'
 export * from './Param'
 export { Registry } from './Registry'
+export type { LinkId } from './types/Link';

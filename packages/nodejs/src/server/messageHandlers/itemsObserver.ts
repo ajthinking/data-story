@@ -11,7 +11,7 @@ export const itemsObserver: MessageHandler<ItemsObserver> = async({
   data,
   inputObserverController
 }: MessageHandlerParams<ItemsObserver>) => {
-  inputObserverController.pushExecutionObserver({
+  inputObserverController.addItemsObserver({
     ...data,
     onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
       ws.send(JSON.stringify({
