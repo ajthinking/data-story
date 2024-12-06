@@ -112,6 +112,11 @@ export class Diagram {
     return link.id
   }
 
+  getInputLinkIdsFromNode(node: Node): LinkId[] {
+    const inputIds = node.inputs.map(input => input.id);
+    return this.links.filter(link => inputIds.includes(link.targetPortId)).map(link => link.id);
+  }
+
   directAncestor(node: Node): Node[] {
     const inputLinks = node.inputs.flatMap(input => this.linksAtInputPortId(input.id))
     const outputPortIds = inputLinks.map(link => link.sourcePortId)
