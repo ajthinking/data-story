@@ -18,14 +18,12 @@ export type ItemsObserver = {
 export interface LinkCountInfo {
   count: number;
   linkId: string;
-  state?: 'running' | 'complete';
 }
 
 export type LinkCountsObserver = {
   type: RequestObserverType.linkCountsObserver,
   linkIds: string[],
   observerId: string,
-  state?: 'running' | 'complete',
   throttleMs?: number,
   msgId?: string,
   onReceive: (params: {
@@ -39,7 +37,7 @@ export type NodeStatusObserver = {
   observerId: string,
   throttleMs?: number,
   onReceive: (data: {
-    nodes: {nodeId: NodeId, status: NodeStatus}[],
+    nodes: {nodeId: NodeId, status: Omit<NodeStatus, 'AVAILABLE'>}[],
   }) => void,
 }
 

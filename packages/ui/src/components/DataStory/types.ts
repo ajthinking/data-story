@@ -108,8 +108,8 @@ export type StoreSchema = {
   /** The Edges */
   edges: Edge[];
   onEdgesChange: OnEdgesChange;
-  updateEdgeCounts: (params: {edgeCounts: Record<string, number>, edgeStatus?: 'running' | 'complete'}) => void;
-  updateEdgeStatus: ({edgeStatus}: {edgeStatus: {nodeId: string, status: NodeStatus}[]}) => void
+  updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
+  updateEdgeStatus: (edgeStatus: {nodeId: string, status: NodeStatus}[]) => void
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
 

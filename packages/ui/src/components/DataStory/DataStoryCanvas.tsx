@@ -24,7 +24,7 @@ import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
 import { getNodesWithNewSelection } from './getNodesWithNewSelection';
-import { createDataStoryId, ItemsObserver, RequestObserverType } from '@data-story/core';
+import { createDataStoryId, NodeStatus, RequestObserverType } from '@data-story/core';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -136,15 +136,13 @@ const Flow = ({
           return acc;
         }, {});
 
-        updateEdgeCounts({
-          edgeCounts: edgeCounts,
-        })
+        updateEdgeCounts(edgeCounts)
       }
     })
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
-  // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
+    // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
   }, [client, edges.length, updateEdgeCounts]);
 
   useEffect(() => {
@@ -156,13 +154,13 @@ const Flow = ({
       nodeIds: allNodeIds,
       type: RequestObserverType.nodeStatusObserver,
       onReceive: ({ nodes }) => {
-        updateEdgeStatus({ edgeStatus: nodes });
+        updateEdgeStatus(nodes as {nodeId: string, status: NodeStatus}[]);
       }
     });
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
-  }, [client, nodes.length]);
+  }, [client, nodes.length, updateEdgeStatus]);
 
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
