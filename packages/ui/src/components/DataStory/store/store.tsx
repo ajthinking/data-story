@@ -173,32 +173,26 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     get().setEdges(updatedEdges);
   },
 
-  updateEdgeStatus: ({ edgeStatus }: {
-    edgeStatus: {
-      nodeId: string,
-      status: NodeStatus
-    }[]
-  }) => {
-    const edgesObject = {};
-    edgeStatus.forEach(e => {
-      const links = get().toDiagram().getInputLinkIdsFromNodeId(e.nodeId);
-      links.forEach(l => {
-        edgesObject[l] = e.status
-      })
-    });
+  updateEdgeStatus: ({ edgeStatus }: { edgeStatus: { nodeId: string, status: NodeStatus }[] }) => {
+    const edgesObject = edgeStatus.reduce((acc, { nodeId, status }) => {
+      get().toDiagram().getOutputLinkIdsFromNodeId(nodeId).forEach(linkId => {
+        acc[linkId] = status;
+      });
+      return acc;
+    }, {} as Record<string, NodeStatus>);
 
     const updatedEdges: Edge[] = get().edges.map(edge => {
       const currentEdgeStatus = edgesObject[edge.id];
+      const isBusy = currentEdgeStatus === 'BUSY';
       return {
         ...edge,
         ...(currentEdgeStatus !== undefined && {
           labelBgStyle: { opacity: 0.6 },
-          style: currentEdgeStatus === 'BUSY' ? { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' } : {}
+          style: isBusy ? { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' } : {}
         }),
       };
     });
 
-    console.log('updatedEdges updateEdgeStatus', edgeStatus);
     get().setEdges(updatedEdges);
   },
 
