@@ -7,7 +7,7 @@ import {
   ExecutionObserver,
   LinkGuesser,
   Node,
-  NodeDescription,
+  NodeDescription, NodeStatus,
   Param, RequestObserverType
 } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
@@ -161,30 +161,47 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ params })
   },
 
-  updateEdgeCounts: ({ edgeCounts, state }) => {
+  updateEdgeCounts: ({ edgeCounts }) => {
     let updatedEdges: Edge[] = [];
-    if (state === 'complete') {
-      updatedEdges = get().edges.map(edge => ({
-        ...edge,
-        ...(edgeCounts[edge.id] !== undefined && {
-          label: edgeCounts[edge.id],
-          labelBgStyle: { opacity: 0.6 },
-          style: {}
-        }),
-      }));
-    } else {
-      updatedEdges = get().edges.map(edge => ({
-        ...edge,
-        ...(edgeCounts[edge.id] !== undefined && {
-          label: edgeCounts[edge.id],
-          labelBgStyle: { opacity: 0.6 },
-          style: { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' }
-        }),
-      }));
-    }
+    updatedEdges = get().edges.map(edge => ({
+      ...edge,
+      ...(edgeCounts[edge.id] !== undefined && {
+        label: edgeCounts[edge.id],
+      }),
+    }));
 
     get().setEdges(updatedEdges);
   },
+
+  updateEdgeStatus: ({ edgeStatus }: {
+    edgeStatus: {
+      nodeId: string,
+      status: NodeStatus
+    }[]
+  }) => {
+    const edgesObject = {};
+    edgeStatus.forEach(e => {
+      const links = get().toDiagram().getInputLinkIdsFromNodeId(e.nodeId);
+      links.forEach(l => {
+        edgesObject[l] = e.status
+      })
+    });
+
+    const updatedEdges: Edge[] = get().edges.map(edge => {
+      const currentEdgeStatus = edgesObject[edge.id];
+      return {
+        ...edge,
+        ...(currentEdgeStatus !== undefined && {
+          labelBgStyle: { opacity: 0.6 },
+          style: currentEdgeStatus === 'BUSY' ? { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' } : {}
+        }),
+      };
+    });
+
+    console.log('updatedEdges updateEdgeStatus', edgeStatus);
+    get().setEdges(updatedEdges);
+  },
+
   setOpenNodeSidebarId: (id: string | null) => {
     set({ openNodeSidebarId: id })
   }

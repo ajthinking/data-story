@@ -5,7 +5,7 @@ import {
   Param,
   RepeatableParam,
   type ReportCallback,
-  type ExecutionObserver, ItemsObserver, LinkCountsObserver
+  type ExecutionObserver, ItemsObserver, LinkCountsObserver, NodeStatus
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
@@ -108,7 +108,8 @@ export type StoreSchema = {
   /** The Edges */
   edges: Edge[];
   onEdgesChange: OnEdgesChange;
-  updateEdgeCounts: (params: {edgeCounts: Record<string, number>, state: 'running' | 'complete'}) => void;
+  updateEdgeCounts: (params: {edgeCounts: Record<string, number>, edgeStatus?: 'running' | 'complete'}) => void;
+  updateEdgeStatus: ({edgeStatus}: {edgeStatus: {nodeId: string, status: NodeStatus}[]}) => void
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
 

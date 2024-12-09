@@ -71,7 +71,8 @@ const Flow = ({
     onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
-    updateEdgeCounts: state.updateEdgeCounts
+    updateEdgeCounts: state.updateEdgeCounts,
+    updateEdgeStatus: state.updateEdgeStatus
   });
 
   const {
@@ -84,7 +85,8 @@ const Flow = ({
     onRun,
     addNodeFromDescription,
     toDiagram,
-    updateEdgeCounts
+    updateEdgeCounts,
+    updateEdgeStatus
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -136,7 +138,6 @@ const Flow = ({
 
         updateEdgeCounts({
           edgeCounts: edgeCounts,
-          state: links[0].state || 'complete',
         })
       }
     })
@@ -145,6 +146,23 @@ const Flow = ({
     }
   // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
   }, [client, edges.length, updateEdgeCounts]);
+
+  useEffect(() => {
+    if (!client) return;
+    const observerId = createDataStoryId();
+    const allNodeIds = nodes.map(node => node.id);
+    client?.nodeStatusObserver?.({
+      observerId,
+      nodeIds: allNodeIds,
+      type: RequestObserverType.nodeStatusObserver,
+      onReceive: ({ nodes }) => {
+        updateEdgeStatus({ edgeStatus: nodes });
+      }
+    });
+    return () => {
+      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+    }
+  }, [client, nodes.length]);
 
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);

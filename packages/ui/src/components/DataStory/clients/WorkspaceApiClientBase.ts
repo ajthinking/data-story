@@ -123,7 +123,6 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     const msg$ = this.transport.streaming(serializableParams);
     const nodeStatusSubscription = msg$.subscribe((data) => {
       const { nodes } = data as {nodes: {nodeId: NodeId, status: NodeStatus}[]};
-      console.log('workspace api nodeStatusObserver', nodes);
       params.onReceive({ nodes });
     });
 
