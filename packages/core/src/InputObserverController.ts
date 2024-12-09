@@ -62,8 +62,11 @@ export class InputObserverController {
   }
 
   reportNodeStatus(nodeId: NodeId, status: NodeStatus): void {
-    this.nodeStatus.set(nodeId, status);
+    if (status === 'AVAILABLE') {
+      return;
+    }
     this.nodeStatus$.next({nodeId, status});
+    this.nodeStatus.set(nodeId, status);
   }
 
   getDataFromStorage({
@@ -131,14 +134,17 @@ export class InputObserverController {
 
   addNodeStatusObserver(observer: NodeStatusObserver): void {
     const subscription = this.nodeStatus$.pipe(
+      filter(payload => observer.nodeIds.includes(payload.nodeId)),
       bufferTime(observer.throttleMs ?? ThrottleMS),
-      filter(it=>it.length > 0),
+      filter(it=> it.length > 0),
       // 去除重复，只保留最新的状态
       tap(nodes => {
-        const nodes1: {nodeId: NodeId, status: NodeStatus}[] = observer.nodeIds.map(nodeId => ({
-          nodeId,
-          status: this.nodeStatus.get(nodeId)!
-        }))
+        const  nodes1 = observer.nodeIds.map((nodeId) => {
+          return {
+            nodeId,
+            status: this.nodeStatus.get(nodeId)!
+          }
+        })
         observer.onReceive({
           nodes: nodes1
         });
