@@ -4,11 +4,10 @@ import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeC
 import {
   createDataStoryId,
   Diagram,
-  ExecutionObserver,
   LinkGuesser,
   Node,
   NodeDescription, NodeStatus,
-  Param, RequestObserverType
+  Param
 } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import React, { Ref, useImperativeHandle, useState } from 'react';
@@ -161,7 +160,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ params })
   },
 
-  updateEdgeCounts: ({ edgeCounts }) => {
+  updateEdgeCounts: (edgeCounts) => {
     let updatedEdges: Edge[] = [];
     updatedEdges = get().edges.map(edge => ({
       ...edge,
@@ -173,7 +172,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     get().setEdges(updatedEdges);
   },
 
-  updateEdgeStatus: ({ edgeStatus }: { edgeStatus: { nodeId: string, status: NodeStatus }[] }) => {
+  updateEdgeStatus: (edgeStatus) => {
     const edgesObject = edgeStatus.reduce((acc, { nodeId, status }) => {
       get().toDiagram().getOutputLinkIdsFromNodeId(nodeId).forEach(linkId => {
         acc[linkId] = status;

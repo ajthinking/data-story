@@ -61,8 +61,9 @@ export class InputObserverController {
     this.linkCountsStorage.set(memoryObserver.linkId, memoryObserver.count);
   }
 
+  // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
   reportNodeStatus(nodeId: NodeId, status: NodeStatus): void {
-    if (status === 'AVAILABLE') {
+    if (status === 'AVAILABLE' || this.nodeStatus.get(nodeId) === status) {
       return;
     }
     this.nodeStatus$.next({nodeId, status});
@@ -137,16 +138,15 @@ export class InputObserverController {
       filter(payload => observer.nodeIds.includes(payload.nodeId)),
       bufferTime(observer.throttleMs ?? ThrottleMS),
       filter(it=> it.length > 0),
-      // 去除重复，只保留最新的状态
-      tap(nodes => {
-        const  nodes1 = observer.nodeIds.map((nodeId) => {
+      tap(_ => {
+        const nodes = observer.nodeIds.map((nodeId) => {
           return {
             nodeId,
             status: this.nodeStatus.get(nodeId)!
           }
         })
         observer.onReceive({
-          nodes: nodes1
+          nodes
         });
       })
     ).subscribe();
