@@ -1,4 +1,4 @@
-import { Application, InputObserverController, InMemoryObserverStorage } from '@data-story/core';
+import { Application, InputObserverController, DiagramObserverStorage } from '@data-story/core';
 import { Subject } from 'rxjs';
 import { HandlerParam, getDefaultMsgHandlers, Message, MessageHandlers } from './messageHandlers';
 
@@ -7,7 +7,7 @@ export class MockJSServer {
   private messageHandlers = {};
 
   constructor({ app, messageHandlers }: {app: Application, messageHandlers?: MessageHandlers}) {
-    const storage = new InMemoryObserverStorage();
+    const storage = new DiagramObserverStorage();
     const inputObserverController = new InputObserverController(storage);
 
     this.messageHandlers = messageHandlers ?? getDefaultMsgHandlers(app, inputObserverController);

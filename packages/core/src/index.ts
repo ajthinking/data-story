@@ -52,4 +52,4 @@ export type { LinkId } from './types/Link';
 export type { NodeId } from './types/Node';
 export type { NodeStatus } from './Executor';
 export type { ObserverStorage } from './types/ObserverStorage'
-export { InMemoryObserverStorage } from './storage/InMemoryObserverStorage'
+export { DiagramObserverStorage } from './storage/diagramObserverStorage'
