@@ -24,7 +24,7 @@ import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
 import { getNodesWithNewSelection } from './getNodesWithNewSelection';
-import { createDataStoryId, ItemsObserver, RequestObserverType } from '@data-story/core';
+import { createDataStoryId, NodeStatus, RequestObserverType } from '@data-story/core';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -71,7 +71,8 @@ const Flow = ({
     onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
-    updateEdgeCounts: state.updateEdgeCounts
+    updateEdgeCounts: state.updateEdgeCounts,
+    updateEdgeStatus: state.updateEdgeStatus
   });
 
   const {
@@ -84,7 +85,8 @@ const Flow = ({
     onRun,
     addNodeFromDescription,
     toDiagram,
-    updateEdgeCounts
+    updateEdgeCounts,
+    updateEdgeStatus
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -134,17 +136,31 @@ const Flow = ({
           return acc;
         }, {});
 
-        updateEdgeCounts({
-          edgeCounts: edgeCounts,
-          state: links[0].state || 'complete',
-        })
+        updateEdgeCounts(edgeCounts)
       }
     })
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
-  // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
+    // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
   }, [client, edges.length, updateEdgeCounts]);
+
+  useEffect(() => {
+    if (!client) return;
+    const observerId = createDataStoryId();
+    const allNodeIds = nodes.map(node => node.id);
+    client?.nodeStatusObserver?.({
+      observerId,
+      nodeIds: allNodeIds,
+      type: RequestObserverType.nodeStatusObserver,
+      onReceive: ({ nodes }) => {
+        updateEdgeStatus(nodes as {nodeId: string, status: NodeStatus}[]);
+      }
+    });
+    return () => {
+      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+    }
+  }, [client, nodes.length, updateEdgeStatus]);
 
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);

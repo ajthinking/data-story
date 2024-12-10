@@ -1,6 +1,8 @@
 import { RequestObserverType } from './InputObserveConfig';
 import { NotifyObserversCallback } from './NotifyObserversCallback';
 import { LinkId } from './Link';
+import { NodeStatus } from '../Executor';
+import { NodeId } from './Node';
 
 export type ItemsObserver = {
   type: RequestObserverType.itemsObserver,
@@ -16,28 +18,27 @@ export type ItemsObserver = {
 export interface LinkCountInfo {
   count: number;
   linkId: string;
-  state?: 'running' | 'complete';
 }
 
 export type LinkCountsObserver = {
   type: RequestObserverType.linkCountsObserver,
   linkIds: string[],
   observerId: string,
-  state?: 'running' | 'complete',
   throttleMs?: number,
   msgId?: string,
-  onReceive: (params:{
+  onReceive: (params: {
     links: LinkCountInfo[],
   }) => void,
 }
 
-export type NodeObserver = {
-  type: RequestObserverType.notifyDataUpdate,
-  nodeId: string,
-  onlyStatuses: string[],
-  onlyOncePerStatus?: boolean,
+export type NodeStatusObserver = {
+  type: RequestObserverType.nodeStatusObserver,
+  nodeIds: NodeId[],
+  observerId: string,
   throttleMs?: number,
-  onReceive: (data: any) => void,
+  onReceive: (data: {
+    nodes: {nodeId: NodeId, status: Omit<NodeStatus, 'AVAILABLE'>}[],
+  }) => void,
 }
 
 export type NotifyDataUpdate = {
@@ -56,4 +57,4 @@ export type CancelObserver = {
   observerId: string,
 }
 
-export type ExecutionObserver = ItemsObserver | LinkCountsObserver | CancelObserver | NotifyDataUpdate;
+export type ExecutionObserver = ItemsObserver | LinkCountsObserver | CancelObserver | NotifyDataUpdate | NodeStatusObserver;

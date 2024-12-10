@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate, GetDataFromStorage, LinkId
+  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate, GetDataFromStorage, LinkId, NodeStatusObserver
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 import { ExecutionObserver } from '@data-story/core/src';
@@ -19,7 +19,7 @@ type RunMessage = {
 }
 
 export type HandlerParam = {data: unknown, sendEvent: (msg: Record<string, any>) => void};
-export type Message = {type: string} & Record<string, unknown>;
+export type Message = {type: string}&Record<string, unknown>;
 
 type Handler = (params: HandlerParam) => Promise<unknown>;
 export type MessageHandlers = {
@@ -30,7 +30,7 @@ export type MessageHandlers = {
 };
 const LocalStorageKey = 'data-story-tree';
 
-export const getDefaultMsgHandlers = (app: Application, inputObserverController: InputObserverController ) => {
+export const getDefaultMsgHandlers = (app: Application, inputObserverController: InputObserverController) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
     const { diagram } = data as RunMessage;
@@ -43,7 +43,8 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
     try {
       const execution = executor?.execute();
-      for await(const executionUpdate of execution) {}
+      for await(const executionUpdate of execution) {
+      }
 
       const executionResult = {
         type: 'ExecutionResult',
@@ -67,6 +68,18 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
         sendEvent({
           links: links,
           type: RequestObserverType.linkCountsObserver
+        })
+      }
+    })
+  }
+
+  const nodeStatusObserver = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.addNodeStatusObserver({
+      ...data as NodeStatusObserver,
+      onReceive: ({ nodes }) => {
+        sendEvent({
+          nodes: nodes,
+          type: RequestObserverType.nodeStatusObserver
         })
       }
     })
@@ -129,7 +142,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const getDataFromStorage = async({ data, sendEvent }: HandlerParam) => {
-    const result: Record<LinkId, ItemValue[]> = inputObserverController.getDataFromStorage( data as GetDataFromStorage);
+    const result: Record<LinkId, ItemValue[]> = inputObserverController.getDataFromStorage(data as GetDataFromStorage);
     sendEvent(result);
   }
 
@@ -143,5 +156,6 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     notifyDataUpdate,
     cancelObserver,
     getDataFromStorage,
+    nodeStatusObserver
   }
 }

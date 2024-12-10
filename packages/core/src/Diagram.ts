@@ -1,6 +1,6 @@
 import { PortId } from './types/PortId'
 import { Link, LinkId } from './types/Link'
-import { Node } from './types/Node'
+import { Node, NodeId } from './types/Node'
 import { Param } from './Param'
 
 // This is what a serialized Diagram looks like
@@ -110,6 +110,12 @@ export class Diagram {
     if (!link) return;
 
     return link.id
+  }
+
+  getOutputLinkIdsFromNodeId(nodeId: NodeId): LinkId[] {
+    const node = this.nodes.find(node => node.id === nodeId)!;
+    const inputIds = node.outputs.map(input => input.id);
+    return this.links.filter(link => inputIds.includes(link.sourcePortId)).map(link => link.id);
   }
 
   directAncestor(node: Node): Node[] {

@@ -4,11 +4,10 @@ import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeC
 import {
   createDataStoryId,
   Diagram,
-  ExecutionObserver,
   LinkGuesser,
   Node,
-  NodeDescription,
-  Param, RequestObserverType
+  NodeDescription, NodeStatus,
+  Param
 } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import React, { Ref, useImperativeHandle, useState } from 'react';
@@ -161,30 +160,41 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     set({ params })
   },
 
-  updateEdgeCounts: ({ edgeCounts, state }) => {
+  updateEdgeCounts: (edgeCounts) => {
     let updatedEdges: Edge[] = [];
-    if (state === 'complete') {
-      updatedEdges = get().edges.map(edge => ({
-        ...edge,
-        ...(edgeCounts[edge.id] !== undefined && {
-          label: edgeCounts[edge.id],
-          labelBgStyle: { opacity: 0.6 },
-          style: {}
-        }),
-      }));
-    } else {
-      updatedEdges = get().edges.map(edge => ({
-        ...edge,
-        ...(edgeCounts[edge.id] !== undefined && {
-          label: edgeCounts[edge.id],
-          labelBgStyle: { opacity: 0.6 },
-          style: { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' }
-        }),
-      }));
-    }
+    updatedEdges = get().edges.map(edge => ({
+      ...edge,
+      ...(edgeCounts[edge.id] !== undefined && {
+        label: edgeCounts[edge.id],
+      }),
+    }));
 
     get().setEdges(updatedEdges);
   },
+
+  updateEdgeStatus: (edgeStatus) => {
+    const edgesObject = edgeStatus.reduce((acc, { nodeId, status }) => {
+      get().toDiagram().getOutputLinkIdsFromNodeId(nodeId).forEach(linkId => {
+        acc[linkId] = status;
+      });
+      return acc;
+    }, {} as Record<string, NodeStatus>);
+
+    const updatedEdges: Edge[] = get().edges.map(edge => {
+      const currentEdgeStatus = edgesObject[edge.id];
+      const isBusy = currentEdgeStatus === 'BUSY';
+      return {
+        ...edge,
+        ...(currentEdgeStatus !== undefined && {
+          labelBgStyle: { opacity: 0.6 },
+          style: isBusy ? { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' } : {}
+        }),
+      };
+    });
+
+    get().setEdges(updatedEdges);
+  },
+
   setOpenNodeSidebarId: (id: string | null) => {
     set({ openNodeSidebarId: id })
   }
