@@ -86,7 +86,7 @@ export class ExecutionMemory {
 
     this.inputObserverController?.reportItems({
       linkId,
-      type: RequestObserverType.itemsObserver,
+      type: RequestObserverType.linkItemsObserver,
       items
     })
 

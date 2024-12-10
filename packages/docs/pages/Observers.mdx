@@ -4,8 +4,8 @@ Configure the `DataStory` component by setting `observers` to monitor changes in
 
 ```tsx
 <DataStory
-  itemsObserver={{
-    type: RequestObserverType.ItemsObserver,
+  linkItemsObserver={{
+    type: RequestObserverType.linkItemsObserver,
     // set the linkIds that you want to observe
     linkIds: [diagram.links[0]?.id],
     onReceive: (items, inputObserver) => {
@@ -26,8 +26,8 @@ Configure the `DataStory` component by setting `observers` to monitor changes in
 ## attributes
 
 ```ts
-export type ItemsObserver = {
-  type: RequestObserverType.ItemsObserver,
+export type linkItemsObserver = {
+  type: RequestObserverType.linkItemsObserver,
   linkIds: string[],
   observerId?: string,
   direction?: 'pull' | 'push',
@@ -44,7 +44,7 @@ export type LinkCountsObserver = {
   onReceive: (count: number) => void,
 }
 
-export type ExecutionObserver = ItemsObserver | LinkCountsObserver;
+export type ExecutionObserver = linkItemsObserver | LinkCountsObserver;
 ```
 
 ## Demo

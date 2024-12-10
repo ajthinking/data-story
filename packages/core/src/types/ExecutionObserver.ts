@@ -4,8 +4,8 @@ import { LinkId } from './Link';
 import { NodeStatus } from '../Executor';
 import { NodeId } from './Node';
 
-export type ItemsObserver = {
-  type: RequestObserverType.itemsObserver,
+export type LinkItemsObserver = {
+  type: RequestObserverType.linkItemsObserver,
   linkIds: string[],
   onReceive: NotifyObserversCallback,
   observerId: string,
@@ -41,8 +41,8 @@ export type NodeStatusObserver = {
   }) => void,
 }
 
-export type NotifyDataUpdate = {
-  type: RequestObserverType.notifyDataUpdate,
+export type LinkUpdateObserver = {
+  type: RequestObserverType.linkUpdateObserver,
   linkIds: string[],
   observerId: string,
   onReceive: (linkIds: LinkId[]) => void,
@@ -57,4 +57,4 @@ export type CancelObserver = {
   observerId: string,
 }
 
-export type ExecutionObserver = ItemsObserver | LinkCountsObserver | CancelObserver | NotifyDataUpdate | NodeStatusObserver;
+export type ExecutionObserver = LinkItemsObserver | LinkCountsObserver | CancelObserver | LinkUpdateObserver | NodeStatusObserver;

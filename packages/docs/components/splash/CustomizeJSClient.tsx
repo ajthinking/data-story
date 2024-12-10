@@ -1,4 +1,4 @@
-import { Application, Diagram, NodeDescription,ItemsObserver,LinkCountsObserver } from '@data-story/core';
+import { Application, Diagram, NodeDescription,LinkItemsObserver,LinkCountsObserver } from '@data-story/core';
 import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientBase } from '@data-story/ui';
 
 export class CustomizeJSClient implements WorkspaceApiClient {
@@ -30,8 +30,8 @@ export class CustomizeJSClient implements WorkspaceApiClient {
     return this.diagram;
   };
 
-  itemsObserver = (params: ItemsObserver) => {
-    return this.jsClient.itemsObserver(params);
+  linkItemsObserver = (params: LinkItemsObserver) => {
+    return this.jsClient.linkItemsObserver(params);
   }
 
   linksCountObserver = (params: LinkCountsObserver) => {
