@@ -5,7 +5,7 @@ import {
   Param,
   RepeatableParam,
   type ReportCallback,
-  type ExecutionObserver, ItemsObserver, LinkCountsObserver, NodeStatus
+  type ExecutionObserver, NodeStatus
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';

@@ -27,15 +27,15 @@ export default () => {
       return;
     }
     const observerId = createDataStoryId();
-    const itemsObserver = {
-      type: RequestObserverType.itemsObserver as const,
+    const linkItemsObserver = {
+      type: RequestObserverType.linkItemsObserver as const,
       linkIds: [diagram.links[0]?.id],
       onReceive: (items) => {
         console.log('Observer items', items);
       },
       observerId
     };
-    client.itemsObserver?.(itemsObserver);
+    client.linkItemsObserver?.(linkItemsObserver);
     return () => {
       client.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }

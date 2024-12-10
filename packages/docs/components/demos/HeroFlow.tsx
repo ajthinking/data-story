@@ -46,7 +46,7 @@ export default () => {
 
   const client = useMemo(() =>
     isSmallScreen ? new CustomizeJSClient({ diagram: smallDiagram, app }) : new CustomizeJSClient({ diagram: bigDiagram, app }),
-  [isSmallScreen, bigDiagram, smallDiagram, app]);
+  [isSmallScreen, app]);
 
   if (loading || !client) return null;
   return (

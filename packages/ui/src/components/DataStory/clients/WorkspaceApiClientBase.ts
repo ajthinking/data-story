@@ -7,13 +7,13 @@ import {
   ExecutionObserver,
   GetDataFromStorage,
   InputObserveConfig,
-  ItemsObserver,
+  LinkItemsObserver,
   ItemValue,
   LinkCountInfo,
   LinkCountsObserver,
   LinkId,
   NodeDescription,
-  NotifyDataUpdate,
+  LinkUpdateObserver,
   NodeId,
   NodeStatus,
   NodeStatusObserver
@@ -94,7 +94,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     }
   }
 
-  itemsObserver(params: ItemsObserver): Subscription {
+  linkItemsObserver(params: LinkItemsObserver): Subscription {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams);
     const itemsSubscription = msg$.subscribe((data) => {
@@ -142,7 +142,7 @@ export class WorkspaceApiClientBase implements WorkspaceApiClient {
     }
   }
 
-  notifyDataUpdate(params: NotifyDataUpdate): Subscription {
+  linkUpdateObserver(params: LinkUpdateObserver): Subscription {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams);
     const linksSubscription = msg$.subscribe((data) => {

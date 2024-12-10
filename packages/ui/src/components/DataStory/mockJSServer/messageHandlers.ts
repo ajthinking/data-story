@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate, GetDataFromStorage, LinkId, NodeStatusObserver
+  type LinkItemsObserver, LinkCountsObserver, LinkUpdateObserver, GetDataFromStorage, LinkId, NodeStatusObserver
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 import { ExecutionObserver } from '@data-story/core/src';
@@ -85,17 +85,17 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     })
   }
 
-  const itemsObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.addItemsObserver({
-      ...data as ItemsObserver,
+  const linklinkItemsObserver = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.addlinkItemsObserver({
+      ...data as LinkItemsObserver,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
         sendEvent({
           items,
           inputObserver,
-          type: RequestObserverType.itemsObserver
+          type: RequestObserverType.linkItemsObserver
         })
       }
-    } as ItemsObserver);
+    } as LinkItemsObserver);
   }
 
   const cancelObserver = ({ data, sendEvent }: HandlerParam) => {
@@ -106,16 +106,16 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     });
   }
 
-  const notifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.notifyDataUpdate({
-      ...data as NotifyDataUpdate,
+  const linkUpdateObserver = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.linkUpdateObserver({
+      ...data as LinkUpdateObserver,
       onReceive: () => {
         sendEvent({
-          linkIds: (data as NotifyDataUpdate).linkIds,
-          type: RequestObserverType.notifyDataUpdate
+          linkIds: (data as LinkUpdateObserver).linkIds,
+          type: RequestObserverType.linkUpdateObserver
         });
       }
-    } as NotifyDataUpdate);
+    } as LinkUpdateObserver);
   }
 
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
@@ -152,8 +152,8 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     updateDiagram,
     getDiagram,
     linkCountsObserver,
-    itemsObserver,
-    notifyDataUpdate,
+    linkItemsObserver: linklinkItemsObserver,
+    linkUpdateObserver: linkUpdateObserver,
     cancelObserver,
     getDataFromStorage,
     nodeStatusObserver

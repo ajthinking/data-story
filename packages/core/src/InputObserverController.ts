@@ -2,10 +2,10 @@ import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
 import {
   ExecutionObserver,
-  ItemsObserver,
+  LinkItemsObserver,
   LinkCountsObserver,
   NodeStatusObserver,
-  NotifyDataUpdate
+  LinkUpdateObserver
 } from './types/ExecutionObserver';
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
 
 type MemoryItemObserver = {
-  type: RequestObserverType.itemsObserver;
+  type: RequestObserverType.linkItemsObserver;
   linkId: string;
   items: ItemValue[];
 }
@@ -77,7 +77,7 @@ export class InputObserverController {
     return items;
   }
 
-  notifyDataUpdate(observer: NotifyDataUpdate): void {
+  linkUpdateObserver(observer: LinkUpdateObserver): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),
@@ -92,7 +92,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addItemsObserver(observer: ItemsObserver ): void {
+  addlinkItemsObserver(observer: LinkItemsObserver ): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),

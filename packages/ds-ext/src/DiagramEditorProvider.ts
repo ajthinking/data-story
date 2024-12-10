@@ -8,7 +8,7 @@ import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
 import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
-import { itemsObserver } from './messageHandlers/ItemsObserver';
+import { linkItemsObserver } from './messageHandlers/linkItemsObserver';
 import { linkCountsObserver } from './messageHandlers/linkCountsObserver';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
@@ -64,7 +64,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         updateDiagram: onUpdateDiagram,
         getDiagram: getDiagram,
         toast: onToast,
-        itemsObserver: itemsObserver,
+        linkItemsObserver: linkItemsObserver,
         linkCountsObserver: linkCountsObserver
       };
 

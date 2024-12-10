@@ -4,7 +4,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
 import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
-import { ItemValue, multiline, NotifyDataUpdate } from '@data-story/core';
+import { ItemValue, multiline, LinkUpdateObserver } from '@data-story/core';
 
 const data = {
   'params': [],
@@ -40,7 +40,7 @@ const mountTableNodeComponent = (items: unknown[], client?: any ) => {
 
             return Promise.resolve({ tableLinkId: items });
           },
-          notifyDataUpdate: (params: NotifyDataUpdate) => {
+          linkUpdateObserver: (params: LinkUpdateObserver) => {
             if (initialScreenCount > 0) {
               params.onReceive(['tableLinkId']);
             }
@@ -221,7 +221,7 @@ describe('test TableNodeComponent for table', () => {
         console.log('initialScreenCount', initialScreenCount1);
         return Promise.resolve({ tableLinkId: items });
       },
-      notifyDataUpdate: (params: NotifyDataUpdate) => {
+      linkUpdateObserver: (params: LinkUpdateObserver) => {
         if (initialScreenCount1 > 0) {
           params.onReceive(['tableLinkId']);
         }

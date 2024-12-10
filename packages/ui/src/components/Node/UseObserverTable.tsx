@@ -1,6 +1,6 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
-import { createDataStoryId, ItemValue, NotifyDataUpdate, RequestObserverType } from '@data-story/core';
+import { createDataStoryId, ItemValue, LinkUpdateObserver, RequestObserverType } from '@data-story/core';
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
@@ -63,12 +63,12 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   }, [loadMore, parentRef.current]);
 
   useEffect(() => {
-    if (!client?.notifyDataUpdate || !linkId) return;
+    if (!client?.linkUpdateObserver || !linkId) return;
     const observerId = createDataStoryId();
-    const tableUpdate: NotifyDataUpdate = {
+    const tableUpdate: LinkUpdateObserver = {
       observerId,
       linkIds: [linkId],
-      type: RequestObserverType.notifyDataUpdate,
+      type: RequestObserverType.linkUpdateObserver,
       throttleMs: 300,
       onReceive: (linkIds) => {
         if (items.length < initialScreenCount) {
@@ -76,7 +76,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
         }
       }
     }
-    client?.notifyDataUpdate?.(tableUpdate);
+    client?.linkUpdateObserver?.(tableUpdate);
 
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });

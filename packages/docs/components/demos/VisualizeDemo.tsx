@@ -1,4 +1,4 @@
-import { core, createDataStoryId, ItemsObserver, nodes, RequestObserverType } from '@data-story/core';
+import { core, createDataStoryId, LinkItemsObserver, nodes, RequestObserverType } from '@data-story/core';
 import React, { useEffect, useMemo } from 'react';
 import { DataStory } from '@data-story/ui';
 import {
@@ -76,9 +76,9 @@ export default () => {
     console.log(client, 'client');
 
     const observerId = createDataStoryId();
-    const itemsObserver: ItemsObserver = {
+    const linkItemsObserver: LinkItemsObserver = {
       linkIds: [diagram.links[1].id],
-      type: RequestObserverType.itemsObserver,
+      type: RequestObserverType.linkItemsObserver,
       onReceive: (items) => {
         setPoints([
           ...points,
@@ -87,7 +87,7 @@ export default () => {
       },
       observerId
     };
-    client.itemsObserver?.(itemsObserver as ItemsObserver)
+    client.linkItemsObserver?.(linkItemsObserver as LinkItemsObserver)
 
     return () => {
       client.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });

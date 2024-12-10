@@ -1,7 +1,7 @@
 export enum RequestObserverType {
   linkCountsObserver = 'linkCountsObserver',
-  itemsObserver = 'itemsObserver',
-  notifyDataUpdate = 'notifyDataUpdate',
+  linkItemsObserver = 'linkItemsObserver',
+  linkUpdateObserver = 'linkUpdateObserver',
   nodeStatusObserver = 'nodeStatusObserver',
   cancelObserver = 'cancelObserver',
 }

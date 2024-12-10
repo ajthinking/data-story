@@ -2,11 +2,11 @@ import { ClientRunParams } from '../types';
 import {
   CancelObserver,
   Diagram,
-  ItemsObserver,
+  LinkItemsObserver,
   ItemValue,
   LinkCountsObserver,
   NodeDescription,
-  NotifyDataUpdate,
+  LinkUpdateObserver,
   GetDataFromStorage,
   NodeStatusObserver,
   LinkId
@@ -19,9 +19,9 @@ export interface WorkspaceApiClient {
   updateDiagram?: (diagram: Diagram) => Promise<void>;
   getDiagram?: ({ path }: {path?: string}) => Promise<Diagram>;
   linksCountObserver?:(params: LinkCountsObserver) => void;
-  itemsObserver?: (params: ItemsObserver) => Subscription;
+  linkItemsObserver?: (params: LinkItemsObserver) => Subscription;
   cancelObserver?:(params: CancelObserver) => Promise<void>;
-  notifyDataUpdate?: (params: NotifyDataUpdate) => Subscription;
+  linkUpdateObserver?: (params: LinkUpdateObserver) => Subscription;
   getDataFromStorage?: (params: GetDataFromStorage) => Promise<Record<LinkId, ItemValue[]>>;
   nodeStatusObserver?:(params: NodeStatusObserver) => Subscription;
 }

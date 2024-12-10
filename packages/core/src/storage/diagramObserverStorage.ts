@@ -5,13 +5,15 @@ import { NodeStatus } from '../Executor';
 import { ObserverStorage } from '../types/ObserverStorage';
 
 /**
- * In-memory implementation of ObserverStorage using Maps
+ * implementation of ObserverStorage using Maps
  */
 export class DiagramObserverStorage implements ObserverStorage {
-  private linkCountsStorage: Map<LinkId, number> = new Map();
-  private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map();
-  private nodeStatusStorage: Map<NodeId, NodeStatus> = new Map();
 
+  constructor(
+    private linkCountsStorage: Map<LinkId, number> = new Map(),
+    private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map(),
+    private nodeStatusStorage: Map<NodeId, NodeStatus> = new Map()
+  ) {}
   // Link Counts
   getLinkCount(linkId: LinkId): number | undefined {
     return this.linkCountsStorage.get(linkId);
