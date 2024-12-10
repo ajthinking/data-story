@@ -7,7 +7,7 @@ import { ObserverStorage } from '../types/ObserverStorage';
 /**
  * In-memory implementation of ObserverStorage using Maps
  */
-export class InMemoryObserverStorage implements ObserverStorage {
+export class DiagramObserverStorage implements ObserverStorage {
   private linkCountsStorage: Map<LinkId, number> = new Map();
   private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map();
   private nodeStatusStorage: Map<NodeId, NodeStatus> = new Map();

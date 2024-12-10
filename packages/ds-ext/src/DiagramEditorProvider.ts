@@ -7,7 +7,7 @@ import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
-import { InputObserverController } from '@data-story/core';
+import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
 import { itemsObserver } from './messageHandlers/ItemsObserver';
 import { linkCountsObserver } from './messageHandlers/linkCountsObserver';
 
@@ -32,7 +32,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   }
 
   constructor(private readonly context: vscode.ExtensionContext) {
-    this.inputObserverController = new InputObserverController();
+    const storage = new DiagramObserverStorage();
+    this.inputObserverController = new InputObserverController(storage);
   }
 
   async openCustomDocument(

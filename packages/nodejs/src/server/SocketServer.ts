@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { Application, InMemoryStorage, InputObserverController } from '@data-story/core';
+import { Application, DiagramObserverStorage, InMemoryStorage, InputObserverController } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
 
@@ -24,7 +24,8 @@ export class SocketServer {
     this.app = app;
     this.port = port;
     this.messageHandlers = messageHandlers;
-    this.inputObserverController = new InputObserverController();
+    const storage = new DiagramObserverStorage();
+    this.inputObserverController = new InputObserverController(storage);
   }
 
   start() {
