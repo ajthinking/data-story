@@ -213,7 +213,7 @@ describe('test TableNodeComponent for table', () => {
   it('test table component scroll', () => {
     const thousandRows = createLargeRows(1000);
     testPerformanceLimit = thousandRows.length;
-    let initialScreenCount1: number = 10;
+    let initialScreenCount1: number = 15;
     const items = thousandRows.slice(0, initialScreenCount1);
     const client =  {
       getDataFromStorage: (data:  Record<string, ItemValue[]>) => {
@@ -238,12 +238,13 @@ describe('test TableNodeComponent for table', () => {
     const start = performance.now();
     cy.dataCy('data-story-table-scroll')
       .scrollTo('bottom', { duration: 300 })
+      .scrollTo('bottom', { duration: 300 })
       .then(() => {
         const end = performance.now();
         const scrollTime = end - start;
         cy.log(`cypress scroll Time: ${scrollTime}ms`);
         expect(getDataSpy).to.have.called;
-        expect(initialScreenCount1).lte(8);
+        expect(initialScreenCount1).lte(13);
       });
   });
 })
