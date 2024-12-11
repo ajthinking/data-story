@@ -8,8 +8,8 @@ import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
 import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
-import { linkItemsObserver } from './messageHandlers/linkItemsObserver';
-import { linkCountsObserver } from './messageHandlers/linkCountsObserver';
+import { observeLinkItems } from './messageHandlers/observeLinkItems';
+import { observelinkCounts } from './messageHandlers/observelinkCounts';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -64,8 +64,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         updateDiagram: onUpdateDiagram,
         getDiagram: getDiagram,
         toast: onToast,
-        linkItemsObserver: linkItemsObserver,
-        linkCountsObserver: linkCountsObserver
+        observeLinkItems: observeLinkItems,
+        observelinkCounts: observelinkCounts
       };
 
       const handler = handlers[event.type];

@@ -1,6 +1,6 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
-import { createDataStoryId, ItemValue, LinkUpdateObserver, RequestObserverType } from '@data-story/core';
+import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -82,12 +82,12 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   }, [loadMore, parentRef.current]);
 
   useEffect(() => {
-    if (!client?.linkUpdateObserver || !linkIds) return;
+    if (!client?.observeLinkUpdate || !linkIds) return;
     const observerId = createDataStoryId();
-    const tableUpdate: LinkUpdateObserver = {
+    const tableUpdate: ObserveLinkUpdate = {
       observerId,
       linkIds: linkIds,
-      type: RequestObserverType.linkUpdateObserver,
+      type: RequestObserverType.observeLinkUpdate,
       throttleMs: 300,
       onReceive: (linkIds) => {
         if (items.length < initialScreenCount) {
@@ -95,10 +95,10 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
         }
       }
     }
-    client?.linkUpdateObserver?.(tableUpdate);
+    client?.observeLinkUpdate?.(tableUpdate);
 
     return () => {
-      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+      client?.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
     }
   }, [client, id, items.length, linkIds, loadMore]);
 

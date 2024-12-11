@@ -120,14 +120,14 @@ const Flow = ({
     }
   }, []);
 
-  // when edges change, re-subscribe to linkCountsObserver
+  // when edges change, re-subscribe to observelinkCounts
   useEffect(() => {
     const observerId = createDataStoryId();
     const allLinkIds = edges.map(edge => edge.id);
-    client?.linksCountObserver?.({
+    client?.observeLinkCounts?.({
       observerId,
       linkIds: allLinkIds,
-      type: RequestObserverType.linkCountsObserver,
+      type: RequestObserverType.observelinkCounts,
       onReceive: ({ links }) => {
         if (!links || links.length === 0) return;
 
@@ -140,7 +140,7 @@ const Flow = ({
       }
     })
     return () => {
-      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+      client?.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
     }
     // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
   }, [client, edges.length, updateEdgeCounts]);
@@ -149,16 +149,16 @@ const Flow = ({
     if (!client) return;
     const observerId = createDataStoryId();
     const allNodeIds = nodes.map(node => node.id);
-    client?.nodeStatusObserver?.({
+    client?.observeNodeStatus?.({
       observerId,
       nodeIds: allNodeIds,
-      type: RequestObserverType.nodeStatusObserver,
+      type: RequestObserverType.observeNodeStatus,
       onReceive: ({ nodes }) => {
         updateEdgeStatus(nodes as {nodeId: string, status: NodeStatus}[]);
       }
     });
     return () => {
-      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+      client?.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
     }
   }, [client, nodes.length, updateEdgeStatus]);
 

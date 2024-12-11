@@ -1,14 +1,14 @@
 import { ClientRunParams } from '../types';
 import {
-  CancelObserver,
+  CancelObservation,
   Diagram,
-  LinkItemsObserver,
+  ObserveLinkItems,
   ItemValue,
-  LinkCountsObserver,
+  ObservelinkCounts,
   NodeDescription,
-  LinkUpdateObserver,
+  ObserveLinkUpdate,
   GetDataFromStorage,
-  NodeStatusObserver,
+  ObserveNodeStatus,
   LinkId
 } from '@data-story/core';
 import { Subscription } from 'rxjs';
@@ -18,10 +18,10 @@ export interface WorkspaceApiClientImplement {
   getNodeDescriptions: ({ path }: {path?: string}) => Promise<NodeDescription[]>
   updateDiagram?: (diagram: Diagram) => Promise<void>;
   getDiagram?: ({ path }: {path?: string}) => Promise<Diagram>;
-  linksCountObserver?:(params: LinkCountsObserver) => void;
-  linkItemsObserver?: (params: LinkItemsObserver) => Subscription;
-  cancelObserver?:(params: CancelObserver) => Promise<void>;
-  linkUpdateObserver?: (params: LinkUpdateObserver) => Subscription;
+  observeLinkCounts?:(params: ObservelinkCounts) => Subscription;
+  observeLinkItems?: (params: ObserveLinkItems) => Subscription;
+  observeLinkUpdate?: (params: ObserveLinkUpdate) => Subscription;
+  observeNodeStatus?: (params: ObserveNodeStatus) => Subscription;
   getDataFromStorage?: (params: GetDataFromStorage) => Promise<Record<LinkId, ItemValue[]>>;
-  nodeStatusObserver?:(params: NodeStatusObserver) => Subscription;
+  cancelObservation?:(params: CancelObservation) => Promise<void>;
 }

@@ -10,7 +10,7 @@ const diagram = core.getDiagramBuilder()
   .add(Table)
   .get();
 const linksCountObserver = {
-  type: RequestObserverType.linkCountsObserver as const,
+  type: RequestObserverType.observelinkCounts as const,
   linkIds: [diagram.links[0]?.id],
   onReceive: (count) => {
     console.log('Link count', count);
@@ -27,25 +27,25 @@ export default () => {
       return;
     }
     const observerId = createDataStoryId();
-    const linkItemsObserver = {
-      type: RequestObserverType.linkItemsObserver as const,
+    const observeLinkItems = {
+      type: RequestObserverType.observeLinkItems as const,
       linkIds: [diagram.links[0]?.id],
       onReceive: (items) => {
         console.log('Observer items', items);
       },
       observerId
     };
-    client.linkItemsObserver?.(linkItemsObserver);
+    client.observeLinkItems?.(observeLinkItems);
     return () => {
-      client.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+      client.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
     }
   }, [client]);
 
   useEffect(() => {
-    if (!client?.linksCountObserver || !client?.cancelObserver) return;
-    client.linksCountObserver(linksCountObserver);
+    if (!client?.observeLinkCounts || !client?.cancelObservation) return;
+    client.observeLinkCounts(linksCountObserver);
     return () => {
-      client.cancelObserver(linksCountObserver);
+      client.cancelObservation(linksCountObserver);
     }
   }, [client]);
 

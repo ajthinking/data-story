@@ -1,6 +1,6 @@
 import ConsoleNodeComponent from './ConsoleNodeComponent';
 import { ReactFlowProvider } from '@xyflow/react';
-import { LinkItemsObserver } from '@data-story/core';
+import { ObserveLinkItems } from '@data-story/core';
 import { DataStoryContext } from '../DataStory/store/store';
 
 const data = {
@@ -29,8 +29,8 @@ const mountConsoleNodeComponent = (items: unknown[], client?: () => void) => {
           }
         }),
         client: client?.() || {
-          linkItemsObserver: (observer: LinkItemsObserver) => {
-            console.log('linkItemsObserver:', observer)
+          observeLinkItems: (observer: ObserveLinkItems) => {
+            console.log('observeLinkItems:', observer)
             // @ts-ignore
             observer.onReceive(items);
           }

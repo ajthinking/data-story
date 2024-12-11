@@ -4,7 +4,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
 import { eventManager } from '../DataStory/events/eventManager';
 import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
-import { ItemValue, multiline, LinkUpdateObserver } from '@data-story/core';
+import { ItemValue, multiline, ObserveLinkUpdate } from '@data-story/core';
 
 const data = {
   'params': [],
@@ -40,12 +40,12 @@ const mountTableNodeComponent = (items: unknown[], client?: any ) => {
 
             return Promise.resolve({ tableLinkId: items });
           },
-          linkUpdateObserver: (params: LinkUpdateObserver) => {
+          observeLinkUpdate: (params: ObserveLinkUpdate) => {
             if (initialScreenCount > 0) {
               params.onReceive(['tableLinkId']);
             }
           },
-          cancelObserver: () => {}
+          cancelObservation: () => {}
         }
       })
     }}>
@@ -221,12 +221,12 @@ describe('test TableNodeComponent for table', () => {
         console.log('initialScreenCount', initialScreenCount1);
         return Promise.resolve({ tableLinkId: items });
       },
-      linkUpdateObserver: (params: LinkUpdateObserver) => {
+      observeLinkUpdate: (params: ObserveLinkUpdate) => {
         if (initialScreenCount1 > 0) {
           params.onReceive(['tableLinkId']);
         }
       },
-      cancelObserver: cy.spy()
+      cancelObservation: cy.spy()
     };
 
     const getDataSpy = cy.spy(client, 'getDataFromStorage').as('getDataSpy');

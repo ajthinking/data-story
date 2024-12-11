@@ -4,8 +4,8 @@ Configure the `DataStory` component by setting `observers` to monitor changes in
 
 ```tsx
 <DataStory
-  linkItemsObserver={{
-    type: RequestObserverType.linkItemsObserver,
+  observeLinkItems={{
+    type: RequestObserverType.observeLinkItems,
     // set the linkIds that you want to observe
     linkIds: [diagram.links[0]?.id],
     onReceive: (items, inputObserver) => {
@@ -14,7 +14,7 @@ Configure the `DataStory` component by setting `observers` to monitor changes in
     }
   }}
   linksCountObserver={{
-    type: RequestObserverType.linkCountsObserver as const,
+    type: RequestObserverType.observelinkCounts as const,
     linkIds: [diagram.links[1]?.id],
     onReceive: (count) => {
       console.log('Link count', count);
@@ -26,8 +26,8 @@ Configure the `DataStory` component by setting `observers` to monitor changes in
 ## attributes
 
 ```ts
-export type linkItemsObserver = {
-  type: RequestObserverType.linkItemsObserver,
+export type observeLinkItems = {
+  type: RequestObserverType.observeLinkItems,
   linkIds: string[],
   observerId?: string,
   direction?: 'pull' | 'push',
@@ -36,15 +36,15 @@ export type linkItemsObserver = {
   onReceive: NotifyObserversCallback,
 }
 
-export type LinkCountsObserver = {
-  type: RequestObserverType.LinkCountsObserver,
+export type ObservelinkCounts = {
+  type: RequestObserverType.ObservelinkCounts,
   linkIds: string[],
   observerId?: string,
   throttleMs?: number,
   onReceive: (count: number) => void,
 }
 
-export type ExecutionObserver = linkItemsObserver | LinkCountsObserver;
+export type ExecutionObserver = observeLinkItems | ObservelinkCounts;
 ```
 
 ## Demo

@@ -1,22 +1,23 @@
 import { WorkspaceApiClientImplement as WorkspaceApiClientImplement } from './WorkspaceApiClientImplement';
 import { ClientRunParams } from '../types';
-import { filter, Observable, Subject, Subscription } from 'rxjs';
+import { filter, finalize, Observable, Subject, Subscription } from 'rxjs';
 import {
-  CancelObserver,
+  CancelObservation,
   Diagram,
   ExecutionObserver,
   GetDataFromStorage,
   InputObserveConfig,
-  LinkItemsObserver,
+  ObserveLinkItems,
   ItemValue,
   LinkCountInfo,
-  LinkCountsObserver,
+  ObservelinkCounts,
   LinkId,
   NodeDescription,
-  LinkUpdateObserver,
+  ObserveLinkUpdate,
   NodeId,
   NodeStatus,
-  NodeStatusObserver
+  ObserveNodeStatus,
+  RequestObserverType
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -29,7 +30,7 @@ export interface Transport {
 
 const matchMsgType = (type: string) => it => it.type === type;
 
-function removeUnserializable(params: Exclude<ExecutionObserver, CancelObserver>): Partial<ExecutionObserver> {
+function removeUnserializable(params: Exclude<ExecutionObserver, CancelObservation>): Partial<ExecutionObserver> {
   const { onReceive, ...serializableParams } = params;
   return JSON.parse(JSON.stringify(serializableParams));
 }
@@ -94,7 +95,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     }
   }
 
-  linkItemsObserver(params: LinkItemsObserver): Subscription {
+  observeLinkItems(params: ObserveLinkItems): Subscription {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams);
     const itemsSubscription = msg$.subscribe((data) => {
@@ -106,19 +107,23 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     return itemsSubscription;
   }
 
-  linksCountObserver(params: LinkCountsObserver): Subscription {
+  observeLinkCounts(params: ObservelinkCounts): Subscription {
     const serializableParams = removeUnserializable(params);
-    const msg$ = this.transport.streaming(serializableParams);
+    const msg$ = this.transport.streaming(serializableParams)
+      .pipe(
+        finalize(() => {
+          this.cancelObservation({observerId: params.observerId, type: RequestObserverType.cancelObservation});
+        })
+      );
     const linksSubscription = msg$.subscribe((data) => {
       const { links } = data as {links: LinkCountInfo[]};
       params.onReceive({ links });
     });
 
-    this.observerMap.set(params.observerId, linksSubscription);
     return linksSubscription;
   }
 
-  nodeStatusObserver(params: NodeStatusObserver): Subscription {
+  observeNodeStatus(params: ObserveNodeStatus): Subscription {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams);
     const nodeStatusSubscription = msg$.subscribe((data) => {
@@ -130,7 +135,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     return nodeStatusSubscription;
   }
 
-  linkUpdateObserver(params: LinkUpdateObserver): Subscription {
+  observeLinkUpdate(params: ObserveLinkUpdate): Subscription {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams);
     const linksSubscription = msg$.subscribe((data) => {
@@ -140,7 +145,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     return linksSubscription;
   }
 
-  async cancelObserver(params: CancelObserver): Promise<void> {
+  async cancelObservation(params: CancelObservation): Promise<void> {
     const data = await this.transport.sendAndReceive({
       ...params,
     });

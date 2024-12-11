@@ -4,8 +4,8 @@ import { LinkId } from './Link';
 import { NodeStatus } from '../Executor';
 import { NodeId } from './Node';
 
-export type LinkItemsObserver = {
-  type: RequestObserverType.linkItemsObserver,
+export type ObserveLinkItems = {
+  type: RequestObserverType.observeLinkItems,
   linkIds: string[],
   onReceive: NotifyObserversCallback,
   observerId: string,
@@ -20,8 +20,8 @@ export interface LinkCountInfo {
   linkId: string;
 }
 
-export type LinkCountsObserver = {
-  type: RequestObserverType.linkCountsObserver,
+export type ObservelinkCounts = {
+  type: RequestObserverType.observelinkCounts,
   linkIds: string[],
   observerId: string,
   throttleMs?: number,
@@ -31,8 +31,8 @@ export type LinkCountsObserver = {
   }) => void,
 }
 
-export type NodeStatusObserver = {
-  type: RequestObserverType.nodeStatusObserver,
+export type ObserveNodeStatus = {
+  type: RequestObserverType.observeNodeStatus,
   nodeIds: NodeId[],
   observerId: string,
   throttleMs?: number,
@@ -41,8 +41,8 @@ export type NodeStatusObserver = {
   }) => void,
 }
 
-export type LinkUpdateObserver = {
-  type: RequestObserverType.linkUpdateObserver,
+export type ObserveLinkUpdate = {
+  type: RequestObserverType.observeLinkUpdate,
   linkIds: string[],
   observerId: string,
   onReceive: (linkIds: LinkId[]) => void,
@@ -52,9 +52,9 @@ export type LinkUpdateObserver = {
   offset?: number,
 }
 
-export type CancelObserver = {
-  type: RequestObserverType.cancelObserver,
+export type CancelObservation = {
+  type: RequestObserverType.cancelObservation,
   observerId: string,
 }
 
-export type ExecutionObserver = LinkItemsObserver | LinkCountsObserver | CancelObserver | LinkUpdateObserver | NodeStatusObserver;
+export type ExecutionObserver = ObserveLinkItems | ObservelinkCounts | CancelObservation | ObserveLinkUpdate | ObserveNodeStatus;

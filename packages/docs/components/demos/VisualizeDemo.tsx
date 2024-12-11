@@ -1,4 +1,4 @@
-import { core, createDataStoryId, LinkItemsObserver, nodes, RequestObserverType } from '@data-story/core';
+import { core, createDataStoryId, ObserveLinkItems, nodes, RequestObserverType } from '@data-story/core';
 import React, { useEffect, useMemo } from 'react';
 import { DataStory } from '@data-story/ui';
 import {
@@ -76,9 +76,9 @@ export default () => {
     console.log(client, 'client');
 
     const observerId = createDataStoryId();
-    const linkItemsObserver: LinkItemsObserver = {
+    const observeLinkItems: ObserveLinkItems = {
       linkIds: [diagram.links[1].id],
-      type: RequestObserverType.linkItemsObserver,
+      type: RequestObserverType.observeLinkItems,
       onReceive: (items) => {
         setPoints([
           ...points,
@@ -87,26 +87,26 @@ export default () => {
       },
       observerId
     };
-    client.linkItemsObserver?.(linkItemsObserver as LinkItemsObserver)
+    client.observeLinkItems?.(observeLinkItems as ObserveLinkItems)
 
     return () => {
-      client.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+      client.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
     }
   }, [client, points]);
 
   useEffect(() => {
-    if(!client?.linksCountObserver || !client?.cancelObserver) return;
+    if(!client?.observeLinkCounts || !client?.cancelObservation) return;
 
     const linksCountObserver = {
-      type: RequestObserverType.linkCountsObserver as const,
+      type: RequestObserverType.observelinkCounts as const,
       linkIds: [diagram.links[1].id],
       onReceive: (count) => {
         console.log('Link count', count);
       },
       observerId: createDataStoryId(),
     }
-    client?.linksCountObserver?.(linksCountObserver);
-    return () => { client?.cancelObserver?.({ observerId: linksCountObserver.observerId, type: RequestObserverType.cancelObserver }) };
+    client?.observeLinkCounts?.(linksCountObserver);
+    return () => { client?.cancelObservation?.({ observerId: linksCountObserver.observerId, type: RequestObserverType.cancelObservation }) };
   }, [client]);
 
   if (loading || !client) {

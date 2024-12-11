@@ -1,16 +1,16 @@
 import { MessageHandler } from '../MessageHandler';
-import { InputObserver, type LinkItemsObserver, ItemValue, RequestObserverType } from '@data-story/core';
+import { InputObserver, type ObserveLinkItems, ItemValue, RequestObserverType } from '@data-story/core';
 
-export const linkItemsObserver: MessageHandler = async ({ event, webviewPanel, inputObserverController }) => {
+export const observeLinkItems: MessageHandler = async ({ event, webviewPanel, inputObserverController }) => {
   inputObserverController.addlinkItemsObserver({
     ...event,
     onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
       webviewPanel.webview.postMessage({
         items,
         inputObserver,
-        type: RequestObserverType.linkItemsObserver,
+        type: RequestObserverType.observeLinkItems,
         msgId: event!.msgId,
       });
     }
-  } as LinkItemsObserver);
+  } as ObserveLinkItems);
 };
