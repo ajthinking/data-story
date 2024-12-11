@@ -11,8 +11,8 @@ export type { DataStoryProps, ClientRunParams, ServerClientObservationConfig } f
 export { default as NodeComponent } from './components/Node/NodeComponent';
 export { createJSClient } from './components/DataStory/clients/createJSClient';
 export type { DataStoryControlsType } from './components/DataStory/dataStoryControls';
-export type { WorkspaceApiClient } from './components/DataStory/clients/WorkspaceApiClient';
+export type { WorkspaceApiClientImplement as WorkspaceApiClient } from './components/DataStory/clients/WorkspaceApiClientImplement';
 export { processWaitingResponse, waitForResponse } from './components/DataStory/clients/WebSocketHandleResponseMiddleware';
 export { createSocketClient } from './components/DataStory/clients/createSocketClient';
 export { createTransport, type TransportConfig } from './components/DataStory/clients/createTransport';
-export { WorkspaceApiClientBase } from './components/DataStory/clients/WorkspaceApiClientBase';
+export { WorkspaceApiClient as WorkspaceApiClientBase } from './components/DataStory/clients/WorkspaceApiClient';
