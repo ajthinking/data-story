@@ -124,7 +124,7 @@ const Flow = ({
   useEffect(() => {
     const observerId = createDataStoryId();
     const allLinkIds = edges.map(edge => edge.id);
-    client?.observeLinkCounts?.({
+    const subscription = client?.observeLinkCounts?.({
       observerId,
       linkIds: allLinkIds,
       type: RequestObserverType.observelinkCounts,
@@ -140,7 +140,7 @@ const Flow = ({
       }
     })
     return () => {
-      client?.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
+      subscription?.unsubscribe();
     }
     // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
   }, [client, edges.length, updateEdgeCounts]);
@@ -149,7 +149,7 @@ const Flow = ({
     if (!client) return;
     const observerId = createDataStoryId();
     const allNodeIds = nodes.map(node => node.id);
-    client?.observeNodeStatus?.({
+    const subscription = client?.observeNodeStatus?.({
       observerId,
       nodeIds: allNodeIds,
       type: RequestObserverType.observeNodeStatus,
@@ -158,7 +158,7 @@ const Flow = ({
       }
     });
     return () => {
-      client?.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
+      subscription?.unsubscribe();
     }
   }, [client, nodes.length, updateEdgeStatus]);
 

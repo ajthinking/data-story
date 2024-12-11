@@ -45,7 +45,7 @@ const mountTableNodeComponent = (items: unknown[], client?: any ) => {
               params.onReceive(['tableLinkId']);
             }
           },
-          cancelObservation: () => {}
+          cancelObservation: cy.spy()
         }
       })
     }}>
