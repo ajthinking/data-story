@@ -3,7 +3,7 @@ import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, LinkUpdateObserver, RequestObserverType } from '@data-story/core';
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const initialScreenCount: number = 20;
 
@@ -24,34 +24,44 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
 
   const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
   const pendingRequest = useRef(false);
+  const linkOffsets = useRef<Map<string, number>>(new Map());
 
-  const loadMore = useLatest(() => {
+  const loadMore = useLatest(async () => {
     if (pendingRequest.current) return;
     if (!client?.getDataFromStorage || !linkIds) return;
 
     setIsDataFetched(true);
     pendingRequest.current = true;
 
-    // todo: get data from different links
-    return client?.getDataFromStorage?.({
-      type: 'getDataFromStorage',
-      linkIds: linkIds,
-      limit: initialScreenCount,
-      offset: items.length,
-    }).then((data) => {
-      const currentItems = linkIds.reduce((acc, linkId) => {
-        return acc.concat(data[linkId]);
-      }, [] as ItemValue[])
-      // console.log('currentIt?ems', currentItems, 'data', data);
-      setItems(preItems => {
-        // console.log('preItems', preItems);
-        // console.log('currentItems', currentItems);
-        // console.log('preItems.concat(currentItems)', preItems.concat(currentItems));
-        return preItems.concat(currentItems);
+    try {
+      const newItems: ItemValue[] = [];
+
+      // Fetch data for each link
+      const promises = linkIds.map(async (linkId) => {
+        const currentOffset = linkOffsets.current.get(linkId) ?? 0;
+        const result = await client?.getDataFromStorage?.({
+          type: 'getDataFromStorage',
+          linkId,
+          limit: initialScreenCount,
+          offset: currentOffset,
+        });
+
+        const linkItems = result?.[linkId] ?? [];
+        if (linkItems.length > 0) {
+          newItems.push(...linkItems);
+          // Update offset only if we got items
+          linkOffsets.current.set(linkId, currentOffset + linkItems.length);
+        }
       });
-    }).finally(() => {
+
+      await Promise.all(promises);
+
+      if (newItems.length > 0) {
+        setItems(prevItems => [...prevItems, ...newItems]);
+      }
+    } finally {
       pendingRequest.current = false;
-    });
+    }
   });
 
   useLayoutEffect(() => {

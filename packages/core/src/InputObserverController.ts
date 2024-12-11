@@ -64,16 +64,14 @@ export class InputObserverController {
   }
 
   getDataFromStorage({
-    linkIds,
+    linkId,
     limit = 100,
     offset = 0
   }: GetDataFromStorage): Record<LinkId, ItemValue[]> {
     const items: Record<LinkId, ItemValue[]> = {};
-    linkIds.map(linkId => {
-      const currentItems = this.storage.getLinkItems(linkId) ?? [];
-      const storageItems = currentItems.slice(offset, offset + limit);
-      items[linkId] = storageItems;
-    });
+    const currentItems = this.storage.getLinkItems(linkId) ?? [];
+    const storageItems = currentItems.slice(offset, offset + limit);
+    items[linkId] = storageItems;
     return items;
   }
 
