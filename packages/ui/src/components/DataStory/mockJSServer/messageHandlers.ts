@@ -19,7 +19,7 @@ type RunMessage = {
 }
 
 export type HandlerParam = {data: unknown, sendEvent: (msg: Record<string, any>) => void};
-export type Message = {type: string}&Record<string, unknown>;
+export type Message = {type: string} & Record<string, unknown>;
 
 type Handler = (params: HandlerParam) => Promise<unknown>;
 export type MessageHandlers = {
