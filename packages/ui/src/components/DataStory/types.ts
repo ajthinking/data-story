@@ -10,7 +10,7 @@ import {
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import React from 'react';
-import { WorkspaceApiClient } from './clients/WorkspaceApiClient';
+import { WorkspaceApiClientImplement } from './clients/WorkspaceApiClientImplement';
 
 export type DataStoryCallback = (options: {run: () => void}) => void;
 
@@ -30,7 +30,7 @@ type ControlsType = 'run' | 'addNode' | 'save';
 export type DataStoryProps = {
   onNodeDoubleClick?: (node: ReactFlowNode) => void,
   children?: React.ReactNode;
-  client: WorkspaceApiClient,
+  client: WorkspaceApiClientImplement,
   initDiagram?: Diagram | null;
   hideControls?: boolean | ControlsType[];
   slotComponents?: React.ReactNode[];
@@ -61,7 +61,7 @@ export type StoreInitOptions = {
   initDiagram?: Diagram | null,
   callback?: DataStoryCallback,
   focusOnFlow?: StoreSchema['focusOnFlow'];
-  client?: WorkspaceApiClient;
+  client?: WorkspaceApiClientImplement;
 }
 
 export type FormCommonProps = {
@@ -89,7 +89,7 @@ export type NodeSettingsFormProps = {
 }
 
 export type StoreSchema = {
-  client?: WorkspaceApiClient;
+  client?: WorkspaceApiClientImplement;
 
   /** The main reactflow instance */
   rfInstance: StoreInitOptions['rfInstance'] | undefined;
