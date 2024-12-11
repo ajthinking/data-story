@@ -1,11 +1,13 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
-import { useLatest, useWhyDidYouUpdate } from 'ahooks';
+import { useLatest, useMount, useUnmount, useWhyDidYouUpdate } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { MutableRefObject, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Subscription } from 'rxjs';
 
-const initialScreenCount: number = 20;
+const initialScreenCount: number = 15;
+let subscription: Subscription | undefined;
 
 export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
   id: string,
@@ -27,6 +29,8 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   }, [toDiagram, id]);
   const pendingRequest = useRef(false);
   const linkOffsets = useRef<Map<string, number>>(new Map());
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
 
   const loadMore = useLatest(async () => {
     if (pendingRequest.current) return;
@@ -34,6 +38,11 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
 
     setIsDataFetched(true);
     pendingRequest.current = true;
+
+    // Clear offsets if re-running the diagram (no items)
+    if (items.length === 0) {
+      linkOffsets.current.clear();
+    }
 
     try {
       const newItems: ItemValue[] = [];
@@ -83,7 +92,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     };
   }, [loadMore, parentRef.current]);
 
-  useEffect(() => {
+  useMount(() => {
     if (!client?.observeLinkUpdate || !linkIds) return;
     const observerId = createDataStoryId();
     const tableUpdate: ObserveLinkUpdate = {
@@ -91,18 +100,19 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
       linkIds: linkIds,
       type: RequestObserverType.observeLinkUpdate,
       throttleMs: 300,
-      onReceive: (linkIds) => {
-        if (items.length < initialScreenCount) {
+      onReceive: () => {
+        // if linkOffsets all items.length < initialScreenCount then load more
+        if (itemsRef.current.length < initialScreenCount) {
           loadMore.current();
         }
       }
     }
-    const subscription = client?.observeLinkUpdate?.(tableUpdate);
-    console.log('useObserverTable????', subscription);
-    return () => {
-      subscription?.unsubscribe();
-    }
-  }, [client, items.length, linkIds, loadMore]);
+    subscription = client?.observeLinkUpdate?.(tableUpdate);
+  });
+
+  useUnmount(() => {
+    subscription?.unsubscribe();
+  });
 
   return { loadMore };
 }
