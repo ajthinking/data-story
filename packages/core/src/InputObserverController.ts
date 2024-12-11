@@ -2,10 +2,10 @@ import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
 import {
   ExecutionObserver,
-  LinkItemsObserver,
-  LinkCountsObserver,
-  NodeStatusObserver,
-  LinkUpdateObserver
+  ObserveLinkItems,
+  ObservelinkCounts,
+  ObserveNodeStatus,
+  ObserveLinkUpdate
 } from './types/ExecutionObserver';
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
@@ -16,13 +16,13 @@ import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
 
 type MemoryItemObserver = {
-  type: RequestObserverType.linkItemsObserver;
+  type: RequestObserverType.observeLinkItems;
   linkId: string;
   items: ItemValue[];
 }
 
 type MemoryLinksCountObserver = {
-  type: RequestObserverType.linkCountsObserver;
+  type: RequestObserverType.observelinkCounts;
   linkId: string;
   count: number;
 }
@@ -75,7 +75,7 @@ export class InputObserverController {
     return items;
   }
 
-  linkUpdateObserver(observer: LinkUpdateObserver): void {
+  observeLinkUpdate(observer: ObserveLinkUpdate): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),
@@ -90,7 +90,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addlinkItemsObserver(observer: LinkItemsObserver ): void {
+  addlinkItemsObserver(observer: ObserveLinkItems ): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),
@@ -107,7 +107,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addLinkCountsObserver(observer: LinkCountsObserver): void {
+  addLinkCountsObserver(observer: ObservelinkCounts): void {
     const subscription = this.links$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload),
@@ -124,7 +124,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addNodeStatusObserver(observer: NodeStatusObserver): void {
+  addNodeStatusObserver(observer: ObserveNodeStatus): void {
     const subscription = this.nodeStatus$.pipe(
       filter(payload => observer.nodeIds.includes(payload.nodeId)),
       bufferTime(observer.throttleMs ?? ThrottleMS),

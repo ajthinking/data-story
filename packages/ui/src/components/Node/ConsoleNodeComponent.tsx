@@ -5,7 +5,7 @@ import { useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { Subscription } from 'rxjs';
 import { useMount, useUnmount } from 'ahooks';
-import { createDataStoryId, LinkItemsObserver, RequestObserverType } from '@data-story/core';
+import { createDataStoryId, ObserveLinkItems, RequestObserverType } from '@data-story/core';
 import { StoreSchema } from '../DataStory/types';
 
 const ConsoleNodeComponent = ({ id, data, selected }: {
@@ -28,21 +28,21 @@ const useObserverConsole = ({ id }: {id: string}) => {
   // Add the node to the inputObservers when the node is mounted
   useMount(() => {
     const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
-    if (!client?.linkItemsObserver || !linkIds) return;
-    const consoleObserver: LinkItemsObserver = {
+    if (!client?.observeLinkItems || !linkIds) return;
+    const consoleObserver: ObserveLinkItems = {
       linkIds: linkIds,
-      type: RequestObserverType.linkItemsObserver,
+      type: RequestObserverType.observeLinkItems,
       observerId,
       onReceive: (batchedItems) => {
         console.log(...(batchedItems ?? []));
       }
     }
 
-    client?.linkItemsObserver?.(consoleObserver);
+    client?.observeLinkItems?.(consoleObserver);
   });
 
   useUnmount(() => {
-    client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+    client?.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
   });
 }
 export default memo(ConsoleNodeComponent);

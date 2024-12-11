@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type LinkItemsObserver, LinkCountsObserver, LinkUpdateObserver, GetDataFromStorage, LinkId, NodeStatusObserver
+  type ObserveLinkItems, ObservelinkCounts, ObserveLinkUpdate, GetDataFromStorage, LinkId, ObserveNodeStatus
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 import { ExecutionObserver } from '@data-story/core/src';
@@ -61,61 +61,61 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     }
   };
 
-  const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
+  const ObservelinkCounts = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.addLinkCountsObserver({
-      ...data as LinkCountsObserver,
+      ...data as ObservelinkCounts,
       onReceive: ({ links }) => {
         sendEvent({
           links: links,
-          type: RequestObserverType.linkCountsObserver
+          type: RequestObserverType.observelinkCounts
         })
       }
     })
   }
 
-  const nodeStatusObserver = ({ data, sendEvent }: HandlerParam) => {
+  const observeNodeStatus = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.addNodeStatusObserver({
-      ...data as NodeStatusObserver,
+      ...data as ObserveNodeStatus,
       onReceive: ({ nodes }) => {
         sendEvent({
           nodes: nodes,
-          type: RequestObserverType.nodeStatusObserver
+          type: RequestObserverType.observeNodeStatus
         })
       }
     })
   }
 
-  const linklinkItemsObserver = ({ data, sendEvent }: HandlerParam) => {
+  const observeLinkItems = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.addlinkItemsObserver({
-      ...data as LinkItemsObserver,
+      ...data as ObserveLinkItems,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
         sendEvent({
           items,
           inputObserver,
-          type: RequestObserverType.linkItemsObserver
+          type: RequestObserverType.observeLinkItems
         })
       }
-    } as LinkItemsObserver);
+    } as ObserveLinkItems);
   }
 
-  const cancelObserver = ({ data, sendEvent }: HandlerParam) => {
+  const cancelObservation = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.deleteExecutionObserver(data as ExecutionObserver);
     sendEvent({
       ...data as Record<string, unknown>,
-      cancelObserver: true
+      cancelObservation: true
     });
   }
 
-  const linkUpdateObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.linkUpdateObserver({
-      ...data as LinkUpdateObserver,
+  const observeLinkUpdate = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.observeLinkUpdate({
+      ...data as ObserveLinkUpdate,
       onReceive: () => {
         sendEvent({
-          linkIds: (data as LinkUpdateObserver).linkIds,
-          type: RequestObserverType.linkUpdateObserver
+          linkIds: (data as ObserveLinkUpdate).linkIds,
+          type: RequestObserverType.observeLinkUpdate
         });
       }
-    } as LinkUpdateObserver);
+    } as ObserveLinkUpdate);
   }
 
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
@@ -151,11 +151,11 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     getNodeDescriptions,
     updateDiagram,
     getDiagram,
-    linkCountsObserver,
-    linkItemsObserver: linklinkItemsObserver,
-    linkUpdateObserver: linkUpdateObserver,
-    cancelObserver,
+    observelinkCounts: ObservelinkCounts,
+    observeLinkItems: observeLinkItems,
+    observeLinkUpdate: observeLinkUpdate,
+    cancelObservation,
     getDataFromStorage,
-    nodeStatusObserver
+    observeNodeStatus: observeNodeStatus
   }
 }

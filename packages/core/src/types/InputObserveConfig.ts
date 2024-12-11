@@ -1,9 +1,9 @@
 export enum RequestObserverType {
-  linkCountsObserver = 'linkCountsObserver',
-  linkItemsObserver = 'linkItemsObserver',
-  linkUpdateObserver = 'linkUpdateObserver',
-  nodeStatusObserver = 'nodeStatusObserver',
-  cancelObserver = 'cancelObserver',
+  observelinkCounts = 'observelinkCounts',
+  observeLinkItems = 'observeLinkItems',
+  observeLinkUpdate = 'observeLinkUpdate',
+  observeNodeStatus = 'observeNodeStatus',
+  cancelObservation = 'cancelObservation',
 }
 export type InputObserveConfig = {nodeId: string, portId?: string, type: RequestObserverType}
 | {linkId: string, type: RequestObserverType};

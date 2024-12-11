@@ -1,11 +1,11 @@
-import { Application, Diagram, NodeDescription,LinkItemsObserver,LinkCountsObserver } from '@data-story/core';
-import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientBase } from '@data-story/ui';
+import { Application, Diagram, NodeDescription,ObserveLinkItems,ObservelinkCounts } from '@data-story/core';
+import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientImplement } from '@data-story/ui';
 
-export class CustomizeJSClient implements WorkspaceApiClient {
+export class CustomizeJSClient implements WorkspaceApiClientImplement {
   private nodeDescriptions: NodeDescription[];
   private app: Application;
   private diagram: Diagram;
-  private jsClient: WorkspaceApiClientBase;
+  private jsClient: WorkspaceApiClient;
 
   constructor({ diagram, app, nodeDescriptions }: {
     app: Application,
@@ -30,15 +30,15 @@ export class CustomizeJSClient implements WorkspaceApiClient {
     return this.diagram;
   };
 
-  linkItemsObserver = (params: LinkItemsObserver) => {
-    return this.jsClient.linkItemsObserver(params);
+  observeLinkItems = (params: ObserveLinkItems) => {
+    return this.jsClient.observeLinkItems(params);
   }
 
-  linksCountObserver = (params: LinkCountsObserver) => {
-    return this.jsClient.linksCountObserver(params);
+  observeLinkCounts = (params: ObservelinkCounts) => {
+    return this.jsClient.observeLinkCounts(params);
   }
 
-  cancelObserver = (params) => {
-    return this.jsClient.cancelObserver(params);
+  cancelObservation = (params) => {
+    return this.jsClient.cancelObservation(params);
   }
 }
