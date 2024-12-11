@@ -99,23 +99,23 @@ export class Diagram {
     }
   }
 
-  getLinkIdFromNodeId(nodeId: string, portName: string): LinkId | undefined {
+  getInputLinkIdsFromNodeIdAndPortName(nodeId: string, portName: string = 'input'): LinkId[] | undefined {
     const node = this.nodes.find(node => node.id === nodeId)
     if (!node) return;
 
     const port = node.inputs.find(input => input.name === portName)
     if (!port) return;
 
-    const link = this.links.find(link => link.targetPortId === port.id)
-    if (!link) return;
+    const linkIds = this.linksAtInputPortId(port.id).map(link => link.id);
+    if (!linkIds.length) return;
 
-    return link.id
+    return linkIds;
   }
 
   getOutputLinkIdsFromNodeId(nodeId: NodeId): LinkId[] {
     const node = this.nodes.find(node => node.id === nodeId)!;
-    const inputIds = node.outputs.map(input => input.id);
-    return this.links.filter(link => inputIds.includes(link.sourcePortId)).map(link => link.id);
+    const outputIds = node.outputs.map(output => output.id);
+    return this.links.filter(link => outputIds.includes(link.sourcePortId)).map(link => link.id);
   }
 
   directAncestor(node: Node): Node[] {

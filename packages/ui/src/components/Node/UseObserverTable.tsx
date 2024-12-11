@@ -22,24 +22,33 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   });
   const { toDiagram, client } = useStore(selector, shallow);
 
-  const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
+  const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
   const pendingRequest = useRef(false);
 
   const loadMore = useLatest(() => {
     if (pendingRequest.current) return;
-    if (!client?.getDataFromStorage || !linkId) return;
+    if (!client?.getDataFromStorage || !linkIds) return;
 
     setIsDataFetched(true);
     pendingRequest.current = true;
 
+    // todo: get data from different links
     return client?.getDataFromStorage?.({
       type: 'getDataFromStorage',
-      linkIds: [linkId],
+      linkIds: linkIds,
       limit: initialScreenCount,
       offset: items.length,
     }).then((data) => {
-      const currentItems = data[linkId] ?? [];
-      setItems(preItems => [...preItems, ...currentItems]);
+      const currentItems = linkIds.reduce((acc, linkId) => {
+        return acc.concat(data[linkId]);
+      }, [] as ItemValue[])
+      // console.log('currentIt?ems', currentItems, 'data', data);
+      setItems(preItems => {
+        // console.log('preItems', preItems);
+        // console.log('currentItems', currentItems);
+        // console.log('preItems.concat(currentItems)', preItems.concat(currentItems));
+        return preItems.concat(currentItems);
+      });
     }).finally(() => {
       pendingRequest.current = false;
     });
@@ -63,11 +72,11 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   }, [loadMore, parentRef.current]);
 
   useEffect(() => {
-    if (!client?.linkUpdateObserver || !linkId) return;
+    if (!client?.linkUpdateObserver || !linkIds) return;
     const observerId = createDataStoryId();
     const tableUpdate: LinkUpdateObserver = {
       observerId,
-      linkIds: [linkId],
+      linkIds: linkIds,
       type: RequestObserverType.linkUpdateObserver,
       throttleMs: 300,
       onReceive: (linkIds) => {
@@ -81,7 +90,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     return () => {
       client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
     }
-  }, [client, id, items.length, linkId, loadMore]);
+  }, [client, id, items.length, linkIds, loadMore]);
 
   return { loadMore };
 }

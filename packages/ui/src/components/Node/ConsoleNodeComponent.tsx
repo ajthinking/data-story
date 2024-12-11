@@ -27,14 +27,14 @@ const useObserverConsole = ({ id }: {id: string}) => {
   const { toDiagram, client } = useStore(selector, shallow);
   // Add the node to the inputObservers when the node is mounted
   useMount(() => {
-    const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
-    if (!client?.linkItemsObserver || !linkId) return;
+    const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
+    if (!client?.linkItemsObserver || !linkIds) return;
     const consoleObserver: LinkItemsObserver = {
-      linkIds: [linkId],
+      linkIds: linkIds,
       type: RequestObserverType.linkItemsObserver,
       observerId,
       onReceive: (batchedItems) => {
-        console.log(...batchedItems ?? []);
+        console.log(...(batchedItems ?? []));
       }
     }
 
