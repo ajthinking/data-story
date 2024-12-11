@@ -24,8 +24,8 @@ const mountConsoleNodeComponent = (items: unknown[], client?: () => void) => {
     <DataStoryContext.Provider value={() => {
       return ({
         toDiagram: () => ({
-          getLinkIdFromNodeId: (id: string, port: string) => {
-            return `${id}.${port}`;
+          getInputLinkIdsFromNodeIdAndPortName: (id: string, port: string) => {
+            return [`${id}.${port}`];
           }
         }),
         client: client?.() || {

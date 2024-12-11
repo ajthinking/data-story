@@ -29,8 +29,8 @@ const mountTableNodeComponent = (items: unknown[], client?: any ) => {
     <DataStoryContext.Provider value={() => {
       return ({
         toDiagram: () => ({
-          getLinkIdFromNodeId: (id: string, port: string) => {
-            return 'tableLinkId';
+          getInputLinkIdsFromNodeIdAndPortName: (id: string, port: string) => {
+            return ['tableLinkId'];
           }
         }),
         client: client || {
