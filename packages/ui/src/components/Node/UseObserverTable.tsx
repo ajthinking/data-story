@@ -1,9 +1,9 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
-import { useLatest } from 'ahooks';
+import { useLatest, useWhyDidYouUpdate } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { MutableRefObject, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 
 const initialScreenCount: number = 20;
 
@@ -22,7 +22,9 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   });
   const { toDiagram, client } = useStore(selector, shallow);
 
-  const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
+  const linkIds = useMemo(() => {
+    return toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
+  }, [toDiagram, id]);
   const pendingRequest = useRef(false);
   const linkOffsets = useRef<Map<string, number>>(new Map());
 
@@ -95,12 +97,12 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
         }
       }
     }
-    client?.observeLinkUpdate?.(tableUpdate);
-
+    const subscription = client?.observeLinkUpdate?.(tableUpdate);
+    console.log('useObserverTable????', subscription);
     return () => {
-      client?.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
+      subscription?.unsubscribe();
     }
-  }, [client, id, items.length, linkIds, loadMore]);
+  }, [client, items.length, linkIds, loadMore]);
 
   return { loadMore };
 }

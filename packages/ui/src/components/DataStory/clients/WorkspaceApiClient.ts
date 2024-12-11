@@ -37,7 +37,6 @@ function removeUnserializable(params: Exclude<ExecutionObserver, CancelObservati
 
 export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   private receivedMsg$ = new Subject();
-  private observerMap: Map<string, Subscription> = new Map();
 
   constructor(private transport: Transport) {
     this.initExecutionResult();
@@ -97,13 +96,17 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
 
   observeLinkItems(params: ObserveLinkItems): Subscription {
     const serializableParams = removeUnserializable(params);
-    const msg$ = this.transport.streaming(serializableParams);
+    const msg$ = this.transport.streaming(serializableParams)
+      .pipe(
+        finalize(() => {
+          this.cancelObservation({observerId: params.observerId, type: RequestObserverType.cancelObservation});
+        })
+      );
     const itemsSubscription = msg$.subscribe((data) => {
       const { items, inputObserver } = data as {items: ItemValue[], inputObserver: InputObserveConfig};
       params.onReceive(items, inputObserver);
     });
 
-    this.observerMap.set(params.observerId, itemsSubscription);
     return itemsSubscription;
   }
 
@@ -125,23 +128,32 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
 
   observeNodeStatus(params: ObserveNodeStatus): Subscription {
     const serializableParams = removeUnserializable(params);
-    const msg$ = this.transport.streaming(serializableParams);
+    const msg$ = this.transport.streaming(serializableParams)
+      .pipe(
+        finalize(() => {
+          this.cancelObservation({observerId: params.observerId, type: RequestObserverType.cancelObservation});
+        })
+      );
     const nodeStatusSubscription = msg$.subscribe((data) => {
       const { nodes } = data as {nodes: {nodeId: NodeId, status: NodeStatus}[]};
       params.onReceive({ nodes });
     });
 
-    this.observerMap.set(params.observerId, nodeStatusSubscription);
     return nodeStatusSubscription;
   }
 
   observeLinkUpdate(params: ObserveLinkUpdate): Subscription {
     const serializableParams = removeUnserializable(params);
-    const msg$ = this.transport.streaming(serializableParams);
+    const msg$ = this.transport.streaming(serializableParams)
+      .pipe(
+        finalize(() => {
+          this.cancelObservation({observerId: params.observerId, type: RequestObserverType.cancelObservation});
+        })
+      );
     const linksSubscription = msg$.subscribe((data) => {
       params.onReceive((data as {linkIds: LinkId[]}).linkIds);
     });
-    this.observerMap.set(params.observerId, linksSubscription);
+
     return linksSubscription;
   }
 
@@ -149,12 +161,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     const data = await this.transport.sendAndReceive({
       ...params,
     });
-
-    const subscription = this.observerMap.get(params.observerId);
-    if (subscription) {
-      subscription.unsubscribe();
-      this.observerMap.delete(params.observerId);
-    }
+    console.log(`Canceled observation ${params.observerId}, response:`, data);
   }
 
   run({ diagram }: ClientRunParams): void {

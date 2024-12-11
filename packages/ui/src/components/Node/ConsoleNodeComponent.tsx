@@ -18,7 +18,7 @@ const ConsoleNodeComponent = ({ id, data, selected }: {
 }
 
 const observerId = createDataStoryId();
-
+let observeLinkItemsSubscription: Subscription;
 const useObserverConsole = ({ id }: {id: string}) => {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
@@ -38,11 +38,11 @@ const useObserverConsole = ({ id }: {id: string}) => {
       }
     }
 
-    client?.observeLinkItems?.(consoleObserver);
+    observeLinkItemsSubscription = client?.observeLinkItems?.(consoleObserver);
   });
 
   useUnmount(() => {
-    client?.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
+    observeLinkItemsSubscription && observeLinkItemsSubscription.unsubscribe();
   });
 }
 export default memo(ConsoleNodeComponent);

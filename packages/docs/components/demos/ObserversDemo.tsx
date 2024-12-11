@@ -35,17 +35,17 @@ export default () => {
       },
       observerId
     };
-    client.observeLinkItems?.(observeLinkItems);
+    const subscription = client.observeLinkItems?.(observeLinkItems);
     return () => {
-      client.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
+      subscription?.unsubscribe();
     }
   }, [client]);
 
   useEffect(() => {
     if (!client?.observeLinkCounts || !client?.cancelObservation) return;
-    client.observeLinkCounts(linksCountObserver);
+    const subscription = client.observeLinkCounts(linksCountObserver);
     return () => {
-      client.cancelObservation(linksCountObserver);
+      subscription?.unsubscribe();
     }
   }, [client]);
 

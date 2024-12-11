@@ -87,15 +87,13 @@ export default () => {
       },
       observerId
     };
-    client.observeLinkItems?.(observeLinkItems as ObserveLinkItems)
+    const subscription = client.observeLinkItems?.(observeLinkItems as ObserveLinkItems)
 
-    return () => {
-      client.cancelObservation?.({ observerId, type: RequestObserverType.cancelObservation });
-    }
+    return () => subscription?.unsubscribe()
   }, [client, points]);
 
   useEffect(() => {
-    if(!client?.observeLinkCounts || !client?.cancelObservation) return;
+    if(!client?.observeLinkCounts) return;
 
     const linksCountObserver = {
       type: RequestObserverType.observelinkCounts as const,
@@ -105,8 +103,8 @@ export default () => {
       },
       observerId: createDataStoryId(),
     }
-    client?.observeLinkCounts?.(linksCountObserver);
-    return () => { client?.cancelObservation?.({ observerId: linksCountObserver.observerId, type: RequestObserverType.cancelObservation }) };
+    const subscription = client?.observeLinkCounts?.(linksCountObserver);
+    return () =>  subscription?.unsubscribe()
   }, [client]);
 
   if (loading || !client) {

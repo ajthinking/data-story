@@ -102,7 +102,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     inputObserverController.deleteExecutionObserver(data as ExecutionObserver);
     sendEvent({
       ...data as Record<string, unknown>,
-      cancelObservation: true
+      // cancelObservation: true
     });
   }
 
