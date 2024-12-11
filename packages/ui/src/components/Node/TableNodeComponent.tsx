@@ -19,7 +19,6 @@ import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack
 import { notUndefined, useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import CustomHandle from './CustomHandle';
-import { useWhyDidYouUpdate } from 'ahooks';
 import { ItemValue } from '@data-story/core';
 
 const TRUNCATE_CELL_LENGTH = 50;

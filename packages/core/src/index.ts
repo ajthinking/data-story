@@ -43,7 +43,7 @@ export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluati
 export { numberCast } from './Param/casts/numberCast'
 export { stringCast } from './Param/casts/stringCast'
 export { core } from './core'
-export type { LinkCountInfo, ObservelinkCounts as ObservelinkCounts, ExecutionObserver, ObserveLinkItems as ObserveLinkItems, ObserveNodeStatus as ObserveNodeStatus, CancelObservation as CancelObservation, ObserveLinkUpdate as ObserveLinkUpdate} from './types/ExecutionObserver'
+export type { LinkCountInfo, ObservelinkCounts, ExecutionObserver, ObserveLinkItems, ObserveNodeStatus, CancelObservation, ObserveLinkUpdate} from './types/ExecutionObserver'
 export type { GetDataFromStorage } from './types/GetDataFromStorage'
 export * as nodes from './computers'
 export * from './Param'

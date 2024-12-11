@@ -161,7 +161,6 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     const data = await this.transport.sendAndReceive({
       ...params,
     });
-    console.log(`Canceled observation ${params.observerId}, response:`, data);
   }
 
   run({ diagram }: ClientRunParams): void {
@@ -176,12 +175,6 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   //<editor-fold desc="Message init">
-  private initReceiveMsg() {
-    return this.receivedMsg$.subscribe((data: any) => {
-      console.log('Received message:', data);
-    });
-  }
-
   private initExecutionResult() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionResult')))
       .subscribe((data: any) => {
