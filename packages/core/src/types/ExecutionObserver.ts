@@ -36,6 +36,7 @@ export type ObserveNodeStatus = {
   nodeIds: NodeId[],
   observerId: string,
   throttleMs?: number,
+  msgId?: string,
   onReceive: (data: {
     nodes: {nodeId: NodeId, status: Omit<NodeStatus, 'AVAILABLE'>}[],
   }) => void,
@@ -55,6 +56,7 @@ export type ObserveLinkUpdate = {
 export type CancelObservation = {
   type: RequestObserverType.cancelObservation,
   observerId: string,
+  msgId?: string
 }
 
 export type ExecutionObserver = ObserveLinkItems | ObservelinkCounts | CancelObservation | ObserveLinkUpdate | ObserveNodeStatus;

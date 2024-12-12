@@ -5,7 +5,8 @@ import {
   ObserveLinkItems,
   ObservelinkCounts,
   ObserveNodeStatus,
-  ObserveLinkUpdate
+  ObserveLinkUpdate,
+  CancelObservation
 } from './types/ExecutionObserver';
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
@@ -145,7 +146,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  deleteExecutionObserver(observer: ExecutionObserver): void {
+  deleteExecutionObserver(observer: CancelObservation): void {
     if (observer?.observerId) {
       const subscription = this.observerMap.get(observer.observerId);
       if (subscription) {
