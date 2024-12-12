@@ -122,8 +122,10 @@ const Flow = ({
 
   // when edges change, re-subscribe to observelinkCounts
   useEffect(() => {
-    const observerId = createDataStoryId();
     const allLinkIds = edges.map(edge => edge.id);
+    if (allLinkIds.length === 0 || !client?.observeLinkCounts) return;
+
+    const observerId = createDataStoryId();
     const subscription = client?.observeLinkCounts?.({
       observerId,
       linkIds: allLinkIds,
@@ -146,9 +148,10 @@ const Flow = ({
   }, [client, edges.length, updateEdgeCounts]);
 
   useEffect(() => {
-    if (!client) return;
-    const observerId = createDataStoryId();
     const allNodeIds = nodes.map(node => node.id);
+    if (allNodeIds.length === 0 || !client?.observeNodeStatus) return;
+
+    const observerId = createDataStoryId();
     const subscription = client?.observeNodeStatus?.({
       observerId,
       nodeIds: allNodeIds,
