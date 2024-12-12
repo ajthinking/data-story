@@ -7,9 +7,9 @@ import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
-import { InputObserverController } from '@data-story/core';
-import { itemsObserver } from './messageHandlers/ItemsObserver';
-import { linkCountsObserver } from './messageHandlers/linkCountsObserver';
+import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
+import { observeLinkItems } from './messageHandlers/observeLinkItems';
+import { observelinkCounts } from './messageHandlers/observelinkCounts';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -32,7 +32,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   }
 
   constructor(private readonly context: vscode.ExtensionContext) {
-    this.inputObserverController = new InputObserverController();
+    const storage = new DiagramObserverStorage();
+    this.inputObserverController = new InputObserverController(storage);
   }
 
   async openCustomDocument(
@@ -63,8 +64,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         updateDiagram: onUpdateDiagram,
         getDiagram: getDiagram,
         toast: onToast,
-        itemsObserver: itemsObserver,
-        linkCountsObserver: linkCountsObserver
+        observeLinkItems: observeLinkItems,
+        observelinkCounts: observelinkCounts
       };
 
       const handler = handlers[event.type];

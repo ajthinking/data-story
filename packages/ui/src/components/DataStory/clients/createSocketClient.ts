@@ -1,8 +1,8 @@
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Observable, retry, share } from 'rxjs';
 import { createTransport, TransportConfig } from './createTransport';
+import { WorkspaceApiClientImplement } from './WorkspaceApiClientImplement';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
-import { WorkspaceApiClientBase } from './WorkspaceApiClientBase';
 
 function createSocketTransport(socket: WebSocketSubject<any>) {
   const maxReconnectTries = 100;
@@ -21,7 +21,7 @@ function createSocketTransport(socket: WebSocketSubject<any>) {
 }
 
 export const createSocketClient = (): {
-  client: WorkspaceApiClient,
+  client: WorkspaceApiClientImplement,
   dispose: () => void
 } => {
   const socket$ = webSocket({
@@ -42,7 +42,7 @@ export const createSocketClient = (): {
 
   const transport = createSocketTransport(socket$);
   return {
-    client: new WorkspaceApiClientBase(transport),
+    client: new WorkspaceApiClient(transport),
     dispose: () => {
       socketKeepAlive.unsubscribe();
       socket$.complete();

@@ -1,4 +1,4 @@
-import { core, createDataStoryId, ItemsObserver, nodes, RequestObserverType } from '@data-story/core';
+import { core, createDataStoryId, ObserveLinkItems, nodes, RequestObserverType } from '@data-story/core';
 import React, { useEffect, useMemo } from 'react';
 import { DataStory } from '@data-story/ui';
 import {
@@ -76,9 +76,9 @@ export default () => {
     console.log(client, 'client');
 
     const observerId = createDataStoryId();
-    const itemsObserver: ItemsObserver = {
+    const observeLinkItems: ObserveLinkItems = {
       linkIds: [diagram.links[1].id],
-      type: RequestObserverType.itemsObserver,
+      type: RequestObserverType.observeLinkItems,
       onReceive: (items) => {
         setPoints([
           ...points,
@@ -87,26 +87,24 @@ export default () => {
       },
       observerId
     };
-    client.itemsObserver?.(itemsObserver as ItemsObserver)
+    const subscription = client.observeLinkItems?.(observeLinkItems as ObserveLinkItems)
 
-    return () => {
-      client.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
-    }
+    return () => subscription?.unsubscribe()
   }, [client, points]);
 
   useEffect(() => {
-    if(!client?.linksCountObserver || !client?.cancelObserver) return;
+    if(!client?.observeLinkCounts) return;
 
     const linksCountObserver = {
-      type: RequestObserverType.linkCountsObserver as const,
+      type: RequestObserverType.observelinkCounts as const,
       linkIds: [diagram.links[1].id],
       onReceive: (count) => {
         console.log('Link count', count);
       },
       observerId: createDataStoryId(),
     }
-    client?.linksCountObserver?.(linksCountObserver);
-    return () => { client?.cancelObserver?.({ observerId: linksCountObserver.observerId, type: RequestObserverType.cancelObserver }) };
+    const subscription = client?.observeLinkCounts?.(linksCountObserver);
+    return () =>  subscription?.unsubscribe()
   }, [client]);
 
   if (loading || !client) {

@@ -2,24 +2,24 @@ import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 import {
   type InputObserver,
   type ItemValue,
+  type ObserveLinkItems,
   RequestObserverType,
-  type ItemsObserver
 } from '@data-story/core';
 
-export const itemsObserver: MessageHandler<ItemsObserver> = async({
+export const observeLinkItems: MessageHandler<ObserveLinkItems> = async({
   ws,
   data,
   inputObserverController
-}: MessageHandlerParams<ItemsObserver>) => {
-  inputObserverController.addItemsObserver({
+}: MessageHandlerParams<ObserveLinkItems>) => {
+  inputObserverController.addlinkItemsObserver({
     ...data,
     onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
       ws.send(JSON.stringify({
         items,
         inputObserver,
-        type: RequestObserverType.itemsObserver,
+        type: RequestObserverType.observeLinkItems,
         msgId: data!.msgId,
       }))
     }
-  } as ItemsObserver);
+  } as ObserveLinkItems);
 }

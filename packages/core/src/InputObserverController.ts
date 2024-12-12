@@ -2,10 +2,10 @@ import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
 import {
   ExecutionObserver,
-  ItemsObserver,
-  LinkCountsObserver,
-  NodeStatusObserver,
-  NotifyDataUpdate
+  ObserveLinkItems,
+  ObservelinkCounts,
+  ObserveNodeStatus,
+  ObserveLinkUpdate
 } from './types/ExecutionObserver';
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
@@ -13,15 +13,16 @@ import { LinkId } from './types/Link';
 import { GetDataFromStorage } from './types/GetDataFromStorage';
 import { NodeStatus } from './Executor';
 import { NodeId } from './types/Node';
+import { ObserverStorage } from './types/ObserverStorage';
 
 type MemoryItemObserver = {
-  type: RequestObserverType.itemsObserver;
+  type: RequestObserverType.observeLinkItems;
   linkId: string;
   items: ItemValue[];
 }
 
 type MemoryLinksCountObserver = {
-  type: RequestObserverType.linkCountsObserver;
+  type: RequestObserverType.observelinkCounts;
   linkId: string;
   count: number;
 }
@@ -34,57 +35,47 @@ export class InputObserverController {
   private nodeStatus$ = new Subject<{nodeId: NodeId, status: NodeStatus}>();
   private observerMap: Map<string, Subscription> = new Map();
 
-  // TODO: In the future, consider using indexDB or JSON Lines instead of variables for data storage
-  private linkCountsStorage: Map<LinkId, number> = new Map();
-  private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map();
-  private nodeStatus: Map<NodeId, NodeStatus> = new Map();
-  /**
-   * Constructs an instance of InputObserverController
-   */
-  constructor() {}
+  constructor(private storage: ObserverStorage) {}
 
   /**
    * When we invoke `reportItems`, it triggers the `notifyObservers` callback and forwards the `items` and `inputObserver` parameters
    */
   reportItems(memoryObserver: MemoryItemObserver): void {
-    const currentItems = this.linkItemsStorage.get(memoryObserver.linkId) ?? [];
-    this.linkItemsStorage.set(memoryObserver.linkId, currentItems.concat(memoryObserver.items));
+    this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
     this.items$.next(memoryObserver);
   }
 
   setItems(linkId: LinkId, items: ItemValue[]): void {
-    this.linkItemsStorage.set(linkId, items);
+    this.storage.setLinkItems(linkId, items);
   }
 
   reportLinksCount(memoryObserver: MemoryLinksCountObserver): void {
     this.links$.next(memoryObserver);
-    this.linkCountsStorage.set(memoryObserver.linkId, memoryObserver.count);
+    this.storage.setLinkCount(memoryObserver.linkId, memoryObserver.count);
   }
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
   reportNodeStatus(nodeId: NodeId, status: NodeStatus): void {
-    if (status === 'AVAILABLE' || this.nodeStatus.get(nodeId) === status) {
+    if (status === 'AVAILABLE' || this.storage.getNodeStatus(nodeId) === status) {
       return;
     }
     this.nodeStatus$.next({nodeId, status});
-    this.nodeStatus.set(nodeId, status);
+    this.storage.setNodeStatus(nodeId, status);
   }
 
   getDataFromStorage({
-    linkIds,
+    linkId,
     limit = 100,
     offset = 0
   }: GetDataFromStorage): Record<LinkId, ItemValue[]> {
     const items: Record<LinkId, ItemValue[]> = {};
-    linkIds.map(linkId => {
-      const currentItems = this.linkItemsStorage.get(linkId) ?? [];
-      const storageItems = currentItems.slice(offset, offset + limit);
-      items[linkId] = storageItems;
-    });
+    const currentItems = this.storage.getLinkItems(linkId) ?? [];
+    const storageItems = currentItems.slice(offset, offset + limit);
+    items[linkId] = storageItems;
     return items;
   }
 
-  notifyDataUpdate(observer: NotifyDataUpdate): void {
+  observeLinkUpdate(observer: ObserveLinkUpdate): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),
@@ -99,7 +90,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addItemsObserver(observer: ItemsObserver ): void {
+  addlinkItemsObserver(observer: ObserveLinkItems ): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),
@@ -116,7 +107,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addLinkCountsObserver(observer: LinkCountsObserver): void {
+  addLinkCountsObserver(observer: ObservelinkCounts): void {
     const subscription = this.links$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload),
@@ -133,7 +124,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addNodeStatusObserver(observer: NodeStatusObserver): void {
+  addNodeStatusObserver(observer: ObserveNodeStatus): void {
     const subscription = this.nodeStatus$.pipe(
       filter(payload => observer.nodeIds.includes(payload.nodeId)),
       bufferTime(observer.throttleMs ?? ThrottleMS),
@@ -142,7 +133,7 @@ export class InputObserverController {
         const nodes = observer.nodeIds.map((nodeId) => {
           return {
             nodeId,
-            status: this.nodeStatus.get(nodeId)!
+            status: this.storage.getNodeStatus(nodeId)!
           }
         })
         observer.onReceive({

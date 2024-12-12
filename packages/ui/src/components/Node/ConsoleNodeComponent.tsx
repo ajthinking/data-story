@@ -5,7 +5,7 @@ import { useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { Subscription } from 'rxjs';
 import { useMount, useUnmount } from 'ahooks';
-import { createDataStoryId, ItemsObserver, RequestObserverType } from '@data-story/core';
+import { createDataStoryId, ObserveLinkItems, RequestObserverType } from '@data-story/core';
 import { StoreSchema } from '../DataStory/types';
 
 const ConsoleNodeComponent = ({ id, data, selected }: {
@@ -18,7 +18,7 @@ const ConsoleNodeComponent = ({ id, data, selected }: {
 }
 
 const observerId = createDataStoryId();
-
+let observeLinkItemsSubscription: Subscription;
 const useObserverConsole = ({ id }: {id: string}) => {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
@@ -27,22 +27,22 @@ const useObserverConsole = ({ id }: {id: string}) => {
   const { toDiagram, client } = useStore(selector, shallow);
   // Add the node to the inputObservers when the node is mounted
   useMount(() => {
-    const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
-    if (!client?.itemsObserver || !linkId) return;
-    const consoleObserver: ItemsObserver = {
-      linkIds: [linkId],
-      type: RequestObserverType.itemsObserver,
+    const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
+    if (!client?.observeLinkItems || !linkIds) return;
+    const consoleObserver: ObserveLinkItems = {
+      linkIds: linkIds,
+      type: RequestObserverType.observeLinkItems,
       observerId,
       onReceive: (batchedItems) => {
-        console.log(...batchedItems ?? []);
+        console.log(...(batchedItems ?? []));
       }
     }
 
-    client?.itemsObserver?.(consoleObserver);
+    observeLinkItemsSubscription = client?.observeLinkItems?.(consoleObserver);
   });
 
   useUnmount(() => {
-    client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
+    observeLinkItemsSubscription && observeLinkItemsSubscription.unsubscribe();
   });
 }
 export default memo(ConsoleNodeComponent);

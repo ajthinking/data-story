@@ -1,6 +1,6 @@
 import { defer, filter, firstValueFrom, map, Observable } from 'rxjs';
 import { createDataStoryId } from '@data-story/core';
-import { Transport } from './WorkspaceApiClientBase';
+import { Transport } from './WorkspaceApiClient';
 
 export interface TransportConfig {
   postMessage: (msg: {msgId: string; [key: string]: unknown;}) => void,

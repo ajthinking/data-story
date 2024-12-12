@@ -1,6 +1,6 @@
 import ConsoleNodeComponent from './ConsoleNodeComponent';
 import { ReactFlowProvider } from '@xyflow/react';
-import { ItemsObserver } from '@data-story/core';
+import { ObserveLinkItems } from '@data-story/core';
 import { DataStoryContext } from '../DataStory/store/store';
 
 const data = {
@@ -24,13 +24,13 @@ const mountConsoleNodeComponent = (items: unknown[], client?: () => void) => {
     <DataStoryContext.Provider value={() => {
       return ({
         toDiagram: () => ({
-          getLinkIdFromNodeId: (id: string, port: string) => {
-            return `${id}.${port}`;
+          getInputLinkIdsFromNodeIdAndPortName: (id: string, port: string) => {
+            return [`${id}.${port}`];
           }
         }),
         client: client?.() || {
-          itemsObserver: (observer: ItemsObserver) => {
-            console.log('itemsObserver:', observer)
+          observeLinkItems: (observer: ObserveLinkItems) => {
+            console.log('observeLinkItems:', observer)
             // @ts-ignore
             observer.onReceive(items);
           }

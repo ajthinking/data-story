@@ -1,6 +1,8 @@
+import { LinkId } from './Link';
+
 export type GetDataFromStorage = {
   type: 'getDataFromStorage',
-  linkIds: string[],
+  linkId: LinkId,
   msgId?: string,
   offset?: number,
   limit?: number,

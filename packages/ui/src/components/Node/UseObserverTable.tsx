@@ -1,11 +1,13 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
-import { createDataStoryId, ItemValue, NotifyDataUpdate, RequestObserverType } from '@data-story/core';
-import { useLatest } from 'ahooks';
+import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
+import { useLatest, useMount, useUnmount, useWhyDidYouUpdate } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Subscription } from 'rxjs';
 
-const initialScreenCount: number = 20;
+const initialScreenCount: number = 15;
+let subscription: Subscription | undefined;
 
 export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
   id: string,
@@ -22,27 +24,55 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   });
   const { toDiagram, client } = useStore(selector, shallow);
 
-  const linkId = toDiagram()?.getLinkIdFromNodeId?.(id, 'input');
+  const linkIds = useMemo(() => {
+    return toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
+  }, [toDiagram, id]);
   const pendingRequest = useRef(false);
+  const linkOffsets = useRef<Map<string, number>>(new Map());
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
 
-  const loadMore = useLatest(() => {
+  const loadMore = useLatest(async () => {
     if (pendingRequest.current) return;
-    if (!client?.getDataFromStorage || !linkId) return;
+    if (!client?.getDataFromStorage || !linkIds) return;
 
     setIsDataFetched(true);
     pendingRequest.current = true;
 
-    return client?.getDataFromStorage?.({
-      type: 'getDataFromStorage',
-      linkIds: [linkId],
-      limit: initialScreenCount,
-      offset: items.length,
-    }).then((data) => {
-      const currentItems = data[linkId] ?? [];
-      setItems(preItems => [...preItems, ...currentItems]);
-    }).finally(() => {
+    // Clear offsets if re-running the diagram (no items)
+    if (items.length === 0) {
+      linkOffsets.current.clear();
+    }
+
+    try {
+      const newItems: ItemValue[] = [];
+
+      // Fetch data for each link
+      const promises = linkIds.map(async (linkId) => {
+        const currentOffset = linkOffsets.current.get(linkId) ?? 0;
+        const result = await client?.getDataFromStorage?.({
+          type: 'getDataFromStorage',
+          linkId,
+          limit: initialScreenCount,
+          offset: currentOffset,
+        });
+
+        const linkItems = result?.[linkId] ?? [];
+        if (linkItems.length > 0) {
+          newItems.push(...linkItems);
+          // Update offset only if we got items
+          linkOffsets.current.set(linkId, currentOffset + linkItems.length);
+        }
+      });
+
+      await Promise.all(promises);
+
+      if (newItems.length > 0) {
+        setItems(prevItems => [...prevItems, ...newItems]);
+      }
+    } finally {
       pendingRequest.current = false;
-    });
+    }
   });
 
   useLayoutEffect(() => {
@@ -62,26 +92,27 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     };
   }, [loadMore, parentRef.current]);
 
-  useEffect(() => {
-    if (!client?.notifyDataUpdate || !linkId) return;
+  useMount(() => {
+    if (!client?.observeLinkUpdate || !linkIds) return;
     const observerId = createDataStoryId();
-    const tableUpdate: NotifyDataUpdate = {
+    const tableUpdate: ObserveLinkUpdate = {
       observerId,
-      linkIds: [linkId],
-      type: RequestObserverType.notifyDataUpdate,
+      linkIds: linkIds,
+      type: RequestObserverType.observeLinkUpdate,
       throttleMs: 300,
-      onReceive: (linkIds) => {
-        if (items.length < initialScreenCount) {
+      onReceive: () => {
+        // if linkOffsets all items.length < initialScreenCount then load more
+        if (itemsRef.current.length < initialScreenCount) {
           loadMore.current();
         }
       }
     }
-    client?.notifyDataUpdate?.(tableUpdate);
+    subscription = client?.observeLinkUpdate?.(tableUpdate);
+  });
 
-    return () => {
-      client?.cancelObserver?.({ observerId, type: RequestObserverType.cancelObserver });
-    }
-  }, [client, id, items.length, linkId, loadMore]);
+  useUnmount(() => {
+    subscription?.unsubscribe();
+  });
 
   return { loadMore };
 }

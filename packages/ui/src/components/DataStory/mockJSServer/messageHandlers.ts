@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ItemsObserver, LinkCountsObserver, NotifyDataUpdate, GetDataFromStorage, LinkId, NodeStatusObserver
+  type ObserveLinkItems, ObservelinkCounts, ObserveLinkUpdate, GetDataFromStorage, LinkId, ObserveNodeStatus
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 import { ExecutionObserver } from '@data-story/core/src';
@@ -19,7 +19,7 @@ type RunMessage = {
 }
 
 export type HandlerParam = {data: unknown, sendEvent: (msg: Record<string, any>) => void};
-export type Message = {type: string}&Record<string, unknown>;
+export type Message = {type: string} & Record<string, unknown>;
 
 type Handler = (params: HandlerParam) => Promise<unknown>;
 export type MessageHandlers = {
@@ -61,61 +61,61 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     }
   };
 
-  const linkCountsObserver = ({ data, sendEvent }: HandlerParam) => {
+  const ObservelinkCounts = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.addLinkCountsObserver({
-      ...data as LinkCountsObserver,
+      ...data as ObservelinkCounts,
       onReceive: ({ links }) => {
         sendEvent({
           links: links,
-          type: RequestObserverType.linkCountsObserver
+          type: RequestObserverType.observelinkCounts
         })
       }
     })
   }
 
-  const nodeStatusObserver = ({ data, sendEvent }: HandlerParam) => {
+  const observeNodeStatus = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.addNodeStatusObserver({
-      ...data as NodeStatusObserver,
+      ...data as ObserveNodeStatus,
       onReceive: ({ nodes }) => {
         sendEvent({
           nodes: nodes,
-          type: RequestObserverType.nodeStatusObserver
+          type: RequestObserverType.observeNodeStatus
         })
       }
     })
   }
 
-  const itemsObserver = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.addItemsObserver({
-      ...data as ItemsObserver,
+  const observeLinkItems = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.addlinkItemsObserver({
+      ...data as ObserveLinkItems,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
         sendEvent({
           items,
           inputObserver,
-          type: RequestObserverType.itemsObserver
+          type: RequestObserverType.observeLinkItems
         })
       }
-    } as ItemsObserver);
+    } as ObserveLinkItems);
   }
 
-  const cancelObserver = ({ data, sendEvent }: HandlerParam) => {
+  const cancelObservation = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.deleteExecutionObserver(data as ExecutionObserver);
     sendEvent({
       ...data as Record<string, unknown>,
-      cancelObserver: true
+      // cancelObservation: true
     });
   }
 
-  const notifyDataUpdate = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.notifyDataUpdate({
-      ...data as NotifyDataUpdate,
+  const observeLinkUpdate = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.observeLinkUpdate({
+      ...data as ObserveLinkUpdate,
       onReceive: () => {
         sendEvent({
-          linkIds: (data as NotifyDataUpdate).linkIds,
-          type: RequestObserverType.notifyDataUpdate
+          linkIds: (data as ObserveLinkUpdate).linkIds,
+          type: RequestObserverType.observeLinkUpdate
         });
       }
-    } as NotifyDataUpdate);
+    } as ObserveLinkUpdate);
   }
 
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
@@ -151,11 +151,11 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     getNodeDescriptions,
     updateDiagram,
     getDiagram,
-    linkCountsObserver,
-    itemsObserver,
-    notifyDataUpdate,
-    cancelObserver,
+    observelinkCounts: ObservelinkCounts,
+    observeLinkItems: observeLinkItems,
+    observeLinkUpdate: observeLinkUpdate,
+    cancelObservation,
     getDataFromStorage,
-    nodeStatusObserver
+    observeNodeStatus: observeNodeStatus
   }
 }
