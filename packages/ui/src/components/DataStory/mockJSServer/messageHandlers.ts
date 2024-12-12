@@ -6,10 +6,10 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ObserveLinkItems, ObservelinkCounts, ObserveLinkUpdate, GetDataFromStorage, LinkId, ObserveNodeStatus
+  type ObserveLinkItems, ObservelinkCounts, ObserveLinkUpdate, GetDataFromStorage, LinkId, ObserveNodeStatus,
+  CancelObservation
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
-import { ExecutionObserver } from '@data-story/core/src';
 
 type RunMessage = {
   msgId: string,
@@ -99,7 +99,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const cancelObservation = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.deleteExecutionObserver(data as ExecutionObserver);
+    inputObserverController.deleteExecutionObserver(data as CancelObservation);
     sendEvent({
       ...data as Record<string, unknown>,
       // cancelObservation: true

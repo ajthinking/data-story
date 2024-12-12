@@ -4,7 +4,7 @@ import { shallow } from 'zustand/shallow';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { Handle, Position } from '@xyflow/react';
 import { PortIcon } from '../DataStory/icons/portIcon';
-import { StringableParam } from '@data-story/core/*';
+import { StringableParam } from '@data-story/core';
 import { StoreSchema } from '../DataStory/types';
 
 const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataStoryNodeData; selected: boolean }) => {
