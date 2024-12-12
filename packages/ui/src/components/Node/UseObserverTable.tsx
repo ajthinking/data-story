@@ -3,7 +3,7 @@ import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
 import { useLatest, useMount, useUnmount, useWhyDidYouUpdate } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { MutableRefObject, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { MutableRefObject, useEffect, useLayoutEffect, useMemo as useCallback, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 
 const initialScreenCount: number = 15;
@@ -24,16 +24,17 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   });
   const { toDiagram, client } = useStore(selector, shallow);
 
-  const linkIds = useMemo(() => {
-    return toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id, 'input');
-  }, [toDiagram, id]);
   const pendingRequest = useRef(false);
   const linkOffsets = useRef<Map<string, number>>(new Map());
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
+  const getLinkIds = () => toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
+
   const loadMore = useLatest(async () => {
     if (pendingRequest.current) return;
+
+    const linkIds = getLinkIds();
     if (!client?.getDataFromStorage || !linkIds) return;
 
     // Clear offsets if re-running the diagram (no items)
@@ -92,7 +93,9 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   }, [loadMore, parentRef.current]);
 
   useMount(() => {
+    const linkIds = getLinkIds();
     if (!client?.observeLinkUpdate || !linkIds) return;
+
     const observerId = createDataStoryId();
     const tableUpdate: ObserveLinkUpdate = {
       observerId,

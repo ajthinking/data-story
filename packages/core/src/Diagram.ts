@@ -2,6 +2,7 @@ import { PortId } from './types/PortId'
 import { Link, LinkId } from './types/Link'
 import { Node, NodeId } from './types/Node'
 import { Param } from './Param'
+import { PortName } from './types/Port';
 
 // This is what a serialized Diagram looks like
 export type Diagrammable = {
@@ -71,19 +72,19 @@ export class Diagram {
     })
   }
 
-  linksAtInput(node: Node, name: string): Link[] {
+  linksAtInput(node: Node, name: PortName): Link[] {
     const port = node.inputs.find(input => input.name === name)!
 
     return this.linksAtInputPortId(port.id)
   }
 
-  linksAtOutput(node: Node, name: string): Link[] {
+  linksAtOutput(node: Node, name: PortName): Link[] {
     const port = node.outputs.find(input => input.name === name)!
 
     return this.linksAtOutputPortId(port.id)
   }
 
-  getNodeIdAndPortIdFromLinkId(linkId: string): { nodeId: string, portId: string } {
+  getNodeIdAndPortIdFromLinkId(linkId: LinkId): { nodeId: NodeId, portId: PortId } {
     const link = this.links.find(link => link.id === linkId)
 
     if (!link) throw new Error(`Link with id ${linkId} not found`)
@@ -99,7 +100,7 @@ export class Diagram {
     }
   }
 
-  getInputLinkIdsFromNodeIdAndPortName(nodeId: string, portName: string = 'input'): LinkId[] | undefined {
+  getInputLinkIdsFromNodeIdAndPortName(nodeId: NodeId, portName: PortName = 'input'): LinkId[] | undefined {
     const node = this.nodes.find(node => node.id === nodeId)
     if (!node) return;
 
@@ -107,6 +108,7 @@ export class Diagram {
     if (!port) return;
 
     const linkIds = this.linksAtInputPortId(port.id).map(link => link.id);
+    // console.log('getInputLinkIdsFromNodeIdAndPortName linkIds', linkIds, 'port', port);
     if (!linkIds.length) return;
 
     return linkIds;
