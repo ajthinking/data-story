@@ -86,8 +86,8 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
 
   async getDataFromStorage(params: GetDataFromStorage): Promise<Record<LinkId, ItemValue[]>> {
     try {
-      const data = await this.transport.sendAndReceive(params);
-      return data as Record<LinkId, ItemValue[]>;
+      const result: GetDataFromStorage & { data: Record<LinkId, ItemValue[]> } = await this.transport.sendAndReceive(params);
+      return result.data as Record<LinkId, ItemValue[]>;
     } catch(e) {
       console.error('Error getting diagram', e);
       throw e;

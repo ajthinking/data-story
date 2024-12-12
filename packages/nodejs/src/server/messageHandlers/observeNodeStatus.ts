@@ -6,9 +6,11 @@ export const observeNodeStatus: MessageHandler<ObserveNodeStatus> = async({
   data,
   inputObserverController
 }: MessageHandlerParams<ObserveNodeStatus>) => {
+  console.log('observeNodeStatus', data)
   inputObserverController.addNodeStatusObserver({
     ...data,
-    onReceive: (nodes) => {
+    onReceive: ({nodes}) => {
+      console.log('onReceive', nodes)
       ws.send(JSON.stringify({
         nodes,
         type: RequestObserverType.observeNodeStatus,

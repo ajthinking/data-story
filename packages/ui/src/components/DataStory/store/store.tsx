@@ -174,7 +174,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     get().setEdges(updatedEdges);
   },
 
-  updateEdgeStatus: (edgeStatus) => {
+  updateEdgeStatus: (edgeStatus = []) => {
     const edgesObject = edgeStatus.reduce((acc, { nodeId, status }) => {
       get().toDiagram().getOutputLinkIdsFromNodeId(nodeId).forEach(linkId => {
         acc[linkId] = status;

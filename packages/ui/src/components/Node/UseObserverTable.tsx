@@ -36,13 +36,12 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     if (pendingRequest.current) return;
     if (!client?.getDataFromStorage || !linkIds) return;
 
-    setIsDataFetched(true);
-    pendingRequest.current = true;
-
     // Clear offsets if re-running the diagram (no items)
     if (items.length === 0) {
       linkOffsets.current.clear();
     }
+    setIsDataFetched(true);
+    pendingRequest.current = true;
 
     try {
       const newItems: ItemValue[] = [];
@@ -100,7 +99,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
       linkIds: linkIds,
       type: RequestObserverType.observeLinkUpdate,
       throttleMs: 300,
-      onReceive: () => {
+      onReceive: (linkIds) => {
         // if linkOffsets all items.length < initialScreenCount then load more
         if (itemsRef.current.length < initialScreenCount) {
           loadMore.current();
