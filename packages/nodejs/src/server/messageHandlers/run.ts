@@ -51,7 +51,6 @@ export const run: MessageHandler<RunMessage> = async({
         msgId: data.msgId,
         type: 'ExecutionFailure',
         message: error.message,
-        history: executor.memory.getHistory()
       }
 
       ws.send(JSON.stringify(failure))

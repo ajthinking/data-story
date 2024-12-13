@@ -55,7 +55,6 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       const failure: ExecutionFailure = {
         type: 'ExecutionFailure',
         message: error?.message,
-        history: executor.memory.getHistory()
       }
       sendEvent(failure);
     }
