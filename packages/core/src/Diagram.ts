@@ -108,7 +108,6 @@ export class Diagram {
     if (!port) return;
 
     const linkIds = this.linksAtInputPortId(port.id).map(link => link.id);
-    // console.log('getInputLinkIdsFromNodeIdAndPortName linkIds', linkIds, 'port', port);
     if (!linkIds.length) return;
 
     return linkIds;
