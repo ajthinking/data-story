@@ -29,8 +29,6 @@ export class ExecutionMemory {
   hooks: Hook[]
   inputObserverController?: InputObserverController
 
-  history: string[] = []
-
   constructor(values: MemoryValues = {}) {
     this.nodeStatuses = values.nodeStatuses || new Map()
     this.nodeRunners = values.nodeRunners || new Map()
@@ -47,8 +45,6 @@ export class ExecutionMemory {
   }
 
   setNodeStatus(nodeId: NodeId, status: NodeStatus) {
-    this.history.push(`Setting node ${nodeId} to ${status}`)
-
     this.inputObserverController?.reportNodeStatus(nodeId, status);
     this.nodeStatuses.set(nodeId, status)
   }
@@ -62,8 +58,6 @@ export class ExecutionMemory {
   }
 
   setNodeRunner(nodeId: NodeId, status: AsyncGenerator<undefined, void, void>) {
-    this.history.push(`Setting node ${nodeId} runner`)
-
     this.nodeRunners.set(nodeId, status)
   }
 
@@ -74,8 +68,6 @@ export class ExecutionMemory {
   pullLinkItems(linkId: LinkId, count: number = Infinity): ItemValue[] {
     const linkItems = this.linkItems.get(linkId)!
     const pulled = linkItems.splice(0, count)
-
-    this.history.push(`Pulled in ${pulled.length} items from link ${linkId}`)
 
     return pulled
   }
@@ -89,13 +81,10 @@ export class ExecutionMemory {
       type: RequestObserverType.observeLinkItems,
       items
     })
-
-    this.history.push(`Pushed ${items.length} items to link ${linkId}`)
   }
 
   setLinkItems(linkId: LinkId, items: ItemValue[]) {
-    this.history.push(`Setting link ${linkId} items: ${JSON.stringify(items)}`)
-    this.inputObserverController?.setItems(linkId, items)
+    this.inputObserverController?.setItems(linkId, items);
 
     this.linkItems.set(linkId, items)
   }
@@ -109,7 +98,6 @@ export class ExecutionMemory {
   }
 
   setLinkCount(linkId: LinkId, count: number) {
-    this.history.push(`Setting link ${linkId} count to ${count}`)
     this.inputObserverController?.reportLinksCount({
       linkId,
       type: RequestObserverType.observelinkCounts,
@@ -124,16 +112,7 @@ export class ExecutionMemory {
   }
 
   setInputDevice(nodeId: NodeId, device: InputDevice) {
-    this.history.push(`Setting node ${nodeId} input device`)
     this.inputDevices.set(nodeId, device)
-  }
-
-  getHistory(): string[] {
-    return this.history
-  }
-
-  pushHistoryMessage(message: string) {
-    this.history.push(message)
   }
 
   pushHooks(hooks: Hook[]) {
