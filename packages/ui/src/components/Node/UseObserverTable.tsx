@@ -46,7 +46,6 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
 
     try {
       const newItems: ItemValue[] = [];
-
       // Fetch data for each link
       const promises = linkIds.map(async (linkId) => {
         const currentOffset = linkOffsets.current.get(linkId) ?? 0;
@@ -75,23 +74,6 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     }
   });
 
-  useLayoutEffect(() => {
-    const currentRef = parentRef.current;
-    if (!currentRef) return;
-
-    const handleScroll = () => {
-      const { scrollHeight, scrollTop, clientHeight } = currentRef;
-      if (scrollTop + clientHeight >= scrollHeight) {
-        loadMore.current();
-      }
-    };
-
-    currentRef?.addEventListener('scroll', handleScroll);
-    return () => {
-      currentRef?.removeEventListener('scroll', handleScroll);
-    };
-  }, [loadMore, parentRef.current]);
-
   useMount(() => {
     const linkIds = getLinkIds();
     if (!client?.observeLinkUpdate || !linkIds) return;
@@ -115,6 +97,23 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   useUnmount(() => {
     subscription?.unsubscribe();
   });
+
+  useLayoutEffect(() => {
+    const currentRef = parentRef.current;
+    if (!currentRef) return;
+
+    const handleScroll = () => {
+      const { scrollHeight, scrollTop, clientHeight } = currentRef;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        loadMore.current();
+      }
+    };
+
+    currentRef?.addEventListener('scroll', handleScroll);
+    return () => {
+      currentRef?.removeEventListener('scroll', handleScroll);
+    };
+  }, [loadMore, parentRef.current]);
 
   return { loadMore };
 }
