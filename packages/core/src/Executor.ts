@@ -29,8 +29,6 @@ export class Executor {
   }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {
-    this.memory.pushHistoryMessage('Starting execution 🚀')
-
     let pendingPromises: Promise<void>[] = []
     let executionError: Error | undefined
 
@@ -72,7 +70,6 @@ export class Executor {
           })
           .catch((error: Error) => {
             console.log('Registering an execution error')
-            this.memory.pushHistoryMessage(error.message || 'Error in node')
             executionError = error;
           })
       })
@@ -88,8 +85,6 @@ export class Executor {
 
       // If no promises, then we might be stuck
       if(pendingPromises.length === 0) {
-        this.memory.pushHistoryMessage('No pending promises.')
-
         // Check for nodes we can mark as complete
         for(const node of this.diagram.nodes) {
           this.attemptToMarkNodeComplete(node);

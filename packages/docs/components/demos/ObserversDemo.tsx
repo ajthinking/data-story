@@ -20,7 +20,7 @@ const linksCountObserver = {
 
 export default () => {
   const { app, loading } = useRequestApp();
-  const client = new CustomizeJSClient({ diagram: diagram, app });
+  const client = new CustomizeJSClient({ diagram, app });
 
   useEffect(() => {
     if (!client) {
