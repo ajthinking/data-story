@@ -8,7 +8,6 @@ export const observeNodeStatus: MessageHandler = async({ event, webviewPanel, in
   inputObserverController.addNodeStatusObserver({
     ...event,
     onReceive: ({ nodes }) => {
-      console.log('observeNodeStatus onReceive postMessage content nodes - msgId:', nodes, event?.msgId);
       webviewPanel.webview.postMessage({
         nodes: nodes,
         type: RequestObserverType.observeNodeStatus,
