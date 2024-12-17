@@ -1,15 +1,19 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
+import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
-import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
 import { observeLinkItems } from './messageHandlers/observeLinkItems';
 import { observelinkCounts } from './messageHandlers/observelinkCounts';
+import { observeNodeStatus } from './messageHandlers/observeNodeStatus';
+import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
+import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
+import { cancelObservation } from './messageHandlers/cancelObservation';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -65,7 +69,11 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         getDiagram: getDiagram,
         toast: onToast,
         observeLinkItems: observeLinkItems,
-        observelinkCounts: observelinkCounts
+        observelinkCounts: observelinkCounts,
+        observeNodeStatus: observeNodeStatus,
+        observeLinkUpdate: observeLinkUpdate,
+        getDataFromStorage: getDataFromStorage,
+        cancelObservation: cancelObservation,
       };
 
       const handler = handlers[event.type];

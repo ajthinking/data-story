@@ -104,7 +104,9 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
 
     const handleScroll = () => {
       const { scrollHeight, scrollTop, clientHeight } = currentRef;
-      if (scrollTop + clientHeight >= scrollHeight) {
+      // Using Math.ceil prevents errors in floating-point calculations.
+      const isBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+      if (isBottom) {
         loadMore.current();
       }
     };

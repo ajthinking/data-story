@@ -11,7 +11,11 @@
       "persistent": true
     },
     "ext:dev": {
-      "dependsOn": ["watch:extension", "watch:app"],
+      "dependsOn": [
+        "watch:extension", 
+        "watch:app", 
+        "watch"
+      ],
       "cache": false,
       "persistent": true
     },
