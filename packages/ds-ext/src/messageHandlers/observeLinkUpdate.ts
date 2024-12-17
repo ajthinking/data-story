@@ -5,7 +5,6 @@ import {
 } from '@data-story/core';
 
 export const observeLinkUpdate: MessageHandler = async({ event, webviewPanel, inputObserverController }) => {
-  console.log('observeLinkUpdate event:', event, 'onReceive:', event.linkIds);
   inputObserverController.observeLinkUpdate({
     ...event,
     onReceive: () => {
