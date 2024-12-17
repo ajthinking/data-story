@@ -73,7 +73,6 @@ export default () => {
 
   useEffect(() => {
     if (!client) { return; }
-    console.log(client, 'client');
 
     const observerId = createDataStoryId();
     const observeLinkItems: ObserveLinkItems = {

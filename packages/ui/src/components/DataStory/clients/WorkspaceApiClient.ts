@@ -42,8 +42,6 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     this.initExecutionResult();
     this.initExecutionFailure();
     this.initUpdateStorage();
-    this.run = this.run.bind(this);
-    this.updateDiagram = this.updateDiagram.bind(this);
   }
 
   async getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
