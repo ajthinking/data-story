@@ -2,7 +2,7 @@ import { Application, Computer, ComputerFactory, ServiceProvider } from '@data-s
 import * as computers from './computers'
 
 export const hubspotProvider: ServiceProvider = {
-  boot: (app: Application) => {
+  boot: async (app: Application) => {
     const configs = Object.values(computers as {[key: string]: Computer})
     app.addComputers(configs);
   },
