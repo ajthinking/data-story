@@ -15,7 +15,7 @@ import { shallow } from 'zustand/shallow';
 import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
 import TableNodeComponent from '../Node/TableNodeComponent';
-import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
+import { DataStoryCanvasProps, ItemsObserver, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import { onDropDefault } from './onDropDefault';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
@@ -90,9 +90,13 @@ const Flow = ({
   const reactFlowStore = useStoreApi();
   const { addSelectedNodes, setNodes } = reactFlowStore.getState();
 
+  // todo: 关于第三方订阅 observer 的逻辑
   useEffect(() => {
-    setObservers('workbench', observers);
-  }, [observers, setObservers]);
+    if (client?.itemsObserver && observers) {
+      console.log('observers Flow 2222', observers);
+      client?.itemsObserver?.(observers as ItemsObserver)
+    }
+  }, [observers, client.itemsObserver]);
 
   useEffect(() => {
     if (onInitialize && onRun && isExecutePostRenderEffect) {
@@ -184,6 +188,7 @@ const Flow = ({
             callback: onInitialize,
             clientRun: client?.run,
             focusOnFlow,
+            client
           });
           setIsExecutePostRenderEffect(true);
         }}

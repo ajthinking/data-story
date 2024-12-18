@@ -7,7 +7,7 @@ import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
-import { ClientRunParams, DataStoryObservers, ExecutionObserver, StoreInitOptions, StoreSchema } from '../types';
+import { ClientRunParams, ExecutionObserver, StoreInitOptions, StoreSchema } from '../types';
 import { shallow } from 'zustand/shallow';
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -149,7 +149,6 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   onRun: () => {
-    // const ExecutionObserver = createObservers(get().observerMap);
     // 将 ObserverMap 转换为 ExecutionObserver[]
     const ObserverArray = Array.from(get().observerMap.values());
     get()?.clientRun?.({
