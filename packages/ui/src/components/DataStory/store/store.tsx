@@ -1,14 +1,20 @@
 import { StoreApi, UseBoundStore } from 'zustand';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, NodeChange } from '@xyflow/react';
-import { createDataStoryId, Diagram, LinkGuesser, Node, NodeDescription, Param } from '@data-story/core';
+import {
+  createDataStoryId,
+  Diagram,
+  LinkGuesser,
+  Node,
+  NodeDescription, NodeStatus,
+  Param
+} from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import React, { Ref, useImperativeHandle, useState } from 'react';
 import { ReactFlowFactory } from '../../../factories/ReactFlowFactory';
 import { DiagramFactory } from '../../../factories/DiagramFactory';
 import { NodeFactory } from '../../../factories/NodeFactory';
-import { createObservers } from './createObservers';
-import { ClientRunParams, DataStoryObservers, StoreInitOptions, StoreSchema } from '../types';
+import { StoreInitOptions, StoreSchema } from '../types';
 import { shallow } from 'zustand/shallow';
 
 export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) => ({
@@ -17,9 +23,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   edges: [],
   params: [],
   openNodeSidebarId: null,
-  observerMap: new Map(),
   focusOnFlow: () => void 0,
-  clientRun: (params: ClientRunParams) => {},
 
   // METHODS
   toDiagram: () => {
@@ -130,8 +134,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
   onInit: (options: StoreInitOptions) => {
     set({ rfInstance: options.rfInstance })
-    set({ clientRun: options.clientRun })
     set({ focusOnFlow: options.focusOnFlow })
+    set({ client: options.client })
 
     if (options.initDiagram) get().updateDiagram(options.initDiagram)
 
@@ -149,38 +153,53 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   onRun: () => {
-    const observers = createObservers(get().observerMap);
-    get()?.clientRun?.({
+    get()?.client?.run({
       diagram: get().toDiagram(),
-      updateEdgeCounts: get().updateEdgeCounts,
-      observers
-    })
+    });
   },
 
   setParams: (params: Param[]) => {
     set({ params })
   },
-  updateEdgeCounts: (edgeCounts: Record<string, number>) => {
-    const updatedEdges = get().edges.map(edge => ({
+
+  updateEdgeCounts: (edgeCounts) => {
+    let updatedEdges: Edge[] = [];
+    updatedEdges = get().edges.map(edge => ({
       ...edge,
       ...(edgeCounts[edge.id] !== undefined && {
         label: edgeCounts[edge.id],
-        labelBgStyle: { opacity: 0.6 },
       }),
     }));
 
     get().setEdges(updatedEdges);
   },
-  setOpenNodeSidebarId: (id: string | null) => {
-    set({ openNodeSidebarId: id })
-  },
-  setObservers(observerId: string, observers?: DataStoryObservers) {
-    get().observerMap.set(observerId, (observers || {
-      inputObservers: [], onDataChange: () => {
-      }
-    }) as DataStoryObservers);
+
+  updateEdgeStatus: (edgeStatus = []) => {
+    const edgesObject = edgeStatus.reduce((acc, { nodeId, status }) => {
+      get().toDiagram().getOutputLinkIdsFromNodeId(nodeId).forEach(linkId => {
+        acc[linkId] = status;
+      });
+      return acc;
+    }, {} as Record<string, NodeStatus>);
+
+    const updatedEdges: Edge[] = get().edges.map(edge => {
+      const currentEdgeStatus = edgesObject[edge.id];
+      const isBusy = currentEdgeStatus === 'BUSY';
+      return {
+        ...edge,
+        ...(currentEdgeStatus !== undefined && {
+          labelBgStyle: { opacity: 0.6 },
+          style: isBusy ? { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' } : {}
+        }),
+      };
+    });
+
+    get().setEdges(updatedEdges);
   },
 
+  setOpenNodeSidebarId: (id: string | null) => {
+    set({ openNodeSidebarId: id })
+  }
 }));
 
 export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);
@@ -211,7 +230,7 @@ export const useGetStore = (ref: Ref<unknown>) => {
   }, [addNodeFromDescription, toDiagram, onRun]);
 }
 
-export const DataStoryCanvasProvider = ({ children }: {children: React.ReactNode}) => {
+export const DataStoryCanvasProvider = ({ children }: { children: React.ReactNode }) => {
   const [useLocalStore] = useState(() => createStore());
 
   return <DataStoryContext.Provider value={useLocalStore}>

@@ -1,16 +1,24 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
+import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
 import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
+import { observeLinkItems } from './messageHandlers/observeLinkItems';
+import { observelinkCounts } from './messageHandlers/observelinkCounts';
+import { observeNodeStatus } from './messageHandlers/observeNodeStatus';
+import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
+import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
+import { cancelObservation } from './messageHandlers/cancelObservation';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
   public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
+  private inputObserverController: InputObserverController;
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new DiagramEditorProvider(context);
@@ -27,7 +35,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     );
   }
 
-  constructor(private readonly context: vscode.ExtensionContext) {}
+  constructor(private readonly context: vscode.ExtensionContext) {
+    const storage = new DiagramObserverStorage();
+    this.inputObserverController = new InputObserverController(storage);
+  }
 
   async openCustomDocument(
     uri: vscode.Uri,
@@ -57,6 +68,12 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         updateDiagram: onUpdateDiagram,
         getDiagram: getDiagram,
         toast: onToast,
+        observeLinkItems: observeLinkItems,
+        observelinkCounts: observelinkCounts,
+        observeNodeStatus: observeNodeStatus,
+        observeLinkUpdate: observeLinkUpdate,
+        getDataFromStorage: getDataFromStorage,
+        cancelObservation: cancelObservation,
       };
 
       const handler = handlers[event.type];
@@ -64,7 +81,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         console.error(`No handler found for event type: ${event.type}. Available handlers: ${Object.keys(handlers).join(', ')}`);
         return;
       }
-      handler({ webviewPanel, event, document });
+
+      handler({ webviewPanel, event, document, inputObserverController: this.inputObserverController });
     });
   }
 

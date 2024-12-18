@@ -1,8 +1,8 @@
 import { Application, } from '@data-story/core';
 import { filter } from 'rxjs';
 import { createTransport, TransportConfig } from './createTransport';
-import { WorkspaceApiClientBase } from './WorkspaceApiClientBase';
-import { MockJSServer } from '../mockJSServer/index';
+import { WorkspaceApiClient } from './WorkspaceApiClient';
+import { MockJSServer } from '../mockJSServer';
 
 function createJSTransport(app: Application) {
   const jsServer = new MockJSServer({ app });
@@ -22,5 +22,5 @@ function createJSTransport(app: Application) {
 
 export const createJSClient = (app: Application) => {
   const transport = createJSTransport(app);
-  return new WorkspaceApiClientBase(transport);
+  return new WorkspaceApiClient(transport);
 }

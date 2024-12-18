@@ -4,14 +4,18 @@
     "dev": {
       "dependsOn": [
         "watch:webpack",
-        "watch:tsc",
+        "watch",
         "watch:css"
       ],
       "cache": false,
       "persistent": true
     },
     "ext:dev": {
-      "dependsOn": ["watch:extension", "watch:app"],
+      "dependsOn": [
+        "watch:extension", 
+        "watch:app", 
+        "watch"
+      ],
       "cache": false,
       "persistent": true
     },
@@ -23,7 +27,7 @@
       "cache": false,
       "persistent": true
     },
-    "watch:tsc": {
+    "watch": {
       "cache": false,
       "persistent": true
     },

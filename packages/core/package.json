@@ -32,13 +32,13 @@
   ],
   "scripts": {
     "build-vite": "vite build",
-    "watch:tsc": "tsc --watch",
     "tinker": "npx ts-node ./src/tinker.ts",
     "demo": "npx ts-node ./src/V2/old/demo.ts",
     "test": "yarn run -T vitest run",
     "watch:test": "yarn run -T vitest",
     "build:esm": "vite build --config vite.config.esm.ts",
     "build:cjs": "tsc -p tsconfig.build.json",
+    "watch": "yarn build:esm --watch",
     "build": "yarn build:esm && yarn build:cjs && yarn build-vite",
     "release": "yarn run -T release-it"
   },
@@ -55,7 +55,8 @@
   "dependencies": {
     "axios": "^1.3.4",
     "dotenv": "^16.0.3",
-    "nanoid": "3"
+    "nanoid": "3",
+    "rxjs": "^7.8.1"
   },
   "devDependencies": {
     "@types/node": "18.14.2",

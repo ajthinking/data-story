@@ -1,5 +1,5 @@
-import { core, nodes } from '@data-story/core';
-import React, { useMemo } from 'react';
+import { core, createDataStoryId, ObserveLinkItems, nodes, RequestObserverType } from '@data-story/core';
+import React, { useEffect, useMemo } from 'react';
 import { DataStory } from '@data-story/ui';
 import {
   CategoryScale,
@@ -41,7 +41,7 @@ export const options = {
   },
 };
 
-const { Signal, Table, Map, Create, Request, ConsoleLog } = nodes;
+const { Signal, Table, Map } = nodes;
 
 const diagram = core.getDiagramBuilder()
   .add(Signal, {
@@ -57,7 +57,6 @@ const diagram = core.getDiagramBuilder()
 export default () => {
   const [points, setPoints] = React.useState([]);
   const { app, loading } = useRequestApp();
-
   const client = useMemo(() => new CustomizeJSClient({ diagram, app }), [diagram, app]);
 
   const mapNode = diagram.nodes.find(n => n.type === 'Map');
@@ -72,12 +71,40 @@ export default () => {
     selected: true,
   }]
 
-  const tableAndConsoleLog = core.getDiagramBuilder()
-    .add(Create)
-    .add(Request)
-    .add(ConsoleLog)
-    .add(Table)
-    .get();
+  useEffect(() => {
+    if (!client) { return; }
+
+    const observerId = createDataStoryId();
+    const observeLinkItems: ObserveLinkItems = {
+      linkIds: [diagram.links[1].id],
+      type: RequestObserverType.observeLinkItems,
+      onReceive: (items) => {
+        setPoints([
+          ...points,
+          ...items,
+        ].slice(-100));
+      },
+      observerId
+    };
+    const subscription = client.observeLinkItems?.(observeLinkItems as ObserveLinkItems)
+
+    return () => subscription?.unsubscribe()
+  }, [client, points]);
+
+  useEffect(() => {
+    if(!client?.observeLinkCounts) return;
+
+    const linksCountObserver = {
+      type: RequestObserverType.observelinkCounts as const,
+      linkIds: [diagram.links[1].id],
+      onReceive: (count) => {
+        console.log('Link count', count);
+      },
+      observerId: createDataStoryId(),
+    }
+    const subscription = client?.observeLinkCounts?.(linksCountObserver);
+    return () =>  subscription?.unsubscribe()
+  }, [client]);
 
   if (loading || !client) {
     return null;
@@ -88,12 +115,6 @@ export default () => {
       <Line options={options} data={{
         labels: points.map(p => p.x),
         datasets: [
-          // {
-          //   label: 'Data',
-          //   data: points.map(p => p.y),
-          //   borderColor: 'rgb(255, 99, 132)',
-          //   backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          // },
           {
             label: 'Data',
             data: points.map(p => p.y),
@@ -110,15 +131,6 @@ export default () => {
           }}
           hideControls={['save']}
           client={client}
-          observers={{
-            inputObservers: [{ nodeId: 'Table.1', portId: 'input' }],
-            onDataChange: (items) => {
-              setPoints([
-                ...points,
-                ...items,
-              ].slice(-100))
-            },
-          }}
         />
       </div>
     </div>

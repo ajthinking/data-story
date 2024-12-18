@@ -1,10 +1,20 @@
-import { Application, Diagram, NodeDescription } from '@data-story/core';
-import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientBase } from '@data-story/ui';
+import {
+  Application,
+  Diagram,
+  NodeDescription,
+  ObserveLinkItems,
+  ObservelinkCounts,
+  ObserveLinkUpdate,
+  GetDataFromStorage,
+  ObserveNodeStatus
+} from '@data-story/core';
+import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientImplement } from '@data-story/ui';
 
-export class CustomizeJSClient implements WorkspaceApiClient {
+export class CustomizeJSClient implements WorkspaceApiClientImplement {
   private nodeDescriptions: NodeDescription[];
   private app: Application;
   private diagram: Diagram;
+  private jsClient: WorkspaceApiClient;
 
   constructor({ diagram, app, nodeDescriptions }: {
     app: Application,
@@ -14,6 +24,7 @@ export class CustomizeJSClient implements WorkspaceApiClient {
     this.nodeDescriptions = nodeDescriptions || [];
     this.app = app;
     this.diagram = diagram;
+    this.jsClient = createJSClient(this.app);
   }
 
   getNodeDescriptions = async({ path }) => {
@@ -21,11 +32,34 @@ export class CustomizeJSClient implements WorkspaceApiClient {
   };
 
   run = (params:  ClientRunParams) => {
-    const jsClient = createJSClient(this.app);
-    jsClient.run(params);
+    this.jsClient.run(params);
   };
 
   getDiagram = async({ path }) => {
     return this.diagram;
   };
+
+  observeLinkItems = (params: ObserveLinkItems) => {
+    return this.jsClient.observeLinkItems(params);
+  }
+
+  observeLinkCounts = (params: ObservelinkCounts) => {
+    return this.jsClient.observeLinkCounts(params);
+  }
+
+  observeNodeStatus = (params: ObserveNodeStatus) => {
+    return this.jsClient.observeNodeStatus(params);
+  }
+
+  observeLinkUpdate = (params: ObserveLinkUpdate) => {
+    return this.jsClient.observeLinkUpdate(params);
+  }
+
+  getDataFromStorage = (params: GetDataFromStorage) => {
+    return this.jsClient.getDataFromStorage(params);
+  }
+
+  cancelObservation = (params) => {
+    return this.jsClient.cancelObservation(params);
+  }
 }

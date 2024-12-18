@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { Application, InMemoryStorage } from '@data-story/core';
+import { Application, DiagramObserverStorage, InMemoryStorage, InputObserverController } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
 
@@ -14,6 +14,7 @@ export class SocketServer {
   private port: number;
   private messageHandlers: Record<string, MessageHandler<any>>;
   private wsServer?: WebSocket.Server;
+  private inputObserverController: InputObserverController;
 
   constructor({
     app,
@@ -23,6 +24,8 @@ export class SocketServer {
     this.app = app;
     this.port = port;
     this.messageHandlers = messageHandlers;
+    const storage = new DiagramObserverStorage();
+    this.inputObserverController = new InputObserverController(storage);
   }
 
   start() {
@@ -51,13 +54,19 @@ export class SocketServer {
     storage: InMemoryStorage
   ) {
     const parsed: { type: string } & Record<string, any> = JSON.parse(message);
-
     const handler = this.messageHandlers[parsed.type];
+
     if (!handler) {
       console.warn('Unknown message type (server): ' + parsed.type);
       return;
     }
 
-    await handler(ws, parsed, this.app, storage);
+    await handler({
+      ws,
+      data: parsed,
+      app: this.app,
+      storage,
+      inputObserverController: this.inputObserverController
+    });
   }
 }

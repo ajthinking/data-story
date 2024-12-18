@@ -1,11 +1,9 @@
-import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
 import { InputObserverController } from './InputObserverController'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
-import { Param } from './Param'
 import { Registry } from './Registry'
 import { UnfoldedDiagram } from './UnfoldedDiagram'
 import { Hook } from './types/Hook'
@@ -31,6 +29,7 @@ export class ExecutionMemoryFactory {
       linkCounts: new Map<LinkId, number>(),
       inputDevices: new Map<NodeId, InputDevice>(),
       outputDevices: new Map<NodeId, OutputDevice>(),
+      inputObserverController: this.inputObserverController
     })
 
     // Configure the memory's initial state
@@ -88,7 +87,6 @@ export class ExecutionMemoryFactory {
       node,
       this.unfoldedDiagram,
       memory,
-      this.inputObserverController,
     )
   }
 
@@ -100,7 +98,7 @@ export class ExecutionMemoryFactory {
       map[output.name] = connectedLinks.map(link => link.id);
     }
 
-    return new OutputDevice(map, memory)
+    return new OutputDevice(map, memory, node)
   }
 
   protected makeParamsDevice(node: Node, memory: ExecutionMemory) {

@@ -1,52 +1,121 @@
 import { useStore } from '../DataStory/store/store';
-import { DataStoryObservers, StoreSchema } from '../DataStory/types';
-import { createDataStoryId } from '@data-story/core';
-import { useMount, useUnmount } from 'ahooks';
-import { useRef } from 'react';
+import { StoreSchema } from '../DataStory/types';
+import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
+import { useLatest, useMount, useUnmount, useWhyDidYouUpdate } from 'ahooks';
 import { shallow } from 'zustand/shallow';
+import { MutableRefObject, useEffect, useLayoutEffect, useMemo as useCallback, useRef, useState } from 'react';
+import { Subscription } from 'rxjs';
 
-export function useObserverTable({ id, isDataFetched, setIsDataFetched, setItems }: {
+const initialScreenCount: number = 15;
+let subscription: Subscription | undefined;
+
+export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
   id: string,
-  isDataFetched: boolean,
   setIsDataFetched: (value: boolean) => void,
   setItems: (value: any) => void
-}): void {
+  items: ItemValue[];
+  parentRef: React.MutableRefObject<HTMLDivElement | null>;
+}): {
+    loadMore: MutableRefObject<() => Promise<void> | undefined>
+  } {
   const selector = (state: StoreSchema) => ({
-    observerMap: state.observerMap,
-    setObservers: state.setObservers,
+    toDiagram: state.toDiagram,
+    client: state.client,
+  });
+  const { toDiagram, client } = useStore(selector, shallow);
+
+  const pendingRequest = useRef(false);
+  const linkOffsets = useRef<Map<string, number>>(new Map());
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
+
+  const getLinkIds = () => toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
+
+  const loadMore = useLatest(async () => {
+    if (pendingRequest.current) return;
+
+    const linkIds = getLinkIds();
+    if (!client?.getDataFromStorage || !linkIds) return;
+
+    // Clear offsets if re-running the diagram (no items)
+    if (items.length === 0) {
+      linkOffsets.current.clear();
+    }
+    setIsDataFetched(true);
+    pendingRequest.current = true;
+
+    try {
+      const newItems: ItemValue[] = [];
+      // Fetch data for each link
+      const promises = linkIds.map(async (linkId) => {
+        const currentOffset = linkOffsets.current.get(linkId) ?? 0;
+        const result = await client?.getDataFromStorage?.({
+          type: 'getDataFromStorage',
+          linkId,
+          limit: initialScreenCount,
+          offset: currentOffset,
+        });
+
+        const linkItems = result?.[linkId] ?? [];
+        if (linkItems.length > 0) {
+          newItems.push(...linkItems);
+          // Update offset only if we got items
+          linkOffsets.current.set(linkId, currentOffset + linkItems.length);
+        }
+      });
+
+      await Promise.all(promises);
+
+      if (newItems.length > 0) {
+        setItems(prevItems => [...prevItems, ...newItems]);
+      }
+    } finally {
+      pendingRequest.current = false;
+    }
   });
 
-  const { observerMap, setObservers } = useStore(selector, shallow);
-
-  const observerId = useRef(createDataStoryId());
-  // Add the node to the inputObservers when the node is mounted
   useMount(() => {
-    if (observerMap?.get(observerId.current)) {
-      console.error('observers already exist');
-      return;
-    }
+    const linkIds = getLinkIds();
+    if (!client?.observeLinkUpdate || !linkIds) return;
 
-    const tableObserver: DataStoryObservers = {
-      inputObservers: [{ nodeId: id, portId: 'input' }],
-      onDataChange: (batchedItems, inputObserver) => {
-        if (!observerMap?.get(observerId.current)) {
-          console.error('observer unmounted');
-          return;
+    const observerId = createDataStoryId();
+    const tableUpdate: ObserveLinkUpdate = {
+      observerId,
+      linkIds: linkIds,
+      type: RequestObserverType.observeLinkUpdate,
+      throttleMs: 300,
+      onReceive: (linkIds) => {
+        // if linkOffsets all items.length < initialScreenCount then load more
+        if (itemsRef.current.length < initialScreenCount) {
+          loadMore.current();
         }
-        if (!isDataFetched) {
-          setIsDataFetched(true);
-        }
-
-        setItems(prevItems => [...prevItems, ...batchedItems.flat()]);
       }
     }
-
-    setObservers(observerId.current, tableObserver);
+    subscription = client?.observeLinkUpdate?.(tableUpdate);
   });
 
   useUnmount(() => {
-    if (observerMap && !observerMap?.get(observerId.current)) {
-      observerMap.delete(observerId.current);
-    }
+    subscription?.unsubscribe();
   });
+
+  useLayoutEffect(() => {
+    const currentRef = parentRef.current;
+    if (!currentRef) return;
+
+    const handleScroll = () => {
+      const { scrollHeight, scrollTop, clientHeight } = currentRef;
+      // Using Math.ceil prevents errors in floating-point calculations.
+      const isBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+      if (isBottom) {
+        loadMore.current();
+      }
+    };
+
+    currentRef?.addEventListener('scroll', handleScroll);
+    return () => {
+      currentRef?.removeEventListener('scroll', handleScroll);
+    };
+  }, [loadMore, parentRef.current]);
+
+  return { loadMore };
 }

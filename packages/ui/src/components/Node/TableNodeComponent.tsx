@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { DataStoryNodeData } from './ReactFlowNode';
-import { Handle, Position } from '@xyflow/react';
 import { ItemCollection } from './ItemCollection';
 import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
 import { useDataStoryEvent } from '../DataStory/events/eventManager';
@@ -19,9 +18,8 @@ import {
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import { notUndefined, useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
-import { Port } from '@data-story/core';
-import { PortIcon } from '../DataStory/icons/portIcon';
 import CustomHandle from './CustomHandle';
+import { ItemValue } from '@data-story/core';
 
 const TRUNCATE_CELL_LENGTH = 50;
 
@@ -117,11 +115,10 @@ const TableNodeComponent = ({ id, data }: {
   data: DataStoryNodeData,
   selected: boolean
 }) => {
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<ItemValue[]>([]);
   const tableRef = useRef<HTMLTableElement>(null);
   const [isDataFetched, setIsDataFetched] = useState(false);
-
-  useObserverTable({ id, isDataFetched, setIsDataFetched, setItems });
+  const parentRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {
@@ -132,8 +129,9 @@ const TableNodeComponent = ({ id, data }: {
       setIsDataFetched(true);
     }
   }, []);
-
   useDataStoryEvent(dataStoryEvent);
+
+  useObserverTable({ id, setIsDataFetched, setItems, items, parentRef });
 
   let { headers, rows } = useMemo(() => {
     const itemCollection = new ItemCollection(items);
@@ -174,8 +172,6 @@ const TableNodeComponent = ({ id, data }: {
 
   const { getHeaderGroups, getRowModel } = tableInstance;
 
-  const parentRef: React.MutableRefObject<HTMLDivElement | null> = useRef(null);
-
   const virtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
@@ -201,7 +197,7 @@ const TableNodeComponent = ({ id, data }: {
     (
       <div
         ref={tableRef}
-        className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xxxs"
+        className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xs"
       >
         <CustomHandle id={input.id} isConnectable={true} isInput={true} />
 
@@ -252,7 +248,7 @@ const TableNodeComponent = ({ id, data }: {
                     const row = getRowModel().rows[virtualRow.index];
                     return (<tr
                       data-cy={'data-story-table-row'}
-                      className="odd:bg-gray-50 w-full text-xxxs"
+                      className="odd:bg-gray-50 w-full text-xs"
                       key={row.id}
                       style={{
                         width: '100%',

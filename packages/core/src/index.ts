@@ -28,10 +28,10 @@ export type { Hook } from './types/Hook'
 export type { ItemValue } from './types/ItemValue'
 export { coreNodeProvider } from './coreNodeProvider'
 export { type ExecutionResult } from './ExecutionResult'
-export { InputObserverController } from './InputObserverController'
+export { InputObserverController} from './InputObserverController'
 export type { ExecutionFailure } from './types/ExecutionFailure'
 export { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
-export type { InputObserveConfig } from './types/InputObserveConfig';
+export { type InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';
 export type { InputObserver } from './types/InputObserver';
 export type { NotifyObserversCallback } from './types/NotifyObserversCallback';
 export type { ReportCallback } from './types/ReportCallback';
@@ -43,6 +43,13 @@ export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluati
 export { numberCast } from './Param/casts/numberCast'
 export { stringCast } from './Param/casts/stringCast'
 export { core } from './core'
+export type { LinkCountInfo, ObservelinkCounts, ExecutionObserver, ObserveLinkItems, ObserveNodeStatus, CancelObservation, ObserveLinkUpdate} from './types/ExecutionObserver'
+export type { GetDataFromStorage } from './types/GetDataFromStorage'
 export * as nodes from './computers'
 export * from './Param'
 export { Registry } from './Registry'
+export type { LinkId } from './types/Link';
+export type { NodeId } from './types/Node';
+export type { NodeStatus } from './Executor';
+export type { ObserverStorage } from './types/ObserverStorage'
+export { DiagramObserverStorage } from './storage/diagramObserverStorage'

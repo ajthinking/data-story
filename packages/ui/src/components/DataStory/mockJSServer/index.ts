@@ -1,4 +1,4 @@
-import { Application } from '@data-story/core';
+import { Application, InputObserverController, DiagramObserverStorage } from '@data-story/core';
 import { Subject } from 'rxjs';
 import { HandlerParam, getDefaultMsgHandlers, Message, MessageHandlers } from './messageHandlers';
 
@@ -7,7 +7,10 @@ export class MockJSServer {
   private messageHandlers = {};
 
   constructor({ app, messageHandlers }: {app: Application, messageHandlers?: MessageHandlers}) {
-    this.messageHandlers = messageHandlers ?? getDefaultMsgHandlers(app);
+    const storage = new DiagramObserverStorage();
+    const inputObserverController = new InputObserverController(storage);
+
+    this.messageHandlers = messageHandlers ?? getDefaultMsgHandlers(app, inputObserverController);
     this.start();
   }
 
@@ -31,7 +34,7 @@ export class MockJSServer {
 
   private start() {
     this.channel.subscribe((msg: Message) => {
-      console.debug('JS_SERVER:msg', msg);
+      // console.debug('JS_SERVER:msg', msg);
       this.handleMessage(msg);
     });
     console.log('Client connected 💓');

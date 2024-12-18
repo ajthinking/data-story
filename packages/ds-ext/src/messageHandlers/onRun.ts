@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Application, coreNodeProvider, Diagram, ExecutionResult, InMemoryStorage, InputObserverController, ReportCallback } from '@data-story/core';
+import { Application, coreNodeProvider, Diagram, InMemoryStorage, ReportCallback } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
 import { nodeJsProvider } from '@data-story/nodejs';
 
@@ -20,7 +20,7 @@ function setWorkspaceFolderPath() {
   }
 }
 
-export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
+export const onRun: MessageHandler = async ({ event, webviewPanel, inputObserverController }) => {
   const app = new Application();
   app.register([
     coreNodeProvider,
@@ -29,27 +29,11 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
 
   await app.boot();
 
-  const storage = new InMemoryStorage();
-
   const diagram = new Diagram({
     nodes: event.diagram.nodes,
     links: event.diagram.links,
   });
-
   const msgId = event.msgId;
-  const sendMsg: ReportCallback = (items, inputObservers) => {
-    webviewPanel.webview.postMessage({
-      msgId,
-      type: 'NotifyObservers',
-      inputObservers,
-      items
-    });
-  };
-
-  const inputObserverController = new InputObserverController(
-    event.inputObservers || [],
-    sendMsg
-  );
 
   setWorkspaceFolderPath();
 
@@ -63,12 +47,7 @@ export const onRun: MessageHandler = async ({ event, webviewPanel }) => {
   const execution = executor.execute();
 
   try {
-    for await(const update of execution) {
-      webviewPanel.webview.postMessage({
-        msgId,
-        ...update
-      });
-    }
+    for await(const update of execution) {}
 
     const endTime = Date.now();
     webviewPanel.webview.postMessage({

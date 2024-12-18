@@ -1,6 +1,14 @@
 import { DataStoryControls } from './dataStoryControls';
 import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { Background, BackgroundVariant, EdgeChange, NodeChange, ReactFlow, ReactFlowProvider, useStoreApi } from '@xyflow/react';
+import {
+  Background,
+  BackgroundVariant,
+  EdgeChange,
+  NodeChange,
+  ReactFlow,
+  ReactFlowProvider,
+  useStoreApi
+} from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
@@ -9,12 +17,14 @@ import InputNodeComponent from '../Node/InputNodeComponent';
 import TableNodeComponent from '../Node/TableNodeComponent';
 import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
+import ConsoleNodeComponent from '../Node/ConsoleNodeComponent';
 import { onDropDefault } from './onDropDefault';
 import type { NodeTypes } from '@xyflow/react/dist/esm/types';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
 import { getNodesWithNewSelection } from './getNodesWithNewSelection';
+import { createDataStoryId, NodeStatus, RequestObserverType } from '@data-story/core';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -22,6 +32,7 @@ const nodeTypes = {
   inputNodeComponent: InputNodeComponent,
   outputNodeComponent: OutputNodeComponent,
   tableNodeComponent: TableNodeComponent,
+  consoleNodeComponent: ConsoleNodeComponent,
 };
 
 const DataStoryCanvasComponent = forwardRef((props: DataStoryCanvasProps, ref) => {
@@ -42,7 +53,6 @@ const Flow = ({
   initDiagram,
   hideControls,
   slotComponents,
-  observers,
   onInitialize,
   setSidebarKey,
   onSave,
@@ -59,9 +69,10 @@ const Flow = ({
     connect: state.connect,
     onInit: state.onInit,
     onRun: state.onRun,
-    setObservers: state.setObservers,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
+    updateEdgeCounts: state.updateEdgeCounts,
+    updateEdgeStatus: state.updateEdgeStatus
   });
 
   const {
@@ -72,19 +83,16 @@ const Flow = ({
     onEdgesChange,
     onInit,
     onRun,
-    setObservers,
     addNodeFromDescription,
     toDiagram,
+    updateEdgeCounts,
+    updateEdgeStatus
   } = useStore(selector, shallow);
 
   const id = useId()
   const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
   const reactFlowStore = useStoreApi();
   const { addSelectedNodes, setNodes } = reactFlowStore.getState();
-
-  useEffect(() => {
-    setObservers('workbench', observers);
-  }, [observers, setObservers]);
 
   useEffect(() => {
     if (onInitialize && onRun && isExecutePostRenderEffect) {
@@ -112,13 +120,58 @@ const Flow = ({
     }
   }, []);
 
+  // when edges change, re-subscribe to observelinkCounts
+  useEffect(() => {
+    const allLinkIds = edges.map(edge => edge.id);
+    if (allLinkIds.length === 0 || !client?.observeLinkCounts) return;
+
+    const observerId = createDataStoryId();
+    const subscription = client?.observeLinkCounts?.({
+      observerId,
+      linkIds: allLinkIds,
+      type: RequestObserverType.observelinkCounts,
+      onReceive: ({ links }) => {
+        if (!links || links.length === 0) return;
+
+        const edgeCounts = links.reduce((acc, link) => {
+          acc[link.linkId] = link.count;
+          return acc;
+        }, {});
+
+        updateEdgeCounts(edgeCounts)
+      }
+    })
+    return () => {
+      subscription?.unsubscribe();
+    }
+    // listen to edges.length because changes in the count on edges trigger this useEffect, leading to frequent subscriptions and unsubscriptions, which can impact performance.
+  }, [client, edges.length, updateEdgeCounts]);
+
+  useEffect(() => {
+    const allNodeIds = nodes.map(node => node.id);
+    if (allNodeIds.length === 0 || !client?.observeNodeStatus) return;
+
+    const observerId = createDataStoryId();
+    const subscription = client?.observeNodeStatus?.({
+      observerId,
+      nodeIds: allNodeIds,
+      type: RequestObserverType.observeNodeStatus,
+      onReceive: ({ nodes }) => {
+        updateEdgeStatus(nodes as {nodeId: string, status: NodeStatus}[]);
+      }
+    });
+    return () => {
+      subscription?.unsubscribe();
+    }
+  }, [client, nodes.length, updateEdgeStatus]);
+
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
   const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
 
   const traverseNodes = useCallback((direction) => {
     const selectedNode = getNodesWithNewSelection(direction, nodes);
-    if (selectedNode)  addSelectedNodes([selectedNode.id]);
+    if (selectedNode) addSelectedNodes([selectedNode.id]);
   }, [nodes]);
 
   useHotkeys({
@@ -136,6 +189,15 @@ const Flow = ({
 
   return (
     <>
+      <style>
+        {`
+          @keyframes dash {
+            to {
+              stroke-dashoffset: -10;
+            }
+          }
+        `}
+      </style>
       <ReactFlow
         tabIndex={0}
         ref={flowRef}
@@ -165,8 +227,8 @@ const Flow = ({
             rfInstance,
             initDiagram,
             callback: onInitialize,
-            clientRun: client?.run,
             focusOnFlow,
+            client
           });
           setIsExecutePostRenderEffect(true);
         }}
@@ -183,7 +245,6 @@ const Flow = ({
         onDrop={
           useCallback((event) => {
             const handler = onDrop || onDropDefault;
-
             handler(event, addNodeFromDescription)
           }, [addNodeFromDescription]
           )}

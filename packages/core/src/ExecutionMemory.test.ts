@@ -240,39 +240,6 @@ describe('ExecutionMemory', () => {
     });
   });
 
-  describe('getHistory', () => {
-    it('returns the correct history messages', () => {
-      const memory = new ExecutionMemory();
-      const messages = ['message1', 'message2', 'message3'];
-
-      for (const message of messages) {
-        memory.pushHistoryMessage(message);
-      }
-
-      const retrieved = memory.getHistory();
-      expect(retrieved).toEqual(messages);
-    });
-
-    it('returns an empty array if no history messages are pushed', () => {
-      const memory = new ExecutionMemory();
-
-      const retrieved = memory.getHistory();
-      expect(retrieved).toEqual([]);
-    });
-  });
-
-  describe('pushHistoryMessage', () => {
-    it('pushes a history message correctly', () => {
-      const memory = new ExecutionMemory();
-      const message = 'Test message';
-
-      memory.pushHistoryMessage(message);
-
-      const retrieved = memory.getHistory();
-      expect(retrieved).toEqual([message]);
-    });
-  });
-
   describe('pushHooks', () => {
     it('pushes hooks correctly', () => {
       const memory = new ExecutionMemory();

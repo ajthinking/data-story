@@ -3,11 +3,8 @@ import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams } from './ItemWithParams'
 import { Node } from './types/Node'
 import { ItemValue } from './types/ItemValue'
-import { PortName } from './types/Port'
 import { InputObserverController } from './InputObserverController';
 import { UnfoldedDiagram } from './UnfoldedDiagram'
-
-export type PortLinkMap = Record<PortName, LinkId[]>
 
 export class InputDevice {
   constructor(
@@ -47,11 +44,6 @@ export class InputDevice {
       remaining -= batch.length
       if(remaining === 0) break
     }
-
-    this.inputObserverController?.reportItems({
-      nodeId: this.node.id,
-      portId: name
-    }, pulled);
 
     // Enhance ItemValue to ItemWithParams
     return pulled.map(item => new ItemWithParams(

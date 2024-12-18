@@ -5,7 +5,9 @@ import {
   InMemoryStorage,
   type InputObserver,
   InputObserverController,
-  type ItemValue
+  type ItemValue, RequestObserverType,
+  type ObserveLinkItems, ObservelinkCounts, ObserveLinkUpdate, GetDataFromStorage, LinkId, ObserveNodeStatus,
+  CancelObservation
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 
@@ -28,33 +30,20 @@ export type MessageHandlers = {
 };
 const LocalStorageKey = 'data-story-tree';
 
-export const getDefaultMsgHandlers = (app: Application) => {
+export const getDefaultMsgHandlers = (app: Application, inputObserverController: InputObserverController) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
     const storage = new InMemoryStorage();
-    const { diagram, inputObservers } = data as RunMessage;
-
-    const inputObserverController = new InputObserverController(
-      inputObservers || [],
-      (items: ItemValue[], inputObservers: InputObserver[]) => {
-        sendEvent({
-          type: 'NotifyObservers',
-          items,
-          inputObservers
-        });
-      }
-    );
+    const { diagram } = data as RunMessage;
 
     const executor = app!.getExecutor({
       diagram,
       storage,
-      inputObserverController
+      inputObserverController,
     });
 
     try {
       const execution = executor?.execute();
-
       for await(const executionUpdate of execution) {
-        sendEvent(executionUpdate);
       }
 
       const executionResult = {
@@ -66,11 +55,67 @@ export const getDefaultMsgHandlers = (app: Application) => {
       const failure: ExecutionFailure = {
         type: 'ExecutionFailure',
         message: error?.message,
-        history: executor.memory.getHistory()
       }
       sendEvent(failure);
     }
   };
+
+  const ObservelinkCounts = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.addLinkCountsObserver({
+      ...data as ObservelinkCounts,
+      onReceive: ({ links }) => {
+        sendEvent({
+          links: links,
+          type: RequestObserverType.observelinkCounts
+        })
+      }
+    })
+  }
+
+  const observeNodeStatus = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.addNodeStatusObserver({
+      ...data as ObserveNodeStatus,
+      onReceive: ({ nodes }) => {
+        sendEvent({
+          nodes: nodes,
+          type: RequestObserverType.observeNodeStatus
+        })
+      }
+    })
+  }
+
+  const observeLinkItems = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.addlinkItemsObserver({
+      ...data as ObserveLinkItems,
+      onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
+        sendEvent({
+          items,
+          inputObserver,
+          type: RequestObserverType.observeLinkItems
+        })
+      }
+    } as ObserveLinkItems);
+  }
+
+  const cancelObservation = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.deleteExecutionObserver(data as CancelObservation);
+    sendEvent({
+      ...data as Record<string, unknown>,
+      // cancelObservation: true
+    });
+  }
+
+  const observeLinkUpdate = ({ data, sendEvent }: HandlerParam) => {
+    inputObserverController.observeLinkUpdate({
+      ...data as ObserveLinkUpdate,
+      onReceive: () => {
+        sendEvent({
+          linkIds: (data as ObserveLinkUpdate).linkIds,
+          type: RequestObserverType.observeLinkUpdate
+        });
+      }
+    } as ObserveLinkUpdate);
+  }
 
   const getNodeDescriptions = async({ data, sendEvent }: HandlerParam) => {
     const nodeDescriptions = app!.descriptions();
@@ -95,10 +140,24 @@ export const getDefaultMsgHandlers = (app: Application) => {
     });
   };
 
+  const getDataFromStorage = async({ data, sendEvent }: HandlerParam) => {
+    const result: Record<LinkId, ItemValue[]> = inputObserverController.getDataFromStorage(data as GetDataFromStorage);
+    sendEvent({
+      ...data as GetDataFromStorage,
+      data: result
+    });
+  }
+
   return {
     run,
     getNodeDescriptions,
     updateDiagram,
-    getDiagram
+    getDiagram,
+    observelinkCounts: ObservelinkCounts,
+    observeLinkItems: observeLinkItems,
+    observeLinkUpdate: observeLinkUpdate,
+    cancelObservation,
+    getDataFromStorage,
+    observeNodeStatus: observeNodeStatus
   }
 }

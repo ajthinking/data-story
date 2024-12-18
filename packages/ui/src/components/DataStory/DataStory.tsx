@@ -9,6 +9,7 @@ import { DataStoryCanvasProvider } from './store/store';
 import { DataStoryCanvas } from './DataStoryCanvas';
 import { useRequest } from 'ahooks';
 import { LoadingMask } from './common/loadingMask';
+import { Diagram } from '@data-story/core';
 
 function handleRequestError(requestError?: Error): void {
   if (requestError) console.error(`Error fetching : ${requestError?.message}`);
@@ -17,7 +18,7 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps
 ) => {
-  const { client, initSidebarKey, children, initDiagram, onChange } = props;
+  const { client, initSidebarKey, children, onChange } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
@@ -67,6 +68,10 @@ export const DataStoryComponent = (
     setIsSidebarClose(false);
   }, [setSidebarKey, setSelectedNode, setIsSidebarClose]);
 
+  const handleSave = useCallback(async(diagram: Diagram) => {
+    client?.updateDiagram?.(diagram)
+  }, [client]);
+
   return (
     <DataStoryCanvasProvider>
       <div className="relative h-full w-full">
@@ -80,7 +85,7 @@ export const DataStoryComponent = (
               <Allotment.Pane minSize={300} className="h-full w-96">
                 <DataStoryCanvas
                   {...props}
-                  onSave={client.updateDiagram}
+                  onSave={handleSave}
                   key={'data-story-canvas'}
                   initDiagram={diagramData}
                   ref={partialStoreRef}
@@ -97,7 +102,7 @@ export const DataStoryComponent = (
                   sidebarKey={sidebarKey}
                   setSidebarKey={setSidebarKey}
                   node={selectedNode}
-                  onSave={client.updateDiagram}
+                  onSave={handleSave}
                   onClose={setIsSidebarClose}/>
               </Allotment.Pane>
             </Allotment>

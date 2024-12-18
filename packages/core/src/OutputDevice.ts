@@ -1,13 +1,9 @@
 import { LinkId } from './types/Link'
 import { ItemValue } from './types/ItemValue'
-import { PortId } from './types/PortId'
 import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams, isItemWithParams } from './ItemWithParams'
 import { PortName } from './types/Port'
-
-type LinkItems = Record<LinkId, ItemValue[]>
-
-export type OutputTree = Record<PortId, LinkItems>
+import { Node } from './types/Node';
 
 export type PortLinkMap = Record<PortName, LinkId[]>
 
@@ -30,6 +26,7 @@ export class OutputDevice {
   constructor(
     private portLinkMap: PortLinkMap = {},
     private memory: ExecutionMemory,
+    private node: Node
   ) {}
 
   getPortNames(): string[] {
@@ -54,10 +51,9 @@ export class OutputDevice {
         // Clone items to ensure induvidual mutation per branch
         formattedItems
       )
-
       // Update link counts
       const count = this.memory.getLinkCount(linkId)!
-      this.memory.setLinkCount(linkId, count + items.length)
+      this.memory.setLinkCount(linkId, count + items.length);
     }
   }
 

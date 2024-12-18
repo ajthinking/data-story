@@ -5,6 +5,8 @@ import { ItemValue } from './types/ItemValue'
 import { Hook } from './types/Hook'
 import { InputDevice } from './InputDevice'
 import { OutputDevice } from './OutputDevice'
+import { InputObserverController } from './InputObserverController'
+import { RequestObserverType } from './types/InputObserveConfig';
 
 type MemoryValues = {
   nodeStatuses?: Map<NodeId, NodeStatus>,
@@ -14,6 +16,7 @@ type MemoryValues = {
   inputDevices?: Map<NodeId, InputDevice>,
   outputDevices?: Map<NodeId, OutputDevice>,
   hooks?: any[],
+  inputObserverController?: InputObserverController,
 }
 
 export class ExecutionMemory {
@@ -24,8 +27,7 @@ export class ExecutionMemory {
   inputDevices: Map<NodeId, InputDevice>
   outputDevices: Map<NodeId, OutputDevice>
   hooks: Hook[]
-
-  history: string[] = []
+  inputObserverController?: InputObserverController
 
   constructor(values: MemoryValues = {}) {
     this.nodeStatuses = values.nodeStatuses || new Map()
@@ -34,7 +36,8 @@ export class ExecutionMemory {
     this.linkCounts = values.linkCounts || new Map()
     this.inputDevices = values.inputDevices || new Map()
     this.outputDevices = values.outputDevices || new Map()
-    this.hooks = values.hooks || []
+    this.hooks = values.hooks || [];
+    this.inputObserverController = values.inputObserverController;
   }
 
   getNodeStatus(nodeId: NodeId): NodeStatus | undefined {
@@ -42,8 +45,7 @@ export class ExecutionMemory {
   }
 
   setNodeStatus(nodeId: NodeId, status: NodeStatus) {
-    this.history.push(`Setting node ${nodeId} to ${status}`)
-
+    this.inputObserverController?.reportNodeStatus(nodeId, status);
     this.nodeStatuses.set(nodeId, status)
   }
 
@@ -56,8 +58,6 @@ export class ExecutionMemory {
   }
 
   setNodeRunner(nodeId: NodeId, status: AsyncGenerator<undefined, void, void>) {
-    this.history.push(`Setting node ${nodeId} runner`)
-
     this.nodeRunners.set(nodeId, status)
   }
 
@@ -69,8 +69,6 @@ export class ExecutionMemory {
     const linkItems = this.linkItems.get(linkId)!
     const pulled = linkItems.splice(0, count)
 
-    this.history.push(`Pulled in ${pulled.length} items from link ${linkId}`)
-
     return pulled
   }
 
@@ -78,11 +76,15 @@ export class ExecutionMemory {
     const linkItems = this.linkItems.get(linkId)!
     this.linkItems.set(linkId, linkItems.concat(items))
 
-    this.history.push(`Pushed ${items.length} items to link ${linkId}`)
+    this.inputObserverController?.reportItems({
+      linkId,
+      type: RequestObserverType.observeLinkItems,
+      items
+    })
   }
 
   setLinkItems(linkId: LinkId, items: ItemValue[]) {
-    this.history.push(`Setting link ${linkId} items: ${JSON.stringify(items)}`)
+    this.inputObserverController?.setItems(linkId, items);
 
     this.linkItems.set(linkId, items)
   }
@@ -96,7 +98,11 @@ export class ExecutionMemory {
   }
 
   setLinkCount(linkId: LinkId, count: number) {
-    this.history.push(`Setting link ${linkId} count to ${count}`)
+    this.inputObserverController?.reportLinksCount({
+      linkId,
+      type: RequestObserverType.observelinkCounts,
+      count
+    })
 
     this.linkCounts.set(linkId, count)
   }
@@ -106,16 +112,7 @@ export class ExecutionMemory {
   }
 
   setInputDevice(nodeId: NodeId, device: InputDevice) {
-    this.history.push(`Setting node ${nodeId} input device`)
     this.inputDevices.set(nodeId, device)
-  }
-
-  getHistory(): string[] {
-    return this.history
-  }
-
-  pushHistoryMessage(message: string) {
-    this.history.push(message)
   }
 
   pushHooks(hooks: Hook[]) {
