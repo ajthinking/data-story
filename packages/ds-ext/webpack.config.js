@@ -2,6 +2,8 @@
 
 'use strict';
 
+const nodeExternals = require('webpack-node-externals');
+
 const path = require('path');
 
 //@ts-check
@@ -19,10 +21,12 @@ const extensionConfig = {
     filename: 'extension.js',
     libraryTarget: 'commonjs2'
   },
-  externals: {
-    vscode: 'commonjs vscode' // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
-    // modules added here also need to be added in the .vscodeignore file
-  },
+  externals: [
+    {
+      vscode: 'commonjs vscode', // the vscode-module is created on-the-fly and must be excluded.
+      'duckdb-async': 'commonjs duckdb-async',
+    },
+  ],
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js']
