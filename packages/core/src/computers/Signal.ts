@@ -31,11 +31,11 @@ export const Signal: Computer = {
     hjson({
       name: 'expression',
       label: 'Template expression',
-      help: 'Use this field to customize the signal. ${i} is available as a variable.',
+      help: 'Use this field to customize the signal. ${{i}} is available as a variable.',
       // Avoid Hjson bug
       value: [
         '{',
-        '  id: ${i}',
+        '  id: ${{i}}',
         '}',
       ].join('\n'),
       evaluations: [
