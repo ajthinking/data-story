@@ -226,7 +226,7 @@ describe('params', () => {
         name: 'greeting',
         label: 'Greeting',
         help: 'The greeting to use',
-        value: 'Hello ${name}',
+        value: 'Hello ${{name}}',
         multiline: false,
         canInterpolate: true,
         interpolate: true,
