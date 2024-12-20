@@ -187,9 +187,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   private initExecutionFailure() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionFailure')))
       .subscribe((data: any) => {
-        console.error('Execution failed: ', {
-          history: data.history,
-        })
+        console.error('Execution failed')
 
         eventManager.emit({
           type: DataStoryEvents.RUN_ERROR,
