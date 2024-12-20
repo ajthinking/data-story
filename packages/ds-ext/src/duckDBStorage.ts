@@ -30,7 +30,6 @@ interface Node {
   updateTime: Date;
 }
 
-// todo: 只能使用 db.all ?
 export async function simpleTest() {
   // get path to current workspace
   const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath;
@@ -56,10 +55,28 @@ export class DuckDBStorage implements ObserverStorage {
 
   async initDatabase() {
     this.db = await Database.create(this.dbPath);
-    // create 3 tables
-    await this.db.all('create table linkCounts (linkId text, count int, createTime timestamp, updateTime timestamp)');
-    await this.db.all('create table linkItems (linkId text, item json, createTime timestamp, updateTime timestamp)');
-    await this.db.all('create table nodes (nodeId text, status text, createTime timestamp, updateTime timestamp)');
+    await this.db.all(`
+      CREATE TABLE IF NOT EXISTS linkCounts (
+        linkId TEXT,
+        count INT,
+        createTime TIMESTAMP,
+        updateTime TIMESTAMP
+      );
+    
+      CREATE TABLE IF NOT EXISTS linkItems (
+        linkId TEXT,
+        item JSON,
+        createTime TIMESTAMP,
+        updateTime TIMESTAMP
+      );
+    
+      CREATE TABLE IF NOT EXISTS nodes (
+        nodeId TEXT,
+        status TEXT,
+        createTime TIMESTAMP,
+        updateTime TIMESTAMP
+      );
+    `);
   }
 
   async close() {
