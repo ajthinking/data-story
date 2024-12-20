@@ -1,7 +1,7 @@
 import * as glob from 'glob';
 import fs from 'fs';
 import path from 'path'; // Import path module
-import { Computer, get, ItemValue, serializeError, str } from '@data-story/core';
+import { Computer, get, asArray, ItemValue, serializeError, str } from '@data-story/core';
 
 export const JsonFileRead: Computer = {
   name: 'JsonFile.read',
@@ -67,17 +67,17 @@ export const JsonFileRead: Computer = {
         try {
           const content = fs.readFileSync(file, 'utf-8');
           const data = JSON.parse(content);
-          const items = get(data, itemsPath).map((i: ItemValue) => ({
+          const itemable = get(data, itemsPath);
+          const items = asArray(itemable).map((i: ItemValue) => ({
             ...i,
             _filePath: file,
           }));
           output.push(items);
+          yield;
         } catch (fileError: any) {
           output.pushTo('errors', [serializeError(fileError)]);
         }
       }
-
-      yield;
     } catch (error: any) {
       output.pushTo('errors', [serializeError(error)]);
       yield;
