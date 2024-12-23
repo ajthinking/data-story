@@ -1,46 +1,5 @@
 import { ObserverStorage } from '@data-story/core';
 import { Database } from 'duckdb-async';
-import * as vscode from 'vscode';
-
-// Link Table
-interface LinkCount {
-  // tableId: number;
-  linkId: string;
-  count: number;
-  createTime: Date;
-  updateTime: Date;
-}
-
-// LinkItems Table
-interface LinkItem {
-  // itemId: number;
-  linkId: string;
-  item: Record<string, any>; // Assuming JSON structure
-  // tableId: number;
-  createTime: Date;
-  updateTime: Date;
-}
-
-// Node Table
-interface Node {
-  // tableId: number;
-  nodeId: string;
-  status: 'BUSY' | 'COMPLETE';
-  createTime: Date;
-  updateTime: Date;
-}
-
-export async function simpleTest() {
-  // get path to current workspace
-  const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath;
-  const db = await Database.create(`${workspacePath}/test.db`);
-  // create table
-  await db.all('create table test (id int, name text)');
-  // insert data
-  await db.all('insert into test values (1, \'John Doe\')');
-  // query data
-  const rows = await db.all('select * from test');
-}
 
 export class DuckDBStorage implements ObserverStorage {
   private db: Database | null = null;
@@ -134,4 +93,5 @@ export class DuckDBStorage implements ObserverStorage {
     await this.db?.all('INSERT INTO nodes (nodeId, status, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(nodeId) DO UPDATE SET status = ?, updateTime = ?',
       nodeId, status, currentTime, currentTime, status, currentTime);
   }
+
 }

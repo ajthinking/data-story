@@ -5,15 +5,19 @@ import * as path from 'path';
 import { createDemosDirectory } from './commands/createDemosDirectory';
 import { spawn } from 'child_process';
 
+let diagramEditorProvider: DiagramEditorProvider;
+
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand('ds-ext.createDemos', async () => {
     createDemosDirectory();
   });
 
+  diagramEditorProvider = new DiagramEditorProvider(context);
+
   context.subscriptions.push(
     vscode.window.registerCustomEditorProvider(
       'ds-ext.diagramEditor',
-      new DiagramEditorProvider(context)
+      diagramEditorProvider
     )
   );
 
@@ -32,4 +36,6 @@ export function activate(context: vscode.ExtensionContext) {
   });
 }
 
-export function deactivate() {}
+export function deactivate(context: any) {
+  diagramEditorProvider.dispose();
+}

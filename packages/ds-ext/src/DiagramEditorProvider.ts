@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
+import { InputObserverController } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
@@ -14,12 +14,13 @@ import { observeNodeStatus } from './messageHandlers/observeNodeStatus';
 import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
 import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
-import { DuckDBStorage, simpleTest } from './duckDBStorage';
+import { DuckDBStorage } from './duckDBStorage';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
   public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
   private inputObserverController: InputObserverController;
+  private duckDBStorage: DuckDBStorage;
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new DiagramEditorProvider(context);
@@ -36,10 +37,14 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     );
   }
 
+  dispose(): void {
+    this.duckDBStorage.close();
+  }
+
   constructor(private readonly context: vscode.ExtensionContext) {
     const dbPath = path.join(vscode.workspace.workspaceFolders![0].uri.fsPath, 'diagram.db');
-    const duckDBStorage = new DuckDBStorage(dbPath);
-    this.inputObserverController = new InputObserverController(duckDBStorage);
+    this.duckDBStorage = new DuckDBStorage(dbPath);
+    this.inputObserverController = new InputObserverController(this.duckDBStorage);
   }
 
   async openCustomDocument(
