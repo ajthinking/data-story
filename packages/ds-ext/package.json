@@ -103,7 +103,6 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/vscode": "^1.80.0",
-    "@types/webpack-node-externals": "^3",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
     "@vitejs/plugin-react": "^4.3.1",
@@ -115,8 +114,7 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.7",
     "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "@data-story/core": "workspace:*",

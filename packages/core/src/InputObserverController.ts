@@ -65,7 +65,7 @@ export class InputObserverController {
     this.storage.setNodeStatus(nodeId, status);
   }
 
-  // todo: 需要从数据库中获取时就进行 limit and offset
+  // todo: get data from database set limit and offset
   async getDataFromStorage({
     linkId,
     limit = 100,
