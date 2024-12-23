@@ -2,7 +2,7 @@ import { ItemValue } from '../types/ItemValue';
 import { LinkId } from '../types/Link';
 import { NodeId } from '../types/Node';
 import { NodeStatus } from '../Executor';
-import { ObserverStorage } from '../types/ObserverStorage';
+import { GetLinkItemsParams, ObserverStorage } from '../types/ObserverStorage';
 
 /**
  * implementation of ObserverStorage using Maps
@@ -14,6 +14,7 @@ export class DiagramObserverStorage implements ObserverStorage {
     private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map(),
     private nodeStatusStorage: Map<NodeId, NodeStatus> = new Map()
   ) {}
+
   // Link Counts
   async getLinkCount(linkId: LinkId): Promise<number | undefined> {
     return this.linkCountsStorage.get(linkId);
@@ -24,8 +25,9 @@ export class DiagramObserverStorage implements ObserverStorage {
   }
 
   // Link Items
-  async getLinkItems(linkId: LinkId): Promise<ItemValue[] | undefined> {
-    return this.linkItemsStorage.get(linkId);
+  async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
+    const storageItems = this.linkItemsStorage.get(linkId)?.slice(offset, offset + limit);
+    return storageItems ?? [];
   }
 
   async setLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {

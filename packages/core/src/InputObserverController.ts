@@ -65,16 +65,14 @@ export class InputObserverController {
     this.storage.setNodeStatus(nodeId, status);
   }
 
-  // todo: get data from database set limit and offset
   async getDataFromStorage({
     linkId,
     limit = 100,
     offset = 0
   }: GetDataFromStorage): Promise<Record<LinkId, ItemValue[]>> {
     const items: Record<LinkId, ItemValue[]> = {};
-    const currentItems = await this.storage.getLinkItems(linkId) ?? [];
-    const storageItems = currentItems.slice(offset, offset + limit);
-    items[linkId] = storageItems;
+    const currentItems = await this.storage.getLinkItems({linkId, offset, limit}) ?? [];
+    items[linkId] = currentItems;
     return items;
   }
 

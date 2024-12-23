@@ -6,13 +6,19 @@ import { NodeStatus } from '../Executor';
 /**
  * Interface for storage implementations used by InputObserverController
  */
+export type GetLinkItemsParams = {
+  linkId: LinkId;
+  offset: number;
+  limit: number;
+};
+
 export interface ObserverStorage {
 // Link Counts
   getLinkCount(linkId: LinkId): Promise<number | undefined>;
   setLinkCount(linkId: LinkId, count: number): Promise<void>;
 
   // Link Items
-  getLinkItems(linkId: LinkId): Promise<ItemValue[] | undefined>;
+  getLinkItems(params: GetLinkItemsParams): Promise<ItemValue[] | undefined>;
   setLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void>;
   appendLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void>;
 

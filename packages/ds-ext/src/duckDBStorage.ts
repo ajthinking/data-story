@@ -1,4 +1,4 @@
-import { ObserverStorage } from '@data-story/core';
+import { GetLinkItemsParams, ObserverStorage } from '@data-story/core';
 import { Database } from 'duckdb-async';
 
 export class DuckDBStorage implements ObserverStorage {
@@ -57,8 +57,8 @@ export class DuckDBStorage implements ObserverStorage {
       linkId, count, currentTime, currentTime, count, currentTime);
   }
 
-  async getLinkItems(linkId: string): Promise<Record<string, any>[] | undefined> {
-    const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ?', linkId);
+  async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<Record<string, any>[] | undefined> {
+    const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ? LIMIT ? OFFSET ?', linkId, limit, offset);
     if (!data || data.length === 0) {
       return undefined;
     }
