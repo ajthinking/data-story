@@ -75,7 +75,6 @@ export class InputObserverController {
     const currentItems = await this.storage.getLinkItems(linkId) ?? [];
     const storageItems = currentItems.slice(offset, offset + limit);
     items[linkId] = storageItems;
-    console.log('get data from storage', items);
     return items;
   }
 

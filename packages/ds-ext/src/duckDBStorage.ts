@@ -33,7 +33,6 @@ interface Node {
 export async function simpleTest() {
   // get path to current workspace
   const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath;
-  console.log('simpleTest', workspacePath);
   const db = await Database.create(`${workspacePath}/test.db`);
   // create table
   await db.all('create table test (id int, name text)');
@@ -41,7 +40,6 @@ export async function simpleTest() {
   await db.all('insert into test values (1, \'John Doe\')');
   // query data
   const rows = await db.all('select * from test');
-  console.log(rows);
 }
 
 export class DuckDBStorage implements ObserverStorage {
@@ -101,12 +99,12 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async getLinkItems(linkId: string): Promise<Record<string, any>[] | undefined> {
-    const result = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ?', linkId);
-    console.log('get linkId items oMBfhvoQOc', linkId, 'result', result);
-    if (!result || result.length === 0) {
+    const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ?', linkId);
+    if (!data || data.length === 0) {
       return undefined;
     }
-    return result.map(row => row.item);
+    const result = data.map(row => JSON.parse(row.item));
+    return result;
   }
 
   async setLinkItems(linkId: string, items: Record<string, any>[]): Promise<void> {
