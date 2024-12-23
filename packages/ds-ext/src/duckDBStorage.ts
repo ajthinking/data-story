@@ -87,7 +87,7 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async getLinkCount(linkId: string): Promise<number | undefined> {
-    const result = await this.db?.all('SELECT count FROM linkCounts WHERE linkId = ?', [linkId]);
+    const result = await this.db?.all('SELECT count FROM linkCounts WHERE linkId = ?', linkId);
     if (result && result.length > 0) {
       return result[0].count;
     }
@@ -97,38 +97,34 @@ export class DuckDBStorage implements ObserverStorage {
   async setLinkCount(linkId: string, count: number): Promise<void> {
     const currentTime = new Date();
     await this.db?.all('INSERT INTO linkCounts (linkId, count, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(linkId) DO UPDATE SET count = ?, updateTime = ?',
-      [linkId, count, currentTime, currentTime, count, currentTime]);
+      linkId, count, currentTime, currentTime, count, currentTime);
   }
 
   async getLinkItems(linkId: string): Promise<Record<string, any>[] | undefined> {
-    const result = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ?', [linkId]);
+    const result = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ?', linkId);
     console.log('get linkId items oMBfhvoQOc', linkId, 'result', result);
-    // if (!result || result.length === 0) {
-    //   return undefined;
-    // }
-    // return result.map(row => row.item);
-    return [];
+    if (!result || result.length === 0) {
+      return undefined;
+    }
+    return result.map(row => row.item);
   }
 
   async setLinkItems(linkId: string, items: Record<string, any>[]): Promise<void> {
-    console.log('clear linkId items', linkId, 'append items', items);
-    // 需要先清空 linkId 对应的 linkItems 表， 然后追加 items
-    await this.db?.all('DELETE FROM linkItems WHERE linkId = ?', [linkId]);
+    await this.db?.all('DELETE FROM linkItems WHERE linkId = ?', linkId);
     await this.appendLinkItems(linkId, items);
   }
 
   async appendLinkItems(linkId: string, items: Record<string, any>[]): Promise<void> {
-    console.log('append linkId items', linkId, 'items', items);
-    // 这里只需要追加 items，linkId 不是唯一的主键
-    const currentTime = new Date();
+    const currentTime = new Date().toISOString();
     items.forEach(async(item) => {
+      const data = JSON.stringify(item);
       await this.db?.all('INSERT INTO linkItems (linkId, item, createTime, updateTime) VALUES (?, ?, ?, ?)',
-        [linkId, JSON.stringify(item), currentTime, currentTime]);
+        linkId, data, currentTime, currentTime);
     });
   }
 
   async getNodeStatus(nodeId: string): Promise<'BUSY' | 'COMPLETE' | undefined> {
-    const result = await this.db?.all('SELECT status FROM nodes WHERE nodeId = ?', [nodeId]);
+    const result = await this.db?.all('SELECT status FROM nodes WHERE nodeId = ?', nodeId);
     if (!result || result.length === 0) {
       return undefined;
     }
@@ -138,6 +134,6 @@ export class DuckDBStorage implements ObserverStorage {
   async setNodeStatus(nodeId: string, status: 'BUSY' | 'COMPLETE'): Promise<void> {
     const currentTime = new Date();
     await this.db?.all('INSERT INTO nodes (nodeId, status, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(nodeId) DO UPDATE SET status = ?, updateTime = ?',
-      [nodeId, status, currentTime, currentTime, status, currentTime]);
+      nodeId, status, currentTime, currentTime, status, currentTime);
   }
 }

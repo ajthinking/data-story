@@ -43,7 +43,6 @@ export class InputObserverController {
    */
   reportItems(memoryObserver: MemoryItemObserver): void {
     this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
-    console.log('reportItems', memoryObserver);
     this.items$.next(memoryObserver);
   }
 
@@ -66,6 +65,7 @@ export class InputObserverController {
     this.storage.setNodeStatus(nodeId, status);
   }
 
+  // todo: 需要从数据库中获取时就进行 limit and offset
   async getDataFromStorage({
     linkId,
     limit = 100,
@@ -75,6 +75,7 @@ export class InputObserverController {
     const currentItems = await this.storage.getLinkItems(linkId) ?? [];
     const storageItems = currentItems.slice(offset, offset + limit);
     items[linkId] = storageItems;
+    console.log('get data from storage', items);
     return items;
   }
 
