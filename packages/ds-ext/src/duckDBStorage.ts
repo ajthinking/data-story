@@ -57,7 +57,7 @@ export class DuckDBStorage implements ObserverStorage {
     this.db = await Database.create(this.dbPath);
     await this.db.all(`
       CREATE TABLE IF NOT EXISTS linkCounts (
-        linkId TEXT,
+        linkId TEXT PRIMARY KEY,
         count INT,
         createTime TIMESTAMP,
         updateTime TIMESTAMP
@@ -69,9 +69,10 @@ export class DuckDBStorage implements ObserverStorage {
         createTime TIMESTAMP,
         updateTime TIMESTAMP
       );
+      CREATE INDEX idx_linkId ON linkItems (linkId);
     
       CREATE TABLE IF NOT EXISTS nodes (
-        nodeId TEXT,
+        nodeId TEXT PRIMARY KEY,
         status TEXT,
         createTime TIMESTAMP,
         updateTime TIMESTAMP
@@ -101,23 +102,29 @@ export class DuckDBStorage implements ObserverStorage {
 
   async getLinkItems(linkId: string): Promise<Record<string, any>[] | undefined> {
     const result = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ?', [linkId]);
-
-    if (!result || result.length === 0) {
-      return undefined;
-    }
-    return result.map(row => row.item);
+    console.log('get linkId items oMBfhvoQOc', linkId, 'result', result);
+    // if (!result || result.length === 0) {
+    //   return undefined;
+    // }
+    // return result.map(row => row.item);
+    return [];
   }
 
   async setLinkItems(linkId: string, items: Record<string, any>[]): Promise<void> {
-    const currentTime = new Date();
-    await this.db?.all('INSERT INTO linkItems (linkId, item, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(linkId) DO UPDATE SET item = ?, updateTime = ?',
-      [linkId, JSON.stringify(items), currentTime, currentTime, JSON.stringify(items), currentTime]);
+    console.log('clear linkId items', linkId, 'append items', items);
+    // 需要先清空 linkId 对应的 linkItems 表， 然后追加 items
+    await this.db?.all('DELETE FROM linkItems WHERE linkId = ?', [linkId]);
+    await this.appendLinkItems(linkId, items);
   }
 
   async appendLinkItems(linkId: string, items: Record<string, any>[]): Promise<void> {
-    const currentItems = await this.getLinkItems(linkId) || [];
-    const updatedItems = currentItems.concat(items);
-    await this.setLinkItems(linkId, updatedItems);
+    console.log('append linkId items', linkId, 'items', items);
+    // 这里只需要追加 items，linkId 不是唯一的主键
+    const currentTime = new Date();
+    items.forEach(async(item) => {
+      await this.db?.all('INSERT INTO linkItems (linkId, item, createTime, updateTime) VALUES (?, ?, ?, ?)',
+        [linkId, JSON.stringify(item), currentTime, currentTime]);
+    });
   }
 
   async getNodeStatus(nodeId: string): Promise<'BUSY' | 'COMPLETE' | undefined> {
