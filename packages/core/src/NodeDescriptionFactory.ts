@@ -1,4 +1,5 @@
 import { Diagram } from './Diagram';
+import { StringableInputValue } from './Param';
 import { Computer } from './types/Computer';
 import { NodeDescription } from './types/NodeDescription';
 
@@ -22,8 +23,10 @@ export const NodeDescriptionFactory = {
       inputs: diagram.nodes
         .filter(node => node.type === 'Input')
         .map(node => {
-          const portName = node.params
-            .find(param => param.name === 'port_name')!.value as string
+          const portParam = node.params
+            .find(param => param.name === 'port_name')! as StringableInputValue
+
+          const portName = portParam.value.value
 
           return {
             name: portName,
@@ -33,8 +36,10 @@ export const NodeDescriptionFactory = {
       outputs: diagram.nodes
         .filter(node => node.type === 'Output')
         .map(node => {
-          const portName = node.params
-            .find(param => param.name === 'port_name')!.value as string
+          const portParam = node.params
+            .find(param => param.name === 'port_name')! as StringableInputValue
+
+          const portName = portParam.value.value
 
           return {
             name: portName,
