@@ -1,8 +1,7 @@
 import { GetLinkItemsParams, ObserverStorage } from '@data-story/core';
-import { Database } from 'duckdb-async';
-
+import type { Database as DatabaseType} from 'duckdb-async';
 export class DuckDBStorage implements ObserverStorage {
-  private db: Database | null = null;
+  private db: DatabaseType | null = null;
   private dbPath: string;
 
   constructor(dbPath: string) {
@@ -11,6 +10,7 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async initDatabase() {
+    const { Database } = await import('duckdb-async');
     this.db = await Database.create(this.dbPath);
     await this.db.all(`
       CREATE TABLE IF NOT EXISTS linkCounts (
