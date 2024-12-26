@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { Application, coreNodeProvider, Diagram, InMemoryStorage, ReportCallback } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
 import { nodeJsProvider } from '@data-story/nodejs';
+import { createAndBootApp } from '../app/createAndBootApp';
 
 /**
  * Set the workspace folder path in `process.env.WORKSPACE_FOLDER_PATH`
@@ -21,13 +22,7 @@ function setWorkspaceFolderPath() {
 }
 
 export const onRun: MessageHandler = async ({ event, webviewPanel, inputObserverController }) => {
-  const app = new Application();
-  app.register([
-    coreNodeProvider,
-    nodeJsProvider,
-  ]);
-
-  await app.boot();
+  const app = await createAndBootApp();
 
   const diagram = new Diagram({
     nodes: event.diagram.nodes,
