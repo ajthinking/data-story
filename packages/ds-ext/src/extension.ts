@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel('DS-Ext');
   outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');
   outputChannel.appendLine(`ds-ext is installed at ${context.extensionPath}`);
-  outputChannel.show();
+  // outputChannel.show();
 
   diagramEditorProvider = new DiagramEditorProvider(context);
   context.subscriptions.push(
