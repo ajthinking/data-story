@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-export function createDataStoryDB(): string {
+export function createDataStoryDBPath(): string {
   const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath;
 
   // Construct the datastory directory path
@@ -14,15 +14,6 @@ export function createDataStoryDB(): string {
   }
 
   const dbPath = path.join(datastoryDir, 'execution.db');
-
-  // Create the execution.db file
-  fs.writeFile(dbPath, '', (err) => {
-    if (err) {
-      console.error('Error creating execution.db:', err);
-    } else {
-      console.log('execution.db created successfully in datastory directory.');
-    }
-  });
 
   return dbPath;
 }

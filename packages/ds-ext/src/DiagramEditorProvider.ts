@@ -15,7 +15,7 @@ import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
 import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
 import { DuckDBStorage } from './duckDBStorage';
-import { createDataStoryDB } from './commands/createDataStoryDB';
+import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -43,7 +43,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   }
 
   constructor(private readonly context: vscode.ExtensionContext) {
-    const dbPath = createDataStoryDB();
+    const dbPath = createDataStoryDBPath();
     this.duckDBStorage = new DuckDBStorage(dbPath);
     this.inputObserverController = new InputObserverController(this.duckDBStorage);
   }
