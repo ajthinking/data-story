@@ -15,46 +15,35 @@ export class DiagramObserverStorage implements ObserverStorage {
     private nodeStatusStorage: Map<NodeId, NodeStatus> = new Map()
   ) {}
   // Link Counts
-  getLinkCount(linkId: LinkId): number | undefined {
+  async getLinkCount(linkId: LinkId): Promise<number | undefined> {
     return this.linkCountsStorage.get(linkId);
   }
 
-  setLinkCount(linkId: LinkId, count: number): void {
+  async setLinkCount(linkId: LinkId, count: number): Promise<void> {
     this.linkCountsStorage.set(linkId, count);
   }
 
-  getAllLinkCounts(): Map<LinkId, number> {
-    return this.linkCountsStorage;
-  }
-
   // Link Items
-  getLinkItems(linkId: LinkId): ItemValue[] | undefined {
+  async getLinkItems(linkId: LinkId): Promise<ItemValue[] | undefined> {
     return this.linkItemsStorage.get(linkId);
   }
 
-  setLinkItems(linkId: LinkId, items: ItemValue[]): void {
+  async setLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
     this.linkItemsStorage.set(linkId, items);
   }
 
-  appendLinkItems(linkId: LinkId, items: ItemValue[]): void {
+  async appendLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
     const currentItems = this.linkItemsStorage.get(linkId) ?? [];
     this.linkItemsStorage.set(linkId, currentItems.concat(items));
   }
 
-  getAllLinkItems(): Map<LinkId, ItemValue[]> {
-    return this.linkItemsStorage;
-  }
-
   // Node Status
-  getNodeStatus(nodeId: NodeId): NodeStatus | undefined {
+  async getNodeStatus(nodeId: NodeId): Promise<NodeStatus | undefined> {
     return this.nodeStatusStorage.get(nodeId);
   }
 
-  setNodeStatus(nodeId: NodeId, status: NodeStatus): void {
+  async setNodeStatus(nodeId: NodeId, status: NodeStatus): Promise<void> {
     this.nodeStatusStorage.set(nodeId, status);
   }
 
-  getAllNodeStatus(): Map<NodeId, NodeStatus> {
-    return this.nodeStatusStorage;
-  }
 }

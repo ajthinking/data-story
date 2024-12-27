@@ -2,7 +2,6 @@ import { nodeJsProvider, SocketServer } from './src';
 import { Application, coreNodeProvider } from '@data-story/core';
 import * as dotenv from 'dotenv';
 import { hubspotProvider } from '@data-story/hubspot';
-import { openAiProvider } from '@data-story/openai';
 
 dotenv.config({ path: '.env.local' });
 
@@ -13,7 +12,6 @@ const startServer = async() => {
     coreNodeProvider,
     nodeJsProvider,
     hubspotProvider,
-    openAiProvider,
   ]);
 
   await app.boot();

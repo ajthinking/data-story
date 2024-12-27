@@ -25,17 +25,13 @@ export class Application {
   }
 
   async boot() {
+    for(const provider of this.providers) {
+      await provider.boot(this)
+    }
+
     this.providers.forEach(provider => {
       provider.boot(this);
     });
-
-    const mockDelayPromise = new Promise<number>((resolve) => {
-      setTimeout(() => {
-        resolve(1);
-      }, 100);
-    });
-
-    await mockDelayPromise;
 
     this.hasBooted = true;
 

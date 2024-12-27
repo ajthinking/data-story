@@ -1,9 +1,9 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
-import { useLatest, useMount, useUnmount, useWhyDidYouUpdate } from 'ahooks';
+import { useLatest, useMount, useUnmount } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { MutableRefObject, useEffect, useLayoutEffect, useMemo as useCallback, useRef, useState } from 'react';
+import { MutableRefObject, useLayoutEffect, useRef } from 'react';
 import { Subscription } from 'rxjs';
 
 const initialScreenCount: number = 15;

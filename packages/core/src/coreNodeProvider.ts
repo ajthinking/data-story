@@ -3,7 +3,7 @@ import { ServiceProvider } from './types/ServiceProvider';
 import * as computers from './computers'
 
 export const coreNodeProvider: ServiceProvider = {
-  boot: (app: Application) => {
+  boot: async (app: Application) => {
     app.addComputers(Object.values(computers));
   },
 }
