@@ -1,8 +1,7 @@
-import { ObserverStorage } from '@data-story/core';
-import { Database } from 'duckdb-async';
-
+import { GetLinkItemsParams, ObserverStorage } from '@data-story/core';
+import type { Database as DatabaseType} from 'duckdb-async';
 export class DuckDBStorage implements ObserverStorage {
-  private db: Database | null = null;
+  private db: DatabaseType | null = null;
   private dbPath: string;
 
   constructor(dbPath: string) {
@@ -11,6 +10,7 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async initDatabase() {
+    const { Database } = await import('duckdb-async');
     this.db = await Database.create(this.dbPath);
     await this.db.all(`
       CREATE TABLE IF NOT EXISTS linkCounts (
@@ -57,8 +57,8 @@ export class DuckDBStorage implements ObserverStorage {
       linkId, count, currentTime, currentTime, count, currentTime);
   }
 
-  async getLinkItems(linkId: string): Promise<Record<string, any>[] | undefined> {
-    const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ?', linkId);
+  async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<Record<string, any>[] | undefined> {
+    const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ? LIMIT ? OFFSET ?', linkId, limit, offset);
     if (!data || data.length === 0) {
       return undefined;
     }

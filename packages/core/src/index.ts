@@ -51,5 +51,5 @@ export { Registry } from './Registry'
 export type { LinkId } from './types/Link';
 export type { NodeId } from './types/Node';
 export type { NodeStatus } from './Executor';
-export type { ObserverStorage } from './types/ObserverStorage'
+export type { ObserverStorage, GetLinkItemsParams } from './types/ObserverStorage'
 export { DiagramObserverStorage } from './storage/diagramObserverStorage'
