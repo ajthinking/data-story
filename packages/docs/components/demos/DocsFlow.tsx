@@ -1,37 +1,51 @@
 import { DataStory } from '@data-story/ui'
-import { core, multiline, nodes, } from '@data-story/core';
+import { core, multiline, sleep, str, } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
+import useRequest from 'ahooks/lib/useRequest';
 
 export default () => {
-  const { Signal, Pass, Comment, Ignore } = nodes;
+  const { app, loading: appLoading } = useRequestApp();
 
-  const diagram = core.getDiagramBuilder()
-    .add({ ...Signal, label: 'DataSource' }, { period: 20, count: 100000 })
-    .add({ ...Pass, label: 'Transforms' })
-    .add({ ...Ignore, label: 'Actions' })
-    .from('Pass.1.output').below('Ignore.1').add({ ...Pass, label: 'APIs' })
-    .add({ ...Ignore, label: 'Storage' })
-    .jiggle({ x: 60, y: 25 })
-    .above('Signal.1').add(Comment, {
-      content: multiline`
+  const { data: diagram, loading: diagramLoading } = useRequest(async() => {
+    await core.boot();
+    const diagram = core.getDiagramBuilderV3()
+      .add('Signal', { period: 20, count: 100000 })
+      .add('Pass', { label: 'Transforms' })
+      .add('Ignore', { label: 'Actions' })
+      .add('Ignore', { label: 'Storage' })
+      .add('Comment', {
+        content: multiline`
       ### DataStory 🔥
       Combine data sources, transforms, actions, APIs, storage and more. Create custom nodes for your business logic.
     `
-    })
-    .get()
+      })
+      .connect()
+      .place()
+      .jiggle({ x: 60, y: 25 })
+      .get()
 
-  const { app, loading } = useRequestApp();
-  const client = new CustomizeJSClient({ diagram: diagram, app });
+    diagram.params = [
+      str({
+        name: 'message',
+        help: 'A message to pass on into the execution.',
+      })
+    ]
+    return diagram;
+  });
 
-  if (loading || !client) return null;
+  const client = new CustomizeJSClient({ diagram, app });
+
+  if (appLoading || !client || diagramLoading) return null;
 
   return (
     <div className="w-full h-1/6">
       <DataStory
         client={client}
         onInitialize={(options) => {
-          options.run()
+          sleep(1000).then(() => {
+            options.run()
+          })
         }}
         hideControls={true}
         hideActivityBar={true}

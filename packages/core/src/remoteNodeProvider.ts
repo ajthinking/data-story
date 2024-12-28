@@ -30,10 +30,5 @@ export const remoteNodeProvider = {
     // Add nested node to app
     // *************************************
     app.addNestedNode('FooBarStamper', nestedNode);
-
-    console.log({
-      msg: 'after booting remoteNodeProvider',
-      appNodes: app.descriptions()
-    })
   }
 };

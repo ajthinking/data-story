@@ -69,7 +69,7 @@ export class Application {
 
   getDiagramBuilderV3() {
     return new DiagramBuilderV3(
-      Object.values(this.registry.computers)
+      this.descriptions()
     );
   }
 
