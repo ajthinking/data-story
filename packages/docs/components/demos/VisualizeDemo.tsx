@@ -1,4 +1,4 @@
-import { core, createDataStoryId, ObserveLinkItems, nodes, RequestObserverType } from '@data-story/core';
+import { core, createDataStoryId, ObserveLinkItems, nodes, RequestObserverType, multiline } from '@data-story/core';
 import React, { useEffect, useMemo } from 'react';
 import { DataStory } from '@data-story/ui';
 import {
@@ -47,10 +47,15 @@ const diagram = core.getDiagramBuilder()
   .add(Signal, {
     period: 100,
     count: 100,
-    expression: '{ x: ${i} }'
+    expression: '{ x: ${{i}} }'
   })
-  .add(Map, { mapper: 'item => ({ x: ${x}, y: Math.cos(${x}/4) })' })
-  // .add(Map)
+  .add(Map, {
+    mapper: multiline`
+      item => ({
+        x: \${{x}},
+        y: Math.cos(\${{x}}/4) })
+      `
+  })
   .add(Table)
   .get();
 

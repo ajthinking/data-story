@@ -1,9 +1,8 @@
-import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
-import { Param, ParamValue } from './Param';
+import { Param, ParamValue, StringableInputValue } from './Param';
 import { Computer } from './types/Computer';
-import { Link } from './types/Link';
 import { Node } from './types/Node';
+import { NodeDescription } from './types/NodeDescription';
 
 // type ParamConfig = Record<string, ParamValue> | Partial<Param>
 type ParamConfig = {
@@ -19,24 +18,46 @@ type AddNodeConfig =
   | Omit<Partial<Computer>, 'params'> | ParamConfig
 
 export class DiagramBuilderV3 {
-  private nodes: Node[] = []
-  private links: Link[] = []
-  private computerIdCounters: Record<string, number> = {}
+  private diagram = new Diagram()
 
-  constructor(private computers: Computer[]) {}
+  constructor(private nodeDescriptions: NodeDescription[]) {}
 
-  add(computerName: string, config?: AddNodeConfig) {
-    const template = this.computers.find(e => e.name === computerName)
+  add(nodeName: string, config?: AddNodeConfig) {
+    const description = this.nodeDescriptions.find(e => e.name === nodeName)
 
-    // Ensure the computer config exists
-    if (!template) throw new Error(`Computer config ${computerName} not found`)
+    if (!description) throw new Error(`Description for a Node ${nodeName} not found`)
 
-    this.addNode(
-      new ComputerFactory().getInstance(template),
-      config
-    )
+    this.addNodeFromDescription(description, config)
 
     return this
+  }
+
+  place() {
+    // Configuration for layout, adjust as needed
+    const nodeWidth = 150;
+    const nodeHeight = 100;
+    const padding = 50;
+
+    // Determine grid layout
+    let x = padding;
+    let y = padding;
+
+    this.diagram.nodes.forEach((node, index) => {
+      // Place the node in a grid-like structure
+      node.position!.x = node.position!.x ? node.position!.x : x;
+      node.position!.y = node.position!.y ? node.position!.y : y;
+
+      // Move to the next column
+      x += nodeWidth + padding;
+
+      // Wrap to the next row if necessary
+      if ((index + 1) % 5 === 0) { // 5 nodes per row, adjust as needed
+        x = padding;
+        y += nodeHeight + padding;
+      }
+    });
+
+    return this;
   }
 
   connect(connections? : string | [fromPortId: string, toPortId: string][]) {
@@ -48,10 +69,16 @@ export class DiagramBuilderV3 {
 
   connectByArray(connections: [fromPortId: string, toPortId: string][]) {
     for(const [fromPortId, toPortId] of connections) {
-      const sourceNode = this.nodes.find(n => n.outputs.some(o => o.id === fromPortId))
-      const targetNode = this.nodes.find(n => n.inputs.some(i => i.id === toPortId))
+      console.log({ fromPortId, toPortId })
+      const sourceNode = this.diagram.nodes.find(n => n.outputs.some(o => o.id === fromPortId))
+      const targetNode = this.diagram.nodes.find(n => n.inputs.some(i => i.id === toPortId))
 
       if(!sourceNode || !targetNode) {
+        console.log({
+          sourceNode,
+          targetNode,
+          connections
+        })
         throw new Error('Source or target node not found')
       }
 
@@ -61,7 +88,7 @@ export class DiagramBuilderV3 {
         targetPortId: toPortId,
       }
 
-      this.links.push(link)
+      this.diagram.links.push(link)
     }
 
     return this
@@ -74,7 +101,11 @@ export class DiagramBuilderV3 {
     // Remove empty lines
       .map(line => line.trim()).filter(Boolean)
     // Remove whitespace and "|"
-      .map(line => line.replace(/\s*\|\s*/, ''))
+      .map(line => {
+        const afterClenup = line.replace(/\s+/g, '')
+        console.log({ afterClenup })
+        return afterClenup
+      })
     // Split by arrows of any length
       .map(line => line.split(/-+>/))
     // Ensure two parts or throw
@@ -90,9 +121,9 @@ export class DiagramBuilderV3 {
   }
 
   guessConnections() {
-    for (let i = 0; i < this.nodes.length - 1; i++) {
-      const current = this.nodes[i]
-      const next = this.nodes[i + 1]
+    for (let i = 0; i < this.diagram.nodes.length - 1; i++) {
+      const current = this.diagram.nodes[i]
+      const next = this.diagram.nodes[i + 1]
 
       if (current.outputs.length === 0 || next.inputs.length === 0) {
         continue
@@ -107,84 +138,113 @@ export class DiagramBuilderV3 {
         targetPortId: firstInput.id,
       }
 
-      this.links.push(link)
+      this.diagram.links.push(link)
+    }
+
+    return this
+  }
+
+  jiggle(jitter = {x: 50, y: 25 }) {
+    for(const node of this.diagram.nodes) {
+      node.position!.x += (0.5 - Math.random()) * jitter.x
+      node.position!.y += (0.5 - Math.random()) * jitter.y
     }
 
     return this
   }
 
   get(): Diagram {
-    return new Diagram({
-      nodes: this.nodes,
-      links: this.links,
+    return this.diagram
+  }
+
+  private nodeDescriptionToDiagramNode(nodeDescription: NodeDescription): Node {
+    const id = `${nodeDescription.name}.${this.getScopedId(nodeDescription.name)}`;
+
+    return structuredClone({
+      id,
+      type: nodeDescription.name,
+      label: nodeDescription.label,
+      inputs: nodeDescription.inputs.map(input => {
+        return {
+          id: `${id}.${input.name}`,
+          name: input.name,
+          schema: input.schema,
+        }
+      }),
+      outputs: nodeDescription.outputs.map(output => {
+        return {
+          id: `${id}.${output.name}`,
+          name: output.name,
+          schema: output.schema,
+        }
+      }),
+      params: nodeDescription.params || [],
+      position: { x: 0, y: 0 },
     })
   }
 
-  private addNode(computer: Computer, config: AddNodeConfig) {
-    const node = this.computerToNode(computer)
+  private addNodeFromDescription(nodeDescription: NodeDescription, config: AddNodeConfig) {
+    const node = this.nodeDescriptionToDiagramNode(nodeDescription)
 
     if(!config) {
-      this.nodes.push(node)
+      this.diagram.nodes.push(node)
       return this
     }
 
     for(const [key, value] of Object.entries(config)) {
+      console.log({ key, value })
+      // ****************************************************
+      // Special case for label
+      // ****************************************************
       if(key === 'label') {
         node.label = value
+        continue
+      }
+
+      // ****************************************************
+      // Special case for position
+      // ****************************************************
+      if(key === 'position') {
+        node.position = value
         continue
       }
 
       let param = node.params.find(p => p.name === key)
       if(!param) throw new Error(`Param ${key} not found`)
 
-      if(Array.isArray(value)) {
-        param.value = value
-        continue
-      }
+      console.log({ param2: structuredClone(param) })
+
+      // if(Array.isArray(value)) {
+      //   param.value = value
+      //   continue
+      // }
 
       if(typeof value === 'object') {
-        param = { ...param, ...value}
+        param = {
+          ...param,
+          value: {
+            ...(param.value as Object),
+            ...value
+          }
+        }
         continue
       }
 
       // Default
-      param.value = value
+      (param.value as StringableInputValue).value = value
     }
 
-    this.nodes.push(node)
+    this.diagram.nodes.push(node)
   }
 
-  private computerToNode(computer: Computer): Node {
-    if (!this.computerIdCounters[computer.name]) {
-      this.computerIdCounters[computer.name] = 1;
-    } else {
-      this.computerIdCounters[computer.name]++;
-    }
+  protected getScopedId(nodeName: string) {
+    const max = this.diagram.nodes
+      .filter(node => node.type === nodeName)
+      .map(node => node.id)
+      .map(id => id.split('.')[1])
+      .map(id => parseInt(id))
+      .reduce((max, id) => Math.max(max, id), 0)
 
-    const nodeId = `${computer.name}.${this.computerIdCounters[computer.name]}`
-
-    return {
-      id: nodeId,
-      type: computer.name,
-      inputs: computer.inputs.map(i => ({
-        id: `${nodeId}.${(i as unknown as string)}`,
-        name: typeof i === 'string'
-          ? i
-          : i.name,
-        schema: {},
-      })),
-      outputs: computer.outputs.map(o => ({
-        id: `${nodeId}.${(o as unknown as string)}`,
-        name: typeof o === 'string'
-          ? o
-          : o.name,
-        schema: {},
-      })),
-      params: computer.params,
-      position: {
-        x: 0,
-        y: 0,
-      }
-    }
+    return max + 1
   }
 }
