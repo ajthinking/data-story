@@ -1,6 +1,7 @@
 import { Diagram } from './Diagram';
-import { Param, ParamValue } from './Param';
+import { Param, ParamValue, StringableInputValue } from './Param';
 import { Computer } from './types/Computer';
+import { Node } from './types/Node';
 import { NodeDescription } from './types/NodeDescription';
 
 // type ParamConfig = Record<string, ParamValue> | Partial<Param>
@@ -35,7 +36,7 @@ export class DiagramBuilderV3 {
     // Configuration for layout, adjust as needed
     const nodeWidth = 150;
     const nodeHeight = 100;
-    const padding = 20;
+    const padding = 50;
 
     // Determine grid layout
     let x = padding;
@@ -43,8 +44,8 @@ export class DiagramBuilderV3 {
 
     this.diagram.nodes.forEach((node, index) => {
       // Place the node in a grid-like structure
-      node.position!.x = x;
-      node.position!.y = y;
+      node.position!.x = node.position!.x ? node.position!.x : x;
+      node.position!.y = node.position!.y ? node.position!.y : y;
 
       // Move to the next column
       x += nodeWidth + padding;
@@ -156,7 +157,7 @@ export class DiagramBuilderV3 {
     return this.diagram
   }
 
-  private nodeDescriptionToDiagramNode(nodeDescription: NodeDescription) {
+  private nodeDescriptionToDiagramNode(nodeDescription: NodeDescription): Node {
     const id = `${nodeDescription.name}.${this.getScopedId(nodeDescription.name)}`;
 
     return structuredClone({
@@ -191,26 +192,46 @@ export class DiagramBuilderV3 {
     }
 
     for(const [key, value] of Object.entries(config)) {
+      console.log({ key, value })
+      // ****************************************************
+      // Special case for label
+      // ****************************************************
       if(key === 'label') {
         node.label = value
+        continue
+      }
+
+      // ****************************************************
+      // Special case for position
+      // ****************************************************
+      if(key === 'position') {
+        node.position = value
         continue
       }
 
       let param = node.params.find(p => p.name === key)
       if(!param) throw new Error(`Param ${key} not found`)
 
-      if(Array.isArray(value)) {
-        param.value = value
-        continue
-      }
+      console.log({ param2: structuredClone(param) })
+
+      // if(Array.isArray(value)) {
+      //   param.value = value
+      //   continue
+      // }
 
       if(typeof value === 'object') {
-        param = { ...param, ...value}
+        param = {
+          ...param,
+          value: {
+            ...(param.value as Object),
+            ...value
+          }
+        }
         continue
       }
 
       // Default
-      param.value = value
+      (param.value as StringableInputValue).value = value
     }
 
     this.diagram.nodes.push(node)
