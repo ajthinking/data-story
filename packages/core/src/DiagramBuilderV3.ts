@@ -69,18 +69,20 @@ export class DiagramBuilderV3 {
 
   connectByArray(connections: [fromPortId: string, toPortId: string][]) {
     for(const [fromPortId, toPortId] of connections) {
-      console.log({ fromPortId, toPortId })
-      const sourceNode = this.diagram.nodes.find(n => n.outputs.some(o => o.id === fromPortId))
-      const targetNode = this.diagram.nodes.find(n => n.inputs.some(i => i.id === toPortId))
+      const sourceNodeId = fromPortId.split('.').slice(0, -1).join('.');
+      const targetNodeId = toPortId.split('.').slice(0, -1).join('.');
 
-      if(!sourceNode || !targetNode) {
-        console.log({
-          sourceNode,
-          targetNode,
-          connections
-        })
-        throw new Error('Source or target node not found')
-      }
+      const sourceNode = this.diagram.nodes.find(n => n.id === sourceNodeId)
+      const targetNode = this.diagram.nodes.find(n => n.id === targetNodeId)
+
+      if(!sourceNode) throw new Error(`Source node with id ${sourceNodeId} not found`)
+      if(!targetNode) throw new Error(`Target node with id ${targetNodeId} not found`)
+
+      const sourcePort = sourceNode.outputs.find(o => o.id === fromPortId)
+      const targetPort = targetNode.inputs.find(i => i.id === toPortId)
+
+      if(!sourcePort) throw new Error(`Source port with id ${fromPortId} not found`)
+      if(!targetPort) throw new Error(`Target port with id ${toPortId} not found`)
 
       const link = {
         id: `${sourceNode.id}--->${targetNode.id}`,
@@ -109,10 +111,22 @@ export class DiagramBuilderV3 {
     // Split by arrows of any length
       .map(line => line.split(/-+>/))
     // Ensure two parts or throw
-      .map((parseInt) => {
-        const [from, to, rest] = parseInt
+      .map((parts) => {
+        const [from, to, rest] = parts
+        console.log({ from, to, rest })
+
         if (!from || !to) throw new Error(`Invalid line connection string: \n${connections}\nCould not resolve from & to parts.`);
         if(rest) throw new Error(`Invalid line connection string: \n${connections}\nToo many parts.`);
+
+        return [from, to]
+      })
+    // Ensure correct format
+      .map(([from, to]) => {
+        const fromParts = from.split('.')
+        const toParts = to.split('.')
+
+        if(fromParts.length !== 3) throw new Error(`Invalid line connection string: \n${connections}. Use format: <NodeName>.<Count>.<PortName>.`);
+        if(toParts.length !== 3) throw new Error(`Invalid line connection string: \n${connections}. Use format: <NodeName>.<Count>.<PortName>.`);
 
         return [from, to]
       })
