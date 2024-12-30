@@ -1,17 +1,17 @@
 import { GetLinkItemsParams, ItemValue, ObserverStorage } from '@data-story/core';
 import type { Database as DatabaseType} from 'duckdb-async';
+import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
 export class DuckDBStorage implements ObserverStorage {
   private db: DatabaseType | null = null;
-  private dbPath: string;
 
-  constructor(dbPath: string) {
-    this.dbPath = dbPath;
+  constructor() {
     this.initDatabase();
   }
 
   async initDatabase() {
     const { Database } = await import('duckdb-async');
-    this.db = await Database.create(this.dbPath);
+    const dbPath = createDataStoryDBPath();
+    this.db = await Database.create(dbPath);
     await this.db.all(`
       CREATE TABLE IF NOT EXISTS linkCounts (
         linkId TEXT PRIMARY KEY,
@@ -71,11 +71,11 @@ export class DuckDBStorage implements ObserverStorage {
 
   async appendLinkItems(linkId: string, items: ItemValue[]): Promise<void> {
     const currentTime = new Date().toISOString();
-    items.forEach(async(item) => {
+    for(const item of items) {
       const data = JSON.stringify(item);
       await this.db?.all('INSERT INTO linkItems (linkId, item, createTime, updateTime) VALUES (?, ?, ?, ?)',
         linkId, data, currentTime, currentTime);
-    });
+    }
   }
 
   async getNodeStatus(nodeId: string): Promise<'BUSY' | 'COMPLETE' | undefined> {

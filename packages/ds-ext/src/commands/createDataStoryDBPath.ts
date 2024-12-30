@@ -6,7 +6,7 @@ export function createDataStoryDBPath(): string {
   const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath;
 
   // Construct the datastory directory path
-  const datastoryDir = path.join(workspacePath, 'datastory');
+  const datastoryDir = path.join(workspacePath, '.datastory');
 
   // Check if the datastory directory exists, create if it doesn't
   if (!fs.existsSync(datastoryDir)) {

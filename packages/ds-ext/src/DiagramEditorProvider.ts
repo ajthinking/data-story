@@ -15,13 +15,12 @@ import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
 import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
 import { DuckDBStorage } from './duckDBStorage';
-import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
   public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
   private inputObserverController!: InputObserverController;
-  private duckDBStorage!: ObserverStorage;
+  private observerStorage!: ObserverStorage;
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new DiagramEditorProvider(context);
@@ -38,23 +37,18 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     );
   }
 
-  dispose(): void {
-    if (this.duckDBStorage instanceof DuckDBStorage) {
-      this.duckDBStorage.close();
-    }
+  async dispose(): Promise<void> {
+    await this.observerStorage.close();
   }
 
   private async init(): Promise<void> {
-    const dbPath = createDataStoryDBPath();
-    let duckDBStorage: ObserverStorage;
     try {
-      duckDBStorage = new DuckDBStorage(dbPath);
+      this.observerStorage = new DuckDBStorage();
     } catch (error) {
-      duckDBStorage = new DiagramObserverStorage();
+      this.observerStorage = new DiagramObserverStorage();
     }
 
-    this.duckDBStorage = duckDBStorage;
-    this.inputObserverController = new InputObserverController(this.duckDBStorage);
+    this.inputObserverController = new InputObserverController(this.observerStorage);
   }
 
   constructor(private readonly context: vscode.ExtensionContext) {
