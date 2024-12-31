@@ -94,6 +94,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     return () => {
       subscription?.unsubscribe();
     };
+    // connections.length is 0 means the node is not connected
   }, [client, connections.length, id, loadMore, toDiagram]);
 
   useLayoutEffect(() => {
