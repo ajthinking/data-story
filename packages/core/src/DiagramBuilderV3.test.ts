@@ -4,14 +4,14 @@ import { Diagram } from './Diagram';
 
 describe('get', () => {
   it('returns the diagram', () => {
-    const diagram = core.getDiagramBuilderV3().get()
+    const diagram = core.getDiagramBuilder().get()
 
     expect(diagram).toBeInstanceOf(Diagram)
   })
 
   it('does not reposition or link nodes by default',async  () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Create')
       .add('Pass')
       .get()
@@ -30,7 +30,7 @@ describe('get', () => {
 describe('add', () => {
   it('adds node to the diagram', async() => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Create')
       .add('Ignore')
       .get()
@@ -43,7 +43,7 @@ describe('add', () => {
 
   it('can set stringable params', async () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Signal', { period: 99 })
       .get()
 
@@ -62,7 +62,7 @@ describe('add', () => {
 
   it('can set label', async () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Signal', { label: 'Read' })
       .get()
 
@@ -73,7 +73,7 @@ describe('add', () => {
 
   it('can set position', async () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Signal', { position: { x: 100, y: 200 } })
       .get()
 
@@ -84,7 +84,7 @@ describe('add', () => {
 
   it('has a default position of 0, 0', async () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Signal')
       .get()
 
@@ -95,7 +95,7 @@ describe('add', () => {
 
   it('can add multiple nodes of same type', async () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Pass')
       .add('Pass')
       .get()
@@ -110,7 +110,7 @@ describe('add', () => {
 describe('place', () => {
   it('positions nodes gracefully', async () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Signal')
       .add('Pass')
       .place()
@@ -137,7 +137,7 @@ describe('jiggle', () => {
 
     // Boot the application and apply jiggle
     const app = await core.boot();
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Signal')
       .add('Pass')
       .jiggle()
@@ -164,7 +164,7 @@ describe('jiggle', () => {
 describe('connect', () => {
   it('connects nodes using a string', async () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Create')
       .add('Pass')
       .connect(`
@@ -182,7 +182,7 @@ describe('connect', () => {
 
   it('can make multiple links', async () => {
     const app = await core.boot()
-    const diagram = app.getDiagramBuilderV3()
+    const diagram = app.getDiagramBuilder()
       .add('Create')
       .add('Pass')
       .add('Ignore')
@@ -208,7 +208,7 @@ describe('connect', () => {
     const app = await core.boot()
 
     expect(() => {
-      app.getDiagramBuilderV3()
+      app.getDiagramBuilder()
         .add('Pass')
         .connect(`
           Typo.1.typo ---> Pass.1.input
@@ -220,7 +220,7 @@ describe('connect', () => {
     const app = await core.boot()
 
     expect(() => {
-      app.getDiagramBuilderV3()
+      app.getDiagramBuilder()
         .add('Create')
         .connect(`
           Create.1.output ---> Typo.1.typo
@@ -232,7 +232,7 @@ describe('connect', () => {
     const app = await core.boot()
 
     expect(() => {
-      app.getDiagramBuilderV3()
+      app.getDiagramBuilder()
         .add('Create')
         .add('Pass')
         .connect(`
@@ -245,7 +245,7 @@ describe('connect', () => {
     const app = await core.boot()
 
     expect(() => {
-      app.getDiagramBuilderV3()
+      app.getDiagramBuilder()
         .add('Create')
         .add('Pass')
         .connect(`

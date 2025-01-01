@@ -15,15 +15,15 @@ export const remoteNodeProvider = {
         }
         )
       ])
-      .add(nodes.Input, { port_name: 'input' })
-      .add(nodes.Map, {
+      .add('Input', { port_name: 'input' })
+      .add('Map', {
         mapper: multiline`
           item => ({
             ...item,
             global_param_access: '@{stamp}',
           })`
       })
-      .add(nodes.Output, { port_name: 'stamped' })
+      .add('Output', { port_name: 'stamped' })
       .get();
 
     // *************************************

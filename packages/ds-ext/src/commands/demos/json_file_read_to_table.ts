@@ -1,10 +1,9 @@
-import { DiagramBuilder } from '@data-story/core';
-import { nodes as coreNodes } from '@data-story/core';
-import { nodes as nodeJsNodes } from '@data-story/nodejs';
+import { core } from '@data-story/core';
 
-export const json_file_read_to_table = new DiagramBuilder()
-  .add(nodeJsNodes.JsonFileRead, {
+export const json_file_read_to_table = async () => (await core.boot())
+  .getDiagramBuilder()
+  .add('JsonFileRead', {
     file_path: 'demos/demo_data/todos.json'
   })
-  .add(coreNodes.Table)
+  .add('Table')
   .get();

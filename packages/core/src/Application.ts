@@ -64,13 +64,13 @@ export class Application {
   }
 
   getDiagramBuilder() {
-    return new DiagramBuilder();
-  }
-
-  getDiagramBuilderV3() {
     return new DiagramBuilderV3(
       this.descriptions()
     );
+  }
+
+  getDiagramBuilderLegacy() {
+    return new DiagramBuilder();
   }
 
   getExecutor({ diagram, storage, inputObserverController}: {

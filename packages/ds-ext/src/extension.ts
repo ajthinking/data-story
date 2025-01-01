@@ -6,7 +6,7 @@ import { createDemosDirectory } from './commands/createDemosDirectory';
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand('ds-ext.createDemos', async () => {
-    createDemosDirectory();
+    await createDemosDirectory();
   });
 
   context.subscriptions.push(

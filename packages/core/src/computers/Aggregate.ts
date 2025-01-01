@@ -40,12 +40,10 @@ export const Aggregate: Computer = {
   async *run({ input, output, params }) {
     const all = input.pull()
     const property: string = get(params, 'aggregation_property')
-    console.log({ property })
 
     const groups = new Map();
     for (const item of all) {
       const key = get(item.value, property);
-      console.log({ firstKey: key })
 
       if (!groups.has(key)) groups.set(key, []);
 
