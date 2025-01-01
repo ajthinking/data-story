@@ -106,12 +106,6 @@ export const RequestLoopByToken: Computer = {
         yield;
 
         hasNextPage = !!currentCursor;
-
-        console.log({
-          items: items.length,
-          limit,
-          currentCursor,
-        })
       } catch(error: any) {
         console.log(error)
         output.pushTo('error', [error]);

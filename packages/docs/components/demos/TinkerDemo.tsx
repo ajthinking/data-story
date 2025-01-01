@@ -10,7 +10,7 @@ export default () => {
 
   const { data: diagram, loading: diagramLoading } = useRequest(async() => {
     await core.boot();
-    const diagram = core.getDiagramBuilderV3()
+    const diagram = core.getDiagramBuilder()
       .add('Create')
       .add('Sample')
       .add('Table')

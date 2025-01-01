@@ -3,6 +3,7 @@ import { Param, ParamValue, StringableInputValue } from './Param';
 import { Computer } from './types/Computer';
 import { Node } from './types/Node';
 import { NodeDescription } from './types/NodeDescription';
+import { isStringableParam } from './utils/isStringableParam';
 
 // type ParamConfig = Record<string, ParamValue> | Partial<Param>
 type ParamConfig = {
@@ -28,6 +29,54 @@ export class DiagramBuilderV3 {
     if (!description) throw new Error(`Description for a Node ${nodeName} not found`)
 
     this.addNodeFromDescription(description, config)
+
+    return this
+  }
+
+  addNestedNode(name: string, diagram: Diagram, params: Record<string, any> = {}) {
+    const nodeId = `${name}.${this.getScopedId(name)}`
+
+    const node: Node = {
+      id: nodeId,
+      label: name,
+      type: name,
+      // The inputs have not yet been assigned ids, to it here
+      inputs: diagram.inputNodes().map(inputNode => {
+        const param = inputNode.params.find(param => param.name === 'port_name');
+        const inputName = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value as string
+
+        return {
+          name: inputName,
+          id: `${nodeId}.${inputName}`,
+          schema: {},
+        }
+      }),
+      // The outputs have not yet been assigned ids, to it here
+      outputs: diagram.outputNodes().map(outputNode => {
+        const param = outputNode.params.find(param => param.name === 'port_name');
+        const outputName = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value as string
+
+        return {
+          name: outputName,
+          id: `${nodeId}.${outputName}`,
+          schema: {},
+        }
+      }),
+      // default params
+      params: diagram.params,
+      position: { x: 0, y: 0 },
+    }
+
+    // set explicit params
+    for(const [key, value] of Object.entries(params)) {
+      const param = node.params.find(param => param.name === key)
+
+      if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
+
+      param.value = isStringableParam(param.type) ? { ...(param.value as StringableInputValue ?? {}), value } : value;
+    }
+
+    this.diagram.nodes.push(node)
 
     return this
   }
@@ -67,6 +116,12 @@ export class DiagramBuilderV3 {
     return this.connectByArray(connections)
   }
 
+  withParams(params: Param[]) {
+    this.diagram.params = params
+
+    return this
+  }
+
   connectByArray(connections: [fromPortId: string, toPortId: string][]) {
     for(const [fromPortId, toPortId] of connections) {
       const sourceNodeId = fromPortId.split('.').slice(0, -1).join('.');
@@ -103,17 +158,12 @@ export class DiagramBuilderV3 {
     // Remove empty lines
       .map(line => line.trim()).filter(Boolean)
     // Remove whitespace and "|"
-      .map(line => {
-        const afterClenup = line.replace(/\s+/g, '')
-        console.log({ afterClenup })
-        return afterClenup
-      })
+      .map(line => line.replace(/\s+/g, ''))
     // Split by arrows of any length
       .map(line => line.split(/-+>/))
     // Ensure two parts or throw
       .map((parts) => {
         const [from, to, rest] = parts
-        console.log({ from, to, rest })
 
         if (!from || !to) throw new Error(`Invalid line connection string: \n${connections}\nCould not resolve from & to parts.`);
         if(rest) throw new Error(`Invalid line connection string: \n${connections}\nToo many parts.`);
@@ -206,7 +256,6 @@ export class DiagramBuilderV3 {
     }
 
     for(const [key, value] of Object.entries(config)) {
-      console.log({ key, value })
       // ****************************************************
       // Special case for label
       // ****************************************************
@@ -225,13 +274,6 @@ export class DiagramBuilderV3 {
 
       let param = node.params.find(p => p.name === key)
       if(!param) throw new Error(`Param ${key} not found`)
-
-      console.log({ param2: structuredClone(param) })
-
-      // if(Array.isArray(value)) {
-      //   param.value = value
-      //   continue
-      // }
 
       if(typeof value === 'object') {
         param = {

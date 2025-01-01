@@ -10,7 +10,7 @@ export default () => {
   const { data: diagram, loading: diagramLoading } = useRequest(async() => {
     console.log('Dhe fuck?')
     await core.boot();
-    const diagram = core.getDiagramBuilderV3()
+    const diagram = core.getDiagramBuilder()
       .add('Signal', { label: 'Read',period: 20, count: 100000 })
       .add('Pass', { label: 'Transform' })
       .add('Sample', { label: 'Filter' })
@@ -39,11 +39,6 @@ export default () => {
         help: 'A message to pass on into the execution.',
       })
     ]
-
-    console.log({
-      xs: diagram.nodes.map(n => n.position!.x),
-      ys: diagram.nodes.map(n => n.position!.y),
-    })
 
     return diagram;
   });

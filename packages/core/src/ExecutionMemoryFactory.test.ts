@@ -1,3 +1,4 @@
+import { c } from 'vite/dist/node/types.d-aGj9QkWt';
 import { ComputerFactory } from './ComputerFactory';
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { InMemoryStorage } from './InMemoryStorage';
@@ -7,10 +8,12 @@ import { ConsoleLog, Create } from './computers'
 import { core } from './core';
 
 describe('create', () => {
-  it('sets empty link items and counts', () => {
-    const diagram = core.getDiagramBuilder()
-      .add(Create)
-      .add(ConsoleLog)
+  it('sets empty link items and counts', async () => {
+    const app = await core.boot()
+    const diagram = app.getDiagramBuilder()
+      .add('Create')
+      .add('ConsoleLog')
+      .connect()
       .get();
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
@@ -31,10 +34,11 @@ describe('create', () => {
     expect(memory.getLinkCount(link.id)).toEqual(0);
   })
 
-  it('sets all nodes to available', () => {
-    const diagram = core.getDiagramBuilder()
-      .add(Create)
-      .add(ConsoleLog)
+  it('sets all nodes to available',async  () => {
+    const app = await core.boot()
+    const diagram = app.getDiagramBuilder()
+      .add('Create')
+      .add('ConsoleLog')
       .get();
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
@@ -54,10 +58,12 @@ describe('create', () => {
     expect(memory.getNodeStatus(secondNode.id)).toEqual('AVAILABLE');
   })
 
-  it('creates input and output devices', () => {
-    const diagram = core.getDiagramBuilder()
-      .add(Create)
-      .add(ConsoleLog)
+  it('creates input and output devices', async () => {
+    const app = await core.boot()
+    const diagram = app.getDiagramBuilder()
+      .add('Create')
+      .add('ConsoleLog')
+      .connect()
       .get();
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
@@ -81,10 +87,11 @@ describe('create', () => {
     expect(memory.outputDevices.get(secondNode.id)).toMatchObject({ push: expect.any(Function)})
   })
 
-  it('sets node runners', () => {
-    const diagram = core.getDiagramBuilder()
-      .add(Create)
-      .add(ConsoleLog)
+  it('sets node runners', async () => {
+    const app = await core.boot()
+    const diagram = app.getDiagramBuilder()
+      .add('Create')
+      .add('ConsoleLog')
       .get();
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()

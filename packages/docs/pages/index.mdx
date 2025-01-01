@@ -32,9 +32,9 @@ We may execute diagrams directly via the UI or in headless/serverless environmen
 ```ts
 // A diagram created programmatically 🤖
 const diagram = core.getDiagramBuilder()
-  .add(Signal)
-  .add(Sleep, { duration: 500 })
-  .add(ConsoleLog)
+  .add('Signal')
+  .add('Sleep', { duration: 500 })
+  .add('ConsoleLog')
   .get()
 
 // Serializable 📦

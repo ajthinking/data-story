@@ -235,26 +235,14 @@ describe('execute', () => {
   })
 
   it('can test diagram executions like this', async () => {
-    const diagram = core.getDiagramBuilder()
-      .add(Signal, { period: 1, count: 10 })
-      .add(Ignore)
+    const app = await core.boot()
+    const diagram = app.getDiagramBuilder()
+      .add('Signal', { period: 1, count: 10 })
+      .add('Ignore')
       .get()
 
     await whenRunning(diagram)
       .expectSuccess()
-      .ok()
-  })
-
-  it.todo('can test failed diagram executions like this', async () => {
-    const diagram = core.getDiagramBuilder()
-      .add(Create)
-      .add(Throw)
-      .get()
-
-    console.log('OK')
-
-    await whenRunning(diagram)
-      .expectFail()
       .ok()
   })
 })

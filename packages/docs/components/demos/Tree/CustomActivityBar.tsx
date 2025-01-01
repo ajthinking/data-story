@@ -9,9 +9,9 @@ export default () => {
   const { Signal, Comment, Ignore } = nodes;
 
   const diagram = core.getDiagramBuilder()
-    .add({ ...Signal, label: 'DataSource' }, { period: 200, count: 100 })
-    .add({ ...Ignore, label: 'Storage' })
-    .above('Signal.1').add(Comment, { content: '### Custom Config Activity Bar 🔥' })
+    .add('Signal', { label: 'DataSource', period: 200, count: 100 })
+    .add('Ignore', { label: 'Storage' })
+    .add('Comment', { content: '### Custom Config Activity Bar 🔥' })
     .get();
   const { app } = useRequestApp();
   const client = new CustomizeJSClient({ diagram: diagram, app });

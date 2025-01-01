@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as demos from './demos';
 
-export function createDemosDirectory() {
+export async function createDemosDirectory() {
   const workspaceFolders = vscode.workspace.workspaceFolders;
   if (!workspaceFolders) {
     vscode.window.showErrorMessage('No workspace folder is open.');
@@ -32,11 +32,11 @@ export function createDemosDirectory() {
       { id: 3, title: 'Profit', completed: false },
     ], null, 2));
 
-    // Loop through each demo imported from the `demos` index file
-    Object.entries(demos).forEach(([moduleName, demoContent]) => {
+    for (const [moduleName, demoFactory] of Object.entries(demos)) {
       const filePath = path.join(demosDir, `${moduleName}.diagram.json`);
-      fs.writeFileSync(filePath, JSON.stringify(demoContent, null, 2));
-    });
+      const demoData = await demoFactory();
+      fs.writeFileSync(filePath, JSON.stringify(demoData, null, 2));
+    }
 
     vscode.window.showInformationMessage('Created DataStory demos directory.');
   } catch (error: any) {

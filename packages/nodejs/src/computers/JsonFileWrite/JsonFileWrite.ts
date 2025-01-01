@@ -36,8 +36,6 @@ export const JsonFileWrite: Computer = {
       ? filePath // Use the absolute path directly
       : path.join(process.env.WORKSPACE_FOLDER_PATH as string, filePath); // Prepend the workspace root for relative paths
 
-    console.log({ fullPath }); // Debug output to check resolved path
-
     try {
       // Create the directory recursively if it doesn't exist
       await fs.mkdir(path.dirname(fullPath), { recursive: true });
