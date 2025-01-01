@@ -58,7 +58,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) =>
             { name: 'Charlie', age: 45 },
           ]),
         })
-        .addNestedNode('FooBarStamper', nestedNode)
+        .add('FooBarStamper')
         .add('Table')
         .connect()
         .place()
