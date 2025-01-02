@@ -3,6 +3,7 @@ import type { Database as DatabaseType} from 'duckdb-async';
 import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
 export class DuckDBStorage implements ObserverStorage {
   private db: DatabaseType | null = null;
+  private insertSequence: bigint = BigInt(0);
 
   constructor() {
     this.initDatabase();
@@ -22,12 +23,12 @@ export class DuckDBStorage implements ObserverStorage {
     
       CREATE TABLE IF NOT EXISTS linkItems (
         linkId TEXT,
+        sequenceNumber BIGINT,
         item JSON,
         createTime TIMESTAMP,
         updateTime TIMESTAMP
       );
-      CREATE INDEX idx_linkId ON linkItems (linkId);
-    
+
       CREATE TABLE IF NOT EXISTS nodes (
         nodeId TEXT PRIMARY KEY,
         status TEXT,
@@ -39,6 +40,14 @@ export class DuckDBStorage implements ObserverStorage {
 
   async close() {
     await this.db?.close();
+  }
+
+  resetSequence() {
+    this.insertSequence = BigInt(0);
+  }
+
+  nextSequenceVal() {
+    return this.insertSequence++;
   }
 
   async getLinkCount(linkId: string): Promise<number | undefined> {
@@ -56,7 +65,7 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
-    const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ? LIMIT ? OFFSET ?', linkId, limit, offset);
+    const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC LIMIT ? OFFSET ?', linkId, limit, offset);
     if (!data || data.length === 0) {
       return undefined;
     }
@@ -65,6 +74,7 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async setLinkItems(linkId: string, items: ItemValue[]): Promise<void> {
+    this.resetSequence();
     await this.db?.all('DELETE FROM linkItems WHERE linkId = ?', linkId);
     await this.appendLinkItems(linkId, items);
   }
@@ -73,8 +83,8 @@ export class DuckDBStorage implements ObserverStorage {
     const currentTime = new Date().toISOString();
     for(const item of items) {
       const data = JSON.stringify(item);
-      await this.db?.all('INSERT INTO linkItems (linkId, item, createTime, updateTime) VALUES (?, ?, ?, ?)',
-        linkId, data, currentTime, currentTime);
+      await this.db?.all('INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime) VALUES (?, ?, ?, ?, ?)',
+        linkId, this.nextSequenceVal(), data, currentTime, currentTime);
     }
   }
 
