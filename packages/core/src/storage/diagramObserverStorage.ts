@@ -48,4 +48,10 @@ export class DiagramObserverStorage implements ObserverStorage {
     this.nodeStatusStorage.set(nodeId, status);
   }
 
+  async close(): Promise<void> {
+    this.linkCountsStorage.clear();
+    this.linkItemsStorage.clear();
+    this.nodeStatusStorage.clear();
+  }
+
 }

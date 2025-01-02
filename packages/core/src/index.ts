@@ -1,4 +1,5 @@
 export { get } from './utils/get'
+export { asArray } from './utils/asArray'
 export { debounce } from './utils/debounce'
 export { sleep } from './utils/sleep'
 export { stringifyError } from './utils/stringifyError'

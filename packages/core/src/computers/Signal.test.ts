@@ -17,7 +17,7 @@ it('outputs items with the template provided', async () => {
     .hasParams({
       period: 1,
       count: 3,
-      expression: '{ identifier: ${i}}'
+      expression: '{ identifier: ${{i}} }'
     })
     .doRun()
     .expectOutput([{identifier: 1}])

@@ -1,17 +1,17 @@
-import { GetLinkItemsParams, ObserverStorage } from '@data-story/core';
+import { GetLinkItemsParams, ItemValue, ObserverStorage } from '@data-story/core';
 import type { Database as DatabaseType} from 'duckdb-async';
+import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
 export class DuckDBStorage implements ObserverStorage {
   private db: DatabaseType | null = null;
-  private dbPath: string;
 
-  constructor(dbPath: string) {
-    this.dbPath = dbPath;
+  constructor() {
     this.initDatabase();
   }
 
   async initDatabase() {
     const { Database } = await import('duckdb-async');
-    this.db = await Database.create(this.dbPath);
+    const dbPath = createDataStoryDBPath();
+    this.db = await Database.create(dbPath);
     await this.db.all(`
       CREATE TABLE IF NOT EXISTS linkCounts (
         linkId TEXT PRIMARY KEY,
@@ -38,9 +38,7 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async close() {
-    if (this.db) {
-      await this.db.close();
-    }
+    await this.db?.close();
   }
 
   async getLinkCount(linkId: string): Promise<number | undefined> {
@@ -57,27 +55,27 @@ export class DuckDBStorage implements ObserverStorage {
       linkId, count, currentTime, currentTime, count, currentTime);
   }
 
-  async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<Record<string, any>[] | undefined> {
+  async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
     const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ? LIMIT ? OFFSET ?', linkId, limit, offset);
     if (!data || data.length === 0) {
       return undefined;
     }
-    const result = data.map(row => JSON.parse(row.item));
+    const result:ItemValue[] = data.map(row => JSON.parse(row.item));
     return result;
   }
 
-  async setLinkItems(linkId: string, items: Record<string, any>[]): Promise<void> {
+  async setLinkItems(linkId: string, items: ItemValue[]): Promise<void> {
     await this.db?.all('DELETE FROM linkItems WHERE linkId = ?', linkId);
     await this.appendLinkItems(linkId, items);
   }
 
-  async appendLinkItems(linkId: string, items: Record<string, any>[]): Promise<void> {
+  async appendLinkItems(linkId: string, items: ItemValue[]): Promise<void> {
     const currentTime = new Date().toISOString();
-    items.forEach(async(item) => {
+    for(const item of items) {
       const data = JSON.stringify(item);
       await this.db?.all('INSERT INTO linkItems (linkId, item, createTime, updateTime) VALUES (?, ?, ?, ?)',
         linkId, data, currentTime, currentTime);
-    });
+    }
   }
 
   async getNodeStatus(nodeId: string): Promise<'BUSY' | 'COMPLETE' | undefined> {

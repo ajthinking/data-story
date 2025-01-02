@@ -11,7 +11,7 @@ import {
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { LinkId } from './types/Link';
-import { GetDataFromStorage } from './types/GetDataFromStorage';
+import { GetDataFromStorage, LinkItems } from './types/GetDataFromStorage';
 import { NodeStatus } from './Executor';
 import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
@@ -57,8 +57,8 @@ export class InputObserverController {
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
   async reportNodeStatus(nodeId: NodeId, status: NodeStatus): Promise<void> {
-    const currentStatus = await this.storage.getNodeStatus(nodeId);
-    if (status === 'AVAILABLE' || currentStatus === status) {
+    const preStatus = await this.storage.getNodeStatus(nodeId);
+    if (status === 'AVAILABLE' || preStatus === status) {
       return;
     }
     this.nodeStatus$.next({nodeId, status});
@@ -69,8 +69,8 @@ export class InputObserverController {
     linkId,
     limit = 100,
     offset = 0
-  }: GetDataFromStorage): Promise<Record<LinkId, ItemValue[]>> {
-    const items: Record<LinkId, ItemValue[]> = {};
+  }: GetDataFromStorage): Promise<LinkItems> {
+    const items: LinkItems = {};
     const currentItems = await this.storage.getLinkItems({linkId, offset, limit}) ?? [];
     items[linkId] = currentItems;
     return items;

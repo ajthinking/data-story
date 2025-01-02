@@ -21,7 +21,7 @@ describe('convertParams', () => {
     expect(signalParams).toEqual({
       period: 50,
       count: 300,
-      expression: '{\n  id: ${i}\n}'
+      expression: '{\n  id: ${{i}}\n}'
     });
   });
 

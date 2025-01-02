@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import { InputObserverController } from '@data-story/core';
+import { DiagramObserverStorage, InputObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
@@ -19,8 +19,8 @@ import { DuckDBStorage } from './duckDBStorage';
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
   public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
-  private inputObserverController: InputObserverController;
-  private duckDBStorage: DuckDBStorage;
+  private inputObserverController!: InputObserverController;
+  private observerStorage!: ObserverStorage;
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new DiagramEditorProvider(context);
@@ -37,14 +37,22 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     );
   }
 
-  dispose(): void {
-    this.duckDBStorage.close();
+  async dispose(): Promise<void> {
+    await this.observerStorage.close();
+  }
+
+  private async init(): Promise<void> {
+    try {
+      this.observerStorage = new DuckDBStorage();
+    } catch (error) {
+      this.observerStorage = new DiagramObserverStorage();
+    }
+
+    this.inputObserverController = new InputObserverController(this.observerStorage);
   }
 
   constructor(private readonly context: vscode.ExtensionContext) {
-    const dbPath = path.join(vscode.workspace.workspaceFolders![0].uri.fsPath, 'diagram.db');
-    this.duckDBStorage = new DuckDBStorage(dbPath);
-    this.inputObserverController = new InputObserverController(this.duckDBStorage);
+    this.init();
   }
 
   async openCustomDocument(

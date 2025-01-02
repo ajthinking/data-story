@@ -2,6 +2,7 @@ import axios from 'axios';
 import { json_, str } from '../Param';
 import { get } from '../utils/get';
 import { Computer } from '../types/Computer';
+import { asArray } from '../utils/asArray';
 
 export const Request: Computer = {
   name: 'Request',
@@ -63,13 +64,15 @@ export const Request: Computer = {
 
       if(method === 'GET') {
         const response = await axios.get(url, config)
-        const items = get(response.data, item_path)
+        const itemables = get(response.data, item_path)
+        const items = asArray(itemables)
         output.pushTo('items', items)
       }
 
       if(method === 'POST') {
         const response = await axios.post(url, body, config)
-        const items = get(response.data, item_path)
+        const itemables = get(response.data, item_path)
+        const items = asArray(itemables)
         output.pushTo('items', items)
       }
 
