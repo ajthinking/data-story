@@ -41,8 +41,8 @@ export class InputObserverController {
   /**
    * When we invoke `reportItems`, it triggers the `notifyObservers` callback and forwards the `items` and `inputObserver` parameters
    */
-  reportItems(memoryObserver: MemoryItemObserver): void {
-    this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
+  async reportItems(memoryObserver: MemoryItemObserver): Promise<void> {
+    await this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
     this.items$.next(memoryObserver);
   }
 
@@ -50,9 +50,9 @@ export class InputObserverController {
     this.storage.setLinkItems(linkId, items);
   }
 
-  reportLinksCount(memoryObserver: MemoryLinksCountObserver): void {
+  async reportLinksCount(memoryObserver: MemoryLinksCountObserver): Promise<void> {
+    await this.storage.setLinkCount(memoryObserver.linkId, memoryObserver.count);
     this.links$.next(memoryObserver);
-    this.storage.setLinkCount(memoryObserver.linkId, memoryObserver.count);
   }
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
