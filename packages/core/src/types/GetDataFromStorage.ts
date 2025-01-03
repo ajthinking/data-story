@@ -1,3 +1,4 @@
+import { ItemValue } from './ItemValue';
 import { LinkId } from './Link';
 
 export type GetDataFromStorage = {
@@ -7,3 +8,5 @@ export type GetDataFromStorage = {
   offset?: number,
   limit?: number,
 }
+
+export type LinkItems = Record<LinkId, ItemValue[]>

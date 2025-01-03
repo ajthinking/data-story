@@ -11,7 +11,7 @@ import {
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { LinkId } from './types/Link';
-import { GetDataFromStorage } from './types/GetDataFromStorage';
+import { GetDataFromStorage, LinkItems } from './types/GetDataFromStorage';
 import { NodeStatus } from './Executor';
 import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
@@ -28,7 +28,7 @@ type MemoryLinksCountObserver = {
   count: number;
 }
 
-const ThrottleMS: number = 100;
+const ThrottleMS: number = 300;
 
 export class InputObserverController {
   private items$ = new Subject<MemoryItemObserver>();
@@ -56,23 +56,19 @@ export class InputObserverController {
   }
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
-  reportNodeStatus(nodeId: NodeId, status: NodeStatus): void {
-    if (status === 'AVAILABLE' || this.storage.getNodeStatus(nodeId) === status) {
-      return;
-    }
+  async reportNodeStatus(nodeId: NodeId, status: NodeStatus): Promise<void> {
+    await this.storage.setNodeStatus(nodeId, status);
     this.nodeStatus$.next({nodeId, status});
-    this.storage.setNodeStatus(nodeId, status);
   }
 
-  getDataFromStorage({
+  async getDataFromStorage({
     linkId,
     limit = 100,
     offset = 0
-  }: GetDataFromStorage): Record<LinkId, ItemValue[]> {
-    const items: Record<LinkId, ItemValue[]> = {};
-    const currentItems = this.storage.getLinkItems(linkId) ?? [];
-    const storageItems = currentItems.slice(offset, offset + limit);
-    items[linkId] = storageItems;
+  }: GetDataFromStorage): Promise<LinkItems> {
+    const items: LinkItems = {};
+    const currentItems = await this.storage.getLinkItems({linkId, offset, limit}) ?? [];
+    items[linkId] = currentItems;
     return items;
   }
 
@@ -84,6 +80,7 @@ export class InputObserverController {
       filter(it=>it.length > 0),
       map(bufferedItems => bufferedItems.flat(1)),
       tap(items => {
+        // console.log('onReceive observeLinkUpdate', observer.linkIds);
         observer.onReceive(observer.linkIds);
       })
     ).subscribe();
@@ -101,6 +98,8 @@ export class InputObserverController {
       filter(it=>it.length > 0),
       map(bufferedItems => bufferedItems.flat(1)),
       tap(items => {
+        // console.log('onReceive addlinkItemsObserver', items);
+
         observer.onReceive(items);
       })
     ).subscribe();
@@ -130,15 +129,15 @@ export class InputObserverController {
       filter(payload => observer.nodeIds.includes(payload.nodeId)),
       bufferTime(observer.throttleMs ?? ThrottleMS),
       filter(it=> it.length > 0),
-      tap(_ => {
-        const nodes = observer.nodeIds.map((nodeId) => {
+      tap(async (_) => {
+        const nodes = await Promise.all(observer.nodeIds.map(async (nodeId) => {
           return {
             nodeId,
-            status: this.storage.getNodeStatus(nodeId)!
+            status: await this.storage.getNodeStatus(nodeId)!
           }
-        })
+        }));
         observer.onReceive({
-          nodes
+          nodes: nodes as {nodeId: NodeId, status: NodeStatus}[]
         });
       })
     ).subscribe();

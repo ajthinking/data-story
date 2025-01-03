@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import { DiagramObserverStorage, InputObserverController } from '@data-story/core';
+import { DiagramObserverStorage, InputObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
@@ -14,11 +14,13 @@ import { observeNodeStatus } from './messageHandlers/observeNodeStatus';
 import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
 import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
+import { DuckDBStorage } from './duckDBStorage';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
   public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
-  private inputObserverController: InputObserverController;
+  private inputObserverController!: InputObserverController;
+  private observerStorage!: ObserverStorage;
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new DiagramEditorProvider(context);
@@ -35,9 +37,22 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     );
   }
 
+  async dispose(): Promise<void> {
+    await this.observerStorage.close();
+  }
+
+  private async init(): Promise<void> {
+    try {
+      this.observerStorage = new DuckDBStorage();
+    } catch (error) {
+      this.observerStorage = new DiagramObserverStorage();
+    }
+
+    this.inputObserverController = new InputObserverController(this.observerStorage);
+  }
+
   constructor(private readonly context: vscode.ExtensionContext) {
-    const storage = new DiagramObserverStorage();
-    this.inputObserverController = new InputObserverController(storage);
+    this.init();
   }
 
   async openCustomDocument(

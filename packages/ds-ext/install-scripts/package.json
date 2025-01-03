@@ -1,0 +1,5 @@
+{
+    "dependencies": {
+      "duckdb-async": "^1.1.3"
+    }
+}
