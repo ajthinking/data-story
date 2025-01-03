@@ -1,13 +1,12 @@
 import { useStore } from '../DataStory/store/store';
 import { StoreSchema } from '../DataStory/types';
 import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
-import { useLatest, useMount, useUnmount } from 'ahooks';
+import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
-import { MutableRefObject, useLayoutEffect, useRef } from 'react';
-import { Subscription } from 'rxjs';
+import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
+import { useHandleConnections } from '@xyflow/react';
 
 const initialScreenCount: number = 15;
-let subscription: Subscription | undefined;
 
 export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
   id: string,
@@ -29,12 +28,13 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
-  const getLinkIds = () => toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
+  const tableInputId = `${id}.input`;
+  const connections = useHandleConnections({ type: 'target', id: tableInputId });
 
   const loadMore = useLatest(async () => {
     if (pendingRequest.current) return;
 
-    const linkIds = getLinkIds();
+    const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
     if (!client?.getDataFromStorage || !linkIds) return;
 
     // Clear offsets if re-running the diagram (no items)
@@ -74,13 +74,12 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     }
   });
 
-  useMount(() => {
-    const linkIds = getLinkIds();
+  useEffect(() => {
+    const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
     if (!client?.observeLinkUpdate || !linkIds) return;
 
-    const observerId = createDataStoryId();
     const tableUpdate: ObserveLinkUpdate = {
-      observerId,
+      observerId: createDataStoryId(),
       linkIds: linkIds,
       type: RequestObserverType.observeLinkUpdate,
       throttleMs: 300,
@@ -91,12 +90,12 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
         }
       }
     }
-    subscription = client?.observeLinkUpdate?.(tableUpdate);
-  });
-
-  useUnmount(() => {
-    subscription?.unsubscribe();
-  });
+    const subscription = client?.observeLinkUpdate?.(tableUpdate);
+    return () => {
+      subscription?.unsubscribe();
+    };
+    // connections.length is 0 means the node is not connected
+  }, [client, connections.length, id, loadMore, toDiagram]);
 
   useLayoutEffect(() => {
     const currentRef = parentRef.current;

@@ -31,6 +31,7 @@ const mountConsoleNodeComponent = (items: unknown[], client?: () => void) => {
         client: client?.() || {
           observeLinkItems: (observer: ObserveLinkItems) => {
             observer.onReceive(items as ItemValue[]);
+            return { unsubscribe:() => cy.spy() };
           }
         }
       })

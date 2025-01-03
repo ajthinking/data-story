@@ -28,7 +28,7 @@ type MemoryLinksCountObserver = {
   count: number;
 }
 
-const ThrottleMS: number = 100;
+const ThrottleMS: number = 300;
 
 export class InputObserverController {
   private items$ = new Subject<MemoryItemObserver>();
@@ -57,12 +57,8 @@ export class InputObserverController {
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
   async reportNodeStatus(nodeId: NodeId, status: NodeStatus): Promise<void> {
-    const preStatus = await this.storage.getNodeStatus(nodeId);
-    if (status === 'AVAILABLE' || preStatus === status) {
-      return;
-    }
+    await this.storage.setNodeStatus(nodeId, status);
     this.nodeStatus$.next({nodeId, status});
-    this.storage.setNodeStatus(nodeId, status);
   }
 
   async getDataFromStorage({
@@ -84,6 +80,7 @@ export class InputObserverController {
       filter(it=>it.length > 0),
       map(bufferedItems => bufferedItems.flat(1)),
       tap(items => {
+        // console.log('onReceive observeLinkUpdate', observer.linkIds);
         observer.onReceive(observer.linkIds);
       })
     ).subscribe();
@@ -101,6 +98,8 @@ export class InputObserverController {
       filter(it=>it.length > 0),
       map(bufferedItems => bufferedItems.flat(1)),
       tap(items => {
+        // console.log('onReceive addlinkItemsObserver', items);
+
         observer.onReceive(items);
       })
     ).subscribe();
