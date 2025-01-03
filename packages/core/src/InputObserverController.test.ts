@@ -1,13 +1,14 @@
 import { InputObserverController}  from './InputObserverController';
-import { describe, expect } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DiagramObserverStorage } from './storage/diagramObserverStorage';
 import { NodeId } from './types/Node';
 import { NodeStatus } from './Executor';
-import { ObserveLinkCounts, ObserveLinkItems, ObserveNodeStatus } from './types/ExecutionObserver';
+import { ObserveLinkCounts, ObserveLinkItems, ObserveLinkUpdate, ObserveNodeStatus } from './types/ExecutionObserver';
 import { RequestObserverType } from './types/InputObserveConfig';
 import { LinkId } from './types/Link';
 import { ItemValue } from './types/ItemValue';
 import { sleep } from './utils/sleep';
+import { LinkItemsParam } from './types/LinkItemsParam';
 
 describe('InputObserverController', () => {
   it('should be defined', () => {
@@ -243,7 +244,6 @@ describe('InputObserverController', () => {
 
     it('should return undefined if link items are not set', async () => {
       const mockStorage = new DiagramObserverStorage();
-      const controller = new InputObserverController(mockStorage);
 
       const items = await mockStorage.getLinkItems({
         linkId: 'linkId', offset: 0, limit: 100
@@ -266,55 +266,59 @@ describe('InputObserverController', () => {
     it('should emit link items', () => {
       const mockStorage = new DiagramObserverStorage();
       const controller = new InputObserverController(mockStorage);
+      const linkItemsParam: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
+        linkId: 'linkId', items: [{value: 1}]};
 
       controller.addLinkItemsObserver({
         observerId: 'observerId',
         linkIds: ['linkId'],
+        throttleMs: 0,
         onReceive: (items) => {
-          console.log('onReceive addlinkItemsObserver', items);
-          expect(items).toEqual([{value: 1}]);
+          expect(items).toEqual([linkItemsParam]);
         }
       } as ObserveLinkItems);
 
-      controller.reportItems({ type: RequestObserverType.observeLinkItems,
-        linkId: 'linkId', items: [{value: 1}]});
+      controller.reportItems(linkItemsParam);
     });
 
-    it('should emit link items with throttle', () => {
+    it('should emit link items with throttle', async () => {
       const mockStorage = new DiagramObserverStorage();
       const controller = new InputObserverController(mockStorage);
+      const linkItemsParam: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
+        linkId: 'linkId', items: [{value: 1}]};
 
       controller.addLinkItemsObserver({
         observerId: 'observerId',
         linkIds: ['linkId'],
-        throttleMs: 100,
+        throttleMs: 10,
         onReceive: (items) => {
-          console.log('onReceive addlinkItemsObserver', items);
-          expect(items).toEqual([{value: 1}]);
+          expect(items).toEqual([linkItemsParam]);
         }
       } as ObserveLinkItems);
 
-      controller.reportItems({ type: RequestObserverType.observeLinkItems,
-        linkId: 'linkId', items: [{value: 1}]});
+      await controller.reportItems(linkItemsParam);
+      await sleep(20);
     });
 
-    it.skip('should emit link items with multiple links', () => {
+    it('should emit link items with multiple links', () => {
       const mockStorage = new DiagramObserverStorage();
       const controller = new InputObserverController(mockStorage);
+      const linkItemsParam1: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
+        linkId: 'linkId1', items: [{value: 1}]};
+      const linkItemsParam2: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
+        linkId: 'linkId2', items: [{value: 2}]};
 
       controller.addLinkItemsObserver({
         observerId: 'observerId',
         linkIds: ['linkId1', 'linkId2'],
+        throttleMs: 0,
         onReceive: (items) => {
-          console.log('onReceive addlinkItemsObserver', items);
-          expect(items).toEqual([{value: 1}, {value: 2}]);
+          expect(items).toEqual([linkItemsParam1, linkItemsParam2]);
         }
       } as ObserveLinkItems);
 
-      controller.reportItems({ type: RequestObserverType.observeLinkItems,
-        linkId: 'linkId1', items: [{value: 1}]});
-      controller.reportItems({ type: RequestObserverType.observeLinkItems,
-        linkId: 'linkId2', items: [{value: 2}]});
+      controller.reportItems(linkItemsParam1);
+      controller.reportItems(linkItemsParam2);
     });
 
     it('should emit link items with async storage', async () => {
@@ -341,7 +345,7 @@ describe('InputObserverController', () => {
         throttleMs: 200,
         onReceive: (items) => {
           console.log('onReceive addlinkItemsObserver', items);
-          expect(items).toEqual([{value: 1}, {value: 2}]);
+          expect(items).toEqual([{ type: RequestObserverType.observeLinkItems, linkId: 'linkId', items: [{value: 1}, {value: 2}]}]);
         }
       } as ObserveLinkItems);
 
@@ -352,4 +356,74 @@ describe('InputObserverController', () => {
       await sleep(100);
     });
   });
+
+  describe('observeLinkUpdate', () => {
+    let observer: ObserveLinkUpdate;
+    let controller: InputObserverController;
+    beforeEach(() => {
+      observer = {
+        linkIds: ['linkId'],
+        onReceive: vi.fn(),
+        type: RequestObserverType.observeLinkUpdate,
+        observerId: 'observerId',
+        throttleMs:0,
+      };
+
+      const mockStorage = new DiagramObserverStorage();
+      controller = new InputObserverController(mockStorage);
+    });
+
+    it('should call onReceive when items are received', async() => {
+      controller.observeLinkUpdate(observer);
+
+      await controller.reportItems({
+        type: RequestObserverType.observeLinkItems,
+        linkId: 'linkId', items: [{value: 1}]});
+      await sleep(1);
+
+      expect(observer.onReceive).toHaveBeenCalledTimes(1);
+      expect(observer.onReceive).toHaveBeenCalledWith(observer.linkIds);
+    });
+
+    it('should not call onReceive when no items are received', async () => {
+      controller.observeLinkUpdate(observer);
+      await sleep(1);
+
+      expect(observer.onReceive).not.toHaveBeenCalled();
+    });
+
+    it('should call onReceive when multiple items are received', async() => {
+      controller.observeLinkUpdate(observer);
+
+      await controller.reportItems({
+        type: RequestObserverType.observeLinkItems,
+        linkId: 'linkId', items: [{value: 1}]});
+      await sleep(1);
+      await controller.reportItems({
+        type: RequestObserverType.observeLinkItems,
+        linkId: 'linkId', items: [{value: 2}]});
+      await sleep(1);
+
+      expect(observer.onReceive).toHaveBeenCalledTimes(2);
+      expect(observer.onReceive).toHaveBeenCalledWith(observer.linkIds);
+    });
+
+    it('should call onReceive when items are received with throttle', async() => {
+      observer.throttleMs = 10;
+      controller.observeLinkUpdate(observer);
+
+      await controller.reportItems({
+        type: RequestObserverType.observeLinkItems,
+        linkId: 'linkId', items: [{value: 1}]});
+      await sleep(1);
+
+      expect(observer.onReceive).toHaveBeenCalledTimes(0);
+
+      await sleep(10);
+      expect(observer.onReceive).toHaveBeenCalledTimes(1);
+      expect(observer.onReceive).toHaveBeenCalledWith(observer.linkIds);
+    });
+  });
+
+  // todo: add test for deleteExecutionObserver and observerMap
 });
