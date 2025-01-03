@@ -10,14 +10,15 @@ import {
   ObserveLinkItems,
   ItemValue,
   LinkCountInfo,
-  ObservelinkCounts,
+  ObserveLinkCounts,
   LinkId,
   NodeDescription,
   ObserveLinkUpdate,
   NodeId,
   NodeStatus,
   ObserveNodeStatus,
-  RequestObserverType
+  RequestObserverType,
+  LinkItemsInfo
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -101,14 +102,14 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
         })
       );
     const itemsSubscription = msg$.subscribe((data) => {
-      const { items, inputObserver } = data as {items: ItemValue[], inputObserver: InputObserveConfig};
+      const { items, inputObserver } = data as {items: LinkItemsInfo[], inputObserver: InputObserveConfig};
       params.onReceive(items, inputObserver);
     });
 
     return itemsSubscription;
   }
 
-  observeLinkCounts(params: ObservelinkCounts): Subscription {
+  observeLinkCounts(params: ObserveLinkCounts): Subscription {
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(

@@ -20,7 +20,7 @@ export interface LinkCountInfo {
   linkId: string;
 }
 
-export type ObservelinkCounts = {
+export type ObserveLinkCounts = {
   type: RequestObserverType.observeLinkCounts,
   linkIds: string[],
   observerId: string,
@@ -59,4 +59,4 @@ export type CancelObservation = {
   msgId?: string
 }
 
-export type ExecutionObserver = ObserveLinkItems | ObservelinkCounts | CancelObservation | ObserveLinkUpdate | ObserveNodeStatus;
+export type ExecutionObserver = ObserveLinkItems | ObserveLinkCounts | CancelObservation | ObserveLinkUpdate | ObserveNodeStatus;

@@ -3,7 +3,7 @@ import { describe, expect } from 'vitest';
 import { DiagramObserverStorage } from './storage/diagramObserverStorage';
 import { NodeId } from './types/Node';
 import { NodeStatus } from './Executor';
-import { ObservelinkCounts, ObserveLinkItems, ObserveNodeStatus } from './types/ExecutionObserver';
+import { ObserveLinkCounts, ObserveLinkItems, ObserveNodeStatus } from './types/ExecutionObserver';
 import { RequestObserverType } from './types/InputObserveConfig';
 import { LinkId } from './types/Link';
 import { ItemValue } from './types/ItemValue';
@@ -164,7 +164,7 @@ describe('InputObserverController', () => {
         onReceive: ({links}) => {
           expect(links).toEqual([linksCountObserver]);
         }
-      } as ObservelinkCounts);
+      } as ObserveLinkCounts);
 
       controller.reportLinksCount(linksCountObserver);
     });
@@ -182,7 +182,7 @@ describe('InputObserverController', () => {
         onReceive: ({links}) => {
           expect(links).toEqual([linksCountObserver]);
         }
-      } as ObservelinkCounts);
+      } as ObserveLinkCounts);
 
       controller.reportLinksCount(linksCountObserver);
     });
@@ -195,16 +195,15 @@ describe('InputObserverController', () => {
         observerId: 'observerId',
         linkIds: ['linkId1', 'linkId2'],
         onReceive: ({links}) => {
-          expect(links).toEqual([{linkId: 'linkId1', count: 10}, {linkId: 'linkId2', count: 20}]);
+          expect(links).toEqual([
+            { type: RequestObserverType.observeLinkCounts, linkId: 'linkId1', count: 10},
+            { type: RequestObserverType.observeLinkCounts, linkId: 'linkId2', count: 20}
+          ]);
         }
-      } as ObservelinkCounts);
+      } as ObserveLinkCounts);
 
-      controller.reportLinksCount({
-        type: RequestObserverType.observeLinkCounts,
-        linkId: 'linkId1', count: 10});
-      controller.reportLinksCount({
-        type: RequestObserverType.observeLinkCounts,
-        linkId: 'linkId2', count: 20});
+      controller.reportLinksCount({ type: RequestObserverType.observeLinkCounts, linkId: 'linkId1', count: 10});
+      controller.reportLinksCount({ type: RequestObserverType.observeLinkCounts, linkId: 'linkId2', count: 20});
     });
 
     it('should emit link count with async storage', async () => {
@@ -231,7 +230,7 @@ describe('InputObserverController', () => {
         onReceive: ({links}) => {
           expect(links).toEqual([linksCountObserver]);
         }
-      } as ObservelinkCounts);
+      } as ObserveLinkCounts);
 
       await controller.reportLinksCount(linksCountObserver);
     });
@@ -268,7 +267,7 @@ describe('InputObserverController', () => {
       const mockStorage = new DiagramObserverStorage();
       const controller = new InputObserverController(mockStorage);
 
-      controller.addlinkItemsObserver({
+      controller.addLinkItemsObserver({
         observerId: 'observerId',
         linkIds: ['linkId'],
         onReceive: (items) => {
@@ -285,7 +284,7 @@ describe('InputObserverController', () => {
       const mockStorage = new DiagramObserverStorage();
       const controller = new InputObserverController(mockStorage);
 
-      controller.addlinkItemsObserver({
+      controller.addLinkItemsObserver({
         observerId: 'observerId',
         linkIds: ['linkId'],
         throttleMs: 100,
@@ -303,7 +302,7 @@ describe('InputObserverController', () => {
       const mockStorage = new DiagramObserverStorage();
       const controller = new InputObserverController(mockStorage);
 
-      controller.addlinkItemsObserver({
+      controller.addLinkItemsObserver({
         observerId: 'observerId',
         linkIds: ['linkId1', 'linkId2'],
         onReceive: (items) => {
@@ -336,7 +335,7 @@ describe('InputObserverController', () => {
 
       const controller = new InputObserverController(mockStorage);
 
-      controller.addlinkItemsObserver({
+      controller.addLinkItemsObserver({
         observerId: 'observerId',
         linkIds: ['linkId'],
         throttleMs: 200,

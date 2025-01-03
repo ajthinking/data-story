@@ -36,15 +36,15 @@ export type observeLinkItems = {
   onReceive: NotifyObserversCallback,
 }
 
-export type ObservelinkCounts = {
-  type: RequestObserverType.ObservelinkCounts,
+export type ObserveLinkCounts = {
+  type: RequestObserverType.ObserveLinkCounts,
   linkIds: string[],
   observerId?: string,
   throttleMs?: number,
   onReceive: (count: number) => void,
 }
 
-export type ExecutionObserver = observeLinkItems | ObservelinkCounts;
+export type ExecutionObserver = observeLinkItems | ObserveLinkCounts;
 ```
 
 ## Demo

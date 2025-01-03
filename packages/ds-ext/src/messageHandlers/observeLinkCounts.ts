@@ -1,6 +1,6 @@
 import { MessageHandler } from '../MessageHandler';
 import {
-  ObservelinkCounts,
+  ObserveLinkCounts,
   RequestObserverType
 } from '@data-story/core';
 
@@ -14,5 +14,5 @@ export const observeLinkCounts: MessageHandler = async({ event, webviewPanel, in
         msgId: event!.msgId,
       });
     }
-  } as ObservelinkCounts);
+  } as ObserveLinkCounts);
 };

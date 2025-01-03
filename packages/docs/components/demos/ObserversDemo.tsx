@@ -4,14 +4,16 @@ import { DataStory } from '@data-story/ui';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
 
-const { Signal, Table } = nodes;
+const { Signal, Table, ConsoleLog } = nodes;
 const diagram = core.getDiagramBuilder()
   .add(Signal, { period: 5, count: 10 })
   .add(Table)
+  .from('Signal.1.output').below('Table.1').add(Table)
   .get();
+
 const linksCountObserver = {
   type: RequestObserverType.observeLinkCounts as const,
-  linkIds: [diagram.links[0]?.id],
+  linkIds: [diagram.links[0]?.id, diagram.links[1]?.id],
   onReceive: (count) => {
     console.log('Link count', count);
   },
@@ -29,7 +31,7 @@ export default () => {
     const observerId = createDataStoryId();
     const observeLinkItems = {
       type: RequestObserverType.observeLinkItems as const,
-      linkIds: [diagram.links[0]?.id],
+      linkIds: [diagram.links[0]?.id, diagram.links[1]?.id],
       onReceive: (items) => {
         console.log('Observer items', items);
       },

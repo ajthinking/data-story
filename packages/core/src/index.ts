@@ -34,7 +34,7 @@ export type { ExecutionFailure } from './types/ExecutionFailure'
 export { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
 export { type InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';
 export type { InputObserver } from './types/InputObserver';
-export type { NotifyObserversCallback } from './types/NotifyObserversCallback';
+export type { NotifyObserversCallback, LinkItemsInfo } from './types/NotifyObserversCallback';
 export type { ReportCallback } from './types/ReportCallback';
 export { json_ } from './Param'
 export { jsonEvaluation } from './Param/evaluations/jsonEvaluation'
@@ -44,7 +44,7 @@ export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluati
 export { numberCast } from './Param/casts/numberCast'
 export { stringCast } from './Param/casts/stringCast'
 export { core } from './core'
-export type { LinkCountInfo, ObservelinkCounts, ExecutionObserver, ObserveLinkItems, ObserveNodeStatus, CancelObservation, ObserveLinkUpdate} from './types/ExecutionObserver'
+export type { LinkCountInfo, ObserveLinkCounts, ExecutionObserver, ObserveLinkItems, ObserveNodeStatus, CancelObservation, ObserveLinkUpdate} from './types/ExecutionObserver'
 export type { GetDataFromStorage } from './types/GetDataFromStorage'
 export * as nodes from './computers'
 export * from './Param'

@@ -3,7 +3,7 @@ import {
   Diagram,
   NodeDescription,
   ObserveLinkItems,
-  ObservelinkCounts,
+  ObserveLinkCounts,
   ObserveLinkUpdate,
   GetDataFromStorage,
   ObserveNodeStatus
@@ -43,7 +43,7 @@ export class CustomizeJSClient implements WorkspaceApiClientImplement {
     return this.jsClient.observeLinkItems(params);
   }
 
-  observeLinkCounts = (params: ObservelinkCounts) => {
+  observeLinkCounts = (params: ObserveLinkCounts) => {
     return this.jsClient.observeLinkCounts(params);
   }
 
