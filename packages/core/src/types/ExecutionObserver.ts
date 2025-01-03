@@ -21,7 +21,7 @@ export interface LinkCountInfo {
 }
 
 export type ObservelinkCounts = {
-  type: RequestObserverType.observelinkCounts,
+  type: RequestObserverType.observeLinkCounts,
   linkIds: string[],
   observerId: string,
   throttleMs?: number,

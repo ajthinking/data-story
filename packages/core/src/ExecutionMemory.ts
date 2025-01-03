@@ -100,7 +100,7 @@ export class ExecutionMemory {
   setLinkCount(linkId: LinkId, count: number) {
     this.inputObserverController?.reportLinksCount({
       linkId,
-      type: RequestObserverType.observelinkCounts,
+      type: RequestObserverType.observeLinkCounts,
       count
     })
 

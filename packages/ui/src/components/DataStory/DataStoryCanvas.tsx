@@ -129,7 +129,7 @@ const Flow = ({
     const subscription = client?.observeLinkCounts?.({
       observerId,
       linkIds: allLinkIds,
-      type: RequestObserverType.observelinkCounts,
+      type: RequestObserverType.observeLinkCounts,
       onReceive: ({ links }) => {
         if (!links || links.length === 0) return;
 

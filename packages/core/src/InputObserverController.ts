@@ -23,7 +23,7 @@ type MemoryItemObserver = {
 }
 
 type MemoryLinksCountObserver = {
-  type: RequestObserverType.observelinkCounts;
+  type: RequestObserverType.observeLinkCounts;
   linkId: string;
   count: number;
 }

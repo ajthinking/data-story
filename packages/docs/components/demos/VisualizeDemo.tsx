@@ -95,7 +95,7 @@ export default () => {
     if(!client?.observeLinkCounts) return;
 
     const linksCountObserver = {
-      type: RequestObserverType.observelinkCounts as const,
+      type: RequestObserverType.observeLinkCounts as const,
       linkIds: [diagram.links[1].id],
       onReceive: (count) => {
         console.log('Link count', count);

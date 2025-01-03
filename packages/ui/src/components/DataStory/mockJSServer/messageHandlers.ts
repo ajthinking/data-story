@@ -60,13 +60,13 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     }
   };
 
-  const observelinkCounts = ({ data, sendEvent }: HandlerParam) => {
+  const observeLinkCounts = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.addLinkCountsObserver({
       ...data as ObservelinkCounts,
       onReceive: ({ links }) => {
         sendEvent({
           links: links,
-          type: RequestObserverType.observelinkCounts
+          type: RequestObserverType.observeLinkCounts
         })
       }
     })
@@ -153,7 +153,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     getNodeDescriptions,
     updateDiagram,
     getDiagram,
-    observelinkCounts,
+    observeLinkCounts,
     observeLinkItems,
     observeLinkUpdate,
     cancelObservation,

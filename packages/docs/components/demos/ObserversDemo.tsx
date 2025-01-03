@@ -10,7 +10,7 @@ const diagram = core.getDiagramBuilder()
   .add(Table)
   .get();
 const linksCountObserver = {
-  type: RequestObserverType.observelinkCounts as const,
+  type: RequestObserverType.observeLinkCounts as const,
   linkIds: [diagram.links[0]?.id],
   onReceive: (count) => {
     console.log('Link count', count);
