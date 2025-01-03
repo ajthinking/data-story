@@ -1,10 +1,11 @@
-import { DiagramBuilder } from '@data-story/core';
-import { nodes as coreNodes } from '@data-story/core';
-import { nodes as nodeJsNodes } from '@data-story/nodejs';
+import { getDemoApp } from '../getDemoApp';
 
-export const create_to_json_file_write = new DiagramBuilder()
-  .add(coreNodes.Create)
-  .add(nodeJsNodes.JsonFileWrite, {
-    file_path: 'demos/output/items.json'
+export const create_to_json_file_write = async () => (await getDemoApp())
+  .getDiagramBuilder()
+  .add('Create')
+  .add('JsonFile.write', {
+    file_path: '.datastory/demos/output/items.json'
   })
+  .connect()
+  .place()
   .get();

@@ -10,9 +10,9 @@ export default () => {
   const { app, loading } = useRequestApp();
 
   const diagram = core.getDiagramBuilder()
-    .add({ ...Signal, label: 'DataSource' }, { period: 200, count: 100 })
-    .add({ ...Ignore, label: 'Storage' })
-    .above('Signal.1').add(Comment, { content: '### Single Diagram 🔥' })
+    .add('Signal', { label: 'DataSource', period: 200, count: 100 })
+    .add('Ignore', { label: 'Storage' })
+    .add('Comment', { content: '### Single Diagram 🔥' })
     .get();
 
   const client = new CustomizeJSClient({ diagram: diagram, app });

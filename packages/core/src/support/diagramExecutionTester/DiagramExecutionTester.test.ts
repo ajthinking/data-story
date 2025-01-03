@@ -4,8 +4,9 @@ import { whenRunning } from './DiagramExecutionTester'
 import { core } from '../../core'
 
 it('can test diagram executions like this', async () => {
-  const diagram = core.getDiagramBuilder()
-    .add(Create)
+  const app = await core.boot()
+  const diagram = app.getDiagramBuilder()
+    .add('Create')
     .get()
 
   await whenRunning(diagram)

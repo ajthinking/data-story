@@ -4,7 +4,7 @@ import { Computer } from './types/Computer';
 /**
  * Ensure all inputs/outputs are Port
  */
-const portableToPort = (portable: PortName | AbstractPort): AbstractPort => {
+export const portableToPort = (portable: PortName | AbstractPort): AbstractPort => {
   return typeof portable === 'string'
     ? ({ name: portable, schema: {} })
     : portable;

@@ -1,95 +1,119 @@
-import { DataStory } from '@data-story/ui'
-import { Application, core, coreNodeProvider, multiline, nodes, str, UnfoldedDiagramFactory, } from '@data-story/core';
+import { useState, useEffect } from 'react';
+import { DataStory } from '@data-story/ui';
+import { multiline, str, UnfoldedDiagramFactory } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
-import useRequest from 'ahooks/lib/useRequest';
+import { useRequestApp } from '../hooks/useRequestApp';
 
-export default ({ part }: {part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED'}) => {
-  const { Create, Table, Input, Map, Output, ConsoleLog } = nodes;
+export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) => {
+  const { app: bootedApp, loading: isBooting } = useRequestApp();
+  const [clients, setClients] = useState<{
+    mainClient?: CustomizeJSClient;
+    mainUnfoldedClient?: CustomizeJSClient;
+    nestedNodeClient?: CustomizeJSClient;
+  }>({});
 
-  // *************************************
-  // Make a nested node
-  // *************************************
-  const nestedNode = core.getDiagramBuilder()
-    .withParams([
-      str({
-        name: 'stamp',
-        value: 'foo'
-      }
-      )
-    ])
-    .add(nodes.Input, { port_name: 'input' })
-    .add(nodes.Map, {
-      mapper: multiline`
-        item => ({
-          foo: 'bar',
-          global_param_access: 'The foo stamp was >>>@{stamp}<<<',
-        })`
-    })
-    .add(nodes.Output, { port_name: 'stamped' })
-    .get()
+  useEffect(() => {
+    if (!bootedApp || isBooting) return;
 
-  // *************************************
-  // Make app, register nested node
-  // *************************************
+    const initializeClients = async () => {
+      // *************************************
+      // Make a nested node
+      // *************************************
+      const nestedNode = bootedApp
+        .getDiagramBuilder()
+        .withParams([
+          str({
+            name: 'stamp',
+            value: 'foo',
+          }),
+        ])
+        .add('Input', { port_name: 'input' })
+        .add('Map', {
+          mapper: multiline`
+            item => ({
+              foo: 'bar',
+              global_param_access: 'The foo stamp was >>>@{stamp}<<<',
+            })`,
+        })
+        .add('Output', { port_name: 'stamped' })
+        .connect()
+        .place()
+        .get();
 
-  const { data: app, loading } = useRequest(async() => {
-    let app = new Application();
-    app.register(coreNodeProvider);
-    app.addNestedNode('FooBarStamper', nestedNode);
-    app = await app.boot();
-    return app;
-  });
+      // *************************************
+      // Make app, register nested node
+      // *************************************
+      bootedApp.addNestedNode('FooBarStamper', nestedNode);
 
-  // *************************************
-  // Build main diagram, use the nested node
-  // *************************************
-  const diagram = core.getDiagramBuilder()
-    .add({ ...Create, label: 'Users' }, {
-      data: JSON.stringify([
-        { name: 'Alice', age: 23 },
-        { name: 'Bob', age: 34 },
-        { name: 'Charlie', age: 45 },
-      ])
-    })
-    .addNestedNode('FooBarStamper', nestedNode)
-    .add(Table)
-    .get()
+      // *************************************
+      // Build main diagram, use the nested node
+      // *************************************
+      const diagram = bootedApp
+        .getDiagramBuilder()
+        .add('Create', {
+          label: 'Users',
+          data: JSON.stringify([
+            { name: 'Alice', age: 23 },
+            { name: 'Bob', age: 34 },
+            { name: 'Charlie', age: 45 },
+          ]),
+        })
+        .add('FooBarStamper')
+        .add('Table')
+        .connect()
+        .place()
+        .get();
 
-  // *************************************
-  // Unfold diagram (for visualization purposes)
-  // *************************************
-  const nestedNodes = {
-    'FooBarStamper': nestedNode,
-  }
+      // *************************************
+      // Unfold diagram (for visualization purposes)
+      // *************************************
+      const nestedNodes = {
+        FooBarStamper: nestedNode,
+      };
 
-  const unfolded = new UnfoldedDiagramFactory(
-    diagram.clone(),
-    nestedNodes
-  ).unfold();
+      const unfolded = new UnfoldedDiagramFactory(diagram.clone(), nestedNodes).unfold();
 
-  const mainClient = new CustomizeJSClient({ diagram: diagram, app: app });
-  const mainUnfoldedClient = new CustomizeJSClient({ diagram: unfolded.diagram, app: app });
-  const nestedNodeClient = new CustomizeJSClient({ diagram: nestedNode, app: app });
+      console.log({
+        msg: 'Main Client Diagram',
+        diagram,
+      })
 
-  if (loading || !mainClient) return null;
+      // Create clients
+      const mainClient = new CustomizeJSClient({ diagram, app: bootedApp });
+      const mainUnfoldedClient = new CustomizeJSClient({ diagram: unfolded.diagram, app: bootedApp });
+      const nestedNodeClient = new CustomizeJSClient({ diagram: nestedNode, app: bootedApp });
+
+      // Update state
+      setClients({
+        mainClient,
+        mainUnfoldedClient,
+        nestedNodeClient,
+      });
+    };
+
+    initializeClients();
+  }, [bootedApp, isBooting]);
+
+  if (isBooting || !clients.mainClient) return null;
+
   // *************************************
   // Render requested part
   // *************************************
   return (
     <div className="w-full h-1/4">
-      {part === 'MAIN' && <DataStory
-        hideControls={['save']}
-        onInitialize={({ run }) => run()}
-        client={mainClient}
-      />}
-      {part === 'NESTED_NODE' && <DataStory
-        hideControls={['save']}
-        client={nestedNodeClient}
-      />}
-      {part === 'MAIN_UNFOLDED' && <DataStory
-        hideControls={['save']}
-        client={mainUnfoldedClient}
-      />}
+      {part === 'MAIN' && (
+        <DataStory
+          hideControls={['save']}
+          onInitialize={({ run }) => run()}
+          client={clients.mainClient}
+        />
+      )}
+      {part === 'NESTED_NODE' && (
+        <DataStory hideControls={['save']} client={clients.nestedNodeClient} />
+      )}
+      {part === 'MAIN_UNFOLDED' && (
+        <DataStory hideControls={['save']} client={clients.mainUnfoldedClient} />
+      )}
     </div>
   );
 };
