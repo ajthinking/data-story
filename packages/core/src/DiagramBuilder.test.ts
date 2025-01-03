@@ -1,4 +1,3 @@
-import { Ignore, Create, Pass, Signal } from './computers';
 import { core } from './core';
 import { Diagram } from './Diagram';
 

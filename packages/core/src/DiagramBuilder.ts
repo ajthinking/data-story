@@ -1,85 +1,70 @@
-import { ComputerFactory } from './ComputerFactory';
 import { Diagram } from './Diagram';
-import { Node, NodeId } from './types/Node';
-import { Link } from './types/Link';
-import { PositionGuesser } from './PositionGuesser';
-import { AbstractPort, Port, PortName } from './types/Port';
-import { Fake } from './computers/Fake';
-import { createDataStoryId } from './utils/createDataStoryId';
-import { Param, StringableInputValue } from './Param';
-import { isStringableParam } from './utils/isStringableParam';
+import { Param, ParamValue, StringableInputValue } from './Param';
 import { Computer } from './types/Computer';
+import { Node } from './types/Node';
+import { NodeDescription } from './types/NodeDescription';
+import { isStringableParam } from './utils/isStringableParam';
+
+// type ParamConfig = Record<string, ParamValue> | Partial<Param>
+type ParamConfig = {
+  [paramName: string]: (
+    | ParamValue
+    | Partial<Param>
+    | Record<string, ParamValue & Partial<Param>>
+    | any // TODO ¯\_(ツ)_/¯
+  )
+}
+type AddNodeConfig =
+  undefined
+  | Omit<Partial<Computer>, 'params'> | ParamConfig
 
 export class DiagramBuilder {
-  diagram: Diagram
-  previousNode: Node | null = null
-  fromDirective: PortName | null = null
-  toDirective: PortName | null = null
-  aboveDirective: NodeId | null = null
-  belowDirective: NodeId | null = null
+  private diagram = new Diagram()
 
-  constructor() {
-    this.diagram = new Diagram()
-  }
+  constructor(private nodeDescriptions: NodeDescription[]) {}
 
-  from(directive: string) {
-    this.fromDirective = directive
+  add(nodeName: string, config?: AddNodeConfig) {
+    const description = this.nodeDescriptions.find(e => e.name === nodeName)
+
+    if (!description) throw new Error(`Description for a Node ${nodeName} not found`)
+
+    this.addNodeFromDescription(description, config)
+
     return this
   }
 
-  above(directive: string) {
-    this.aboveDirective = directive
-    return this;
-  }
-
-  below(directive: string) {
-    this.belowDirective = directive
-    return this;
-  }
-
-  on(directive: string) {
-    return this.from(directive)
-  }
-
-  to(directive: string) {
-    this.toDirective = directive
-    return this
-  }
-
-  add(
-    config: Computer,
-    params: Record<string, any> = {},
-    ports?: {
-      inputs?: AbstractPort[],
-      outputs?: AbstractPort[],
-    }
-  ) {
-    // The computer config might be partial
-    // so we are resolving it to a full computer
-    const computer = new ComputerFactory().getInstance(config)
-
-    const nodeId = `${computer.name}.${this.getScopedId(computer.name)}`
+  addNestedNode(name: string, diagram: Diagram, params: Record<string, any> = {}) {
+    const nodeId = `${name}.${this.getScopedId(name)}`
 
     const node: Node = {
       id: nodeId,
-      label: computer.label,
-      type: computer.name,
+      label: name,
+      type: name,
       // The inputs have not yet been assigned ids, to it here
-      inputs: (ports?.inputs ?? computer.inputs ?? []).map(input => {
+      inputs: diagram.inputNodes().map(inputNode => {
+        const param = inputNode.params.find(param => param.name === 'port_name');
+        const inputName = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value as string
+
         return {
-          ...input,
-          id: `${nodeId}.${input.name}`,
+          name: inputName,
+          id: `${nodeId}.${inputName}`,
+          schema: {},
         }
       }),
       // The outputs have not yet been assigned ids, to it here
-      outputs: (ports?.outputs ?? computer.outputs ?? []).map(output => {
+      outputs: diagram.outputNodes().map(outputNode => {
+        const param = outputNode.params.find(param => param.name === 'port_name');
+        const outputName = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value as string
+
         return {
-          ...output,
-          id: `${nodeId}.${output.name}`,
+          name: outputName,
+          id: `${nodeId}.${outputName}`,
+          schema: {},
         }
       }),
       // default params
-      params: computer.params,
+      params: diagram.params,
+      position: { x: 0, y: 0 },
     }
 
     // set explicit params
@@ -91,52 +76,134 @@ export class DiagramBuilder {
       param.value = isStringableParam(param.type) ? { ...(param.value as StringableInputValue ?? {}), value } : value;
     }
 
-    if(this.aboveDirective) {
-      const aboveNode = this.diagram.nodes.find(node => node.id === this.aboveDirective)
-
-      if(!aboveNode) throw new Error(`Bad above directive: ${this.aboveDirective}. Node not found`)
-
-      node.position = {
-        x: aboveNode.position!.x,
-        y: aboveNode.position!.y - 200,
-      }
-    } else if(this.belowDirective) {
-      const belowNode = this.diagram.nodes.find(node => node.id === this.belowDirective)
-
-      if(!belowNode) throw new Error(`Bad below directive: ${this.belowDirective}. Node not found`)
-
-      node.position = {
-        x: belowNode.position!.x,
-        y: belowNode.position!.y + 100,
-      }
-    } else {
-      node.position = new PositionGuesser(
-        this.diagram
-      ).guess(node)
-    }
-
     this.diagram.nodes.push(node)
-
-    this.linkToNewNode(node)
-
-    this.previousNode = node
-
-    this.fromDirective = null
-
-    this.aboveDirective = null
-    this.belowDirective = null
 
     return this
   }
 
-  link(from: string, to: string) {
-    const link: Link = {
-      id: createDataStoryId(),
-      sourcePortId: from,
-      targetPortId: to,
+  place() {
+    // Configuration for layout, adjust as needed
+    const nodeWidth = 150;
+    const nodeHeight = 100;
+    const padding = 50;
+
+    // Determine grid layout
+    let x = padding;
+    let y = padding;
+
+    this.diagram.nodes.forEach((node, index) => {
+      // Place the node in a grid-like structure
+      node.position!.x = node.position!.x ? node.position!.x : x;
+      node.position!.y = node.position!.y ? node.position!.y : y;
+
+      // Move to the next column
+      x += nodeWidth + padding;
+
+      // Wrap to the next row if necessary
+      if ((index + 1) % 5 === 0) { // 5 nodes per row, adjust as needed
+        x = padding;
+        y += nodeHeight + padding;
+      }
+    });
+
+    return this;
+  }
+
+  connect(connections? : string | [fromPortId: string, toPortId: string][]) {
+    if(!connections) return this.guessConnections()
+    if(typeof connections === 'string') return this.connectByString(connections)
+
+    return this.connectByArray(connections)
+  }
+
+  withParams(params: Param[]) {
+    this.diagram.params = params
+
+    return this
+  }
+
+  connectByArray(connections: [fromPortId: string, toPortId: string][]) {
+    for(const [fromPortId, toPortId] of connections) {
+      const sourceNodeId = fromPortId.split('.').slice(0, -1).join('.');
+      const targetNodeId = toPortId.split('.').slice(0, -1).join('.');
+
+      const sourceNode = this.diagram.nodes.find(n => n.id === sourceNodeId)
+      const targetNode = this.diagram.nodes.find(n => n.id === targetNodeId)
+
+      if(!sourceNode) throw new Error(`Source node with id ${sourceNodeId} not found`)
+      if(!targetNode) throw new Error(`Target node with id ${targetNodeId} not found`)
+
+      const sourcePort = sourceNode.outputs.find(o => o.id === fromPortId)
+      const targetPort = targetNode.inputs.find(i => i.id === toPortId)
+
+      if(!sourcePort) throw new Error(`Source port with id ${fromPortId} not found`)
+      if(!targetPort) throw new Error(`Target port with id ${toPortId} not found`)
+
+      const link = {
+        id: `${sourceNode.id}--->${targetNode.id}`,
+        sourcePortId: fromPortId,
+        targetPortId: toPortId,
+      }
+
+      this.diagram.links.push(link)
     }
 
-    this.diagram.links.push(link)
+    return this
+  }
+
+  connectByString(connections: string) {
+    const parsed: [from: string, to: string][] = connections
+    // Process line by line
+      .split('\n')
+    // Remove empty lines
+      .map(line => line.trim()).filter(Boolean)
+    // Remove whitespace and "|"
+      .map(line => line.replace(/\s+/g, ''))
+    // Split by arrows of any length
+      .map(line => line.split(/-+>/))
+    // Ensure two parts or throw
+      .map((parts) => {
+        const [from, to, rest] = parts
+
+        if (!from || !to) throw new Error(`Invalid line connection string: \n${connections}\nCould not resolve from & to parts.`);
+        if(rest) throw new Error(`Invalid line connection string: \n${connections}\nToo many parts.`);
+
+        return [from, to]
+      })
+    // Ensure correct format
+      .map(([from, to]) => {
+        const fromParts = from.split('.')
+        const toParts = to.split('.')
+
+        if(fromParts.length !== 3) throw new Error(`Invalid line connection string: \n${connections}. Use format: <NodeName>.<Count>.<PortName>.`);
+        if(toParts.length !== 3) throw new Error(`Invalid line connection string: \n${connections}. Use format: <NodeName>.<Count>.<PortName>.`);
+
+        return [from, to]
+      })
+
+    return this.connectByArray(parsed)
+  }
+
+  guessConnections() {
+    for (let i = 0; i < this.diagram.nodes.length - 1; i++) {
+      const current = this.diagram.nodes[i]
+      const next = this.diagram.nodes[i + 1]
+
+      if (current.outputs.length === 0 || next.inputs.length === 0) {
+        continue
+      }
+
+      const firstOutput = current.outputs[0]
+      const firstInput = next.inputs[0]
+
+      const link = {
+        id: `${current.id}--->${next.id}`,
+        sourcePortId: firstOutput.id,
+        targetPortId: firstInput.id,
+      }
+
+      this.diagram.links.push(link)
+    }
 
     return this
   }
@@ -150,132 +217,90 @@ export class DiagramBuilder {
     return this
   }
 
-  linkByLabel(fromLabelDotOutput: string, toLabelDotInput: string) {
-    const fromNode = this.diagram.nodes.find(node => node.label === fromLabelDotOutput.split('.')[0])
-    const toNode = this.diagram.nodes.find(node => node.label === toLabelDotInput.split('.')[0])
-
-    if(!fromNode) throw new Error(`Bad from label: ${fromLabelDotOutput}. Node not found`)
-    if(!toNode) throw new Error(`Bad to label: ${toLabelDotInput}. Node not found`)
-
-    const fromPort = fromNode.outputs.find(output => output.name === fromLabelDotOutput.split('.')[1])
-    const toPort = toNode.inputs.find(input => input.name === toLabelDotInput.split('.')[1])
-
-    if(!fromPort) throw new Error(`Bad from label: ${fromLabelDotOutput}. Port not found`)
-    if(!toPort) throw new Error(`Bad to label: ${toLabelDotInput}. Port not found`)
-
-    return this.link(fromPort.id!, toPort.id!)
-  }
-
-  addFake({
-    label,
-    inputs = [],
-    outputs = [],
-
-  }: {
-    label: string,
-    inputs?: string[],
-    outputs?: string[],
-  }) {
-    return this.add({
-      ...Fake,
-      label,
-      inputs: inputs.map((name) => ({ name, schema: { type: 'object' } })),
-      outputs: outputs.map((name) => ({ name, schema: { type: 'object' } })),
-    })
-  }
-
-  withParams(params: Param[]) {
-    this.diagram.params = params
-
-    return this
-  }
-
-  get() {
+  get(): Diagram {
     return this.diagram
   }
 
-  protected getScopedId(computerName: string) {
+  private nodeDescriptionToDiagramNode(nodeDescription: NodeDescription): Node {
+    const id = `${nodeDescription.name}.${this.getScopedId(nodeDescription.name)}`;
+
+    return structuredClone({
+      id,
+      type: nodeDescription.name,
+      label: nodeDescription.label,
+      inputs: nodeDescription.inputs.map(input => {
+        return {
+          id: `${id}.${input.name}`,
+          name: input.name,
+          schema: input.schema,
+        }
+      }),
+      outputs: nodeDescription.outputs.map(output => {
+        return {
+          id: `${id}.${output.name}`,
+          name: output.name,
+          schema: output.schema,
+        }
+      }),
+      params: nodeDescription.params || [],
+      position: { x: 0, y: 0 },
+    })
+  }
+
+  private addNodeFromDescription(nodeDescription: NodeDescription, config: AddNodeConfig) {
+    const node = this.nodeDescriptionToDiagramNode(nodeDescription)
+
+    if(!config) {
+      this.diagram.nodes.push(node)
+      return this
+    }
+
+    for(const [key, value] of Object.entries(config)) {
+      // ****************************************************
+      // Special case for label
+      // ****************************************************
+      if(key === 'label') {
+        node.label = value
+        continue
+      }
+
+      // ****************************************************
+      // Special case for position
+      // ****************************************************
+      if(key === 'position') {
+        node.position = value
+        continue
+      }
+
+      let param = node.params.find(p => p.name === key)
+      if(!param) throw new Error(`Param ${key} not found`)
+
+      if(typeof value === 'object') {
+        param = {
+          ...param,
+          value: {
+            ...(param.value as Object),
+            ...value
+          }
+        }
+        continue
+      }
+
+      // Default
+      (param.value as StringableInputValue).value = value
+    }
+
+    this.diagram.nodes.push(node)
+  }
+
+  protected getScopedId(nodeName: string) {
     const max = this.diagram.nodes
-      .filter(node => node.type === computerName)
+      .filter(node => node.type === nodeName)
       .map(node => node.id)
       .map(id => id.split('.')[1])
       .map(id => parseInt(id))
       .reduce((max, id) => Math.max(max, id), 0)
 
     return max + 1
-  }
-
-  protected linkToNewNode(newNode: Node) {
-    const originPort = this.getPortToLinkTo()
-
-    const newNodePort = this.toDirective
-      ? newNode.inputs.find(input => input.name === this.toDirective)
-      : newNode.inputs.at(0);
-
-    if(!originPort || !newNodePort) return
-
-    const link: Link = {
-      id: createDataStoryId(),
-      sourcePortId: originPort.id!,
-      targetPortId: newNodePort.id!,
-    }
-
-    this.diagram.links.push(link)
-  }
-
-  protected getPortToLinkTo(): Port | undefined {
-    if(!this.previousNode) return
-
-    // 1. Default: First port on the most recent node
-    if(!this.fromDirective) {
-      return this.previousNode.outputs.at(0)
-    }
-
-    // 2. A specified port on the most recent node
-    if(
-      // Is a port name
-      typeof this.fromDirective === 'string'
-      // Is not in format "node.port"
-      && !this.fromDirective.includes('.')
-    ) {
-      const port = this.previousNode.outputs.find(
-        output => output.name === this.fromDirective
-      )
-
-      if(!port) throw new Error(`Bad on directive: ${this.fromDirective}. Port not found on ${this.previousNode.id}`)
-
-      return port
-    }
-
-    // 3. A specified port on a specified node
-    if(
-      // Is a port name
-      typeof this.fromDirective === 'string'
-      // Is not in format "node.port"
-      && this.fromDirective.includes('.')
-    ) {
-      const parts = this.fromDirective.split('.')
-
-      // Node counter may be omitted - assume 1
-      const [nodeType, nodeId, portName] = parts.length === 3
-        ? parts
-        : [parts.at(0), 1, parts.at(1)]
-
-      const origin = this.diagram.nodes.find(
-        node => node.id === `${nodeType}.${nodeId}`
-      )
-      if(!origin) throw new Error(`Bad on directive: ${this.fromDirective}. Could not find origin node`)
-
-      const port = origin?.outputs.find(
-        output => output.name === portName
-      )
-
-      if(!port) throw new Error(`Bad on directive: ${this.fromDirective}. Could not find origin port`)
-
-      return port
-    }
-
-    // No port found
-    return undefined
   }
 }
