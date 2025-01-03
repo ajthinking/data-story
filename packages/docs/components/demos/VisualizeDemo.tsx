@@ -79,9 +79,10 @@ export default () => {
       linkIds: [diagram.links[1].id],
       type: RequestObserverType.observeLinkItems,
       onReceive: (items) => {
+        const latestPoints = items[0].items;
         setPoints([
           ...points,
-          ...items,
+          ...latestPoints,
         ].slice(-100));
       },
       observerId

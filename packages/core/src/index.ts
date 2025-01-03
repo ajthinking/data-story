@@ -34,7 +34,7 @@ export type { ExecutionFailure } from './types/ExecutionFailure'
 export { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
 export { type InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';
 export type { InputObserver } from './types/InputObserver';
-export type { NotifyObserversCallback, LinkItemsInfo } from './types/NotifyObserversCallback';
+export type { NotifyObserversCallback } from './types/NotifyObserversCallback';
 export type { ReportCallback } from './types/ReportCallback';
 export { json_ } from './Param'
 export { jsonEvaluation } from './Param/evaluations/jsonEvaluation'
@@ -54,3 +54,5 @@ export type { NodeId } from './types/Node';
 export type { NodeStatus } from './Executor';
 export type { ObserverStorage, GetLinkItemsParams } from './types/ObserverStorage'
 export { DiagramObserverStorage } from './storage/diagramObserverStorage'
+export type { LinkItemsParam } from './types/LinkItemsParam'
+export type { LinksCountParam } from './types/LinksCountParam'

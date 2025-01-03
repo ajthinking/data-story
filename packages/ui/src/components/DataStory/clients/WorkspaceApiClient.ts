@@ -18,7 +18,7 @@ import {
   NodeStatus,
   ObserveNodeStatus,
   RequestObserverType,
-  LinkItemsInfo
+  LinkItemsParam
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -102,7 +102,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
         })
       );
     const itemsSubscription = msg$.subscribe((data) => {
-      const { items, inputObserver } = data as {items: LinkItemsInfo[], inputObserver: InputObserveConfig};
+      const { items, inputObserver } = data as {items: LinkItemsParam[], inputObserver: InputObserveConfig};
       params.onReceive(items, inputObserver);
     });
 
