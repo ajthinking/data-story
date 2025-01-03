@@ -1,9 +1,11 @@
-import { core } from '@data-story/core';
+import { getDemoApp } from '../getDemoApp';
 
-export const create_to_json_file_write = async () => (await core.boot())
+export const create_to_json_file_write = async () => (await getDemoApp())
   .getDiagramBuilder()
   .add('Create')
-  .add('JsonFileWrite', {
-    file_path: 'demos/output/items.json'
+  .add('JsonFile.write', {
+    file_path: '.datastory/demos/output/items.json'
   })
+  .connect()
+  .place()
   .get();
