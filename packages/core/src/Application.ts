@@ -1,5 +1,4 @@
 import { Diagram } from './Diagram';
-import { DiagramBuilder } from './DiagramBuilder';
 import { DiagramBuilderV3 } from './DiagramBuilderV3';
 import { ExecutorFactory } from './ExecutorFactory';
 import { InputObserverController } from './InputObserverController';
@@ -67,10 +66,6 @@ export class Application {
     return new DiagramBuilderV3(
       this.descriptions()
     );
-  }
-
-  getDiagramBuilderLegacy() {
-    return new DiagramBuilder();
   }
 
   getExecutor({ diagram, storage, inputObserverController}: {
