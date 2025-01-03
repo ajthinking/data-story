@@ -1,5 +1,5 @@
 import { Diagram } from './Diagram';
-import { DiagramBuilderV3 } from './DiagramBuilderV3';
+import { DiagramBuilder } from './DiagramBuilder';
 import { ExecutorFactory } from './ExecutorFactory';
 import { InputObserverController } from './InputObserverController';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
@@ -63,7 +63,7 @@ export class Application {
   }
 
   getDiagramBuilder() {
-    return new DiagramBuilderV3(
+    return new DiagramBuilder(
       this.descriptions()
     );
   }

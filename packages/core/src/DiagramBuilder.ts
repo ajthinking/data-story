@@ -18,7 +18,7 @@ type AddNodeConfig =
   undefined
   | Omit<Partial<Computer>, 'params'> | ParamConfig
 
-export class DiagramBuilderV3 {
+export class DiagramBuilder {
   private diagram = new Diagram()
 
   constructor(private nodeDescriptions: NodeDescription[]) {}

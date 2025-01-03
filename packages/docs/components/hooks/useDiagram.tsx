@@ -1,7 +1,7 @@
-import { Application, coreNodeProvider, Diagram, DiagramBuilderV3, remoteNodeProvider, sleep } from '@data-story/core';
+import { Application, coreNodeProvider, Diagram, DiagramBuilder, remoteNodeProvider, sleep } from '@data-story/core';
 import useRequest from 'ahooks/lib/useRequest';
 
-export function useDiagram(diagramFactory: (builder: DiagramBuilderV3) => Diagram): {
+export function useDiagram(diagramFactory: (builder: DiagramBuilder) => Diagram): {
   app: Application;
   diagram: Diagram;
   loading: boolean;
@@ -25,7 +25,7 @@ export function useDiagram(diagramFactory: (builder: DiagramBuilderV3) => Diagra
   return { ...data, loading, error };
 }
 
-export function useDiagrams(diagramFactories: ((builder: DiagramBuilderV3) => Diagram)[]): {
+export function useDiagrams(diagramFactories: ((builder: DiagramBuilder) => Diagram)[]): {
   app: Application;
   diagrams: Diagram[];
   loading: boolean;
