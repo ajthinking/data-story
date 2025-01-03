@@ -15,6 +15,7 @@ import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
 import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
 import { DuckDBStorage } from './duckDBStorage';
+import { FileStorage } from './fileStorage';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
@@ -44,6 +45,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private async init(): Promise<void> {
     try {
       this.observerStorage = new DuckDBStorage();
+      // this.observerStorage = new FileStorage();
     } catch (error) {
       this.observerStorage = new DiagramObserverStorage();
     }
