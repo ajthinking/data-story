@@ -1,5 +1,5 @@
-import { core } from '@data-story/core';
+import { getDemoApp } from '../getDemoApp';
 
-export const empty = async () => (await core.boot())
+export const empty = async () => (await getDemoApp())
   .getDiagramBuilder()
   .get();

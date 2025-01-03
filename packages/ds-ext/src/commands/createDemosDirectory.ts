@@ -11,7 +11,7 @@ export async function createDemosDirectory() {
   }
 
   const workspaceRoot = workspaceFolders[0].uri.fsPath;
-  const demosDir = path.join(workspaceRoot, 'demos');
+  const demosDir = path.join(workspaceRoot, '.datastory/demos');
 
   try {
     // Nuke directory if it already exists
@@ -20,7 +20,7 @@ export async function createDemosDirectory() {
     }
 
     // Create the directory
-    fs.mkdirSync(demosDir);
+    fs.mkdirSync(demosDir, { recursive: true });
 
     // Create a demo data directory
     fs.mkdirSync(path.join(demosDir, 'data'));
