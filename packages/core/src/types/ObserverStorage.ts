@@ -26,5 +26,7 @@ export interface ObserverStorage {
   getNodeStatus(nodeId: NodeId): Promise<NodeStatus | undefined>;
   setNodeStatus(nodeId: NodeId, status: NodeStatus): Promise<void>;
 
+  // create optional init method
+  init?(): Promise<void>;
   close(): Promise<void>;
 }
