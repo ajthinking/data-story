@@ -1,7 +1,9 @@
-import { DiagramBuilder } from '@data-story/core';
-import { nodes } from '@data-story/core';
+import { getDemoApp } from '../getDemoApp';
 
-export const signal_to_table = new DiagramBuilder()
-  .add(nodes.Signal)
-  .add(nodes.Table)
+export const signal_to_table = async () => (await getDemoApp())
+  .getDiagramBuilder()
+  .add('Signal')
+  .add('Table')
+  .connect()
+  .place()
   .get();

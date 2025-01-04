@@ -20,9 +20,9 @@ export default () => {
   const { Signal, Comment, Ignore } = nodes;
 
   const diagram = core.getDiagramBuilder()
-    .add({ ...Signal, label: 'DataSource' }, { period: 200, count: 100 })
-    .add({ ...Ignore, label: 'Storage' })
-    .above('Signal.1').add(Comment, { content: '### Add Node Description 🔥' })
+    .add('Signal', { label: 'DataSource', period: 200, count: 100 })
+    .add('Ignore', { label: 'Storage' })
+    .add('Comment', { content: '### Add Node Description 🔥' })
     .get();
 
   const client = useMemo(() => {

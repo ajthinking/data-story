@@ -10,8 +10,18 @@ export default () => {
 
   const { data: diagram, loading: diagramLoading } = useRequest(async() => {
     await core.boot();
-    const diagram = core.getDiagramBuilderV3()
+    const diagram = core.getDiagramBuilder()
       .add('Create')
+      .add('Sample')
+      .add('Table')
+      .add('Table')
+      .connect(`
+        Create.1.output ---> Sample.1.input
+        Sample.1.sampled ---> Table.1.input
+        Sample.1.not_sampled ---> Table.2.input
+      `)
+      .place()
+      .jiggle()
       .get()
 
     diagram.params = [

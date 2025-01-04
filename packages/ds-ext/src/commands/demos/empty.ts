@@ -1,3 +1,5 @@
-import { DiagramBuilder } from '@data-story/core';
+import { getDemoApp } from '../getDemoApp';
 
-export const empty = new DiagramBuilder().get();
+export const empty = async () => (await getDemoApp())
+  .getDiagramBuilder()
+  .get();

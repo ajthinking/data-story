@@ -1,63 +1,140 @@
-import { core, createDataStoryId, nodes, RequestObserverType } from '@data-story/core';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { DataStory } from '@data-story/ui';
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import { Line } from 'react-chartjs-2';
+import { useDiagram } from '../hooks/useDiagram';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
-import { useRequestApp } from '../hooks/useRequestApp';
+import { createDataStoryId, multiline, RequestObserverType } from '@data-story/core';
+import path from 'path';
 
-const { Signal, Table, ConsoleLog } = nodes;
-const diagram = core.getDiagramBuilder()
-  .add(Signal, { period: 5, count: 10 })
-  .add(Table)
-  .from('Signal.1.output').below('Table.1').add(Table)
-  .get();
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const linksCountObserver = {
-  type: RequestObserverType.observeLinkCounts as const,
-  linkIds: [diagram.links[0]?.id, diagram.links[1]?.id],
-  onReceive: (count) => {
-    console.log('Link count', count);
-  },
-  observerId: createDataStoryId(),
-}
+const ObserversDemo = () => {
+  const [points, setPoints] = useState([]);
+  const { app, diagram, loading } = useDiagram((builder) => builder
+    .add('Signal', {
+      period: 100,
+      count: 1000,
+      expression: '{ x: ${{i}} }',
+    })
+    .add('Map', {
+      mapper: multiline`
+        item => ({
+          x: \${{x}},
+          y: Math.sin(\${{x}} / 4) + Math.cos(\${{x}} / 3) * Math.exp(-\${{x}} / 100) + Math.random() * 0.5
+        })
+        `,
+    })
+    .add('Table')
+    .connect()
+    .place()
+    .get()
+  );
 
-export default () => {
-  const { app, loading } = useRequestApp();
-  const client = new CustomizeJSClient({ diagram, app });
+  const client = useMemo(() => diagram
+    ? new CustomizeJSClient({ diagram, app })
+    : undefined,
+  [diagram, app]);
 
+  // // Listen to item changes - render graph
   useEffect(() => {
-    if (!client) {
-      return;
-    }
+    if (!client?.observeLinkItems) return;
+
     const observerId = createDataStoryId();
     const observeLinkItems = {
-      type: RequestObserverType.observeLinkItems as const,
-      linkIds: [diagram.links[0]?.id, diagram.links[1]?.id],
+      linkIds: diagram?.links[1]?.id ? [diagram.links[1].id] : [],
+      type: RequestObserverType.observeLinkItems,
       onReceive: (items) => {
-        console.log('Observer items', items);
+        setPoints((prevPoints) => [...prevPoints, ...items].slice(-100));
       },
-      observerId
+      observerId,
     };
-    const subscription = client.observeLinkItems?.(observeLinkItems);
-    return () => {
-      subscription?.unsubscribe();
-    }
-  }, [client]);
+    const subscription = client.observeLinkItems?.(observeLinkItems as any);
 
+    return () => subscription?.unsubscribe();
+  }, [client, diagram?.links]);
+
+  // // Listen to link counts - console.log
   useEffect(() => {
-    if (!client?.observeLinkCounts || !client?.cancelObservation) return;
-    const subscription = client.observeLinkCounts(linksCountObserver);
-    return () => {
-      subscription?.unsubscribe();
-    }
-  }, [client]);
+    if (!client?.observeLinkCounts) return;
 
-  if (loading || !client) return null;
+    const linksCountObserver = {
+      type: RequestObserverType.observelinkCounts,
+      linkIds: diagram?.links[1]?.id ? [diagram.links[1].id] : [],
+      onReceive: (count) => {
+        console.log('Link counts updated', count);
+      },
+      observerId: createDataStoryId(),
+    };
+    const subscription = client?.observeLinkCounts?.(linksCountObserver as any);
+
+    return () => subscription?.unsubscribe();
+  }, [client, diagram?.links]);
+
+  // Await booting and diagram creation
+  if (loading || !client || !diagram) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="w-full" style={{ height: '36vh' }}>
-      <DataStory
-        client={client}
-        hideControls={['save']}
+    <div className="w-full" style={{ height: '60vh' }}>
+      <Line
+        options={{
+          responsive: true,
+          animation: {
+            duration: 0, // general animation time
+          },
+          plugins: {
+            legend: {
+              position: 'top' as const,
+            },
+            title: {
+              display: true,
+              text: 'Chart.js Line Chart',
+            },
+          },
+        }}
+        data={{
+          labels: points.map((p) => p.x),
+          datasets: [
+            {
+              label: 'Data',
+              data: points.map((p) => p.y),
+              borderColor: 'blue',
+              backgroundColor: 'blue',
+            },
+          ],
+        }}
       />
+      <div className={'h-1/2'}>
+        <DataStory
+          onInitialize={async ({ run }) => {
+            setPoints([]);
+            run();
+          }}
+          hideControls={['save']}
+          client={client}
+        />
+      </div>
     </div>
   );
 };
+
+export default ObserversDemo;

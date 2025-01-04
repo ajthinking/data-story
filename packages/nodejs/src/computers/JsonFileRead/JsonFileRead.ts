@@ -38,10 +38,6 @@ export const JsonFileRead: Computer = {
     // Check if the provided path is absolute
     const isAbsolutePath = path.isAbsolute(pathPattern);
 
-    console.log({
-      pathPattern
-    })
-
     let files: string[] = [];
     try {
       if (isAbsolutePath) {
@@ -59,8 +55,6 @@ export const JsonFileRead: Computer = {
           absolute: true,
         });
       }
-
-      console.log({ files }); // Debug output
 
       // Process each file found by glob
       for (const file of files) {

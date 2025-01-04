@@ -112,14 +112,6 @@ export const RequestLoopByOffset: Computer = {
         } else {
           hasNextPage = false;
         }
-
-        console.log({
-          items: items.length,
-          limit,
-          currentOffset,
-          nextOffset,
-          hasNextPage,
-        })
       } catch (error: any) {
         console.log(error)
         output.pushTo('error', [error]);

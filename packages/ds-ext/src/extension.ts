@@ -8,7 +8,7 @@ let diagramEditorProvider: DiagramEditorProvider;
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand('ds-ext.createDemos', async () => {
-    createDemosDirectory();
+    await createDemosDirectory();
   });
 
   const outputChannel = vscode.window.createOutputChannel('DS-Ext');

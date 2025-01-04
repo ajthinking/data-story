@@ -1,6 +1,5 @@
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
-import { DiagramBuilderV3 } from './DiagramBuilderV3';
 import { ExecutorFactory } from './ExecutorFactory';
 import { InputObserverController } from './InputObserverController';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
@@ -64,12 +63,8 @@ export class Application {
   }
 
   getDiagramBuilder() {
-    return new DiagramBuilder();
-  }
-
-  getDiagramBuilderV3() {
-    return new DiagramBuilderV3(
-      Object.values(this.registry.computers)
+    return new DiagramBuilder(
+      this.descriptions()
     );
   }
 

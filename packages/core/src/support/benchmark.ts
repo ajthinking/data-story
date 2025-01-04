@@ -23,9 +23,9 @@ import { coreNodeProvider } from '../coreNodeProvider';
   await app.boot();
 
   const diagram = core.getDiagramBuilder()
-    .add(Create, {json: JSON.stringify(data)})
-    .add(CreateProperties)
-    .add(Ignore)
+    .add('Create', {json: JSON.stringify(data)})
+    .add('CreateProperties')
+    .add('Ignore')
     .get()
 
   const executor = app.getExecutor({
