@@ -16,12 +16,15 @@ import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
 import { DuckDBStorage } from './duckDBStorage';
 import { FileStorage } from './fileStorage';
+import { loadConfig } from './loadConfig';
+import { DataStoryConfig } from './DataStoryConfig';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
   public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
   private inputObserverController!: InputObserverController;
   private observerStorage!: ObserverStorage;
+  private config: DataStoryConfig;
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const provider = new DiagramEditorProvider(context);
@@ -43,18 +46,30 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   }
 
   private async init(): Promise<void> {
+
+  }
+
+  constructor(private readonly context: vscode.ExtensionContext) {
+    this.config = loadConfig(this.context);
+
+    const storages = {
+      DUCK_DB: DuckDBStorage,
+      FILE: FileStorage,
+      IN_MEMORY: DiagramObserverStorage,
+    };
+
+    let Storage = storages[this.config.storage];
+    if(!Storage) throw new Error(`Unknown storage type: ${this.config.storage}`);
+
     try {
-      this.observerStorage = new DuckDBStorage();
-      // this.observerStorage = new FileStorage();
+      this.observerStorage = new Storage();
+      console.log(`Successfully initialized storage ${this.config.storage}`);
     } catch (error) {
+      console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
       this.observerStorage = new DiagramObserverStorage();
     }
 
     this.inputObserverController = new InputObserverController(this.observerStorage);
-  }
-
-  constructor(private readonly context: vscode.ExtensionContext) {
-    this.init();
   }
 
   async openCustomDocument(
