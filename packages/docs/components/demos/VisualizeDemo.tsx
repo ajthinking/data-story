@@ -41,17 +41,15 @@ export const options = {
   },
 };
 
-const { Signal, Table, Map } = nodes;
-
 const diagram = core.getDiagramBuilder()
-  .add(Signal, {
+  .add('Signal', {
     period: 100,
     count: 100,
     expression: '{ x: ${i} }'
   })
-  .add(Map, { mapper: 'item => ({ x: ${x}, y: Math.cos(${x}/4) })' })
+  .add('Map', { mapper: 'item => ({ x: ${x}, y: Math.cos(${x}/4) })' })
   // .add(Map)
-  .add(Table)
+  .add('Table')
   .get();
 
 export default () => {
