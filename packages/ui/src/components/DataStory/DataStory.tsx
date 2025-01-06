@@ -74,7 +74,7 @@ export const DataStoryComponent = (
 
   return (
     <DataStoryCanvasProvider>
-      <div className="relative h-full w-full">
+      <div className="relative h-full w-full" data-cy="data-story">
         {children}
         {
           (diagramDataLoading || nodeDescriptionsLoading) // TODO isLoading?

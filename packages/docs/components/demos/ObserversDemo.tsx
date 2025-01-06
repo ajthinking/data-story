@@ -13,8 +13,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { useDiagram } from '../hooks/useDiagram';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
-import { createDataStoryId, multiline, RequestObserverType } from '@data-story/core';
-import path from 'path';
+import { createDataStoryId, multiline, RequestObserverType, LinkItemsParam } from '@data-story/core';
 
 ChartJS.register(
   CategoryScale,
@@ -61,8 +60,9 @@ const ObserversDemo = () => {
     const observeLinkItems = {
       linkIds: diagram?.links[1]?.id ? [diagram.links[1].id] : [],
       type: RequestObserverType.observeLinkItems,
-      onReceive: (items) => {
-        setPoints((prevPoints) => [...prevPoints, ...items].slice(-100));
+      onReceive: (params: LinkItemsParam) => {
+        const newPoints = params[0].items;
+        setPoints((prevPoints) => [...prevPoints, ...newPoints].slice(-100));
       },
       observerId,
     };
@@ -76,7 +76,7 @@ const ObserversDemo = () => {
     if (!client?.observeLinkCounts) return;
 
     const linksCountObserver = {
-      type: RequestObserverType.observelinkCounts,
+      type: RequestObserverType.observeLinkCounts,
       linkIds: diagram?.links[1]?.id ? [diagram.links[1].id] : [],
       onReceive: (count) => {
         console.log('Link counts updated', count);
