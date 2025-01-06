@@ -90,16 +90,8 @@ const Flow = ({
   } = useStore(selector, shallow);
 
   const id = useId()
-  const [isExecutePostRenderEffect, setIsExecutePostRenderEffect] = useState(false);
   const reactFlowStore = useStoreApi();
   const { addSelectedNodes, setNodes } = reactFlowStore.getState();
-
-  useEffect(() => {
-    if (onInitialize && onRun && isExecutePostRenderEffect) {
-      onInitialize({ run: onRun });
-      setIsExecutePostRenderEffect(false);
-    }
-  }, [isExecutePostRenderEffect, onRun, onInitialize]);
 
   const flowRef = useRef<HTMLDivElement>(null);
 
@@ -129,7 +121,7 @@ const Flow = ({
     const subscription = client?.observeLinkCounts?.({
       observerId,
       linkIds: allLinkIds,
-      type: RequestObserverType.observelinkCounts,
+      type: RequestObserverType.observeLinkCounts,
       onReceive: ({ links }) => {
         if (!links || links.length === 0) return;
 
@@ -230,7 +222,6 @@ const Flow = ({
             focusOnFlow,
             client
           });
-          setIsExecutePostRenderEffect(true);
         }}
         minZoom={0.25}
         maxZoom={8}

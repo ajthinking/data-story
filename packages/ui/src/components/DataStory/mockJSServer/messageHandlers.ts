@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ObserveLinkItems, ObservelinkCounts, ObserveLinkUpdate, GetDataFromStorage, LinkId, ObserveNodeStatus,
+  type ObserveLinkItems, ObserveLinkCounts, ObserveLinkUpdate, GetDataFromStorage, LinkId, ObserveNodeStatus,
   CancelObservation
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
@@ -60,13 +60,13 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     }
   };
 
-  const observelinkCounts = ({ data, sendEvent }: HandlerParam) => {
+  const observeLinkCounts = ({ data, sendEvent }: HandlerParam) => {
     inputObserverController.addLinkCountsObserver({
-      ...data as ObservelinkCounts,
+      ...data as ObserveLinkCounts,
       onReceive: ({ links }) => {
         sendEvent({
           links: links,
-          type: RequestObserverType.observelinkCounts
+          type: RequestObserverType.observeLinkCounts
         })
       }
     })
@@ -85,7 +85,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const observeLinkItems = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.addlinkItemsObserver({
+    inputObserverController.addLinkItemsObserver({
       ...data as ObserveLinkItems,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
         sendEvent({
@@ -153,7 +153,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     getNodeDescriptions,
     updateDiagram,
     getDiagram,
-    observelinkCounts,
+    observeLinkCounts,
     observeLinkItems,
     observeLinkUpdate,
     cancelObservation,

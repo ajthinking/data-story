@@ -1,6 +1,6 @@
 import ConsoleNodeComponent from './ConsoleNodeComponent';
 import { ReactFlowProvider } from '@xyflow/react';
-import { ItemValue, ObserveLinkItems } from '@data-story/core';
+import { LinkItemsParam, ObserveLinkItems } from '@data-story/core';
 import { DataStoryContext } from '../DataStory/store/store';
 
 const data = {
@@ -30,7 +30,7 @@ const mountConsoleNodeComponent = (items: unknown[], client?: () => void) => {
         }),
         client: client?.() || {
           observeLinkItems: (observer: ObserveLinkItems) => {
-            observer.onReceive(items as ItemValue[]);
+            observer.onReceive(items as LinkItemsParam[]);
             return { unsubscribe:() => cy.spy() };
           }
         }

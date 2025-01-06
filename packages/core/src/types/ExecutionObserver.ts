@@ -20,8 +20,8 @@ export interface LinkCountInfo {
   linkId: string;
 }
 
-export type ObservelinkCounts = {
-  type: RequestObserverType.observelinkCounts,
+export type ObserveLinkCounts = {
+  type: RequestObserverType.observeLinkCounts,
   linkIds: string[],
   observerId: string,
   throttleMs?: number,
@@ -59,4 +59,4 @@ export type CancelObservation = {
   msgId?: string
 }
 
-export type ExecutionObserver = ObserveLinkItems | ObservelinkCounts | CancelObservation | ObserveLinkUpdate | ObserveNodeStatus;
+export type ExecutionObserver = ObserveLinkItems | ObserveLinkCounts | CancelObservation | ObserveLinkUpdate | ObserveNodeStatus;

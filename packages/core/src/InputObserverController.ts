@@ -1,12 +1,11 @@
 import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
 import {
-  ExecutionObserver,
+  CancelObservation,
+  ObserveLinkCounts,
   ObserveLinkItems,
-  ObservelinkCounts,
-  ObserveNodeStatus,
   ObserveLinkUpdate,
-  CancelObservation
+  ObserveNodeStatus
 } from './types/ExecutionObserver';
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
@@ -15,24 +14,14 @@ import { GetDataFromStorage, LinkItems } from './types/GetDataFromStorage';
 import { NodeStatus } from './Executor';
 import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
-
-type MemoryItemObserver = {
-  type: RequestObserverType.observeLinkItems;
-  linkId: string;
-  items: ItemValue[];
-}
-
-type MemoryLinksCountObserver = {
-  type: RequestObserverType.observelinkCounts;
-  linkId: string;
-  count: number;
-}
+import { LinkItemsParam } from './types/LinkItemsParam';
+import { LinksCountParam } from './types/LinksCountParam';
 
 const ThrottleMS: number = 300;
 
 export class InputObserverController {
-  private items$ = new Subject<MemoryItemObserver>();
-  private links$ = new Subject<MemoryLinksCountObserver>();
+  private items$ = new Subject<LinkItemsParam>();
+  private links$ = new Subject<LinksCountParam>();
   private nodeStatus$ = new Subject<{nodeId: NodeId, status: NodeStatus}>();
   private observerMap: Map<string, Subscription> = new Map();
 
@@ -41,8 +30,8 @@ export class InputObserverController {
   /**
    * When we invoke `reportItems`, it triggers the `notifyObservers` callback and forwards the `items` and `inputObserver` parameters
    */
-  reportItems(memoryObserver: MemoryItemObserver): void {
-    this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
+  async reportItems(memoryObserver: LinkItemsParam): Promise<void> {
+    await this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
     this.items$.next(memoryObserver);
   }
 
@@ -50,9 +39,9 @@ export class InputObserverController {
     this.storage.setLinkItems(linkId, items);
   }
 
-  reportLinksCount(memoryObserver: MemoryLinksCountObserver): void {
+  async reportLinksCount(memoryObserver: LinksCountParam): Promise<void> {
+    await this.storage.setLinkCount(memoryObserver.linkId, memoryObserver.count);
     this.links$.next(memoryObserver);
-    this.storage.setLinkCount(memoryObserver.linkId, memoryObserver.count);
   }
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
@@ -80,7 +69,6 @@ export class InputObserverController {
       filter(it=>it.length > 0),
       map(bufferedItems => bufferedItems.flat(1)),
       tap(items => {
-        // console.log('onReceive observeLinkUpdate', observer.linkIds);
         observer.onReceive(observer.linkIds);
       })
     ).subscribe();
@@ -88,18 +76,29 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addlinkItemsObserver(observer: ObserveLinkItems ): void {
+  addLinkItemsObserver(observer: ObserveLinkItems): void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
-      map(payload => payload.items),
-      // todo: could implement a timer that doesn't rely on bufferTime.
       bufferTime(observer.throttleMs ?? ThrottleMS),
-      // To prevent bufferTime from returning an empty array when this.items$.next is not triggered
-      filter(it=>it.length > 0),
-      map(bufferedItems => bufferedItems.flat(1)),
-      tap(items => {
-        // console.log('onReceive addlinkItemsObserver', items);
+      filter(bufferedItems => bufferedItems.length > 0),
+      map(bufferedItems => {
+        // implement groupBy
+        const grouped = bufferedItems.reduce((acc, item) => {
+          if (!acc[item.linkId]) {
+            acc[item.linkId] = [];
+          }
+          acc[item.linkId].push(item);
+          return acc;
+        }, {} as Record<string, typeof bufferedItems>);
 
+        // convert MemoryItemObserver array
+        return Object.keys(grouped).map(linkId => ({
+          linkId,
+          type: RequestObserverType.observeLinkItems,
+          items: grouped[linkId].flatMap(item => item.items)
+        } as LinkItemsParam));
+      }),
+      tap(items => {
         observer.onReceive(items);
       })
     ).subscribe();
@@ -107,7 +106,7 @@ export class InputObserverController {
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
   }
 
-  addLinkCountsObserver(observer: ObservelinkCounts): void {
+  addLinkCountsObserver(observer: ObserveLinkCounts): void {
     const subscription = this.links$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload),

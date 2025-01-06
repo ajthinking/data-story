@@ -6,10 +6,10 @@ export class DuckDBStorage implements ObserverStorage {
   private insertSequence: bigint = BigInt(0);
 
   constructor() {
-    this.initDatabase();
+    this.init();
   }
 
-  async initDatabase() {
+  async init() {
     const { Database } = await import('duckdb-async');
     const dbPath = createDataStoryDBPath();
     this.db = await Database.create(dbPath);
