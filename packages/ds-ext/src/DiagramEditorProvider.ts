@@ -9,7 +9,7 @@ import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
 import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
 import { observeLinkItems } from './messageHandlers/observeLinkItems';
-import { observelinkCounts } from './messageHandlers/observelinkCounts';
+import { observeLinkCounts } from './messageHandlers/observeLinkCounts';
 import { observeNodeStatus } from './messageHandlers/observeNodeStatus';
 import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
 import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
@@ -98,14 +98,14 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         run: onRun,
         getNodeDescriptions: onGetNodeDescriptions,
         updateDiagram: onUpdateDiagram,
-        getDiagram: getDiagram,
         toast: onToast,
-        observeLinkItems: observeLinkItems,
-        observelinkCounts: observelinkCounts,
-        observeNodeStatus: observeNodeStatus,
-        observeLinkUpdate: observeLinkUpdate,
-        getDataFromStorage: getDataFromStorage,
-        cancelObservation: cancelObservation,
+        getDiagram,
+        observeLinkItems,
+        observeLinkCounts,
+        observeNodeStatus,
+        observeLinkUpdate,
+        getDataFromStorage,
+        cancelObservation,
       };
 
       const handler = handlers[event.type];

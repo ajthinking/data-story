@@ -7,6 +7,7 @@ import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
 import { useHandleConnections } from '@xyflow/react';
 
 const initialScreenCount: number = 15;
+const tableThrottleMs: number = 300;
 
 export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
   id: string,
@@ -82,7 +83,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
       observerId: createDataStoryId(),
       linkIds: linkIds,
       type: RequestObserverType.observeLinkUpdate,
-      throttleMs: 300,
+      throttleMs: tableThrottleMs,
       onReceive: (linkIds) => {
         // if linkOffsets all items.length < initialScreenCount then load more
         if (itemsRef.current.length < initialScreenCount) {

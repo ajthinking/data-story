@@ -26,7 +26,7 @@ export class OutputDevice {
   constructor(
     private portLinkMap: PortLinkMap = {},
     private memory: ExecutionMemory,
-    private node: Node
+    private node?: Node
   ) {}
 
   getPortNames(): string[] {

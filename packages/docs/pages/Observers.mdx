@@ -1,5 +1,54 @@
 # Observers
 
+Configure the `DataStory` component by setting `observers` to monitor changes in the data of the node
+
+```tsx
+<DataStory
+  observeLinkItems={{
+    type: RequestObserverType.observeLinkItems,
+    // set the linkIds that you want to observe
+    linkIds: [diagram.links[0]?.id],
+    onReceive: (items, inputObserver) => {
+      // open the devtool console to see the data change
+      console.log('Observer items', items, 'Observer inputObserver', inputObserver);
+    }
+  }}
+  linksCountObserver={{
+    type: RequestObserverType.observelinkCounts as const,
+    linkIds: [diagram.links[1]?.id],
+    onReceive: (count) => {
+      console.log('Link count', count);
+    }
+  }}
+/>
+```
+
+## attributes
+
+```ts
+export type observeLinkItems = {
+  type: RequestObserverType.observeLinkItems,
+  linkIds: string[],
+  observerId?: string,
+  direction?: 'pull' | 'push',
+  onlyFirstNItems?: number,
+  throttleMs?: number,
+  onReceive: NotifyObserversCallback,
+}
+
+export type ObserveLinkCounts = {
+  type: RequestObserverType.ObserveLinkCounts,
+  linkIds: string[],
+  observerId?: string,
+  throttleMs?: number,
+  onReceive: (count: number) => void,
+}
+
+export type ExecutionObserver = observeLinkItems | ObserveLinkCounts;
+```
+
+## Demo
+
 import ObserversDemo from '../components/demos/ObserversDemo';
 
 You can hook into execution progress by registering *observers*. In the example below, we send execution information to a third party graph component.

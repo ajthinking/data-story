@@ -4,7 +4,7 @@ import {
   Diagram,
   ObserveLinkItems,
   ItemValue,
-  ObservelinkCounts,
+  ObserveLinkCounts,
   NodeDescription,
   ObserveLinkUpdate,
   GetDataFromStorage,
@@ -18,7 +18,7 @@ export interface WorkspaceApiClientImplement {
   getNodeDescriptions: ({ path }: {path?: string}) => Promise<NodeDescription[]>
   updateDiagram?: (diagram: Diagram) => Promise<void>;
   getDiagram?: ({ path }: {path?: string}) => Promise<Diagram>;
-  observeLinkCounts?:(params: ObservelinkCounts) => Subscription;
+  observeLinkCounts?:(params: ObserveLinkCounts) => Subscription;
   observeLinkItems?: (params: ObserveLinkItems) => Subscription;
   observeLinkUpdate?: (params: ObserveLinkUpdate) => Subscription;
   observeNodeStatus?: (params: ObserveNodeStatus) => Subscription;

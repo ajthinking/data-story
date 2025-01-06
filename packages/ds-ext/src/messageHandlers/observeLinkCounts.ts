@@ -1,18 +1,18 @@
 import { MessageHandler } from '../MessageHandler';
 import {
-  ObservelinkCounts,
+  ObserveLinkCounts,
   RequestObserverType
 } from '@data-story/core';
 
-export const observelinkCounts: MessageHandler = async({ event, webviewPanel, inputObserverController }) => {
+export const observeLinkCounts: MessageHandler = async({ event, webviewPanel, inputObserverController }) => {
   inputObserverController.addLinkCountsObserver({
     ...event,
     onReceive: ({ links }) => {
       webviewPanel.webview.postMessage({
         links: links,
-        type: RequestObserverType.observelinkCounts,
+        type: RequestObserverType.observeLinkCounts,
         msgId: event!.msgId,
       });
     }
-  } as ObservelinkCounts);
+  } as ObserveLinkCounts);
 };

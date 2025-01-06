@@ -45,7 +45,7 @@ export { jsExpressionEvaluation } from './Param/evaluations/jsExpressionEvaluati
 export { numberCast } from './Param/casts/numberCast'
 export { stringCast } from './Param/casts/stringCast'
 export { core } from './core'
-export type { LinkCountInfo, ObservelinkCounts, ExecutionObserver, ObserveLinkItems, ObserveNodeStatus, CancelObservation, ObserveLinkUpdate} from './types/ExecutionObserver'
+export type { LinkCountInfo, ObserveLinkCounts, ExecutionObserver, ObserveLinkItems, ObserveNodeStatus, CancelObservation, ObserveLinkUpdate} from './types/ExecutionObserver'
 export type { GetDataFromStorage } from './types/GetDataFromStorage'
 export * as nodes from './computers'
 export * from './Param'
@@ -55,3 +55,5 @@ export type { NodeId } from './types/Node';
 export type { NodeStatus } from './Executor';
 export type { ObserverStorage, GetLinkItemsParams } from './types/ObserverStorage'
 export { DiagramObserverStorage } from './storage/diagramObserverStorage'
+export type { LinkItemsParam } from './types/LinkItemsParam'
+export type { LinksCountParam } from './types/LinksCountParam'

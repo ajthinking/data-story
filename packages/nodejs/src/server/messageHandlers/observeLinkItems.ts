@@ -11,7 +11,7 @@ export const observeLinkItems: MessageHandler<ObserveLinkItems> = async({
   data,
   inputObserverController
 }: MessageHandlerParams<ObserveLinkItems>) => {
-  inputObserverController.addlinkItemsObserver({
+  inputObserverController.addLinkItemsObserver({
     ...data,
     onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
       ws.send(JSON.stringify({

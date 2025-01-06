@@ -1,5 +1,5 @@
 export enum RequestObserverType {
-  observelinkCounts = 'observelinkCounts',
+  observeLinkCounts = 'observeLinkCounts',
   observeLinkItems = 'observeLinkItems',
   observeLinkUpdate = 'observeLinkUpdate',
   observeNodeStatus = 'observeNodeStatus',

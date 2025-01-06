@@ -8,7 +8,7 @@ describe('register', () => {
     const app = new Application()
 
     const provider: ServiceProvider = {
-      boot: (app) => {},
+      boot: (app) => Promise.resolve(),
     }
 
     app.register(provider)
@@ -22,11 +22,11 @@ describe('register', () => {
     const app = new Application()
 
     const provider1: ServiceProvider = {
-      boot: (app) => {},
+      boot: (app) => Promise.resolve(),
     }
 
     const provider2: ServiceProvider = {
-      boot: (app) => {},
+      boot: (app) => Promise.resolve(),
     }
 
     app.register([provider1, provider2])
