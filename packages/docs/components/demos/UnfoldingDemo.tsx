@@ -109,10 +109,10 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) =>
         />
       )}
       {part === 'NESTED_NODE' && (
-        <DataStory hideControls={['save']} client={clients.nestedNodeClient} />
+        <DataStory hideControls={['save']} client={clients.nestedNodeClient!} />
       )}
       {part === 'MAIN_UNFOLDED' && (
-        <DataStory hideControls={['save']} client={clients.mainUnfoldedClient} />
+        <DataStory hideControls={['save']} client={clients.mainUnfoldedClient!} />
       )}
     </div>
   );

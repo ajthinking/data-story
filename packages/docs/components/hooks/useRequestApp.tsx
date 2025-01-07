@@ -15,5 +15,5 @@ export function useRequestApp(): {
     return appInstance
   });
 
-  return { app, loading, error };
+  return { app: app!, loading, error };
 }

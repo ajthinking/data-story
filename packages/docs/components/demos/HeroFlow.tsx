@@ -1,11 +1,7 @@
 import { DataStory } from '@data-story/ui'
-import { core, multiline, nodes, } from '@data-story/core';
-import useWindowDimensions from '../../hooks/useWindowDimensions';
+import { core, multiline } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
-import { useMemo } from 'react';
 import { useRequestApp } from '../hooks/useRequestApp';
-
-const { Signal, Pass, Comment, Ignore } = nodes;
 
 const welcomeMarkdown = multiline`
     ### Welcome to DataStory 👋

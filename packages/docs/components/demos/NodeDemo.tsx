@@ -5,6 +5,7 @@ import { useRequestApp } from '../hooks/useRequestApp';
 
 export default ({ nodeName }: {nodeName: string}) => {
   const diagram = core.getDiagramBuilder()
+    // @ts-ignore
     .add(nodes[nodeName])
     .get()
 

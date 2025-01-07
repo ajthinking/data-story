@@ -13,7 +13,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { useDiagram } from '../hooks/useDiagram';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
-import { createDataStoryId, multiline, RequestObserverType, LinkItemsParam } from '@data-story/core';
+import { createDataStoryId, multiline, RequestObserverType, LinkItemsParam, ItemValue } from '@data-story/core';
 
 ChartJS.register(
   CategoryScale,
@@ -26,7 +26,7 @@ ChartJS.register(
 );
 
 const ObserversDemo = () => {
-  const [points, setPoints] = useState([]);
+  const [points, setPoints] = useState<ItemValue[]>([]);
   const { app, diagram, loading } = useDiagram((builder) => builder
     .add('Signal', {
       period: 100,
@@ -60,7 +60,7 @@ const ObserversDemo = () => {
     const observeLinkItems = {
       linkIds: diagram?.links[1]?.id ? [diagram.links[1].id] : [],
       type: RequestObserverType.observeLinkItems,
-      onReceive: (params: LinkItemsParam) => {
+      onReceive: (params: LinkItemsParam[]) => {
         const newPoints = params[0].items;
         setPoints((prevPoints) => [...prevPoints, ...newPoints].slice(-100));
       },
@@ -78,7 +78,7 @@ const ObserversDemo = () => {
     const linksCountObserver = {
       type: RequestObserverType.observeLinkCounts,
       linkIds: diagram?.links[1]?.id ? [diagram.links[1].id] : [],
-      onReceive: (count) => {
+      onReceive: (count: number) => {
         console.log('Link counts updated', count);
       },
       observerId: createDataStoryId(),

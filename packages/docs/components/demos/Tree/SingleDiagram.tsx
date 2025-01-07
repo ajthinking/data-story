@@ -1,12 +1,11 @@
 'use client'
 
 import { DataStory } from '@data-story/ui';
-import { core, nodes } from '@data-story/core';
+import { core } from '@data-story/core';
 import { CustomizeJSClient } from '../../splash/CustomizeJSClient';
 import { useRequestApp } from '../../hooks/useRequestApp';
 
 export default () => {
-  const { Signal, Comment, Ignore } = nodes;
   const { app, loading } = useRequestApp();
 
   const diagram = core.getDiagramBuilder()
@@ -17,7 +16,7 @@ export default () => {
 
   const client = new CustomizeJSClient({ diagram: diagram, app });
 
-  if(!client) return null;
+  if (!client) return null;
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">
