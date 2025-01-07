@@ -19,10 +19,19 @@ import {
   ObserveNodeStatus,
   RequestObserverType,
   LinkItemsParam,
-  NodeDescriptionResponse
+  NodeDescriptionResponse,
+  ObserveLinkCountsSchema,
+  LinkCountInfoSchema,
+  ObserveLinkItemsSchema,
+  ObserveNodeStatusSchema,
+  NodesStatusSchema,
+  ObserveLinkUpdateSchema,
+  CancelObservationSchema,
+  GetDataFromStorageParamsSchema
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
+import { validateZodSchema } from './utils';
 
 export interface Transport {
   sendAndReceive<T>(params: Record<string, any>): Promise<T>;
@@ -55,6 +64,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   updateDiagram(diagram: Diagram): Promise<void> {
+    // validateZodSchema(Diagram, diagram);
     try {
       eventManager.emit({
         type: DataStoryEvents.SAVE_SUCCESS
@@ -85,6 +95,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   async getDataFromStorage(params: GetDataFromStorageParams): Promise<Record<LinkId, ItemValue[]>> {
+    validateZodSchema(GetDataFromStorageParamsSchema, params);
     try {
       const result: GetDataFromStorageParams & { data: Record<LinkId, ItemValue[]> } = await this.transport.sendAndReceive(params);
       return result.data as Record<LinkId, ItemValue[]>;
@@ -95,6 +106,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   observeLinkItems(params: ObserveLinkItems): Subscription {
+    validateZodSchema(ObserveLinkItemsSchema, params);
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(
@@ -111,6 +123,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   observeLinkCounts(params: ObserveLinkCounts): Subscription {
+    validateZodSchema(ObserveLinkCountsSchema, params);
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(
@@ -120,6 +133,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
       );
     const linksSubscription = msg$.subscribe((data) => {
       const { links } = data as {links: LinkCountInfo[]};
+      validateZodSchema(LinkCountInfoSchema, links[0]);
       params.onReceive({ links });
     });
 
@@ -127,6 +141,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   observeNodeStatus(params: ObserveNodeStatus): Subscription {
+    validateZodSchema(ObserveNodeStatusSchema, params);
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(
@@ -136,6 +151,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
       );
     const nodeStatusSubscription = msg$.subscribe((data) => {
       const { nodes } = data as {nodes: {nodeId: NodeId, status: NodeStatus}[]};
+      validateZodSchema(NodesStatusSchema, nodes[0]);
       params.onReceive({ nodes });
     });
 
@@ -143,6 +159,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   observeLinkUpdate(params: ObserveLinkUpdate): Subscription {
+    validateZodSchema(ObserveLinkUpdateSchema, params);
     const serializableParams = removeUnserializable(params);
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(
@@ -158,6 +175,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   async cancelObservation(params: CancelObservation): Promise<void> {
+    validateZodSchema(CancelObservationSchema, params);
     const data = await this.transport.sendAndReceive({
       ...params,
     });
