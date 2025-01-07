@@ -7,7 +7,7 @@ import {
   ObserveLinkCounts,
   NodeDescription,
   ObserveLinkUpdate,
-  GetDataFromStorage,
+  GetDataFromStorageParams,
   ObserveNodeStatus,
   LinkId
 } from '@data-story/core';
@@ -22,6 +22,6 @@ export interface WorkspaceApiClientImplement {
   observeLinkItems?: (params: ObserveLinkItems) => Subscription;
   observeLinkUpdate?: (params: ObserveLinkUpdate) => Subscription;
   observeNodeStatus?: (params: ObserveNodeStatus) => Subscription;
-  getDataFromStorage?: (params: GetDataFromStorage) => Promise<Record<LinkId, ItemValue[]>>;
+  getDataFromStorage?: (params: GetDataFromStorageParams) => Promise<Record<LinkId, ItemValue[]>>;
   cancelObservation?:(params: CancelObservation) => Promise<void>;
 }

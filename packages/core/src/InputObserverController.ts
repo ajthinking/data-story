@@ -10,7 +10,7 @@ import {
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { LinkId } from './types/Link';
-import { GetDataFromStorage, LinkItems } from './types/GetDataFromStorage';
+import { GetDataFromStorageParams, LinkItems } from './types/GetDataFromStorageParams';
 import { NodeStatus } from './Executor';
 import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
@@ -54,7 +54,7 @@ export class InputObserverController {
     linkId,
     limit = 100,
     offset = 0
-  }: GetDataFromStorage): Promise<LinkItems> {
+  }: GetDataFromStorageParams): Promise<LinkItems> {
     const items: LinkItems = {};
     const currentItems = await this.storage.getLinkItems({linkId, offset, limit}) ?? [];
     items[linkId] = currentItems;

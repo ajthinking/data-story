@@ -5,7 +5,7 @@ import {
   ObserveLinkItems,
   ObserveLinkCounts,
   ObserveLinkUpdate,
-  GetDataFromStorage,
+  GetDataFromStorageParams,
   ObserveNodeStatus
 } from '@data-story/core';
 import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientImplement } from '@data-story/ui';
@@ -55,7 +55,7 @@ export class CustomizeJSClient implements WorkspaceApiClientImplement {
     return this.jsClient.observeLinkUpdate(params);
   }
 
-  getDataFromStorage = (params: GetDataFromStorage) => {
+  getDataFromStorage = (params: GetDataFromStorageParams) => {
     return this.jsClient.getDataFromStorage(params);
   }
 

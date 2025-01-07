@@ -1,7 +1,7 @@
 import { ItemValue } from './ItemValue';
 import { LinkId } from './Link';
 
-export type GetDataFromStorage = {
+export type GetDataFromStorageParams = {
   type: 'getDataFromStorage',
   linkId: LinkId,
   msgId?: string,

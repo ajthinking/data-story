@@ -5,7 +5,7 @@ import {
   CancelObservation,
   Diagram,
   ExecutionObserver,
-  GetDataFromStorage,
+  GetDataFromStorageParams,
   InputObserveConfig,
   ObserveLinkItems,
   ItemValue,
@@ -83,9 +83,9 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     }
   }
 
-  async getDataFromStorage(params: GetDataFromStorage): Promise<Record<LinkId, ItemValue[]>> {
+  async getDataFromStorage(params: GetDataFromStorageParams): Promise<Record<LinkId, ItemValue[]>> {
     try {
-      const result: GetDataFromStorage & { data: Record<LinkId, ItemValue[]> } = await this.transport.sendAndReceive(params);
+      const result: GetDataFromStorageParams & { data: Record<LinkId, ItemValue[]> } = await this.transport.sendAndReceive(params);
       return result.data as Record<LinkId, ItemValue[]>;
     } catch(e) {
       console.error('Error getting diagram', e);
