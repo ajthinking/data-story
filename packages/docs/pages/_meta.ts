@@ -39,7 +39,7 @@ export default {
       'layout': 'raw'
     }
   },
-  'Visualize': 'Visualize',
+  // 'Visualize': 'Visualize',
   'Unfolding': 'Unfolding',
   'Observers': 'Observers',
   'contributing': 'Contributing',
