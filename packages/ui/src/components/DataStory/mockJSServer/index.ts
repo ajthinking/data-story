@@ -18,6 +18,7 @@ export class MockJSServer {
     if (message.status !== 'client-post') return;
     const handler = this.messageHandlers[message.type] as (params: HandlerParam) => Promise<void>;
     if (!handler) throw new Error('Unknown message type (server): ' + message.type);
+
     const sendEvent = (msg: Record<string, any>) => {
       this.channel.next({
         ...msg,
