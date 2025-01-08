@@ -86,12 +86,3 @@ describe('descriptions', ()  => {
     ])
   })
 })
-
-interface STRICT {
-  name: string
-  age: number
-}
-
-const chill = {
-  name: 'chiller'
-} as STRICT

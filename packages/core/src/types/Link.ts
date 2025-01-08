@@ -2,6 +2,7 @@ import { PortId } from './PortId';
 import type { CSSProperties, ReactNode } from 'react';
 
 export type LinkId = string
+export type LinkCount = number
 
 export type Link = {
   id: LinkId,

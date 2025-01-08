@@ -1,7 +1,8 @@
 import { RequestObserverType } from './InputObserveConfig';
+import { LinkId } from './Link';
 
 export type LinksCountParam = {
   type: RequestObserverType.observeLinkCounts;
-  linkId: string;
+  linkId: LinkId;
   count: number;
 }

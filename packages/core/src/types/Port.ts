@@ -1,3 +1,5 @@
+import { PortId } from './PortId'
+
 export type PortName = string
 
 export type AbstractPort = {
@@ -8,7 +10,7 @@ export type AbstractPort = {
 }
 
 export type Port = {
-  id: string,
+  id: PortId,
   name: PortName,
   schema: {
     [key: string]: any,

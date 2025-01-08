@@ -1,12 +1,12 @@
 import { RequestObserverType } from './InputObserveConfig';
 import { NotifyObserversCallback } from './NotifyObserversCallback';
-import { LinkId } from './Link';
+import { LinkCount, LinkId } from './Link';
 import { NodeStatus } from '../Executor';
 import { NodeId } from './Node';
 
 export type ObserveLinkItems = {
   type: RequestObserverType.observeLinkItems,
-  linkIds: string[],
+  linkIds: LinkId[],
   onReceive: NotifyObserversCallback,
   observerId: string,
   direction?: 'pull' | 'push',
@@ -16,13 +16,13 @@ export type ObserveLinkItems = {
 }
 
 export interface LinkCountInfo {
-  count: number;
-  linkId: string;
+  count: LinkCount;
+  linkId: LinkId;
 }
 
 export type ObserveLinkCounts = {
   type: RequestObserverType.observeLinkCounts,
-  linkIds: string[],
+  linkIds: LinkId[],
   observerId: string,
   throttleMs?: number,
   msgId?: string,
@@ -44,7 +44,7 @@ export type ObserveNodeStatus = {
 
 export type ObserveLinkUpdate = {
   type: RequestObserverType.observeLinkUpdate,
-  linkIds: string[],
+  linkIds: LinkId[],
   observerId: string,
   onReceive: (linkIds: LinkId[]) => void,
   throttleMs?: number,

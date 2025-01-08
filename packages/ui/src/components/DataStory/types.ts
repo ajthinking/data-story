@@ -5,7 +5,8 @@ import {
   Param,
   RepeatableParam,
   type ReportCallback,
-  type ExecutionObserver, NodeStatus
+  type ExecutionObserver, NodeStatus,
+  NodeId
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
@@ -103,13 +104,13 @@ export type StoreSchema = {
   addNodeFromDescription: (nodeDescription: NodeDescription) => void;
   onNodesChange: OnNodesChange;
   setNodes: (nodes: ReactFlowNode[]) => void;
-  selectNode: (nodeId: string) => void;
+  selectNode: (nodeId: NodeId) => void;
 
   /** The Edges */
   edges: Edge[];
   onEdgesChange: OnEdgesChange;
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  updateEdgeStatus: (edgeStatus: {nodeId: string, status: NodeStatus}[]) => void
+  updateEdgeStatus: (edgeStatus: {nodeId: NodeId, status: NodeStatus}[]) => void
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
 
