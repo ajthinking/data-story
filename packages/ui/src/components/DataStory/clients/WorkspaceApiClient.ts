@@ -27,7 +27,11 @@ import {
   NodesStatusSchema,
   ObserveLinkUpdateSchema,
   CancelObservationSchema,
-  GetDataFromStorageParamsSchema
+  GetDataFromStorageParamsSchema,
+  NodeDescriptionRequestSchema,
+  NodeDescriptionResponseSchema,
+  LinkItemsSchema,
+  LinkItemsParamSchema
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -56,15 +60,14 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   }
 
   async getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
-    const data = await this.transport.sendAndReceive({
-      type: 'getNodeDescriptions',
-      path,
-    }) as NodeDescriptionResponse;
+    const request = {type: 'getNodeDescriptions', path};
+    validateZodSchema(NodeDescriptionRequestSchema, request);
+    const data = await this.transport.sendAndReceive(request) as NodeDescriptionResponse;
+    validateZodSchema(NodeDescriptionResponseSchema, data);
     return data.availableNodes ?? [];
   }
 
   updateDiagram(diagram: Diagram): Promise<void> {
-    // validateZodSchema(Diagram, diagram);
     try {
       eventManager.emit({
         type: DataStoryEvents.SAVE_SUCCESS
@@ -116,6 +119,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
       );
     const itemsSubscription = msg$.subscribe((data) => {
       const { items, inputObserver } = data as {items: LinkItemsParam[], inputObserver: InputObserveConfig};
+      validateZodSchema(LinkItemsParamSchema, items[0]);
       params.onReceive(items, inputObserver);
     });
 
