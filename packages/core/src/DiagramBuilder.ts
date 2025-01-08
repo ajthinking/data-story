@@ -40,7 +40,7 @@ export class DiagramBuilder {
     const node: Node = {
       id: nodeId,
       label: name,
-      type: name,
+      name: name,
       // The inputs have not yet been assigned ids, to it here
       inputs: diagram.inputNodes().map(inputNode => {
         const param = inputNode.params.find(param => param.name === 'port_name');
@@ -227,7 +227,7 @@ export class DiagramBuilder {
 
     return structuredClone({
       id,
-      type: nodeDescription.name,
+      name: nodeDescription.name,
       label: nodeDescription.label,
       inputs: nodeDescription.inputs.map(input => {
         return {
@@ -296,7 +296,7 @@ export class DiagramBuilder {
 
   protected getScopedId(nodeName: string) {
     const max = this.diagram.nodes
-      .filter(node => node.type === nodeName)
+      .filter(node => node.name === nodeName)
       .map(node => node.id)
       .map(id => id.split('.')[1])
       .map(id => parseInt(id))

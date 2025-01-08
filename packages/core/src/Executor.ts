@@ -128,7 +128,7 @@ export class Executor {
   protected getRunnableNodes(): Node[] {
     return this.diagram.nodes.filter(node => {
       // If the computer implements a custom hook
-      const computer = this.registry.computers[node.type]
+      const computer = this.registry.computers[node.name]
       const hook = computer.canRun
       if(hook) return hook({
         isAvailable: () => this.memory.getNodeStatus(node.id) === 'AVAILABLE',

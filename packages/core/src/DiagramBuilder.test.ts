@@ -35,8 +35,8 @@ describe('add', () => {
       .get()
 
     expect(diagram.nodes).toMatchObject([
-      { id: 'Create.1', type: 'Create' },
-      { id: 'Ignore.1', type: 'Ignore' },
+      { id: 'Create.1', name: 'Create' },
+      { id: 'Ignore.1', name: 'Ignore' },
     ])
   })
 
