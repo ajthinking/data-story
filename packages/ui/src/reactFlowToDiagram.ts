@@ -4,7 +4,7 @@ import { SerializedReactFlow, SerializedReactFlowNode } from './SerializedReactF
 export const reactFlowNodeToDiagramNode = (flowNode: SerializedReactFlowNode): Node => {
   return {
     id: flowNode.id,
-    type: flowNode.data.computer,
+    name: flowNode.data.computer,
     inputs: flowNode.data.inputs.map(input => {
       return {
         id: input.id,
@@ -25,10 +25,10 @@ export const reactFlowNodeToDiagramNode = (flowNode: SerializedReactFlowNode): N
 }
 
 export const reactFlowToDiagram = (flow: SerializedReactFlow): Diagram => {
-  const nodes = flow.nodes.map(flowNode => {
+  const nodes: Node[] = flow.nodes.map(flowNode => {
     return {
       id: flowNode.id,
-      type: flowNode.data.computer,
+      name: flowNode.data.computer,
       inputs: flowNode.data.inputs.map(input => {
         return {
           id: input.id,

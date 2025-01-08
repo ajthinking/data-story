@@ -6,7 +6,7 @@ export const NodeFactory = {
   fromReactFlowNode: (flowNode: ReactFlowNode): Node => {
     return {
       id: flowNode.id,
-      type: flowNode.data.computer,
+      name: flowNode.data.computer,
       label: flowNode.data.label,
       inputs: flowNode.data.inputs.map(input => {
         return {
@@ -34,7 +34,7 @@ export const NodeFactory = {
 
     return structuredClone({
       id,
-      type: nodeDescription.name,
+      name: nodeDescription.name,
       label: nodeDescription.label,
       inputs: nodeDescription.inputs.map(input => {
         return {

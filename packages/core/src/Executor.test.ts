@@ -33,7 +33,7 @@ describe('execute', () => {
   it('can execute a diagram with a single no-input no-output node', async () => {
     const node: Node = {
       id: 'node-id',
-      type: 'Dummy',
+      name: 'Dummy',
       inputs: [],
       outputs: [],
       params: []
@@ -73,7 +73,7 @@ describe('execute', () => {
   it('can execute a diagram with non connected input node', async () => {
     const node: Node = {
       id: 'node-id',
-      type: 'Accepter',
+      name: 'Accepter',
       inputs: [{
         id: 'input-id',
         name: 'input',
@@ -110,7 +110,7 @@ describe('execute', () => {
   it('can execute a diagram with a node outputting items', async () => {
     const node: Node = {
       id: 'zergling-spawner-id',
-      type: 'Spawner',
+      name: 'Spawner',
       inputs: [],
       outputs: [
         {
@@ -153,7 +153,7 @@ describe('execute', () => {
   it('can execute a diagram with item flowing between two nodes', async () => {
     const create: Node = {
       id: 'create-id',
-      type: 'Create',
+      name: 'Create',
       inputs: [],
       outputs: [{
         id: 'Create.1.output',
@@ -165,7 +165,7 @@ describe('execute', () => {
 
     const log: Node = {
       id: 'log-id',
-      type: 'Log',
+      name: 'Log',
       inputs: [{
         id: 'Log.1.input',
         name: 'input',

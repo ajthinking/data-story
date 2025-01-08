@@ -21,7 +21,7 @@ export const NodeDescriptionFactory = {
       label: name,
       category: undefined,
       inputs: diagram.nodes
-        .filter(node => node.type === 'Input')
+        .filter(node => node.name === 'Input')
         .map(node => {
           const portParam = node.params
             .find(param => param.name === 'port_name')! as StringableInputValue
@@ -34,7 +34,7 @@ export const NodeDescriptionFactory = {
           }
         }),
       outputs: diagram.nodes
-        .filter(node => node.type === 'Output')
+        .filter(node => node.name === 'Output')
         .map(node => {
           const portParam = node.params
             .find(param => param.name === 'port_name')! as StringableInputValue

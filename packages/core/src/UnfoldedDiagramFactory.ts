@@ -26,11 +26,11 @@ export class UnfoldedDiagramFactory {
   }
 
   unfold(): UnfoldedDiagram {
-    const replacables = this.diagram.nodes.filter(node => node.type in this.nestedNodes)
+    const replacables = this.diagram.nodes.filter(node => node.name in this.nestedNodes)
 
     for(const node of replacables) {
-      const nestedDiagram = this.nestedNodes[node.type]
-      if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.type}"`)
+      const nestedDiagram = this.nestedNodes[node.name]
+      if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.name}"`)
 
       this.diagram.nodes.push(...nestedDiagram.nodes)
       this.diagram.links.push(...nestedDiagram.links)
@@ -54,8 +54,8 @@ export class UnfoldedDiagramFactory {
     if(index === -1) throw new Error('Node not found in diagram')
     this.diagram.nodes.splice(index, 1)
 
-    const nestedDiagram = this.nestedNodes[node.type]
-    if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.type}"`)
+    const nestedDiagram = this.nestedNodes[node.name]
+    if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.name}"`)
 
     // Rewire incoming links
     for(const inputPort of node.inputs) {
@@ -64,7 +64,7 @@ export class UnfoldedDiagramFactory {
       for(const link of links) {
         const newTargetNode = nestedDiagram.nodes
           .find(node => {
-            const isInputNode = node.type === 'Input'
+            const isInputNode = node.name === 'Input'
             if(!isInputNode) return false;
 
             const param = node.params[0];
@@ -76,10 +76,10 @@ export class UnfoldedDiagramFactory {
             return matchesPortName
           })
 
-        if(!newTargetNode) throw new Error(`No input node found for input port "${inputPort.name}" on the nesteddiagram of "${node.type}"`)
+        if(!newTargetNode) throw new Error(`No input node found for input port "${inputPort.name}" on the nesteddiagram of "${node.name}"`)
 
         const newInputPort = newTargetNode.inputs[0]
-        if(!newInputPort) throw new Error(`No input port found for input port "${inputPort.name}" on the nesteddiagram of "${node.type}". The node was ${JSON.stringify(node)}`)
+        if(!newInputPort) throw new Error(`No input port found for input port "${inputPort.name}" on the nesteddiagram of "${node.name}". The node was ${JSON.stringify(node)}`)
 
         link.targetPortId = newInputPort.id
       }
@@ -91,7 +91,7 @@ export class UnfoldedDiagramFactory {
       for(const link of links) {
         const newSourceNode = nestedDiagram.nodes
           .find(node => {
-            const isOutputNode = node.type === 'Output'
+            const isOutputNode = node.name === 'Output'
             if(!isOutputNode) return false;
 
             const param = node.params[0];
@@ -103,10 +103,10 @@ export class UnfoldedDiagramFactory {
             return matchesPortName
           })
 
-        if(!newSourceNode) throw new Error(`No output node found for output port "${outputPort.name}" on the nesteddiagram of "${node.type}"`)
+        if(!newSourceNode) throw new Error(`No output node found for output port "${outputPort.name}" on the nesteddiagram of "${node.name}"`)
 
         const newOutputPort = newSourceNode.outputs[0]
-        if(!newOutputPort) throw new Error(`No output port found for output port "${outputPort.name}" on the nesteddiagram of "${node.type}"`)
+        if(!newOutputPort) throw new Error(`No output port found for output port "${outputPort.name}" on the nesteddiagram of "${node.name}"`)
 
         link.sourcePortId = newOutputPort.id
       }

@@ -128,10 +128,10 @@ export class Diagram {
   }
 
   inputNodes(): Node[] {
-    return this.nodes.filter(node => node.type === 'Input')
+    return this.nodes.filter(node => node.name === 'Input')
   }
 
   outputNodes(): Node[] {
-    return this.nodes.filter(node => node.type === 'Output')
+    return this.nodes.filter(node => node.name === 'Output')
   }
 }
