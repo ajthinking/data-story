@@ -24,7 +24,7 @@ import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
 import { getNodesWithNewSelection } from './getNodesWithNewSelection';
-import { createDataStoryId, NodeStatus, RequestObserverType } from '@data-story/core';
+import { createDataStoryId, LinkCount, LinkId, NodeStatus, RequestObserverType } from '@data-story/core';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -125,7 +125,7 @@ const Flow = ({
       onReceive: ({ links }) => {
         if (!links || links.length === 0) return;
 
-        const edgeCounts = links.reduce((acc, link) => {
+        const edgeCounts: Record<LinkId, LinkCount> = links.reduce((acc, link) => {
           acc[link.linkId] = link.count;
           return acc;
         }, {});

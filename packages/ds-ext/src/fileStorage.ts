@@ -1,4 +1,4 @@
-import { GetLinkItemsParams, ItemValue, ObserverStorage } from '@data-story/core';
+import { GetLinkItemsParams, ItemValue, LinkId, NodeId, ObserverStorage } from '@data-story/core';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
@@ -20,12 +20,12 @@ export class FileStorage implements ObserverStorage {
 
   async close() {}
 
-  async getLinkCount(linkId: string): Promise<number | undefined> {
+  async getLinkCount(linkId: LinkId): Promise<number | undefined> {
     const data = this.read();
     return data.linkCounts[linkId];
   }
 
-  async setLinkCount(linkId: string, count: number): Promise<void> {
+  async setLinkCount(linkId: LinkId, count: number): Promise<void> {
     const data = this.read();
     data.linkCounts[linkId] = count;
     this.write(data);
@@ -36,24 +36,24 @@ export class FileStorage implements ObserverStorage {
     return data.linkItems[linkId].slice(offset, offset + limit);
   }
 
-  async setLinkItems(linkId: string, items: ItemValue[]): Promise<void> {
+  async setLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
     const data = this.read();
     data.linkItems[linkId] = items;
     this.write(data);
   }
 
-  async appendLinkItems(linkId: string, items: ItemValue[]): Promise<void> {
+  async appendLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
     const data = this.read();
     data.linkItems[linkId].push(...items);
     this.write(data);
   }
 
-  async getNodeStatus(nodeId: string): Promise<'BUSY' | 'COMPLETE' | undefined> {
+  async getNodeStatus(nodeId: NodeId): Promise<'BUSY' | 'COMPLETE' | undefined> {
     const data = this.read();
     return data.nodes[nodeId];
   }
 
-  async setNodeStatus(nodeId: string, status: 'BUSY' | 'COMPLETE'): Promise<void> {
+  async setNodeStatus(nodeId: NodeId, status: 'BUSY' | 'COMPLETE'): Promise<void> {
     const data = this.read();
     data.nodes[nodeId] = status;
     this.write(data);

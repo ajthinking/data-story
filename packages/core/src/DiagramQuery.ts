@@ -1,4 +1,5 @@
 import { Diagram } from './Diagram';
+import { PortId } from './types/PortId';
 
 export type NodeLabel = string
 export type NodeId = string
@@ -19,7 +20,7 @@ export class DiagramQuery {
     })
   }
 
-  protected getPortId(portDescriptor: PortDescriptor): string {
+  protected getPortId(portDescriptor: PortDescriptor): PortId {
     const [nodeType, portName] = portDescriptor.split('.')
 
     const node = this.diagram.nodes.find(node => node.type === nodeType)

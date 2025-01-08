@@ -1,8 +1,9 @@
 import { RequestObserverType } from './InputObserveConfig';
 import { ItemValue } from './ItemValue';
+import { LinkId } from './Link';
 
 export type LinkItemsParam = {
   type: RequestObserverType.observeLinkItems;
-  linkId: string;
+  linkId: LinkId;
   items: ItemValue[];
 }
