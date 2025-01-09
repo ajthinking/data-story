@@ -14,8 +14,6 @@ import {
   LinkId,
   NodeDescription,
   ObserveLinkUpdate,
-  NodeId,
-  NodeStatus,
   ObserveNodeStatus,
   RequestObserverType,
   LinkItemsParam,
@@ -30,7 +28,7 @@ import {
   GetDataFromStorageParamsSchema,
   NodeDescriptionRequestSchema,
   NodeDescriptionResponseSchema,
-  LinkItemsSchema,
+  NodesStatusInfo,
   LinkItemsParamSchema
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
@@ -154,7 +152,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
         })
       );
     const nodeStatusSubscription = msg$.subscribe((data) => {
-      const { nodes } = data as {nodes: {nodeId: NodeId, status: NodeStatus}[]};
+      const { nodes } = data as {nodes: NodesStatusInfo[]};
       validateZodSchema(NodesStatusSchema, nodes[0]);
       params.onReceive({ nodes });
     });

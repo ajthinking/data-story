@@ -1,5 +1,5 @@
 import { RequestObserverType } from './InputObserveConfig';
-import { NotifyObserversCallbackSchema } from './NotifyObserversCallback';
+import { NotifyObserversCallback, NotifyObserversCallbackSchema } from './NotifyObserversCallback';
 import { LinkId } from './Link';
 import { NodeId } from './Node';
 import { z } from 'zod';
@@ -17,7 +17,7 @@ export const LinkCountInfoSchema = z.object({
 
 export type LinkCountInfo = z.input<typeof LinkCountInfoSchema>;
 
-export const NodesStatusSchema = z.object({
+export const NodesStatusInfoSchema = z.object({
   nodeId: z.string({
     required_error: 'nodeId is required',
     invalid_type_error: 'nodeId must be a string'
@@ -28,7 +28,7 @@ export const NodesStatusSchema = z.object({
   }),
 })
 
-export type NodesStatus = z.input<typeof NodesStatusSchema>;
+export type NodesStatusInfo = z.input<typeof NodesStatusInfoSchema>;
 
 export const ObserveLinkItemsSchema = z.object({
   linkIds: z.array(z.string({
@@ -55,7 +55,7 @@ export const ObserveLinkItemsSchema = z.object({
     required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
-  onReceive: NotifyObserversCallbackSchema
+  onReceive: NotifyObserversCallbackSchema as z.ZodType<NotifyObserversCallback>,
 })
 
 export type ObserveLinkItems = z.input<typeof ObserveLinkItemsSchema>;
@@ -113,7 +113,7 @@ export const ObserveNodeStatusSchema = z.object({
   }).optional(),
   onReceive: z.function()
     .args(z.object({
-      nodes: z.array(NodesStatusSchema)
+      nodes: z.array(NodesStatusInfoSchema)
     }))
     .returns(z.void()),
 });

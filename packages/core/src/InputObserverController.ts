@@ -2,6 +2,7 @@ import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
 import {
   CancelObservation,
+  NodesStatusInfo,
   ObserveLinkCounts,
   ObserveLinkItems,
   ObserveLinkUpdate,
@@ -136,7 +137,7 @@ export class InputObserverController {
           }
         }));
         observer.onReceive({
-          nodes: nodes as {nodeId: NodeId, status: NodeStatus}[]
+          nodes: nodes as NodesStatusInfo[]
         });
       })
     ).subscribe();
