@@ -1,3 +1,7 @@
+import { LinkId } from './Link';
+import { NodeId } from './Node';
+import { PortId } from './PortId';
+
 export enum RequestObserverType {
   observeLinkCounts = 'observeLinkCounts',
   observeLinkItems = 'observeLinkItems',
@@ -5,5 +9,5 @@ export enum RequestObserverType {
   observeNodeStatus = 'observeNodeStatus',
   cancelObservation = 'cancelObservation',
 }
-export type InputObserveConfig = {nodeId: string, portId?: string, type: RequestObserverType}
-| {linkId: string, type: RequestObserverType};
+export type InputObserveConfig = {nodeId: NodeId, portId?: PortId, type: RequestObserverType}
+| {linkId: LinkId, type: RequestObserverType};

@@ -19,7 +19,6 @@ export { ComputerFactory } from './ComputerFactory'
 export { type Computer } from './types/Computer'
 export { Diagram } from './Diagram'
 export type { Node } from './types/Node'
-export type { Link } from './types/Link'
 export { PositionGuesser } from './PositionGuesser'
 export { LinkGuesser } from './LinkGuesser'
 export { InMemoryStorage } from './InMemoryStorage'
@@ -53,7 +52,7 @@ export { GetDataFromStorageParamsSchema, GetDataFromStorageResponseSchema, LinkI
 export * as nodes from './computers'
 export * from './Param'
 export { Registry } from './Registry'
-export type { LinkId } from './types/Link';
+export type { Link, LinkId, LinkCount } from './types/Link';
 export type { NodeId } from './types/Node';
 export type { NodeStatus } from './Executor';
 export type { ObserverStorage, GetLinkItemsParams } from './types/ObserverStorage'

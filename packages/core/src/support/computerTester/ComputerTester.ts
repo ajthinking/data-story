@@ -194,7 +194,7 @@ export class ComputerTester {
     // Create a new Node from the computer + params (TODO: this is a general need)
     const node: Node = {
       id: nodeId,
-      type: this.computer.name,
+      name: this.computer.name,
       inputs: (this.computer.inputs || []).map(input => ({
         id: `${nodeId}.${input.name}`,
         name: input.name,

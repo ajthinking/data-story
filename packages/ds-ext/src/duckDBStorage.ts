@@ -1,4 +1,4 @@
-import { GetLinkItemsParams, ItemValue, ObserverStorage } from '@data-story/core';
+import { GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
 import type { Database as DatabaseType} from 'duckdb-async';
 import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
 export class DuckDBStorage implements ObserverStorage {
@@ -50,7 +50,7 @@ export class DuckDBStorage implements ObserverStorage {
     return this.insertSequence++;
   }
 
-  async getLinkCount(linkId: string): Promise<number | undefined> {
+  async getLinkCount(linkId: LinkId): Promise<LinkCount | undefined> {
     const result = await this.db?.all('SELECT count FROM linkCounts WHERE linkId = ?', linkId);
     if (result && result.length > 0) {
       return result[0].count;
@@ -58,7 +58,7 @@ export class DuckDBStorage implements ObserverStorage {
     return undefined;
   }
 
-  async setLinkCount(linkId: string, count: number): Promise<void> {
+  async setLinkCount(linkId: LinkId, count: LinkCount): Promise<void> {
     const currentTime = new Date();
     await this.db?.all('INSERT INTO linkCounts (linkId, count, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(linkId) DO UPDATE SET count = ?, updateTime = ?',
       linkId, count, currentTime, currentTime, count, currentTime);
@@ -73,13 +73,13 @@ export class DuckDBStorage implements ObserverStorage {
     return result;
   }
 
-  async setLinkItems(linkId: string, items: ItemValue[]): Promise<void> {
+  async setLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
     this.resetSequence();
     await this.db?.all('DELETE FROM linkItems WHERE linkId = ?', linkId);
     await this.appendLinkItems(linkId, items);
   }
 
-  async appendLinkItems(linkId: string, items: ItemValue[]): Promise<void> {
+  async appendLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
     const currentTime = new Date().toISOString();
     const values = items.map(item => {
       const data = JSON.stringify(item);
@@ -93,7 +93,7 @@ export class DuckDBStorage implements ObserverStorage {
     await this.db?.run(sql);
   }
 
-  async getNodeStatus(nodeId: string): Promise<'BUSY' | 'COMPLETE' | undefined> {
+  async getNodeStatus(nodeId: NodeId): Promise<'BUSY' | 'COMPLETE' | undefined> {
     const result = await this.db?.all('SELECT status FROM nodes WHERE nodeId = ?', nodeId);
     if (!result || result.length === 0) {
       return undefined;
@@ -101,7 +101,7 @@ export class DuckDBStorage implements ObserverStorage {
     return result[0].status;
   }
 
-  async setNodeStatus(nodeId: string, status: 'BUSY' | 'COMPLETE'): Promise<void> {
+  async setNodeStatus(nodeId: NodeId, status: 'BUSY' | 'COMPLETE'): Promise<void> {
     const currentTime = new Date();
     await this.db?.all('INSERT INTO nodes (nodeId, status, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(nodeId) DO UPDATE SET status = ?, updateTime = ?',
       nodeId, status, currentTime, currentTime, status, currentTime);

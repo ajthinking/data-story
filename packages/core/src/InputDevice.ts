@@ -5,6 +5,7 @@ import { Node } from './types/Node'
 import { ItemValue } from './types/ItemValue'
 import { InputObserverController } from './InputObserverController';
 import { UnfoldedDiagram } from './UnfoldedDiagram'
+import { PortName } from './types/Port'
 
 export class InputDevice {
   constructor(
@@ -27,7 +28,7 @@ export class InputDevice {
   /**
    * Removes and return items at edges connected to input with name
    */
-  pullFrom(name: string, count: number = Infinity): ItemWithParams[] {
+  pullFrom(name: PortName, count: number = Infinity): ItemWithParams[] {
     let remaining = count
     const pulled: ItemValue[] = []
     const links = this.unfoldedDiagram.diagram.linksAtInput(this.node, name)

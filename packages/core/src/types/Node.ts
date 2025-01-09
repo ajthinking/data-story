@@ -5,7 +5,7 @@ export type NodeId = string
 
 export type Node = {
   id: NodeId
-  type: string
+  name: string
   label?: string
   inputs: Port[]
   outputs: Port[]

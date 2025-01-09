@@ -8,7 +8,7 @@ describe('add', () => {
     const diagram = new Diagram()
     const node: Node = {
       id: 'node-id',
-      type: 'MyNode',
+      name: 'MyNode',
       inputs: [],
       outputs: [],
       params: []
@@ -30,7 +30,7 @@ describe('nodeWithOutputPortId', () => {
 
     const node: Node = {
       id: 'node-id',
-      type: 'MyNode',
+      name: 'MyNode',
       inputs: [],
       outputs: [output],
       params: []
@@ -70,7 +70,7 @@ describe('clone', () => {
   it('creates a deep clone of the diagram', () => {
     const node: Node = {
       id: 'node-id',
-      type: 'MyNode',
+      name: 'MyNode',
       inputs: [],
       outputs: [],
       params: []

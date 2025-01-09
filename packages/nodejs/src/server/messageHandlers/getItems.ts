@@ -1,10 +1,10 @@
 import WebSocket from 'ws';
-import { Application, InMemoryStorage } from '@data-story/core';
+import { Application, InMemoryStorage, NodeId } from '@data-story/core';
 import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 
 export type GetItemsMessage = {
   type: 'getItems',
-  atNodeId: string,
+  atNodeId: NodeId,
   id: string,
   offset?: number,
   limit?: number,

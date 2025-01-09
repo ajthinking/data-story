@@ -17,6 +17,7 @@ import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
 import { LinkItemsParam } from './types/LinkItemsParam';
 import { LinksCountParam } from './types/LinksCountParam';
+import { sleep } from './utils/sleep';
 
 const ThrottleMS: number = 300;
 
@@ -153,5 +154,19 @@ export class InputObserverController {
         this.observerMap.delete(observer.observerId);
       }
     }
+  }
+
+  async dispose() {
+    // Await any throttled events to complete
+    await sleep(ThrottleMS)
+
+    // Remove all subscriptions
+    this.observerMap.forEach((subscription) => subscription.unsubscribe());
+    this.observerMap.clear();
+
+    // Complete all subjects
+    this.items$.complete();
+    this.links$.complete();
+    this.nodeStatus$.complete();
   }
 }

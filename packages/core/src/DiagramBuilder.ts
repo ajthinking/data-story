@@ -3,6 +3,7 @@ import { Param, ParamValue, StringableInputValue } from './Param';
 import { Computer } from './types/Computer';
 import { Node } from './types/Node';
 import { NodeDescription } from './types/NodeDescription';
+import { PortId } from './types/PortId';
 import { isStringableParam } from './utils/isStringableParam';
 
 // type ParamConfig = Record<string, ParamValue> | Partial<Param>
@@ -39,7 +40,7 @@ export class DiagramBuilder {
     const node: Node = {
       id: nodeId,
       label: name,
-      type: name,
+      name: name,
       // The inputs have not yet been assigned ids, to it here
       inputs: diagram.inputNodes().map(inputNode => {
         const param = inputNode.params.find(param => param.name === 'port_name');
@@ -109,7 +110,7 @@ export class DiagramBuilder {
     return this;
   }
 
-  connect(connections? : string | [fromPortId: string, toPortId: string][]) {
+  connect(connections? : string | [fromPortId: PortId, toPortId: PortId][]) {
     if(!connections) return this.guessConnections()
     if(typeof connections === 'string') return this.connectByString(connections)
 
@@ -122,7 +123,7 @@ export class DiagramBuilder {
     return this
   }
 
-  connectByArray(connections: [fromPortId: string, toPortId: string][]) {
+  connectByArray(connections: [fromPortId: PortId, toPortId: PortId][]) {
     for(const [fromPortId, toPortId] of connections) {
       const sourceNodeId = fromPortId.split('.').slice(0, -1).join('.');
       const targetNodeId = toPortId.split('.').slice(0, -1).join('.');
@@ -226,7 +227,7 @@ export class DiagramBuilder {
 
     return structuredClone({
       id,
-      type: nodeDescription.name,
+      name: nodeDescription.name,
       label: nodeDescription.label,
       inputs: nodeDescription.inputs.map(input => {
         return {
@@ -295,7 +296,7 @@ export class DiagramBuilder {
 
   protected getScopedId(nodeName: string) {
     const max = this.diagram.nodes
-      .filter(node => node.type === nodeName)
+      .filter(node => node.name === nodeName)
       .map(node => node.id)
       .map(id => id.split('.')[1])
       .map(id => parseInt(id))
