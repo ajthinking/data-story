@@ -1,10 +1,10 @@
 import { MessageHandler } from '../MessageHandler';
 import { createAndBootApp } from '../app/createAndBootApp';
 
-export const onGetNodeDescriptions: MessageHandler = async ({ event, webviewPanel }) => {
+export const onGetNodeDescriptions: MessageHandler = async ({ event, postMessage }) => {
   const app = await createAndBootApp();
 
-  webviewPanel.webview.postMessage({
+  postMessage({
     ...event,
     awaited: true,
     availableNodes: app.descriptions(),

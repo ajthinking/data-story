@@ -5,9 +5,9 @@ import {
   LinkId
 } from '@data-story/core';
 
-export const getDataFromStorage: MessageHandler = async({ event, webviewPanel, inputObserverController }) => {
+export const getDataFromStorage: MessageHandler = async({ event, postMessage, inputObserverController }) => {
   const result: Record<LinkId, ItemValue[]> = await inputObserverController.getDataFromStorage(event as GetDataFromStorageParams);
-  webviewPanel.webview.postMessage({
+  postMessage({
     ...event,
     data: result,
   });

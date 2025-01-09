@@ -27,7 +27,7 @@ export const makeDensityDatasets = (directory: string) => {
 
   // Generate datasets based on density vectors
   const createDatasets = (fileDensity: any, itemsDensity: any, schemaDensity: any) => {
-    const datasetDir = path.join(datasetsDir, `${fileDensity}-${itemsDensity}-${schemaDensity}`);
+    const datasetDir = path.join(datasetsDir, `${fileDensity}_${itemsDensity}_${schemaDensity}`);
     if (!fs.existsSync(datasetDir)) fs.mkdirSync(datasetDir);
 
     for (let i = 0; i < fileDensity; i++) {
