@@ -605,6 +605,7 @@ __metadata:
     webpack: "npm:^5.88.1"
     webpack-cli: "npm:^5.1.4"
     ws: "npm:^8.12.1"
+    zod: "npm:^3.24.1"
     zustand: "npm:^4.3.9"
   peerDependencies:
     react: ^18.2.0
