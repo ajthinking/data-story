@@ -15,7 +15,7 @@ export type NodeDescription = {
  * @schema NodeDescriptionResponse
  */
 export const NodeDescriptionResponseSchema = z.object({
-  availableNodes: z.array(z.object({}), {
+  availableNodes: z.array(z.object({}) as unknown as z.ZodType<NodeDescription>, {
     required_error: 'availableNodes is required',
     invalid_type_error: 'availableNodes must be an array'
   }),
@@ -37,13 +37,7 @@ export const NodeDescriptionResponseSchema = z.object({
   }),
 });
 
-export interface NodeDescriptionResponse {
-  availableNodes: NodeDescription[];
-  msgId: string;
-  path?: string;
-  status: 'server-post';
-  type: 'getNodeDescriptions';
-}
+export type NodeDescriptionResponse = z.input<typeof NodeDescriptionResponseSchema>;
 
 /**
  * @schema NodeDescriptionRequest
@@ -63,8 +57,4 @@ export const NodeDescriptionRequestSchema = z.object({
   }).optional()
 });
 
-export interface NodeDescriptionRequest {
-  type: 'getNodeDescriptions';
-  path?: string;
-  msgId?: string;
-}
+export type NodeDescriptionRequest = z.input<typeof NodeDescriptionRequestSchema>;

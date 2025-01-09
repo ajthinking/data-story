@@ -1,67 +1,8 @@
 import { RequestObserverType } from './InputObserveConfig';
-import { NotifyObserversCallback } from './NotifyObserversCallback';
+import { NotifyObserversCallbackSchema } from './NotifyObserversCallback';
 import { LinkId } from './Link';
-import { NodeStatus } from '../Executor';
 import { NodeId } from './Node';
 import { z } from 'zod';
-
-export type ObserveLinkItems = {
-  type: RequestObserverType.observeLinkItems,
-  linkIds: string[],
-  onReceive: NotifyObserversCallback,
-  observerId: string,
-  direction?: 'pull' | 'push',
-  throttleMs?: number,
-  msgId?: string;
-}
-
-export interface LinkCountInfo {
-  count: number;
-  linkId: string;
-}
-
-export type ObserveLinkCounts = {
-  type: RequestObserverType.observeLinkCounts,
-  linkIds: string[],
-  observerId: string,
-  throttleMs?: number,
-  msgId?: string,
-  onReceive: (params: {
-    links: LinkCountInfo[],
-  }) => void,
-}
-
-export type NodesStatus = {nodeId: NodeId, status: Omit<NodeStatus, 'AVAILABLE'>}
-
-export type ObserveNodeStatus = {
-  type: RequestObserverType.observeNodeStatus,
-  nodeIds: NodeId[],
-  observerId: string,
-  throttleMs?: number,
-  msgId?: string,
-  onReceive: (data: {
-    nodes: NodesStatus[],
-  }) => void,
-}
-
-export type ObserveLinkUpdate = {
-  type: RequestObserverType.observeLinkUpdate,
-  linkIds: string[],
-  observerId: string,
-  onReceive: (linkIds: LinkId[]) => void,
-  throttleMs?: number,
-  msgId?: string,
-  limit?: number,
-  offset?: number,
-}
-
-export type CancelObservation = {
-  type: RequestObserverType.cancelObservation,
-  observerId: string,
-  msgId?: string
-}
-
-export type ExecutionObserver = ObserveLinkItems | ObserveLinkCounts | CancelObservation | ObserveLinkUpdate | ObserveNodeStatus;
 
 export const LinkCountInfoSchema = z.object({
   count: z.number({
@@ -74,6 +15,8 @@ export const LinkCountInfoSchema = z.object({
   }),
 })
 
+export type LinkCountInfo = z.input<typeof LinkCountInfoSchema>;
+
 export const NodesStatusSchema = z.object({
   nodeId: z.string({
     required_error: 'nodeId is required',
@@ -84,6 +27,8 @@ export const NodesStatusSchema = z.object({
     invalid_type_error: 'status must be either BUSY or COMPLETE'
   }),
 })
+
+export type NodesStatus = z.input<typeof NodesStatusSchema>;
 
 export const ObserveLinkItemsSchema = z.object({
   linkIds: z.array(z.string({
@@ -110,8 +55,10 @@ export const ObserveLinkItemsSchema = z.object({
     required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
-  onReceive: z.function(),
+  onReceive: NotifyObserversCallbackSchema
 })
+
+export type ObserveLinkItems = z.input<typeof ObserveLinkItemsSchema>;
 
 export const ObserveLinkCountsSchema = z.object({
   type: z.literal(RequestObserverType.observeLinkCounts, {
@@ -134,8 +81,14 @@ export const ObserveLinkCountsSchema = z.object({
     required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
-  onReceive: z.function(),
+  onReceive: z.function()
+    .args(z.object({
+      links: z.array(LinkCountInfoSchema)
+    }))
+    .returns(z.void()),
 });
+
+export type ObserveLinkCounts = z.input<typeof ObserveLinkCountsSchema>;
 
 export const ObserveNodeStatusSchema = z.object({
   type: z.literal(RequestObserverType.observeNodeStatus, {
@@ -145,7 +98,7 @@ export const ObserveNodeStatusSchema = z.object({
   nodeIds: z.array(z.string({
     required_error: 'nodeIds is required',
     invalid_type_error: 'nodeIds must be a string'
-  })),
+  }).transform(nodeId => nodeId as NodeId)),
   observerId: z.string({
     required_error: 'observerId is required',
     invalid_type_error: 'observerId must be a string'
@@ -158,8 +111,14 @@ export const ObserveNodeStatusSchema = z.object({
     required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
-  onReceive: z.function(),
+  onReceive: z.function()
+    .args(z.object({
+      nodes: z.array(NodesStatusSchema)
+    }))
+    .returns(z.void()),
 });
+
+export type ObserveNodeStatus = z.input<typeof ObserveNodeStatusSchema>;
 
 export const ObserveLinkUpdateSchema = z.object({
   type: z.literal(RequestObserverType.observeLinkUpdate, {
@@ -190,8 +149,14 @@ export const ObserveLinkUpdateSchema = z.object({
     required_error: 'offset is required',
     invalid_type_error: 'offset must be a number'
   }).optional(),
-  onReceive: z.function(),
+  onReceive: z.function()
+    .args(z.array(
+      z.string().transform(linkId => linkId as LinkId).optional()
+    ))
+    .returns(z.void())
 });
+
+export type ObserveLinkUpdate = z.input<typeof ObserveLinkUpdateSchema>;
 
 export const CancelObservationSchema = z.object({
   type: z.literal(RequestObserverType.cancelObservation, {
@@ -208,10 +173,14 @@ export const CancelObservationSchema = z.object({
   }).optional(),
 });
 
+export type CancelObservation = z.input<typeof CancelObservationSchema>;
+
 export const ExecutionObserverSchema = z.discriminatedUnion('type', [
   ObserveLinkItemsSchema,
   ObserveLinkCountsSchema,
   ObserveLinkUpdateSchema,
   ObserveNodeStatusSchema,
-  CancelObservationSchema,
+  CancelObservationSchema
 ]);
+
+export type ExecutionObserver = z.input<typeof ExecutionObserverSchema>;
