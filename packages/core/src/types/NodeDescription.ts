@@ -24,7 +24,6 @@ export const NodeDescriptionResponseSchema = z.object({
     invalid_type_error: 'msgId must be a string'
   }),
   path: z.string({
-    required_error: 'path is required',
     invalid_type_error: 'path must be a string'
   }).optional(),
   status: z.literal('server-post', {
@@ -48,11 +47,9 @@ export const NodeDescriptionRequestSchema = z.object({
     invalid_type_error: 'type must be getNodeDescriptions'
   }),
   path: z.string({
-    required_error: 'path is required',
     invalid_type_error: 'path must be a string'
   }).optional(),
   msgId: z.string({
-    required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional()
 });

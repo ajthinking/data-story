@@ -3,8 +3,14 @@ import { RequestObserverType } from './InputObserveConfig';
 import { ItemValue } from './ItemValue';
 
 export const LinkItemsParamSchema = z.object({
-  type: z.literal(RequestObserverType.observeLinkItems),
-  linkId: z.string(),
+  type: z.literal(RequestObserverType.observeLinkItems, {
+    required_error: 'type is required',
+    invalid_type_error: 'type must be observeLinkItems'
+  }),
+  linkId: z.string({
+    required_error: 'linkId is required',
+    invalid_type_error: 'linkId must be a string'
+  }) as z.ZodType<string>,
   items: z.array(z.object({}) as z.ZodType<ItemValue>),
 });
 

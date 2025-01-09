@@ -5,7 +5,6 @@ import { z } from 'zod';
 export const NotifyObserversCallbackSchema = z.function()
   .args(
     z.array(LinkItemsParamSchema) as z.ZodType<LinkItemsParam[]>,
-    // z.optional(z.object({}) as unknown as z.ZodType<InputObserver | undefined>)
     z.optional(z.object({}) as unknown as z.ZodType<InputObserver>)
   ).returns(z.void());
 

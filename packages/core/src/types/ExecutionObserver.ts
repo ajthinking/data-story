@@ -12,7 +12,7 @@ export const LinkCountInfoSchema = z.object({
   linkId: z.string({
     required_error: 'linkId is required',
     invalid_type_error: 'linkId must be a string'
-  }),
+  }) as z.ZodType<LinkId>,
 })
 
 export type LinkCountInfo = z.input<typeof LinkCountInfoSchema>;
@@ -34,7 +34,7 @@ export const ObserveLinkItemsSchema = z.object({
   linkIds: z.array(z.string({
     required_error: 'linkIds is required',
     invalid_type_error: 'linkIds must be an array'
-  })),
+  }) as z.ZodType<LinkId>),
   type: z.literal(RequestObserverType.observeLinkItems, {
     required_error: 'type is required',
     invalid_type_error: 'type must be observeLinkItems'
@@ -44,15 +44,12 @@ export const ObserveLinkItemsSchema = z.object({
     invalid_type_error: 'observerId must be a string'
   }),
   direction: z.enum(['pull', 'push'], {
-    required_error: 'direction is required',
     invalid_type_error: 'direction must be either pull or push'
   }).optional(),
   throttleMs: z.number({
-    required_error: 'throttleMs is required',
     invalid_type_error: 'throttleMs must be a number'
   }).optional(),
   msgId: z.string({
-    required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
   onReceive: NotifyObserversCallbackSchema as z.ZodType<NotifyObserversCallback>,
@@ -68,17 +65,15 @@ export const ObserveLinkCountsSchema = z.object({
   linkIds: z.array(z.string({
     required_error: 'linkIds is required',
     invalid_type_error: 'linkIds must be a string'
-  })),
+  }) as z.ZodType<LinkId>),
   observerId: z.string({
     required_error: 'observerId is required',
     invalid_type_error: 'observerId must be a string'
   }),
   throttleMs: z.number({
-    required_error: 'throttleMs is required',
     invalid_type_error: 'throttleMs must be a number'
   }).optional(),
   msgId: z.string({
-    required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
   onReceive: z.function()
@@ -104,11 +99,9 @@ export const ObserveNodeStatusSchema = z.object({
     invalid_type_error: 'observerId must be a string'
   }),
   throttleMs: z.number({
-    required_error: 'throttleMs is required',
     invalid_type_error: 'throttleMs must be a number'
   }).optional(),
   msgId: z.string({
-    required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
   onReceive: z.function()
@@ -128,25 +121,21 @@ export const ObserveLinkUpdateSchema = z.object({
   linkIds: z.array(z.string({
     required_error: 'linkIds is required',
     invalid_type_error: 'linkIds must be a string'
-  })),
+  }) as z.ZodType<LinkId>),
   observerId: z.string({
     required_error: 'observerId is required',
     invalid_type_error: 'observerId must be a string'
   }),
   throttleMs: z.number({
-    required_error: 'throttleMs is required',
     invalid_type_error: 'throttleMs must be a number'
   }).optional(),
   msgId: z.string({
-    required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
   limit: z.number({
-    required_error: 'limit is required',
     invalid_type_error: 'limit must be a number'
   }).optional(),
   offset: z.number({
-    required_error: 'offset is required',
     invalid_type_error: 'offset must be a number'
   }).optional(),
   onReceive: z.function()
@@ -168,7 +157,6 @@ export const CancelObservationSchema = z.object({
     invalid_type_error: 'observerId must be a string'
   }),
   msgId: z.string({
-    required_error: 'msgId is required',
     invalid_type_error: 'msgId must be a string'
   }).optional(),
 });
