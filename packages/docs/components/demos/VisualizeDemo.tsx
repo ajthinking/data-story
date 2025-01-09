@@ -1,4 +1,4 @@
-import { core, createDataStoryId, ObserveLinkItems, nodes, RequestObserverType } from '@data-story/core';
+import { core, createDataStoryId, ObserveLinkItems, nodes, RequestObserverType, ItemValue, ObserveLinkCounts } from '@data-story/core';
 import React, { useEffect, useMemo } from 'react';
 import { DataStory } from '@data-story/ui';
 import {
@@ -53,12 +53,12 @@ const diagram = core.getDiagramBuilder()
   .get();
 
 export default () => {
-  const [points, setPoints] = React.useState([]);
+  const [points, setPoints] = React.useState<ItemValue[]>([]);
   const { app, loading } = useRequestApp();
   const client = useMemo(() => new CustomizeJSClient({ diagram, app }), [diagram, app]);
 
   const mapNode = diagram.nodes.find(n => n.name === 'Map');
-  const mapperParam = mapNode.params.find(p => p.name === 'mapper') as any;
+  const mapperParam = mapNode!.params.find(p => p.name === 'mapper') as any;
   mapperParam.value = {
     ...mapperParam.value,
     Evaluation: 'JS_FUNCTION',
@@ -96,12 +96,12 @@ export default () => {
     const linksCountObserver = {
       type: RequestObserverType.observeLinkCounts as const,
       linkIds: [diagram.links[1].id],
-      onReceive: (count) => {
+      onReceive: (count: number) => {
         console.log('Link count', count);
       },
       observerId: createDataStoryId(),
     }
-    const subscription = client?.observeLinkCounts?.(linksCountObserver);
+    const subscription = client?.observeLinkCounts?.(linksCountObserver as unknown as ObserveLinkCounts);
     return () =>  subscription?.unsubscribe()
   }, [client]);
 
