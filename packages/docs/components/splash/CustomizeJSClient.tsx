@@ -5,8 +5,9 @@ import {
   ObserveLinkItems,
   ObserveLinkCounts,
   ObserveLinkUpdate,
-  GetDataFromStorage,
-  ObserveNodeStatus
+  GetDataFromStorageParams,
+  ObserveNodeStatus,
+  CancelObservation
 } from '@data-story/core';
 import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientImplement } from '@data-story/ui';
 
@@ -23,11 +24,11 @@ export class CustomizeJSClient implements WorkspaceApiClientImplement {
   }) {
     this.nodeDescriptions = nodeDescriptions || [];
     this.app = app;
-    this.diagram = diagram;
+    this.diagram = diagram || new Diagram();
     this.jsClient = createJSClient(this.app);
   }
 
-  getNodeDescriptions = async({ path }) => {
+  getNodeDescriptions = async(params: { path?: string }) => {
     return this.nodeDescriptions;
   };
 
@@ -35,7 +36,7 @@ export class CustomizeJSClient implements WorkspaceApiClientImplement {
     this.jsClient.run(params);
   };
 
-  getDiagram = async({ path }) => {
+  getDiagram = async(params: { path?: string }) => {
     return this.diagram;
   };
 
@@ -55,11 +56,11 @@ export class CustomizeJSClient implements WorkspaceApiClientImplement {
     return this.jsClient.observeLinkUpdate(params);
   }
 
-  getDataFromStorage = (params: GetDataFromStorage) => {
+  getDataFromStorage = (params: GetDataFromStorageParams) => {
     return this.jsClient.getDataFromStorage(params);
   }
 
-  cancelObservation = (params) => {
+  cancelObservation = (params: CancelObservation) => {
     return this.jsClient.cancelObservation(params);
   }
 }

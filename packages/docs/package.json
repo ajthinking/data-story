@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "analyze": "cross-env ANALYZE_ENV=true next build"
+    "analyze": "cross-env ANALYZE_ENV=true next build",
+    "lint": "next lint"
   },
   "repository": {
     "type": "git",

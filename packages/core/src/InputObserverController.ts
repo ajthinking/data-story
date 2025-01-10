@@ -2,6 +2,7 @@ import { ItemValue } from './types/ItemValue';
 import { RequestObserverType } from './types/InputObserveConfig';
 import {
   CancelObservation,
+  NodesStatusInfo,
   ObserveLinkCounts,
   ObserveLinkItems,
   ObserveLinkUpdate,
@@ -10,7 +11,7 @@ import {
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 import { LinkId } from './types/Link';
-import { GetDataFromStorage, LinkItems } from './types/GetDataFromStorage';
+import { GetDataFromStorageParams, LinkItems } from './types/GetDataFromStorageParams';
 import { NodeStatus } from './Executor';
 import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
@@ -55,7 +56,7 @@ export class InputObserverController {
     linkId,
     limit = 100,
     offset = 0
-  }: GetDataFromStorage): Promise<LinkItems> {
+  }: GetDataFromStorageParams): Promise<LinkItems> {
     const items: LinkItems = {};
     const currentItems = await this.storage.getLinkItems({linkId, offset, limit}) ?? [];
     items[linkId] = currentItems;
@@ -137,7 +138,7 @@ export class InputObserverController {
           }
         }));
         observer.onReceive({
-          nodes: nodes as {nodeId: NodeId, status: NodeStatus}[]
+          nodes: nodes as NodesStatusInfo[]
         });
       })
     ).subscribe();

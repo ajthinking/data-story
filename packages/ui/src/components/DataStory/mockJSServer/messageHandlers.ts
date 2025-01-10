@@ -6,7 +6,7 @@ import {
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
-  type ObserveLinkItems, ObserveLinkCounts, ObserveLinkUpdate, GetDataFromStorage, LinkId, ObserveNodeStatus,
+  type ObserveLinkItems, ObserveLinkCounts, ObserveLinkUpdate, GetDataFromStorageParams, LinkId, ObserveNodeStatus,
   CancelObservation
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
@@ -141,9 +141,10 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const getDataFromStorage = async({ data, sendEvent }: HandlerParam) => {
-    const result: Record<LinkId, ItemValue[]> = await inputObserverController.getDataFromStorage(data as GetDataFromStorage);
+    const result: Record<LinkId, ItemValue[]> = await inputObserverController.getDataFromStorage(data as GetDataFromStorageParams);
+
     sendEvent({
-      ...data as GetDataFromStorage,
+      ...data as GetDataFromStorageParams,
       data: result
     });
   }

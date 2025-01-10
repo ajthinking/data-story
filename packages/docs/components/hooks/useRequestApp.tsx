@@ -11,10 +11,9 @@ export function useRequestApp(): {
     appInstance.register(coreNodeProvider)
     appInstance.register(remoteNodeProvider)
     await appInstance.boot()
-    await sleep(10) // TODO why is this necessary?
 
     return appInstance
   });
 
-  return { app, loading, error };
+  return { app: app!, loading, error };
 }

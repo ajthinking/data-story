@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { createJSClient, createSocketClient, DataStory } from '@data-story/ui';
+import { createJSClient, createSocketClient, DataStory, WorkspaceApiClientImplement } from '@data-story/ui';
 import { useRequestApp } from './hooks/useRequestApp';
 import { ToastComponent } from './Toast';
 
@@ -7,7 +7,7 @@ export default Playground;
 
 function Playground({ mode }: {mode?: 'js' | 'node'}) {
   const { app, loading } = useRequestApp();
-  const [client, setClient] = useState(null);
+  const [client, setClient] = useState<WorkspaceApiClientImplement>();
 
   useEffect(() => {
     if (mode === 'node') {

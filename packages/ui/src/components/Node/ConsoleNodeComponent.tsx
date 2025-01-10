@@ -3,8 +3,6 @@ import { DataStoryNodeData } from './ReactFlowNode';
 import NodeComponent from './NodeComponent';
 import { useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
-import { Subscription } from 'rxjs';
-import { useMount, useUnmount } from 'ahooks';
 import { createDataStoryId, ObserveLinkItems, RequestObserverType } from '@data-story/core';
 import { StoreSchema } from '../DataStory/types';
 import { useHandleConnections } from '@xyflow/react';

@@ -22,7 +22,7 @@ export function useDiagram(diagramFactory: (builder: DiagramBuilder) => Diagram)
     }
   });
 
-  return { ...data, loading, error };
+  return { ...data!, loading, error };
 }
 
 export function useDiagrams(diagramFactories: ((builder: DiagramBuilder) => Diagram)[]): {
@@ -46,5 +46,5 @@ export function useDiagrams(diagramFactories: ((builder: DiagramBuilder) => Diag
     }
   });
 
-  return { ...data, loading, error };
+  return { ...data!, loading, error };
 }
