@@ -8,7 +8,7 @@ export const getDiagram: MessageHandler = async ({ event, postMessage, document 
     diagram = JSON.parse(diagramData);
   }
 
-  postMessage({
+  postMessage?.({
     ...event,
     type: 'getDiagram',
     diagram: diagram,

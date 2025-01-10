@@ -7,7 +7,7 @@ import {
 
 export const getDataFromStorage: MessageHandler = async({ event, postMessage, inputObserverController }) => {
   const result: Record<LinkId, ItemValue[]> = await inputObserverController.getDataFromStorage(event as GetDataFromStorageParams);
-  postMessage({
+  postMessage?.({
     ...event,
     data: result,
   });

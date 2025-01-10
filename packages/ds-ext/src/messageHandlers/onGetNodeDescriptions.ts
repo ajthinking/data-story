@@ -4,7 +4,7 @@ import { createAndBootApp } from '../app/createAndBootApp';
 export const onGetNodeDescriptions: MessageHandler = async ({ event, postMessage }) => {
   const app = await createAndBootApp();
 
-  postMessage({
+  postMessage?.({
     ...event,
     awaited: true,
     availableNodes: app.descriptions(),

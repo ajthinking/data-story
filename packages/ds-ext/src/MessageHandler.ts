@@ -8,4 +8,4 @@ export type MessageHandlerArgs = {
   inputObserverController: InputObserverController
 };
 
-export type MessageHandler = (args: MessageHandlerArgs) => Promise<void>;
+export type MessageHandler = (args: MessageHandlerArgs) => Promise<() => void> | Promise<void>;

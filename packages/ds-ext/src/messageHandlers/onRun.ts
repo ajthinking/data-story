@@ -45,13 +45,13 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
     for await(const update of execution) {}
 
     const endTime = Date.now();
-    postMessage({
+    postMessage?.({
       msgId,
       type: 'ExecutionResult',
       time: endTime - startTime
     });
   } catch(error: any) {
-    postMessage({
+    postMessage?.({
       msgId,
       type: 'ExecutionFailure',
       error: error.message

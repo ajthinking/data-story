@@ -63,7 +63,7 @@ export class InputObserverController {
     return items;
   }
 
-  observeLinkUpdate(observer: ObserveLinkUpdate): void {
+  observeLinkUpdate(observer: ObserveLinkUpdate): () => void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload.items),
@@ -76,9 +76,16 @@ export class InputObserverController {
     ).subscribe();
 
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
+
+    return () => {
+      this.deleteExecutionObserver({
+        type: RequestObserverType.cancelObservation,
+        observerId: observer.observerId
+      });
+    };
   }
 
-  addLinkItemsObserver(observer: ObserveLinkItems): void {
+  addLinkItemsObserver(observer: ObserveLinkItems): () => void {
     const subscription = this.items$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       bufferTime(observer.throttleMs ?? ThrottleMS),
@@ -106,9 +113,16 @@ export class InputObserverController {
     ).subscribe();
 
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
+
+    return () => {
+      this.deleteExecutionObserver({
+        type: RequestObserverType.cancelObservation,
+        observerId: observer.observerId
+      });
+    };
   }
 
-  addLinkCountsObserver(observer: ObserveLinkCounts): void {
+  addLinkCountsObserver(observer: ObserveLinkCounts): () => void {
     const subscription = this.links$.pipe(
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload),
@@ -123,9 +137,16 @@ export class InputObserverController {
     ).subscribe();
 
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
+
+    return () => {
+      this.deleteExecutionObserver({
+        type: RequestObserverType.cancelObservation,
+        observerId: observer.observerId
+      });
+    };
   }
 
-  addNodeStatusObserver(observer: ObserveNodeStatus): void {
+  addNodeStatusObserver(observer: ObserveNodeStatus): () => void {
     const subscription = this.nodeStatus$.pipe(
       filter(payload => observer.nodeIds.includes(payload.nodeId)),
       bufferTime(observer.throttleMs ?? ThrottleMS),
@@ -143,7 +164,14 @@ export class InputObserverController {
       })
     ).subscribe();
 
-    if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
+    if (observer.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
+
+    return () => {
+      this.deleteExecutionObserver({
+        type: RequestObserverType.cancelObservation,
+        observerId: observer.observerId
+      });
+    };
   }
 
   deleteExecutionObserver(observer: CancelObservation): void {

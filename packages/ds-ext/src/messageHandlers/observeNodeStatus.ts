@@ -5,10 +5,11 @@ import {
 } from '@data-story/core';
 
 export const observeNodeStatus: MessageHandler = async({ event, postMessage, inputObserverController }) => {
-  inputObserverController.addNodeStatusObserver({
+  return inputObserverController.addNodeStatusObserver({
     ...event,
     onReceive: ({ nodes }) => {
-      postMessage({
+      console.log(nodes, 'observeNodeStatus - ds-ext');
+      postMessage?.({
         nodes: nodes,
         type: RequestObserverType.observeNodeStatus,
         msgId: event!.msgId,

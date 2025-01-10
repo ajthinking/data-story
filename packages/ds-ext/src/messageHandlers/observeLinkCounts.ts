@@ -5,10 +5,10 @@ import {
 } from '@data-story/core';
 
 export const observeLinkCounts: MessageHandler = async({ event, postMessage, inputObserverController }) => {
-  inputObserverController.addLinkCountsObserver({
+  return inputObserverController.addLinkCountsObserver({
     ...event,
     onReceive: ({ links }) => {
-      postMessage({
+      postMessage?.({
         links: links,
         type: RequestObserverType.observeLinkCounts,
         msgId: event!.msgId,
