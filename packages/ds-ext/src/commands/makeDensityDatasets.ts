@@ -4,7 +4,6 @@ import * as path from 'path';
 
 export const makeDensityDatasets = (directory: string) => {
   const datasetsDir = path.join(directory);
-  console.log(datasetsDir, 'datasetsDir', fs.existsSync(datasetsDir), 'fs.existsSync(datasetsDir)');
   if (!fs.existsSync(datasetsDir)) fs.mkdirSync(datasetsDir);
 
   // Utility function to generate an item with schemaDensity

@@ -8,7 +8,6 @@ export const observeNodeStatus: MessageHandler = async({ event, postMessage, inp
   return inputObserverController.addNodeStatusObserver({
     ...event,
     onReceive: ({ nodes }) => {
-      console.log(nodes, 'observeNodeStatus - ds-ext');
       postMessage?.({
         nodes: nodes,
         type: RequestObserverType.observeNodeStatus,
