@@ -92,8 +92,15 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     // Set the webview's HTML content
     webviewPanel.webview.html = this.getWebviewContent(webviewPanel.webview, document);
 
-    // Handle messages from the webview
-    webviewPanel.webview.onDidReceiveMessage(event => {
+    const postMessage = (msg: any) => {
+      // Webview is disposed, but webviewPanel.postMessage is still being referenced. To prevent errors, we need to mock webviewPanel.postMessage.
+      if (webviewPanel?.webview?.postMessage) {
+        return webviewPanel?.webview?.postMessage(msg);
+      }
+    };
+
+    const disposables: (Promise<() => void>)[] = [];
+    const unsubscribe = webviewPanel.webview.onDidReceiveMessage(event => {
       const handlers: Record<string, MessageHandler> = {
         run: onRun,
         getNodeDescriptions: onGetNodeDescriptions,
@@ -114,7 +121,15 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         return;
       }
 
-      handler({ webviewPanel, event, document, inputObserverController: this.inputObserverController });
+      const disposable = handler({ postMessage, event, document, inputObserverController: this.inputObserverController });
+      if(typeof disposable === 'function' && disposable){
+        disposables.push(disposable);
+      }
+    });
+
+    webviewPanel.onDidDispose(() => {
+      unsubscribe.dispose();
+      disposables.forEach(async (disposable) => (await disposable)());
     });
   }
 

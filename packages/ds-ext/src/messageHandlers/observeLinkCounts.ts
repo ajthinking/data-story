@@ -4,11 +4,11 @@ import {
   RequestObserverType
 } from '@data-story/core';
 
-export const observeLinkCounts: MessageHandler = async({ event, webviewPanel, inputObserverController }) => {
-  inputObserverController.addLinkCountsObserver({
+export const observeLinkCounts: MessageHandler = async({ event, postMessage, inputObserverController }) => {
+  return inputObserverController.addLinkCountsObserver({
     ...event,
     onReceive: ({ links }) => {
-      webviewPanel.webview.postMessage({
+      postMessage?.({
         links: links,
         type: RequestObserverType.observeLinkCounts,
         msgId: event!.msgId,

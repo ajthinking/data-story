@@ -4,11 +4,11 @@ import {
   RequestObserverType
 } from '@data-story/core';
 
-export const observeNodeStatus: MessageHandler = async({ event, webviewPanel, inputObserverController }) => {
-  inputObserverController.addNodeStatusObserver({
+export const observeNodeStatus: MessageHandler = async({ event, postMessage, inputObserverController }) => {
+  return inputObserverController.addNodeStatusObserver({
     ...event,
     onReceive: ({ nodes }) => {
-      webviewPanel.webview.postMessage({
+      postMessage?.({
         nodes: nodes,
         type: RequestObserverType.observeNodeStatus,
         msgId: event!.msgId,

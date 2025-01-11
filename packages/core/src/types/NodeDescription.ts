@@ -27,9 +27,8 @@ export const NodeDescriptionResponseSchema = z.object({
     invalid_type_error: 'path must be a string'
   }).optional(),
   status: z.literal('server-post', {
-    required_error: 'status is required',
     invalid_type_error: 'status must be server-post'
-  }),
+  }).optional(),
   type: z.literal('getNodeDescriptions', {
     required_error: 'type is required',
     invalid_type_error: 'type must be getNodeDescriptions'

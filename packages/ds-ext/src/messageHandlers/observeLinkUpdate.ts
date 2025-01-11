@@ -4,11 +4,11 @@ import {
   RequestObserverType
 } from '@data-story/core';
 
-export const observeLinkUpdate: MessageHandler = async({ event, webviewPanel, inputObserverController }) => {
-  inputObserverController.observeLinkUpdate({
+export const observeLinkUpdate: MessageHandler = async({ event, postMessage, inputObserverController }) => {
+  return inputObserverController.observeLinkUpdate({
     ...event,
     onReceive: () => {
-      webviewPanel.webview.postMessage({
+      postMessage?.({
         linkIds: event.linkIds,
         type: RequestObserverType.observeLinkUpdate,
         msgId: event!.msgId,

@@ -21,7 +21,7 @@ function setWorkspaceFolderPath() {
   }
 }
 
-export const onRun: MessageHandler = async ({ event, webviewPanel, inputObserverController }) => {
+export const onRun: MessageHandler = async ({ event, postMessage, inputObserverController }) => {
   const app = await createAndBootApp();
 
   const diagram = new Diagram({
@@ -45,13 +45,13 @@ export const onRun: MessageHandler = async ({ event, webviewPanel, inputObserver
     for await(const update of execution) {}
 
     const endTime = Date.now();
-    webviewPanel.webview.postMessage({
+    postMessage?.({
       msgId,
       type: 'ExecutionResult',
       time: endTime - startTime
     });
   } catch(error: any) {
-    webviewPanel.webview.postMessage({
+    postMessage?.({
       msgId,
       type: 'ExecutionFailure',
       error: error.message
