@@ -14,6 +14,7 @@ import { observeNodeStatus } from './messageHandlers/observeNodeStatus';
 import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
 import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
+import { onEdgeDoubleClick } from './messageHandlers/onEdgeDoubleClick';
 import { DuckDBStorage } from './duckDBStorage';
 import { FileStorage } from './fileStorage';
 import { loadConfig } from './loadConfig';
@@ -113,6 +114,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         observeLinkUpdate,
         getDataFromStorage,
         cancelObservation,
+        onEdgeDoubleClick,
       };
 
       const handler = handlers[event.type];
