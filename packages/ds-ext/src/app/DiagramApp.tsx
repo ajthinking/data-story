@@ -5,7 +5,7 @@ import { VsCodeToast } from './VsCodeToast';
 import { onDrop } from './onDrop';
 import { createVsCodeClient } from './createVsCodeClient';
 
-export default function App() {
+export default function DiagramApp() {
   const client = createVsCodeClient(window.vscode);
 
   const handleChange = useCallback(

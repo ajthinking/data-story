@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import DiagramApp from './DiagramApp';
+import TableApp from './TableApp';
 
 // TypeScript null-check or assertion for the root element
 const rootElement = document.getElementById('root') as HTMLElement | null;
@@ -10,7 +11,8 @@ if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <App />
+      <DiagramApp />
+      {/* <TableApp /> */}
     </React.StrictMode>
   );
 } else {
