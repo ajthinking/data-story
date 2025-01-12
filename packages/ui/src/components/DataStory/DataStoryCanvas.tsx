@@ -205,6 +205,12 @@ const Flow = ({
         onNodeDoubleClick={(_, node) => {
           onNodeDoubleClick?.(node);
         }}
+        onEdgeDoubleClick={(event, edge) => {
+          console.log({
+            msg: 'Edge double click',
+            edgeId: edge.id,
+          })
+        }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);
           if (onChange) onChange(toDiagram())
