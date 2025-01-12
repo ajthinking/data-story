@@ -194,6 +194,13 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     msg$.subscribe(this.receivedMsg$);
   }
 
+  onEdgeDoubleClick(edgeId: string): void {
+    this.transport.sendAndReceive({
+      type: 'onEdgeDoubleClick',
+      edgeId
+    });
+  }
+
   //<editor-fold desc="Message init">
   private initExecutionResult() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionResult')))
