@@ -164,6 +164,8 @@ const TableNodeComponent = ({ id, data }: {
     [rows, headers]
   );
 
+  // console.log(tableData, 'tableData', columns, 'columns');
+
   const tableInstance = useReactTable({
     data: tableData,
     columns,
@@ -176,6 +178,13 @@ const TableNodeComponent = ({ id, data }: {
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => fixedHeight, // every row fixed height
+    overscan: 2,
+  });
+  const colVirtualizer = useVirtualizer({
+    count: getHeaderGroups()[0].headers.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 25, // every row fixed height
+    horizontal: true,
     overscan: 2,
   });
 
@@ -209,7 +218,7 @@ const TableNodeComponent = ({ id, data }: {
                 height: showNoData ? '40px' : 'auto',
               }}
               data-cy={'data-story-table-scroll'}
-              className="max-h-48 nowheel overflow-auto scrollbar rounded-sm">
+              className="max-h-48 max-w-128 nowheel overflow-auto scrollbar rounded-sm">
               <table className="table-auto">
                 <thead>
                   {
@@ -246,6 +255,10 @@ const TableNodeComponent = ({ id, data }: {
                   )}
                   {virtualizer.getVirtualItems().map((virtualRow, rowindex) => {
                     const row = getRowModel().rows[virtualRow.index];
+                    console.log(row.getVisibleCells(), 'row');
+                    // get the column left and start
+                    // const colLeft = colVirtualizer.getVirtualItems()[virtualRow.index].start;
+                    // const colWidth = colInfo[virtualRow.index].size;
                     return (<tr
                       data-cy={'data-story-table-row'}
                       className="odd:bg-gray-50 w-full text-xs"
@@ -254,18 +267,20 @@ const TableNodeComponent = ({ id, data }: {
                         width: '100%',
                       }}
                     >
-                      {row.getVisibleCells().map((cell, cellIndex) => (<td
-                        className="whitespace-nowrap px-1 py-0 my-0"
-                        key={cell.id}
-                        style={{
-                          width: 'auto',
-                          minWidth: '25px',
-                          height: `${fixedHeight}px`,
-                        }}
-                      >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>))}
+                      {
+                        row.getVisibleCells().map((cell, cellIndex) => (<td
+                          className="whitespace-nowrap px-1 py-0 my-0"
+                          key={cell.id}
+                          style={{
+                            width: 'auto',
+                            minWidth: '25px',
+                            height: `${fixedHeight}px`,
+                          }}
+                        >
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>))}
                     </tr>);
+                    // })
                   })}
                   {after > 0 && (
                     <tr>
