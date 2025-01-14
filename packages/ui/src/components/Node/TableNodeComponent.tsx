@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState, CSSProperties, HTMLProps } from 'react';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { ItemCollection } from './ItemCollection';
 import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
@@ -16,7 +16,7 @@ import {
   useRole
 } from '@floating-ui/react';
 import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
-import { notUndefined, useVirtualizer, VirtualItem } from '@tanstack/react-virtual';
+import { notUndefined, useVirtualizer, VirtualItem, Virtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import CustomHandle from './CustomHandle';
 import { ItemValue } from '@data-story/core';
@@ -115,91 +115,136 @@ const MemoizedTableBody = memo(({
   before,
   after,
   virtualRows,
-  getRowModel
+  getRowModel,
+  virtualColumns,
+  rowVirtualizer
 }: {
   before: number;
   after: number;
   virtualRows: VirtualItem[];
+  virtualColumns: VirtualItem[];
+  rowVirtualizer: Virtualizer<HTMLDivElement, Element>;
   getRowModel: () => any;
 }) => {
   useWhyDidYouUpdate('MemoizedTableBody', { before, after, virtualRows, getRowModel });
   return (
-    <tbody>
-      {before > 0 && (
+    <tbody
+      style={{
+        display: 'grid',
+        height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
+        position: 'relative', //needed for absolute positioning of rows
+      }}>
+      {/* {before > 0 && (
         <tr>
           <td style={{ height: before }} />
         </tr>
-      )}
+      )} */}
       {virtualRows.map((virtualRow, rowindex) => {
         const row = getRowModel().rows[virtualRow.index];
-        console.log(row.getVisibleCells(), 'row');
+        // console.log(row.getVisibleCells(), 'row');
         return (
           <tr
             data-cy={'data-story-table-row'}
             className="odd:bg-gray-50 w-full text-xs"
             key={row.id}
             style={{
+              display: 'flex',
+              position: 'absolute',
+              transform: `translateY(${virtualRow.start}px)`,
               width: '100%',
+              // height: `${fixedHeight}px`,
             }}
           >
-            {row.getVisibleCells().map((cell, cellIndex) => (
-              <td
-                className="whitespace-nowrap px-1 py-0 my-0"
-                key={cell.id}
-                style={{
-                  width: 'auto',
-                  minWidth: '25px',
-                  height: `${fixedHeight}px`,
-                }}
-              >
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
+            {/**fake empty column to the left for virtualization scroll padding **/}
+            <td
+              style={{
+                display: 'var(--virtual-padding-left-display)',
+                width: 'calc(var(--virtual-padding-left) * 1px)',
+              }}
+            />
+            {virtualColumns.map((virtualColumn) => {
+              const cell = row.getVisibleCells()[virtualColumn.index];
+              return (
+                <td
+                  className="whitespace-nowrap px-1 py-0 my-0"
+                  key={cell.id}
+                  style={{
+                    display: 'flex',
+                    width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
+                    // minWidth: '25px',
+                    // height: `${fixedHeight}px`,
+                  }}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              )
+            })}
+            <td
+              style={{
+                display: 'var(--virtual-padding-right-display)',
+                width: 'calc(var(--virtual-padding-right) * 1px)',
+              }}
+            />
           </tr>
         );
       })}
-      {after > 0 && (
+      {/* {after > 0 && (
         <tr>
           <td style={{ height: after }} />
         </tr>
-      )}
+      )} */}
     </tbody>
   );
 });
 
 const MemoizedTableHeader = memo(({
   headerGroups,
+  virtualColumns
 }: {
   headerGroups: HeaderGroup<Record<string, unknown>>[];
+  virtualColumns: VirtualItem[];
 }) => {
-  useWhyDidYouUpdate('MemoizedTableHeader', { headerGroups });
+  useWhyDidYouUpdate('MemoizedTableHeader', { headerGroups, virtualColumns });
   return (
     <thead
       style={{
         position: 'sticky',
         top: 0,
         zIndex: 1,
-        height: `${fixedHeight}px`,
+        display: 'grid',
       }}>
       {headerGroups.map((headerGroup) => (
         <tr
           key={headerGroup.id}
-          className="bg-gray-200 space-x-4 z-10"
+          className="bg-gray-200 space-x-4 z-10 flex"
         >
-          {headerGroup.headers.map((header) => (
-            <th
-              data-cy={'data-story-table-th'}
-              key={header.id}
-              style={{
-                height: `${fixedHeight}px`,
-                width: 'auto',
-                minWidth: '25px',
-              }}
-              className="z-10 sticky top-0 whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300"
-            >
-              {flexRender(header.column.columnDef.header, header.getContext())}
-            </th>
-          ))}
+          {/**fake empty column to the left for virtualization scroll padding **/}
+          <th
+            style={{
+              display: 'var(--virtual-padding-left-display)',
+              width: 'calc(var(--virtual-padding-left) * 1px)',
+            }}
+          />
+          {
+            virtualColumns.map((virtualColumn) => {
+              const headerColumn = headerGroup.headers[virtualColumn.index];
+              console.log(headerColumn, 'headerColumn');
+              return (
+                <th
+                  data-cy={'data-story-table-th'}
+                  key={headerColumn.id}
+                  style={{
+                    display: 'flex',
+                    position: 'relative',
+                    width: `calc(var(--header-${headerColumn?.id}-size) * 1px)`,
+                  }}
+                  className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300"
+                >
+                  {flexRender(headerColumn.column.columnDef.header, headerColumn.getContext())}
+                </th>
+              );
+            })
+          }
         </tr>
       ))}
     </thead>
@@ -363,19 +408,22 @@ const TableNodeComponent = ({ id, data }: {
               ref={parentRef}
               style={{
                 height: showNoData ? '40px' : '200px',
-                // ...virtualPaddingVars,
-                // ...colSizes,
+                ...virtualPaddingVars,
+                ...colSizes,
               }}
               data-cy={'data-story-table-scroll'}
               className="max-h-64 max-w-128 nowheel overflow-auto scrollbar rounded-sm">
               <table className="table-auto">
                 <MemoizedTableHeader
                   headerGroups={getHeaderGroups()}
+                  virtualColumns={virtualColumns}
                 />
                 <MemoizedTableBody
                   before={before}
                   after={after}
                   virtualRows={virtualRows}
+                  virtualColumns={virtualColumns}
+                  rowVirtualizer={rowVirtualizer}
                   getRowModel={getRowModel}
                 />
               </table>
