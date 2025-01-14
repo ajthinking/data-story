@@ -15,8 +15,8 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { ColumnDef, flexRender, getCoreRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
-import { notUndefined, useVirtualizer } from '@tanstack/react-virtual';
+import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, HeaderGroup, useReactTable } from '@tanstack/react-table';
+import { notUndefined, useVirtualizer, VirtualItem } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import CustomHandle from './CustomHandle';
 import { ItemValue } from '@data-story/core';
@@ -114,15 +114,15 @@ const fixedHeight = 12;
 const MemoizedTableBody = memo(({
   before,
   after,
-  virtualizer,
-  getRowModel,
+  virtualRows,
+  getRowModel
 }: {
   before: number;
   after: number;
-  virtualizer: any;
+  virtualRows: VirtualItem[];
   getRowModel: () => any;
 }) => {
-  useWhyDidYouUpdate('MemoizedTableBody', { before, after, virtualizer, getRowModel });
+  useWhyDidYouUpdate('MemoizedTableBody', { before, after, virtualRows, getRowModel });
   return (
     <tbody>
       {before > 0 && (
@@ -130,7 +130,7 @@ const MemoizedTableBody = memo(({
           <td style={{ height: before }} />
         </tr>
       )}
-      {virtualizer.getVirtualItems().map((virtualRow, rowindex) => {
+      {virtualRows.map((virtualRow, rowindex) => {
         const row = getRowModel().rows[virtualRow.index];
         console.log(row.getVisibleCells(), 'row');
         return (
@@ -265,32 +265,83 @@ const TableNodeComponent = ({ id, data }: {
   const tableInstance = useReactTable({
     data: tableData,
     columns,
+    defaultColumn: {
+      size: 150,
+      minSize: 60,
+      maxSize: 800,
+    },
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+
   });
 
   const { getHeaderGroups, getRowModel } = tableInstance;
+  const visibleColumns = tableInstance.getVisibleLeafColumns();
+  /**
+   * Instead of calling `column.getSize()` on every render for every header
+   * and especially every data cell (very expensive),
+   * we will calculate all column sizes at once at the root table level in a useMemo
+   * and pass the column sizes down as CSS variables to the <table> element.
+   */
+  const colSizes = React.useMemo(() => {
+    const headers = tableInstance.getLeafHeaders();
+    const colSizes: { [key: string]: number } = {};
 
-  const virtualizer = useVirtualizer({
+    for (let i = 0; i < headers.length; i++) {
+      const header = headers[i]!;
+      colSizes[`--header-${header.id}-size`] = header.getSize();
+      colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
+    }
+
+    return colSizes;
+  }, [tableInstance.getState().columnSizingInfo]);
+  const rowVirtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => fixedHeight, // every row fixed height
     overscan: 2,
   });
-  const colVirtualizer = useVirtualizer({
-    count: getHeaderGroups()[0].headers.length,
+  const columnVirtualizer = useVirtualizer({
+    count: visibleColumns.length,
+    estimateSize: (index) => visibleColumns[index].getSize(), //estimate width of each column for accurate scrollbar dragging
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 25, // every row fixed height
     horizontal: true,
-    overscan: 2,
+    overscan: 5, //how many columns to render on each side off screen each way (adjust this for performance)
   });
 
-  const virtualItems = virtualizer.getVirtualItems();
+  const virtualRows = rowVirtualizer.getVirtualItems();
+  const virtualColumns = columnVirtualizer.getVirtualItems();
+  //different virtualization strategy for columns - instead of absolute and translateY, we add empty columns to the left and right
+
+  let virtualPaddingVars = {
+    '--virtual-padding-left': 0,
+    '--virtual-padding-right': 0,
+    '--virtual-padding-right-display': 'none',
+    '--virtual-padding-left-display': 'none',
+  };
+
+  if (columnVirtualizer && virtualColumns?.length) {
+    let virtualPaddingLeft: number | undefined;
+    let virtualPaddingRight: number | undefined;
+
+    virtualPaddingLeft = virtualColumns[0]?.start ?? 0;
+    virtualPaddingRight =
+    columnVirtualizer.getTotalSize() -
+    (virtualColumns[virtualColumns.length - 1]?.end ?? 0);
+
+    virtualPaddingVars = {
+      '--virtual-padding-left': virtualPaddingLeft,
+      '--virtual-padding-right': virtualPaddingRight,
+      '--virtual-padding-right-display': virtualPaddingRight ? 'flex' : 'none',
+      '--virtual-padding-left-display': virtualPaddingLeft ? 'flex' : 'none',
+    };
+  }
 
   const [before, after] =
-    virtualItems.length > 0
+    virtualRows.length > 0
       ? [
-        notUndefined(virtualItems[0]).start - virtualizer.options.scrollMargin,
-        virtualizer.getTotalSize() - notUndefined(virtualItems[virtualItems.length - 1]).end,
+        notUndefined(virtualRows[0]).start - rowVirtualizer.options.scrollMargin,
+        rowVirtualizer.getTotalSize() - notUndefined(virtualRows[virtualRows.length - 1]).end,
       ]
       : [0, 0];
 
@@ -311,10 +362,12 @@ const TableNodeComponent = ({ id, data }: {
             (<div
               ref={parentRef}
               style={{
-                height: showNoData ? '40px' : 'auto',
+                height: showNoData ? '40px' : '200px',
+                // ...virtualPaddingVars,
+                // ...colSizes,
               }}
               data-cy={'data-story-table-scroll'}
-              className="max-h-48 max-w-128 nowheel overflow-auto scrollbar rounded-sm">
+              className="max-h-64 max-w-128 nowheel overflow-auto scrollbar rounded-sm">
               <table className="table-auto">
                 <MemoizedTableHeader
                   headerGroups={getHeaderGroups()}
@@ -322,7 +375,7 @@ const TableNodeComponent = ({ id, data }: {
                 <MemoizedTableBody
                   before={before}
                   after={after}
-                  virtualizer={virtualizer}
+                  virtualRows={virtualRows}
                   getRowModel={getRowModel}
                 />
               </table>
