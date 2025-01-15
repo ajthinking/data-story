@@ -46,10 +46,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     await this.observerStorage.close();
   }
 
-  private async init(): Promise<void> {
-
-  }
-
   constructor(private readonly context: vscode.ExtensionContext) {
     this.config = loadConfig(this.context);
 
@@ -136,8 +132,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   }
 
   private getWebviewContent(webview: vscode.Webview, document: DiagramDocument): string {
-    const diagramData = Buffer.from(document.data).toString('utf8');
-
     const mainScript = path.join(this.context.extensionPath, 'dist', 'app', 'app.mjs');
 
     const scriptUri = webview.asWebviewUri(
