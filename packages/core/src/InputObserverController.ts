@@ -153,9 +153,10 @@ export class InputObserverController {
       filter(it=> it.length > 0),
       tap(async (_) => {
         const nodes = await Promise.all(observer.nodeIds.map(async (nodeId) => {
+          const status = await this.storage.getNodeStatus(nodeId);
           return {
             nodeId,
-            status: await this.storage.getNodeStatus(nodeId)!
+            status: status ?? 'COMPLETE'
           }
         }));
         observer.onReceive({
