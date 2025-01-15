@@ -1,9 +1,9 @@
 import TableNodeComponent from './TableNodeComponent';
-import { DataStoryContext } from '../DataStory/store/store';
+import { DataStoryContext } from '../../DataStory/store/store';
 import { ReactFlowProvider } from '@xyflow/react';
 import { createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
-import { eventManager } from '../DataStory/events/eventManager';
-import { DataStoryEvents } from '../DataStory/events/dataStoryEventType';
+import { eventManager } from '../../DataStory/events/eventManager';
+import { DataStoryEvents } from '../../DataStory/events/dataStoryEventType';
 import { ItemValue, multiline, ObserveLinkUpdate } from '@data-story/core';
 
 const data = {

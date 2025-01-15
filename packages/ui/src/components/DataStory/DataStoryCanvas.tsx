@@ -14,7 +14,7 @@ import { useGetStore, useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
 import CommentNodeComponent from '../Node/CommentNodeComponent';
 import InputNodeComponent from '../Node/InputNodeComponent';
-import TableNodeComponent from '../Node/TableNodeComponent';
+import TableNodeComponent from '../Node/table/TableNodeComponent';
 import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import ConsoleNodeComponent from '../Node/ConsoleNodeComponent';
