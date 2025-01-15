@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useRef, useState, CSSProperties, HTMLProps } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { DataStoryNodeData } from './ReactFlowNode';
 import { ItemCollection } from './ItemCollection';
 import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
@@ -22,11 +22,13 @@ import CustomHandle from './CustomHandle';
 import { ItemValue } from '@data-story/core';
 import { useWhyDidYouUpdate } from 'ahooks';
 
-const TRUNCATE_CELL_LENGTH = 50;
+const TRUNCATE_CELL_LENGTH = 8;
+const FIXED_HEIGHT = 18;
+const FIXED_WIDTH = 75;
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
-  return result.length > TRUNCATE_CELL_LENGTH ? result.slice(0, TRUNCATE_CELL_LENGTH) + '...' : result;
+  return result.length > TRUNCATE_CELL_LENGTH ? result.slice(0, TRUNCATE_CELL_LENGTH) + '..' : result;
 }
 
 const formatTooltipContent = (content: unknown) => {
@@ -82,7 +84,7 @@ function TableNodeCell(props: {tableRef: React.RefObject<HTMLTableElement>, cont
   }
 
   return (
-    <div style={{width: '75px'}}>
+    <div>
       <span
         ref={refs.setReference} {...getReferenceProps()}
       >
@@ -108,8 +110,6 @@ function LoadingComponent() {
     </div>
   </div>;
 }
-
-const fixedHeight = 18;
 
 const MemoizedTableBody = memo(({
   before,
@@ -145,18 +145,18 @@ const MemoizedTableBody = memo(({
             style={{
               display: 'flex',
               width: '100%',
-              height: `${fixedHeight}px`,
+              height: `${FIXED_HEIGHT}px`,
               position: 'absolute',
               transform: `translateY(${virtualRow.start}px)`,
             }}
           >
             {/**fake empty column to the left for virtualization scroll padding **/}
-            {/*<td*/}
-            {/*  style={{*/}
-            {/*    display: 'var(--virtual-padding-left-display)',*/}
-            {/*    width: 'calc(var(--virtual-padding-left) * 1px)',*/}
-            {/*  }}*/}
-            {/*/>*/}
+            <td
+              style={{
+                display: 'var(--virtual-padding-left-display)',
+                width: 'calc(var(--virtual-padding-left) * 1px)',
+              }}
+            />
             {virtualColumns.map((virtualColumn) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
               return (
@@ -167,19 +167,19 @@ const MemoizedTableBody = memo(({
                     display: 'flex',
                     position: 'relative',
                     width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
-                    height: `${fixedHeight}px`,
+                    height: `${FIXED_HEIGHT}px`,
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               )
             })}
-            {/*<td*/}
-            {/*  style={{*/}
-            {/*    display: 'var(--virtual-padding-right-display)',*/}
-            {/*    width: 'calc(var(--virtual-padding-right) * 1px)',*/}
-            {/*  }}*/}
-            {/*/>*/}
+            <td
+              style={{
+                display: 'var(--virtual-padding-right-display)',
+                width: 'calc(var(--virtual-padding-right) * 1px)',
+              }}
+            />
           </tr>
         );
       })}
@@ -234,6 +234,13 @@ const MemoizedTableHeader = memo(({
               );
             })
           }
+          {/**fake empty column to the left for virtualization scroll padding **/}
+          <th
+            style={{
+              display: 'var(--virtual-padding-right-display)',
+              width: 'calc(var(--virtual-padding-right) * 1px)',
+            }}
+          />
         </tr>
       ))}
     </thead>
@@ -300,7 +307,7 @@ const TableNodeComponent = ({ id, data }: {
     data: tableData,
     columns,
     defaultColumn: {
-      size: 75,
+      size: FIXED_WIDTH,
       minSize: 25,
       maxSize: 150,
     },
@@ -334,7 +341,7 @@ const TableNodeComponent = ({ id, data }: {
   const rowVirtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => fixedHeight, // every row fixed height
+    estimateSize: () => FIXED_HEIGHT, // every row fixed height
     overscan: 2,
   });
   const columnVirtualizer = useVirtualizer({
