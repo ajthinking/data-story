@@ -166,7 +166,7 @@ const MemoizedTableBody = memo(({
                   style={{
                     display: 'flex',
                     position: 'relative',
-                    width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
+                    width: `${FIXED_WIDTH}px`,
                     height: `${FIXED_HEIGHT}px`,
                   }}
                 >
@@ -225,7 +225,7 @@ const MemoizedTableHeader = memo(({
                   style={{
                     display: 'flex',
                     position: 'relative',
-                    width: `calc(var(--header-${headerColumn?.id}-size) * 1px)`,
+                    width: `${FIXED_WIDTH}px`,
                   }}
                   className="whitespace-nowrap bg-gray-200 text-left border-r-0.5 last:border-r-0 border-gray-300"
                 >
@@ -319,25 +319,7 @@ const TableNodeComponent = ({ id, data }: {
 
   const { getHeaderGroups, getRowModel } = tableInstance;
   const visibleColumns = tableInstance.getVisibleLeafColumns();
-  /**
-   * Instead of calling `column.getSize()` on every render for every header
-   * and especially every data cell (very expensive),
-   * we will calculate all column sizes at once at the root table level in a useMemo
-   * and pass the column sizes down as CSS variables to the <table> element.
-   */
-  // todo: 这里存在问题
-  const colSizes = React.useMemo(() => {
-    const headers = tableInstance.getLeafHeaders();
-    const colSizes: { [key: string]: number } = {};
 
-    for (let i = 0; i < headers.length; i++) {
-      const header = headers[i]!;
-      colSizes[`--header-${header.id}-size`] = header.getSize();
-      colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
-    }
-    console.log(colSizes, 'colSizes');
-    return colSizes;
-  }, [tableInstance.getState().columnSizingInfo, tableInstance.getLeafHeaders()]);
   const rowVirtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
@@ -349,7 +331,7 @@ const TableNodeComponent = ({ id, data }: {
     estimateSize: (index) => visibleColumns[index].getSize(), //estimate width of each column for accurate scrollbar dragging
     getScrollElement: () => parentRef.current,
     horizontal: true,
-    overscan: 2, //how many columns to render on each side off screen each way (adjust this for performance)
+    overscan: 2, //how many columns to render on each side off-screen each way (adjust this for performance)
   });
 
   const virtualRows = rowVirtualizer.getVirtualItems();
@@ -392,6 +374,17 @@ const TableNodeComponent = ({ id, data }: {
     return headers.length === 0 && rows.length === 0;
   }, [headers.length, rows.length]);
 
+  const tableHeight = useMemo(() => {
+    if (showNoData) {
+      return '40px';
+    }
+    if (rows.length <= 9) {
+      // rows.length + header row + 5px padding
+      return (rows.length + 1) * FIXED_HEIGHT + 5 + 'px';
+    }
+    return '205px';
+  }, [showNoData, rows.length]);
+
   return (
     (
       <div
@@ -405,10 +398,9 @@ const TableNodeComponent = ({ id, data }: {
             (<div
               ref={parentRef}
               style={{
-                height: showNoData ? '40px' : '200px',
+                height: tableHeight,
                 position: 'relative', // needed for sticky header
                 ...virtualPaddingVars,
-                ...colSizes,
               }}
               data-cy={'data-story-table-scroll'}
               className="max-h-64 max-w-128 nowheel overflow-auto scrollbar rounded-sm">
