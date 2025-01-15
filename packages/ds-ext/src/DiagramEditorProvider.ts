@@ -27,21 +27,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private observerStorage!: ObserverStorage;
   private config: DataStoryConfig;
 
-  public static register(context: vscode.ExtensionContext): vscode.Disposable {
-    const provider = new DiagramEditorProvider(context);
-
-    return vscode.window.registerCustomEditorProvider(
-      'ds-ext.diagramEditor',
-      provider,
-      {
-        webviewOptions: {
-          retainContextWhenHidden: true, // Keep the webview loaded when not visible
-        },
-        supportsMultipleEditorsPerDocument: false,
-      }
-    );
-  }
-
   async dispose(): Promise<void> {
     await this.observerStorage.close();
   }
