@@ -1,6 +1,7 @@
 import { json_, str } from '../Param';
 import { ItemWithParams } from '../ItemWithParams';
 import { Computer } from '../types/Computer';
+import { get } from '../utils/get';
 
 export const Unique: Computer = {
   name: 'Unique',
@@ -44,7 +45,7 @@ export const Unique: Computer = {
 
     // Count occurrences of each item
     for (const item of incoming) {
-      const propValue = item.value[property];
+      const propValue = get(item.value, property);
       if (!itemCounts.has(propValue)) {
         itemCounts.set(propValue, 1);
       } else {
@@ -54,7 +55,7 @@ export const Unique: Computer = {
 
     // Classify items as unique or duplicate based on their counts
     for (const item of incoming) {
-      const propValue = item.value[property];
+      const propValue = get(item.value, property);
       if (itemCounts.get(propValue) === 1) {
         unique.push(item);
       } else {
