@@ -82,7 +82,7 @@ function TableNodeCell(props: {tableRef: React.RefObject<HTMLTableElement>, cont
   }
 
   return (
-    <div>
+    <div style={{width: '75px'}}>
       <span
         ref={refs.setReference} {...getReferenceProps()}
       >
@@ -109,7 +109,7 @@ function LoadingComponent() {
   </div>;
 }
 
-const fixedHeight = 12;
+const fixedHeight = 18;
 
 const MemoizedTableBody = memo(({
   before,
@@ -134,11 +134,6 @@ const MemoizedTableBody = memo(({
         height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
         position: 'relative', //needed for absolute positioning of rows
       }}>
-      {/* {before > 0 && (
-        <tr>
-          <td style={{ height: before }} />
-        </tr>
-      )} */}
       {virtualRows.map((virtualRow, rowindex) => {
         const row = getRowModel().rows[virtualRow.index];
         // console.log(row.getVisibleCells(), 'row');
@@ -149,50 +144,45 @@ const MemoizedTableBody = memo(({
             key={row.id}
             style={{
               display: 'flex',
+              width: '100%',
+              height: `${fixedHeight}px`,
               position: 'absolute',
               transform: `translateY(${virtualRow.start}px)`,
-              width: '100%',
-              // height: `${fixedHeight}px`,
             }}
           >
             {/**fake empty column to the left for virtualization scroll padding **/}
-            <td
-              style={{
-                display: 'var(--virtual-padding-left-display)',
-                width: 'calc(var(--virtual-padding-left) * 1px)',
-              }}
-            />
+            {/*<td*/}
+            {/*  style={{*/}
+            {/*    display: 'var(--virtual-padding-left-display)',*/}
+            {/*    width: 'calc(var(--virtual-padding-left) * 1px)',*/}
+            {/*  }}*/}
+            {/*/>*/}
             {virtualColumns.map((virtualColumn) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
               return (
                 <td
-                  className="whitespace-nowrap px-1 py-0 my-0"
                   key={cell.id}
+                  className="whitespace-nowrap text-left"
                   style={{
                     display: 'flex',
+                    position: 'relative',
                     width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
-                    // minWidth: '25px',
-                    // height: `${fixedHeight}px`,
+                    height: `${fixedHeight}px`,
                   }}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               )
             })}
-            <td
-              style={{
-                display: 'var(--virtual-padding-right-display)',
-                width: 'calc(var(--virtual-padding-right) * 1px)',
-              }}
-            />
+            {/*<td*/}
+            {/*  style={{*/}
+            {/*    display: 'var(--virtual-padding-right-display)',*/}
+            {/*    width: 'calc(var(--virtual-padding-right) * 1px)',*/}
+            {/*  }}*/}
+            {/*/>*/}
           </tr>
         );
       })}
-      {/* {after > 0 && (
-        <tr>
-          <td style={{ height: after }} />
-        </tr>
-      )} */}
     </tbody>
   );
 });
@@ -216,7 +206,7 @@ const MemoizedTableHeader = memo(({
       {headerGroups.map((headerGroup) => (
         <tr
           key={headerGroup.id}
-          className="bg-gray-200 space-x-4 z-10 flex"
+          className="bg-gray-200 z-10 flex"
         >
           {/**fake empty column to the left for virtualization scroll padding **/}
           <th
@@ -228,7 +218,6 @@ const MemoizedTableHeader = memo(({
           {
             virtualColumns.map((virtualColumn) => {
               const headerColumn = headerGroup.headers[virtualColumn.index];
-              console.log(headerColumn, 'headerColumn');
               return (
                 <th
                   data-cy={'data-story-table-th'}
@@ -238,7 +227,7 @@ const MemoizedTableHeader = memo(({
                     position: 'relative',
                     width: `calc(var(--header-${headerColumn?.id}-size) * 1px)`,
                   }}
-                  className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300"
+                  className="whitespace-nowrap bg-gray-200 text-left border-r-0.5 last:border-r-0 border-gray-300"
                 >
                   {flexRender(headerColumn.column.columnDef.header, headerColumn.getContext())}
                 </th>
@@ -311,10 +300,11 @@ const TableNodeComponent = ({ id, data }: {
     data: tableData,
     columns,
     defaultColumn: {
-      size: 150,
-      minSize: 60,
-      maxSize: 800,
+      size: 75,
+      minSize: 25,
+      maxSize: 150,
     },
+    columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
 
@@ -328,6 +318,7 @@ const TableNodeComponent = ({ id, data }: {
    * we will calculate all column sizes at once at the root table level in a useMemo
    * and pass the column sizes down as CSS variables to the <table> element.
    */
+  // todo: 这里存在问题
   const colSizes = React.useMemo(() => {
     const headers = tableInstance.getLeafHeaders();
     const colSizes: { [key: string]: number } = {};
@@ -337,9 +328,9 @@ const TableNodeComponent = ({ id, data }: {
       colSizes[`--header-${header.id}-size`] = header.getSize();
       colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
     }
-
+    console.log(colSizes, 'colSizes');
     return colSizes;
-  }, [tableInstance.getState().columnSizingInfo]);
+  }, [tableInstance.getState().columnSizingInfo, tableInstance.getLeafHeaders()]);
   const rowVirtualizer = useVirtualizer({
     count: getRowModel().rows.length,
     getScrollElement: () => parentRef.current,
@@ -351,7 +342,7 @@ const TableNodeComponent = ({ id, data }: {
     estimateSize: (index) => visibleColumns[index].getSize(), //estimate width of each column for accurate scrollbar dragging
     getScrollElement: () => parentRef.current,
     horizontal: true,
-    overscan: 5, //how many columns to render on each side off screen each way (adjust this for performance)
+    overscan: 2, //how many columns to render on each side off screen each way (adjust this for performance)
   });
 
   const virtualRows = rowVirtualizer.getVirtualItems();
@@ -408,12 +399,13 @@ const TableNodeComponent = ({ id, data }: {
               ref={parentRef}
               style={{
                 height: showNoData ? '40px' : '200px',
+                position: 'relative', // needed for sticky header
                 ...virtualPaddingVars,
                 ...colSizes,
               }}
               data-cy={'data-story-table-scroll'}
               className="max-h-64 max-w-128 nowheel overflow-auto scrollbar rounded-sm">
-              <table className="table-auto">
+              <table className="table-fixed grid">
                 <MemoizedTableHeader
                   headerGroups={getHeaderGroups()}
                   virtualColumns={virtualColumns}
