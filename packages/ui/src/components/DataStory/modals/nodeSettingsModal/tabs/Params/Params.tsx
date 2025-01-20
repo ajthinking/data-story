@@ -10,7 +10,6 @@ export function ParamsComponent({
 }: {
   node: ReactFlowNode,
 }) {
-  console.log(node.data.params, 'node.data.params');
   return <>
     <div className='max-w-4xl w-full space-y-2 p-4'>
       {node.data.params.map((param) => {

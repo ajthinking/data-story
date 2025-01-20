@@ -48,6 +48,9 @@ export class InputObserverController {
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
   async reportNodeStatus(nodeId: NodeId, status: NodeStatus): Promise<void> {
+    if (status === 'AVAILABLE') {
+      return;
+    }
     await this.storage.setNodeStatus(nodeId, status);
     this.nodeStatus$.next({nodeId, status});
   }
