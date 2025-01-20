@@ -67,8 +67,8 @@ export type RepeatableParam<RepeatableRow> = {
 }
 
 /**
- * it effectively is an array, but does not require brackets or quotation marks.
- */
+ * This type can represent ["a", "b", "c"] using 'a, b, c', which facilitates user input
+ * */
 export type StringListParam = {
   name: string,
   label: string,

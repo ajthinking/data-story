@@ -6,7 +6,6 @@ export class StringListParamEvaluator implements ParamsValueEvaluator<StringList
   type = 'StringListParam' as const;
 
   evaluate(itemValue: ItemValue, param: StringListParam) {
-    console.log(param.name, 'param1111');
     const value = param.value as string;
     const result = value.split(',').map(v => v.trim().toString()).filter(v => v.length > 0);
     return result;
