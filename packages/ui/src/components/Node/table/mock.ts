@@ -29,6 +29,22 @@ export const createLargeRows = (count: number) => Array.from({ length: count }, 
   'foo3': 'bar3'
 }));
 
+export const address = {
+  address: {
+    street: '122\n Main St\nSuite 100\nAnytown',
+    city: 'Anytown',
+    state: 'Anystate',
+    zipcode: '12344'
+  }
+}
+
+export const booleanData = {
+  booleanFalse: false,
+  booleanTrue: true,
+  StringFalse: 'false',
+  StringTrue: 'true',
+}
+
 export const nested = {
   objectId: '123456789',
   properties: {

@@ -34,6 +34,7 @@ export default {
   'playground-node': {
     'title': 'Playground NodeJS',
     'display': 'hidden',
+    'footer': false,
     'type': 'page',
     'theme': {
       'layout': 'raw'

@@ -1,5 +1,5 @@
-import { useStore } from '../DataStory/store/store';
-import { StoreSchema } from '../DataStory/types';
+import { useStore } from '../../DataStory/store/store';
+import { StoreSchema } from '../../DataStory/types';
 import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
