@@ -104,6 +104,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         return;
       }
 
+      // @ts-ignore
       const disposable = handler({ postMessage, event, document, inputObserverController: this.inputObserverController });
       if(typeof disposable === 'function' && disposable){
         disposables.push(disposable);
