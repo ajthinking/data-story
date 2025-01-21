@@ -13,6 +13,17 @@ import { TableCell } from './TableCell';
 import { MemoizedTableBody, FIXED_WIDTH, FIXED_HEIGHT } from './MemoizedTableBody';
 import { MemoizedTableHeader } from './MemoizedTableHeader';
 
+function getFormatterOnlyAndDropParam(items: ItemValue[], data: DataStoryNodeData): { only: string[], drop: string[] } {
+  const paramEvaluator = new ItemWithParams(items, data.params, []);
+  let only: string[] = [], drop: string[] = [];
+  try {
+    only = paramEvaluator.params?.only as string[] ?? [];
+    drop = paramEvaluator.params?.drop as string[] ?? [];
+  } catch(e) {
+  }
+  return { only, drop };
+}
+
 const TableNodeComponent = ({ id, data }: {
   id: string,
   data: DataStoryNodeData,
@@ -36,10 +47,8 @@ const TableNodeComponent = ({ id, data }: {
 
   useObserverTable({ id, setIsDataFetched, setItems, items, parentRef });
 
-  let { headers, rows } = useMemo(() => {
-    const paramEvaluator = new ItemWithParams(items, data.params, []);
-    const only = paramEvaluator.params.only as string[] || [];
-    const drop = paramEvaluator.params.drop as string[] || [];
+  const { headers, rows } = useMemo(() => {
+    const { only, drop } = getFormatterOnlyAndDropParam(items, data);
     const itemCollection = new ItemCollection(items);
     return itemCollection.toTable(only, drop);
   }, [data.params, items]);
