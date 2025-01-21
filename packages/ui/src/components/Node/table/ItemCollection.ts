@@ -6,10 +6,7 @@ export class ItemCollection {
   constructor(public items: ItemValue[]) {
   }
 
-  toTable({ only = [], drop = []}: {
-    only: string[]
-    drop: string[],
-  }) {
+  toTable(only: string[] = [], drop: string[] = []) {
     const headers: Set<string> = new Set();
     const rows: (string | undefined)[][] = [];
 

@@ -41,7 +41,7 @@ const TableNodeComponent = ({ id, data }: {
     const only = paramEvaluator.params.only as string[] || [];
     const drop = paramEvaluator.params.drop as string[] || [];
     const itemCollection = new ItemCollection(items);
-    return itemCollection.toTable({ only, drop });
+    return itemCollection.toTable(only, drop);
   }, [data.params, items]);
 
   const input = data.inputs[0];
