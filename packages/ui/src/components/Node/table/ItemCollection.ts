@@ -6,7 +6,10 @@ export class ItemCollection {
   constructor(public items: ItemValue[]) {
   }
 
-  toTable() {
+  toTable({ only, drop}: {
+    only?: string[],
+    drop?: string[],
+  }) {
     const headers: Set<string> = new Set();
     const rows: (string | undefined)[][] = [];
 
@@ -30,6 +33,16 @@ export class ItemCollection {
     this.items.forEach(item => {
       if (typeof item === 'object' && item !== null && !Array.isArray(item)) {
         buildHeaders(item);
+      }
+    });
+
+    // filter headers by only and drop
+    headers.forEach(header => {
+      if (only && !only.includes(header)) {
+        headers.delete(header);
+      }
+      if (drop && drop.includes(header)) {
+        headers.delete(header);
       }
     });
 

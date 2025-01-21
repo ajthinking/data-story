@@ -60,3 +60,4 @@ export { DiagramObserverStorage } from './storage/diagramObserverStorage'
 export type { LinkItemsParam } from './types/LinkItemsParam'
 export { LinkItemsParamSchema } from './types/LinkItemsParam'
 export type { LinksCountParam } from './types/LinksCountParam'
+export { ItemWithParams } from './ItemWithParams';
