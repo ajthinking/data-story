@@ -344,7 +344,6 @@ describe('InputObserverController', () => {
         linkIds: ['linkId'],
         throttleMs: 200,
         onReceive: (items) => {
-          console.log('onReceive addlinkItemsObserver', items);
           expect(items).toEqual([{ type: RequestObserverType.observeLinkItems, linkId: 'linkId', items: [{value: 1}, {value: 2}]}]);
         }
       } as ObserveLinkItems);

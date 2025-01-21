@@ -38,8 +38,8 @@ const TableNodeComponent = ({ id, data }: {
 
   let { headers, rows } = useMemo(() => {
     const paramEvaluator = new ItemWithParams(items, data.params, []);
-    const only = paramEvaluator.params.only as string[] ?? undefined;
-    const drop = paramEvaluator.params.drop as string[] ?? undefined;
+    const only = paramEvaluator.params.only as string[] || [];
+    const drop = paramEvaluator.params.drop as string[] || [];
     const itemCollection = new ItemCollection(items);
     return itemCollection.toTable({ only, drop });
   }, [data.params, items]);
