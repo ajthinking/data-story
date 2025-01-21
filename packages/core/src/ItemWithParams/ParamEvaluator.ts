@@ -4,12 +4,14 @@ import { StringableParamEvaluator } from './StringableParamEvaluator';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 import { RepeatableParamEvaluator } from './RepeatableParamEvaluator';
 import { SelectableParamEvaluator } from './SelectableParamEvaluator';
+import { StringListParamEvaluator } from './StringListParamEvaluator';
 
 export class ParamEvaluator implements ParamsValueEvaluator<any>{
   private evaluators: ParamsValueEvaluator<Param>[] = [
     new StringableParamEvaluator(),
     new SelectableParamEvaluator(),
     new RepeatableParamEvaluator(this),
+    new StringListParamEvaluator(),
   ]
 
   canEvaluate(param: Param): param is Param {

@@ -66,12 +66,24 @@ export type RepeatableParam<RepeatableRow> = {
   value: Record<string, unknown>[]
 }
 
+/**
+ * This type can represent ["a", "b", "c"] using 'a, b, c', which facilitates user input
+ * */
+export type StringListParam = {
+  name: string,
+  label: string,
+  help: string,
+  type: 'StringListParam',
+  value: unknown
+}
+
 export type Param =
   SelectParam |
   StringableParam |
   PropertySelectionParam |
   PortSelectionParam |
-  RepeatableParam<Param[]>
+  RepeatableParam<Param[]> |
+  StringListParam;
 
 export type ParamValue = Param['value']
 
@@ -79,6 +91,26 @@ export type ParamValue = Param['value']
 
 type StringableConfigType = Omit<StringableParam, 'value' | 'type'> & {
   value: StringableInputValue['value']
+}
+
+export const strList = ({
+  name,
+  label,
+  help,
+  value,
+}: {
+  name: string,
+  label?: string,
+  help?: string,
+  value?: unknown,
+}): StringListParam => {
+  return {
+    name,
+    type: 'StringListParam',
+    label: label ?? name,
+    help: help ?? '',
+    value: value ?? undefined,
+  }
 }
 
 export const createDefaultStringable = ({

@@ -3,6 +3,7 @@ import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
 import { SelectInput } from '../../../../Form/SelectInput';
 import { FormFieldWrapper } from '../../../../Form/UseFormField';
+import { StringListInput } from '../../../../Form/StringListInput';
 
 export function ParamsComponent({
   node,
@@ -18,6 +19,11 @@ export function ParamsComponent({
 
           {/* Horizontal layout */}
           {param.type === 'StringableParam' && <StringableWithConfig
+            param={param}
+            node={node}
+          />}
+
+          {param.type === 'StringListParam' && <StringListInput
             param={param}
             node={node}
           />}
@@ -38,10 +44,10 @@ export function ParamsComponent({
   </>;
 }
 
-export function Params ({
+export function Params({
   node,
 }) {
   return (<FormFieldWrapper fieldName={'params'}>
-    <ParamsComponent node={node}/>
+    <ParamsComponent node={node} />
   </FormFieldWrapper>);
 }

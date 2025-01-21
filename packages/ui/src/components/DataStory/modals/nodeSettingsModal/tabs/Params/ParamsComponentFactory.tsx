@@ -3,12 +3,14 @@ import {  FormComponent, FormComponentProps } from '../../../../types';
 import { StringableComponent } from './StringableWithConfig';
 import { PortSelectionComponent } from '../../../../Form/PortSelectionInput';
 import { SelectComponent } from '../../../../Form/SelectInput';
+import { StringListComponent } from '../../../../Form/StringListInput';
 
 export class ParamsComponentFactory{
   availableComponents: FormComponent<Param>[] = [
     new StringableComponent(),
     new PortSelectionComponent(),
     new SelectComponent(),
+    new StringListComponent(),
   ]
   private selectedComponent?: FormComponent<Param> = undefined;
 
