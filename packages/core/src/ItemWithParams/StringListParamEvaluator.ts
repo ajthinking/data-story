@@ -7,7 +7,11 @@ export class StringListParamEvaluator implements ParamsValueEvaluator<StringList
 
   evaluate(itemValue: ItemValue, param: StringListParam) {
     const value = param.value as string;
-    const result = value.split(',').map(v => v.trim().toString()).filter(v => v.length > 0);
+    // the value will be a string with comma or newline separated values
+    const result = value.split('\n')
+      .flatMap(line => line.split(','))
+      .map(v => v.trim())
+      .filter(v => v.length > 0);
     return result;
   }
 

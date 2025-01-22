@@ -45,6 +45,18 @@ export const booleanData = {
   StringTrue: 'true',
 }
 
+export const associationData = {
+  associations: {
+    contacts: [{
+      id: '123456789',
+      type: 'CONTACT_TO_COMPANY',
+    }],
+  },
+  associationsEmpty: {
+    contacts: [],
+  },
+}
+
 export const nested = {
   objectId: '123456789',
   properties: {

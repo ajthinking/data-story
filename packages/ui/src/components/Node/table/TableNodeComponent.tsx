@@ -9,8 +9,8 @@ import { useObserverTable } from './UseObserverTable';
 import CustomHandle from '../CustomHandle';
 import { ItemValue, ItemWithParams } from '@data-story/core';
 import { LoadingComponent } from './LoadingComponent';
-import { TableCell } from './TableCell';
-import { MemoizedTableBody, FIXED_WIDTH, FIXED_HEIGHT } from './MemoizedTableBody';
+import { FIXED_HEIGHT, FIXED_WIDTH, MAX_WIDTH, MIN_WIDTH, TableCell } from './TableCell';
+import { MemoizedTableBody } from './MemoizedTableBody';
 import { MemoizedTableHeader } from './MemoizedTableHeader';
 
 function getFormatterOnlyAndDropParam(items: ItemValue[], data: DataStoryNodeData): { only: string[], drop: string[] } {
@@ -67,25 +67,23 @@ const TableNodeComponent = ({ id, data }: {
         }
       })), [headers]);
 
-  const tableData = useMemo(
-    () =>
-      rows.map((row) => {
-        const rowData = {};
-        headers.forEach((header, index) => {
-          rowData[header] = row[index];
-        });
-        return rowData;
-      }),
-    [rows, headers]
-  );
+  const tableData = useMemo(() =>
+    rows.map((row) => {
+      const rowData = {};
+      headers.forEach((header, index) => {
+        rowData[header] = row[index];
+      });
+      return rowData;
+    }),
+  [rows, headers]);
 
   const tableInstance = useReactTable({
     data: tableData,
     columns,
     defaultColumn: {
       size: FIXED_WIDTH,
-      minSize: 25,
-      maxSize: 150,
+      minSize: MIN_WIDTH,
+      maxSize: MAX_WIDTH,
     },
     columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),

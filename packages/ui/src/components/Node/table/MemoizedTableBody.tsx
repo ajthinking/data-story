@@ -1,9 +1,7 @@
 import React, { memo } from 'react';
 import { VirtualItem, Virtualizer } from '@tanstack/react-virtual';
 import { flexRender, RowModel } from '@tanstack/react-table';
-
-export const FIXED_HEIGHT = 18;
-export const FIXED_WIDTH = 75;
+import { calculateColumnWidth, FIXED_HEIGHT } from './TableCell';
 
 export const MemoizedTableBody = memo(({
   virtualRows,
@@ -48,6 +46,7 @@ export const MemoizedTableBody = memo(({
             />
             {virtualColumns.map((virtualColumn) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
+              const columnWidth = calculateColumnWidth(cell);
               return (
                 <td
                   key={cell.id}
@@ -55,7 +54,7 @@ export const MemoizedTableBody = memo(({
                   style={{
                     display: 'flex',
                     position: 'relative',
-                    width: `${FIXED_WIDTH}px`,
+                    width: `${columnWidth}px`,
                     height: `${FIXED_HEIGHT}px`,
                   }}
                 >
