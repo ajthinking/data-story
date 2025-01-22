@@ -12,7 +12,6 @@ export class StringListParamEvaluator implements ParamsValueEvaluator<StringList
       .flatMap(line => line.split(','))
       .map(v => v.trim())
       .filter(v => v.length > 0);
-    console.log('string list param result', result);
     return result;
   }
 
