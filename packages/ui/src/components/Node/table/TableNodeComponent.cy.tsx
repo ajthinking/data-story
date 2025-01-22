@@ -1,7 +1,16 @@
 import TableNodeComponent from './TableNodeComponent';
 import { DataStoryContext } from '../../DataStory/store/store';
 import { ReactFlowProvider } from '@xyflow/react';
-import { address, booleanData, createLargeColsFn, createLargeRows, nested, normal, oversize } from './mock';
+import {
+  address,
+  associationData,
+  booleanData,
+  createLargeColsFn,
+  createLargeRows,
+  nested,
+  normal,
+  oversize
+} from './mock';
 import { eventManager } from '../../DataStory/events/eventManager';
 import { DataStoryEvents } from '../../DataStory/events/dataStoryEventType';
 import { ItemValue, multiline, ObserveLinkUpdate } from '@data-story/core';
@@ -113,10 +122,10 @@ describe('test TableNodeComponent for tooltip', () => {
   });
 
   it('render tooltip with formatted data', () => {
-    mountTableNodeComponent([nested]);
+    mountTableNodeComponent([associationData]);
     let jsonString = '[\n  {\n    "id": "123456789",\n    "type": "CONTACT_TO_COMPANY"\n  }\n]';
 
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(8)').click();
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').click();
     cy.dataCy('data-story-table-tooltip').should('have.text', jsonString);
   });
 });
@@ -141,30 +150,30 @@ describe('test TableNodeComponent for table', () => {
     mountTableNodeComponent([nested]);
 
     cy.dataCy('data-story-table-th').eq(0).should('have.text', 'objectId');
-    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'properti..');
+    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'properties.firstname');
     cy.get('[data-cy="data-story-table-row"] > :nth-child(3)').should('have.text', 'John');
   })
 
   it('render component with oversize key or value data', () => {
     mountTableNodeComponent([oversize]);
 
-    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'long_lon..');
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(4)').should('have.text', 'long_lon..');
+    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'long_'.repeat(20));
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(4)').should('have.text', oversize['long_property']);
   });
 
   it('render component with line break data', () => {
     mountTableNodeComponent([address]);
 
-    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'address...');
-    cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').should('have.text', '122\n Mai..');
+    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'address.city');
+    cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').should('have.text', address.address.street);
   });
 
   it('render component with boolean data', () => {
     mountTableNodeComponent([booleanData]);
 
-    cy.dataCy('data-story-table-th').eq(0).should('have.text', 'booleanF..');
+    cy.dataCy('data-story-table-th').eq(0).should('have.text', 'booleanFalse');
     cy.get('[data-cy="data-story-table-row"] > :nth-child(2)').should('have.text', 'false');
-    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'booleanT..');
+    cy.dataCy('data-story-table-th').eq(1).should('have.text', 'booleanTrue');
     cy.get('[data-cy="data-story-table-row"] > :nth-child(3)').should('have.text', 'true');
   });
 
@@ -230,7 +239,8 @@ describe('test TableNodeComponent for table', () => {
 
     const start = performance.now();
     cy.dataCy('data-story-table-scroll')
-      .scrollTo('bottom', { duration: 500 })
+      .scrollTo('bottom', { duration: 200 })
+      .scrollTo('bottom', { duration: 200 })
       .then(() => {
         const end = performance.now();
         const scrollTime = end - start;
@@ -253,7 +263,7 @@ describe('test TableNodeComponent for table', () => {
         const scrollTime = end - start;
         cy.log(`cypress scroll Time: ${scrollTime}ms`);
 
-        cy.get('[data-cy="data-story-table-row"] > :nth-child(3)').should('have.text', 'Value 99..');
+        cy.get('[data-cy="data-story-table-row"] > :nth-child(3)').should('contain.text', 'Value 99');
       });
   });
 })
