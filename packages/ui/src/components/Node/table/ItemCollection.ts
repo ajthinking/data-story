@@ -2,11 +2,18 @@ import { ItemValue, get } from '@data-story/core'
 
 type JSONValue = string | number | boolean | {[key: string]: JSONValue} | JSONValue[];
 
+interface TableOptions {
+  only?: string[];
+  drop?: string[];
+  destructObjects?: boolean;
+}
+
 export class ItemCollection {
   constructor(public items: ItemValue[]) {
   }
 
-  toTable(only: string[] = [], drop: string[] = []) {
+  toTable(options: TableOptions = {}) {
+    const { only = [], drop = [], destructObjects = false } = options;
     const headers: Set<string> = new Set();
     const rows: (string | undefined)[][] = [];
 
@@ -17,7 +24,11 @@ export class ItemCollection {
       Object.entries(entry).forEach(([key, value]) => {
         const newKey = prefix ? `${prefix}.${key}` : key;
         if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-          buildHeaders(value as {[key: string]: JSONValue}, newKey);
+          if (destructObjects) {
+            buildHeaders(value as {[key: string]: JSONValue}, newKey);
+          } else {
+            headers.add(newKey);
+          }
         } else {
           headers.add(newKey);
         }
@@ -47,7 +58,7 @@ export class ItemCollection {
      * @description get value by header's path
      */
     const getValueByPath = (object: ItemValue, path: string): string | undefined => {
-      let rawValue: any = get(object, path);
+      let rawValue: any = destructObjects ? get(object, path) : get(object, path.split('.')[0]);
 
       const currentType = typeof rawValue;
 
@@ -56,7 +67,7 @@ export class ItemCollection {
       }
 
       if (currentType === 'object' && rawValue !== null) {
-        return undefined;
+        return destructObjects ? undefined : JSON.stringify(rawValue);
       }
 
       return typeof rawValue === 'string'
