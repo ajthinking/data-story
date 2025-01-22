@@ -24,31 +24,16 @@ export interface ColumnWidthInfo {
   isNumeric: boolean;
 }
 
-export const calculateColumnWidth = (cell: Header<Record<string, unknown>, unknown>|Cell<Record<string, unknown>, unknown>) => {
-  // Get the header name
-  // @ts-ignore
-  const header = cell.column?.columnDef?.accessorKey as string || '';
-
-  // Safely get width info
+export const calculateColumnWidth = (cell: Header<Record<string, unknown>, unknown> | Cell<Record<string, unknown>, unknown>) => {
   const columnDef = cell.column?.columnDef as any;
-  const widthInfo = columnDef?.widthInfo as ColumnWidthInfo | undefined;
+  const maxChars = columnDef?.maxChars as number;
 
-  if (!widthInfo) {
-    // Fallback to header-based width if no width info
-    return Math.min(Math.max(header.length * 8, MIN_WIDTH), MAX_WIDTH);
+  if (!maxChars) {
+    return MIN_WIDTH;
   }
 
-  if (widthInfo.isNumeric) {
-    // For numeric columns, use a more compact width
-    return Math.min(Math.max(widthInfo.maxContent * 8, MIN_WIDTH), 100);
-  }
-
-  // For text columns, use a weighted average of header and content width
-  const headerWidth = header.length * 8;
-  const contentWidth = Math.min(widthInfo.averageContent * 8, MAX_WIDTH);
-  const width = Math.max(headerWidth, contentWidth);
-
-  return Math.min(Math.max(width, MIN_WIDTH), MAX_WIDTH);
+  // Convert chars to pixels (8px per char)
+  return Math.min(Math.max(maxChars * 8, MIN_WIDTH), MAX_WIDTH);
 }
 
 const formatCellContent = (content: unknown) => {

@@ -46,7 +46,8 @@ export const MemoizedTableBody = memo(({
             />
             {virtualColumns.map((virtualColumn) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
-              const columnWidth = calculateColumnWidth(cell);
+              const maxChars = cell.column.columnDef.meta?.maxChars ?? 0;
+              const width = maxChars * 8 + 24; // 8px per character + 24px padding
               return (
                 <td
                   key={cell.id}
@@ -54,7 +55,7 @@ export const MemoizedTableBody = memo(({
                   style={{
                     display: 'flex',
                     position: 'relative',
-                    width: `${columnWidth}px`,
+                    width: `${width}px`,
                     height: `${FIXED_HEIGHT}px`,
                   }}
                 >
