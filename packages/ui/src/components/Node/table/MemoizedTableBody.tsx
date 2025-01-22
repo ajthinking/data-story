@@ -38,16 +38,17 @@ export const MemoizedTableBody = memo(({
             }}
           >
             {/**fake empty column to the left for virtualization scroll padding **/}
-            <td
+            {/* <td
               style={{
                 display: 'var(--virtual-padding-left-display)',
                 width: 'calc(var(--virtual-padding-left) * 1px)',
               }}
-            />
+            /> */}
             {virtualColumns.map((virtualColumn) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
+              // @ts-ignore
               const maxChars = cell.column.columnDef.meta?.maxChars ?? 0;
-              const width = maxChars * 8 + 24; // 8px per character + 24px padding
+              const width = Math.min(320, maxChars * 8 + 24); // Cap maximum width, 8px per character + 24px padding
               return (
                 <td
                   key={cell.id}

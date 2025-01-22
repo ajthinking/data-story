@@ -85,7 +85,7 @@ export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, c
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="select-text overflow-visible z-50 bg-white shadow-lg rounded-md"
+        className="select-text overflow-auto max-h-[400px] max-w-[600px] whitespace-pre-wrap break-words z-50 bg-white shadow-lg rounded-md p-2 text-xs"
       >
         {formatTooltipContent(content) as string}
       </pre>

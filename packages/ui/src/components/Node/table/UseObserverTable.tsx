@@ -7,7 +7,7 @@ import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
 import { useHandleConnections } from '@xyflow/react';
 
 const initialScreenCount: number = 15;
-const tableThrottleMs: number = 300;
+const tableThrottleMs: number = 100;
 
 export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
   id: string,

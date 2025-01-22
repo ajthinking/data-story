@@ -79,7 +79,7 @@ const TableNodeComponent = ({ id, data }: {
       });
 
       metadata[header] = {
-        maxChars: Math.max(header.length, ...lengths)
+        maxChars: Math.min(40, Math.max(header.length, ...lengths)) // Cap maximum width
       };
     });
 
@@ -196,7 +196,7 @@ const TableNodeComponent = ({ id, data }: {
             data-cy={'data-story-table-scroll'}
             className="max-h-64 max-w-256 min-w-6 nowheel overflow-auto scrollbar rounded-sm"
           >
-            <table className="table-fixed grid">
+            <table className="table-fixed w-max">
               <MemoizedTableHeader
                 headerGroups={getHeaderGroups()}
                 virtualColumns={virtualColumns}
