@@ -1,3 +1,4 @@
+import { num, str, strList } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Table: Computer = {
@@ -8,7 +9,18 @@ export const Table: Computer = {
     schema: {},
   }],
   outputs: [],
-  params: [],
+  params: [
+    strList({
+      name: 'only',
+      help: 'If set, only the specified paths will be shown. Use comma separation',
+      value: '',
+    }),
+    strList({
+      name: 'drop',
+      help: 'If set, the specified paths will be dropped. Use comma separation',
+      value: '',
+    }),
+  ],
 
   async* run({ input, hooks, params: rawParams, node, storage }) {
     while(true) {
