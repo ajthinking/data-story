@@ -189,7 +189,7 @@ const TableNodeComponent = ({ id, data }: {
                 ...virtualPaddingVars,
               }}
               data-cy={'data-story-table-scroll'}
-              className="max-h-64 max-w-128 min-w-6 nowheel overflow-auto scrollbar rounded-sm">
+              className="max-h-64 max-w-256 min-w-6 nowheel overflow-auto scrollbar rounded-sm">
               <table className="table-fixed grid">
                 <MemoizedTableHeader
                   headerGroups={getHeaderGroups()}
