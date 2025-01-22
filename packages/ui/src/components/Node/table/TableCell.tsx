@@ -11,12 +11,23 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
+import { Cell, Header } from '@tanstack/react-table';
 
-const TRUNCATE_CELL_LENGTH = 8;
+export const FIXED_HEIGHT = 18;
+export const FIXED_WIDTH = 75;
+export const MIN_WIDTH = 25;
+export const MAX_WIDTH = 150;
+
+export const calculateColumnWidth = (cell: Header<Record<string, unknown>, unknown>|Cell<Record<string, unknown>, unknown>) => {
+  // @ts-ignore
+  const header = (cell.column.columnDef?.accessorKey ?? '') as unknown as string;
+  if (header.length > 8) return MAX_WIDTH;
+  return FIXED_WIDTH;
+}
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
-  return result.length > TRUNCATE_CELL_LENGTH ? result.slice(0, TRUNCATE_CELL_LENGTH) + '..' : result;
+  return result;
 }
 const formatTooltipContent = (content: unknown) => {
   try {
@@ -71,8 +82,9 @@ export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, c
   }
 
   return (
-    <div>
+    <div className='w-full'>
       <span
+        className={'whitespace-nowrap overflow-hidden overflow-ellipsis inline-block w-full'}
         ref={refs.setReference} {...getReferenceProps()}
       >
         {formatCellContent(content)}

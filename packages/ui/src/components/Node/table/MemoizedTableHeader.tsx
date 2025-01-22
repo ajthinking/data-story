@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import { flexRender, HeaderGroup } from '@tanstack/react-table';
 import { VirtualItem } from '@tanstack/react-virtual';
-import { FIXED_WIDTH } from './MemoizedTableBody';
+import { calculateColumnWidth } from './TableCell';
 
 export const MemoizedTableHeader = memo(({
   headerGroups,
@@ -33,6 +33,8 @@ export const MemoizedTableHeader = memo(({
           {
             virtualColumns.map((virtualColumn) => {
               const headerColumn = headerGroup.headers[virtualColumn.index];
+              const columnWidth = calculateColumnWidth(headerColumn);
+
               return (
                 <th
                   data-cy={'data-story-table-th'}
@@ -40,7 +42,7 @@ export const MemoizedTableHeader = memo(({
                   style={{
                     display: 'flex',
                     position: 'relative',
-                    width: `${FIXED_WIDTH}px`,
+                    width: `${columnWidth}px`,
                   }}
                   className="whitespace-nowrap bg-gray-200 text-left border-r-0.5 last:border-r-0 border-gray-300"
                 >
