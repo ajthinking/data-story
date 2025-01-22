@@ -9,7 +9,7 @@ import { useObserverTable } from './UseObserverTable';
 import CustomHandle from '../CustomHandle';
 import { ItemValue, ItemWithParams } from '@data-story/core';
 import { LoadingComponent } from './LoadingComponent';
-import { FIXED_HEIGHT, FIXED_WIDTH, MAX_WIDTH, MIN_WIDTH, TableCell } from './TableCell';
+import { FIXED_HEIGHT, MAX_WIDTH, MIN_WIDTH, TableCell } from './TableCell';
 import { MemoizedTableBody } from './MemoizedTableBody';
 import { MemoizedTableHeader } from './MemoizedTableHeader';
 
@@ -50,22 +50,10 @@ const TableNodeComponent = ({ id, data }: {
   const { headers, rows } = useMemo(() => {
     const { only, drop } = getFormatterOnlyAndDropParam(items, data);
     const itemCollection = new ItemCollection(items);
-    return itemCollection.toTable(only, drop);
+    return itemCollection.toTable({only, drop });
   }, [data.params, items]);
 
   const input = data.inputs[0];
-
-  const columns: ColumnDef<Record<string, unknown>>[] = useMemo(
-    () =>
-      headers.map((header) => ({
-        accessorKey: header,
-        id: header,
-        header: () => <TableCell tableRef={tableRef} content={header}/>,
-        cell: ({ cell, row }) => {
-          const originalContent = row.original[cell.column?.id];
-          return <TableCell tableRef={tableRef} content={originalContent}/>
-        }
-      })), [headers]);
 
   const tableData = useMemo(() =>
     rows.map((row) => {
@@ -77,18 +65,50 @@ const TableNodeComponent = ({ id, data }: {
     }),
   [rows, headers]);
 
+  const columns: ColumnDef<Record<string, unknown>>[] = useMemo(
+    () =>
+      headers.map((header) => {
+        // Calculate width info for this column
+        const columnData = tableData.map(row => row[header]);
+        const lengths = columnData.map(value => {
+          if (value === null || value === undefined) return 0;
+          return value.toString().length;
+        });
+
+        const isNumeric = columnData.every(value =>
+          typeof value === 'number' ||
+          (typeof value === 'string' && !isNaN(Number(value)))
+        );
+
+        const widthInfo = {
+          minContent: lengths.length ? Math.min(...lengths) : 0,
+          maxContent: lengths.length ? Math.max(...lengths) : 0,
+          averageContent: lengths.length ? lengths.reduce((a, b) => a + b, 0) / lengths.length : 0,
+          isNumeric
+        };
+
+        return {
+          accessorKey: header,
+          id: header,
+          header: () => <TableCell tableRef={tableRef} content={header}/>,
+          cell: ({ cell, row }) => {
+            const originalContent = row.original[cell.column?.id];
+            return <TableCell tableRef={tableRef} content={originalContent}/>
+          },
+          widthInfo
+        };
+      }), [headers, tableData]);
+
   const tableInstance = useReactTable({
     data: tableData,
     columns,
     defaultColumn: {
-      size: FIXED_WIDTH,
       minSize: MIN_WIDTH,
       maxSize: MAX_WIDTH,
     },
     columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-
   });
 
   const { getHeaderGroups, getRowModel } = tableInstance;

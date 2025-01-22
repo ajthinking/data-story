@@ -14,15 +14,41 @@ import {
 import { Cell, Header } from '@tanstack/react-table';
 
 export const FIXED_HEIGHT = 18;
-export const FIXED_WIDTH = 75;
-export const MIN_WIDTH = 25;
-export const MAX_WIDTH = 150;
+export const MIN_WIDTH = 40;
+export const MAX_WIDTH = 300;
+
+export interface ColumnWidthInfo {
+  minContent: number;
+  maxContent: number;
+  averageContent: number;
+  isNumeric: boolean;
+}
 
 export const calculateColumnWidth = (cell: Header<Record<string, unknown>, unknown>|Cell<Record<string, unknown>, unknown>) => {
+  // Get the header name
   // @ts-ignore
-  const header = (cell.column.columnDef?.accessorKey ?? '') as unknown as string;
-  if (header.length > 8) return MAX_WIDTH;
-  return FIXED_WIDTH;
+  const header = cell.column?.columnDef?.accessorKey as string || '';
+
+  // Safely get width info
+  const columnDef = cell.column?.columnDef as any;
+  const widthInfo = columnDef?.widthInfo as ColumnWidthInfo | undefined;
+
+  if (!widthInfo) {
+    // Fallback to header-based width if no width info
+    return Math.min(Math.max(header.length * 8, MIN_WIDTH), MAX_WIDTH);
+  }
+
+  if (widthInfo.isNumeric) {
+    // For numeric columns, use a more compact width
+    return Math.min(Math.max(widthInfo.maxContent * 8, MIN_WIDTH), 100);
+  }
+
+  // For text columns, use a weighted average of header and content width
+  const headerWidth = header.length * 8;
+  const contentWidth = Math.min(widthInfo.averageContent * 8, MAX_WIDTH);
+  const width = Math.max(headerWidth, contentWidth);
+
+  return Math.min(Math.max(width, MIN_WIDTH), MAX_WIDTH);
 }
 
 const formatCellContent = (content: unknown) => {
