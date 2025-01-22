@@ -13,12 +13,12 @@ export const Table: Computer = {
     strList({
       name: 'only',
       help: 'If set, only the specified paths will be shown. Use comma separation',
-      value: 'column1, column2',
+      value: '',
     }),
     strList({
       name: 'drop',
       help: 'If set, the specified paths will be dropped. Use comma separation',
-      value: 'column1, column2',
+      value: '',
     }),
   ],
 
