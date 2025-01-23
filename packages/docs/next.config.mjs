@@ -27,8 +27,11 @@ export default (async () => {
           use: ['source-map-loader'],
         });
         baseConfig.ignoreWarnings = [/Failed to parse source map/];
+        /**
+         * https://webpack.js.org/configuration/module/#modulenoparse
+         * https://github.com/microsoft/TypeScript/issues/39436
+         */
         if (!baseConfig.module.noParse) {
-          // return /node_modules[\\/]typescript[\\/]lib[\\/]typescript\.js$/.test(content); // 添加你的 noParse 配置
           baseConfig.module.noParse =(content) => {
             return /[\/\\]node_modules[\/\\]typescript[\/\\]lib[\/\\]typescript\.js$|[\/\\]node_modules[\/\\]@typescript[\/\\]vfs[\/\\]dist[\/\\]vfs\.esm\.js$/.test(content);
           }
