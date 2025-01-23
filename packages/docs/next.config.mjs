@@ -27,6 +27,12 @@ export default (async () => {
           use: ['source-map-loader'],
         });
         baseConfig.ignoreWarnings = [/Failed to parse source map/];
+        if (!baseConfig.module.noParse) {
+          // return /node_modules[\\/]typescript[\\/]lib[\\/]typescript\.js$/.test(content); // 添加你的 noParse 配置
+          baseConfig.module.noParse =(content) => {
+            return /[\/\\]node_modules[\/\\]typescript[\/\\]lib[\/\\]typescript\.js$|[\/\\]node_modules[\/\\]@typescript[\/\\]vfs[\/\\]dist[\/\\]vfs\.esm\.js$/.test(content);
+          }
+        }
       }
 
       if (!context.isServer && process.env.ANALYZE_ENV === 'true') {
