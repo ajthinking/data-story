@@ -48,7 +48,7 @@ export const MemoizedTableBody = memo(({
               const cell = row.getVisibleCells()[virtualColumn.index];
               // @ts-ignore
               const maxChars = cell.column.columnDef.meta?.maxChars ?? 0;
-              const width = Math.min(320, maxChars * 8 + 24); // Cap maximum width, 8px per character + 24px padding
+              const width = Math.min(80, maxChars * 8 + 24); // More aggressive width cap for cells
               return (
                 <td
                   key={cell.id}

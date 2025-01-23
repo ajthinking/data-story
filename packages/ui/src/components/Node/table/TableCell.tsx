@@ -15,7 +15,7 @@ import { Cell, Header } from '@tanstack/react-table';
 
 export const FIXED_HEIGHT = 18;
 export const MIN_WIDTH = 40;
-export const MAX_WIDTH = 300;
+export const MAX_WIDTH = 256;
 
 export interface ColumnWidthInfo {
   minContent: number;

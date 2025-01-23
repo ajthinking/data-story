@@ -70,6 +70,9 @@ const TableNodeComponent = ({ id, data }: {
   // Step 3: Calculate column metadata once
   const columnMetadata = useMemo(() => {
     const metadata: Record<string, { maxChars: number }> = {};
+    const maxTotalWidth = 256;
+    const totalColumns = headers.length;
+    const maxCharsPerColumn = Math.floor((maxTotalWidth - 24) / (8 * Math.max(1, totalColumns))); // 8px per char, 24px padding total
 
     headers.forEach(header => {
       const columnData = tableData.map(row => row[header]);
@@ -79,7 +82,7 @@ const TableNodeComponent = ({ id, data }: {
       });
 
       metadata[header] = {
-        maxChars: Math.min(40, Math.max(header.length, ...lengths)) // Cap maximum width
+        maxChars: Math.min(maxCharsPerColumn, Math.max(3, Math.min(20, Math.max(header.length, ...lengths)))) // More aggressive capping
       };
     });
 
@@ -184,19 +187,21 @@ const TableNodeComponent = ({ id, data }: {
       className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xs"
     >
       <CustomHandle id={input.id} isConnectable={true} isInput={true} />
-      <div data-cy={'data-story-table'} className="text-gray-600 bg-gray-100 rounded font-mono -mt-3">
+      <div data-cy={'data-story-table'} className="text-gray-600 max-w-256 bg-gray-100 rounded font-mono -mt-3" style={{ maxWidth: '256px', width: '256px' }}>
         {isDataFetched ? (
           <div
             ref={parentRef}
             style={{
               height: tableHeight,
               position: 'relative',
+              maxWidth: '256px',
+              width: '256px',
               ...virtualPaddingVars,
             }}
             data-cy={'data-story-table-scroll'}
-            className="max-h-64 max-w-256 min-w-6 nowheel overflow-auto scrollbar rounded-sm"
+            className="max-h-64 min-w-6 nowheel overflow-auto scrollbar rounded-sm"
           >
-            <table className="table-fixed w-max">
+            <table className="table-fixed" style={{ maxWidth: '256px', width: '256px' }}>
               <MemoizedTableHeader
                 headerGroups={getHeaderGroups()}
                 virtualColumns={virtualColumns}

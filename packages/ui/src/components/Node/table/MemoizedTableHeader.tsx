@@ -34,7 +34,7 @@ export const MemoizedTableHeader = memo(({
               const headerColumn = headerGroup.headers[virtualColumn.index];
               // @ts-ignore
               const maxChars = headerColumn.column.columnDef.meta?.maxChars ?? 0;
-              const width = maxChars * 8 + 24; // 8px per character + 24px padding
+              const width = Math.min(80, maxChars * 8 + 24); // More aggressive width cap for headers
 
               return (
                 <th
