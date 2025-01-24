@@ -95,7 +95,7 @@ export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, c
   }
 
   return (
-    <div className='w-full border-r border-gray-200'>
+    <div className='w-full'>
       <span
         className={'whitespace-nowrap overflow-hidden overflow-ellipsis inline-block w-full px-1'}
         ref={refs.setReference} {...getReferenceProps()}

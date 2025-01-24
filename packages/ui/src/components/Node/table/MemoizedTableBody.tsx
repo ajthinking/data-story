@@ -31,7 +31,6 @@ export const MemoizedTableBody = memo(({
             key={row.id}
             style={{
               display: 'flex',
-              width: '100%',
               height: `${FIXED_HEIGHT}px`,
               position: 'absolute',
               transform: `translateY(${virtualRow.start}px)`,
@@ -47,6 +46,8 @@ export const MemoizedTableBody = memo(({
             {virtualColumns.map((virtualColumn) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
               const columnWidth = calculateColumnWidth(cell);
+              // console.log('virtualColumn', virtualColumn, 'cell', cell);
+              // console.log('virtualColumns :', virtualColumns);
               // @ts-ignore
               const maxChars = cell.column.columnDef.meta?.maxChars ?? 0;
               console.log('todo maxChars', maxChars);
@@ -54,7 +55,7 @@ export const MemoizedTableBody = memo(({
               return (
                 <td
                   key={cell.id}
-                  className="whitespace-nowrap text-left"
+                  className="whitespace-nowrap text-left border-r-0.5 last:border-r-0 border-gray-300"
                   style={{
                     display: 'flex',
                     position: 'relative',
