@@ -27,6 +27,15 @@ export default (async () => {
           use: ['source-map-loader'],
         });
         baseConfig.ignoreWarnings = [/Failed to parse source map/];
+        /**
+         * https://webpack.js.org/configuration/module/#modulenoparse
+         * https://github.com/microsoft/TypeScript/issues/39436
+         */
+        if (!baseConfig.module.noParse) {
+          baseConfig.module.noParse =(content) => {
+            return /[\/\\]node_modules[\/\\]typescript[\/\\]lib[\/\\]typescript\.js$|[\/\\]node_modules[\/\\]@typescript[\/\\]vfs[\/\\]dist[\/\\]vfs\.esm\.js$/.test(content);
+          }
+        }
       }
 
       if (!context.isServer && process.env.ANALYZE_ENV === 'true') {
