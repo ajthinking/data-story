@@ -175,9 +175,9 @@ const TableNodeComponent = ({ id, data }: {
       return '40px';
     }
     if (rows.length <= 9) {
-      return (rows.length + 1) * FIXED_HEIGHT + 8 + 'px';
+      return (rows.length + 1) * FIXED_HEIGHT + 6 + 'px';
     }
-    return 11 * FIXED_HEIGHT + 8 + 'px';
+    return 11 * FIXED_HEIGHT + 5 + 'px';
   }, [showNoData, rows.length]);
 
   console.log('render: TableNodeComponent');
@@ -187,21 +187,19 @@ const TableNodeComponent = ({ id, data }: {
       className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xs"
     >
       <CustomHandle id={input.id} isConnectable={true} isInput={true} />
-      <div data-cy={'data-story-table'} className="text-gray-600 max-w-256 bg-gray-100 rounded font-mono -mt-3" style={{ maxWidth: '256px', width: '256px' }}>
+      <div data-cy={'data-story-table'} className="text-gray-600 max-w-[256px] bg-gray-100 rounded font-mono -mt-3">
         {isDataFetched ? (
           <div
             ref={parentRef}
             style={{
               height: tableHeight,
               position: 'relative',
-              maxWidth: '256px',
-              width: '256px',
               ...virtualPaddingVars,
             }}
             data-cy={'data-story-table-scroll'}
-            className="max-h-64 min-w-6 nowheel overflow-auto scrollbar rounded-sm"
+            className="max-h-64 min-w-6 nowheel overflow-auto scrollbar rounded-sm w-full"
           >
-            <table className="table-fixed" style={{ maxWidth: '256px', width: '256px' }}>
+            <table className="table-fixed max-w-[256px]">
               <MemoizedTableHeader
                 headerGroups={getHeaderGroups()}
                 virtualColumns={virtualColumns}
