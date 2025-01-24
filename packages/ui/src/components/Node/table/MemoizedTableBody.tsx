@@ -46,9 +46,11 @@ export const MemoizedTableBody = memo(({
             />
             {virtualColumns.map((virtualColumn) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
+              const columnWidth = calculateColumnWidth(cell);
               // @ts-ignore
               const maxChars = cell.column.columnDef.meta?.maxChars ?? 0;
-              const width = Math.min(80, maxChars * 8 + 24); // More aggressive width cap for cells
+              console.log('todo maxChars', maxChars);
+              // const width = Math.min(80, maxChars * 8 + 24); // More aggressive width cap for cells
               return (
                 <td
                   key={cell.id}
@@ -56,7 +58,7 @@ export const MemoizedTableBody = memo(({
                   style={{
                     display: 'flex',
                     position: 'relative',
-                    width: `${width}px`,
+                    width: `${columnWidth}px`,
                     height: `${FIXED_HEIGHT}px`,
                   }}
                 >

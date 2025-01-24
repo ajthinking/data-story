@@ -9,7 +9,7 @@ import { useObserverTable } from './UseObserverTable';
 import CustomHandle from '../CustomHandle';
 import { ItemValue, ItemWithParams } from '@data-story/core';
 import { LoadingComponent } from './LoadingComponent';
-import { FIXED_HEIGHT, TableCell } from './TableCell';
+import { FIXED_HEIGHT, MAX_WIDTH, MIN_WIDTH, TableCell, WIDTH } from './TableCell';
 import { MemoizedTableBody } from './MemoizedTableBody';
 import { MemoizedTableHeader } from './MemoizedTableHeader';
 
@@ -56,70 +56,41 @@ const TableNodeComponent = ({ id, data }: {
     return itemCollection.toTable({only, drop });
   }, [items, data]);
 
-  // Step 2: Transform rows to table data once
-  const tableData = useMemo(() => {
-    return rows.map((row) => {
-      const rowData: Record<string, unknown> = {};
+  const columns: ColumnDef<Record<string, unknown>>[] = useMemo(
+    () =>
+      headers.map((header) => ({
+        accessorKey: header,
+        id: header,
+        header: () => <TableCell tableRef={tableRef} content={header}/>,
+        cell: ({ cell, row }) => {
+          const originalContent = row.original[cell.column?.id];
+          return <TableCell tableRef={tableRef} content={originalContent}/>
+        }
+      })), [headers]);
+
+  const tableData = useMemo(() =>
+    rows.map((row) => {
+      const rowData = {};
       headers.forEach((header, index) => {
         rowData[header] = row[index];
       });
       return rowData;
-    });
-  }, [rows, headers]);
+    }),
+  [rows, headers]);
 
-  // Step 3: Calculate column metadata once
-  const columnMetadata = useMemo(() => {
-    const metadata: Record<string, { maxChars: number }> = {};
-    const maxTotalWidth = 256;
-    const totalColumns = headers.length;
-    const maxCharsPerColumn = Math.floor((maxTotalWidth - 24) / (8 * Math.max(1, totalColumns))); // 8px per char, 24px padding total
-
-    headers.forEach(header => {
-      const columnData = tableData.map(row => row[header]);
-      const lengths = columnData.map(value => {
-        if (value === null || value === undefined) return 0;
-        return String(value).length;
-      });
-
-      metadata[header] = {
-        maxChars: Math.min(maxCharsPerColumn, Math.max(3, Math.min(20, Math.max(header.length, ...lengths)))) // More aggressive capping
-      };
-    });
-
-    return metadata;
-  }, [headers, tableData]);
-
-  // Create stable cell renderer
-  const cellRenderer = useCallback(({ row, column }: { row: any, column: any }) => {
-    const content = row.original[column.id as string];
-    return <TableCell tableRef={tableRef} content={content}/>;
-  }, [tableRef]);
-
-  const headerRenderer = useCallback((header: string) => {
-    return <TableCell tableRef={tableRef} content={header}/>;
-  }, [tableRef]);
-
-  // Step 4: Create column definitions with stable references
-  const columns = useMemo(() =>
-    headers.map((header): ColumnDef<Record<string, unknown>> => ({
-      accessorKey: header,
-      id: header,
-      header: () => headerRenderer(header),
-      cell: cellRenderer,
-      meta: {
-        maxChars: columnMetadata[header].maxChars
-      }
-    })),[headers, columnMetadata, headerRenderer, cellRenderer]);
-
-  // Step 5: Create table instance with minimal dependencies and stable options
-  const tableOptions = useMemo(() => ({
+  console.log('tableData', tableData);
+  const tableInstance = useReactTable({
     data: tableData,
     columns,
+    defaultColumn: {
+      size: WIDTH,
+      minSize: MIN_WIDTH,
+      maxSize: MAX_WIDTH,
+    },
+    columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
-    debugTable: true
-  }), [tableData, columns]);
-
-  const tableInstance = useReactTable(tableOptions);
+    getSortedRowModel: getSortedRowModel(),
+  });
 
   const { getHeaderGroups, getRowModel } = tableInstance;
   const visibleColumns = tableInstance.getVisibleLeafColumns();
@@ -175,9 +146,9 @@ const TableNodeComponent = ({ id, data }: {
       return '40px';
     }
     if (rows.length <= 9) {
-      return (rows.length + 1) * FIXED_HEIGHT + 6 + 'px';
+      return (rows.length + 1) * FIXED_HEIGHT + 14 + 'px';
     }
-    return 11 * FIXED_HEIGHT + 5 + 'px';
+    return 11 * FIXED_HEIGHT + 14 + 'px';
   }, [showNoData, rows.length]);
 
   console.log('render: TableNodeComponent');
@@ -199,7 +170,7 @@ const TableNodeComponent = ({ id, data }: {
             data-cy={'data-story-table-scroll'}
             className="max-h-64 min-w-6 nowheel overflow-auto scrollbar rounded-sm w-full"
           >
-            <table className="table-fixed max-w-[256px]">
+            <table className="table-fixed grid max-w-[256px]">
               <MemoizedTableHeader
                 headerGroups={getHeaderGroups()}
                 virtualColumns={virtualColumns}

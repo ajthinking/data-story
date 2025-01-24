@@ -13,7 +13,8 @@ import {
 } from '@floating-ui/react';
 import { Cell, Header } from '@tanstack/react-table';
 
-export const FIXED_HEIGHT = 22;
+export const FIXED_HEIGHT = 28;
+export const WIDTH = 75;
 export const MIN_WIDTH = 40;
 export const MAX_WIDTH = 256;
 
@@ -27,9 +28,10 @@ export interface ColumnWidthInfo {
 export const calculateColumnWidth = (cell: Header<Record<string, unknown>, unknown> | Cell<Record<string, unknown>, unknown>) => {
   const columnDef = cell.column?.columnDef as any;
   const maxChars = columnDef?.maxChars as number;
+  console.log('calculateColumnWidth todo maxChars', maxChars);
 
   if (!maxChars) {
-    return MIN_WIDTH;
+    return WIDTH;
   }
 
   // Convert chars to pixels (8px per char)
@@ -85,7 +87,7 @@ export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, c
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="select-text overflow-auto max-h-[400px] max-w-[600px] whitespace-pre-wrap break-words z-50 bg-white shadow-lg rounded-md p-2 text-xs"
+        className="select-text overflow-auto whitespace-pre-wrap break-words z-50 bg-white shadow-lg rounded-md "
       >
         {formatTooltipContent(content) as string}
       </pre>
