@@ -5,8 +5,11 @@
     }
   },
   "fileExtensions": {
-    "diagram.json": "diagramIcon"
+    "diagram.json": "diagramIcon",
+    "ds": "diagramIcon"
   },
   "fileNames": {},
-  "languageIds": {}
+  "languageIds": {
+    "diagramJson": "diagramIcon"
+  }
 }

@@ -27,10 +27,12 @@
       {
         "id": "diagramJson",
         "aliases": [
-          "Diagram JSON"
+          "Diagram JSON",
+          "Data Story"
         ],
         "extensions": [
-          ".diagram.json"
+          ".diagram.json",
+          ".ds"
         ],
         "configuration": "./language-configuration.json"
       }
@@ -42,6 +44,9 @@
         "selector": [
           {
             "filenamePattern": "*.diagram.json"
+          },
+          {
+            "filenamePattern": "*.ds"
           }
         ]
       }
