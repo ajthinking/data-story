@@ -20,19 +20,20 @@ export class ItemCollection {
     /**
      * @description recursively build headers
      */
-    const buildHeaders = (entry: {[key: string]: JSONValue}, prefix: string = '') => {
-      Object.entries(entry).forEach(([key, value]) => {
-        const newKey = prefix ? `${prefix}.${key}` : key;
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-          if (destructObjects) {
-            buildHeaders(value as {[key: string]: JSONValue}, newKey);
-          } else {
-            headers.add(newKey);
-          }
+    const buildHeaders = (object: {[key: string]: JSONValue}, prefix: string = '') => {
+      Object.entries(object).forEach(([property, value]) => {
+        const fullPath = prefix ? `${prefix}.${property}` : property;
+
+        if (isNestedObject(value) && destructObjects) {
+          buildHeaders(value, fullPath);
         } else {
-          headers.add(newKey);
+          headers.add(fullPath);
         }
       });
+    };
+
+    const isNestedObject = (value: any): value is {[key: string]: JSONValue} => {
+      return typeof value === 'object' && value !== null && !Array.isArray(value);
     };
 
     /**
