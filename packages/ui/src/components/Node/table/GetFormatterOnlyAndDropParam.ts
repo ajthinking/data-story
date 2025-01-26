@@ -5,7 +5,7 @@ export function getFormatterOnlyAndDropParam(items: ItemValue[], data: DataStory
 {only: string[], drop: string[], destructObjects: boolean} {
   const paramEvaluator = new ItemWithParams(items, data.params, []);
   let only: string[] = [], drop: string[] = [];
-  let destructObjects = false;
+  let destructObjects = true;
   try {
     only = paramEvaluator.params?.only as string[] ?? [];
     drop = paramEvaluator.params?.drop as string[] ?? [];

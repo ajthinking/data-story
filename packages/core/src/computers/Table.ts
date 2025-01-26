@@ -23,7 +23,7 @@ export const Table: Computer = {
     str({
       name: 'destructObjects',
       help: 'If set, objects will be destructured',
-      value: 'false',
+      value: 'true',
     })
   ],
 

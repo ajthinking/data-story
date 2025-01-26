@@ -13,7 +13,7 @@ export class ItemCollection {
   }
 
   toTable(options: TableOptions = {}) {
-    const { only = [], drop = [], destructObjects = false } = options;
+    const { only = [], drop = [], destructObjects = true } = options;
     const headers: Set<string> = new Set();
     const rows: (string | undefined)[][] = [];
 
