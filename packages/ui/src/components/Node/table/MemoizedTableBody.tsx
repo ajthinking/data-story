@@ -1,18 +1,21 @@
 import React, { memo } from 'react';
 import { VirtualItem, Virtualizer } from '@tanstack/react-virtual';
 import { flexRender, RowModel } from '@tanstack/react-table';
-import { calculateColumnWidth, FIXED_HEIGHT } from './TableCell';
+import { FIXED_HEIGHT } from './TableCell';
+import { ColumnWidthOptions } from './CellsMatrix';
 
 export const MemoizedTableBody = memo(({
   virtualRows,
   getRowModel,
   virtualColumns,
-  rowVirtualizer
+  rowVirtualizer,
+  calculateColumnWidth,
 }: {
   virtualRows: VirtualItem[];
   virtualColumns: VirtualItem[];
   rowVirtualizer: Virtualizer<HTMLDivElement, Element>;
-  getRowModel: () => RowModel<Record<string, unknown>>
+  getRowModel: () => RowModel<Record<string, unknown>>;
+  calculateColumnWidth: (colIndex: number,options?: ColumnWidthOptions) => number;
 }) => {
   return (
     <tbody
@@ -23,7 +26,6 @@ export const MemoizedTableBody = memo(({
       }}>
       {virtualRows.map((virtualRow, rowindex) => {
         const row = getRowModel().rows[virtualRow.index];
-        // console.log(row.getVisibleCells(), 'row');
         return (
           <tr
             data-cy={'data-story-table-row'}
@@ -43,9 +45,9 @@ export const MemoizedTableBody = memo(({
                 width: 'calc(var(--virtual-padding-left) * 1px)',
               }}
             />
-            {virtualColumns.map((virtualColumn) => {
+            {virtualColumns.map((virtualColumn, index) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
-              const columnWidth = calculateColumnWidth(cell);
+              const columnWidth = calculateColumnWidth(index);
               return (
                 <td
                   key={cell.id}

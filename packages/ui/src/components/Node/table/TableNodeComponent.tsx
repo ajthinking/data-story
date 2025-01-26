@@ -7,25 +7,13 @@ import { ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable } from '@t
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useObserverTable } from './UseObserverTable';
 import CustomHandle from '../CustomHandle';
-import { ItemValue, ItemWithParams } from '@data-story/core';
+import { ItemValue } from '@data-story/core';
 import { LoadingComponent } from './LoadingComponent';
-import { FIXED_HEIGHT, MAX_WIDTH, MIN_WIDTH, TableCell, WIDTH } from './TableCell';
+import { FIXED_HEIGHT, TableCell } from './TableCell';
 import { MemoizedTableBody } from './MemoizedTableBody';
 import { MemoizedTableHeader } from './MemoizedTableHeader';
-
-function getFormatterOnlyAndDropParam(items: ItemValue[], data: DataStoryNodeData):
-{ only: string[], drop: string[], destructObjects: boolean } {
-  const paramEvaluator = new ItemWithParams(items, data.params, []);
-  let only: string[] = [], drop: string[] = [];
-  let destructObjects = false;
-  try {
-    only = paramEvaluator.params?.only as string[] ?? [];
-    drop = paramEvaluator.params?.drop as string[] ?? [];
-    destructObjects = paramEvaluator.params?.destructObjects === 'false' ? false : true;
-  } catch(e) {
-  }
-  return { only, drop, destructObjects };
-}
+import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix } from './CellsMatrix';
+import { getFormatterOnlyAndDropParam } from './GetFormatterOnlyAndDropParam';
 
 const TableNodeComponent = ({ id, data }: {
   id: string,
@@ -81,14 +69,13 @@ const TableNodeComponent = ({ id, data }: {
     }),
   [rows, headers]);
 
-  console.log('tableData', tableData);
   const tableInstance = useReactTable({
     data: tableData,
     columns,
     defaultColumn: {
-      size: WIDTH,
-      minSize: MIN_WIDTH,
-      maxSize: MAX_WIDTH,
+      size: CELL_WIDTH,
+      minSize: CELL_MIN_WIDTH,
+      maxSize: CELL_MAX_WIDTH,
     },
     columnResizeMode: 'onChange',
     getCoreRowModel: getCoreRowModel(),
@@ -139,6 +126,20 @@ const TableNodeComponent = ({ id, data }: {
       '--virtual-padding-left-display': virtualPaddingLeft ? 'flex' : 'none',
     };
   }
+  // 获取二维数组形式的cells
+  const { calculateColumnWidth } = useMemo(() => {
+    const cellsMatrixClass = new CellsMatrix({
+      virtualRows,
+      virtualColumns,
+      getRowModel
+    });
+
+    const calculateColumnWidth = cellsMatrixClass.calculateColumnWidth;
+
+    return {
+      calculateColumnWidth
+    }
+  }, [getRowModel, virtualColumns, virtualRows]);
 
   const showNoData = useMemo(() => {
     return headers.length === 0 && rows.length === 0;
@@ -154,7 +155,6 @@ const TableNodeComponent = ({ id, data }: {
     return 11 * FIXED_HEIGHT + 14 + 'px';
   }, [showNoData, rows.length]);
 
-  console.log('render: TableNodeComponent');
   return (
     <div
       ref={tableRef}
@@ -177,12 +177,14 @@ const TableNodeComponent = ({ id, data }: {
               <MemoizedTableHeader
                 headerGroups={getHeaderGroups()}
                 virtualColumns={virtualColumns}
+                calculateColumnWidth={calculateColumnWidth}
               />
               <MemoizedTableBody
                 virtualRows={virtualRows}
                 virtualColumns={virtualColumns}
                 rowVirtualizer={rowVirtualizer}
                 getRowModel={getRowModel}
+                calculateColumnWidth={calculateColumnWidth}
               />
             </table>
             {showNoData && (

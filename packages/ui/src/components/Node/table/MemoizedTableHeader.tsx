@@ -1,14 +1,16 @@
 import React, { memo } from 'react';
 import { flexRender, HeaderGroup } from '@tanstack/react-table';
 import { VirtualItem } from '@tanstack/react-virtual';
-import { calculateColumnWidth } from './TableCell';
+import { ColumnWidthOptions } from './CellsMatrix';
 
 export const MemoizedTableHeader = memo(({
   headerGroups,
-  virtualColumns
+  virtualColumns,
+  calculateColumnWidth,
 }: {
   headerGroups: HeaderGroup<Record<string, unknown>>[];
   virtualColumns: VirtualItem[];
+  calculateColumnWidth: (colIndex: number,options?: ColumnWidthOptions) => number;
 }) => {
   return (
     <thead
@@ -31,9 +33,9 @@ export const MemoizedTableHeader = memo(({
             }}
           />
           {
-            virtualColumns.map((virtualColumn) => {
+            virtualColumns.map((virtualColumn, index) => {
               const headerColumn = headerGroup.headers[virtualColumn.index];
-              const columnWidth = calculateColumnWidth(headerColumn);
+              const columnWidth = calculateColumnWidth(index);
 
               return (
                 <th

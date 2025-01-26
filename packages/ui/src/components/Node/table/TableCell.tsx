@@ -11,32 +11,8 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { Cell, Header } from '@tanstack/react-table';
 
-export const FIXED_HEIGHT = 28;
-export const WIDTH = 75;
-export const MIN_WIDTH = 40;
-export const MAX_WIDTH = 256;
-
-export interface ColumnWidthInfo {
-  minContent: number;
-  maxContent: number;
-  averageContent: number;
-  isNumeric: boolean;
-}
-
-export const calculateColumnWidth = (cell: Header<Record<string, unknown>, unknown> | Cell<Record<string, unknown>, unknown>) => {
-  const columnDef = cell.column?.columnDef as any;
-  const maxChars = columnDef?.maxChars as number;
-  console.log('calculateColumnWidth todo maxChars', maxChars);
-
-  if (!maxChars) {
-    return WIDTH;
-  }
-
-  // Convert chars to pixels (8px per char)
-  return Math.min(Math.max(maxChars * 8, MIN_WIDTH), MAX_WIDTH);
-}
+export const FIXED_HEIGHT = 24;
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
