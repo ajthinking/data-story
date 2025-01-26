@@ -13,15 +13,18 @@ import { FIXED_HEIGHT, MAX_WIDTH, MIN_WIDTH, TableCell, WIDTH } from './TableCel
 import { MemoizedTableBody } from './MemoizedTableBody';
 import { MemoizedTableHeader } from './MemoizedTableHeader';
 
-function getFormatterOnlyAndDropParam(items: ItemValue[], data: DataStoryNodeData): { only: string[], drop: string[] } {
+function getFormatterOnlyAndDropParam(items: ItemValue[], data: DataStoryNodeData):
+{ only: string[], drop: string[], destructObjects: boolean } {
   const paramEvaluator = new ItemWithParams(items, data.params, []);
   let only: string[] = [], drop: string[] = [];
+  let destructObjects = false;
   try {
     only = paramEvaluator.params?.only as string[] ?? [];
     drop = paramEvaluator.params?.drop as string[] ?? [];
+    destructObjects = paramEvaluator.params?.destructObjects === 'false' ? false : true;
   } catch(e) {
   }
-  return { only, drop };
+  return { only, drop, destructObjects };
 }
 
 const TableNodeComponent = ({ id, data }: {
@@ -51,9 +54,9 @@ const TableNodeComponent = ({ id, data }: {
 
   // Step 1: Calculate headers and rows once
   const { headers, rows } = useMemo(() => {
-    const { only, drop } = getFormatterOnlyAndDropParam(items, data);
+    const { only, drop, destructObjects } = getFormatterOnlyAndDropParam(items, data);
     const itemCollection = new ItemCollection(items);
-    return itemCollection.toTable({only, drop });
+    return itemCollection.toTable({only, drop, destructObjects });
   }, [items, data]);
 
   const columns: ColumnDef<Record<string, unknown>>[] = useMemo(

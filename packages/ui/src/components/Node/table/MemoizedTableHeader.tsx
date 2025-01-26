@@ -34,9 +34,6 @@ export const MemoizedTableHeader = memo(({
             virtualColumns.map((virtualColumn) => {
               const headerColumn = headerGroup.headers[virtualColumn.index];
               const columnWidth = calculateColumnWidth(headerColumn);
-              // @ts-ignore
-              // const maxChars = headerColumn.column.columnDef.meta?.maxChars ?? 0;
-              // const width = Math.min(80, maxChars * 8 + 24); // More aggressive width cap for headers
 
               return (
                 <th
@@ -47,7 +44,7 @@ export const MemoizedTableHeader = memo(({
                     position: 'relative',
                     width: `${columnWidth}px`,
                   }}
-                  className="whitespace-nowrap bg-gray-200 text-left border-r-0.5 last:border-r-0 border-gray-300"
+                  className="max-w-[256px] whitespace-nowrap bg-gray-200 text-left border-r-0.5 last:border-r-0 border-gray-300"
                 >
                   {flexRender(headerColumn.column.columnDef.header, headerColumn.getContext())}
                 </th>
