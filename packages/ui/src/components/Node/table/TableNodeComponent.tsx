@@ -12,7 +12,7 @@ import { LoadingComponent } from './LoadingComponent';
 import { FIXED_HEIGHT, TableCell } from './TableCell';
 import { MemoizedTableBody } from './MemoizedTableBody';
 import { MemoizedTableHeader } from './MemoizedTableHeader';
-import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix } from './CellsMatrix';
+import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix, ColumnWidthOptions } from './CellsMatrix';
 import { getFormatterOnlyAndDropParam } from './GetFormatterOnlyAndDropParam';
 
 const TableNodeComponent = ({ id, data }: {
@@ -133,7 +133,7 @@ const TableNodeComponent = ({ id, data }: {
       getRowModel
     });
 
-    const calculateColumnWidth = cellsMatrixClass.calculateColumnWidth;
+    const calculateColumnWidth = (colIndex:number, options: ColumnWidthOptions = {}) => cellsMatrixClass.calculateColumnWidth(colIndex, options);
 
     return {
       calculateColumnWidth
