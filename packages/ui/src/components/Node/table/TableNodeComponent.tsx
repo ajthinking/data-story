@@ -40,7 +40,6 @@ const TableNodeComponent = ({ id, data }: {
 
   const input = data.inputs[0];
 
-  // Step 1: Calculate headers and rows once
   const { headers, rows } = useMemo(() => {
     const { only, drop, destructObjects } = getFormatterOnlyAndDropParam(items, data);
     const itemCollection = new ItemCollection(items);
@@ -126,7 +125,7 @@ const TableNodeComponent = ({ id, data }: {
       '--virtual-padding-left-display': virtualPaddingLeft ? 'flex' : 'none',
     };
   }
-  // 获取二维数组形式的cells
+
   const { calculateColumnWidth } = useMemo(() => {
     const cellsMatrixClass = new CellsMatrix({
       virtualRows,
