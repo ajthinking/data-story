@@ -24,7 +24,7 @@ export class SocketServer {
     this.app = app;
     this.port = port;
     this.messageHandlers = messageHandlers;
-    const storage = new DiagramObserverStorage();
+    const storage = new DiagramObserverStorage('_');
     this.inputObserverController = new InputObserverController(storage);
   }
 

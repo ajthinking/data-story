@@ -1,12 +1,13 @@
-import { GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
+import { DiagramId, GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
 import type { Database as DatabaseType} from 'duckdb-async';
 import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
 export class DuckDBStorage implements ObserverStorage {
   private db: DatabaseType | null = null;
   private insertSequence: bigint = BigInt(0);
+  private diagramId: DiagramId;
 
-  constructor() {
-    this.init();
+  constructor(diagramId: DiagramId) {
+    this.diagramId = diagramId;
   }
 
   async init() {

@@ -2,18 +2,20 @@ import { ItemValue } from '../types/ItemValue';
 import { LinkId } from '../types/Link';
 import { NodeId } from '../types/Node';
 import { NodeStatus } from '../Executor';
-import { GetLinkItemsParams, ObserverStorage } from '../types/ObserverStorage';
+import { DiagramId, GetLinkItemsParams, ObserverStorage } from '../types/ObserverStorage';
 
 /**
  * implementation of ObserverStorage using Maps
  */
 export class DiagramObserverStorage implements ObserverStorage {
+  private diagramId: DiagramId;
+  private linkCountsStorage: Map<LinkId, number> = new Map()
+  private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map()
+  private nodeStatusStorage: Map<NodeId, NodeStatus> = new Map()
 
-  constructor(
-    private linkCountsStorage: Map<LinkId, number> = new Map(),
-    private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map(),
-    private nodeStatusStorage: Map<NodeId, NodeStatus> = new Map()
-  ) {}
+  constructor(diagramId: DiagramId) {
+    this.diagramId = diagramId;
+  }
 
   // Link Counts
   async getLinkCount(linkId: LinkId): Promise<number | undefined> {
@@ -24,6 +26,10 @@ export class DiagramObserverStorage implements ObserverStorage {
     this.linkCountsStorage.set(linkId, count);
   }
 
+  async setLinkCounts(counts: Map<LinkId, number>): Promise<void> {
+    this.linkCountsStorage = counts;
+  }
+
   // Link Items
   async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
     const storageItems = this.linkItemsStorage.get(linkId)?.slice(offset, offset + limit);
@@ -32,6 +38,10 @@ export class DiagramObserverStorage implements ObserverStorage {
 
   async setLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
     this.linkItemsStorage.set(linkId, items);
+  }
+
+  async setLinksItems(linksItems: Map<LinkId, ItemValue[]>): Promise<void> {
+    this.linkItemsStorage = linksItems;
   }
 
   async appendLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
@@ -46,6 +56,10 @@ export class DiagramObserverStorage implements ObserverStorage {
 
   async setNodeStatus(nodeId: NodeId, status: NodeStatus): Promise<void> {
     this.nodeStatusStorage.set(nodeId, status);
+  }
+
+  async setNodeStatuses(statuses: Map<NodeId, NodeStatus>): Promise<void> {
+    this.nodeStatusStorage = statuses;
   }
 
   async close(): Promise<void> {

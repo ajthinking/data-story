@@ -7,7 +7,7 @@ export class MockJSServer {
   private messageHandlers = {};
 
   constructor({ app, messageHandlers }: {app: Application, messageHandlers?: MessageHandlers}) {
-    const storage = new DiagramObserverStorage();
+    const storage = new DiagramObserverStorage('_');
     const inputObserverController = new InputObserverController(storage);
 
     this.messageHandlers = messageHandlers ?? getDefaultMsgHandlers(app, inputObserverController);

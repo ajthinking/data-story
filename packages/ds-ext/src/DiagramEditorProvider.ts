@@ -27,13 +27,15 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private observerStorage!: ObserverStorage;
   private config: DataStoryConfig;
 
-  async dispose(): Promise<void> {
-    await this.observerStorage.close();
-  }
-
   constructor(private readonly context: vscode.ExtensionContext) {
     this.config = loadConfig(this.context);
+  }
 
+  async dispose(): Promise<void> {
+    await this.observerStorage?.close();
+  }
+
+  private async initializeStorage(diagramId: string) {
     const storages = {
       DUCK_DB: DuckDBStorage,
       FILE: FileStorage,
@@ -44,11 +46,13 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     if(!Storage) throw new Error(`Unknown storage type: ${this.config.storage}`);
 
     try {
-      this.observerStorage = new Storage();
+      this.observerStorage = new Storage(diagramId);
+      await this.observerStorage.init?.();
       console.log(`Successfully initialized storage ${this.config.storage}`);
     } catch (error) {
       console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
-      this.observerStorage = new DiagramObserverStorage();
+      this.observerStorage = new DiagramObserverStorage(diagramId);
+      await this.observerStorage.init?.();
     }
 
     this.inputObserverController = new InputObserverController(this.observerStorage);
@@ -59,6 +63,9 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     _openContext: vscode.CustomDocumentOpenContext,
     _token: vscode.CancellationToken
   ): Promise<DiagramDocument> {
+    // Initialize storage with diagram ID from the file name
+    const diagramId = path.basename(uri.fsPath);
+    await this.initializeStorage(diagramId);
     return DiagramDocument.create(uri);
   }
 

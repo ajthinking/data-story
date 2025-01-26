@@ -21,7 +21,7 @@ describe('InputObserverController', () => {
     });
 
     it('should return undefined if node status is not set', async () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       const status = await mockStorage.getNodeStatus('nodeId');
@@ -29,7 +29,7 @@ describe('InputObserverController', () => {
     });
 
     it('should set and get node status', async () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       await controller.reportNodeStatus('nodeId', 'BUSY');
@@ -38,7 +38,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit node status', () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
@@ -53,7 +53,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit node status with throttle', () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
@@ -69,7 +69,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit node status with multiple nodes', () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
@@ -85,7 +85,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit node status with multiple observers', async () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
@@ -102,11 +102,9 @@ describe('InputObserverController', () => {
 
     it('should emit node status with async storage', async () => {
       const nodeStatusStorage = new Map<NodeId, NodeStatus>();
-      const mockStorage = new DiagramObserverStorage(
-        undefined,
-        undefined,
-        nodeStatusStorage
-      );
+      const mockStorage = new DiagramObserverStorage('_');
+      mockStorage.setNodeStatuses(nodeStatusStorage)
+
       mockStorage.setNodeStatus = async (nodeId: NodeId, status: NodeStatus) => {
         await new Promise((resolve) => setTimeout(() => {
           nodeStatusStorage.set(nodeId, status);
@@ -135,7 +133,7 @@ describe('InputObserverController', () => {
     });
 
     it('should return undefined if link count is not set', async () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       const count = await mockStorage.getLinkCount('linkId');
@@ -143,7 +141,7 @@ describe('InputObserverController', () => {
     });
 
     it('should set and get link count', async () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       await controller.reportLinksCount({
@@ -154,7 +152,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit link count', () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
       const linksCountObserver = { type: RequestObserverType.observeLinkCounts,
         linkId: 'linkId', count: 10} as const;
@@ -171,7 +169,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit link count with throttle', () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
       const linksCountObserver = { type: RequestObserverType.observeLinkCounts,
         linkId: 'linkId', count: 10} as const;
@@ -189,7 +187,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit link count with multiple links', () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       controller.addLinkCountsObserver({
@@ -209,11 +207,9 @@ describe('InputObserverController', () => {
 
     it('should emit link count with async storage', async () => {
       const linkCountsStorage = new Map<LinkId, number>();
-      const mockStorage = new DiagramObserverStorage(
-        linkCountsStorage,
-        undefined,
-        undefined,
-      );
+      const mockStorage = new DiagramObserverStorage('_')
+      mockStorage.setLinkCounts(linkCountsStorage);
+
       mockStorage.setLinkCount = async (linkId: LinkId, count: number) => {
         await new Promise((resolve) => setTimeout(() => {
           linkCountsStorage.set(linkId, count);
@@ -243,7 +239,7 @@ describe('InputObserverController', () => {
     });
 
     it('should return undefined if link items are not set', async () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
 
       const items = await mockStorage.getLinkItems({
         linkId: 'linkId', offset: 0, limit: 100
@@ -252,7 +248,7 @@ describe('InputObserverController', () => {
     });
 
     it('should set and get link items', async () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
 
       await controller.reportItems({
@@ -264,7 +260,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit link items', () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
       const linkItemsParam: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId', items: [{value: 1}]};
@@ -282,7 +278,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit link items with throttle', async () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
       const linkItemsParam: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId', items: [{value: 1}]};
@@ -301,7 +297,7 @@ describe('InputObserverController', () => {
     });
 
     it('should emit link items with multiple links', () => {
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       const controller = new InputObserverController(mockStorage);
       const linkItemsParam1: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId1', items: [{value: 1}]};
@@ -323,11 +319,8 @@ describe('InputObserverController', () => {
 
     it('should emit link items with async storage', async () => {
       const linkItemsStorage = new Map<LinkId, ItemValue[]>();
-      const mockStorage = new DiagramObserverStorage(
-        undefined,
-        linkItemsStorage,
-        undefined,
-      );
+      const mockStorage = new DiagramObserverStorage('_')
+      mockStorage.setLinksItems(linkItemsStorage);
 
       mockStorage.appendLinkItems = async (linkId: LinkId, items: ItemValue[]) => {
         await new Promise((resolve) => setTimeout(() => {
@@ -368,7 +361,7 @@ describe('InputObserverController', () => {
         throttleMs:0,
       };
 
-      const mockStorage = new DiagramObserverStorage();
+      const mockStorage = new DiagramObserverStorage('_');
       controller = new InputObserverController(mockStorage);
     });
 
