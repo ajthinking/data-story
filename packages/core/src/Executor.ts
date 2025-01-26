@@ -158,18 +158,17 @@ export class Executor {
    */
   protected canRunNodeDefault(node: Node) {
     // Get the nodes input device
-    const input = this.memory.getInputDevice(node.id)!
+    const inputDevice = this.memory.getInputDevice(node.id)!
 
     // Must be available
     if(this.memory.getNodeStatus(node.id) !== 'AVAILABLE') return false;
 
     // If one input port, it must not be empty
-    if(node.inputs.length === 1 && !input.haveItemsAtInput(node.inputs.at(0)!.name))
-      return false;
+    const [ input1 ] = node.inputs
+    if(input1 && !inputDevice.haveItemsAtInput(input1.name)) return false;
 
     // If two or more ports, all items must be awaited
-    if(node.inputs.length >= 2 && !input.haveAllItemsAtAllInputs())
-      return false;
+    if(node.inputs.length >= 2 && !inputDevice.haveAllItemsAtAllInputs()) return false;
 
     // All passed
     return true
