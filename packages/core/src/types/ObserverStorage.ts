@@ -4,6 +4,11 @@ import { NodeId } from './Node';
 import { NodeStatus } from '../Executor';
 
 /**
+ * Type for diagram identifiers used in storage
+ */
+export type DiagramId = string;
+
+/**
  * Interface for storage implementations used by InputObserverController
  */
 export type GetLinkItemsParams = {
@@ -13,7 +18,7 @@ export type GetLinkItemsParams = {
 };
 
 export interface ObserverStorage {
-// Link Counts
+  // Link Counts
   getLinkCount(linkId: LinkId): Promise<number | undefined>;
   setLinkCount(linkId: LinkId, count: number): Promise<void>;
 
