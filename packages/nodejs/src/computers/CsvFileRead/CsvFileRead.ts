@@ -31,11 +31,18 @@ export const CsvFileRead: Computer = {
       help: 'CSV delimiter character (default: ,)',
       value: ',',
     }),
+    str({
+      name: 'batch_size',
+      label: 'Batch size',
+      help: 'Number of records to yield in each batch (default: 1000)',
+      value: '1000',
+    }),
   ],
 
   async *run({ output, params }) {
     const pathPattern = params.file_path as string;
     const delimiter = params.delimiter as string;
+    const batchSize = parseInt(params.batch_size as string) || 1000;
 
     // Check if the provided path is absolute
     const isAbsolutePath = path.isAbsolute(pathPattern);
@@ -75,8 +82,12 @@ export const CsvFileRead: Computer = {
             _filePath: file,
           }));
 
-          output.push(items);
-          yield;
+          // Process items in batches
+          for (let i = 0; i < items.length; i += batchSize) {
+            const batch = items.slice(i, i + batchSize);
+            output.push(batch);
+            yield;
+          }
         } catch (fileError: any) {
           output.pushTo('errors', [serializeError(fileError)]);
         }
