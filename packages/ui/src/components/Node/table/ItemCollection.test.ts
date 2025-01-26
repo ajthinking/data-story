@@ -5,7 +5,7 @@ import { multiline } from '@data-story/core';
 
 describe('toTable', () => {
   it('should correctly extract headers and rows from normal data', () => {
-    const { headers, rows } = new ItemCollection([normal]).toTable();
+    const { headers, rows } = new ItemCollection([normal]).toTable({ only: [], drop: [], destructObjects: true });
     expect(headers).toEqual(['property_a', 'property_b', 'property_c', 'property_d', 'property_e', 'property_f', 'property_g', 'property_h', 'property_i']);
     expect(rows).toEqual([['10000', '20000', '30000', '40000', '50000', '60000', '70000', '80000', '90000']]);
   });
@@ -23,7 +23,7 @@ describe('toTable', () => {
       }
     ];
 
-    const { headers, rows } = new ItemCollection(mockData).toTable();
+    const { headers, rows } = new ItemCollection(mockData).toTable({ only: [], drop: [], destructObjects: true });
     expect(headers).toEqual(['foo', 'baz']);
     expect(rows).toEqual([['bar', '[{"foo":"bar","baz":"qux"}]']]);
   });
@@ -36,14 +36,14 @@ describe('toTable', () => {
       ['bar1', 'bar2', undefined, 'bar1', 'bar2', 'bar1', 'bar2', 'bar3'],
     ];
 
-    const { headers, rows } = new ItemCollection(threeTierNested).toTable();
+    const { headers, rows } = new ItemCollection(threeTierNested).toTable({ only: [], drop: [], destructObjects: true });
 
     expect(headers).toEqual(expectedHeaders);
     expect(rows).toEqual(expectedContent);
   });
 
   it('should correctly extract headers and rows from nested JSON data', () => {
-    const { headers, rows } = new ItemCollection([nested]).toTable();
+    const { headers, rows } = new ItemCollection([nested]).toTable({ only: [], drop: [], destructObjects: true });
 
     expect(headers).toEqual(
       [
@@ -87,7 +87,7 @@ describe('toTable', () => {
   });
 
   it('should handle empty array input', () => {
-    const { headers, rows } =  new ItemCollection([]).toTable();
+    const { headers, rows } =  new ItemCollection([]).toTable({ only: [], drop: [], destructObjects: true });
     expect(headers).toEqual([]);
     expect(rows).toEqual([]);
   });
@@ -107,7 +107,7 @@ describe('toTable', () => {
       },
     ];
 
-    const { headers, rows } = new ItemCollection(mockData).toTable();
+    const { headers, rows } = new ItemCollection(mockData).toTable({ only: [], drop: [], destructObjects: true });
     expect(headers).toEqual(['name.first', 'name.last', 'age', 'name']);
     expect(rows).toEqual([
       ['John', 'Doe', '21', undefined],
