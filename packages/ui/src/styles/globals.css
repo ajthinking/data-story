@@ -4,27 +4,29 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
-  .scrollbar::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
-    margin-right: -4px;
-  }
+/* Webkit (Chrome, Safari, Edge) scrollbar styles */
+.scrollbar::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
 
-  .scrollbar::-webkit-scrollbar-track {
-    border-radius: 100vh;
-    background: rgba(255, 255, 255, 0);
-  }
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent !important;
+}
 
-  .scrollbar::-webkit-scrollbar-thumb {
-    background: rgb(229 231 235);
-    border-radius: 100vh;
-    border: 3px solid rgb(229 231 235);
-  }
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb !important;
+  border-radius: 3px !important;
+}
 
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #adabab;
-  }
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #d1d5db !important;
+}
+
+/* Firefox scrollbar styles */
+.scrollbar {
+  scrollbar-width: thin !important;
+  scrollbar-color: #e5e7eb transparent !important;
 }
 
 @layer components {

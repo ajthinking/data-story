@@ -6,7 +6,7 @@ export function LoadingComponent() {
       className="whitespace-nowrap bg-gray-200 text-left px-1 border-r-0.5 last:border-r-0 border-gray-300 sticky top-0 z-10">
       Awaiting data
     </div>
-    <div className="text-center bg-gray-100 hover:bg-gray-200">
+    <div className="text-left bg-gray-100 hover:bg-gray-200">
       Load initial data...
     </div>
   </div>;

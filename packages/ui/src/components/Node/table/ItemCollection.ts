@@ -2,26 +2,38 @@ import { ItemValue, get } from '@data-story/core'
 
 type JSONValue = string | number | boolean | {[key: string]: JSONValue} | JSONValue[];
 
+interface TableOptions {
+  only?: string[];
+  drop?: string[];
+  destructObjects?: boolean;
+}
+
 export class ItemCollection {
   constructor(public items: ItemValue[]) {
   }
 
-  toTable(only: string[] = [], drop: string[] = []) {
+  toTable(options: TableOptions = {}) {
+    const { only = [], drop = [], destructObjects = true } = options;
     const headers: Set<string> = new Set();
     const rows: (string | undefined)[][] = [];
 
     /**
      * @description recursively build headers
      */
-    const buildHeaders = (entry: {[key: string]: JSONValue}, prefix: string = '') => {
-      Object.entries(entry).forEach(([key, value]) => {
-        const newKey = prefix ? `${prefix}.${key}` : key;
-        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-          buildHeaders(value as {[key: string]: JSONValue}, newKey);
+    const buildHeaders = (object: {[key: string]: JSONValue}, prefix: string = '') => {
+      Object.entries(object).forEach(([property, value]) => {
+        const fullPath = prefix ? `${prefix}.${property}` : property;
+
+        if (isNestedObject(value) && destructObjects) {
+          buildHeaders(value, fullPath);
         } else {
-          headers.add(newKey);
+          headers.add(fullPath);
         }
       });
+    };
+
+    const isNestedObject = (value: any): value is {[key: string]: JSONValue} => {
+      return typeof value === 'object' && value !== null && !Array.isArray(value);
     };
 
     /**
@@ -47,7 +59,7 @@ export class ItemCollection {
      * @description get value by header's path
      */
     const getValueByPath = (object: ItemValue, path: string): string | undefined => {
-      let rawValue: any = get(object, path);
+      let rawValue: any = destructObjects ? get(object, path) : get(object, path.split('.')[0]);
 
       const currentType = typeof rawValue;
 
@@ -56,7 +68,7 @@ export class ItemCollection {
       }
 
       if (currentType === 'object' && rawValue !== null) {
-        return undefined;
+        return destructObjects ? undefined : JSON.stringify(rawValue);
       }
 
       return typeof rawValue === 'string'

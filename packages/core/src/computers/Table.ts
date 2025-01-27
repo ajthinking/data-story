@@ -20,6 +20,11 @@ export const Table: Computer = {
       help: 'If set, the specified paths will be dropped. Use comma separation',
       value: '',
     }),
+    str({
+      name: 'destructObjects',
+      help: 'If set, objects will be destructured',
+      value: 'true',
+    })
   ],
 
   async* run({ input, hooks, params: rawParams, node, storage }) {

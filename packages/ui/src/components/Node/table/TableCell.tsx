@@ -11,19 +11,8 @@ import {
   useInteractions,
   useRole
 } from '@floating-ui/react';
-import { Cell, Header } from '@tanstack/react-table';
 
-export const FIXED_HEIGHT = 18;
-export const FIXED_WIDTH = 75;
-export const MIN_WIDTH = 25;
-export const MAX_WIDTH = 150;
-
-export const calculateColumnWidth = (cell: Header<Record<string, unknown>, unknown>|Cell<Record<string, unknown>, unknown>) => {
-  // @ts-ignore
-  const header = (cell.column.columnDef?.accessorKey ?? '') as unknown as string;
-  if (header.length > 8) return MAX_WIDTH;
-  return FIXED_WIDTH;
-}
+export const FIXED_HEIGHT = 24;
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
@@ -74,7 +63,7 @@ export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, c
         ref={refs.setFloating}
         style={floatingStyles}
         {...getFloatingProps()}
-        className="select-text overflow-visible z-50 bg-white shadow-lg rounded-md"
+        className="select-text overflow-auto whitespace-pre-wrap break-words z-50 bg-white shadow-lg rounded-md "
       >
         {formatTooltipContent(content) as string}
       </pre>
@@ -84,7 +73,7 @@ export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, c
   return (
     <div className='w-full'>
       <span
-        className={'whitespace-nowrap overflow-hidden overflow-ellipsis inline-block w-full'}
+        className={'whitespace-nowrap overflow-hidden overflow-ellipsis inline-block w-full px-1'}
         ref={refs.setReference} {...getReferenceProps()}
       >
         {formatCellContent(content)}
