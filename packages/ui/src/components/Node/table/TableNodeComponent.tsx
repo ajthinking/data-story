@@ -160,7 +160,7 @@ const TableNodeComponent = ({ id, data }: {
       className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xs"
     >
       <CustomHandle id={input.id} isConnectable={true} isInput={true} />
-      <div data-cy={'data-story-table'} className="text-gray-600 max-w-[256px] bg-gray-100 rounded font-mono -mt-3">
+      <div data-cy={'data-story-table'} className="text-gray-600 max-w-[750px] bg-gray-100 rounded font-mono -mt-3">
         {isDataFetched ? (
           <div
             ref={parentRef}
@@ -172,7 +172,7 @@ const TableNodeComponent = ({ id, data }: {
             data-cy={'data-story-table-scroll'}
             className="max-h-64 min-w-6 nowheel overflow-auto scrollbar rounded-sm w-full"
           >
-            <table className="table-fixed grid max-w-[256px]">
+            <table className="table-fixed grid max-w-[750px]">
               <MemoizedTableHeader
                 headerGroups={getHeaderGroups()}
                 virtualColumns={virtualColumns}
