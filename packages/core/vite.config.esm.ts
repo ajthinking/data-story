@@ -12,8 +12,8 @@ export default defineConfig({
       entry: resolve(__dirname, 'src/index.ts'),
       name: '@data-story/core',
       formats: ['es'],
-      fileName: 'index'
+      fileName: 'index',
     },
-    sourcemap: true
+    sourcemap: true,
   },
 });

@@ -14,7 +14,7 @@ export type GetItemsMessage = {
 export const getItems: MessageHandler<GetItemsMessage> = async({
   ws,
   data,
-  storage
+  storage,
 }: MessageHandlerParams<GetItemsMessage>) => {
   const { offset = 0, limit = 10, atNodeId, id } = data;
   const items = storage.itemsMap.get(atNodeId) ?? [];

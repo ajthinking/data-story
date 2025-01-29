@@ -5,12 +5,12 @@ export const onDrop = (event: any, addNodeFromDescription: any) => {
 
   if(isDropFromOs(event)) return onDropFromOs(
     event,
-    addNodeFromDescription
+    addNodeFromDescription,
   );
 
   if(isDropFromExplorer(event)) return onDropFromExplorer(
     event,
-    addNodeFromDescription
+    addNodeFromDescription,
   );
 };
 

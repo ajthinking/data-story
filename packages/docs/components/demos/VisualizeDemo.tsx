@@ -22,13 +22,13 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 export const options = {
   responsive: true,
   animation: {
-    duration: 0 // general animation time
+    duration: 0, // general animation time
   },
   plugins: {
     legend: {
@@ -45,7 +45,7 @@ const diagram = core.getDiagramBuilder()
   .add('Signal', {
     period: 100,
     count: 100,
-    expression: '{ x: ${i} }'
+    expression: '{ x: ${i} }',
   })
   .add('Map', { mapper: 'item => ({ x: ${x}, y: Math.cos(${x}/4) })' })
   // .add(Map)
@@ -83,7 +83,7 @@ export default () => {
           ...latestPoints,
         ].slice(-100));
       },
-      observerId
+      observerId,
     };
     const subscription = client.observeLinkItems?.(observeLinkItems as ObserveLinkItems)
 

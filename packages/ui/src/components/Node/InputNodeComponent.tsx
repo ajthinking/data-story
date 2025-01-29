@@ -33,7 +33,7 @@ const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStor
           className="relative"
           type="target"
           position={Position.Left}
-          style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 1, width: 1, top: 0, right: 0}}
+          style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 1, width: 1, top: 0, right: 0 }}
           id={inputPort.id}
           isConnectable={true}
         />
@@ -49,7 +49,7 @@ const InputNodeComponent = ({ id, data, selected }: { id: string; data: DataStor
             className="relative"
             type="source"
             position={Position.Right}
-            style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 6, right: 11}}
+            style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 12, width: 12, top: 6, right: 11 }}
             id={outputPort.id}
             isConnectable={true}
           />

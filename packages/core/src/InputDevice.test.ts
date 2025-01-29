@@ -10,9 +10,9 @@ describe('pull', () => {
     const node: Node = {
       id: 'target',
       name: 'node-type',
-      inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
+      inputs: [{ id: 'target-input-id', name: 'input', schema: {} }],
       outputs: [],
-      params: []
+      params: [],
     }
 
     const links = [
@@ -22,24 +22,24 @@ describe('pull', () => {
 
     const diagram = new Diagram({
       nodes: [node],
-      links
+      links,
     })
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
-        .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])
+        .set('link-1', [{ i: 1 }, { i: 2 }])
+        .set('link-2', [{ i: 3 }, { i: 4 }]),
     })
 
     const input = new InputDevice(node, unfoldedDiagram, memory)
 
     expect(input.pull()).toMatchObject([
-      { value: {i: 1} },
-      { value: {i: 2} },
-      { value: {i: 3} },
-      { value: {i: 4} },
+      { value: { i: 1 } },
+      { value: { i: 2 } },
+      { value: { i: 3 } },
+      { value: { i: 4 } },
     ])
   })
 
@@ -50,9 +50,9 @@ describe('pull', () => {
       const node: Node = {
         id: 'target',
         name: 'node-type',
-        inputs: [{id: 'target-input-id', name: 'some-other-name', schema: {}}],
+        inputs: [{ id: 'target-input-id', name: 'some-other-name', schema: {} }],
         outputs: [],
-        params: []
+        params: [],
       }
 
       const diagram = new Diagram({
@@ -71,9 +71,9 @@ describe('pull', () => {
     const node: Node = {
       id: 'target',
       name: 'node-type',
-      inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
+      inputs: [{ id: 'target-input-id', name: 'input', schema: {} }],
       outputs: [],
-      params: []
+      params: [],
     }
 
     const links = [
@@ -83,13 +83,13 @@ describe('pull', () => {
 
     const diagram = new Diagram({
       nodes: [node],
-      links
+      links,
     })
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
-        .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])
+        .set('link-1', [{ i: 1 }, { i: 2 }])
+        .set('link-2', [{ i: 3 }, { i: 4 }]),
     })
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
@@ -108,9 +108,9 @@ describe('pull', () => {
     const node: Node = {
       id: 'target',
       name: 'node-type',
-      inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
+      inputs: [{ id: 'target-input-id', name: 'input', schema: {} }],
       outputs: [],
-      params: []
+      params: [],
     }
 
     const links = [
@@ -120,22 +120,22 @@ describe('pull', () => {
 
     const diagram = new Diagram({
       nodes: [node],
-      links
+      links,
     })
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
-        .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])
+        .set('link-1', [{ i: 1 }, { i: 2 }])
+        .set('link-2', [{ i: 3 }, { i: 4 }]),
     })
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const input = new InputDevice(node, unfoldedDiagram, memory)
 
-    expect(input.pull(1)).toMatchObject([{ value: {i: 1} }])
-    expect(input.pull(2)).toMatchObject([{ value: {i: 2} }, { value: {i: 3} }])
-    expect(input.pull(3)).toMatchObject([{ value: {i: 4} }])
+    expect(input.pull(1)).toMatchObject([{ value: { i: 1 } }])
+    expect(input.pull(2)).toMatchObject([{ value: { i: 2 } }, { value: { i: 3 } }])
+    expect(input.pull(3)).toMatchObject([{ value: { i: 4 } }])
   })
 })
 
@@ -144,9 +144,9 @@ describe('pullFrom', () => {
     const node: Node = {
       id: 'target',
       name: 'node-type',
-      inputs: [{id: 'target-input-id', name: 'numbers', schema: {}}],
+      inputs: [{ id: 'target-input-id', name: 'numbers', schema: {} }],
       outputs: [],
-      params: []
+      params: [],
     }
 
     const links = [
@@ -156,24 +156,24 @@ describe('pullFrom', () => {
 
     const diagram = new Diagram({
       nodes: [node],
-      links
+      links,
     })
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
-        .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])
+        .set('link-1', [{ i: 1 }, { i: 2 }])
+        .set('link-2', [{ i: 3 }, { i: 4 }]),
     })
 
     const input = new InputDevice(node, unfoldedDiagram, memory)
 
     expect(input.pullFrom('numbers')).toMatchObject([
-      { value: {i: 1} },
-      { value: {i: 2} },
-      { value: {i: 3} },
-      { value: {i: 4} },
+      { value: { i: 1 } },
+      { value: { i: 2 } },
+      { value: { i: 3 } },
+      { value: { i: 4 } },
     ])
   })
 
@@ -181,9 +181,9 @@ describe('pullFrom', () => {
     const node: Node = {
       id: 'target',
       name: 'node-type',
-      inputs: [{id: 'target-input-id', name: 'numbers', schema: {}}],
+      inputs: [{ id: 'target-input-id', name: 'numbers', schema: {} }],
       outputs: [],
-      params: []
+      params: [],
     }
 
     const links = [
@@ -193,15 +193,15 @@ describe('pullFrom', () => {
 
     const diagram = new Diagram({
       nodes: [node],
-      links
+      links,
     })
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
-        .set('link-1', [{i: 1}, {i: 2}])
-        .set('link-2', [{i: 3}, {i: 4}])
+        .set('link-1', [{ i: 1 }, { i: 2 }])
+        .set('link-2', [{ i: 3 }, { i: 4 }]),
     })
 
     const input = new InputDevice(node, unfoldedDiagram, memory)
@@ -220,7 +220,7 @@ describe('params', () => {
     const node: Node = {
       id: 'target',
       name: 'node-type',
-      inputs: [{id: 'target-input-id', name: 'input', schema: {}}],
+      inputs: [{ id: 'target-input-id', name: 'input', schema: {} }],
       outputs: [],
       params: [createDefaultStringable({
         name: 'greeting',
@@ -230,7 +230,7 @@ describe('params', () => {
         multiline: false,
         canInterpolate: true,
         interpolate: true,
-      })]
+      })],
     }
 
     const links = [
@@ -239,14 +239,14 @@ describe('params', () => {
 
     const diagram = new Diagram({
       nodes: [node],
-      links
+      links,
     })
 
     const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
-        .set('link-1', [{ name: 'Bob' }])
+        .set('link-1', [{ name: 'Bob' }]),
     })
 
     const input = new InputDevice(node, unfoldedDiagram, memory)

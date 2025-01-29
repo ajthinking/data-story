@@ -22,7 +22,7 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const ObserversDemo = () => {
@@ -44,7 +44,7 @@ const ObserversDemo = () => {
     .add('Table')
     .connect()
     .place()
-    .get()
+    .get(),
   );
 
   const client = useMemo(() => diagram

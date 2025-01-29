@@ -1,5 +1,5 @@
 import { DataStory } from '@data-story/ui'
-import { core, str, } from '@data-story/core';
+import { core, str } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
 import useRequest from 'ahooks/lib/useRequest';
@@ -28,7 +28,7 @@ export default () => {
       str({
         name: 'message',
         help: 'A message to pass on into the execution.',
-      })
+      }),
     ]
     return diagram;
   });

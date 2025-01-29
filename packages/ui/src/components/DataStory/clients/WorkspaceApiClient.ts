@@ -29,7 +29,7 @@ import {
   NodeDescriptionRequestSchema,
   NodeDescriptionResponseSchema,
   NodesStatusInfo,
-  LinkItemsParamSchema
+  LinkItemsParamSchema,
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -57,8 +57,8 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     this.initUpdateStorage();
   }
 
-  async getNodeDescriptions({ path }: {path?: string}): Promise<NodeDescription[]> {
-    const request = {type: 'getNodeDescriptions', path};
+  async getNodeDescriptions({ path }: { path?: string }): Promise<NodeDescription[]> {
+    const request = { type: 'getNodeDescriptions', path };
     validateZodSchema(NodeDescriptionRequestSchema, request);
     const data = await this.transport.sendAndReceive(request) as NodeDescriptionResponse;
     validateZodSchema(NodeDescriptionResponseSchema, data);
@@ -68,27 +68,27 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   updateDiagram(diagram: Diagram): Promise<void> {
     try {
       eventManager.emit({
-        type: DataStoryEvents.SAVE_SUCCESS
+        type: DataStoryEvents.SAVE_SUCCESS,
       });
       return this.transport.sendAndReceive({
         type: 'updateDiagram',
-        diagram
+        diagram,
       });
     } catch(e) {
       eventManager.emit({
-        type: DataStoryEvents.SAVE_ERROR
+        type: DataStoryEvents.SAVE_ERROR,
       });
       throw e;
     }
   }
 
-  async getDiagram({ path }: {path?: string}): Promise<Diagram> {
+  async getDiagram({ path }: { path?: string }): Promise<Diagram> {
     try {
       const data = await this.transport.sendAndReceive({
         type: 'getDiagram',
-        path
+        path,
       });
-      return (data as {msgId: string; diagram: Diagram; [key: string]: any;})?.diagram;
+      return (data as { msgId: string; diagram: Diagram; [key: string]: any; })?.diagram;
     } catch(e) {
       console.error('Error getting diagram', e);
       throw e;
@@ -112,11 +112,11 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(
         finalize(() => {
-          this.cancelObservation({observerId: params.observerId, type: RequestObserverType.cancelObservation});
-        })
+          this.cancelObservation({ observerId: params.observerId, type: RequestObserverType.cancelObservation });
+        }),
       );
     const itemsSubscription = msg$.subscribe((data) => {
-      const { items, inputObserver } = data as {items: LinkItemsParam[], inputObserver: InputObserveConfig};
+      const { items, inputObserver } = data as { items: LinkItemsParam[], inputObserver: InputObserveConfig };
       validateZodSchema(LinkItemsParamSchema, items[0]);
       params.onReceive(items, inputObserver);
     });
@@ -130,11 +130,11 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(
         finalize(() => {
-          this.cancelObservation({observerId: params.observerId, type: RequestObserverType.cancelObservation});
-        })
+          this.cancelObservation({ observerId: params.observerId, type: RequestObserverType.cancelObservation });
+        }),
       );
     const linksSubscription = msg$.subscribe((data) => {
-      const { links } = data as {links: LinkCountInfo[]};
+      const { links } = data as { links: LinkCountInfo[] };
       validateZodSchema(LinkCountInfoSchema, links[0]);
       params.onReceive({ links });
     });
@@ -148,11 +148,11 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(
         finalize(() => {
-          this.cancelObservation({observerId: params.observerId, type: RequestObserverType.cancelObservation});
-        })
+          this.cancelObservation({ observerId: params.observerId, type: RequestObserverType.cancelObservation });
+        }),
       );
     const nodeStatusSubscription = msg$.subscribe((data) => {
-      const { nodes } = data as {nodes: NodesStatusInfo[]};
+      const { nodes } = data as { nodes: NodesStatusInfo[] };
       validateZodSchema(NodesStatusSchema, nodes[0]);
       params.onReceive({ nodes });
     });
@@ -166,11 +166,11 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     const msg$ = this.transport.streaming(serializableParams)
       .pipe(
         finalize(() => {
-          this.cancelObservation({observerId: params.observerId, type: RequestObserverType.cancelObservation});
-        })
+          this.cancelObservation({ observerId: params.observerId, type: RequestObserverType.cancelObservation });
+        }),
       );
     const linksSubscription = msg$.subscribe((data) => {
-      params.onReceive((data as {linkIds: LinkId[]}).linkIds);
+      params.onReceive((data as { linkIds: LinkId[] }).linkIds);
     });
 
     return linksSubscription;
@@ -185,7 +185,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
 
   run({ diagram }: ClientRunParams): void {
     eventManager.emit({
-      type: DataStoryEvents.RUN_START
+      type: DataStoryEvents.RUN_START,
     });
     const msg$ = this.transport.streaming({
       type: 'run',
@@ -197,7 +197,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   onEdgeDoubleClick(edgeId: string): void {
     this.transport.sendAndReceive({
       type: 'onEdgeDoubleClick',
-      edgeId
+      edgeId,
     });
   }
 
@@ -208,7 +208,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
         console.log('Execution complete 💫')
         eventManager.emit({
           type: DataStoryEvents.RUN_SUCCESS,
-          payload: data
+          payload: data,
         });
       })
   }
@@ -220,7 +220,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
 
         eventManager.emit({
           type: DataStoryEvents.RUN_ERROR,
-          payload: data
+          payload: data,
         });
       })
   }

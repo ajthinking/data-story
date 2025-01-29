@@ -17,7 +17,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
   const [tab, setTab] = useState<TabKey>('Params');
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
-    updateNode: state.updateNode
+    updateNode: state.updateNode,
   });
 
   const { updateNode, toDiagram } = useStore(selector);
@@ -60,7 +60,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
 
       updateNode({
         ...node,
-        data: newData
+        data: newData,
       })
 
       onSave?.(toDiagram());
@@ -106,7 +106,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
 
         {/* ***** CONTENT ***** */}
         <div
-          style={{height: 'calc(100vh - 350px)'}}
+          style={{ height: 'calc(100vh - 350px)' }}
           className="overflow-y-auto relative pb-6 pt-4 px-6 flex-auto space-y-1 text-sm text-gray-800">
           <TabComponent node={node} register={form.register} form={form}/>
         </div>

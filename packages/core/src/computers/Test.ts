@@ -77,7 +77,7 @@ export const Test: Computer = {
         }),
       ],
       value: [],
-    }
+    },
   ],
 
   async *run({ input, output, params }) {
@@ -99,7 +99,7 @@ export const Test: Computer = {
           acc[value] = new Function('a', 'b', `return a ${value} b`) as OperationFunction;
           return acc;
         },
-        {} as Record<string, OperationFunction>
+        {} as Record<string, OperationFunction>,
       );
 
       return tests.every(test => {

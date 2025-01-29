@@ -8,7 +8,7 @@ export const JsonFileWrite: Computer = {
   category: 'NodeJs',
   inputs: [{
     name: 'input',
-    schema: {}
+    schema: {},
   }],
   outputs: [],
   params: [

@@ -25,9 +25,9 @@ describe('evaluate', () => {
         'name': 'remove_properties',
         'type': 'RepeatableParam',
         'row': [],
-        'value': []
+        'value': [],
       } as unknown as RepeatableParam<any>,
-      []
+      [],
     );
 
     expect(result).toEqual([]);
@@ -37,7 +37,7 @@ describe('evaluate', () => {
     const result = evaluator.evaluate(
       {},
       removePropertyData as unknown as RepeatableParam<any>,
-      []
+      [],
     );
 
     expect(result).toEqual([{ property: 'foo-1' }]);
@@ -47,12 +47,12 @@ describe('evaluate', () => {
     const result = evaluator.evaluate(
       {},
       mockPortMapData as unknown as RepeatableParam<any>,
-      []
+      [],
     );
 
     expect(result).toEqual([
       { value: 22, port: 'unfiltered' },
-      { value: 'id', port: 'outputzdbj' }
+      { value: 'id', port: 'outputzdbj' },
     ]);
   });
 
@@ -60,12 +60,12 @@ describe('evaluate', () => {
     const result = evaluator.evaluate(
       {},
       mockRepeatableData as unknown as RepeatableParam<any>,
-      []
+      [],
     );
 
     expect(result).toEqual([
       { value: 'value-11', remove_properties: [{ property: 'property-11' }] },
-      { value: 'value-22', remove_properties: [{ property: 'property-22' }] }
+      { value: 'value-22', remove_properties: [{ property: 'property-22' }] },
     ]);
   });
 
@@ -74,7 +74,7 @@ describe('evaluate', () => {
     evaluator.evaluate(
       {},
       mockRepeatableData as unknown as RepeatableParam<any>,
-      []
+      [],
     );
 
     /**
@@ -90,7 +90,7 @@ describe('evaluate', () => {
     evaluator.evaluate(
       {},
       mockRepeatableData as unknown as RepeatableParam<any>,
-      []
+      [],
     );
     const calls = spy.mock.calls;
 

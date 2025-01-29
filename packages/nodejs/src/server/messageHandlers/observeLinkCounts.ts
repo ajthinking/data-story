@@ -1,13 +1,13 @@
 import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 import {
   RequestObserverType,
-  ObserveLinkCounts
+  ObserveLinkCounts,
 } from '@data-story/core';
 
 export const observeLinkCounts: MessageHandler<ObserveLinkCounts> = async({
   ws,
   data,
-  inputObserverController
+  inputObserverController,
 }: MessageHandlerParams<ObserveLinkCounts>) => {
   inputObserverController.addLinkCountsObserver({
     ...data,
@@ -15,8 +15,8 @@ export const observeLinkCounts: MessageHandler<ObserveLinkCounts> = async({
       ws.send(JSON.stringify({
         links: links,
         type: RequestObserverType.observeLinkCounts,
-        msgId: data.msgId
+        msgId: data.msgId,
       }))
-    }
+    },
   } as ObserveLinkCounts);
 }

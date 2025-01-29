@@ -18,8 +18,8 @@ module.exports = {
           50: '#FAFAFA',
         },
         vsCodeWarmGray: {
-          900: '#1E1E1E'
-        }
+          900: '#1E1E1E',
+        },
       },
       animation: {
         'slow-spin': 'spin 3s linear infinite',

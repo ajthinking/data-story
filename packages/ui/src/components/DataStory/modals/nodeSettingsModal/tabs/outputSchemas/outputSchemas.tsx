@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataStoryOutputTable} from './dataStoryOutputTable';
+import { DataStoryOutputTable } from './dataStoryOutputTable';
 import { OutputSchemaProps } from './common';
 
 export function OutputSchemas({

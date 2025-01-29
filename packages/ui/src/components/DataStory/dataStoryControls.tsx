@@ -51,7 +51,7 @@ export function DataStoryControls({
     updateDiagram: (diagram: Diagram) => {
       updateDiagram(diagram);
     },
-    onSave: onSave
+    onSave: onSave,
   }), [updateDiagram, toDiagram]);
 
   const handleSave = useCallback(() => {

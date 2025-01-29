@@ -41,7 +41,7 @@ export class ItemWithParams<ExpectedType extends ItemValue = ItemValue> {
           console.error('error', error);
           return param.value;
         }
-      }
+      },
     });
   }
 }

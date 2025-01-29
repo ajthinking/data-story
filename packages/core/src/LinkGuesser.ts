@@ -5,11 +5,11 @@ import { createDataStoryId } from './utils/createDataStoryId';
 
 export class LinkGuesser {
   constructor(
-    public diagram: Diagram
+    public diagram: Diagram,
   ) {}
 
   guess(
-    node: Node
+    node: Node,
   ): Link | null {
     const previousNode = this.diagram.nodes.at(-1)
     if(!previousNode) return null;

@@ -12,20 +12,20 @@ export const LinkItemsSchema = z.record(z.string() as z.ZodType<LinkId>, z.array
 export const GetDataFromStorageParamsSchema = z.object({
   type: z.literal('getDataFromStorage', {
     required_error: 'type is required',
-    invalid_type_error: 'type must be getDataFromStorage'
+    invalid_type_error: 'type must be getDataFromStorage',
   }),
   linkId: z.string({
     required_error: 'linkId is required',
-    invalid_type_error: 'linkId must be a string'
+    invalid_type_error: 'linkId must be a string',
   }) as z.ZodType<LinkId>,
   msgId: z.string({
-    invalid_type_error: 'msgId must be a string'
+    invalid_type_error: 'msgId must be a string',
   }).optional(),
   offset: z.number({
-    invalid_type_error: 'offset must be a number'
+    invalid_type_error: 'offset must be a number',
   }).optional(),
   limit: z.number({
-    invalid_type_error: 'limit must be a number'
+    invalid_type_error: 'limit must be a number',
   }).optional(),
 });
 

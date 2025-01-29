@@ -17,7 +17,7 @@ export class FileStorage implements ObserverStorage {
       vscode.workspace.workspaceFolders![0].uri.fsPath,
       '.datastory',
       'storage',
-      this.diagramId
+      this.diagramId,
     );
 
     // Ensure the directory exists
@@ -31,7 +31,7 @@ export class FileStorage implements ObserverStorage {
       this.write({
         linkCounts: {},
         linkItems: {},
-        nodes: {}
+        nodes: {},
       });
     }
   }
@@ -49,7 +49,7 @@ export class FileStorage implements ObserverStorage {
     this.write(data);
   }
 
-  async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
+  async getLinkItems({ linkId, offset, limit }: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
     const data = this.read();
     return data.linkItems[linkId].slice(offset, offset + limit);
   }

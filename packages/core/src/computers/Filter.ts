@@ -39,7 +39,7 @@ export const Filter: Computer = {
           type: 'PortSelectionParam',
           value: '',
           allowCreate: true,
-        }
+        },
       ],
       value: [],
     },

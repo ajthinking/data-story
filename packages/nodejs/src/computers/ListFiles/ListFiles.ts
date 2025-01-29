@@ -16,7 +16,7 @@ export const ListFiles: Computer = {
       name: 'string',
       type: 'string',
       fullPath: 'string',
-    }
+    },
   }],
   params: [
     createDefaultStringable({
@@ -29,7 +29,7 @@ export const ListFiles: Computer = {
       evaluations: [],
       casts: [],
       value: '/',
-    })
+    }),
   ],
 
   async *run({ input, output }) {

@@ -8,12 +8,10 @@ export default defineConfig({
   define: { 'process.env.NODE_ENV': '"production"' },
   build: {
     lib: {
-      // Could also be a dictionary or array of multiple entry points
       entry: resolve(__dirname, 'src/app/index.tsx'),
-      name: 'app',
-      // the proper extensions will be added
-      fileName: 'app'
+      formats: ['es'],
+      fileName: () => 'app.mjs',
     },
-    outDir: 'dist/app'
+    outDir: 'dist/app',
   },
-})
+});

@@ -17,10 +17,10 @@ describe('toTable', () => {
         'baz': [
           {
             'foo': 'bar',
-            'baz': 'qux'
-          }
-        ]
-      }
+            'baz': 'qux',
+          },
+        ],
+      },
     ];
 
     const { headers, rows } = new ItemCollection(mockData).toTable({ only: [], drop: [], destructObjects: true });
@@ -32,7 +32,7 @@ describe('toTable', () => {
     const expectedHeaders = ['foo1', 'foo2', 'foo3', 'foo3.foo1', 'foo3.foo2', 'foo3.foo3.foo1', 'foo3.foo3.foo2', 'foo3.foo3.foo3'];
     const expectedContent = [
       ['bar1', 'bar2', 'bar3', undefined, undefined, undefined, undefined, undefined ],
-      ['bar1', 'bar2', 'bar3', undefined, undefined, undefined, undefined, undefined,],
+      ['bar1', 'bar2', 'bar3', undefined, undefined, undefined, undefined, undefined],
       ['bar1', 'bar2', undefined, 'bar1', 'bar2', 'bar1', 'bar2', 'bar3'],
     ];
 
@@ -60,7 +60,7 @@ describe('toTable', () => {
         'address.city',
         'address.state',
         'address.zipcode',
-      ]
+      ],
     );
     expect(rows).toEqual(
       [
@@ -82,7 +82,7 @@ describe('toTable', () => {
           'Anystate',
           '12344',
         ],
-      ]
+      ],
     );
   });
 
@@ -97,7 +97,7 @@ describe('toTable', () => {
       {
         'name': {
           'first': 'John',
-          'last': 'Doe'
+          'last': 'Doe',
         },
         'age': 21,
       },

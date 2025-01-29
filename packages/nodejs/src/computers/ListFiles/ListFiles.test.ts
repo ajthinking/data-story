@@ -40,13 +40,13 @@ it('outputs objects when files and directories are found', async () => {
       {
         name: 'file1',
         type: 'file',
-        fullPath: '/some/path/file1'
+        fullPath: '/some/path/file1',
       },
       {
         name: 'dir1',
         type: 'directory',
-        fullPath: '/some/path/dir1'
-      }
+        fullPath: '/some/path/dir1',
+      },
     ])
     .ok()
 })

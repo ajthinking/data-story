@@ -4,12 +4,12 @@ import { NodeDescription } from './types/NodeDescription';
 
 export class PositionGuesser {
   constructor(
-    public diagram: Diagram
+    public diagram: Diagram,
   ) {}
 
   guess(
-    node: Node | NodeDescription
-  ): {x: number, y: number} {
+    node: Node | NodeDescription,
+  ): { x: number, y: number } {
     // Defines starting position for new nodes
     const startX = 75;
     const startY = 50;

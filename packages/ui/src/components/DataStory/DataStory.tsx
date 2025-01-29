@@ -16,7 +16,7 @@ function handleRequestError(requestError?: Error): void {
 }
 
 export const DataStoryComponent = (
-  props: DataStoryProps
+  props: DataStoryProps,
 ) => {
   const { client, initSidebarKey, children, onChange } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
@@ -29,7 +29,7 @@ export const DataStoryComponent = (
   const {
     data: nodeDescriptions,
     loading: nodeDescriptionsLoading,
-    error: getNodeDescriptionsError
+    error: getNodeDescriptionsError,
   } = useRequest(async() => {
     return client.getNodeDescriptions({})
   }, {
@@ -40,7 +40,7 @@ export const DataStoryComponent = (
   const {
     data: diagramData,
     loading: diagramDataLoading,
-    error: diagramDataError
+    error: diagramDataError,
   } = useRequest(async() => {
     return client.getDiagram?.({});
   }, {

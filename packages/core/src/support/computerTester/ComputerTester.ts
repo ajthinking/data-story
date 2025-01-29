@@ -63,7 +63,7 @@ export class ComputerTester {
   runner: AsyncGenerator | null = null
   inputDevice: InputDevice | null = null
   outputDevice: OutputDevice | null = null
-  hooksDevice: { register: (hook: Hook) => void} = { register: vi.fn() }
+  hooksDevice: { register: (hook: Hook) => void } = { register: vi.fn() }
   memory: ExecutionMemory | null = null
   expectedErrorMessage: string | undefined
   computer: Computer
@@ -102,12 +102,12 @@ export class ComputerTester {
               console.error('error', error);
               return param.value;
             }
-          }
+          },
         }),
         storage: new InMemoryStorage(),
         hooks: this.hooksDevice,
         node: this.node,
-      })
+      }),
     )
 
     // Runner handle
@@ -205,7 +205,7 @@ export class ComputerTester {
         name: output.name,
         schema: output.schema,
       })),
-      params: []
+      params: [],
     }
 
     // Create dangling links to the inputs
@@ -227,7 +227,7 @@ export class ComputerTester {
       links: [
         ...inputLinks,
         ...outputLinks,
-      ]
+      ],
     })
   }
 
@@ -235,16 +235,16 @@ export class ComputerTester {
     const diagramClone = this.diagram!.clone()
     const unfoldedDiagram = new UnfoldedDiagramFactory(
       diagramClone,
-      {}
+      {},
     ).unfold()
 
     return new InputDevice(
       {
         ...this.node!,
-        params: this.makeParams()
+        params: this.makeParams(),
       },
       unfoldedDiagram,
-      this.memory!
+      this.memory!,
     )
   }
 
@@ -278,7 +278,7 @@ export class ComputerTester {
       if(hasExplicitValue) {
         param.value = param.type === 'StringableParam' ?  {
           ...param.value,
-          value: this.explicitParamValues[param.name]
+          value: this.explicitParamValues[param.name],
         } : this.explicitParamValues[param.name];
 
         continue

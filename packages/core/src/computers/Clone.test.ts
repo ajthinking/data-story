@@ -12,7 +12,7 @@ it('outputs clones with ids', async () => {
         { season: 'Easter', _clone_id: 0 },
         { season: 'Easter', _clone_id: 1 },
         { season: 'Easter', _clone_id: 2 },
-      ]
+      ],
     })
     .ok()
 })

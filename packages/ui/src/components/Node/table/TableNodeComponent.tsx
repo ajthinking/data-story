@@ -43,7 +43,7 @@ const TableNodeComponent = ({ id, data }: {
   const { headers, rows } = useMemo(() => {
     const { only, drop, destructObjects } = getFormatterOnlyAndDropParam(items, data);
     const itemCollection = new ItemCollection(items);
-    return itemCollection.toTable({only, drop, destructObjects });
+    return itemCollection.toTable({ only, drop, destructObjects });
   }, [items, data]);
 
   const columns: ColumnDef<Record<string, unknown>>[] = useMemo(
@@ -55,7 +55,7 @@ const TableNodeComponent = ({ id, data }: {
         cell: ({ cell, row }) => {
           const originalContent = row.original[cell.column?.id];
           return <TableCell tableRef={tableRef} content={originalContent}/>
-        }
+        },
       })), [headers]);
 
   const tableData = useMemo(() =>
@@ -130,13 +130,13 @@ const TableNodeComponent = ({ id, data }: {
     const cellsMatrixClass = new CellsMatrix({
       virtualRows,
       virtualColumns,
-      getRowModel
+      getRowModel,
     });
 
     const calculateColumnWidth = (colIndex:number, options: ColumnWidthOptions = {}) => cellsMatrixClass.calculateColumnWidth(colIndex, options);
 
     return {
-      calculateColumnWidth
+      calculateColumnWidth,
     }
   }, [getRowModel, virtualColumns, virtualRows]);
 

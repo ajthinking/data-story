@@ -7,8 +7,8 @@ it('forwards schema to linked ports', () => {
     id: 'node1.output',
     name: 'output',
     schema: {
-      someProperty: 'someValue'
-    }
+      someProperty: 'someValue',
+    },
   }
 
   const node1: Node = {
@@ -16,13 +16,13 @@ it('forwards schema to linked ports', () => {
     name: 'MyNode',
     inputs: [],
     outputs: [outputPort],
-    params: []
+    params: [],
   }
 
   const inputPort = {
     id: 'node2.input',
     name: 'input',
-    schema: {}
+    schema: {},
   }
 
   const node2: Node = {
@@ -30,23 +30,23 @@ it('forwards schema to linked ports', () => {
     name: 'MyNode',
     inputs: [inputPort],
     outputs: [],
-    params: []
+    params: [],
   }
 
   const link = {
     id: 'link1',
     sourcePortId: 'node1.output',
-    targetPortId: 'node2.input'
+    targetPortId: 'node2.input',
   }
 
   const diagram = new Diagram({
     nodes: [node1, node2],
-    links: [link]
+    links: [link],
   })
 
   syncPortSchemas(link, diagram)
 
   expect(inputPort.schema).toMatchObject({
-    someProperty: 'someValue'
+    someProperty: 'someValue',
   })
 })

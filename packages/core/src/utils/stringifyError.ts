@@ -3,7 +3,7 @@ export function stringifyError(error: any) {
     // Standard Error object
     return JSON.stringify({
       message: error.message,
-      stack: error.stack
+      stack: error.stack,
     });
   } else {
     try {

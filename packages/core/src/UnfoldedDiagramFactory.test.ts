@@ -23,12 +23,12 @@ describe('unfold', () => {
       .withParams([
         str({
           name: 'stamp',
-          value: 'foo'}
-        )
+          value: 'foo' },
+        ),
       ])
-      .add('Input', { port_name: 'input'})
+      .add('Input', { port_name: 'input' })
       .add('Map')
-      .add('Output', { port_name: 'output'})
+      .add('Output', { port_name: 'output' })
       .connect()
       .get()
 
@@ -67,9 +67,9 @@ describe('unfold', () => {
   it('unfolds a diagram with simple nested node with custom named ports', async () => {
     const app = await core.boot()
     const nestedNode = app.getDiagramBuilder()
-      .add('Input', { port_name: 'incoming'})
+      .add('Input', { port_name: 'incoming' })
       .add('Map')
-      .add('Output', { port_name: 'outgoing'})
+      .add('Output', { port_name: 'outgoing' })
       .connect()
       .get()
 

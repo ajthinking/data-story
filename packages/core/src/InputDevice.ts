@@ -50,7 +50,7 @@ export class InputDevice {
     return pulled.map(item => new ItemWithParams(
       item,
       this.node.params,
-      this.globalParamsForNode()
+      this.globalParamsForNode(),
     ));
   }
 
@@ -60,7 +60,7 @@ export class InputDevice {
     return [new ItemWithParams(
       item,
       this.node.params,
-      this.globalParamsForNode()
+      this.globalParamsForNode(),
     )]
   }
 

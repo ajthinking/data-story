@@ -79,7 +79,7 @@ export class ExecutionMemory {
     this.inputObserverController?.reportItems({
       linkId,
       type: RequestObserverType.observeLinkItems,
-      items
+      items,
     })
   }
 
@@ -101,7 +101,7 @@ export class ExecutionMemory {
     this.inputObserverController?.reportLinksCount({
       linkId,
       type: RequestObserverType.observeLinkCounts,
-      count
+      count,
     })
 
     this.linkCounts.set(linkId, count)

@@ -171,12 +171,12 @@ export const str = ({
     interpolate: interpolate ?? true,
     evaluations: evaluations,
     casts: [
-      stringCast
+      stringCast,
     ],
     value: {
       value: value ?? '',
       Cast: stringCast.type,
-    }
+    },
   }
 }
 
@@ -209,7 +209,7 @@ export const num = ({
     interpolate: interpolate ?? true,
     evaluations: evaluations,
     casts: [
-      numberCast
+      numberCast,
     ],
     value: {
       value: value ?? 0,
@@ -343,7 +343,7 @@ export const hjson = ({
     ],
     value: {
       value: value ?? 0,
-      Evaluation: hjsonEvaluation.type
+      Evaluation: hjsonEvaluation.type,
     },
   }
 }

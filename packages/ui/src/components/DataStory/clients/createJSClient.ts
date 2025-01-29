@@ -1,4 +1,4 @@
-import { Application, } from '@data-story/core';
+import { Application } from '@data-story/core';
 import { filter } from 'rxjs';
 import { createTransport, TransportConfig } from './createTransport';
 import { WorkspaceApiClient } from './WorkspaceApiClient';
@@ -10,11 +10,11 @@ function createJSTransport(app: Application) {
     postMessage: (msg) => {
       jsServer.channel.next({
         ...msg,
-        status: 'client-post'
+        status: 'client-post',
       });
     },
     messages$: jsServer.channel.pipe(
-      filter((msg) => msg.status === 'server-post')
+      filter((msg) => msg.status === 'server-post'),
     ),
   };
   return createTransport(config);

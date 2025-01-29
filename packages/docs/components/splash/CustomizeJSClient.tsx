@@ -7,7 +7,7 @@ import {
   ObserveLinkUpdate,
   GetDataFromStorageParams,
   ObserveNodeStatus,
-  CancelObservation
+  CancelObservation,
 } from '@data-story/core';
 import { ClientRunParams, createJSClient, WorkspaceApiClient, WorkspaceApiClientImplement } from '@data-story/ui';
 

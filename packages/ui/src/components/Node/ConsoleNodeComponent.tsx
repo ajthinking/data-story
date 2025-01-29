@@ -16,7 +16,7 @@ const ConsoleNodeComponent = ({ id, data, selected }: {
   return <NodeComponent id={id} data={data} selected={selected}/>
 }
 
-const useObserverConsole = ({ id }: {id: string}) => {
+const useObserverConsole = ({ id }: { id: string }) => {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     client: state.client,
@@ -36,7 +36,7 @@ const useObserverConsole = ({ id }: {id: string}) => {
       observerId: createDataStoryId(),
       onReceive: (batchedItems) => {
         console.log(...(batchedItems ?? []));
-      }
+      },
     }
 
     const observeLinkItemsSubscription = client?.observeLinkItems?.(consoleObserver);

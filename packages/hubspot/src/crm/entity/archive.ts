@@ -20,7 +20,7 @@ const Template: Computer = {
     {
       name: 'errors',
       schema: {},
-    }
+    },
   ],
   category: 'Hubspot',
   params: [

@@ -1,6 +1,6 @@
 export default {
   'index': {
-    'title': 'Home'
+    'title': 'Home',
   },
   'menu': {
     'title': 'Resources',
@@ -8,18 +8,18 @@ export default {
     'items': {
       'home': {
         'title': 'Home',
-        'href': '/'
+        'href': '/',
       },
       'playground': {
         'title': 'Playground',
-        'href': '/playground'
+        'href': '/playground',
       },
       'github': {
         'title': 'GitHub',
         'newWindow': true,
-        'href': 'https://github.com/ajthinking/data-story'
-      }
-    }
+        'href': 'https://github.com/ajthinking/data-story',
+      },
+    },
   },
   'getting-started': 'Getting Started',
   'customize': 'Customize',
@@ -28,8 +28,8 @@ export default {
     'display': 'hidden',
     'type': 'page',
     'theme': {
-      'layout': 'raw'
-    }
+      'layout': 'raw',
+    },
   },
   'playground-node': {
     'title': 'Playground NodeJS',
@@ -37,12 +37,12 @@ export default {
     'footer': false,
     'type': 'page',
     'theme': {
-      'layout': 'raw'
-    }
+      'layout': 'raw',
+    },
   },
   // 'Visualize': 'Visualize',
   'Unfolding': 'Unfolding',
   'Observers': 'Observers',
   'contributing': 'Contributing',
-  'hotkeys': 'Hotkeys'
+  'hotkeys': 'Hotkeys',
 }

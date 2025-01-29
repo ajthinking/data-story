@@ -12,11 +12,11 @@ export const Map: Computer = {
   label: 'Map',
   inputs: [{
     name: 'input',
-    schema: {}
+    schema: {},
   }],
   outputs: [{
     name: 'output',
-    schema: {}
+    schema: {},
   }],
   params: [
     jsFn({
@@ -27,7 +27,7 @@ export const Map: Computer = {
         })
       `,
       help: '',
-    })
+    }),
   ],
 
   async *run({ input, output, params }) {

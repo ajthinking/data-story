@@ -20,8 +20,8 @@ export const Comment: Computer = {
       value: multiline`
         ### Comment
         paragraph
-      `
-    })
+      `,
+    }),
   ],
 
   async *run({}) {},

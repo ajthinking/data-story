@@ -33,7 +33,7 @@ export const Throw: Computer = {
         stringCast,
       ],
       value: 'Some error',
-    })
+    }),
   ],
 
   async *run({ input, node }) {

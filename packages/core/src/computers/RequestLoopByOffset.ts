@@ -37,7 +37,7 @@ export const RequestLoopByOffset: Computer = {
     }),
     json_({
       name: 'config',
-      value: JSON.stringify({ headers: {}}, null, 2),
+      value: JSON.stringify({ headers: {} }, null, 2),
       multiline: true,
     }),
     str({

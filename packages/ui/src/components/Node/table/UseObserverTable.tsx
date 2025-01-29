@@ -89,7 +89,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
         if (itemsRef.current.length < initialScreenCount) {
           loadMore.current();
         }
-      }
+      },
     }
     const subscription = client?.observeLinkUpdate?.(tableUpdate);
     return () => {

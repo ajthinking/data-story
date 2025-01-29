@@ -21,7 +21,7 @@ function groupNotifications(data: ObserverParams[]) {
       if (current) {
         groupedNotificationMap.set(key, {
           items: current.items.concat(d.items),
-          inputObservers: current.inputObservers
+          inputObservers: current.inputObservers,
         });
       }
     } else {
@@ -34,6 +34,6 @@ function groupNotifications(data: ObserverParams[]) {
 export function clientBuffer(bufferTimeSpan: number = 500): UnaryFunction<Observable<ObserverParams>, Observable<ObserverParams>> {
   return pipe(
     bufferTime(bufferTimeSpan),
-    concatMap(groupNotifications)
+    concatMap(groupNotifications),
   );
 }

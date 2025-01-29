@@ -8,7 +8,7 @@ import { defaultColumns, formatOutputs, OutputSchemaProps } from './common';
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { CloseIcon } from '../../../../icons/closeIcon';
 import { DragIcon } from '../../../../icons/dragIcon';
-function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}){
+function PortEditCell({ initialValue, onBlur }: { initialValue: unknown, onBlur: (value: unknown) => void }){
   const [value, setValue] = useState(initialValue);
 
   return (
@@ -24,7 +24,7 @@ function PortEditCell({ initialValue, onBlur }: {initialValue: unknown, onBlur: 
   );
 }
 
-const PortEditObjectCell = ({ initialValue, onBlur }: {initialValue: unknown, onBlur: (value: unknown) => void}) => {
+const PortEditObjectCell = ({ initialValue, onBlur }: { initialValue: unknown, onBlur: (value: unknown) => void }) => {
   const [value, setValue] = useState(JSON.stringify(initialValue, null, 2));
 
   const onCustomBlur = () => {
@@ -88,7 +88,7 @@ const DraggableRow: FC<{
   const [expanded, setExpanded] = useState(false);
   const handleDeleteRow = useCallback(
     () => deleteRow(row.id),
-    [deleteRow, row.id]
+    [deleteRow, row.id],
   );
 
   const handleExpandCollapse = () => {
@@ -154,7 +154,7 @@ export function OutputTable(props: {
     data.splice(
       targetRowIndex,
       0,
-      data.splice(draggedRowIndex, 1)[0] as Port
+      data.splice(draggedRowIndex, 1)[0] as Port,
     );
     setData([...data]);
 
@@ -222,7 +222,7 @@ export function OutputTable(props: {
                     ? null
                     : flexRender(
                       header.column.columnDef.header,
-                      header.getContext()
+                      header.getContext(),
                     )}
                 </th>
               ))}
@@ -255,7 +255,7 @@ export function OutputTable(props: {
 }
 
 export const DataStoryOutputTable = (props: OutputSchemaProps) => {
-  const { control} = useFormContext()
+  const { control } = useFormContext()
   return (
     <DndProvider backend={HTML5Backend}>
       <Controller

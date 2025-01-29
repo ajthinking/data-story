@@ -6,7 +6,7 @@ type FormReturn = UseFormReturn<{
   [x: string]: any;
 }, any>;
 
-const TestedPortSelectionInput = (props: {onForm: (f: FormReturn) => any}) => {
+const TestedPortSelectionInput = (props: { onForm: (f: FormReturn) => any }) => {
   const form = useForm({
     defaultValues: {
       port: '',
@@ -28,7 +28,7 @@ const TestedPortSelectionInput = (props: {onForm: (f: FormReturn) => any}) => {
   );
 }
 
-const mountPortSelectionInput = (formRef: {val: null | FormReturn} = { val: null }) => {
+const mountPortSelectionInput = (formRef: { val: null | FormReturn } = { val: null }) => {
   cy.mount(<TestedPortSelectionInput onForm={(f) => formRef.val = f}/>);
 }
 describe('PortSelectionInput', () => {
@@ -67,7 +67,7 @@ describe('PortSelectionInput', () => {
         { name: 'output4', id: '4' },
       ]), {
         shouldValidate: true,
-        shouldDirty: true
+        shouldDirty: true,
       });
     });
 
@@ -93,7 +93,7 @@ describe('PortSelectionInput', () => {
       // @ts-ignore
       formRef.val!.setValue('outputs', JSON.stringify([]), {
         shouldValidate: true,
-        shouldDirty: true
+        shouldDirty: true,
       });
     });
 
@@ -108,7 +108,7 @@ describe('PortSelectionInput', () => {
         { name: 'output3', id: '4' },
       ]), {
         shouldValidate: true,
-        shouldDirty: true
+        shouldDirty: true,
       });
     });
 

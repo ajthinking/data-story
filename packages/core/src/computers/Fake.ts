@@ -24,7 +24,7 @@ export const Fake: Computer = {
 
         node.outputs.forEach(outputPort => {
           output.pushTo(outputPort.name, [
-            {}
+            {},
           ])
         })
 

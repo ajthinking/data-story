@@ -14,9 +14,9 @@ describe('value', () => {
         str({
           name: 'greeting',
           value: 'Hello ${{name}}!',
-        })
+        }),
       ],
-      []
+      [],
     )
 
     expect(item.value).toEqual({ name: 'Bob' })
@@ -31,9 +31,9 @@ describe('params', () => {
         str({
           name: 'greeting',
           value: 'Hello ${{name}}!',
-        })
+        }),
       ],
-      []
+      [],
     )
 
     expect(item.params.greeting).toEqual('Hello Bob!')

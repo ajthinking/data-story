@@ -5,7 +5,7 @@ import { ToastComponent } from './Toast';
 
 export default Playground;
 
-function Playground({ mode }: {mode?: 'js' | 'node'}) {
+function Playground({ mode }: { mode?: 'js' | 'node' }) {
   const { app, loading } = useRequestApp();
   const [client, setClient] = useState<WorkspaceApiClientImplement>();
 

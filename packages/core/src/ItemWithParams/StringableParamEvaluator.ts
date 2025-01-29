@@ -48,7 +48,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
        */
       transformedValue = transformedValue.replace(
         /\${{([\w\.]+)}}/g,
-        (_: string, name: string) => get(itemValue, name)
+        (_: string, name: string) => get(itemValue, name),
       );
     }
 

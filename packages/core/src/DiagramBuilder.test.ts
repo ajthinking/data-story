@@ -17,7 +17,7 @@ describe('get', () => {
 
     // Everything at default 0, 0
     expect(diagram.nodes).toMatchObject([
-      { position: { x: 0, y: 0} },
+      { position: { x: 0, y: 0 } },
       { position: { x: 0, y: 0 } },
     ])
 
@@ -54,8 +54,8 @@ describe('add', () => {
     expect(periodParam).toMatchObject({
       name: 'period',
       value: {
-        value: 99
-      }
+        value: 99,
+      },
     })
   })
 
@@ -174,8 +174,8 @@ describe('connect', () => {
     expect(diagram.links).toMatchObject([
       {
         sourcePortId: 'Create.1.output',
-        targetPortId: 'Pass.1.input'
-      }
+        targetPortId: 'Pass.1.input',
+      },
     ])
   })
 
@@ -194,12 +194,12 @@ describe('connect', () => {
     expect(diagram.links).toMatchObject([
       {
         sourcePortId: 'Create.1.output',
-        targetPortId: 'Pass.1.input'
+        targetPortId: 'Pass.1.input',
       },
       {
         sourcePortId: 'Create.1.output',
-        targetPortId: 'Ignore.1.input'
-      }
+        targetPortId: 'Ignore.1.input',
+      },
     ])
   })
 

@@ -8,14 +8,14 @@ export const ReadFiles: Computer = {
   category: 'NodeJs',
   inputs: [{
     name: 'input',
-    schema: {}
+    schema: {},
   }],
   outputs: [{
     name: 'files',
     schema: {
       path: 'string',
       content: 'string',
-    }
+    },
   }],
   params: [
     createDefaultStringable({
@@ -40,7 +40,7 @@ export const ReadFiles: Computer = {
       casts: [],
       value: '**/node_modules/**',
     },
-    )
+    ),
   ],
 
   async *run({ input, output }) {

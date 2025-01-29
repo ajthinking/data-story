@@ -31,7 +31,7 @@ export class DiagramObserverStorage implements ObserverStorage {
   }
 
   // Link Items
-  async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
+  async getLinkItems({ linkId, offset, limit }: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
     const storageItems = this.linkItemsStorage.get(linkId)?.slice(offset, offset + limit);
     return storageItems ?? [];
   }

@@ -21,7 +21,7 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
     if (isKeyTrigger) {
       keyManager.subject.pipe(
         filter((activeKeys) => activeKeys.length === 0),
-        take(1)
+        take(1),
       ).subscribe(() => inputReference.current?.focus());
     } else {
       inputReference.current?.focus();
@@ -80,7 +80,7 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
                 {
                   'mr-1': index % 2 !== 0,
                   'ml-2': index % 2 === 0,
-                }
+                },
               )}
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}

@@ -3,7 +3,7 @@ import { ReactFlowNode } from '../../../../Node/ReactFlowNode';
 
 export function InputSchemas({
   node,
-  register
+  register,
 }: {
   node: ReactFlowNode,
   register: any

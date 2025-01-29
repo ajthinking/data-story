@@ -1,4 +1,4 @@
-export function PortIcon({ fill = '#50C878'}) {
+export function PortIcon({ fill = '#50C878' }) {
   return (<svg
     viewBox="0 0 24 24"
     className="w-3 h-3"

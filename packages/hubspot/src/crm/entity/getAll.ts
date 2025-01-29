@@ -10,7 +10,7 @@ const Template: Computer = {
   outputs: [
     {
       name: 'all',
-      schema: {}
+      schema: {},
     },
     {
       name: 'errors',
@@ -73,7 +73,7 @@ const Template: Computer = {
       } catch(e: any) {
         console.log(e)
         output.pushTo('errors', [{
-          message: e.message
+          message: e.message,
         }])
 
         return

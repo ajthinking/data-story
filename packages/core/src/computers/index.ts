@@ -32,4 +32,5 @@ export { Sample } from './Sample';
 export { Unique } from './Unique'
 export { Await } from './Await'
 export { Merge } from './Merge'
+export { MakeSet } from './MakeSet';
 export { RemoveProperties } from './RemoveProperties';

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 
 export class DiagramDocument implements vscode.CustomDocument {
   static async create(
-    uri: vscode.Uri
+    uri: vscode.Uri,
   ): Promise<DiagramDocument | PromiseLike<DiagramDocument>> {
     // Read the file content here and create the document
     const fileData = await vscode.workspace.fs.readFile(uri);
@@ -11,7 +11,7 @@ export class DiagramDocument implements vscode.CustomDocument {
 
   private constructor(
     public readonly uri: vscode.Uri,
-    private documentData: Uint8Array
+    private documentData: Uint8Array,
   ) {}
 
   get data(): Uint8Array {
@@ -43,7 +43,7 @@ export class DiagramDocument implements vscode.CustomDocument {
     await this.saveAs(destination);
     return {
       id: destination.toString(),
-      delete: () => vscode.workspace.fs.delete(destination)
+      delete: () => vscode.workspace.fs.delete(destination),
     };
   }
 

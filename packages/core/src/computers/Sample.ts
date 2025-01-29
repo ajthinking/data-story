@@ -22,8 +22,8 @@ export const Sample: Computer = {
     num({
       name: 'sample_rate',
       help: 'Samples every nth item',
-      value: '2' }
-    )
+      value: '2' },
+    ),
   ],
 
   async *run({ input, output }) {

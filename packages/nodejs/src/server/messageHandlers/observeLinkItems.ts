@@ -9,7 +9,7 @@ import {
 export const observeLinkItems: MessageHandler<ObserveLinkItems> = async({
   ws,
   data,
-  inputObserverController
+  inputObserverController,
 }: MessageHandlerParams<ObserveLinkItems>) => {
   inputObserverController.addLinkItemsObserver({
     ...data,
@@ -20,6 +20,6 @@ export const observeLinkItems: MessageHandler<ObserveLinkItems> = async({
         type: RequestObserverType.observeLinkItems,
         msgId: data!.msgId,
       }))
-    }
+    },
   } as ObserveLinkItems);
 }

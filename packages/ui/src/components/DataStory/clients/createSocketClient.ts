@@ -7,15 +7,15 @@ import { WorkspaceApiClient } from './WorkspaceApiClient';
 function createSocketTransport(socket: WebSocketSubject<any>) {
   const maxReconnectTries = 100;
   const reconnectTimeoutMs = 1000;
-  let messages$: Observable<{msgId: string; [p: string]: unknown}> = socket.pipe(
+  let messages$: Observable<{ msgId: string; [p: string]: unknown }> = socket.pipe(
     retry({ count: maxReconnectTries, delay: reconnectTimeoutMs }),
-    share()
+    share(),
   );
   const config: TransportConfig = {
     postMessage: (msg) => {
       socket.next(msg);
     },
-    messages$: messages$
+    messages$: messages$,
   }
   return createTransport(config);
 }
@@ -29,13 +29,13 @@ export const createSocketClient = (): {
     openObserver: {
       next: () => {
         console.log(`Connected to server: ${'ws://localhost:3300'}`);
-      }
+      },
     },
     closeObserver: {
       next: () => {
         console.log('WebSocket closed.');
-      }
-    }
+      },
+    },
   });
 
   const socketKeepAlive = socket$.subscribe();
@@ -46,6 +46,6 @@ export const createSocketClient = (): {
     dispose: () => {
       socketKeepAlive.unsubscribe();
       socket$.complete();
-    }
+    },
   }
 }

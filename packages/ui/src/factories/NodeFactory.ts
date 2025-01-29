@@ -28,7 +28,7 @@ export const NodeFactory = {
   },
   fromNodeDescription(
     nodeDescription: NodeDescription,
-    diagram: Diagram
+    diagram: Diagram,
   ): Node {
     const id = `${nodeDescription.name}.${createDataStoryId()}`;
 
@@ -53,5 +53,5 @@ export const NodeFactory = {
       params: nodeDescription.params || [],
       position: new PositionGuesser(diagram).guess(nodeDescription),
     })
-  }
+  },
 }

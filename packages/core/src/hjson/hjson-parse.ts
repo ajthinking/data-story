@@ -5,7 +5,7 @@ export default function(source: string, opt?: any) {
   var text: string;
   var at: number;   // The index of the current character
   var ch: string;   // The current character
-  var escapee: {[key: string]: string} = {
+  var escapee: { [key: string]: string } = {
     '"': '"',
     '\'': '\'',
     '\\': '\\',
@@ -14,7 +14,7 @@ export default function(source: string, opt?: any) {
     f: '\f',
     n: '\n',
     r: '\r',
-    t: '\t'
+    t: '\t',
   };
 
   var keepComments: boolean;

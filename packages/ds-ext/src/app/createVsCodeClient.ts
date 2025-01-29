@@ -11,13 +11,13 @@ function createVsCodeTransport(vscode: any) {
     postMessage: (msg) => {
       vscode.postMessage(msg);
     },
-    messages$: new Observable<{msgId: string; [p: string]: unknown}>((subscriber) => {
+    messages$: new Observable<{ msgId: string; [p: string]: unknown }>((subscriber) => {
       window.addEventListener('message', (event) => {
         if (event.data.msgId) {
           subscriber.next(event.data);
         }
       });
-    })
+    }),
   };
   return createTransport(config);
 }

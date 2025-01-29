@@ -1,7 +1,7 @@
 import { LookingForIcon } from '../icons/lookingForIcon';
 
 export const Placeholder = ({
-  content
+  content,
 }: {
   content: string
 }) => {

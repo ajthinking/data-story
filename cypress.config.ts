@@ -7,7 +7,7 @@ export default defineConfig({
     devServer: {
       framework: 'react',
       bundler: 'webpack',
-      webpackConfig: webpackConfig
+      webpackConfig: webpackConfig,
     },
     viewportWidth: 384,
     viewportHeight: 216,
@@ -19,5 +19,5 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
-  }
+  },
 });

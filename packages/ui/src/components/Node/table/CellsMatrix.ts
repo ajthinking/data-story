@@ -30,7 +30,7 @@ export class CellsMatrix {
   constructor({
     virtualRows,
     virtualColumns,
-    getRowModel
+    getRowModel,
   }: {
     virtualRows: VirtualItem[];
     virtualColumns: VirtualItem[];
@@ -59,7 +59,7 @@ export class CellsMatrix {
         matrix[colIndex].push({
           rowIndex: virtualRow.index,
           cell,
-          offsetTop: virtualRow.start
+          offsetTop: virtualRow.start,
         });
       });
     });
@@ -77,7 +77,7 @@ export class CellsMatrix {
       charWidth = DEFAULT_CHAR_WIDTH,
       maxWidth = CELL_MAX_WIDTH,
       minWidth = CELL_MIN_WIDTH,
-      padding = DEFAULT_PADDING
+      padding = DEFAULT_PADDING,
     } = options;
 
     if (this.columnWidthsMap.has(colIndex)) {
@@ -95,7 +95,7 @@ export class CellsMatrix {
     // Calculate final width: characters * charWidth + padding
     const finalWidth = Math.max(
       minWidth,
-      Math.min(maxWidth, maxLength * charWidth + padding)
+      Math.min(maxWidth, maxLength * charWidth + padding),
     );
 
     this.columnWidthsMap.set(colIndex, finalWidth);

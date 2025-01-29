@@ -17,7 +17,7 @@ export class Application {
 
   register(provider: ServiceProvider | ServiceProvider[]) {
     this.providers.push(
-      ...(Array.isArray(provider) ? provider : [provider])
+      ...(Array.isArray(provider) ? provider : [provider]),
     );
 
     return this;
@@ -58,17 +58,17 @@ export class Application {
 
     return [
       ...fromComputers,
-      ...fromNestedNodes
+      ...fromNestedNodes,
     ];
   }
 
   getDiagramBuilder() {
     return new DiagramBuilder(
-      this.descriptions()
+      this.descriptions(),
     );
   }
 
-  getExecutor({ diagram, storage, inputObserverController}: {
+  getExecutor({ diagram, storage, inputObserverController }: {
     diagram: Diagram;
     storage: Storage;
     inputObserverController?: InputObserverController;
@@ -77,7 +77,7 @@ export class Application {
       diagram,
       registry: this.registry,
       storage,
-      inputObserverController
+      inputObserverController,
     })
   }
 

@@ -3,7 +3,7 @@ import { ComputerTester } from '../ComputerTester';
 import { TestStep } from '../TestStep';
 
 export const getsInputs: TestStep = {
-  async handle(tester: ComputerTester, inputs: { [key: string]: ItemValue[]}) {
+  async handle(tester: ComputerTester, inputs: { [key: string]: ItemValue[] }) {
     const portNames = Object.keys(inputs)
 
     for(const portName of portNames) {
@@ -12,5 +12,5 @@ export const getsInputs: TestStep = {
 
       tester.inputDevice!.setItemsAt(link.id, inputs[portName])
     }
-  }
+  },
 }

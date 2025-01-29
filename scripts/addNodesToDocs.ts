@@ -20,7 +20,7 @@ import NodeDemo from '../../components/demos/NodeDemo'
 
       await fs.writeFile(
         `./packages/docs/pages/nodes/${candidate}.mdx`,
-        template(candidate)
+        template(candidate),
       )
     }
   }

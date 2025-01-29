@@ -7,7 +7,7 @@ import {
   InputObserverController,
   type ItemValue, RequestObserverType,
   type ObserveLinkItems, ObserveLinkCounts, ObserveLinkUpdate, GetDataFromStorageParams, LinkId, ObserveNodeStatus,
-  CancelObservation
+  CancelObservation,
 } from '@data-story/core';
 import { loadDiagram, saveDiagram } from './storeDiagram';
 
@@ -18,8 +18,8 @@ type RunMessage = {
   inputObservers: InputObserver[],
 }
 
-export type HandlerParam = {data: unknown, sendEvent: (msg: Record<string, any>) => void};
-export type Message = {type: string} & Record<string, unknown>;
+export type HandlerParam = { data: unknown, sendEvent: (msg: Record<string, any>) => void };
+export type Message = { type: string } & Record<string, unknown>;
 
 type Handler = (params: HandlerParam) => Promise<unknown>;
 export type MessageHandlers = {
@@ -66,9 +66,9 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       onReceive: ({ links }) => {
         sendEvent({
           links: links,
-          type: RequestObserverType.observeLinkCounts
+          type: RequestObserverType.observeLinkCounts,
         })
-      }
+      },
     })
   }
 
@@ -78,9 +78,9 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       onReceive: ({ nodes }) => {
         sendEvent({
           nodes: nodes,
-          type: RequestObserverType.observeNodeStatus
+          type: RequestObserverType.observeNodeStatus,
         })
-      }
+      },
     })
   }
 
@@ -91,9 +91,9 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
         sendEvent({
           items,
           inputObserver,
-          type: RequestObserverType.observeLinkItems
+          type: RequestObserverType.observeLinkItems,
         })
-      }
+      },
     } as ObserveLinkItems);
   }
 
@@ -111,9 +111,9 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       onReceive: () => {
         sendEvent({
           linkIds: (data as ObserveLinkUpdate).linkIds,
-          type: RequestObserverType.observeLinkUpdate
+          type: RequestObserverType.observeLinkUpdate,
         });
-      }
+      },
     } as ObserveLinkUpdate);
   }
 
@@ -122,13 +122,13 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     setTimeout(() => {
       sendEvent({
         ...data as Record<string, unknown>,
-        availableNodes: nodeDescriptions
+        availableNodes: nodeDescriptions,
       });
     }, 1000);
   };
 
   const updateDiagram = async({ data, sendEvent }: HandlerParam) => {
-    saveDiagram(LocalStorageKey, (data as {diagram: Diagram}).diagram);
+    saveDiagram(LocalStorageKey, (data as { diagram: Diagram }).diagram);
   }
 
   const getDiagram = async({ data, sendEvent }: HandlerParam) => {
@@ -136,7 +136,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
     sendEvent({
       ...data as Record<string, unknown>,
-      diagram: localDiagram.diagram
+      diagram: localDiagram.diagram,
     });
   };
 
@@ -145,7 +145,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
     sendEvent({
       ...data as GetDataFromStorageParams,
-      data: result
+      data: result,
     });
   }
 
@@ -159,6 +159,6 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
     observeLinkUpdate,
     cancelObservation,
     getDataFromStorage,
-    observeNodeStatus
+    observeNodeStatus,
   }
 }

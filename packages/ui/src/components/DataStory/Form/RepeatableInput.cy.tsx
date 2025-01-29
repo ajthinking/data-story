@@ -8,7 +8,7 @@ import { defaultValues, mockNode, mockParam } from './mocks';
 import { FormFieldWrapper, useFormField } from './UseFormField';
 
 const MockComponent = ({ param, type }: {
-  param: FormCommonProps & {param: unknown},
+  param: FormCommonProps & { param: unknown },
   type: 'StringableParam' | 'PortSelectionParam'
 }) => {
   const { getValues } = useFormField();
@@ -28,7 +28,7 @@ const MockComponent = ({ param, type }: {
 
 const RepeatableInputWithForm = () => {
   const mockForm = useForm({
-    defaultValues
+    defaultValues,
   });
 
   // change ParamsComponentFactory instance
@@ -39,7 +39,7 @@ const RepeatableInputWithForm = () => {
           <MockComponent param={params} type={'StringableParam'}/>
         </FormFieldWrapper>
       },
-      getType: () => 'StringableParam'
+      getType: () => 'StringableParam',
     },
     {
       getComponent: (params) => {
@@ -47,8 +47,8 @@ const RepeatableInputWithForm = () => {
           <MockComponent param={params} type={'PortSelectionParam'} />
         </FormFieldWrapper>
       },
-      getType: () => 'PortSelectionParam'
-    }
+      getType: () => 'PortSelectionParam',
+    },
   ];
 
   return (<DataStoryCanvasProvider>

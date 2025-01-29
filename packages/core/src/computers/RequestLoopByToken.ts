@@ -38,7 +38,7 @@ export const RequestLoopByToken: Computer = {
     json_({
       name: 'config',
       value: JSON.stringify({
-        headers: {}
+        headers: {},
       }, null, 2),
       multiline: true,
     }),
@@ -113,6 +113,6 @@ export const RequestLoopByToken: Computer = {
     }
 
     yield
-  }
+  },
 
 };

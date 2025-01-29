@@ -4,7 +4,7 @@ import {
   hjsonEvaluation,
   jsExpressionEvaluation,
   jsFunctionEvaluation,
-  json_
+  json_,
 } from '@data-story/core';
 
 export const fileDropper = {
@@ -39,7 +39,7 @@ export const fileDropper = {
           inputs: [],
           outputs: [{
             name: 'output',
-            schema: {}
+            schema: {},
           }],
           params: [
             json_({
@@ -51,8 +51,8 @@ export const fileDropper = {
                 hjsonEvaluation,
                 jsFunctionEvaluation,
                 jsExpressionEvaluation,
-              ]
-            })
+              ],
+            }),
           ],
         }
 

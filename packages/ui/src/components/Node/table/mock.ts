@@ -26,7 +26,7 @@ export const createLargeColsFn = (count: number) => Array.from({ length: count }
 export const createLargeRows = (count: number) => Array.from({ length: count }, (_, index) => ({
   'foo1': 'bar1',
   'foo2': 'bar2',
-  'foo3': 'bar3'
+  'foo3': 'bar3',
 }));
 
 export const address = {
@@ -34,8 +34,8 @@ export const address = {
     street: '122\n Main St\nSuite 100\nAnytown',
     city: 'Anytown',
     state: 'Anystate',
-    zipcode: '12344'
-  }
+    zipcode: '12344',
+  },
 }
 
 export const booleanData = {
@@ -78,20 +78,20 @@ export const nested = {
     street: '122 Main St\nSuite 100\nAnytown',
     city: 'Anytown',
     state: 'Anystate',
-    zipcode: '12344'
-  }
+    zipcode: '12344',
+  },
 }
 
 export const threeTierNested = [
   {
     'foo1': 'bar1',
     'foo2': 'bar2',
-    'foo3': 'bar3'
+    'foo3': 'bar3',
   },
   {
     'foo1': 'bar1',
     'foo2': 'bar2',
-    'foo3': 'bar3'
+    'foo3': 'bar3',
   },
   {
     'foo1': 'bar1',
@@ -102,8 +102,8 @@ export const threeTierNested = [
       'foo3': {
         'foo1': 'bar1',
         'foo2': 'bar2',
-        'foo3': 'bar3'
+        'foo3': 'bar3',
       },
     },
-  }
+  },
 ];

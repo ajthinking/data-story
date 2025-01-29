@@ -19,11 +19,11 @@ export const Output: Computer = {
       value: 'output',
       help: 'The name of the output port.',
       multiline: false,
-      canInterpolate: true
-    })
+      canInterpolate: true,
+    }),
   ],
 
-  async *run({ input, output}) {
+  async *run({ input, output }) {
     while(true) {
       const [ portName, ...other ] = output.getPortNames()
       if (!portName || other.length > 0) throw new Error('Output computer must have exactly one output port.')
