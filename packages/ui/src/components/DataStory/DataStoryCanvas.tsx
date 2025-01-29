@@ -187,16 +187,24 @@ const Flow = ({
   const [draggedNode, setDraggedNode] = useState<{ node: any, droppedOnEdge: any } | null>(null);
 
   const onNodeDrag = useCallback((event: any, node: any) => {
-    console.log('onNodeDrag...')
     // Find any edges that the node is being dragged over
     const edgeElements = document.elementsFromPoint(event.clientX, event.clientY)
       .filter(el => el.classList.contains('react-flow__edge') ||
                    el.classList.contains('react-flow__edge-path') ||
                    el.classList.contains('react-flow__edge-text'));
 
-    if(!edgeElements.length) return;
+    if(!edgeElements.length) {
+      setDraggedNode(null);
+      return;
+    }
     // Get the closest edge element
     const edgeElement = edgeElements[0].closest('.react-flow__edge');
+    const distance = Math.sqrt(
+      Math.pow(edgeElements[0].getBoundingClientRect().x, 2) +
+      Math.pow(edgeElements[0].getBoundingClientRect().y, 2),
+    )
+
+    console.log({ distance });
     if (edgeElement) {
       const edgeId = edgeElement.getAttribute('data-testid')?.replace('rf__edge-', '');
       const { edges } = reactFlowStore.getState();
