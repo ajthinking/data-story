@@ -213,7 +213,36 @@ const Flow = ({
           onEdgesChange(changes);
           if (onChange) onChange(toDiagram())
         }}
-        onNodesDelete={() => {
+        onNodesDelete={(nodesToDelete) => {
+          console.log('onNodesDelete', nodesToDelete);
+
+          nodesToDelete.forEach(node => {
+            const store = reactFlowStore.getState();
+            const { edges } = store;
+
+            // Find all incoming and outgoing edges for this node
+            const incomingEdges = edges.filter(e => e.target === node.id);
+            const outgoingEdges = edges.filter(e => e.source === node.id);
+
+            console.log({
+              incomingEdges,
+              outgoingEdges,
+            });
+
+            // For each incoming edge, connect it to all outgoing edges
+            incomingEdges.forEach(inEdge => {
+              outgoingEdges.forEach(outEdge => {
+                // Create a connection that will be handled by the store's connect method
+                connect({
+                  source: inEdge.source,
+                  sourceHandle: inEdge.sourceHandle ?? null,
+                  target: outEdge.target,
+                  targetHandle: outEdge.targetHandle ?? null,
+                });
+              });
+            });
+          });
+
           // focus on the diagram after node deletion to enhance hotkey usage
           focusOnFlow();
         }}
