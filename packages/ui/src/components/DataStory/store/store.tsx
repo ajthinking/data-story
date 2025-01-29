@@ -66,6 +66,13 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     // Update the diagram
     get().updateDiagram(diagram)
   },
+  disconnect: (linkId: string) => {
+    const diagram = get().toDiagram()
+
+    diagram.disconnect(linkId)
+
+    get().updateDiagram(diagram)
+  },
   addNode: (node: ReactFlowNode) => {
     set({
       nodes: [

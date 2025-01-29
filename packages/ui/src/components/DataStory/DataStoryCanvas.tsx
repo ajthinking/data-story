@@ -3,6 +3,7 @@ import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useS
 import {
   Background,
   BackgroundVariant,
+  Edge,
   EdgeChange,
   NodeChange,
   ReactFlow,
@@ -67,16 +68,19 @@ const Flow = ({
     onNodesChange: state.onNodesChange,
     onEdgesChange: state.onEdgesChange,
     connect: state.connect,
+    disconnect: state.disconnect,
     onInit: state.onInit,
     onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
     updateEdgeCounts: state.updateEdgeCounts,
     updateEdgeStatus: state.updateEdgeStatus,
+    setEdges: state.setEdges,
   });
 
   const {
     connect,
+    disconnect,
     nodes,
     edges,
     onNodesChange,
@@ -87,6 +91,7 @@ const Flow = ({
     toDiagram,
     updateEdgeCounts,
     updateEdgeStatus,
+    setEdges,
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -179,6 +184,52 @@ const Flow = ({
 
   useEscapeKey(() => setSidebarKey!(''), flowRef);
 
+  const [draggedNode, setDraggedNode] = useState<{ node: any, droppedOnEdge: any } | null>(null);
+
+  const onNodeDrag = useCallback((event: any, node: any) => {
+    console.log('onNodeDrag...')
+    // Find any edges that the node is being dragged over
+    const edgeElements = document.elementsFromPoint(event.clientX, event.clientY)
+      .filter(el => el.classList.contains('react-flow__edge') ||
+                   el.classList.contains('react-flow__edge-path') ||
+                   el.classList.contains('react-flow__edge-text'));
+
+    if(!edgeElements.length) return;
+    // Get the closest edge element
+    const edgeElement = edgeElements[0].closest('.react-flow__edge');
+    if (edgeElement) {
+      const edgeId = edgeElement.getAttribute('data-testid')?.replace('rf__edge-', '');
+      const { edges } = reactFlowStore.getState();
+      const edge = edges.find(e => e.id === edgeId);
+      if (edge) {
+        setDraggedNode({ node, droppedOnEdge: edge });
+        return;
+      }
+    }
+
+    setDraggedNode(null);
+  }, []);
+
+  const onNodeDragStop = useCallback((event: any, node: any) => {
+    if(!draggedNode?.droppedOnEdge) return;
+    const { droppedOnEdge } = draggedNode;
+
+    connect({
+      source: droppedOnEdge.source,
+      target: node.id,
+      sourceHandle: `${droppedOnEdge.source}.output`,
+      targetHandle: `${node.id}.input`,
+    });
+    connect({
+      source: node.id,
+      target: droppedOnEdge.target,
+      sourceHandle: `${node.id}.output`,
+      targetHandle: `${droppedOnEdge.target}.input`,
+    });
+    disconnect(droppedOnEdge.id)
+    setDraggedNode(null);
+  }, [draggedNode, connect, setEdges]);
+
   return (
     <>
       <style>
@@ -188,6 +239,22 @@ const Flow = ({
               stroke-dashoffset: -10;
             }
           }
+          .react-flow__edge:hover {
+            cursor: crosshair;
+          }
+          ${draggedNode ? `
+          .react-flow__edge {
+            opacity: 0.5;
+          }
+          .react-flow__edge[data-testid="rf__edge-${draggedNode.droppedOnEdge?.id}"] {
+            opacity: 1;
+            filter: drop-shadow(0 0 5px #4f46e5);
+          }
+          .react-flow__edge[data-testid="rf__edge-${draggedNode.droppedOnEdge?.id}"] path {
+            stroke: #4f46e5;
+            stroke-width: 3;
+          }
+          ` : ''}
         `}
       </style>
       <ReactFlow
@@ -256,6 +323,8 @@ const Flow = ({
             client,
           });
         }}
+        onNodeDrag={onNodeDrag}
+        onNodeDragStop={onNodeDragStop}
         minZoom={0.25}
         maxZoom={8}
         fitView={true}
@@ -264,7 +333,16 @@ const Flow = ({
         }}
         onDragOver={useCallback((event) => {
           event.preventDefault();
-          event.dataTransfer.dropEffect = 'move';
+          // Allow dropping on edges
+          const target = event.target as HTMLElement;
+          const isEdge = target.closest('.react-flow__edge');
+          const hasNodeType = event.dataTransfer.types.includes('application/reactflow');
+
+          if (isEdge && hasNodeType) {
+            event.dataTransfer.dropEffect = 'copy';
+          } else {
+            event.dataTransfer.dropEffect = 'move';
+          }
         }, [])}
         onDrop={
           useCallback((event) => {
