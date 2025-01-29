@@ -28,7 +28,7 @@ export const MakeSet: Computer = {
     while (true) {
       const items = input.pull();
 
-      for (const item of items) {
+      for (let item of items) {
         const property = params.property as string;
         const value = item.value[property];
 
