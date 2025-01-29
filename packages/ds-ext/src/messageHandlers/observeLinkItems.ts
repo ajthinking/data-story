@@ -11,6 +11,6 @@ export const observeLinkItems: MessageHandler = async ({ event, postMessage, inp
         type: RequestObserverType.observeLinkItems,
         msgId: event!.msgId,
       });
-    }
+    },
   } as ObserveLinkItems);
 };

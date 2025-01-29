@@ -2,7 +2,7 @@ import { MessageHandler } from '../MessageHandler';
 import {
   GetDataFromStorageParams,
   ItemValue,
-  LinkId
+  LinkId,
 } from '@data-story/core';
 
 export const getDataFromStorage: MessageHandler = async({ event, postMessage, inputObserverController }) => {

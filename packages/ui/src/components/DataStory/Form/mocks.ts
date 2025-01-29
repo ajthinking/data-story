@@ -11,8 +11,8 @@ const mockRepeatableRow = [
     'canInterpolate': true,
     'interpolate': true,
     'value': {
-      value: 'id'
-    }
+      value: 'id',
+    },
   },
   {
     'name': 'port',
@@ -20,23 +20,23 @@ const mockRepeatableRow = [
     'help': 'The port to map to',
     'type': 'PortSelectionParam',
     'value': '',
-    'allowCreate': true
-  }
+    'allowCreate': true,
+  },
 ];
 const mockRepeatableValue = [
   {
     'id': 'wrihes',
     'value': {
-      value: 'id444'
+      value: 'id444',
     },
-    'port': 'unfiltered'
+    'port': 'unfiltered',
   },
   {
     'id': '3f4tzr',
     'value': {
-      value: 'id333'
+      value: 'id333',
     },
-    'port': 'output4ex3'
+    'port': 'output4ex3',
   },
 ];
 export const mockParam = {
@@ -65,15 +65,15 @@ export const mockNode = {
           {
             'type': 'stringCast',
             'label': 'String',
-            'selected': true
-          }
+            'selected': true,
+          },
         ],
         'value': {
           value: 'id',
-          Cast: 'stringCast'
-        }
+          Cast: 'stringCast',
+        },
       },
-      mockParam
+      mockParam,
     ],
     'computer': 'Filter',
     'label': 'Filter',
@@ -81,24 +81,24 @@ export const mockNode = {
       {
         'id': 'Filter.2.input',
         'name': 'input',
-        'schema': {}
-      }
+        'schema': {},
+      },
     ],
     'outputs': [
       {
         'id': 'Filter.2.unfiltered',
         'name': 'unfiltered',
-        'schema': {}
+        'schema': {},
       },
       {
         'id': 'Filter.2.output4ex3',
         'name': 'output4ex3',
-        'schema': {}
-      }
-    ]
+        'schema': {},
+      },
+    ],
   },
   'type': 'nodeComponent',
 } as unknown as ReactFlowNode;
 export const defaultValues = {
-  'port_map': mockRepeatableValue
+  'port_map': mockRepeatableValue,
 }

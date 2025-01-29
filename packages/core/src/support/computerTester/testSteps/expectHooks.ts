@@ -8,5 +8,5 @@ export const expectHooks: TestStep = {
     for(const hook of expectedHooks) {
       expect(tester.hooksDevice.register).toHaveBeenCalledWith(hook)
     }
-  }
+  },
 }

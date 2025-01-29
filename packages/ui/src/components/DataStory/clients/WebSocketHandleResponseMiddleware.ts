@@ -1,5 +1,5 @@
 // Store the resolve and reject functions of the Promise for pending responses.
-const pendingResponses: Map<string, {resolve: Function; reject: Function}> = new Map();
+const pendingResponses: Map<string, { resolve: Function; reject: Function }> = new Map();
 
 export const processWaitingResponse = (message: any) => {
   const response: any = message;

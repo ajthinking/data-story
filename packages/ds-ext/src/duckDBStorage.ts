@@ -1,5 +1,5 @@
 import { DiagramId, GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
-import type { Database as DatabaseType} from 'duckdb-async';
+import type { Database as DatabaseType } from 'duckdb-async';
 import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
 export class DuckDBStorage implements ObserverStorage {
   private db: DatabaseType | null = null;
@@ -65,7 +65,7 @@ export class DuckDBStorage implements ObserverStorage {
       linkId, count, currentTime, currentTime, count, currentTime);
   }
 
-  async getLinkItems({linkId, offset, limit}: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
+  async getLinkItems({ linkId, offset, limit }: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
     const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC LIMIT ? OFFSET ?', linkId, limit, offset);
     if (!data || data.length === 0) {
       return undefined;

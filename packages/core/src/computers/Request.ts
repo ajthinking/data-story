@@ -41,14 +41,14 @@ export const Request: Computer = {
     }),
     json_({
       name: 'config',
-      value: JSON.stringify({ headers: {}}, null, 2),
+      value: JSON.stringify({ headers: {} }, null, 2),
       multiline: true,
     }),
     str({
       name: 'item_path',
       help: 'Path to the items in the response data.',
       value: '',
-    })
+    }),
   ],
 
   async *run({ input, output, params }) {

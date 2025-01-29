@@ -48,7 +48,7 @@ const FillMode = ({ params, setParams, handleRun }) => {
               'flex w-full items-center justify-center space-y-4 mt-4 px-16 py-2',
               'bg-blue-500 hover:bg-blue-600',
               'font-mono font-bold text-xs text-gray-50 uppercase',
-              'rounded'
+              'rounded',
             )}
             onClick={form.handleSubmit(onSubmit)}
           >

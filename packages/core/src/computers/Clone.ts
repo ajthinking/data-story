@@ -8,17 +8,17 @@ export const Clone: Computer = {
   inputs: [
     {
       name: 'input',
-      schema: {}
-    }
+      schema: {},
+    },
   ],
   outputs: [
     {
       name: 'clones',
-      schema: {}
+      schema: {},
     },
     {
       name: 'original',
-      schema: {}
+      schema: {},
     },
   ],
   params: [

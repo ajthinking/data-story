@@ -16,23 +16,23 @@ const commonJSConfig = (env, options) => ({
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: '/node_modules/'
+        exclude: '/node_modules/',
       },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader', 'postcss-loader' ]
-      }
-    ]
+        use: [ 'style-loader', 'css-loader', 'postcss-loader' ],
+      },
+    ],
   },
   externals: [
     'react',
     'react-dom',
     'react/jsx-runtime',
-    ...Object.keys(deps)
+    ...Object.keys(deps),
   ],
   resolve: {
-    extensions: [ '.js', '.jsx', '.ts', '.tsx' ]
-  }
+    extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
+  },
 });
 
 const esmConfig = (env, options) => ({
@@ -53,22 +53,22 @@ const esmConfig = (env, options) => ({
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: '/node_modules/'
+        exclude: '/node_modules/',
       },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader', 'postcss-loader' ]
-      }
-    ]
+        use: [ 'style-loader', 'css-loader', 'postcss-loader' ],
+      },
+    ],
   },
   externals: [
     'react',
     'react-dom',
     'react/jsx-runtime',
-    ...Object.keys(deps)
+    ...Object.keys(deps),
   ],
   resolve: {
-    extensions: [ '.js', '.jsx', '.ts', '.tsx' ]
+    extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
   },
   externalsType: 'module',
   experiments: {

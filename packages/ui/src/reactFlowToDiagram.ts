@@ -52,7 +52,7 @@ export const reactFlowToDiagram = (flow: SerializedReactFlow): Diagram => {
     return {
       id: edge.id,
       sourcePortId: edge.sourceHandle!,
-      targetPortId: edge.targetHandle!
+      targetPortId: edge.targetHandle!,
     }
   })
 

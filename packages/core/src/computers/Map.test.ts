@@ -13,12 +13,12 @@ it('replaces items with new evaluated value', () => {
     })
     .getsInput([
       {},
-      { existingKey: 'existingValue' }
+      { existingKey: 'existingValue' },
     ])
     .doRun()
     .expectOutput([
       { newKey: 'newValue' },
-      { existingKey: 'existingValue', newKey: 'newValue' }
+      { existingKey: 'existingValue', newKey: 'newValue' },
     ])
     .ok()
 })

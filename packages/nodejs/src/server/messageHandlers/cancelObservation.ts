@@ -4,8 +4,8 @@ import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 export const cancelObservation: MessageHandler<CancelObservation> = async({
   ws,
   data,
-  inputObserverController
+  inputObserverController,
 }: MessageHandlerParams<CancelObservation>) => {
   inputObserverController.deleteExecutionObserver(data as CancelObservation);
-  ws.send(JSON.stringify({...data, type: RequestObserverType.cancelObservation}));
+  ws.send(JSON.stringify({ ...data, type: RequestObserverType.cancelObservation }));
 }

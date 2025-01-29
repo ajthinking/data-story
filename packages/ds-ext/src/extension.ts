@@ -20,8 +20,8 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.window.registerCustomEditorProvider(
       'ds-ext.diagramEditor',
-      diagramEditorProvider
-    )
+      diagramEditorProvider,
+    ),
   );
 
   const installScriptsPath = path.join(context.extensionPath, 'install-scripts');
@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage(
       'The "ds-ext" extension requires "duckdb-async". Would you like to install it now?',
       'Yes',
-      'No'
+      'No',
     ).then(selection => {
       if (selection === 'Yes') {
         // Create a new terminal

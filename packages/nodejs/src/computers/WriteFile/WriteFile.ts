@@ -7,7 +7,7 @@ export const WriteFile: Computer = {
   category: 'NodeJs',
   inputs: [{
     name: 'input',
-    schema: {}
+    schema: {},
   }],
   outputs: [],
   params: [

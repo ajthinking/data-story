@@ -9,12 +9,12 @@ export class UnfoldedDiagramFactory {
   public unfoldedGlobalParams: Record<NodeId, Param[]> = {}
   constructor(
     public diagram: Diagram,
-    public nestedNodes: NestedNodes
+    public nestedNodes: NestedNodes,
   ) {}
 
   static create(
     diagram: Diagram,
-    nestedNodes: NestedNodes
+    nestedNodes: NestedNodes,
   ): UnfoldedDiagram {
     const instance = new this(diagram, nestedNodes)
     instance.unfold()

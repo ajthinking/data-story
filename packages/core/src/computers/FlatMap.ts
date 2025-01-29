@@ -12,18 +12,18 @@ export const FlatMap: Computer = {
   label: 'FlatMap',
   inputs: [{
     name: 'input',
-    schema: {}
+    schema: {},
   }],
   outputs: [{
     name: 'output',
-    schema: {}
+    schema: {},
   }],
   params: [
     json_({
       name: 'json',
       value: '[{\n\tfoo: bar\n}]',
       help: '',
-    })
+    }),
   ],
 
   async *run({ input, output, params }) {

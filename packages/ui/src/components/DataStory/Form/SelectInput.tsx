@@ -7,7 +7,7 @@ function SelectInputComponent({
 }: {
   param: SelectParam
 }) {
-  const {register} = useFormField();
+  const { register } = useFormField();
 
   return (
     <div className="flex w-full text-gray-500">

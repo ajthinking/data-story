@@ -3,8 +3,8 @@ import { createDataStoryId } from '@data-story/core';
 import { Transport } from './WorkspaceApiClient';
 
 export interface TransportConfig {
-  postMessage: (msg: {msgId: string; [key: string]: unknown;}) => void,
-  messages$: Observable<{msgId: string; [key: string]: unknown;}>,
+  postMessage: (msg: { msgId: string; [key: string]: unknown; }) => void,
+  messages$: Observable<{ msgId: string; [key: string]: unknown; }>,
 }
 
 export const createTransport = (config: TransportConfig): Transport => {

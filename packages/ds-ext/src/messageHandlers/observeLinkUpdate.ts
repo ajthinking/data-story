@@ -1,7 +1,7 @@
 import { MessageHandler } from '../MessageHandler';
 import {
   ObserveLinkUpdate,
-  RequestObserverType
+  RequestObserverType,
 } from '@data-story/core';
 
 export const observeLinkUpdate: MessageHandler = async({ event, postMessage, inputObserverController }) => {
@@ -13,6 +13,6 @@ export const observeLinkUpdate: MessageHandler = async({ event, postMessage, inp
         type: RequestObserverType.observeLinkUpdate,
         msgId: event!.msgId,
       });
-    }
+    },
   } as ObserveLinkUpdate);
 };

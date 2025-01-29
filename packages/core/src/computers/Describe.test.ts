@@ -5,9 +5,9 @@ it('describes occurances', async () => {
   await when(Describe)
     .hasDefaultParams()
     .getsInput([
-      {id: 1, isCool: true, name: {first: 'John', last: 'Doe'}},
-      {id: 2, isCool: true, name: {first: 'Jane', last: 'Doe'}},
-      {id: 3, isCool: false, name: {first: 'Copy', last: 'Cat'}},
+      { id: 1, isCool: true, name: { first: 'John', last: 'Doe' } },
+      { id: 2, isCool: true, name: { first: 'Jane', last: 'Doe' } },
+      { id: 3, isCool: false, name: { first: 'Copy', last: 'Cat' } },
     ])
     .doRun()
     .expectOutputs({
@@ -33,7 +33,7 @@ it('describes occurances', async () => {
               Cat: 1,
             },
           },
-        }
+        },
       ],
       full: [
         {
@@ -57,8 +57,8 @@ it('describes occurances', async () => {
               Cat: 1,
             },
           },
-        }
-      ]
+        },
+      ],
     })
     .ok()
 })
@@ -66,12 +66,12 @@ it('describes occurances', async () => {
 it('describes occurances at a path', async () => {
   await when(Describe)
     .hasParams({
-      path: 'name'
+      path: 'name',
     })
     .getsInput([
-      {id: 1, isCool: true, name: {first: 'John', last: 'Doe'}},
-      {id: 2, isCool: true, name: {first: 'Jane', last: 'Doe'}},
-      {id: 3, isCool: false, name: {first: 'Copy', last: 'Cat'}},
+      { id: 1, isCool: true, name: { first: 'John', last: 'Doe' } },
+      { id: 2, isCool: true, name: { first: 'Jane', last: 'Doe' } },
+      { id: 3, isCool: false, name: { first: 'Copy', last: 'Cat' } },
     ])
     .doRun()
     .expectOutputs({
@@ -86,7 +86,7 @@ it('describes occurances at a path', async () => {
             Doe: 2,
             Cat: 1,
           },
-        }
+        },
       ],
       full: [
         {
@@ -99,7 +99,7 @@ it('describes occurances at a path', async () => {
             Doe: 2,
             Cat: 1,
           },
-        }
+        },
       ],
     })
     .ok()
@@ -108,14 +108,14 @@ it('describes occurances at a path', async () => {
 it('can truncate the description', async () => {
   await when(Describe)
     .hasParams({
-      truncate_limit: 3
+      truncate_limit: 3,
     })
     .getsInput([
-      {id: 1, isCool: true},
-      {id: 2, isCool: true},
-      {id: 3, isCool: true},
-      {id: 4, isCool: true},
-      {id: 5, isCool: false},
+      { id: 1, isCool: true },
+      { id: 2, isCool: true },
+      { id: 3, isCool: true },
+      { id: 4, isCool: true },
+      { id: 5, isCool: false },
     ])
     .doRun()
     .expectOutputs({
@@ -131,7 +131,7 @@ it('can truncate the description', async () => {
             true: 4,
             false: 1,
           },
-        }
+        },
       ],
       full: [
         {
@@ -146,7 +146,7 @@ it('can truncate the description', async () => {
             true: 4,
             false: 1,
           },
-        }
+        },
       ],
     })
     .ok()

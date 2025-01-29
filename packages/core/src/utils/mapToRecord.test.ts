@@ -7,6 +7,6 @@ it('converts a map to a record', () => {
   const record: Record<string, number> = mapToRecord(map)
 
   expect(record).toMatchObject({
-    a: 1
+    a: 1,
   })
 });

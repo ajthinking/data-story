@@ -2,7 +2,7 @@ import React from 'react';
 import {
   DataStoryEvents,
   DataStoryEventType,
-  useDataStoryEvent
+  useDataStoryEvent,
 } from '@data-story/ui';
 import { Bounce, toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

@@ -11,7 +11,7 @@ import {
   useDismiss,
   useFloating,
   useInteractions,
-  useRole
+  useRole,
 } from '@floating-ui/react';
 import { FormFieldWrapper, useFormField } from '../DataStory/Form/UseFormField';
 import {
@@ -20,7 +20,7 @@ import {
   jsFunctionEvaluation,
   jsonEvaluation,
   numberCast,
-  stringCast
+  stringCast,
 } from '@data-story/core';
 
 export type Option = {
@@ -173,7 +173,7 @@ function DropDownOperator(props: {
 }
 
 export const DropDown = ({
-  optionGroups
+  optionGroups,
 }: {
   optionGroups: OptionGroup[]
 }) => {
@@ -191,10 +191,10 @@ export const DropDown = ({
     middleware: [
       offset(5),
       flip({
-        fallbackAxisSideDirection: 'start'
+        fallbackAxisSideDirection: 'start',
       }),
-      shift()
-    ]
+      shift(),
+    ],
   });
   const click = useClick(context);
   const dismiss = useDismiss(context);

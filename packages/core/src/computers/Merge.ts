@@ -29,13 +29,13 @@ export const Merge: Computer = {
       name: 'requestor_key',
       label: 'Requestor Key',
       help: 'The requestor key to merge on',
-      value: 'id'
+      value: 'id',
     }),
     str({
       name: 'supplier_key',
       label: 'Supplier Key',
       help: 'The supplier key to merge on',
-      value: 'id'
+      value: 'id',
     }),
   ],
 
@@ -69,7 +69,7 @@ export const Merge: Computer = {
       if(matchingSupplier) {
         merged.push({
           ...requestor.value,
-          ...matchingSupplier.value
+          ...matchingSupplier.value,
         })
       } else {
         notMerged.push(requestor)
@@ -78,5 +78,5 @@ export const Merge: Computer = {
 
     output.pushTo('merged', merged)
     output.pushTo('not_merged', notMerged)
-  }
+  },
 }

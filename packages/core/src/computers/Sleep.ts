@@ -8,11 +8,11 @@ export const Sleep: Computer = {
   label: 'Sleep',
   inputs: [{
     name: 'input',
-    schema: {}
+    schema: {},
   }],
   outputs: [{
     name: 'output',
-    schema: {}
+    schema: {},
   }],
   params: [
     createDefaultStringable({
@@ -23,9 +23,9 @@ export const Sleep: Computer = {
       canInterpolate: true,
       interpolate: true,
       casts: [
-        {...numberCast, selected: true}
+        { ...numberCast, selected: true },
       ],
-      value: String(100)
+      value: String(100),
     }),
   ],
 

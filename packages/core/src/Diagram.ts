@@ -22,7 +22,7 @@ export class Diagram {
     this.viewport = options?.viewport || {
       x: 0,
       y: 0,
-      zoom: 1
+      zoom: 1,
     }
   }
 
@@ -91,7 +91,7 @@ export class Diagram {
 
     return {
       nodeId: targetNode.id,
-      portId: link.targetPortId
+      portId: link.targetPortId,
     }
   }
 

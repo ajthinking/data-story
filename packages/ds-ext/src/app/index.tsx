@@ -13,7 +13,7 @@ if (rootElement) {
     <React.StrictMode>
       <DiagramApp />
       {/* <TableApp /> */}
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 } else {
   console.error('Failed to find the root element. App cannot render.');

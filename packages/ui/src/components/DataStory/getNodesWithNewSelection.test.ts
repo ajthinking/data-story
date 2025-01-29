@@ -29,7 +29,7 @@ it('selects the same node if it is uttermost in direction', () => {
   ] as ReactFlowNode[]
 
   expect(getNodesWithNewSelection('left', nodes)).toMatchObject(
-    { id: '1', position: { x: 1, y: 1 }, selected: true }
+    { id: '1', position: { x: 1, y: 1 }, selected: true },
   )
 })
 
@@ -41,7 +41,7 @@ it('selects new closest node in up direction', () => {
   ] as ReactFlowNode[]
 
   expect(getNodesWithNewSelection('up', nodes)).toMatchObject(
-    { id: '1', position: { x: 1, y: 1 }, selected: true }
+    { id: '1', position: { x: 1, y: 1 }, selected: true },
   )
 })
 
@@ -53,7 +53,7 @@ it('selects new closest node in down direction', () => {
   ] as ReactFlowNode[]
 
   expect(getNodesWithNewSelection('down', nodes)).toMatchObject(
-    { id: '3', position: { x: 3, y: 3 }, selected: true }
+    { id: '3', position: { x: 3, y: 3 }, selected: true },
   )
 })
 
@@ -65,7 +65,7 @@ it('selects new closest node in left direction', () => {
   ] as ReactFlowNode[]
 
   expect(getNodesWithNewSelection('left', nodes)).toMatchObject(
-    { id: '1', position: { x: 1, y: 1 }, selected: true }
+    { id: '1', position: { x: 1, y: 1 }, selected: true },
   )
 })
 
@@ -77,6 +77,6 @@ it('selects new closest node in right direction', () => {
   ] as ReactFlowNode[]
 
   expect(getNodesWithNewSelection('right', nodes)).toMatchObject(
-    { id: '3', position: { x: 3, y: 3 }, selected: true }
+    { id: '3', position: { x: 3, y: 3 }, selected: true },
   )
 })

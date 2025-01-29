@@ -4,7 +4,7 @@ import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 export const observeLinkUpdate: MessageHandler<ObserveLinkUpdate> = async({
   ws,
   data,
-  inputObserverController
+  inputObserverController,
 }: MessageHandlerParams<ObserveLinkUpdate>) => {
   inputObserverController.observeLinkUpdate({
     ...data,
@@ -12,8 +12,8 @@ export const observeLinkUpdate: MessageHandler<ObserveLinkUpdate> = async({
       ws.send(JSON.stringify({
         type: RequestObserverType.observeLinkUpdate,
         msgId: data!.msgId,
-        linkIds: data!.linkIds
+        linkIds: data!.linkIds,
       }))
-    }
+    },
   } as ObserveLinkUpdate);
 }

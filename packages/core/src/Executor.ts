@@ -134,7 +134,7 @@ export class Executor {
         isAvailable: () => this.memory.getNodeStatus(node.id) === 'AVAILABLE',
         input: this.memory.getInputDevice(node.id)!,
         // todo: It seems the params didn't evaluate correctly
-        params: arrayToRecord(node.params, 'name')
+        params: arrayToRecord(node.params, 'name'),
       })
 
       // Decide with some heuristics

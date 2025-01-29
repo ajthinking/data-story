@@ -8,10 +8,10 @@ import { coreNodeProvider } from '../coreNodeProvider';
 (async () => {
   const itemCount = 1_000_000
 
-  const data: {id: number}[] = []
+  const data: { id: number }[] = []
 
   for (let i = 0; i < itemCount; i++) {
-    data.push({id: i})
+    data.push({ id: i })
   }
 
   const app = new Application();
@@ -23,14 +23,14 @@ import { coreNodeProvider } from '../coreNodeProvider';
   await app.boot();
 
   const diagram = core.getDiagramBuilder()
-    .add('Create', {json: JSON.stringify(data)})
+    .add('Create', { json: JSON.stringify(data) })
     .add('CreateProperties')
     .add('Ignore')
     .get()
 
   const executor = app.getExecutor({
     diagram,
-    storage: new InMemoryStorage()
+    storage: new InMemoryStorage(),
   })
 
   const startTime = Date.now()

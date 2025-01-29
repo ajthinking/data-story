@@ -9,5 +9,5 @@ export const getsInput: TestStep = {
     const link = tester.diagram!.linksAtInputPortId(port!.id)[0]
 
     tester.inputDevice?.setItemsAt(link.id, itemsAtInputPort)
-  }
+  },
 }

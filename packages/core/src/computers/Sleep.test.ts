@@ -4,11 +4,11 @@ import { Sleep } from './Sleep';
 it('outputs items incrementally', async () => {
   await when(Sleep)
     .hasParams({ duration: 1 })
-    .getsInput([{i: 1}, {i: 2}])
+    .getsInput([{ i: 1 }, { i: 2 }])
     .doRun()
-    .expectOutput([{i: 1}])
+    .expectOutput([{ i: 1 }])
     .doRun()
-    .expectOutput([{i: 1}, {i: 2}])
+    .expectOutput([{ i: 1 }, { i: 2 }])
     .ok()
 })
 

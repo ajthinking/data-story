@@ -8,5 +8,5 @@ export const expectOutput: TestStep = {
     const actual = tester.outputDevice!.itemsOutputtedThrough('output');
 
     expect(actual).toMatchObject(expectedOutput)
-  }
+  },
 }

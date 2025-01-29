@@ -44,7 +44,7 @@ export const RunCommand: Computer = {
       value: 'say "Hello World"',
       help: 'Command to run',
       canInterpolate: true,
-    })
+    }),
   ],
 
   async *run({ input, output }) {

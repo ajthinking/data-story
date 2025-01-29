@@ -7,7 +7,7 @@ it('removes first layer of keys', () => {
     },
     b: {
       b1: 2,
-    }
+    },
   }
 
   const output = flattenObjectOneLevel(input)

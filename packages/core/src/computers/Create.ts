@@ -12,8 +12,8 @@ export const Create: Computer = {
   outputs: [
     {
       name: 'output',
-      schema: {}
-    }
+      schema: {},
+    },
   ],
   params: [
     json_({
@@ -25,8 +25,8 @@ export const Create: Computer = {
         jsonEvaluation,
         jsFunctionEvaluation,
         jsExpressionEvaluation,
-      ]
-    })
+      ],
+    }),
   ],
 
   async *run({ output, params }) {
@@ -34,7 +34,7 @@ export const Create: Computer = {
 
     output.push(
       // wraps the parsed json in an array if it's not already an array
-      [parsed].flat()
+      [parsed].flat(),
     )
   },
 };

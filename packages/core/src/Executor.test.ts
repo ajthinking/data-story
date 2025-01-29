@@ -36,11 +36,11 @@ describe('execute', () => {
       name: 'Dummy',
       inputs: [],
       outputs: [],
-      params: []
+      params: [],
     }
 
     const diagram = new Diagram({
-      nodes: [node]
+      nodes: [node],
     })
 
     let proof = 'dummy-should-change-this'
@@ -50,7 +50,7 @@ describe('execute', () => {
         async *run({}) {
           proof = 'dummy-rocks'
         },
-      } as Computer
+      } as Computer,
     }, {})
 
     const storage = new InMemoryStorage()
@@ -77,14 +77,14 @@ describe('execute', () => {
       inputs: [{
         id: 'input-id',
         name: 'input',
-        schema: {}
+        schema: {},
       }],
       outputs: [],
-      params: []
+      params: [],
     }
 
     const diagram = new Diagram({
-      nodes: [node]
+      nodes: [node],
     })
 
     const registry = new Registry({
@@ -92,7 +92,7 @@ describe('execute', () => {
         async *run({}) {
           // Do nothing
         },
-      } as Computer
+      } as Computer,
     }, {})
 
     const storage = new InMemoryStorage()
@@ -116,14 +116,14 @@ describe('execute', () => {
         {
           id: 'zergling-output-id',
           name: 'output',
-          schema: {}
-        }
+          schema: {},
+        },
       ],
-      params: []
+      params: [],
     }
 
     const diagram = new Diagram({
-      nodes: [node]
+      nodes: [node],
     })
 
     const registry = new Registry({
@@ -131,7 +131,7 @@ describe('execute', () => {
         async *run({ output }) {
           output.push([{ type: 'Zergling' }])
         },
-      } as Computer
+      } as Computer,
     }, {})
 
     const storage = new InMemoryStorage()
@@ -158,9 +158,9 @@ describe('execute', () => {
       outputs: [{
         id: 'Create.1.output',
         name: 'output',
-        schema: {}
+        schema: {},
       }],
-      params: []
+      params: [],
     }
 
     const log: Node = {
@@ -169,21 +169,21 @@ describe('execute', () => {
       inputs: [{
         id: 'Log.1.input',
         name: 'input',
-        schema: {}
+        schema: {},
       }],
       outputs: [],
-      params: []
+      params: [],
     }
 
     const link: Link = {
       id: 'link-id',
       sourcePortId: 'Create.1.output',
-      targetPortId: 'Log.1.input'
+      targetPortId: 'Log.1.input',
     }
 
     const diagram = new Diagram({
       nodes: [create, log],
-      links: [link]
+      links: [link],
     })
 
     // track order of execution
@@ -193,7 +193,7 @@ describe('execute', () => {
       name: 'Create',
       async *run({ output }: RunArgs) {
         order.push('running create')
-        output.push([{i: 1}])
+        output.push([{ i: 1 }])
       },
     } as Computer
 
@@ -224,11 +224,11 @@ describe('execute', () => {
 
     const update2 = await updates.next()
     expect(update2.done).toBe(false)
-    expect(order).toMatchObject(['running create', 'running log',])
+    expect(order).toMatchObject(['running create', 'running log'])
 
     const update3 = await updates.next()
     expect(update3.done).toBe(false)
-    expect(order).toMatchObject(['running create', 'running log',])
+    expect(order).toMatchObject(['running create', 'running log'])
 
     const result = await updates.next()
     expect(result.done).toBe(true)

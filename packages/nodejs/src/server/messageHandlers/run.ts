@@ -16,7 +16,7 @@ export const run: MessageHandler<RunMessage> = async({
   data,
   inputObserverController,
   app,
-  storage
+  storage,
 }: MessageHandlerParams<RunMessage>) => {
   storage.itemsMap.clear();
   const diagram = new Diagram({
@@ -27,7 +27,7 @@ export const run: MessageHandler<RunMessage> = async({
   const executor = app.getExecutor({
     diagram,
     storage,
-    inputObserverController
+    inputObserverController,
   });
 
   const execution = executor.execute()
@@ -39,8 +39,8 @@ export const run: MessageHandler<RunMessage> = async({
       JSON.stringify({
         msgId: data.msgId,
         type: 'ExecutionResult',
-        time: Date.now()
-      })
+        time: Date.now(),
+      }),
     )
   } catch(error: any) {
     if (ws.readyState === WebSocket.OPEN) {

@@ -9,7 +9,7 @@ import {
   createLargeRows,
   nested,
   normal,
-  oversize
+  oversize,
 } from './mock';
 import { eventManager } from '../../DataStory/events/eventManager';
 import { DataStoryEvents } from '../../DataStory/events/dataStoryEventType';
@@ -23,10 +23,10 @@ const data = {
     {
       'id': 'Table.1.input',
       'name': 'input',
-      'schema': {}
-    }
+      'schema': {},
+    },
   ],
-  'outputs': []
+  'outputs': [],
 };
 const id = 'Table.1';
 let testPerformanceLimit = 20;
@@ -40,7 +40,7 @@ const mountTableNodeComponent = (items: unknown[], client?: any ) => {
         toDiagram: () => ({
           getInputLinkIdsFromNodeIdAndPortName: (id: string, port: string) => {
             return ['tableLinkId'];
-          }
+          },
         }),
         client: client || {
           getDataFromStorage: (data:  Record<string, ItemValue[]>) => {
@@ -54,14 +54,14 @@ const mountTableNodeComponent = (items: unknown[], client?: any ) => {
               params.onReceive(['tableLinkId']);
             }
           },
-          cancelObservation: cy.spy()
-        }
+          cancelObservation: cy.spy(),
+        },
       })
     }}>
       <ReactFlowProvider>
         <TableNodeComponent id={id} data={data} selected={false}/>
       </ReactFlowProvider>
-    </DataStoryContext.Provider>
+    </DataStoryContext.Provider>,
   );
 }
 
@@ -70,7 +70,7 @@ function runSuccess(): void {
     .then(() => {
       cy.wait(10).then(() => {
         eventManager.emit({
-          type: DataStoryEvents.RUN_SUCCESS
+          type: DataStoryEvents.RUN_SUCCESS,
         });
       })
     });
@@ -117,7 +117,7 @@ describe('test TableNodeComponent for tooltip', () => {
       122
        Main St
       Suite 100
-      Anytown`
+      Anytown`,
     );
   });
 
@@ -228,7 +228,7 @@ describe('test TableNodeComponent for table', () => {
           params.onReceive(['tableLinkId']);
         }
       },
-      cancelObservation: cy.spy()
+      cancelObservation: cy.spy(),
     };
 
     const getDataSpy = cy.spy(client, 'getDataFromStorage').as('getDataSpy');

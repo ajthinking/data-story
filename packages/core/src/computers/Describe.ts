@@ -11,17 +11,17 @@ export const Describe: Computer = {
   inputs: [
     {
       name: 'input',
-      schema: {}
-    }
+      schema: {},
+    },
   ],
   outputs: [
     {
       name: 'full',
-      schema: {}
+      schema: {},
     },
     {
       name: 'truncated',
-      schema: {}
+      schema: {},
     },
   ],
   params: [
@@ -32,7 +32,7 @@ export const Describe: Computer = {
       multiline: false,
       canInterpolate: true,
       interpolate: true,
-      value: ''
+      value: '',
     }),
     num(
       {
@@ -42,7 +42,7 @@ export const Describe: Computer = {
         multiline: false,
         canInterpolate: true,
         interpolate: true,
-        value: String(10)
+        value: String(10),
       }),
   ],
 

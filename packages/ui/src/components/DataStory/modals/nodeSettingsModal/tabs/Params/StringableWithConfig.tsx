@@ -86,13 +86,13 @@ const paramOptions = (
         const newValue = part1 + interpolation + part2
         form.setValue(newValue);
         close()
-      }
+      },
     })),
   }
 }
 
 const evaluationOptions = (
-  param: StringableParam
+  param: StringableParam,
 ): OptionGroup | undefined => {
   const evaluations = param.evaluations ?? []
 
@@ -115,7 +115,7 @@ const evaluationOptions = (
           e.selected = i === options.selectedIndex
           return e
         })
-      }
+      },
     })),
   }
 }
@@ -142,7 +142,7 @@ export const castOptions = (
           e.selected = i === options.selectedIndex
           return e
         })
-      }
+      },
     })),
   }
 }

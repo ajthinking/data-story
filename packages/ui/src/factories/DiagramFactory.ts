@@ -24,5 +24,5 @@ export const DiagramFactory = {
     const params = flow.params
 
     return new Diagram({ nodes, links, params })
-  }
+  },
 }

@@ -13,8 +13,8 @@ export const ConsoleLog: Computer = {
   inputs: [
     {
       name: 'input',
-      schema: {}
-    }
+      schema: {},
+    },
   ],
   outputs: [],
   params: [
@@ -35,7 +35,7 @@ export const ConsoleLog: Computer = {
         stringCast,
       ],
       value: '',
-    })
+    }),
   ],
 
   async *run({ input, hooks, params: rawParams }) {},

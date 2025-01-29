@@ -61,7 +61,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   async openCustomDocument(
     uri: vscode.Uri,
     _openContext: vscode.CustomDocumentOpenContext,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ): Promise<DiagramDocument> {
     // Initialize storage with diagram ID from the file name
     const diagramId = path.basename(uri.fsPath);
@@ -72,10 +72,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   resolveCustomEditor(
     document: DiagramDocument,
     webviewPanel: vscode.WebviewPanel,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ): void | Thenable<void> {
     webviewPanel.webview.options = {
-      enableScripts: true
+      enableScripts: true,
     };
 
     // Set the webview's HTML content
@@ -128,7 +128,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     const mainScript = path.join(this.context.extensionPath, 'dist', 'app', 'app.mjs');
 
     const scriptUri = webview.asWebviewUri(
-      vscode.Uri.file(mainScript)
+      vscode.Uri.file(mainScript),
     );
 
     // Return HTML content for the Webview
@@ -171,7 +171,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   backupCustomDocument(
     document: DiagramDocument,
     context: vscode.CustomDocumentBackupContext, // Use CustomDocumentBackupContext instead of Uri
-    cancellation: vscode.CancellationToken
+    cancellation: vscode.CancellationToken,
   ): Thenable<vscode.CustomDocumentBackup> {
     return document.backup(context.destination, cancellation);
   }

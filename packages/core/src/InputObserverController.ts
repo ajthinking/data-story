@@ -6,7 +6,7 @@ import {
   ObserveLinkCounts,
   ObserveLinkItems,
   ObserveLinkUpdate,
-  ObserveNodeStatus
+  ObserveNodeStatus,
 } from './types/ExecutionObserver';
 import { bufferTime, Subject, Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
@@ -24,7 +24,7 @@ const ThrottleMS: number = 300;
 export class InputObserverController {
   private items$ = new Subject<LinkItemsParam>();
   private links$ = new Subject<LinksCountParam>();
-  private nodeStatus$ = new Subject<{nodeId: NodeId, status: NodeStatus}>();
+  private nodeStatus$ = new Subject<{ nodeId: NodeId, status: NodeStatus }>();
   private observerMap: Map<string, Subscription> = new Map();
 
   constructor(private storage: ObserverStorage) {}
@@ -52,16 +52,16 @@ export class InputObserverController {
       return;
     }
     await this.storage.setNodeStatus(nodeId, status);
-    this.nodeStatus$.next({nodeId, status});
+    this.nodeStatus$.next({ nodeId, status });
   }
 
   async getDataFromStorage({
     linkId,
     limit = 100,
-    offset = 0
+    offset = 0,
   }: GetDataFromStorageParams): Promise<LinkItems> {
     const items: LinkItems = {};
-    const currentItems = await this.storage.getLinkItems({linkId, offset, limit}) ?? [];
+    const currentItems = await this.storage.getLinkItems({ linkId, offset, limit }) ?? [];
     items[linkId] = currentItems;
     return items;
   }
@@ -75,7 +75,7 @@ export class InputObserverController {
       map(bufferedItems => bufferedItems.flat(1)),
       tap(items => {
         observer.onReceive(observer.linkIds);
-      })
+      }),
     ).subscribe();
 
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
@@ -83,7 +83,7 @@ export class InputObserverController {
     return () => {
       this.deleteExecutionObserver({
         type: RequestObserverType.cancelObservation,
-        observerId: observer.observerId
+        observerId: observer.observerId,
       });
     };
   }
@@ -107,12 +107,12 @@ export class InputObserverController {
         return Object.keys(grouped).map(linkId => ({
           linkId,
           type: RequestObserverType.observeLinkItems,
-          items: grouped[linkId].flatMap(item => item.items)
+          items: grouped[linkId].flatMap(item => item.items),
         } as LinkItemsParam));
       }),
       tap(items => {
         observer.onReceive(items);
-      })
+      }),
     ).subscribe();
 
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
@@ -120,7 +120,7 @@ export class InputObserverController {
     return () => {
       this.deleteExecutionObserver({
         type: RequestObserverType.cancelObservation,
-        observerId: observer.observerId
+        observerId: observer.observerId,
       });
     };
   }
@@ -134,9 +134,9 @@ export class InputObserverController {
       map(bufferedCounts => bufferedCounts.flat(1)),
       tap(counts => {
         observer.onReceive({
-          links: counts
+          links: counts,
         });
-      })
+      }),
     ).subscribe();
 
     if (observer?.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
@@ -144,7 +144,7 @@ export class InputObserverController {
     return () => {
       this.deleteExecutionObserver({
         type: RequestObserverType.cancelObservation,
-        observerId: observer.observerId
+        observerId: observer.observerId,
       });
     };
   }
@@ -159,13 +159,13 @@ export class InputObserverController {
           const status = await this.storage.getNodeStatus(nodeId);
           return {
             nodeId,
-            status: status ?? 'COMPLETE'
+            status: status ?? 'COMPLETE',
           }
         }));
         observer.onReceive({
-          nodes: nodes as NodesStatusInfo[]
+          nodes: nodes as NodesStatusInfo[],
         });
-      })
+      }),
     ).subscribe();
 
     if (observer.observerId && subscription) this.observerMap.set(observer.observerId, subscription);
@@ -173,7 +173,7 @@ export class InputObserverController {
     return () => {
       this.deleteExecutionObserver({
         type: RequestObserverType.cancelObservation,
-        observerId: observer.observerId
+        observerId: observer.observerId,
       });
     };
   }

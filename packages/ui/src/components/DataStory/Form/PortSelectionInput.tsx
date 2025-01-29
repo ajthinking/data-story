@@ -8,7 +8,7 @@ export function PortSelectionInputComponent({
   param,
   node,
 }: FormComponentProps) {
-  const {register, control} = useFormField();
+  const { register, control } = useFormField();
   const outputsDraft = useWatch({
     control: control,
     name: 'outputs',
@@ -37,7 +37,7 @@ export function PortSelectionInputComponent({
   </div>)
 }
 
-export function PortSelectionInput(params: FormComponentProps & {param: Param}) {
+export function PortSelectionInput(params: FormComponentProps & { param: Param }) {
   return (<FormFieldWrapper fieldName={'port'}>
     <PortSelectionInputComponent {...params} />
   </FormFieldWrapper>);

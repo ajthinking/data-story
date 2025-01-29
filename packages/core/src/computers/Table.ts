@@ -24,7 +24,7 @@ export const Table: Computer = {
       name: 'destructObjects',
       help: 'If set, objects will be destructured',
       value: 'true',
-    })
+    }),
   ],
 
   async* run({ input, hooks, params: rawParams, node, storage }) {
@@ -33,7 +33,7 @@ export const Table: Computer = {
 
       storage!.itemsMap.set(
         node.id,
-        (storage!.itemsMap.get(node.id) || []).concat(incoming.map(i => i.value))
+        (storage!.itemsMap.get(node.id) || []).concat(incoming.map(i => i.value)),
       )
 
       yield;

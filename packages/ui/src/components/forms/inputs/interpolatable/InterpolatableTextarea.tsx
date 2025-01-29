@@ -30,7 +30,7 @@ export const InterPolatableTextArea = ({ form, label, rows, id, inputSchema }: {
         onChange={(e) => {
           form.setValue(
             id,
-            form.getValues(id) + '${' + e.target.value + '}'
+            form.getValues(id) + '${' + e.target.value + '}',
           )
         }}
         className="ml-1 max-h-6 border border-gray-300 text-xs w-6 text-gray-400 bg-gray-300 hover:border-gray-400 focus:outline-none appearance-none">

@@ -1,6 +1,6 @@
 import { ItemValue, get } from '@data-story/core'
 
-type JSONValue = string | number | boolean | {[key: string]: JSONValue} | JSONValue[];
+type JSONValue = string | number | boolean | { [key: string]: JSONValue } | JSONValue[];
 
 interface TableOptions {
   only?: string[];
@@ -20,7 +20,7 @@ export class ItemCollection {
     /**
      * @description recursively build headers
      */
-    const buildHeaders = (object: {[key: string]: JSONValue}, prefix: string = '') => {
+    const buildHeaders = (object: { [key: string]: JSONValue }, prefix: string = '') => {
       Object.entries(object).forEach(([property, value]) => {
         const fullPath = prefix ? `${prefix}.${property}` : property;
 
@@ -32,7 +32,7 @@ export class ItemCollection {
       });
     };
 
-    const isNestedObject = (value: any): value is {[key: string]: JSONValue} => {
+    const isNestedObject = (value: any): value is { [key: string]: JSONValue } => {
       return typeof value === 'object' && value !== null && !Array.isArray(value);
     };
 

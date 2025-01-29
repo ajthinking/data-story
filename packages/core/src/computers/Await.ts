@@ -7,17 +7,17 @@ export const Await: Computer = {
   inputs: [
     {
       name: 'input',
-      schema: {}
-    }
+      schema: {},
+    },
   ],
   outputs: [
     {
       name: 'output',
-      schema: {}
+      schema: {},
     },
     {
       name: 'no_items',
-      schema: {}
+      schema: {},
     },
   ],
   params: [
@@ -30,14 +30,14 @@ export const Await: Computer = {
         canInterpolate: false,
         interpolate: false,
         value: 'Infinity',
-      }
-    )
+      },
+    ),
   ],
 
   canRun({ input, params }) {
     const haveChunk = input.haveItemsAtInput(
       'input',
-      (params.number_of_items.value as StringableInputValue).value as number
+      (params.number_of_items.value as StringableInputValue).value as number,
     )
 
     const haveRemainder = input.haveAllItemsAtInput('input')
@@ -58,7 +58,7 @@ export const Await: Computer = {
       output.push(incoming)
 
       if(pulledCount === 0) output.pushTo('no_items', [{
-        message: 'No items available to await node.'
+        message: 'No items available to await node.',
       }])
 
       if(pulledCount < chunkSize) break;

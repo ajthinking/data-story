@@ -20,7 +20,7 @@ function RepeatableCell({
 }) {
   return <FormFieldWrapper fieldName={`${rowIndex}`}>
     <td
-      style={{height: '1px'}}
+      style={{ height: '1px' }}
       scope="row"
       className="border font-medium whitespace-nowrap bg-gray-50 align-top"
     >
@@ -131,7 +131,7 @@ const defaultRowData = (row: Param[]) => {
   }));
   return {
     id,
-    ...data
+    ...data,
   }
 }
 
@@ -140,7 +140,7 @@ export function RepeatableComponent({
   node,
 }: RepeatableInputProps) {
   const { control } = useFormField();
-  const {fieldName} = useContext(FormFieldContext);
+  const { fieldName } = useContext(FormFieldContext);
   const { fields, append, remove, swap } = useFieldArray({
     control: control,
     name: fieldName,

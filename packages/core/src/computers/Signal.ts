@@ -14,7 +14,7 @@ export const Signal: Computer = {
     name: 'output',
     schema: {
       id: 'any',
-    }
+    },
   }],
 
   params: [
@@ -43,8 +43,8 @@ export const Signal: Computer = {
         jsonEvaluation,
         jsFunctionEvaluation,
         jsExpressionEvaluation,
-      ]
-    })
+      ],
+    }),
   ],
 
   async *run({ input, output, params }) {

@@ -209,7 +209,7 @@ export class DiagramBuilder {
     return this
   }
 
-  jiggle(jitter = {x: 50, y: 25 }) {
+  jiggle(jitter = { x: 50, y: 25 }) {
     for(const node of this.diagram.nodes) {
       node.position!.x += (0.5 - Math.random()) * jitter.x
       node.position!.y += (0.5 - Math.random()) * jitter.y
@@ -281,8 +281,8 @@ export class DiagramBuilder {
           ...param,
           value: {
             ...(param.value as Object),
-            ...value
-          }
+            ...value,
+          },
         }
         continue
       }

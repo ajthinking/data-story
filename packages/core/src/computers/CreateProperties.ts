@@ -13,14 +13,14 @@ export const CreateProperties: Computer = {
   inputs: [
     {
       name: 'input',
-      schema: {}
-    }
+      schema: {},
+    },
   ],
   outputs: [
     {
       name: 'output',
-      schema: {}
-    }
+      schema: {},
+    },
   ],
   params: [
     {
@@ -57,7 +57,7 @@ export const CreateProperties: Computer = {
             stringCast,
           ],
           value: '',
-        })
+        }),
       ],
       value: [],
     },
@@ -67,7 +67,7 @@ export const CreateProperties: Computer = {
     while(true) {
       const [ item ] = input.pull(1)
       if(typeof item.value !== 'object') throw new Error(
-        'Items sent to CreateProperties must be an objects!'
+        'Items sent to CreateProperties must be an objects!',
       )
 
       type Property = { id: any, key: string, value: any }

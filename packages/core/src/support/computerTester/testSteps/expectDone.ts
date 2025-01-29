@@ -7,5 +7,5 @@ export const expectDone: TestStep = {
     const final = await tester.runner!.next()
 
     expect(final.done).toBe(true)
-  }
+  },
 }

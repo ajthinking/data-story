@@ -16,6 +16,6 @@ it('throws an error if the expression is invalid', () => {
   const expression = '1+++2'
 
   expect(() => evalMath(expression)).toThrow(
-    'Error evaluating expression: Invalid left-hand side expression in postfix operation'
+    'Error evaluating expression: Invalid left-hand side expression in postfix operation',
   )
 })

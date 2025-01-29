@@ -11,7 +11,7 @@ describe('add', () => {
       name: 'MyNode',
       inputs: [],
       outputs: [],
-      params: []
+      params: [],
     }
 
     expect(diagram.nodes).toEqual([])
@@ -25,7 +25,7 @@ describe('nodeWithOutputPortId', () => {
     const output: Port = {
       id: 'output-port-id',
       name: 'output',
-      schema: {}
+      schema: {},
     }
 
     const node: Node = {
@@ -33,10 +33,10 @@ describe('nodeWithOutputPortId', () => {
       name: 'MyNode',
       inputs: [],
       outputs: [output],
-      params: []
+      params: [],
     }
 
-    const diagram = new Diagram({ nodes: [node]})
+    const diagram = new Diagram({ nodes: [node] })
     const result = diagram.nodeWithOutputPortId('output-port-id')
 
     expect(result).toMatchObject(node)
@@ -73,7 +73,7 @@ describe('clone', () => {
       name: 'MyNode',
       inputs: [],
       outputs: [],
-      params: []
+      params: [],
     };
 
     const link: Link = {

@@ -7,7 +7,7 @@ import { Create } from './Create';
 
 it('reads json by default', async () => {
   await when(Create)
-    .hasParams({ data: JSON.stringify([{a: 1}]) })
+    .hasParams({ data: JSON.stringify([{ a: 1 }]) })
     .doRun()
     .expectOutput([{ a: 1 }])
     .ok()
@@ -15,9 +15,9 @@ it('reads json by default', async () => {
 
 it('wraps non array inputs', async () => {
   await when(Create)
-    .hasParams({ data: JSON.stringify({a: 1}) })
+    .hasParams({ data: JSON.stringify({ a: 1 }) })
     .doRun()
-    .expectOutput([{a: 1}])
+    .expectOutput([{ a: 1 }])
     .ok()
 })
 
@@ -27,11 +27,11 @@ it('can parse hjson', async () => {
       name: 'data',
       value: {
         value: '{ cool: "yes" }',
-        Evaluation: 'HJSON'
+        Evaluation: 'HJSON',
       },
       evaluations: [
-        { ...hjsonEvaluation, selected: true }
-      ]
+        { ...hjsonEvaluation, selected: true },
+      ],
     })
     .doRun()
     .expectOutput([{ cool: 'yes' }])
@@ -44,11 +44,11 @@ it('can parse js function', async () => {
       name: 'data',
       value: {
         value: '() => ({ sum: 1 + 1 })',
-        Evaluation: 'JS_FUNCTION'
+        Evaluation: 'JS_FUNCTION',
       },
       evaluations: [
-        { ...jsFunctionEvaluation, selected: true }
-      ]
+        { ...jsFunctionEvaluation, selected: true },
+      ],
     })
     .doRun()
     .expectOutput([{ sum: 2 }])
@@ -64,11 +64,11 @@ it('can parse js expression', async () => {
       ({
         interesting: 'yes'
       })`,
-        Evaluation: 'JS_EXPRESSION'
+        Evaluation: 'JS_EXPRESSION',
       },
       evaluations: [
-        { ...jsExpressionEvaluation, selected: true }
-      ]
+        { ...jsExpressionEvaluation, selected: true },
+      ],
     })
     .doRun()
     .expectOutput([{ interesting: 'yes' }])
@@ -84,15 +84,15 @@ it('can directly parse js objects starting with bracket', async () => {
       {
         label: 'statement'
       }`,
-        Evaluation: 'JS_EXPRESSION'
+        Evaluation: 'JS_EXPRESSION',
       },
       evaluations: [
-        { ...jsExpressionEvaluation, selected: true }
-      ]
+        { ...jsExpressionEvaluation, selected: true },
+      ],
     })
     .doRun()
     .expectOutput([ {
-      label: 'statement'
+      label: 'statement',
     }])
     .ok()
 })

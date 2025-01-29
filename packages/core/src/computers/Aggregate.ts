@@ -10,13 +10,13 @@ export const Aggregate: Computer = {
   inputs: [
     {
       name: 'input',
-      schema: {}
-    }
+      schema: {},
+    },
   ],
   outputs: [
     {
       name: 'aggregated',
-      schema: {}
+      schema: {},
     },
   ],
   params: [
@@ -29,8 +29,8 @@ export const Aggregate: Computer = {
         canInterpolate: false,
         interpolate: false,
         value: '',
-      }
-    )
+      },
+    ),
   ],
 
   canRun({ input, params }) {
@@ -55,7 +55,7 @@ export const Aggregate: Computer = {
         type: 'aggregate',
         key,
         length: group.length,
-        items: group.map((item: ItemWithParams) => item.value)
+        items: group.map((item: ItemWithParams) => item.value),
       }
 
       output.pushTo('aggregated', [aggretion]);

@@ -19,10 +19,10 @@ export function RepeatableWithConfig({
             {
               label: 'StringableParam',
               value: 'StringableParam',
-              callback: () => {}
-            }
-          ]
-        }
+              callback: () => {},
+            },
+          ],
+        },
       ]} />
     </div>
     <RepeatableInput

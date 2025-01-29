@@ -6,14 +6,14 @@ import {
   RepeatableParam,
   type ReportCallback,
   type ExecutionObserver, NodeStatus,
-  NodeId
+  NodeId,
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
 import React from 'react';
 import { WorkspaceApiClientImplement } from './clients/WorkspaceApiClientImplement';
 
-export type DataStoryCallback = (options: {run: () => void}) => void;
+export type DataStoryCallback = (options: { run: () => void }) => void;
 
 export type ServerClientObservationConfig = {
   inputObservers: InputObserver[],
@@ -79,7 +79,7 @@ export type RepeatableInputProps = FormCommonProps & {
 }
 
 export interface FormComponent<TParams extends Param> {
-  getComponent: (params: FormCommonProps & {param: TParams}) => React.ReactNode;
+  getComponent: (params: FormCommonProps & { param: TParams }) => React.ReactNode;
   getType: () => string;
 }
 
@@ -110,7 +110,7 @@ export type StoreSchema = {
   edges: Edge[];
   onEdgesChange: OnEdgesChange;
   updateEdgeCounts: (edgeCounts: Record<string, number>) => void;
-  updateEdgeStatus: (edgeStatus: {nodeId: NodeId, status: NodeStatus}[]) => void
+  updateEdgeStatus: (edgeStatus: { nodeId: NodeId, status: NodeStatus }[]) => void
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
 

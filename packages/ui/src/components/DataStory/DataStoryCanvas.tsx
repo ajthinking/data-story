@@ -7,7 +7,7 @@ import {
   NodeChange,
   ReactFlow,
   ReactFlowProvider,
-  useStoreApi
+  useStoreApi,
 } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
@@ -59,7 +59,7 @@ const Flow = ({
   onDrop,
   client,
   onChange,
-  onNodeDoubleClick
+  onNodeDoubleClick,
 }: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -72,7 +72,7 @@ const Flow = ({
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
     updateEdgeCounts: state.updateEdgeCounts,
-    updateEdgeStatus: state.updateEdgeStatus
+    updateEdgeStatus: state.updateEdgeStatus,
   });
 
   const {
@@ -86,7 +86,7 @@ const Flow = ({
     addNodeFromDescription,
     toDiagram,
     updateEdgeCounts,
-    updateEdgeStatus
+    updateEdgeStatus,
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -131,7 +131,7 @@ const Flow = ({
         }, {});
 
         updateEdgeCounts(edgeCounts)
-      }
+      },
     })
     return () => {
       subscription?.unsubscribe();
@@ -149,8 +149,8 @@ const Flow = ({
       nodeIds: allNodeIds,
       type: RequestObserverType.observeNodeStatus,
       onReceive: ({ nodes }) => {
-        updateEdgeStatus(nodes as {nodeId: string, status: NodeStatus}[]);
-      }
+        updateEdgeStatus(nodes as { nodeId: string, status: NodeStatus }[]);
+      },
     });
     return () => {
       subscription?.unsubscribe();
@@ -224,7 +224,7 @@ const Flow = ({
             initDiagram,
             callback: onInitialize,
             focusOnFlow,
-            client
+            client,
           });
         }}
         minZoom={0.25}
@@ -241,7 +241,7 @@ const Flow = ({
           useCallback((event) => {
             const handler = onDrop || onDropDefault;
             handler(event, addNodeFromDescription)
-          }, [addNodeFromDescription]
+          }, [addNodeFromDescription],
           )}
       >
         <DataStoryControls

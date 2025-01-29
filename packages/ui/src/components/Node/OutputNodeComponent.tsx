@@ -50,7 +50,7 @@ const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataSto
           className="relative"
           type="source"
           position={Position.Right}
-          style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 1, width: 1, top: 0, right: 0}}
+          style={{ opacity: 0, backgroundColor: '', position: 'relative', height: 1, width: 1, top: 0, right: 0 }}
           id={outputPort.id}
           isConnectable={false}
         />

@@ -11,9 +11,9 @@ export const remoteNodeProvider = {
       .withParams([
         str({
           name: 'stamp',
-          value: 'secret message passed'
-        }
-        )
+          value: 'secret message passed',
+        },
+        ),
       ])
       .add('Input', { port_name: 'input' })
       .add('Map', {
@@ -21,7 +21,7 @@ export const remoteNodeProvider = {
           item => ({
             ...item,
             global_param_access: '@{stamp}',
-          })`
+          })`,
       })
       .add('Output', { port_name: 'stamped' })
       .get();
@@ -30,5 +30,5 @@ export const remoteNodeProvider = {
     // Add nested node to app
     // *************************************
     app.addNestedNode('FooBarStamper', nestedNode);
-  }
+  },
 };

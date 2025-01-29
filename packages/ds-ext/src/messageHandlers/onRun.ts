@@ -35,7 +35,7 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
   const executor = app.getExecutor({
     diagram,
     storage: new InMemoryStorage(),
-    inputObserverController
+    inputObserverController,
   });
 
   const startTime = Date.now();
@@ -48,13 +48,13 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
     postMessage?.({
       msgId,
       type: 'ExecutionResult',
-      time: endTime - startTime
+      time: endTime - startTime,
     });
   } catch(error: any) {
     postMessage?.({
       msgId,
       type: 'ExecutionFailure',
-      error: error.message
+      error: error.message,
     });
 
     console.log('Error in onRun!');

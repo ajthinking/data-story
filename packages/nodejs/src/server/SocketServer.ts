@@ -19,7 +19,7 @@ export class SocketServer {
   constructor({
     app,
     messageHandlers = defaultMessageHandlers,
-    port = 3300
+    port = 3300,
   }: SocketServerOptions) {
     this.app = app;
     this.port = port;
@@ -51,7 +51,7 @@ export class SocketServer {
   private async handleMessage(
     ws: WebSocket,
     message: string,
-    storage: InMemoryStorage
+    storage: InMemoryStorage,
   ) {
     const parsed: { type: string } & Record<string, any> = JSON.parse(message);
     const handler = this.messageHandlers[parsed.type];
@@ -66,7 +66,7 @@ export class SocketServer {
       data: parsed,
       app: this.app,
       storage,
-      inputObserverController: this.inputObserverController
+      inputObserverController: this.inputObserverController,
     });
   }
 }

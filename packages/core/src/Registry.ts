@@ -13,7 +13,7 @@ export class Registry {
 
   constructor(
     computers: ComputerRecord,
-    nestedNodes: NestedNodes
+    nestedNodes: NestedNodes,
   ) {
     this.computers = computers;
     this.nestedNodes = nestedNodes;

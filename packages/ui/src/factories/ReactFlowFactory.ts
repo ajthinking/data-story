@@ -11,7 +11,7 @@ export const ReactFlowFactory = {
           id: node.id,
           position: {
             x: node.position!.x,
-            y: node.position!.y
+            y: node.position!.y,
           },
           data: {
             params: node.params,
@@ -44,5 +44,5 @@ export const ReactFlowFactory = {
       }),
       viewport: diagram.viewport,
     }
-  }
+  },
 }

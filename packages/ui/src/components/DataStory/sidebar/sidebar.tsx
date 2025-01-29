@@ -11,7 +11,7 @@ import { useStore } from '../store/store';
 const SidebarComponent = (props: NodeSettingsSidebarProps) => {
   const {
     node, onClose, sidebarKey, setSidebarKey, onSave,
-    nodeDescriptions, nodeDescriptionsLoading
+    nodeDescriptions, nodeDescriptionsLoading,
   } = props;
   const selector = (state: StoreSchema) => ({
     onRun: state.onRun,

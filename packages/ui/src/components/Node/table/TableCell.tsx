@@ -9,7 +9,7 @@ import {
   useDismiss,
   useFloating,
   useInteractions,
-  useRole
+  useRole,
 } from '@floating-ui/react';
 
 export const FIXED_HEIGHT = 24;
@@ -27,7 +27,7 @@ const formatTooltipContent = (content: unknown) => {
   }
 }
 
-export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, content?: unknown}): JSX.Element {
+export function TableCell(props: { tableRef: React.RefObject<HTMLTableElement>, content?: unknown }): JSX.Element {
   const { content = '', tableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -40,10 +40,10 @@ export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, c
     middleware: [
       offset(5),
       flip({
-        fallbackAxisSideDirection: 'start'
+        fallbackAxisSideDirection: 'start',
       }),
-      shift()
-    ]
+      shift(),
+    ],
   });
 
   const click = useClick(context);
@@ -53,7 +53,7 @@ export function TableCell(props: {tableRef: React.RefObject<HTMLTableElement>, c
   const { getReferenceProps, getFloatingProps } = useInteractions([
     click,
     role,
-    dismiss
+    dismiss,
   ]);
 
   const Tooltip = () => {

@@ -9,7 +9,7 @@ export const getNodeDescriptions: MessageHandler<DescribeMessage> = async ({
   ws,
   data,
   app,
-}: MessageHandlerParams<DescribeMessage>
+}: MessageHandlerParams<DescribeMessage>,
 ) => {
   const response = {
     ...data,

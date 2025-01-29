@@ -80,11 +80,11 @@ describe('create', () => {
 
     const [ firstNode, secondNode ] = diagram.nodes;
 
-    expect(memory.inputDevices.get(firstNode.id)).toMatchObject({ pull: expect.any(Function)})
-    expect(memory.outputDevices.get(firstNode.id)).toMatchObject({ push: expect.any(Function)})
+    expect(memory.inputDevices.get(firstNode.id)).toMatchObject({ pull: expect.any(Function) })
+    expect(memory.outputDevices.get(firstNode.id)).toMatchObject({ push: expect.any(Function) })
 
-    expect(memory.inputDevices.get(secondNode.id)).toMatchObject({ pull: expect.any(Function)})
-    expect(memory.outputDevices.get(secondNode.id)).toMatchObject({ push: expect.any(Function)})
+    expect(memory.inputDevices.get(secondNode.id)).toMatchObject({ pull: expect.any(Function) })
+    expect(memory.outputDevices.get(secondNode.id)).toMatchObject({ push: expect.any(Function) })
   })
 
   it('sets node runners', async () => {
@@ -108,7 +108,7 @@ describe('create', () => {
 
     const [ firstNode, secondNode ] = diagram.nodes;
 
-    expect(memory.getNodeRunner(firstNode.id)).toMatchObject({ next: expect.any(Function)})
-    expect(memory.getNodeRunner(secondNode.id)).toMatchObject({ next: expect.any(Function)})
+    expect(memory.getNodeRunner(firstNode.id)).toMatchObject({ next: expect.any(Function) })
+    expect(memory.getNodeRunner(secondNode.id)).toMatchObject({ next: expect.any(Function) })
   })
 })

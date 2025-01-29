@@ -30,7 +30,7 @@ export const NodeDescriptionFactory = {
 
           return {
             name: portName,
-            schema: {}
+            schema: {},
           }
         }),
       outputs: diagram.nodes
@@ -43,11 +43,11 @@ export const NodeDescriptionFactory = {
 
           return {
             name: portName,
-            schema: {}
+            schema: {},
           }
         }),
       params: diagram.params,
       // TODO
     }
-  }
+  },
 }

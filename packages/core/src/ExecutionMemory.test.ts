@@ -98,7 +98,7 @@ describe('ExecutionMemory', () => {
     it('returns the correct items for a link', () => {
       const memory = new ExecutionMemory();
       const linkId: LinkId = 'link1';
-      const items: ItemValue[] = [{i: 1}, {i: 2}, {i: 3}];
+      const items: ItemValue[] = [{ i: 1 }, { i: 2 }, { i: 3 }];
 
       memory.setLinkItems(linkId, items);
 
@@ -119,26 +119,26 @@ describe('ExecutionMemory', () => {
     it('pulls the correct number of items from a link', () => {
       const memory = new ExecutionMemory();
       const linkId: LinkId = 'link1';
-      const items: ItemValue[] = [{i: 1}, {i: 2}, {i: 3}];
+      const items: ItemValue[] = [{ i: 1 }, { i: 2 }, { i: 3 }];
       memory.setLinkItems(linkId, items);
 
       const count = 2;
       const pulled = memory.pullLinkItems(linkId, count);
 
-      expect(pulled).toEqual([{i: 1}, {i: 2}]);
-      expect(memory.getLinkItems(linkId)).toEqual([{i: 3}]);
+      expect(pulled).toEqual([{ i: 1 }, { i: 2 }]);
+      expect(memory.getLinkItems(linkId)).toEqual([{ i: 3 }]);
     });
 
     it('pulls all items from a link if count exceeds the number of items', () => {
       const memory = new ExecutionMemory();
       const linkId: LinkId = 'link1';
-      const items: ItemValue[] = [{i: 1}, {i: 2}, {i: 3}];
+      const items: ItemValue[] = [{ i: 1 }, { i: 2 }, { i: 3 }];
       memory.setLinkItems(linkId, items);
 
       const count = 5; // Exceeds the number of items
       const pulled = memory.pullLinkItems(linkId, count);
 
-      expect(pulled).toMatchObject([{i: 1}, {i: 2}, {i: 3}]);
+      expect(pulled).toMatchObject([{ i: 1 }, { i: 2 }, { i: 3 }]);
       expect(memory.getLinkItems(linkId)).toEqual([]);
     });
   });
@@ -149,13 +149,13 @@ describe('ExecutionMemory', () => {
 
       const memory = new ExecutionMemory({
         linkItems: new Map()
-          .set('link1', [{i: 1}, {i: 2}]),
+          .set('link1', [{ i: 1 }, { i: 2 }]),
       });
 
-      memory.pushLinkItems(linkId, [{i: 3}]);
+      memory.pushLinkItems(linkId, [{ i: 3 }]);
 
       expect(memory.getLinkItems(linkId)).toMatchObject([
-        {i: 1}, {i: 2}, {i: 3}
+        { i: 1 }, { i: 2 }, { i: 3 },
       ]);
     });
   });
@@ -164,7 +164,7 @@ describe('ExecutionMemory', () => {
     it('sets the items of a link correctly', () => {
       const memory = new ExecutionMemory();
       const linkId: LinkId = 'link1';
-      const items: ItemValue[] = [{i: 1}, {i: 2}];
+      const items: ItemValue[] = [{ i: 1 }, { i: 2 }];
 
       memory.setLinkItems(linkId, items);
 
@@ -245,7 +245,7 @@ describe('ExecutionMemory', () => {
       const memory = new ExecutionMemory();
       const hooks = [{
         type: 'TEST_HOOK',
-        args: ['arg1', 'arg2']
+        args: ['arg1', 'arg2'],
       }];
 
       memory.pushHooks(hooks);
@@ -259,7 +259,7 @@ describe('ExecutionMemory', () => {
       const memory = new ExecutionMemory();
       const hooks = [{
         type: 'TEST_HOOK',
-        args: ['arg1', 'arg2']
+        args: ['arg1', 'arg2'],
       }];
 
       memory.pushHooks(hooks);

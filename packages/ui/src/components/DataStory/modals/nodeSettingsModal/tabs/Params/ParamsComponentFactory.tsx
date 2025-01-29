@@ -14,7 +14,7 @@ export class ParamsComponentFactory{
   ]
   private selectedComponent?: FormComponent<Param> = undefined;
 
-  getComponent(params: FormComponentProps & {type: string}) {
+  getComponent(params: FormComponentProps & { type: string }) {
     const { type, ...rest } = params;
 
     this.selectedComponent = this.availableComponents.find(e => e.getType() === type);

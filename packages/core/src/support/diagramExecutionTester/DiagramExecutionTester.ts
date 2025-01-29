@@ -23,7 +23,7 @@ export class DiagramExecutionTester {
     const executor = ExecutorFactory.create({
       diagram: this.diagram,
       registry: core.getRegistry(),
-      storage: await this.makeStorage()
+      storage: await this.makeStorage(),
     })
 
     const execution = executor.execute()

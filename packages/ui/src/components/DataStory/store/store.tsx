@@ -7,7 +7,7 @@ import {
   LinkGuesser,
   Node,
   NodeDescription, NodeStatus,
-  Param
+  Param,
 } from '@data-story/core';
 import { ReactFlowNode } from '../../Node/ReactFlowNode';
 import React, { Ref, useImperativeHandle, useState } from 'react';
@@ -74,7 +74,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
           node.selected = false
           return node
         }),
-        node
+        node,
       ],
     })
 
@@ -87,7 +87,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
     const node: Node = NodeFactory.fromNodeDescription(
       nodeDescription,
-      diagram
+      diagram,
     )
 
     const link = new LinkGuesser(diagram).guess(node)
@@ -109,7 +109,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       nodes: get().nodes.map(node => {
         node.selected = node.id === nodeId
         return node
-      })
+      }),
     })
   },
   updateNode: (node: ReactFlowNode) => {
@@ -149,7 +149,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     get().setNodes(reactFlowObject.nodes as ReactFlowNode[]);
     get().setEdges(reactFlowObject.edges);
     set({
-      params: diagram.params
+      params: diagram.params,
     });
   },
   onRun: () => {
@@ -189,7 +189,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         ...edge,
         ...(currentEdgeStatus !== undefined && {
           labelBgStyle: { opacity: 0.6 },
-          style: isBusy ? { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' } : {}
+          style: isBusy ? { strokeDasharray: '5,5', animation: 'dash 1s linear infinite' } : {},
         }),
       };
     });
@@ -199,7 +199,7 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
 
   setOpenNodeSidebarId: (id: string | null) => {
     set({ openNodeSidebarId: id })
-  }
+  },
 }));
 
 export const DataStoryContext = React.createContext<ReturnType<typeof createStore>>({} as ReturnType<typeof createStore>);

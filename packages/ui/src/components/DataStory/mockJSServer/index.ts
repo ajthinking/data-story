@@ -6,7 +6,7 @@ export class MockJSServer {
   channel: Subject<any> = new Subject();
   private messageHandlers = {};
 
-  constructor({ app, messageHandlers }: {app: Application, messageHandlers?: MessageHandlers}) {
+  constructor({ app, messageHandlers }: { app: Application, messageHandlers?: MessageHandlers }) {
     const storage = new DiagramObserverStorage('_');
     const inputObserverController = new InputObserverController(storage);
 
@@ -23,13 +23,13 @@ export class MockJSServer {
       this.channel.next({
         ...msg,
         status: 'server-post',
-        msgId: message.msgId
+        msgId: message.msgId,
       });
     }
 
     await handler({
       data: message,
-      sendEvent
+      sendEvent,
     });
   }
 

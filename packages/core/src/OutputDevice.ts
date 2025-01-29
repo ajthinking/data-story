@@ -26,7 +26,7 @@ export class OutputDevice {
   constructor(
     private portLinkMap: PortLinkMap = {},
     private memory: ExecutionMemory,
-    private node?: Node
+    private node?: Node,
   ) {}
 
   getPortNames(): string[] {
@@ -49,7 +49,7 @@ export class OutputDevice {
       this.memory.pushLinkItems(
         linkId,
         // Clone items to ensure induvidual mutation per branch
-        formattedItems
+        formattedItems,
       )
       // Update link counts
       const count = this.memory.getLinkCount(linkId)!

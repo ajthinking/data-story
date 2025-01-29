@@ -11,10 +11,10 @@ const data = {
     {
       'id': 'ConsoleLog.1.input',
       'name': 'input',
-      'schema': {}
-    }
+      'schema': {},
+    },
   ],
-  'outputs': []
+  'outputs': [],
 };
 const id = 'ConsoleLog.1';
 
@@ -26,20 +26,20 @@ const mountConsoleNodeComponent = (items: unknown[], client?: () => void) => {
         toDiagram: () => ({
           getInputLinkIdsFromNodeIdAndPortName: (id: string, port: string) => {
             return [`${id}.${port}`];
-          }
+          },
         }),
         client: client?.() || {
           observeLinkItems: (observer: ObserveLinkItems) => {
             observer.onReceive(items as LinkItemsParam[]);
             return { unsubscribe:() => cy.spy() };
-          }
-        }
+          },
+        },
       })
     }}>
       <ReactFlowProvider>
         <ConsoleNodeComponent id={id} data={data} selected={false}/>
       </ReactFlowProvider>
-    </DataStoryContext.Provider>
+    </DataStoryContext.Provider>,
   );
 }
 

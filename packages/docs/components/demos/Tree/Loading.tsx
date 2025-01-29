@@ -8,7 +8,7 @@ export default () => {
   const { app, loading } = useRequestApp();
   if(loading) return null;
 
-  const client = new CustomizeJSClient({app});
+  const client = new CustomizeJSClient({ app });
 
   return (
     <div className="w-full h-80 border-gray-400 border-4">

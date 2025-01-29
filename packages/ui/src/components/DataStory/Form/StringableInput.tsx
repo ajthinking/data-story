@@ -1,5 +1,5 @@
 import {  StringableParam } from '@data-story/core';
-import {  useCallback} from 'react';
+import {  useCallback } from 'react';
 import { FormFieldWrapper, useFormField } from './UseFormField';
 import { autocompletion } from '@codemirror/autocomplete';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
@@ -14,7 +14,7 @@ const basicSetup: BasicSetupOptions = {
   highlightActiveLineGutter: false,
   highlightActiveLine: false,
   foldGutter: false,
-  autocompletion: true
+  autocompletion: true,
 };
 
 /**
@@ -32,7 +32,7 @@ export function StringableInputComponent({
   param,
   onCursorPositionChange,
 }: StringableInput) {
-  const { getValues,  setValue} = useFormField();
+  const { getValues,  setValue } = useFormField();
 
   const myCompletions = useCallback((context) => {
     let before = context.matchBefore(parameterReg);
@@ -44,7 +44,7 @@ export function StringableInputComponent({
     };
   }, []);
 
-  const extensions = [autocompletion({ override: [myCompletions] }), ];
+  const extensions = [autocompletion({ override: [myCompletions] }) ];
 
   const onChange = useCallback((value, viewUpdate) => {
     setValue(value);

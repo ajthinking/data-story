@@ -16,7 +16,7 @@ function StringListInputComponent({
   param,
   node,
 }: FormComponentProps) {
-  const { getValues,  setValue} = useFormField();
+  const { getValues,  setValue } = useFormField();
 
   const onChange = useCallback((value, viewUpdate) => {
     setValue(value);

@@ -23,14 +23,14 @@ export const saveDiagram = (key: string, diagram: Diagram) => {
 
     const savedDiagram = {
       ...diagram,
-      links
+      links,
     };
 
     const diagramJSON = JSON.stringify({
       type: 'save',
       version: getCoreVersion(),
       name: key,
-      diagram: savedDiagram
+      diagram: savedDiagram,
     } as LocalDiagram);
 
     localStorage?.setItem(key, diagramJSON);
@@ -44,7 +44,7 @@ export const loadDiagram = (key: string): LocalDiagram => {
     type: 'load',
     version: getCoreVersion(),
     name: key,
-    diagram: null
+    diagram: null,
   }
 
   if (typeof window === 'undefined' || !localStorage?.getItem(key)) {
@@ -56,7 +56,7 @@ export const loadDiagram = (key: string): LocalDiagram => {
 
   initDiagram.diagram = new Diagram({
     nodes: diagram.nodes,
-    links: diagram.links
+    links: diagram.links,
   });
 
   initDiagram.name = name;

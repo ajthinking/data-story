@@ -14,7 +14,7 @@ describe('register', () => {
     app.register(provider)
 
     expect(app.providers).toMatchObject([
-      provider
+      provider,
     ])
   })
 
@@ -33,7 +33,7 @@ describe('register', () => {
 
     expect(app.providers).toMatchObject([
       provider1,
-      provider2
+      provider2,
     ])
   })
 })
@@ -64,13 +64,13 @@ describe('addComputers', () => {
     const app = new Application()
     const computer = {
       name: 'Signal',
-      run: async function*(_) {}
+      run: async function*(_) {},
     } as Computer;
 
     app.addComputers([computer])
 
     expect(app.getRegistry().computers.Signal).toMatchObject(
-      computer
+      computer,
     )
   })
 })
@@ -82,7 +82,7 @@ describe('descriptions', ()  => {
     app.addComputers([ Signal ])
 
     expect(app.descriptions()).toMatchObject([
-      { name: 'Signal' }
+      { name: 'Signal' },
     ])
   })
 })

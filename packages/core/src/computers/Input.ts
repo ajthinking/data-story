@@ -19,11 +19,11 @@ export const Input: Computer = {
       value: 'input',
       help: 'The name of the input port.',
       multiline: false,
-      canInterpolate: true
-    })
+      canInterpolate: true,
+    }),
   ],
 
-  async *run({ input, output}) {
+  async *run({ input, output }) {
     while(true) {
       const [ portName, ...other ] = input.getPortNames()
 
