@@ -3,6 +3,14 @@ import { useStoreApi } from '@xyflow/react';
 import { useStore } from './store/store';
 import { shallow } from 'zustand/shallow';
 import { StoreSchema } from './types';
+import { ReactFlowNode } from '../Node/ReactFlowNode';
+
+/**
+ * todo:
+ * 1. 添加如 clone node， output input port 不为标准的端口名的支持 -get
+ * 2. can't disconnect successfully
+ * 3. BNode can't 顺滑的添加到 edge 上
+ */
 
 export function useDragNode() {
   const reactFlowStore = useStoreApi();
@@ -51,22 +59,25 @@ export function useDragNode() {
     setDraggedNode(null);
   }, []);
 
-  const onNodeDragStop = useCallback((event: any, node: any) => {
+  const onNodeDragStop = useCallback((event: any, node: ReactFlowNode, nodes: ReactFlowNode[]) => {
     if (!draggedNode?.droppedOnEdge) return;
-    const { droppedOnEdge } = draggedNode;
+    const { node: node1, droppedOnEdge } = draggedNode;
+    const nodeOutputId = node.data.outputs[0].id;
+    const nodeInputId = node.data.inputs[0].id;
 
     connect({
       source: droppedOnEdge.source,
       target: node.id,
-      sourceHandle: `${droppedOnEdge.source}.output`,
-      targetHandle: `${node.id}.input`,
+      sourceHandle: droppedOnEdge.sourceHandle,
+      targetHandle: nodeInputId,
     });
     connect({
       source: node.id,
       target: droppedOnEdge.target,
-      sourceHandle: `${node.id}.output`,
-      targetHandle: `${droppedOnEdge.target}.input`,
+      sourceHandle: nodeOutputId,
+      targetHandle: droppedOnEdge.targetHandle,
     });
+
     disconnect(droppedOnEdge.id)
     setDraggedNode(null);
   }, [draggedNode, connect, setEdges]);
