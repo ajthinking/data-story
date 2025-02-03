@@ -1,63 +1,79 @@
-import { useCallback, useState } from 'react';
-import { useStoreApi } from '@xyflow/react';
-import { useStore } from './store/store';
-import { shallow } from 'zustand/shallow';
+import { type MouseEvent as ReactMouseEvent, useCallback, useState } from 'react';
+import { Edge } from '@xyflow/react';
 import { StoreSchema } from './types';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 
-/**
- * todo:
- * 1. 添加如 clone node， output input port 不为标准的端口名的支持 -get
- * 2. can't disconnect successfully
- * 3. BNode can't 顺滑的添加到 edge 上
- */
+interface IntersectionResult {
+  isIntersecting: boolean;
+  edge?: Edge;
+  edgeElement?: SVGPathElement;
+}
 
-export function useDragNode() {
-  const reactFlowStore = useStoreApi();
-  const selector = (state: StoreSchema) => ({
-    connect: state.connect,
-    disconnect: state.disconnect,
-    setEdges: state.setEdges,
-  });
-  const {
-    connect,
-    disconnect,
-    setEdges,
-  } = useStore(selector, shallow);
-
+export function useDragNode({
+  connect,
+  disconnect,
+  setEdges,
+  edges,
+}: {
+  connect: StoreSchema['connect'];
+  disconnect: StoreSchema['disconnect'];
+  setEdges: StoreSchema['setEdges'];
+  edges: StoreSchema['edges'];
+}) {
   const [draggedNode, setDraggedNode] = useState<{ node: any, droppedOnEdge: any } | null>(null);
 
-  const onNodeDrag = useCallback((event: any, node: any) => {
-    // Find any edges that the node is being dragged over
-    const edgeElements = document.elementsFromPoint(event.clientX, event.clientY)
-      .filter(el => el.classList.contains('react-flow__edge') ||
-        el.classList.contains('react-flow__edge-path') ||
-        el.classList.contains('react-flow__edge-text'));
+  const  checkNodeEdgeIntersection = useCallback((
+    dragNodeRect: DOMRect,
+    threshold: number = 0,
+  ): IntersectionResult => {
+    // 遍历所有边，检查是否有相交
+    for (const edge of edges) {
+      // 获取边的 DOM 元素
+      const edgeElement = document.querySelector(
+        `[data-id="${edge.id}"]`,
+      ) as SVGPathElement;
 
-    if (!edgeElements.length) {
-      setDraggedNode(null);
-      return;
-    }
-    // Get the closest edge element
-    const edgeElement = edgeElements[0].closest('.react-flow__edge');
-    const distance = Math.sqrt(
-      Math.pow(edgeElements[0].getBoundingClientRect().x, 2) +
-      Math.pow(edgeElements[0].getBoundingClientRect().y, 2),
-    )
+      console.log(edgeElement, 'edgeElement');
+      if (!edgeElement) continue;
 
-    console.log({ distance });
-    if (edgeElement) {
-      const edgeId = edgeElement.getAttribute('data-testid')?.replace('rf__edge-', '');
-      const { edges } = reactFlowStore.getState();
-      const edge = edges.find(e => e.id === edgeId);
-      if (edge) {
-        setDraggedNode({ node, droppedOnEdge: edge });
-        return;
+      // 获取边的边界矩形
+      const edgeRect = edgeElement.getBoundingClientRect();
+
+      // 检查矩形是否相交
+      const isIntersecting = !(
+        dragNodeRect.right < edgeRect.left - threshold ||
+        dragNodeRect.left > edgeRect.right + threshold ||
+        dragNodeRect.bottom < edgeRect.top - threshold ||
+        dragNodeRect.top > edgeRect.bottom + threshold
+      );
+
+      if (isIntersecting) {
+        return {
+          isIntersecting: true,
+          edge,
+          edgeElement: edgeElement,
+        };
       }
     }
 
+    return { isIntersecting: false };
+  }, [edges]);
+
+  const onNodeDrag = useCallback((event: ReactMouseEvent, node: ReactFlowNode) => {
+    // @ts-ignore
+    const nodeRect = event.target!.getBoundingClientRect() as unknown as DOMRect;
+
+    const { edgeElement, edge, isIntersecting } = checkNodeEdgeIntersection(nodeRect);
+
+    if (edgeElement && edge) {
+      const edgeId = edgeElement.getAttribute('data-testid')?.replace('rf__edge-', '');
+      console.log(edgeId, 'edgeId');
+      setDraggedNode({ node, droppedOnEdge: edge });
+      return;
+    }
+
     setDraggedNode(null);
-  }, []);
+  }, [checkNodeEdgeIntersection]);
 
   const onNodeDragStop = useCallback((event: any, node: ReactFlowNode, nodes: ReactFlowNode[]) => {
     if (!draggedNode?.droppedOnEdge) return;

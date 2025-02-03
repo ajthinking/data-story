@@ -184,7 +184,12 @@ const Flow = ({
   });
 
   useEscapeKey(() => setSidebarKey!(''), flowRef);
-  const { draggedNode, onNodeDragStop, onNodeDrag } = useDragNode();
+  const { draggedNode, onNodeDragStop, onNodeDrag } = useDragNode({
+    connect,
+    disconnect,
+    setEdges,
+    edges,
+  });
 
   return (
     <>
@@ -237,7 +242,7 @@ const Flow = ({
           if (onChange) onChange(toDiagram())
         }}
         onNodesDelete={(nodesToDelete) => {
-          console.log('onNodesDelete', nodesToDelete);
+          // console.log('onNodesDelete', nodesToDelete);
 
           nodesToDelete.forEach(node => {
             const store = reactFlowStore.getState();
@@ -247,10 +252,10 @@ const Flow = ({
             const incomingEdges = edges.filter(e => e.target === node.id);
             const outgoingEdges = edges.filter(e => e.source === node.id);
 
-            console.log({
-              incomingEdges,
-              outgoingEdges,
-            });
+            // console.log({
+            //   incomingEdges,
+            //   outgoingEdges,
+            // });
 
             // For each incoming edge, connect it to all outgoing edges
             incomingEdges.forEach(inEdge => {
