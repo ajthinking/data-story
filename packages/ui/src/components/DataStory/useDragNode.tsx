@@ -9,6 +9,40 @@ interface IntersectionResult {
   edgeElement?: SVGPathElement;
 }
 
+function isIntersecting(
+  edgeRect:  DOMRect,
+  nodeRect:  DOMRect,
+  threshold: number = 0.33,
+): boolean {
+  // 首先检查是否有重叠
+  if (
+    edgeRect.left > nodeRect.right ||
+    edgeRect.right < nodeRect.left ||
+    edgeRect.top > nodeRect.bottom ||
+    edgeRect.bottom < nodeRect.top
+  ) {
+    return false;
+  }
+
+  // 计算重叠区域
+  const overlapLeft = Math.max(edgeRect.left, nodeRect.left);
+  const overlapRight = Math.min(edgeRect.right, nodeRect.right);
+  const overlapTop = Math.max(edgeRect.top, nodeRect.top);
+  const overlapBottom = Math.min(edgeRect.bottom, nodeRect.bottom);
+
+  // 计算重叠面积
+  const overlapArea =
+    (overlapRight - overlapLeft) * (overlapBottom - overlapTop);
+
+  // 计算节点总面积
+  const nodeArea = nodeRect.width * nodeRect.height;
+
+  // 计算重叠比例
+  const overlapRatio = overlapArea / nodeArea;
+
+  return overlapRatio > threshold;
+}
+
 export function useDragNode({
   connect,
   disconnect,
@@ -24,30 +58,21 @@ export function useDragNode({
 
   const  checkNodeEdgeIntersection = useCallback((
     dragNodeRect: DOMRect,
-    threshold: number = 0,
   ): IntersectionResult => {
     // 遍历所有边，检查是否有相交
     for (const edge of edges) {
-      // 获取边的 DOM 元素
       const edgeElement = document.querySelector(
         `[data-id="${edge.id}"]`,
       ) as SVGPathElement;
 
-      console.log(edgeElement, 'edgeElement');
       if (!edgeElement) continue;
 
       // 获取边的边界矩形
       const edgeRect = edgeElement.getBoundingClientRect();
 
-      // 检查矩形是否相交
-      const isIntersecting = !(
-        dragNodeRect.right < edgeRect.left - threshold ||
-        dragNodeRect.left > edgeRect.right + threshold ||
-        dragNodeRect.bottom < edgeRect.top - threshold ||
-        dragNodeRect.top > edgeRect.bottom + threshold
-      );
+      const isEdgeCrossingNode =isIntersecting(edgeRect, dragNodeRect);
 
-      if (isIntersecting) {
+      if (isEdgeCrossingNode) {
         return {
           isIntersecting: true,
           edge,
@@ -57,7 +82,7 @@ export function useDragNode({
     }
 
     return { isIntersecting: false };
-  }, [edges]);
+  }, [edges.length]);
 
   const onNodeDrag = useCallback((event: ReactMouseEvent, node: ReactFlowNode) => {
     // @ts-ignore
@@ -96,7 +121,7 @@ export function useDragNode({
 
     disconnect(droppedOnEdge.id)
     setDraggedNode(null);
-  }, [draggedNode, connect, setEdges]);
+  }, [draggedNode, connect, disconnect]);
 
   return {
     onNodeDrag,
