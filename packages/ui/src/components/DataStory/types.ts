@@ -113,6 +113,7 @@ export type StoreSchema = {
   updateEdgeStatus: (edgeStatus: { nodeId: NodeId, status: NodeStatus }[]) => void
   setEdges: (edges: Edge[]) => void;
   connect: OnConnect;
+  disconnect: (linkId: string) => void;
 
   /** Global Params */
   params: Param[],

@@ -47,6 +47,12 @@ export class Diagram {
     return this
   }
 
+  disconnect(linkId: LinkId) {
+    this.links = this.links.filter(l => l.id !== linkId)
+
+    return this
+  }
+
   linksAtInputPortId(id: PortId | undefined): Link[] {
     return this.links.filter(link => link.targetPortId === id)
   }
