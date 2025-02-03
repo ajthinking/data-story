@@ -14,7 +14,7 @@ function isIntersecting(
   nodeRect:  DOMRect,
   threshold: number = 0.33,
 ): boolean {
-  // 首先检查是否有重叠
+  // check if there is any overlap.
   if (
     edgeRect.left > nodeRect.right ||
     edgeRect.right < nodeRect.left ||
@@ -24,20 +24,17 @@ function isIntersecting(
     return false;
   }
 
-  // 计算重叠区域
+  // calculate the overlap area
   const overlapLeft = Math.max(edgeRect.left, nodeRect.left);
   const overlapRight = Math.min(edgeRect.right, nodeRect.right);
   const overlapTop = Math.max(edgeRect.top, nodeRect.top);
   const overlapBottom = Math.min(edgeRect.bottom, nodeRect.bottom);
 
-  // 计算重叠面积
   const overlapArea =
     (overlapRight - overlapLeft) * (overlapBottom - overlapTop);
-
-  // 计算节点总面积
   const nodeArea = nodeRect.width * nodeRect.height;
 
-  // 计算重叠比例
+  // calculate the overlap ratio
   const overlapRatio = overlapArea / nodeArea;
 
   return overlapRatio > threshold;
@@ -46,12 +43,10 @@ function isIntersecting(
 export function useDragNode({
   connect,
   disconnect,
-  setEdges,
   edges,
 }: {
   connect: StoreSchema['connect'];
   disconnect: StoreSchema['disconnect'];
-  setEdges: StoreSchema['setEdges'];
   edges: StoreSchema['edges'];
 }) {
   const [draggedNode, setDraggedNode] = useState<{ node: any, droppedOnEdge: any } | null>(null);
@@ -59,7 +54,6 @@ export function useDragNode({
   const  checkNodeEdgeIntersection = useCallback((
     dragNodeRect: DOMRect,
   ): IntersectionResult => {
-    // 遍历所有边，检查是否有相交
     for (const edge of edges) {
       const edgeElement = document.querySelector(
         `[data-id="${edge.id}"]`,
@@ -67,10 +61,8 @@ export function useDragNode({
 
       if (!edgeElement) continue;
 
-      // 获取边的边界矩形
       const edgeRect = edgeElement.getBoundingClientRect();
-
-      const isEdgeCrossingNode =isIntersecting(edgeRect, dragNodeRect);
+      const isEdgeCrossingNode = isIntersecting(edgeRect, dragNodeRect);
 
       if (isEdgeCrossingNode) {
         return {
@@ -90,9 +82,11 @@ export function useDragNode({
 
     const { edgeElement, edge, isIntersecting } = checkNodeEdgeIntersection(nodeRect);
 
-    if (edgeElement && edge) {
-      const edgeId = edgeElement.getAttribute('data-testid')?.replace('rf__edge-', '');
-      console.log(edgeId, 'edgeId');
+    // The node must have inputs and outputs that can be connected
+    const isConnected = node.data.inputs.length > 0 && node.data.outputs.length > 0;
+
+    if (isConnected && isIntersecting) {
+      edgeElement!.getAttribute('data-testid')?.replace('rf__edge-', '');
       setDraggedNode({ node, droppedOnEdge: edge });
       return;
     }

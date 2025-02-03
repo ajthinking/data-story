@@ -187,7 +187,6 @@ const Flow = ({
   const { draggedNode, onNodeDragStop, onNodeDrag } = useDragNode({
     connect,
     disconnect,
-    setEdges,
     edges,
   });
 
