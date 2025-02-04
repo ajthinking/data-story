@@ -84,6 +84,11 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
               )}
               key={nodeDescription.name}
               onClick={() => doAddNode(nodeDescription)}
+              draggable="true"
+              onDragStart={(event) => {
+                event.dataTransfer.setData('application/reactflow', nodeDescription.name);
+                event.dataTransfer.effectAllowed = 'move';
+              }}
             >
               <div className='text-gray-500 text-xs overflow-hidden'>
                 <span className='text-indigo-500 font-mono'>{nodeDescription.category || 'Core'}::</span>
