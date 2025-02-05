@@ -85,3 +85,4 @@ yarn.lock
 *.orig
 *.swp
 *.swo
+.aider*
