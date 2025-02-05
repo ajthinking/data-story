@@ -29,15 +29,16 @@ export default {
     'type': 'page',
     'theme': {
       'layout': 'raw',
+      'footer': false,
     },
   },
   'playground-node': {
     'title': 'Playground NodeJS',
     'display': 'hidden',
-    'footer': false,
     'type': 'page',
     'theme': {
       'layout': 'raw',
+      'footer': false,
     },
   },
   // 'Visualize': 'Visualize',
