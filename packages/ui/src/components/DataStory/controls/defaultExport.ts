@@ -21,9 +21,8 @@ export const defaultExport = async (diagram: Diagram) => {
     const writable = await handle.createWritable();
     await writable.write(blob);
     await writable.close();
-
-    console.log('文件已成功保存！');
   } catch (error) {
-    console.error('文件保存失败:', error);
+    console.error('the file save failed!', error);
+    throw new Error('the file save failed');
   }
 };

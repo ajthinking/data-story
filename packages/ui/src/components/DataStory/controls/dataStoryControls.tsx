@@ -10,6 +10,8 @@ import { ExportIcon } from '../icons/export';
 import { ImportIcon } from '../icons/importIcon';
 import { defaultImport } from './defaultImport';
 import { defaultExport } from './defaultExport';
+import { eventManager } from '../events/eventManager';
+import { DataStoryEvents } from '../events/dataStoryEventType';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -59,14 +61,39 @@ export function DataStoryControls({
   }), [updateDiagram, toDiagram]);
 
   const handleImport = async () => {
-    const diagram = await defaultImport();
-    updateDiagram(diagram);
+    try {
+      const diagram = await defaultImport();
+      updateDiagram(diagram);
+      eventManager.emit({
+        type: DataStoryEvents.IMPORT_SUCCESS,
+      });
+    } catch (error: any & { message: string }) {
+      eventManager.emit({
+        type: DataStoryEvents.IMPORT_ERROR,
+        payload: {
+          message: error.message,
+        },
+      });
+    }
   }
 
-  const handleExport = () => {
-    const diagram = toDiagram();
-    defaultExport(diagram);
+  const handleExport = async() => {
+    try {
+      const diagram = toDiagram();
+      await defaultExport(diagram);
+      eventManager.emit({
+        type: DataStoryEvents.EXPORT_SUCCESS,
+      });
+    } catch(error: any & { message: string }) {
+      eventManager.emit({
+        type: DataStoryEvents.EXPORT_ERROR,
+        payload: {
+          message: error.message,
+        },
+      });
+    }
   }
+
   const handleSave = useCallback(() => {
     onSave?.(toDiagram());
   }, [onSave]);
