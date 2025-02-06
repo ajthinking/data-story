@@ -128,7 +128,7 @@ export default () => {
             setPoints([])
             run()
           }}
-          hideControls={['save']}
+          hideControls={['save', 'import']}
           client={client}
         />
       </div>

@@ -42,6 +42,23 @@ const initToast = (event: DataStoryEventType) => {
     case DataStoryEvents.SAVE_ERROR:
       console.error(event.payload);
       errorToast('Diagram save failed!');
+      break;
+    case DataStoryEvents.IMPORT_SUCCESS:
+      successToast('Diagram imported successfully!');
+      break;
+    case DataStoryEvents.IMPORT_ERROR:
+      console.error(event.payload);
+      errorToast('Diagram import failed!');
+      break;
+    case DataStoryEvents.EXPORT_SUCCESS:
+      successToast('Diagram exported successfully!');
+      break;
+    case DataStoryEvents.EXPORT_ERROR:
+      console.error(event.payload);
+      errorToast('Diagram export failed!');
+      break;
+    default:
+      break;
   }
 };
 

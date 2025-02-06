@@ -1,11 +1,17 @@
 import { ControlButton, Controls } from '@xyflow/react';
-import { RunIcon } from './icons/runIcon';
-import { AddNodeIcon } from './icons/addNodeIcon';
+import { RunIcon } from '../icons/runIcon';
+import { AddNodeIcon } from '../icons/addNodeIcon';
 import { Diagram } from '@data-story/core';
-import { useStore } from './store/store';
+import { useStore } from '../store/store';
 import React, { useCallback, useMemo } from 'react';
-import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from './types';
-import { SaveIcon } from './icons/saveIcon';
+import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from '../types';
+import { SaveIcon } from '../icons/saveIcon';
+import { ExportIcon } from '../icons/export';
+import { ImportIcon } from '../icons/importIcon';
+import { defaultImport } from './defaultImport';
+import { defaultExport } from './defaultExport';
+import { eventManager } from '../events/eventManager';
+import { DataStoryEvents } from '../events/dataStoryEventType';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -54,6 +60,40 @@ export function DataStoryControls({
     onSave: onSave,
   }), [updateDiagram, toDiagram]);
 
+  const handleImport = async () => {
+    try {
+      const diagram = await defaultImport();
+      updateDiagram(diagram);
+      eventManager.emit({
+        type: DataStoryEvents.IMPORT_SUCCESS,
+      });
+    } catch (error: any & { message: string }) {
+      eventManager.emit({
+        type: DataStoryEvents.IMPORT_ERROR,
+        payload: {
+          message: error.message,
+        },
+      });
+    }
+  }
+
+  const handleExport = async() => {
+    try {
+      const diagram = toDiagram();
+      await defaultExport(diagram);
+      eventManager.emit({
+        type: DataStoryEvents.EXPORT_SUCCESS,
+      });
+    } catch(error: any & { message: string }) {
+      eventManager.emit({
+        type: DataStoryEvents.EXPORT_ERROR,
+        payload: {
+          message: error.message,
+        },
+      });
+    }
+  }
+
   const handleSave = useCallback(() => {
     onSave?.(toDiagram());
   }, [onSave]);
@@ -91,7 +131,24 @@ export function DataStoryControls({
       key="save"
       onClick={handleSave}>
       <SaveIcon/>
-    </ControlButton>].filter((ControlButton) => {
+    </ControlButton>,
+    <ControlButton
+      title="Export"
+      aria-label="export"
+      key="export"
+      onClick={handleExport}
+    >
+      <ExportIcon />
+    </ControlButton>,
+    <ControlButton
+      title="Import"
+      aria-label="import"
+      key="import"
+      onClick={handleImport}
+    >
+      <ImportIcon />
+    </ControlButton>,
+    ].filter((ControlButton) => {
       if (Array.isArray(hideControls)) {
         return !hideControls.includes(ControlButton.props['aria-label']);
       }

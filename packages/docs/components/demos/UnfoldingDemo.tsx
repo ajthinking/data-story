@@ -103,16 +103,16 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) =>
     <div className="w-full h-1/4">
       {part === 'MAIN' && (
         <DataStory
-          hideControls={['save']}
+          hideControls={['save', 'import']}
           onInitialize={({ run }) => run()}
           client={clients.mainClient}
         />
       )}
       {part === 'NESTED_NODE' && (
-        <DataStory hideControls={['save']} client={clients.nestedNodeClient!} />
+        <DataStory hideControls={['save', 'import']} client={clients.nestedNodeClient!} />
       )}
       {part === 'MAIN_UNFOLDED' && (
-        <DataStory hideControls={['save']} client={clients.mainUnfoldedClient!} />
+        <DataStory hideControls={['save', 'import']} client={clients.mainUnfoldedClient!} />
       )}
     </div>
   );

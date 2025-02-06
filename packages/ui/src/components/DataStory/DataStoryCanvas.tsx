@@ -1,9 +1,8 @@
-import { DataStoryControls } from './dataStoryControls';
+import { DataStoryControls } from './controls/dataStoryControls';
 import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import {
   Background,
   BackgroundVariant,
-  Edge,
   EdgeChange,
   NodeChange,
   ReactFlow,
@@ -27,6 +26,7 @@ import { keyManager } from './keyManager';
 import { getNodesWithNewSelection } from './getNodesWithNewSelection';
 import { createDataStoryId, LinkCount, LinkId, NodeStatus, RequestObserverType } from '@data-story/core';
 import { useDragNode } from './useDragNode';
+import { ReactFlowNode } from '../Node/ReactFlowNode';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -71,12 +71,11 @@ const Flow = ({
     connect: state.connect,
     disconnect: state.disconnect,
     onInit: state.onInit,
-    onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
     updateEdgeCounts: state.updateEdgeCounts,
     updateEdgeStatus: state.updateEdgeStatus,
-    setEdges: state.setEdges,
+    updateDiagram: state.updateDiagram,
   });
 
   const {
@@ -87,12 +86,11 @@ const Flow = ({
     onNodesChange,
     onEdgesChange,
     onInit,
-    onRun,
     addNodeFromDescription,
     toDiagram,
     updateEdgeCounts,
     updateEdgeStatus,
-    setEdges,
+    updateDiagram,
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -190,6 +188,33 @@ const Flow = ({
     edges,
   });
 
+  const getOnNodesDelete =  useCallback((nodesToDelete: ReactFlowNode[]) => {
+    nodesToDelete.forEach(node => {
+      const store = reactFlowStore.getState();
+      const { edges } = store;
+
+      // Find all incoming and outgoing edges for this node
+      const incomingEdges = edges.filter(e => e.target === node.id);
+      const outgoingEdges = edges.filter(e => e.source === node.id);
+
+      // For each incoming edge, connect it to all outgoing edges
+      incomingEdges.forEach(inEdge => {
+        outgoingEdges.forEach(outEdge => {
+          // Create a connection that will be handled by the store's connect method
+          connect({
+            source: inEdge.source,
+            sourceHandle: inEdge.sourceHandle ?? null,
+            target: outEdge.target,
+            targetHandle: outEdge.targetHandle ?? null,
+          });
+        });
+      });
+    });
+
+    // focus on the diagram after node deletion to enhance hotkey usage
+    focusOnFlow();
+  }, [connect, focusOnFlow, reactFlowStore]);
+
   return (
     <>
       <style>
@@ -240,39 +265,7 @@ const Flow = ({
           onEdgesChange(changes);
           if (onChange) onChange(toDiagram())
         }}
-        onNodesDelete={(nodesToDelete) => {
-          // console.log('onNodesDelete', nodesToDelete);
-
-          nodesToDelete.forEach(node => {
-            const store = reactFlowStore.getState();
-            const { edges } = store;
-
-            // Find all incoming and outgoing edges for this node
-            const incomingEdges = edges.filter(e => e.target === node.id);
-            const outgoingEdges = edges.filter(e => e.source === node.id);
-
-            // console.log({
-            //   incomingEdges,
-            //   outgoingEdges,
-            // });
-
-            // For each incoming edge, connect it to all outgoing edges
-            incomingEdges.forEach(inEdge => {
-              outgoingEdges.forEach(outEdge => {
-                // Create a connection that will be handled by the store's connect method
-                connect({
-                  source: inEdge.source,
-                  sourceHandle: inEdge.sourceHandle ?? null,
-                  target: outEdge.target,
-                  targetHandle: outEdge.targetHandle ?? null,
-                });
-              });
-            });
-          });
-
-          // focus on the diagram after node deletion to enhance hotkey usage
-          focusOnFlow();
-        }}
+        onNodesDelete={getOnNodesDelete}
         onConnect={connect}
         onInit={(rfInstance: StoreInitOptions['rfInstance']) => {
           onInit({

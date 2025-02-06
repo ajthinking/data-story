@@ -27,7 +27,7 @@ export interface ClientRunParams {
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
-type ControlsType = 'run' | 'addNode' | 'save';
+type ControlsType = 'run' | 'addNode' | 'save' | 'export' | 'import';
 export type DataStoryProps = {
   onNodeDoubleClick?: (node: ReactFlowNode) => void,
   children?: React.ReactNode;

@@ -40,7 +40,7 @@ export default () => {
     <div className="w-full h-1/2">
       <DataStory
         client={client}
-        hideControls={['save']}
+        hideControls={['save', 'import']}
       />
     </div>
   );
