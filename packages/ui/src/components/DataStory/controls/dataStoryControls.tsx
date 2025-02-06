@@ -8,6 +8,8 @@ import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from '../types';
 import { SaveIcon } from '../icons/saveIcon';
 import { ExportIcon } from '../icons/export';
 import { ImportIcon } from '../icons/importIcon';
+import { defaultImport } from './defaultImport';
+import { defaultExport } from './defaultExport';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -31,16 +33,12 @@ export function DataStoryControls({
   setShowAddNode,
   slotComponents,
   onSave,
-  onImport,
-  onExport,
 }: {
   hideControls?: DataStoryProps['hideControls'];
   setShowRun: (showRun: boolean) => void;
   setShowAddNode: (showAddNode: boolean) => void;
   slotComponents?: React.ReactNode[];
   onSave?: DataStoryCanvasProps['onSave'];
-  onImport?:()=>void;
-  onExport?:()=>void;
 }) {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
@@ -60,6 +58,15 @@ export function DataStoryControls({
     onSave: onSave,
   }), [updateDiagram, toDiagram]);
 
+  const handleImport = async () => {
+    const diagram = await defaultImport();
+    updateDiagram(diagram);
+  }
+
+  const handleExport = () => {
+    const diagram = toDiagram();
+    defaultExport(diagram);
+  }
   const handleSave = useCallback(() => {
     onSave?.(toDiagram());
   }, [onSave]);
@@ -102,7 +109,7 @@ export function DataStoryControls({
       title="Export"
       aria-label="export"
       key="export"
-      onClick={onExport}
+      onClick={handleExport}
     >
       <ExportIcon />
     </ControlButton>,
@@ -110,7 +117,7 @@ export function DataStoryControls({
       title="import"
       aria-label="import"
       key="import"
-      onClick={onImport}
+      onClick={handleImport}
     >
       <ImportIcon />
     </ControlButton>,

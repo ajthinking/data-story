@@ -3,7 +3,6 @@ import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useS
 import {
   Background,
   BackgroundVariant,
-  Edge,
   EdgeChange,
   NodeChange,
   ReactFlow,
@@ -28,8 +27,6 @@ import { getNodesWithNewSelection } from './getNodesWithNewSelection';
 import { createDataStoryId, LinkCount, LinkId, NodeStatus, RequestObserverType } from '@data-story/core';
 import { useDragNode } from './useDragNode';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
-import { defaultExport } from './controls/defaultExport';
-import { defaultImport } from './controls/defaultImport';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -74,12 +71,11 @@ const Flow = ({
     connect: state.connect,
     disconnect: state.disconnect,
     onInit: state.onInit,
-    onRun: state.onRun,
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
     updateEdgeCounts: state.updateEdgeCounts,
     updateEdgeStatus: state.updateEdgeStatus,
-    setEdges: state.setEdges,
+    updateDiagram: state.updateDiagram,
   });
 
   const {
@@ -90,12 +86,11 @@ const Flow = ({
     onNodesChange,
     onEdgesChange,
     onInit,
-    onRun,
     addNodeFromDescription,
     toDiagram,
     updateEdgeCounts,
     updateEdgeStatus,
-    setEdges,
+    updateDiagram,
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -220,24 +215,6 @@ const Flow = ({
     focusOnFlow();
   }, [connect, focusOnFlow, reactFlowStore]);
 
-  const onImport = async () => {
-    console.log('import');
-    const diagram = await defaultImport();
-    console.log('diagram', diagram);
-  }
-
-  const onExport = () => {
-    const diagram = toDiagram();
-
-    // If client has custom export implementation
-    // if (client?.onExport) {
-    //   client.onExport(diagram);
-    //   return;
-    // }
-
-    defaultExport(diagram);
-  }
-
   return (
     <>
       <style>
@@ -328,9 +305,6 @@ const Flow = ({
           )}
       >
         <DataStoryControls
-          // todo: onImport and onExport
-          onImport={onImport}
-          onExport={onExport}
           onSave={onSave}
           slotComponents={slotComponents}
           hideControls={hideControls}
