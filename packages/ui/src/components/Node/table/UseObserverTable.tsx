@@ -4,7 +4,6 @@ import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } 
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
-import { useHandleConnections } from '@xyflow/react';
 
 const initialScreenCount: number = 15;
 const tableThrottleMs: number = 100;
@@ -29,13 +28,12 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
-  const tableInputId = `${id}.input`;
-  const connections = useHandleConnections({ type: 'target', id: tableInputId });
+  const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
+  const linkIdsString = JSON.stringify(linkIds);
 
   const loadMore = useLatest(async () => {
     if (pendingRequest.current) return;
 
-    const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
     if (!client?.getDataFromStorage || !linkIds) return;
 
     // Clear offsets if re-running the diagram (no items)
@@ -76,7 +74,6 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   });
 
   useEffect(() => {
-    const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
     if (!client?.observeLinkUpdate || !linkIds) return;
 
     const tableUpdate: ObserveLinkUpdate = {
@@ -95,8 +92,8 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     return () => {
       subscription?.unsubscribe();
     };
-    // connections.length is 0 means the node is not connected
-  }, [client, connections.length, id, loadMore, toDiagram]);
+    // use linkIdsString replace linkIds to prevent infinite loop
+  }, [client, id, linkIdsString, loadMore, toDiagram]);
 
   useLayoutEffect(() => {
     const currentRef = parentRef.current;

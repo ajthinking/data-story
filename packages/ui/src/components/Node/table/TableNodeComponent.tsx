@@ -149,8 +149,9 @@ const TableNodeComponent = ({ id, data }: {
       return '40px';
     }
     if (rows.length <= 9) {
-      return (rows.length + 1) * FIXED_HEIGHT + 14 + 'px';
+      return (rows.length + 1) * FIXED_HEIGHT + 'px';
     }
+    // The 14px extra height is determined through testing to ensure that the table scrollbar does not obscure the height of the table body when it appears.
     return 11 * FIXED_HEIGHT + 14 + 'px';
   }, [showNoData, rows.length]);
 
