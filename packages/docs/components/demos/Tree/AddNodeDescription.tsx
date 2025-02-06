@@ -36,7 +36,7 @@ export default () => {
       <DataStory
         client={client}
         hideActivityBar={true}
-        hideControls={['save']}
+        hideControls={['save', 'import']}
       />
     </div>
   );

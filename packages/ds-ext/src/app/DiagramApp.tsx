@@ -24,7 +24,7 @@ export default function DiagramApp() {
         key={'abc'}
         onChange={handleChange}
         onDrop={onDrop}
-        hideControls={['save']}
+        hideControls={['save', 'import']}
       />
       <VsCodeToast postMessage={window.vscode.postMessage} />
     </div>

@@ -141,7 +141,7 @@ export function DataStoryControls({
       <ExportIcon />
     </ControlButton>,
     <ControlButton
-      title="import"
+      title="Import"
       aria-label="import"
       key="import"
       onClick={handleImport}
