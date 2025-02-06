@@ -1,11 +1,13 @@
 import { ControlButton, Controls } from '@xyflow/react';
-import { RunIcon } from './icons/runIcon';
-import { AddNodeIcon } from './icons/addNodeIcon';
+import { RunIcon } from '../icons/runIcon';
+import { AddNodeIcon } from '../icons/addNodeIcon';
 import { Diagram } from '@data-story/core';
-import { useStore } from './store/store';
+import { useStore } from '../store/store';
 import React, { useCallback, useMemo } from 'react';
-import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from './types';
-import { SaveIcon } from './icons/saveIcon';
+import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from '../types';
+import { SaveIcon } from '../icons/saveIcon';
+import { ExportIcon } from '../icons/export';
+import { ImportIcon } from '../icons/importIcon';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -29,12 +31,16 @@ export function DataStoryControls({
   setShowAddNode,
   slotComponents,
   onSave,
+  onImport,
+  onExport,
 }: {
   hideControls?: DataStoryProps['hideControls'];
   setShowRun: (showRun: boolean) => void;
   setShowAddNode: (showAddNode: boolean) => void;
   slotComponents?: React.ReactNode[];
   onSave?: DataStoryCanvasProps['onSave'];
+  onImport?:()=>void;
+  onExport?:()=>void;
 }) {
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
@@ -91,7 +97,24 @@ export function DataStoryControls({
       key="save"
       onClick={handleSave}>
       <SaveIcon/>
-    </ControlButton>].filter((ControlButton) => {
+    </ControlButton>,
+    <ControlButton
+      title="Export"
+      aria-label="export"
+      key="export"
+      onClick={onExport}
+    >
+      <ExportIcon />
+    </ControlButton>,
+    <ControlButton
+      title="import"
+      aria-label="import"
+      key="import"
+      onClick={onImport}
+    >
+      <ImportIcon />
+    </ControlButton>,
+    ].filter((ControlButton) => {
       if (Array.isArray(hideControls)) {
         return !hideControls.includes(ControlButton.props['aria-label']);
       }
