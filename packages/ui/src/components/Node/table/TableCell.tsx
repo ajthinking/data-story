@@ -27,7 +27,7 @@ const formatTooltipContent = (content: unknown) => {
   }
 }
 
-export function TableCell(props: { tableRef: React.RefObject<HTMLTableElement>, content?: unknown }): JSX.Element {
+export function TableCell(props: { tableRef: React.RefObject<HTMLTableElement | null>, content?: unknown }) {
   const { content = '', tableRef } = props;
   const [showTooltip, setShowTooltip] = useState(false);
 
