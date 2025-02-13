@@ -9,6 +9,9 @@ export class DiagramDocument implements vscode.CustomDocument {
     return new DiagramDocument(uri, fileData);
   }
 
+  private _onDidChange = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
+  readonly onDidChange = this._onDidChange.event;
+
   private constructor(
     public readonly uri: vscode.Uri,
     private documentData: Uint8Array,
@@ -19,7 +22,7 @@ export class DiagramDocument implements vscode.CustomDocument {
   }
 
   dispose(): void {
-    // Clean up resources here if needed
+    this._onDidChange.dispose();
   }
 
   // Save the document to the file system
@@ -50,5 +53,10 @@ export class DiagramDocument implements vscode.CustomDocument {
   // A method to update the document data
   update(newData: Uint8Array) {
     this.documentData = newData;
+    this._onDidChange.fire({
+      document: this,
+      undo: () => {}, // TODO: Implement proper undo if needed
+      redo: () => {},  // TODO: Implement proper redo if needed
+    });
   }
 }

@@ -21,8 +21,8 @@ import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
-  private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
-  public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
+  public diagramDocument: DiagramDocument | null = null;
+  public readonly onDidChangeCustomDocument = this.diagramDocument?.onDidChange!;
   private inputObserverController!: InputObserverController;
   private observerStorage!: ObserverStorage;
   private config: DataStoryConfig;
@@ -58,6 +58,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     this.inputObserverController = new InputObserverController(this.observerStorage);
   }
 
+  /**
+   * openCustomDocument is called when the first time an editor for a given resource is opened.
+   * When multiple instances of the editor are opened or closed, the OpenCustomDocument method won't be re-invoked.
+   */
   async openCustomDocument(
     uri: vscode.Uri,
     _openContext: vscode.CustomDocumentOpenContext,
@@ -66,7 +70,9 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     // Initialize storage with diagram ID from the file name
     const diagramId = path.basename(uri.fsPath);
     await this.initializeStorage(diagramId);
-    return DiagramDocument.create(uri);
+
+    this.diagramDocument = await DiagramDocument.create(uri);
+    return this.diagramDocument;
   }
 
   resolveCustomEditor(
