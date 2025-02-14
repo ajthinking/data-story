@@ -41,7 +41,7 @@
           "group": "navigation"
         }
       ],
-      "editor/context": [
+      "view/title": [
         {
           "command": "ds-ext.showDiagramPreview",
           "when": "resourceLangId == 'diagramJson'",
@@ -57,20 +57,12 @@
           "Data Story"
         ],
         "extensions": [
-          ".diagram.json",
           ".ds"
         ],
         "filenamePatterns": [
-          "*.diagram.json",
           "*.ds"
         ],
         "configuration": "./language-configuration.json"
-      },
-      {
-        "id": "json",
-        "extensions": [".diagram.json"],
-        "filenames": ["special.diagram.json"],
-        "filenamePatterns": ["*.diagram.json"]
       }
     ],
     "customEditors": [
@@ -80,10 +72,6 @@
         "language": "diagramJson",
         "priority": "default",
         "selector": [
-          {
-            "filenamePattern": "*.diagram.json",
-            "language": "diagramJson"
-          },
           {
             "filenamePattern": "*.ds",
             "language": "diagramJson"

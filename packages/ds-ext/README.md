@@ -5,4 +5,4 @@
 * In "Run and Debug" tab, click "Run Extension"
 * This opens a new instance of VS Code
 * With the new instance, open a directory
-* Create a *.diagram.json file (must have a content)
+* Create a *.ds file (must have a content)
