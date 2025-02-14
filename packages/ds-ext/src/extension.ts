@@ -4,9 +4,19 @@ import { createDemosDirectory } from './commands/createDemosDirectory';
 import path from 'path';
 import * as fs from 'fs';
 import { JsonReadonlyProvider } from './JsonReadonlyProvider';
+import { DiagramDocument } from './DiagramDocument';
 
 let diagramEditorProvider: DiagramEditorProvider;
 let jsonReadonlyProvider: JsonReadonlyProvider | undefined;
+
+function createReadonlyUri(args: vscode.Uri): vscode.Uri {
+  const fileName = path.basename(args.path, '.json');
+  const readOnlyUri = vscode.Uri.parse(
+    `json-readonly:Preview_${fileName}.json`,
+  );
+
+  return readOnlyUri;
+}
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand('ds-ext.createDemos', async () => {
@@ -14,26 +24,41 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   diagramEditorProvider = new DiagramEditorProvider(context);
-  vscode.window.showInformationMessage('Congratulations, your extension "ds-ext" is now active!');
   jsonReadonlyProvider = new JsonReadonlyProvider();
   context.subscriptions.push(
     vscode.workspace.registerTextDocumentContentProvider('json-readonly', jsonReadonlyProvider),
   );
-  // 注册命令（保持与原逻辑一致）
+
+  const registerDiagramChangeAndCloseListeners = (diagramDocument: DiagramDocument, readOnlyUri: vscode.Uri): void => {
+    const changeSubscription = diagramDocument.onDidChange(async(diagramInfo) => {
+      const diagramJson = JSON.parse(new TextDecoder().decode(diagramInfo.document.data));
+
+      // update the content of the read-only document
+      jsonReadonlyProvider!.updateContent(
+        readOnlyUri,
+        JSON.stringify(diagramJson, null, 2),
+      );
+    });
+
+    // stop listening when the document is closed
+    const closeSubscription = vscode.workspace.onDidCloseTextDocument(closedDoc => {
+      if (closedDoc.uri.toString() === readOnlyUri.toString()) {
+        changeSubscription.dispose();
+        closeSubscription .dispose();
+      }
+    });
+    context.subscriptions.push(changeSubscription, closeSubscription );
+  };
+
   vscode.commands.registerCommand('ds-ext.showDiagramPreview', async (args: vscode.Uri) => {
     const diagramDocument = diagramEditorProvider.provideDiagramContent(args);
     const diagramData = diagramDocument?.data;
     const dataString = JSON.stringify(JSON.parse(new TextDecoder().decode(diagramData)), null, 2);
+    const readOnlyUri = createReadonlyUri(args);
 
-    // 生成唯一预览 URI（保持原逻辑）
-    const readOnlyUri = vscode.Uri.parse(
-      `json-readonly:Preview-${args.path}.json`,
-    );
-
-    // 更新 Provider 内容
     jsonReadonlyProvider!.updateContent(readOnlyUri, dataString);
 
-    // 打开文档并显示（保持原逻辑）
+    // Open the document and show readonly content
     const doc = await vscode.workspace.openTextDocument(readOnlyUri);
     await vscode.languages.setTextDocumentLanguage(doc, 'json');
     const editor = await vscode.window.showTextDocument(doc, {
@@ -42,28 +67,16 @@ export function activate(context: vscode.ExtensionContext) {
       preserveFocus: true,
     });
 
-    // 监听图表变化并更新内容（改进版本）
     if (diagramDocument) {
-      const changeSub = diagramDocument.onDidChange(async (diagramInfo) => {
-        // 重新加载最新内容
-        const diagramData = diagramInfo.document.data;
-        const diagramJson = JSON.parse(new TextDecoder().decode(diagramData));
-
-        // 增量更新而非全量替换
-        jsonReadonlyProvider!.updateContent(
-          readOnlyUri,
-          JSON.stringify(diagramJson, null, 2),
-        );
-      });
-
-      context.subscriptions.push(changeSub);
+      // Listen for diagram changes and update content and stop listening when the document is closed
+      registerDiagramChangeAndCloseListeners(diagramDocument, readOnlyUri);
     }
   });
 
   const outputChannel = vscode.window.createOutputChannel('DS-Ext');
   outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');
   outputChannel.appendLine(`ds-ext is installed at ${context.extensionPath}`);
-  outputChannel.show();
+  // outputChannel.show();
 
   context.subscriptions.push(
     vscode.window.registerCustomEditorProvider(
@@ -100,4 +113,5 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate(context: any) {
   diagramEditorProvider.dispose();
+  jsonReadonlyProvider?.dispose();
 }

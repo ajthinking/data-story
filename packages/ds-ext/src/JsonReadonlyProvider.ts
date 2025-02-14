@@ -15,4 +15,9 @@ export class JsonReadonlyProvider implements vscode.TextDocumentContentProvider 
   provideTextDocumentContent(uri: vscode.Uri): string {
     return this.contentMap.get(uri.toString()) || '';
   }
+
+  dispose() {
+    this.contentMap.clear();
+    this.onDidChangeEmitter.dispose();
+  }
 }
