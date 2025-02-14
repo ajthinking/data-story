@@ -3,8 +3,10 @@ import { DiagramEditorProvider } from './DiagramEditorProvider';
 import { createDemosDirectory } from './commands/createDemosDirectory';
 import path from 'path';
 import * as fs from 'fs';
+import { JsonReadonlyProvider } from './JsonReadonlyProvider';
 
 let diagramEditorProvider: DiagramEditorProvider;
+let jsonReadonlyProvider: JsonReadonlyProvider | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
   let disposable = vscode.commands.registerCommand('ds-ext.createDemos', async () => {
@@ -12,46 +14,48 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   diagramEditorProvider = new DiagramEditorProvider(context);
-
+  vscode.window.showInformationMessage('Congratulations, your extension "ds-ext" is now active!');
+  jsonReadonlyProvider = new JsonReadonlyProvider();
+  context.subscriptions.push(
+    vscode.workspace.registerTextDocumentContentProvider('json-readonly', jsonReadonlyProvider),
+  );
+  // 注册命令（保持与原逻辑一致）
   vscode.commands.registerCommand('ds-ext.showDiagramPreview', async (args: vscode.Uri) => {
-    const content = await vscode.workspace.fs.readFile(args);
-    const decodedContent = JSON.parse(new TextDecoder().decode(content));
+    const diagramDocument = diagramEditorProvider.provideDiagramContent(args);
+    const diagramData = diagramDocument?.data;
+    const dataString = JSON.stringify(JSON.parse(new TextDecoder().decode(diagramData)), null, 2);
 
-    console.log('[DataStory]: showDiagramPreview', decodedContent);
-    const contentProvider = new class implements vscode.TextDocumentContentProvider {
-      onDidChangeEmitter = new vscode.EventEmitter<vscode.Uri>();
-      onDidChange = this.onDidChangeEmitter.event;
-      provideTextDocumentContent (uri: vscode.Uri): string {
-        const result = new TextDecoder().decode(content);
-        console.log('[DataStory]: provideTextDocumentContent111', JSON.parse(result));
-        return JSON.stringify(JSON.parse(result), null, 2);
-      }
-    };
-
-    // 注册内容提供程序（全局唯一）
-    vscode.workspace.registerTextDocumentContentProvider('json-readonly', contentProvider);
-
-    const getOriginalPath = args.path;
+    // 生成唯一预览 URI（保持原逻辑）
     const readOnlyUri = vscode.Uri.parse(
-      `json-readonly:Preview-${getOriginalPath}.json`,
+      `json-readonly:Preview-${args.path}.json`,
     );
-    // 展示文档最终版本
+
+    // 更新 Provider 内容
+    jsonReadonlyProvider!.updateContent(readOnlyUri, dataString);
+
+    // 打开文档并显示（保持原逻辑）
     const doc = await vscode.workspace.openTextDocument(readOnlyUri);
     await vscode.languages.setTextDocumentLanguage(doc, 'json');
-
-    // 在第二列显示（强制使用原生JSON模式）
     const editor = await vscode.window.showTextDocument(doc, {
-      viewColumn: vscode.ViewColumn.Two,
+      viewColumn: vscode.ViewColumn.Beside,
       preview: true,
       preserveFocus: true,
     });
 
-    // Listen for diagram document changes and update preview
-    if (diagramEditorProvider.diagramDocument) {
-      const changeSub = diagramEditorProvider.diagramDocument.onDidChange(() => {
-        console.count('[DataStory]: provideTextDocumentContent111');
-        contentProvider.onDidChangeEmitter.fire(readOnlyUri);
+    // 监听图表变化并更新内容（改进版本）
+    if (diagramDocument) {
+      const changeSub = diagramDocument.onDidChange(async (diagramInfo) => {
+        // 重新加载最新内容
+        const diagramData = diagramInfo.document.data;
+        const diagramJson = JSON.parse(new TextDecoder().decode(diagramData));
+
+        // 增量更新而非全量替换
+        jsonReadonlyProvider!.updateContent(
+          readOnlyUri,
+          JSON.stringify(diagramJson, null, 2),
+        );
       });
+
       context.subscriptions.push(changeSub);
     }
   });

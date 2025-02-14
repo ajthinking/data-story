@@ -21,11 +21,11 @@ import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
-  public diagramDocument: DiagramDocument | null = null;
-  public readonly onDidChangeCustomDocument = this.diagramDocument?.onDidChange!;
+  public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
   private inputObserverController!: InputObserverController;
   private observerStorage!: ObserverStorage;
   private config: DataStoryConfig;
+  private contentMap = new Map<string, DiagramDocument>();
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.config = loadConfig(this.context);
@@ -71,8 +71,9 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     const diagramId = path.basename(uri.fsPath);
     await this.initializeStorage(diagramId);
 
-    this.diagramDocument = await DiagramDocument.create(uri);
-    return this.diagramDocument;
+    const diagramDocument = await DiagramDocument.create(uri);
+    this.contentMap.set(uri.toString(), diagramDocument);
+    return diagramDocument;
   }
 
   resolveCustomEditor(
@@ -158,6 +159,14 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     `;
   }
 
+  provideDiagramContent(uri: vscode.Uri): DiagramDocument {
+    const document = this.contentMap.get(uri.toString());
+    if (!document) {
+      throw new Error('Could not find document');
+    }
+
+    return document;
+  }
   // Save changes to the document
   saveCustomDocument(document: DiagramDocument, cancellation: vscode.CancellationToken): Thenable<void> {
     return document.save();
