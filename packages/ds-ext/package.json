@@ -40,6 +40,13 @@
           "when": "resourceLangId == 'diagramJson'",
           "group": "navigation"
         }
+      ],
+      "editor/context": [
+        {
+          "command": "ds-ext.showDiagramPreview",
+          "when": "resourceLangId == 'diagramJson'",
+          "group": "navigation"
+        }
       ]
     },
     "languages": [
@@ -53,19 +60,33 @@
           ".diagram.json",
           ".ds"
         ],
+        "filenamePatterns": [
+          "*.diagram.json",
+          "*.ds"
+        ],
         "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "json",
+        "extensions": [".diagram.json"],
+        "filenames": ["special.diagram.json"],
+        "filenamePatterns": ["*.diagram.json"]
       }
     ],
     "customEditors": [
       {
         "viewType": "ds-ext.diagramEditor",
         "displayName": "Diagram Editor",
+        "language": "diagramJson",
+        "priority": "default",
         "selector": [
           {
-            "filenamePattern": "*.diagram.json"
+            "filenamePattern": "*.diagram.json",
+            "language": "diagramJson"
           },
           {
-            "filenamePattern": "*.ds"
+            "filenamePattern": "*.ds",
+            "language": "diagramJson"
           }
         ]
       }
