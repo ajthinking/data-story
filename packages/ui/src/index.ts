@@ -16,3 +16,4 @@ export { processWaitingResponse, waitForResponse } from './components/DataStory/
 export { createSocketClient } from './components/DataStory/clients/createSocketClient';
 export { createTransport, type TransportConfig } from './components/DataStory/clients/createTransport';
 export { WorkspaceApiClient } from './components/DataStory/clients/WorkspaceApiClient';
+export * from './components/DataStory/controls/index';
