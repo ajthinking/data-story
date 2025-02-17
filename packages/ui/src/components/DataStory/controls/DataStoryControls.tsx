@@ -1,15 +1,8 @@
-import { ControlButton, Controls } from '@xyflow/react';
-import { RunIcon } from '../icons/runIcon';
-import { AddNodeIcon } from '../icons/addNodeIcon';
+import { Controls } from '@xyflow/react';
 import { Diagram } from '@data-story/core';
 import { useStore } from '../store/store';
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from '../types';
-import { SaveIcon } from '../icons/saveIcon';
-import { ExportIcon } from '../icons/export';
-import { ImportIcon } from '../icons/importIcon';
-import { eventManager } from '../events/eventManager';
-import { DataStoryEvents } from '../events/dataStoryEventType';
 import { RunControl } from './RunControl';
 import { AddNodeControl } from './AddNodeControl';
 import { SaveControl } from './SaveControl';
@@ -66,8 +59,9 @@ export function DataStoryControls({
   if (hideControls === true) return null;
 
   return (
+
     <DataStoryControlsContext.Provider value={context}>
-      <Controls>
+      <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
         {[
           RunControl,
           AddNodeControl,
@@ -76,12 +70,11 @@ export function DataStoryControls({
           ImportControl,
         ].filter((Component) => {
           if (Array.isArray(hideControls)) {
-            // @ts-ignore todo
             return !hideControls.includes(Component.defaultProps?.ariaLabel);
           }
           return true;
         }).map((Component, index) => (
-          <Component key={index} setShowAddNode={setShowAddNode} />
+          <Component key={index} setShowAddNode={setShowAddNode}/>
         ))}
 
         {(slotComponents || []).map((component, index) => (

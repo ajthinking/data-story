@@ -4,6 +4,7 @@ import { useDataStoryControls } from './DataStoryControls';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Diagram } from '@data-story/core';
+import { ControlsType } from '../types';
 
 const defaultImport = (): Promise<Diagram> => {
   return new Promise((resolve, reject) => {
@@ -83,5 +84,5 @@ export const ImportControl = () => {
 };
 
 ImportControl.defaultProps = {
-  ariaLabel: 'import',
+  ariaLabel: 'import' as ControlsType,
 };

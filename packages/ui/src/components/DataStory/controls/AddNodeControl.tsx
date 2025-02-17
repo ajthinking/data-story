@@ -1,5 +1,6 @@
 import { ControlButton } from '@xyflow/react';
 import { AddNodeIcon } from '../icons/addNodeIcon';
+import { ControlsType } from '../types';
 
 export const AddNodeControl = ({ setShowAddNode }: { setShowAddNode: (show: boolean) => void }) => (
   <ControlButton
@@ -13,5 +14,5 @@ export const AddNodeControl = ({ setShowAddNode }: { setShowAddNode: (show: bool
 );
 
 AddNodeControl.defaultProps = {
-  ariaLabel: 'addNode'
+  ariaLabel: 'addNode' as ControlsType,
 };
