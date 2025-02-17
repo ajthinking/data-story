@@ -13,6 +13,7 @@ export type DataStoryControlsType = {
   getDiagram: () => Diagram;
   updateDiagram: (diagram: Diagram) => void;
   onSave?: DataStoryCanvasProps['onSave'];
+  setShowAddNode: (showAddNode: boolean) => void;
 };
 
 const DataStoryControlsContext = React.createContext<DataStoryControlsType>(null as unknown as DataStoryControlsType);
@@ -33,7 +34,7 @@ export function DataStoryControls({
   onSave,
 }: {
   hideControls?: DataStoryProps['hideControls'];
-  setShowRun: (showRun: boolean) => void;
+  setShowRun?: (showRun: boolean) => void;
   setShowAddNode: (showAddNode: boolean) => void;
   slotComponents?: React.ReactNode[];
   onSave?: DataStoryCanvasProps['onSave'];
@@ -54,7 +55,8 @@ export function DataStoryControls({
       updateDiagram(diagram);
     },
     onSave: onSave,
-  }), [updateDiagram, toDiagram]);
+    setShowAddNode: setShowAddNode,
+  }), [onSave, setShowAddNode, toDiagram, updateDiagram]);
 
   if (hideControls === true) return null;
 
@@ -74,7 +76,7 @@ export function DataStoryControls({
           }
           return true;
         }).map((Component, index) => (
-          <Component key={index} setShowAddNode={setShowAddNode}/>
+          <Component key={index}/>
         ))}
 
         {(slotComponents || []).map((component, index) => (
