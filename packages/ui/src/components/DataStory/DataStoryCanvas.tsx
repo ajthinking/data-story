@@ -1,4 +1,4 @@
-import { DataStoryControls } from './controls/dataStoryControls';
+import { DataStoryControls } from './controls/DataStoryControls';
 import React, { forwardRef, useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import {
   Background,

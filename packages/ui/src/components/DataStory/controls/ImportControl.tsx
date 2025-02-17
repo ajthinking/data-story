@@ -1,6 +1,11 @@
+import { ControlButton } from '@xyflow/react';
+import { ImportIcon } from '../icons/importIcon';
+import { useDataStoryControls } from './DataStoryControls';
+import { eventManager } from '../events/eventManager';
+import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Diagram } from '@data-story/core';
 
-export const defaultImport = (): Promise<Diagram> => {
+const defaultImport = (): Promise<Diagram> => {
   return new Promise((resolve, reject) => {
     // create an input element
     const input = document.createElement('input');
@@ -48,4 +53,35 @@ export const defaultImport = (): Promise<Diagram> => {
     document.body.appendChild(input);
     input.click();
   });
+};
+
+export const ImportControl = () => {
+  const { updateDiagram } = useDataStoryControls();
+
+  const handleImport = async () => {
+    try {
+      const diagram = await defaultImport();
+      updateDiagram(diagram);
+      eventManager.emit({ type: DataStoryEvents.IMPORT_SUCCESS });
+    } catch (error: any) {
+      eventManager.emit({
+        type: DataStoryEvents.IMPORT_ERROR,
+        payload: { message: error.message },
+      });
+    }
+  };
+
+  return (
+    <ControlButton
+      title="Import"
+      aria-label="import"
+      onClick={handleImport}
+    >
+      <ImportIcon />
+    </ControlButton>
+  );
+};
+
+ImportControl.defaultProps = {
+  ariaLabel: 'import',
 };
