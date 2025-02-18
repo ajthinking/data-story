@@ -1,6 +1,6 @@
 import { core, createDataStoryId, ObserveLinkItems, nodes, RequestObserverType, ItemValue, ObserveLinkCounts } from '@data-story/core';
 import React, { useEffect, useMemo } from 'react';
-import { DataStory } from '@data-story/ui';
+import { AddNodeControl, DataStory, ExportControl, RunControl } from '@data-story/ui';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -128,7 +128,7 @@ export default () => {
             setPoints([])
             run()
           }}
-          hideControls={['save']}
+          controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]}
           client={client}
         />
       </div>

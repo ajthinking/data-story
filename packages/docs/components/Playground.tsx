@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { createJSClient, createSocketClient, DataStory, WorkspaceApiClientImplement } from '@data-story/ui';
+import {
+  createJSClient,
+  createSocketClient,
+  DataStory,
+  WorkspaceApiClientImplement,
+  ExportControl,
+  RunControl,
+  ImportControl,
+  SaveControl, AddNodeControl,
+} from '@data-story/ui';
 import { useRequestApp } from './hooks/useRequestApp';
 import { ToastComponent } from './Toast';
 
@@ -30,6 +39,7 @@ function Playground({ mode }: { mode?: 'js' | 'node' }) {
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         client={client}
+        controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>, <ExportControl/>, <ImportControl/>]}
       >
         <ToastComponent/>
       </DataStory>

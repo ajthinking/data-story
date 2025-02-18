@@ -8,7 +8,6 @@ export default () => {
   const { app, loading: appLoading } = useRequestApp();
 
   const { data: diagram, loading: diagramLoading } = useRequest(async() => {
-    console.log('Dhe fuck?')
     await core.boot();
     const diagram = core.getDiagramBuilder()
       .add('Signal', { label: 'Read',period: 20, count: 100000 })
@@ -56,7 +55,6 @@ export default () => {
             options.run()
           })
         }}
-        hideControls={true}
         hideActivityBar={true}
       />
     </div>

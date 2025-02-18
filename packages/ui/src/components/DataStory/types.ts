@@ -27,14 +27,13 @@ export interface ClientRunParams {
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
-type ControlsType = 'run' | 'addNode' | 'save';
+export type ControlsType = 'run' | 'addNode' | 'save' | 'export' | 'import';
 export type DataStoryProps = {
   onNodeDoubleClick?: (node: ReactFlowNode) => void,
   children?: React.ReactNode;
   client: WorkspaceApiClientImplement,
   initDiagram?: Diagram | null;
-  hideControls?: boolean | ControlsType[];
-  slotComponents?: React.ReactNode[];
+  controls?: React.ReactNode[];
   onInitialize?: DataStoryCallback;
   hideSidebar?: boolean;
   onDrop?: (event: any, addNodeFromDescription: any) => void;

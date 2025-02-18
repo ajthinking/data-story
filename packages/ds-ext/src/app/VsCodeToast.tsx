@@ -33,6 +33,25 @@ export function VsCodeToast({ postMessage }: {
         console.error(event.payload);
         info.message = 'Diagram save failed!';
         info.status = 'error';
+        break;
+      case DataStoryEvents.IMPORT_SUCCESS:
+        info.message = 'Diagram imported successfully!';
+        break;
+      case DataStoryEvents.IMPORT_ERROR:
+        console.error(event.payload);
+        info.message = 'Diagram import failed!';
+        info.status = 'error';
+        break;
+      case DataStoryEvents.EXPORT_SUCCESS:
+        info.message = 'Diagram exported successfully!';
+        break;
+      case DataStoryEvents.EXPORT_ERROR:
+        console.error(event.payload);
+        info.message = 'Diagram export failed!';
+        info.status = 'error';
+        break;
+      default:
+        break;
     }
     postMessage(info);
   });

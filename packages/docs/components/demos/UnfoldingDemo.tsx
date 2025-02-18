@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { DataStory } from '@data-story/ui';
+import { AddNodeControl, DataStory, ExportControl, RunControl } from '@data-story/ui';
 import { multiline, str, UnfoldedDiagramFactory } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
@@ -103,16 +103,16 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) =>
     <div className="w-full h-1/4">
       {part === 'MAIN' && (
         <DataStory
-          hideControls={['save']}
+          controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]}
           onInitialize={({ run }) => run()}
           client={clients.mainClient}
         />
       )}
       {part === 'NESTED_NODE' && (
-        <DataStory hideControls={['save']} client={clients.nestedNodeClient!} />
+        <DataStory controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]} client={clients.nestedNodeClient!} />
       )}
       {part === 'MAIN_UNFOLDED' && (
-        <DataStory hideControls={['save']} client={clients.mainUnfoldedClient!} />
+        <DataStory controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]} client={clients.mainUnfoldedClient!} />
       )}
     </div>
   );
