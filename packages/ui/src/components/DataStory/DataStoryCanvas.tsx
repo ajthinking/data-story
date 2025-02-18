@@ -27,6 +27,7 @@ import { getNodesWithNewSelection } from './getNodesWithNewSelection';
 import { createDataStoryId, LinkCount, LinkId, NodeStatus, RequestObserverType } from '@data-story/core';
 import { useDragNode } from './useDragNode';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
+import useCopyPaste from './controls/useCopyPaste';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -53,7 +54,7 @@ export const DataStoryCanvas = React.memo(DataStoryCanvasComponent);
 
 const Flow = ({
   initDiagram,
-  controls,
+  controls = [],
   onInitialize,
   setSidebarKey,
   onSave,
@@ -187,7 +188,7 @@ const Flow = ({
     edges,
   });
 
-  const getOnNodesDelete =  useCallback((nodesToDelete: ReactFlowNode[]) => {
+  const getOnNodesDelete = useCallback((nodesToDelete: ReactFlowNode[]) => {
     nodesToDelete.forEach(node => {
       const store = reactFlowStore.getState();
       const { edges } = store;
@@ -213,6 +214,11 @@ const Flow = ({
     // focus on the diagram after node deletion to enhance hotkey usage
     focusOnFlow();
   }, [connect, focusOnFlow, reactFlowStore]);
+
+  const { cut, copy, paste, bufferedNodes } = useCopyPaste();
+
+  const canCopy = nodes.some(({ selected }) => selected);
+  const canPaste = bufferedNodes.length > 0;
 
   return (
     <>
@@ -258,7 +264,7 @@ const Flow = ({
         }}
         onEdgeDoubleClick={(event, edge) => {
           if (!client) return;
-          if(client.onEdgeDoubleClick) client.onEdgeDoubleClick(edge.id);
+          if (client.onEdgeDoubleClick) client.onEdgeDoubleClick(edge.id);
         }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);
@@ -305,7 +311,27 @@ const Flow = ({
       >
         <DataStoryControls
           onSave={onSave}
-          controls={controls}
+          controls={[
+            ...controls,
+            <button
+              onClick={() => cut()}
+              disabled={!canCopy}
+            >
+              cut
+            </button>,
+            <button
+              onClick={() => copy()}
+              disabled={!canCopy}
+            >
+              copy
+            </button>,
+            <button
+              onClick={() => paste({ x: 0, y: 0 })}
+              disabled={!canPaste}
+            >
+              paste
+            </button>,
+          ]}
           setShowAddNode={setShowAddNode}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
