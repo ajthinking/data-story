@@ -18,7 +18,6 @@ export default ({ nodeName }: { nodeName: string }) => {
       <DataStory
         client={client}
         initDiagram={diagram}
-        controls={[]}
       />
     </div>
   </div>

@@ -16,7 +16,6 @@ export default () => {
       <DataStory
         client={client}
         onInitialize={(options) => options.run()}
-        controls={[]}
       />
     </div>
   );

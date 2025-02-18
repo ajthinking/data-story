@@ -29,7 +29,6 @@ export default () => {
         client={client}
         initDiagram={diagram}
         onInitialize={(options) => options.run()}
-        controls={[]}
       />
     </div>
   );
