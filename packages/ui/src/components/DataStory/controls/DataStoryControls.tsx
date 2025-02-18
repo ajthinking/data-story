@@ -27,16 +27,12 @@ export function useDataStoryControls() {
 }
 
 export function DataStoryControls({
-  hideControls = false,
-  setShowRun,
-  setShowAddNode,
-  slotComponents,
-  onSave,
-}: {
-  hideControls?: DataStoryProps['hideControls'];
-  setShowRun?: (showRun: boolean) => void;
+                                    setShowAddNode,
+                                    controls = [],
+                                    onSave,
+                                  }: {
   setShowAddNode: (showAddNode: boolean) => void;
-  slotComponents?: React.ReactNode[];
+  controls?: React.ReactNode[];
   onSave?: DataStoryCanvasProps['onSave'];
 }) {
   const selector = (state: StoreSchema) => ({
@@ -58,10 +54,7 @@ export function DataStoryControls({
     setShowAddNode: setShowAddNode,
   }), [onSave, setShowAddNode, toDiagram, updateDiagram]);
 
-  if (hideControls === true) return null;
-
   return (
-
     <DataStoryControlsContext.Provider value={context}>
       <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
         {/*{[*/}
@@ -79,7 +72,7 @@ export function DataStoryControls({
         {/*  <Component key={index}/>*/}
         {/*))}*/}
 
-        {(slotComponents || []).map((component, index) => (
+        {(controls || []).map((component, index) => (
           <React.Fragment key={index}>
             {component}
           </React.Fragment>

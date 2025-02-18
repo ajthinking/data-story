@@ -1,6 +1,6 @@
 'use client'
 
-import { createJSClient, DataStory } from '@data-story/ui';
+import { AddNodeControl, createJSClient, DataStory, ExportControl, RunControl } from '@data-story/ui';
 import { useMemo } from 'react';
 import { useRequestApp } from '../../hooks/useRequestApp';
 
@@ -17,7 +17,7 @@ export default () => {
     <div className="w-full h-80 border-gray-400 border-4">
       <DataStory
         client={client}
-        hideControls={['save', 'import']}
+        controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]}
       />
     </div>
   );

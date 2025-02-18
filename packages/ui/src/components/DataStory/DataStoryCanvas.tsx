@@ -53,8 +53,7 @@ export const DataStoryCanvas = React.memo(DataStoryCanvasComponent);
 
 const Flow = ({
   initDiagram,
-  hideControls,
-  slotComponents,
+  controls,
   onInitialize,
   setSidebarKey,
   onSave,
@@ -306,9 +305,7 @@ const Flow = ({
       >
         <DataStoryControls
           onSave={onSave}
-          slotComponents={slotComponents}
-          hideControls={hideControls}
-          setShowRun={setShowRun}
+          controls={controls}
           setShowAddNode={setShowAddNode}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>

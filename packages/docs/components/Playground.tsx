@@ -7,7 +7,7 @@ import {
   ExportControl,
   RunControl,
   ImportControl,
-  SaveControl,
+  SaveControl, AddNodeControl,
 } from '@data-story/ui';
 import { useRequestApp } from './hooks/useRequestApp';
 import { ToastComponent } from './Toast';
@@ -34,12 +34,16 @@ function Playground({ mode }: { mode?: 'js' | 'node' }) {
   }, [mode, app, loading]);
 
   if (loading || !client) return null;
-
+  /**
+   * todo:
+   * 1. change the controls to controls
+   * 2. change all docs demos and other demos to use the new controls
+   */
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         client={client}
-        slotComponents={[<RunControl />, <ImportControl />, <ExportControl />, <SaveControl />]}
+        controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>, <ExportControl/>, <ImportControl/>]}
       >
         <ToastComponent/>
       </DataStory>

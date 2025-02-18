@@ -56,7 +56,7 @@ export default () => {
             options.run()
           })
         }}
-        hideControls={true}
+        controls={[]}
         hideActivityBar={true}
       />
     </div>

@@ -33,8 +33,7 @@ export type DataStoryProps = {
   children?: React.ReactNode;
   client: WorkspaceApiClientImplement,
   initDiagram?: Diagram | null;
-  hideControls?: boolean | ControlsType[];
-  slotComponents?: React.ReactNode[];
+  controls?: React.ReactNode[];
   onInitialize?: DataStoryCallback;
   hideSidebar?: boolean;
   onDrop?: (event: any, addNodeFromDescription: any) => void;
