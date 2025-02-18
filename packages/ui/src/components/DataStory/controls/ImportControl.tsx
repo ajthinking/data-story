@@ -10,7 +10,7 @@ const defaultImport = (): Promise<Diagram> => {
     // create an input element
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.diagram.json,.ds';
+    input.accept = '.ds';
     input.style.display = 'none';
 
     // when the user selects a file

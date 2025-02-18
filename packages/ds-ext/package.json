@@ -20,9 +20,35 @@
     "commands": [
       {
         "command": "ds-ext.createDemos",
-        "title": "DataStory: Create Demo Diagrams"
+        "title": "Create Demo Diagrams",
+        "category": "DataStory"
+      },
+      {
+        "command": "ds-ext.showDiagramPreview",
+        "title": "Show Diagram Preview11",
+        "category": "DataStory",
+        "icon": {
+          "light": "./themes/preview-dark.svg",
+          "dark": "./themes/preview-white.svg"
+        }
       }
     ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "ds-ext.showDiagramPreview",
+          "when": "resourceLangId == 'diagramJson'",
+          "group": "navigation"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "ds-ext.showDiagramPreview",
+          "when": "resourceLangId == 'diagramJson'",
+          "group": "navigation"
+        }
+      ]
+    },
     "languages": [
       {
         "id": "diagramJson",
@@ -31,8 +57,10 @@
           "Data Story"
         ],
         "extensions": [
-          ".diagram.json",
           ".ds"
+        ],
+        "filenamePatterns": [
+          "*.ds"
         ],
         "configuration": "./language-configuration.json"
       }
@@ -41,12 +69,12 @@
       {
         "viewType": "ds-ext.diagramEditor",
         "displayName": "Diagram Editor",
+        "language": "diagramJson",
+        "priority": "default",
         "selector": [
           {
-            "filenamePattern": "*.diagram.json"
-          },
-          {
-            "filenamePattern": "*.ds"
+            "filenamePattern": "*.ds",
+            "language": "diagramJson"
           }
         ]
       }

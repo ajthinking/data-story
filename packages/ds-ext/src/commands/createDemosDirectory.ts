@@ -37,7 +37,7 @@ export async function createDemosDirectory() {
     makeDensityDatasets(path.join(demosDir, 'data', 'densities'));
 
     for (const [moduleName, demoFactory] of Object.entries(demos)) {
-      const filePath = path.join(demosDir, `${moduleName}.diagram.json`);
+      const filePath = path.join(demosDir, `${moduleName}.ds`);
       const demoData = await demoFactory();
       fs.writeFileSync(filePath, JSON.stringify(demoData, null, 2));
     }

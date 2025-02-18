@@ -1,5 +1,5 @@
 import '../../styles/globals.css';
-import { useCallback, useMemo, useState } from 'react';
+import { JSX, useCallback, useMemo, useState } from 'react';
 import {
   autoUpdate,
   type ExtendedRefs,

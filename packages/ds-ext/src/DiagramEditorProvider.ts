@@ -21,11 +21,11 @@ import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
-  private readonly _onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>();
-  public readonly onDidChangeCustomDocument = this._onDidChangeCustomDocument.event;
+  public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
   private inputObserverController!: InputObserverController;
   private observerStorage!: ObserverStorage;
   private config: DataStoryConfig;
+  private contentMap = new Map<string, DiagramDocument>();
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.config = loadConfig(this.context);
@@ -58,6 +58,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     this.inputObserverController = new InputObserverController(this.observerStorage);
   }
 
+  /**
+   * openCustomDocument is called when the first time an editor for a given resource is opened.
+   * When multiple instances of the editor are opened or closed, the OpenCustomDocument method won't be re-invoked.
+   */
   async openCustomDocument(
     uri: vscode.Uri,
     _openContext: vscode.CustomDocumentOpenContext,
@@ -66,7 +70,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     // Initialize storage with diagram ID from the file name
     const diagramId = path.basename(uri.fsPath);
     await this.initializeStorage(diagramId);
-    return DiagramDocument.create(uri);
+
+    const diagramDocument = await DiagramDocument.create(uri);
+    this.contentMap.set(uri.toString(), diagramDocument);
+    return diagramDocument;
   }
 
   resolveCustomEditor(
@@ -152,6 +159,14 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     `;
   }
 
+  provideDiagramContent(uri: vscode.Uri): DiagramDocument {
+    const document = this.contentMap.get(uri.toString());
+    if (!document) {
+      throw new Error('Could not find document');
+    }
+
+    return document;
+  }
   // Save changes to the document
   saveCustomDocument(document: DiagramDocument, cancellation: vscode.CancellationToken): Thenable<void> {
     return document.save();
