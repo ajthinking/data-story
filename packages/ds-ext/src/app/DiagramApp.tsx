@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { debounce, Diagram } from '@data-story/core';
-import { AddNodeControl, DataStory, ExportControl, RunControl } from '@data-story/ui';
+import { AddNodeControl, DataStory, RunControl } from '@data-story/ui';
 import { VsCodeToast } from './VsCodeToast';
 import { onDrop } from './onDrop';
 import { createVsCodeClient } from './createVsCodeClient';
@@ -24,7 +24,7 @@ export default function DiagramApp() {
         key={'abc'}
         onChange={handleChange}
         onDrop={onDrop}
-        controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]}
+        controls={[<RunControl/>, <AddNodeControl/>]}
       />
       <VsCodeToast postMessage={window.vscode.postMessage} />
     </div>

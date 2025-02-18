@@ -2,12 +2,7 @@ import { Controls } from '@xyflow/react';
 import { Diagram } from '@data-story/core';
 import { useStore } from '../store/store';
 import React, { useMemo } from 'react';
-import { DataStoryCanvasProps, DataStoryProps, StoreSchema } from '../types';
-import { RunControl } from './RunControl';
-import { AddNodeControl } from './AddNodeControl';
-import { SaveControl } from './SaveControl';
-import { ExportControl } from './ExportControl';
-import { ImportControl } from './ImportControl';
+import { DataStoryCanvasProps, StoreSchema } from '../types';
 
 export type DataStoryControlsType = {
   getDiagram: () => Diagram;
@@ -27,10 +22,10 @@ export function useDataStoryControls() {
 }
 
 export function DataStoryControls({
-                                    setShowAddNode,
-                                    controls = [],
-                                    onSave,
-                                  }: {
+  setShowAddNode,
+  controls = [],
+  onSave,
+}: {
   setShowAddNode: (showAddNode: boolean) => void;
   controls?: React.ReactNode[];
   onSave?: DataStoryCanvasProps['onSave'];
@@ -57,21 +52,6 @@ export function DataStoryControls({
   return (
     <DataStoryControlsContext.Provider value={context}>
       <Controls position={'top-left'} showInteractive={false} showZoom={false} showFitView={false}>
-        {/*{[*/}
-        {/*  RunControl,*/}
-        {/*  AddNodeControl,*/}
-        {/*  SaveControl,*/}
-        {/*  ExportControl,*/}
-        {/*  ImportControl,*/}
-        {/*].filter((Component) => {*/}
-        {/*  if (Array.isArray(hideControls)) {*/}
-        {/*    return !hideControls.includes(Component.defaultProps?.ariaLabel);*/}
-        {/*  }*/}
-        {/*  return true;*/}
-        {/*}).map((Component, index) => (*/}
-        {/*  <Component key={index}/>*/}
-        {/*))}*/}
-
         {(controls || []).map((component, index) => (
           <React.Fragment key={index}>
             {component}

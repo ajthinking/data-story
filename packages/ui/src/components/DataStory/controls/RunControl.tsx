@@ -1,7 +1,6 @@
 import { ControlButton } from '@xyflow/react';
 import { RunIcon } from '../icons/runIcon';
 import { useStore } from '../store/store';
-import { ControlsType } from '../types';
 
 export const RunControl = () => {
   const onRun = useStore((state) => state.onRun);
@@ -15,8 +14,4 @@ export const RunControl = () => {
       <RunIcon/>
     </ControlButton>
   );
-};
-
-RunControl.defaultProps = {
-  ariaLabel: 'run'  as ControlsType,
 };

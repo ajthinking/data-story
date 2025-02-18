@@ -4,7 +4,6 @@ import { useDataStoryControls } from './DataStoryControls';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
 import { Diagram } from '@data-story/core';
-import { ControlsType } from '../types';
 
 const defaultExport = async (diagram: Diagram) => {
   try {
@@ -58,8 +57,4 @@ export const ExportControl = () => {
       <ExportIcon />
     </ControlButton>
   );
-};
-
-ExportControl.defaultProps = {
-  ariaLabel: 'export' as ControlsType,
 };

@@ -1,7 +1,6 @@
 import { ControlButton } from '@xyflow/react';
 import { SaveIcon } from '../icons/saveIcon';
 import { useDataStoryControls } from './DataStoryControls';
-import { ControlsType } from '../types';
 
 export const SaveControl = () => {
   const { onSave, getDiagram } = useDataStoryControls();
@@ -15,8 +14,4 @@ export const SaveControl = () => {
       <SaveIcon/>
     </ControlButton>
   );
-};
-
-SaveControl.defaultProps = {
-  ariaLabel: 'save' as ControlsType,
 };

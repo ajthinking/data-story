@@ -1,6 +1,5 @@
 import { ControlButton } from '@xyflow/react';
 import { AddNodeIcon } from '../icons/addNodeIcon';
-import { ControlsType } from '../types';
 import { useDataStoryControls } from './DataStoryControls';
 
 export const AddNodeControl = () => {
@@ -14,8 +13,4 @@ export const AddNodeControl = () => {
   >
     <AddNodeIcon/>
   </ControlButton>)
-};
-
-AddNodeControl.defaultProps = {
-  ariaLabel: 'addNode' as ControlsType,
 };
