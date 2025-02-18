@@ -88,7 +88,8 @@ export class CellsMatrix {
     const headerText = columnCells[0]?.cell.column.id || '';
 
     const maxLength = columnCells.reduce((max, { cell }) => {
-      const contentLength = String(cell.getValue() ?? '').length;
+      const originalContent =  cell?.row.original[cell.column?.id] ?? cell.getValue();
+      const contentLength = String(originalContent).length;
       return Math.max(max, contentLength);
     }, headerText.length);
 
