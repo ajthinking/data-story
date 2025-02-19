@@ -40,6 +40,7 @@ export function useCopyPaste<
       if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
         e.preventDefault();
       }
+      console.log('handleKeyDown', e);
     };
 
     rfDomNode.addEventListener('keydown', handleKeyDown);
@@ -129,24 +130,30 @@ export function useCopyPaste<
     setEdges(edges => edges.map(edge => ({ ...edge, selected: true })));
   }, [setNodes, setEdges]);
 
-  useKeyboardShortcut(['Meta+x', 'Control+x'], cut);
-  useKeyboardShortcut(['Meta+c', 'Control+c'], copy);
-  useKeyboardShortcut(['Meta+v', 'Control+v'], paste);
-  useKeyboardShortcut(['Meta+a', 'Control+a'], selectAll);
+  useKeyboardShortcut(['Meta+x', 'Control+x'], cut, rfDomNode);
+  useKeyboardShortcut(['Meta+c', 'Control+c'], copy, rfDomNode);
+  useKeyboardShortcut(['Meta+v', 'Control+v'], paste, rfDomNode);
+  useKeyboardShortcut(['Meta+a', 'Control+a'], selectAll, rfDomNode);
 
   return { cut, copy, paste, bufferedNodes, bufferedEdges };
 }
 
-function useKeyboardShortcut(keyCode: KeyCode, handler: () => void) {
+function useKeyboardShortcut(keyCode: KeyCode, handler: () => void, rfDomNode: HTMLElement | null) {
   const [keyPressed, setKeyPressed] = useState(false);
   const isPressed = useKeyPress(keyCode);
 
   useEffect(() => {
     if (isPressed && !keyPressed) {
-      handler();
+      // console.log('if isPressed && !keyPressed');
+      // console.log('rfDomNode?.contains(document.activeElement)', rfDomNode?.contains(document.activeElement));
+      // Check if ReactFlow DOM node contains the focused element
+      if (rfDomNode?.contains(document.activeElement)) {
+        handler();
+      }
       setKeyPressed(true);
     } else if (!isPressed && keyPressed) {
+      // console.log('else if !isPressed && keyPressed');
       setKeyPressed(false);
     }
-  }, [isPressed, keyPressed, handler]);
+  }, [isPressed, keyPressed, handler, rfDomNode]);
 }
