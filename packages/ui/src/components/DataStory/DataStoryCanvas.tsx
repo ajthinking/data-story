@@ -27,7 +27,7 @@ import { getNodesWithNewSelection } from './getNodesWithNewSelection';
 import { createDataStoryId, LinkCount, LinkId, NodeStatus, RequestObserverType } from '@data-story/core';
 import { useDragNode } from './useDragNode';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
-import useCopyPaste from './controls/useCopyPaste';
+import { useCopyPaste } from './controls/useCopyPaste';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,

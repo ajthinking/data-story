@@ -10,153 +10,108 @@ import {
   type KeyCode,
 } from '@xyflow/react';
 
-// Could you help me refactor the useCopyPaste hook? Please keep the logic intact while making the code clearer and more concise. AI!
 export function useCopyPaste<
   NodeType extends Node = Node,
   EdgeType extends Edge = Edge
 >() {
+  const { getNodes, setNodes, getEdges, setEdges, screenToFlowPosition } = useReactFlow<NodeType, EdgeType>();
   const mousePosRef = useRef<XYPosition>({ x: 0, y: 0 });
   const rfDomNode = useStore((state) => state.domNode);
+  const [bufferedNodes, setBufferedNodes] = useState<NodeType[]>([]);
+  const [bufferedEdges, setBufferedEdges] = useState<EdgeType[]>([]);
 
-  const { getNodes, setNodes, getEdges, setEdges, screenToFlowPosition } =
-    useReactFlow<NodeType, EdgeType>();
-
-  // Set up the paste buffers to store the copied nodes and edges.
-  const [bufferedNodes, setBufferedNodes] = useState([] as NodeType[]);
-  const [bufferedEdges, setBufferedEdges] = useState([] as EdgeType[]);
-
-  console.log('bufferedNodes', bufferedNodes);
-
+  // Event handling setup
   useEffect(() => {
-    const events = ['cut', 'copy', 'paste'];
+    if (!rfDomNode) return;
 
-    if (rfDomNode) {
-      const preventDefault = (e: Event) => e.preventDefault();
+    const handleMouseMove = (event: MouseEvent) => {
+      mousePosRef.current = { x: event.clientX, y: event.clientY };
+    };
 
-      const onMouseMove = (event: MouseEvent) => {
-        mousePosRef.current = {
-          x: event.clientX,
-          y: event.clientY,
-        };
-      };
+    const preventDefault = (e: Event) => e.preventDefault();
+    const events: (keyof HTMLElementEventMap)[] = ['cut', 'copy', 'paste'];
 
-      for(const event of events) {
-        rfDomNode.addEventListener(event, preventDefault);
-      }
+    events.forEach(event => rfDomNode.addEventListener(event, preventDefault));
+    rfDomNode.addEventListener('mousemove', handleMouseMove);
 
-      rfDomNode.addEventListener('mousemove', onMouseMove);
-
-      return () => {
-        for(const event of events) {
-          rfDomNode.removeEventListener(event, preventDefault);
-        }
-
-        rfDomNode.removeEventListener('mousemove', onMouseMove);
-      };
-    }
+    return () => {
+      events.forEach(event => rfDomNode.removeEventListener(event, preventDefault));
+      rfDomNode.removeEventListener('mousemove', handleMouseMove);
+    };
   }, [rfDomNode]);
 
-  const copy = useCallback(() => {
-    const selectedNodes = getNodes().filter((node) => node.selected);
-    const selectedEdges = getConnectedEdges(selectedNodes, getEdges()).filter(
-      (edge) => {
-        const isExternalSource = selectedNodes.every(
-          (n) => n.id !== edge.source,
-        );
-        const isExternalTarget = selectedNodes.every(
-          (n) => n.id !== edge.target,
-        );
+  const getSelectedNodesAndEdges = useCallback(() => {
+    const selectedNodes = getNodes().filter(node => node.selected);
+    const isEdgeInternal = (edge: EdgeType) =>
+      selectedNodes.some(n => n.id === edge.source) &&
+      selectedNodes.some(n => n.id === edge.target);
 
-        return !(isExternalSource || isExternalTarget);
-      },
-    );
-
-    setBufferedNodes(selectedNodes);
-    setBufferedEdges(selectedEdges);
+    return {
+      nodes: selectedNodes,
+      edges: getConnectedEdges(selectedNodes, getEdges()).filter(isEdgeInternal),
+    };
   }, [getNodes, getEdges]);
 
+  const copy = useCallback(() => {
+    const { nodes, edges } = getSelectedNodesAndEdges();
+    setBufferedNodes(nodes);
+    setBufferedEdges(edges as EdgeType[]);
+  }, [getSelectedNodesAndEdges]);
+
   const cut = useCallback(() => {
-    const selectedNodes = getNodes().filter((node) => node.selected);
-    const selectedEdges = getConnectedEdges(selectedNodes, getEdges()).filter(
-      (edge) => {
-        const isExternalSource = selectedNodes.every(
-          (n) => n.id !== edge.source,
-        );
-        const isExternalTarget = selectedNodes.every(
-          (n) => n.id !== edge.target,
-        );
+    const { nodes, edges } = getSelectedNodesAndEdges();
+    setBufferedNodes(nodes);
+    setBufferedEdges(edges as EdgeType[]);
 
-        return !(isExternalSource || isExternalTarget);
-      },
-    );
+    setNodes(nodes => nodes.filter(node => !node.selected));
+    setEdges(edges => edges.filter(edge => !(edges as EdgeType[]).includes(edge as EdgeType)));
+  }, [getSelectedNodesAndEdges, setNodes, setEdges]);
 
-    setBufferedNodes(selectedNodes);
-    setBufferedEdges(selectedEdges);
+  const paste = useCallback((position = screenToFlowPosition(mousePosRef.current)) => {
+    const now = Date.now();
+    const generateCopiedId = (originalId: string) => `${originalId}-${now}`;
 
-    // A cut action needs to remove the copied nodes and edges from the graph.
-    setNodes((nodes) => nodes.filter((node) => !node.selected));
-    setEdges((edges) => edges.filter((edge) => !selectedEdges.includes(edge)));
-  }, [getNodes, setNodes, getEdges, setEdges]);
+    const calculateNewPosition = (originalPos: XYPosition) => ({
+      x: position.x + (originalPos.x - Math.min(...bufferedNodes.map(n => n.position.x))),
+      y: position.y + (originalPos.y - Math.min(...bufferedNodes.map(n => n.position.y))),
+    });
 
-  const paste = useCallback(
-    (
-      { x: pasteX, y: pasteY } = screenToFlowPosition({
-        x: mousePosRef.current.x,
-        y: mousePosRef.current.y,
-      }),
-    ) => {
-      const minX = Math.min(...bufferedNodes.map((s) => s.position.x));
-      const minY = Math.min(...bufferedNodes.map((s) => s.position.y));
+    const newNodes = bufferedNodes.map(node => ({
+      ...node,
+      id: generateCopiedId(node.id),
+      position: calculateNewPosition(node.position),
+      selected: true,
+    }));
 
-      const now = Date.now();
+    const newEdges = bufferedEdges.map(edge => ({
+      ...edge,
+      id: generateCopiedId(edge.id),
+      source: generateCopiedId(edge.source),
+      target: generateCopiedId(edge.target),
+      selected: true,
+    }));
 
-      const newNodes: NodeType[] = bufferedNodes.map((node) => {
-        const id = `${node.id}-${now}`;
-        const x = pasteX + (node.position.x - minX);
-        const y = pasteY + (node.position.y - minY);
+    setNodes(nodes => [...nodes.map(n => ({ ...n, selected: false })), ...newNodes]);
+    setEdges(edges => [...edges.map(e => ({ ...e, selected: false })), ...newEdges]);
+  }, [bufferedNodes, bufferedEdges, screenToFlowPosition, setNodes, setEdges]);
 
-        return { ...node, id, position: { x, y } };
-      });
-
-      const newEdges: EdgeType[] = bufferedEdges.map((edge) => {
-        const id = `${edge.id}-${now}`;
-        const source = `${edge.source}-${now}`;
-        const target = `${edge.target}-${now}`;
-
-        return { ...edge, id, source, target };
-      });
-
-      setNodes((nodes) => [
-        ...nodes.map((node) => ({ ...node, selected: false })),
-        ...newNodes,
-      ]);
-      setEdges((edges) => [
-        ...edges.map((edge) => ({ ...edge, selected: false })),
-        ...newEdges,
-      ]);
-    },
-    [bufferedNodes, bufferedEdges, screenToFlowPosition, setNodes, setEdges],
-  );
-
-  useShortcut(['Meta+x', 'Control+x'], cut);
-  useShortcut(['Meta+c', 'Control+c'], copy);
-  useShortcut(['Meta+v', 'Control+v'], paste);
+  useKeyboardShortcut(['Meta+x', 'Control+x'], cut);
+  useKeyboardShortcut(['Meta+c', 'Control+c'], copy);
+  useKeyboardShortcut(['Meta+v', 'Control+v'], paste);
 
   return { cut, copy, paste, bufferedNodes, bufferedEdges };
 }
 
-function useShortcut(keyCode: KeyCode, callback: Function): void {
-  const [didRun, setDidRun] = useState(false);
-  const shouldRun = useKeyPress(keyCode);
+function useKeyboardShortcut(keyCode: KeyCode, handler: () => void) {
+  const [keyPressed, setKeyPressed] = useState(false);
+  const isPressed = useKeyPress(keyCode);
 
   useEffect(() => {
-    if (shouldRun && !didRun) {
-      callback();
-      setDidRun(true);
-    } else {
-      setDidRun(shouldRun);
+    if (isPressed && !keyPressed) {
+      handler();
+      setKeyPressed(true);
+    } else if (!isPressed && keyPressed) {
+      setKeyPressed(false);
     }
-  }, [shouldRun, didRun, callback]);
+  }, [isPressed, keyPressed, handler]);
 }
-
-export default useCopyPaste;
