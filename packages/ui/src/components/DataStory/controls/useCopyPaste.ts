@@ -10,6 +10,7 @@ import {
   type KeyCode,
 } from '@xyflow/react';
 
+// Could you help me refactor the useCopyPaste hook? Please keep the logic intact while making the code clearer and more concise. AI!
 export function useCopyPaste<
   NodeType extends Node = Node,
   EdgeType extends Edge = Edge
@@ -26,9 +27,6 @@ export function useCopyPaste<
 
   console.log('bufferedNodes', bufferedNodes);
 
-  // initialize the copy/paste hook
-  // 1. remove native copy/paste/cut handlers
-  // 2. add mouse move handler to keep track of the current mouse position
   useEffect(() => {
     const events = ['cut', 'copy', 'paste'];
 
