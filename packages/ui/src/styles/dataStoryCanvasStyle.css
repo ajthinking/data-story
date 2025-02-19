@@ -1,0 +1,9 @@
+@keyframes dash {
+    to {
+        stroke-dashoffset: -10;
+    }
+}
+
+.react-flow__edge:hover {
+    cursor: crosshair;
+}

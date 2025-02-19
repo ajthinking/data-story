@@ -28,6 +28,7 @@ import { createDataStoryId, LinkCount, LinkId, NodeStatus, RequestObserverType }
 import { useDragNode } from './useDragNode';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { useCopyPaste } from './controls/useCopyPaste';
+import '../../styles/dataStoryCanvasStyle.css';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -215,23 +216,12 @@ const Flow = ({
     focusOnFlow();
   }, [connect, focusOnFlow, reactFlowStore]);
 
-  const { cut, copy, paste, bufferedNodes } = useCopyPaste();
-
-  const canCopy = nodes.some(({ selected }) => selected);
-  const canPaste = bufferedNodes.length > 0;
+  useCopyPaste();
 
   return (
     <>
       <style>
         {`
-          @keyframes dash {
-            to {
-              stroke-dashoffset: -10;
-            }
-          }
-          .react-flow__edge:hover {
-            cursor: crosshair;
-          }
           ${draggedNode ? `
           .react-flow__edge {
             opacity: 0.5;
@@ -311,27 +301,7 @@ const Flow = ({
       >
         <DataStoryControls
           onSave={onSave}
-          controls={[
-            ...controls,
-            <button
-              onClick={() => cut()}
-              disabled={!canCopy}
-            >
-              cut
-            </button>,
-            <button
-              onClick={() => copy()}
-              disabled={!canCopy}
-            >
-              copy
-            </button>,
-            <button
-              onClick={() => paste({ x: 0, y: 0 })}
-              disabled={!canPaste}
-            >
-              paste
-            </button>,
-          ]}
+          controls={controls}
           setShowAddNode={setShowAddNode}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
