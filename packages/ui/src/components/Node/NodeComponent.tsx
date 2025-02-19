@@ -19,7 +19,7 @@ const NodeComponent = ({ id, data, selected }: {
   return (
     (
       <div
-        className={'text-xs' + (selected ? ' shadow-xl' : '')}
+        className={`text-xs ${selected ? 'shadow-xl shadow-blue-100 ring-1 ring-blue-200' : ''}`}
         data-cy="data-story-node-component"
         onDoubleClick={() => {
           setOpenNodeSidebarId(id)
