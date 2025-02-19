@@ -2,6 +2,12 @@ import { ReactFlowNode } from '../Node/ReactFlowNode'
 
 export type Direction = 'up' | 'down' | 'left' | 'right'
 
+/**
+ * using the direction, find the closest node to the current selected node
+ * @param {Direction} direction
+ * @param {ReactFlowNode[]} nodes
+ * @returns {ReactFlowNode | undefined}
+ */
 export const getNodesWithNewSelection = (
   direction: Direction,
   nodes: ReactFlowNode[],

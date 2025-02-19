@@ -24,6 +24,7 @@ export function useCopyPaste<
   useEffect(() => {
     if (!rfDomNode) return;
 
+    // Listen for mouse move events on the DOM node and disable the default actions for cut, copy, and paste
     const handleMouseMove = (event: MouseEvent) => {
       mousePosRef.current = { x: event.clientX, y: event.clientY };
     };
@@ -34,9 +35,18 @@ export function useCopyPaste<
     events.forEach(event => rfDomNode.addEventListener(event, preventDefault));
     rfDomNode.addEventListener('mousemove', handleMouseMove);
 
+    // Listen for keydown events on the DOM node and disable the default action for select all
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+        e.preventDefault();
+      }
+    };
+
+    rfDomNode.addEventListener('keydown', handleKeyDown);
     return () => {
       events.forEach(event => rfDomNode.removeEventListener(event, preventDefault));
       rfDomNode.removeEventListener('mousemove', handleMouseMove);
+      rfDomNode.removeEventListener('keydown', handleKeyDown);
     };
   }, [rfDomNode]);
 
@@ -95,9 +105,15 @@ export function useCopyPaste<
     setEdges(edges => [...edges.map(e => ({ ...e, selected: false })), ...newEdges]);
   }, [bufferedNodes, bufferedEdges, screenToFlowPosition, setNodes, setEdges]);
 
+  const selectAll = useCallback(() => {
+    setNodes(nodes => nodes.map(node => ({ ...node, selected: true })));
+    setEdges(edges => edges.map(edge => ({ ...edge, selected: true })));
+  }, [setNodes, setEdges]);
+
   useKeyboardShortcut(['Meta+x', 'Control+x'], cut);
   useKeyboardShortcut(['Meta+c', 'Control+c'], copy);
   useKeyboardShortcut(['Meta+v', 'Control+v'], paste);
+  useKeyboardShortcut(['Meta+a', 'Control+a'], selectAll);
 
   return { cut, copy, paste, bufferedNodes, bufferedEdges };
 }
