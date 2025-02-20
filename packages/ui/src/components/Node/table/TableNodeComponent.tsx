@@ -15,7 +15,7 @@ import { MemoizedTableHeader } from './MemoizedTableHeader';
 import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix, ColumnWidthOptions } from './CellsMatrix';
 import { getFormatterOnlyAndDropParam } from './GetFormatterOnlyAndDropParam';
 
-const TableNodeComponent = ({ id, data }: {
+const TableNodeComponent = ({ id, data, selected }: {
   id: string,
   data: DataStoryNodeData,
   selected: boolean
@@ -158,7 +158,7 @@ const TableNodeComponent = ({ id, data }: {
   return (
     <div
       ref={tableRef}
-      className="shadow-xl bg-gray-50 border rounded border-gray-300 text-xs"
+      className={`text-xs border rounded border-gray-300 ${selected ? 'shadow-xl shadow-blue-100 ring-1 ring-blue-200' : ''} `}
     >
       <CustomHandle id={input.id} isConnectable={true} isInput={true} />
       <div data-cy={'data-story-table'} className="text-gray-600 max-w-[750px] bg-gray-100 rounded font-mono -mt-3">

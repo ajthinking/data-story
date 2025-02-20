@@ -27,6 +27,8 @@ import { getNodesWithNewSelection } from './getNodesWithNewSelection';
 import { createDataStoryId, LinkCount, LinkId, NodeStatus, RequestObserverType } from '@data-story/core';
 import { useDragNode } from './useDragNode';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
+import { useCopyPaste } from './controls/useCopyPaste';
+import '../../styles/dataStoryCanvasStyle.css';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
@@ -53,7 +55,7 @@ export const DataStoryCanvas = React.memo(DataStoryCanvasComponent);
 
 const Flow = ({
   initDiagram,
-  controls,
+  controls = [],
   onInitialize,
   setSidebarKey,
   onSave,
@@ -187,7 +189,7 @@ const Flow = ({
     edges,
   });
 
-  const getOnNodesDelete =  useCallback((nodesToDelete: ReactFlowNode[]) => {
+  const getOnNodesDelete = useCallback((nodesToDelete: ReactFlowNode[]) => {
     nodesToDelete.forEach(node => {
       const store = reactFlowStore.getState();
       const { edges } = store;
@@ -214,18 +216,12 @@ const Flow = ({
     focusOnFlow();
   }, [connect, focusOnFlow, reactFlowStore]);
 
+  useCopyPaste();
+
   return (
     <>
       <style>
         {`
-          @keyframes dash {
-            to {
-              stroke-dashoffset: -10;
-            }
-          }
-          .react-flow__edge:hover {
-            cursor: crosshair;
-          }
           ${draggedNode ? `
           .react-flow__edge {
             opacity: 0.5;
@@ -258,7 +254,7 @@ const Flow = ({
         }}
         onEdgeDoubleClick={(event, edge) => {
           if (!client) return;
-          if(client.onEdgeDoubleClick) client.onEdgeDoubleClick(edge.id);
+          if (client.onEdgeDoubleClick) client.onEdgeDoubleClick(edge.id);
         }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);
