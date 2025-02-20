@@ -88,12 +88,12 @@ export function useCopyPaste<
     });
 
     const newNodes = bufferedNodes.map(node => ({
-      ...node,
+      ...structuredClone(node),
       id: generateCopiedId(node.id),
       position: calculateNewPosition(node.position),
       selected: true,
       data: {
-        ...node.data,
+        ...structuredClone(node.data),
         inputs: (node.data.inputs as Record<string, unknown>[] || [])?.map(input => ({
           ...input,
           id: `${generateCopiedId(node.id)}.${(input.id as string).split('.').pop()}`,
@@ -106,7 +106,7 @@ export function useCopyPaste<
     }));
 
     const newEdges = bufferedEdges.map(edge  => ({
-      ...edge,
+      ...structuredClone(edge),
       id: generateCopiedId(edge.id),
       source: generateCopiedId(edge.source),
       sourceHandle: `${generateCopiedId(edge.source)}.${edge.sourceHandle!.split('.').pop()}`,
@@ -115,8 +115,8 @@ export function useCopyPaste<
       selected: true,
     }));
 
-    setNodes(nodes => [...nodes.map(n => ({ ...n, selected: false })), ...newNodes]);
-    setEdges(edges => [...edges.map(e => ({ ...e, selected: false })), ...newEdges]);
+    setNodes(nodes => [...nodes.map(node => ({ ...node, selected: false })), ...newNodes]);
+    setEdges(edges => [...edges.map(edge => ({ ...edge, selected: false })), ...newEdges]);
   }, [bufferedNodes, bufferedEdges, screenToFlowPosition, setNodes, setEdges]);
 
   const selectAll = useCallback(() => {
