@@ -9,16 +9,17 @@ import {
   useStore,
   type KeyCode,
 } from '@xyflow/react';
+import { SerializedReactFlowEdge, SerializedReactFlowNode } from '../../../SerializedReactFlow';
 
 export function useCopyPaste<
-  NodeType extends Node = Node,
-  EdgeType extends Edge = Edge
+  SerializedReactFlowNode extends Node = Node,
+  SerializedReactFlowEdge extends Edge = Edge
 >() {
-  const { getNodes, setNodes, getEdges, setEdges, screenToFlowPosition } = useReactFlow<NodeType, EdgeType>();
+  const { getNodes, setNodes, getEdges, setEdges, screenToFlowPosition } = useReactFlow<SerializedReactFlowNode, SerializedReactFlowEdge>();
   const mousePosRef = useRef<XYPosition>({ x: 0, y: 0 });
   const rfDomNode = useStore((state) => state.domNode);
-  const [bufferedNodes, setBufferedNodes] = useState<NodeType[]>([]);
-  const [bufferedEdges, setBufferedEdges] = useState<EdgeType[]>([]);
+  const [bufferedNodes, setBufferedNodes] = useState<SerializedReactFlowNode[]>([]);
+  const [bufferedEdges, setBufferedEdges] = useState<SerializedReactFlowEdge[]>([]);
 
   // Event handling setup
   useEffect(() => {
@@ -52,7 +53,7 @@ export function useCopyPaste<
 
   const getSelectedNodesAndEdges = useCallback(() => {
     const selectedNodes = getNodes().filter(node => node.selected);
-    const isEdgeInternal = (edge: EdgeType) =>
+    const isEdgeInternal = (edge: SerializedReactFlowEdge) =>
       selectedNodes.some(n => n.id === edge.source) &&
       selectedNodes.some(n => n.id === edge.target);
 
@@ -65,16 +66,16 @@ export function useCopyPaste<
   const copy = useCallback(() => {
     const { nodes, edges } = getSelectedNodesAndEdges();
     setBufferedNodes(nodes);
-    setBufferedEdges(edges as EdgeType[]);
+    setBufferedEdges(edges as SerializedReactFlowEdge[]);
   }, [getSelectedNodesAndEdges]);
 
   const cut = useCallback(() => {
     const { nodes, edges } = getSelectedNodesAndEdges();
     setBufferedNodes(nodes);
-    setBufferedEdges(edges as EdgeType[]);
+    setBufferedEdges(edges as SerializedReactFlowEdge[]);
 
     setNodes(nodes => nodes.filter(node => !node.selected));
-    setEdges(edges => edges.filter(edge => !(edges as EdgeType[]).includes(edge as EdgeType)));
+    setEdges(edges => edges.filter(edge => !(edges as SerializedReactFlowEdge[]).includes(edge as SerializedReactFlowEdge)));
   }, [getSelectedNodesAndEdges, setNodes, setEdges]);
 
   const paste = useCallback((position = screenToFlowPosition(mousePosRef.current)) => {
@@ -91,13 +92,26 @@ export function useCopyPaste<
       id: generateCopiedId(node.id),
       position: calculateNewPosition(node.position),
       selected: true,
+      data: {
+        ...node.data,
+        inputs: (node.data.inputs as Record<string, unknown>[] || [])?.map(input => ({
+          ...input,
+          id: `${generateCopiedId(node.id)}.${(input.id as string).split('.').pop()}`,
+        })),
+        outputs: (node.data.outputs as Record<string, unknown>[] || [])?.map(output => ({
+          ...output,
+          id: `${generateCopiedId(node.id)}.${(output.id as string).split('.').pop()}`,
+        })),
+      },
     }));
 
-    const newEdges = bufferedEdges.map(edge => ({
+    const newEdges = bufferedEdges.map(edge  => ({
       ...edge,
       id: generateCopiedId(edge.id),
       source: generateCopiedId(edge.source),
+      sourceHandle: `${generateCopiedId(edge.source)}.${edge.sourceHandle!.split('.').pop()}`,
       target: generateCopiedId(edge.target),
+      targetHandle: `${generateCopiedId(edge.target)}.${edge.targetHandle!.split('.').pop()}`,
       selected: true,
     }));
 
