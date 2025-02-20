@@ -74,8 +74,8 @@ export function useCopyPaste<
     setBufferedNodes(nodes);
     setBufferedEdges(edges as SerializedReactFlowEdge[]);
 
-    setNodes(nodes => nodes.filter(node => !node.selected));
-    setEdges(edges => edges.filter(edge => !(edges as SerializedReactFlowEdge[]).includes(edge as SerializedReactFlowEdge)));
+    setNodes(allNodes => allNodes.filter(node => !node.selected));
+    setEdges(allEdges => allEdges.filter(edge => !(edges as SerializedReactFlowEdge[]).includes(edge as SerializedReactFlowEdge)));
   }, [getSelectedNodesAndEdges, setNodes, setEdges]);
 
   const paste = useCallback((position = screenToFlowPosition(mousePosRef.current)) => {
