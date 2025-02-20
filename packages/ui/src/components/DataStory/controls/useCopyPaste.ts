@@ -1,15 +1,14 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  Edge,
+  getConnectedEdges,
+  type KeyCode,
   Node,
   useKeyPress,
   useReactFlow,
-  getConnectedEdges,
-  Edge,
-  XYPosition,
   useStore,
-  type KeyCode,
+  XYPosition,
 } from '@xyflow/react';
-import { SerializedReactFlowEdge, SerializedReactFlowNode } from '../../../SerializedReactFlow';
 
 export function useCopyPaste<
   SerializedReactFlowNode extends Node = Node,
@@ -53,29 +52,35 @@ export function useCopyPaste<
 
   const getSelectedNodesAndEdges = useCallback(() => {
     const selectedNodes = getNodes().filter(node => node.selected);
+    // the edge is internal if both source and target nodes are selected
     const isEdgeInternal = (edge: SerializedReactFlowEdge) =>
       selectedNodes.some(n => n.id === edge.source) &&
       selectedNodes.some(n => n.id === edge.target);
 
     return {
-      nodes: selectedNodes,
-      edges: getConnectedEdges(selectedNodes, getEdges()).filter(isEdgeInternal),
+      selectedNodes: selectedNodes,
+      // Filter out the internal edges connected to the selected nodes that have nodes on both ends
+      selectedEdges: getConnectedEdges(selectedNodes, getEdges()).filter(isEdgeInternal),
     };
   }, [getNodes, getEdges]);
 
   const copy = useCallback(() => {
-    const { nodes, edges } = getSelectedNodesAndEdges();
-    setBufferedNodes(nodes);
-    setBufferedEdges(edges as SerializedReactFlowEdge[]);
+    const { selectedNodes, selectedEdges } = getSelectedNodesAndEdges();
+    setBufferedNodes(selectedNodes);
+    setBufferedEdges(selectedEdges);
   }, [getSelectedNodesAndEdges]);
 
   const cut = useCallback(() => {
-    const { nodes, edges } = getSelectedNodesAndEdges();
-    setBufferedNodes(nodes);
-    setBufferedEdges(edges as SerializedReactFlowEdge[]);
+    const { selectedNodes, selectedEdges } = getSelectedNodesAndEdges();
+    setBufferedNodes(selectedNodes);
+    setBufferedEdges(selectedEdges);
 
-    setNodes(allNodes => allNodes.filter(node => !node.selected));
-    setEdges(allEdges => allEdges.filter(edge => !(edges as SerializedReactFlowEdge[]).includes(edge as SerializedReactFlowEdge)));
+    setNodes(nodes => nodes.filter(node => !node.selected));
+    setEdges(edges => {
+      return edges.filter(edge => {
+        return !selectedEdges.some(selectedEdge => edge.id === selectedEdge.id);
+      });
+    });
   }, [getSelectedNodesAndEdges, setNodes, setEdges]);
 
   const paste = useCallback((position = screenToFlowPosition(mousePosRef.current)) => {
