@@ -1,6 +1,6 @@
 import { Param } from '@data-story/core'
 import type { CSSProperties, ReactNode } from 'react';
-
+import { Node , Edge } from '@xyflow/react';
 export type SerializedReactFlow = {
   nodes: SerializedReactFlowNode[],
   edges: SerializedReactFlowEdge[],
@@ -42,7 +42,6 @@ export type SerializedReactFlowNode = {
   },
   dragging?: boolean,
 }
-
 export type SerializedReactFlowEdge = {
   id: string
   source: string,
@@ -52,3 +51,5 @@ export type SerializedReactFlowEdge = {
   label?: string | ReactNode;
   labelBgStyle?: CSSProperties;
 }
+export type SNode = SerializedReactFlowNode & Node;
+export type SEdge = SerializedReactFlowEdge & Edge;

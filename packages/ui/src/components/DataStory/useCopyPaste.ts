@@ -1,60 +1,20 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Edge,
-  getConnectedEdges,
-  type KeyCode,
-  Node,
-  useKeyPress,
-  useReactFlow,
-  useStore,
-  XYPosition,
-} from '@xyflow/react';
+import { getConnectedEdges, type KeyCode, useKeyPress, useReactFlow, useStore, XYPosition } from '@xyflow/react';
+import { SEdge, SNode } from '../../SerializedReactFlow';
+import { readFromClipboard, writeToClipboard } from './common/clipboard';
 
-const writeToClipboard = ({
-  selectedNodes,
-  selectedEdges,
-}: {
-  selectedNodes: Node[];
-  selectedEdges: Edge[];
-}) =>  {
-  // Write to system clipboard
-  navigator.clipboard.writeText(
-    JSON.stringify({
-      nodes: selectedNodes,
-      edges: selectedEdges,
-    }),
-  );
-}
-
-const readFromClipboard  = async (): Promise<{ nodes: Node[]; edges: Edge[] }>   => {
-  let nodes: Node[] = [];
-  let edges: Edge[] = [];
-  try {
-  // Read from system clipboard
-    const text = await navigator.clipboard.readText();
-    nodes = JSON.parse(text).nodes;
-    edges = JSON.parse(text).edges;
-  } catch (e) {
-    console.error('Error reading from clipboard', e);
-  }
-  return { nodes, edges };
-}
-
-export function useCopyPaste<
-  SerializedReactFlowNode extends Node = Node,
-  SerializedReactFlowEdge extends Edge = Edge
->() {
+export function useCopyPaste() {
   const {
     getNodes,
     setNodes,
     getEdges,
     setEdges,
     screenToFlowPosition,
-  } = useReactFlow<SerializedReactFlowNode, SerializedReactFlowEdge>();
+  } = useReactFlow<SNode, SEdge>();
   const mousePosRef = useRef<XYPosition>({ x: 0, y: 0 });
   const rfDomNode = useStore((state) => state.domNode);
-  const [bufferedNodes, setBufferedNodes] = useState<SerializedReactFlowNode[]>([]);
-  const [bufferedEdges, setBufferedEdges] = useState<SerializedReactFlowEdge[]>([]);
+  const [bufferedNodes, setBufferedNodes] = useState<SNode[]>([]);
+  const [bufferedEdges, setBufferedEdges] = useState<SEdge[]>([]);
 
   // Event handling setup
   useEffect(() => {
@@ -89,7 +49,7 @@ export function useCopyPaste<
   const getSelectedNodesAndEdges = useCallback(() => {
     const selectedNodes = getNodes().filter(node => node.selected);
     // the edge is internal if both source and target nodes are selected
-    const isEdgeInternal = (edge: SerializedReactFlowEdge) =>
+    const isEdgeInternal = (edge: SEdge) =>
       selectedNodes.some(n => n.id === edge.source) &&
       selectedNodes.some(n => n.id === edge.target);
 
@@ -127,11 +87,11 @@ export function useCopyPaste<
     const now = Date.now();
     const generateCopiedId = (originalId: string) => `${originalId}-${now}`;
 
-    // const { nodes, edges } = await readFromClipboard();
-    // const copiedNodes = nodes;
-    // const copiedEdges = edges;
-    const copiedNodes = bufferedNodes;
-    const copiedEdges = bufferedEdges;
+    const { nodes, edges } = await readFromClipboard();
+    const copiedNodes = nodes;
+    const copiedEdges = edges;
+    // const copiedNodes = bufferedNodes;
+    // const copiedEdges = bufferedEdges;
     const calculateNewPosition = (originalPos: XYPosition) => ({
       x: position.x + (originalPos.x - Math.min(...copiedNodes.map(n => n.position.x))),
       y: position.y + (originalPos.y - Math.min(...copiedNodes.map(n => n.position.y))),
@@ -153,7 +113,7 @@ export function useCopyPaste<
           id: `${generateCopiedId(node.id)}.${(output.id as string).split('.').pop()}`,
         })),
       },
-    }));
+    })) as SNode[];
 
     const newEdges = copiedEdges.map(edge => ({
       ...structuredClone(edge),
@@ -163,7 +123,7 @@ export function useCopyPaste<
       target: generateCopiedId(edge.target),
       targetHandle: `${generateCopiedId(edge.target)}.${edge.targetHandle!.split('.').pop()}`,
       selected: true,
-    }));
+    })) as SEdge[];
 
     setNodes(nodes => [...nodes.map(node => ({ ...node, selected: false })), ...newNodes]);
     setEdges(edges => [...edges.map(edge => ({ ...edge, selected: false })), ...newEdges]);
