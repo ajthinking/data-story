@@ -24,7 +24,7 @@ export const readFromClipboard = async(): Promise<{ nodes: SNode[]; edges: SEdge
     nodes = JSON.parse(text).nodes;
     edges = JSON.parse(text).edges;
   } catch(e) {
-    console.error('Error reading from clipboard', e);
+    console.warn('Error reading from clipboard', e);
   }
   return { nodes, edges };
 }
