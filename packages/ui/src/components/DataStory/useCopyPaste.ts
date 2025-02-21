@@ -80,6 +80,7 @@ export function useCopyPaste() {
     const generateCopiedId = (originalId: string) => `${originalId}-${now}`;
 
     const { nodes: copiedNodes, edges: copiedEdges } = await readFromClipboard();
+    if (!copiedNodes?.length) return;
 
     const calculateNewPosition = (originalPos: XYPosition) => ({
       x: position.x + (originalPos.x - Math.min(...copiedNodes.map(n => n.position.x))),

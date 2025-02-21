@@ -15,14 +15,15 @@ export const writeToClipboard = ({
     }),
   );
 }
+
 export const readFromClipboard = async(): Promise<{ nodes: SNode[]; edges: SEdge[] }> => {
   let nodes: SNode[] = [];
   let edges: SEdge[] = [];
   try {
     // Read from system clipboard
     const text = await navigator.clipboard.readText();
-    nodes = JSON.parse(text).nodes;
-    edges = JSON.parse(text).edges;
+    nodes = JSON.parse(text).nodes ?? [];
+    edges = JSON.parse(text).edges ?? [];
   } catch(e) {
     console.warn('Error reading from clipboard', e);
   }
