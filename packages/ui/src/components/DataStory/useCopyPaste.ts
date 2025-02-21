@@ -1,24 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Edge,
-  getConnectedEdges,
-  type KeyCode,
-  Node,
-  useKeyPress,
-  useReactFlow,
-  useStore,
-  XYPosition,
-} from '@xyflow/react';
+import { getConnectedEdges, type KeyCode, useKeyPress, useReactFlow, useStore, XYPosition } from '@xyflow/react';
+import { SEdge, SNode } from '../../SerializedReactFlow';
+import { readFromClipboard, writeToClipboard } from './common/clipboard';
 
-export function useCopyPaste<
-  SerializedReactFlowNode extends Node = Node,
-  SerializedReactFlowEdge extends Edge = Edge
->() {
-  const { getNodes, setNodes, getEdges, setEdges, screenToFlowPosition } = useReactFlow<SerializedReactFlowNode, SerializedReactFlowEdge>();
+export function useCopyPaste() {
+  const {
+    getNodes,
+    setNodes,
+    getEdges,
+    setEdges,
+    screenToFlowPosition,
+  } = useReactFlow<SNode, SEdge>();
   const mousePosRef = useRef<XYPosition>({ x: 0, y: 0 });
   const rfDomNode = useStore((state) => state.domNode);
-  const [bufferedNodes, setBufferedNodes] = useState<SerializedReactFlowNode[]>([]);
-  const [bufferedEdges, setBufferedEdges] = useState<SerializedReactFlowEdge[]>([]);
 
   // Event handling setup
   useEffect(() => {
@@ -53,7 +47,7 @@ export function useCopyPaste<
   const getSelectedNodesAndEdges = useCallback(() => {
     const selectedNodes = getNodes().filter(node => node.selected);
     // the edge is internal if both source and target nodes are selected
-    const isEdgeInternal = (edge: SerializedReactFlowEdge) =>
+    const isEdgeInternal = (edge: SEdge) =>
       selectedNodes.some(n => n.id === edge.source) &&
       selectedNodes.some(n => n.id === edge.target);
 
@@ -66,14 +60,12 @@ export function useCopyPaste<
 
   const copy = useCallback(() => {
     const { selectedNodes, selectedEdges } = getSelectedNodesAndEdges();
-    setBufferedNodes(selectedNodes);
-    setBufferedEdges(selectedEdges);
+    writeToClipboard({ selectedNodes, selectedEdges });
   }, [getSelectedNodesAndEdges]);
 
   const cut = useCallback(() => {
     const { selectedNodes, selectedEdges } = getSelectedNodesAndEdges();
-    setBufferedNodes(selectedNodes);
-    setBufferedEdges(selectedEdges);
+    writeToClipboard({ selectedNodes, selectedEdges });
 
     setNodes(nodes => nodes.filter(node => !node.selected));
     setEdges(edges => {
@@ -83,16 +75,19 @@ export function useCopyPaste<
     });
   }, [getSelectedNodesAndEdges, setNodes, setEdges]);
 
-  const paste = useCallback((position = screenToFlowPosition(mousePosRef.current)) => {
+  const paste = useCallback(async (position = screenToFlowPosition(mousePosRef.current)) => {
     const now = Date.now();
     const generateCopiedId = (originalId: string) => `${originalId}-${now}`;
 
+    const { nodes: copiedNodes, edges: copiedEdges } = await readFromClipboard();
+    if (!copiedNodes?.length) return;
+
     const calculateNewPosition = (originalPos: XYPosition) => ({
-      x: position.x + (originalPos.x - Math.min(...bufferedNodes.map(n => n.position.x))),
-      y: position.y + (originalPos.y - Math.min(...bufferedNodes.map(n => n.position.y))),
+      x: position.x + (originalPos.x - Math.min(...copiedNodes.map(n => n.position.x))),
+      y: position.y + (originalPos.y - Math.min(...copiedNodes.map(n => n.position.y))),
     });
 
-    const newNodes = bufferedNodes.map(node => ({
+    const newNodes = copiedNodes.map(node => ({
       ...structuredClone(node),
       id: generateCopiedId(node.id),
       position: calculateNewPosition(node.position),
@@ -108,9 +103,9 @@ export function useCopyPaste<
           id: `${generateCopiedId(node.id)}.${(output.id as string).split('.').pop()}`,
         })),
       },
-    }));
+    })) as SNode[];
 
-    const newEdges = bufferedEdges.map(edge  => ({
+    const newEdges = copiedEdges.map(edge => ({
       ...structuredClone(edge),
       id: generateCopiedId(edge.id),
       source: generateCopiedId(edge.source),
@@ -118,28 +113,28 @@ export function useCopyPaste<
       target: generateCopiedId(edge.target),
       targetHandle: `${generateCopiedId(edge.target)}.${edge.targetHandle!.split('.').pop()}`,
       selected: true,
-    }));
+    })) as SEdge[];
 
     setNodes(nodes => [...nodes.map(node => ({ ...node, selected: false })), ...newNodes]);
     setEdges(edges => [...edges.map(edge => ({ ...edge, selected: false })), ...newEdges]);
-  }, [bufferedNodes, bufferedEdges, screenToFlowPosition, setNodes, setEdges]);
+  }, [screenToFlowPosition, setNodes, setEdges]);
 
   const selectAll = useCallback(() => {
     setNodes(nodes => nodes.map(node => ({ ...node, selected: true })));
     setEdges(edges => edges.map(edge => ({ ...edge, selected: true })));
   }, [setNodes, setEdges]);
 
-  useKeyboardShortcut(['Meta+x', 'Control+x'], cut);
-  useKeyboardShortcut(['Meta+c', 'Control+c'], copy);
-  useKeyboardShortcut(['Meta+v', 'Control+v'], paste);
-  useKeyboardShortcut(['Meta+a', 'Control+a'], selectAll);
+  useKeyboardShortcut(['Meta+x', 'Control+x'], cut, rfDomNode);
+  useKeyboardShortcut(['Meta+c', 'Control+c'], copy, rfDomNode);
+  useKeyboardShortcut(['Meta+v', 'Control+v'], paste, rfDomNode);
+  useKeyboardShortcut(['Meta+a', 'Control+a'], selectAll, rfDomNode);
 
-  return { cut, copy, paste, bufferedNodes, bufferedEdges };
+  return { cut, copy, paste, selectAll };
 }
 
-function useKeyboardShortcut(keyCode: KeyCode, handler: () => void) {
+function useKeyboardShortcut(keyCode: KeyCode, handler: () => void, rfDomNode: HTMLElement | null) {
   const [keyPressed, setKeyPressed] = useState(false);
-  const isPressed = useKeyPress(keyCode);
+  const isPressed = useKeyPress(keyCode, { target: rfDomNode });
 
   useEffect(() => {
     if (isPressed && !keyPressed) {
@@ -148,5 +143,5 @@ function useKeyboardShortcut(keyCode: KeyCode, handler: () => void) {
     } else if (!isPressed && keyPressed) {
       setKeyPressed(false);
     }
-  }, [isPressed, keyPressed, handler]);
+  }, [isPressed, keyPressed, handler, rfDomNode]);
 }
