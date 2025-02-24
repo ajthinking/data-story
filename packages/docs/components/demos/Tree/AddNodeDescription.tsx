@@ -1,6 +1,6 @@
 'use client'
 
-import { AddNodeControl, DataStory, ExportControl, RunControl } from '@data-story/ui';
+import { AddNodeControl, DataStory, RunControl } from '@data-story/ui';
 import { core, nodes } from '@data-story/core';
 import { CustomizeJSClient } from '../../splash/CustomizeJSClient';
 import { useMemo } from 'react';
@@ -36,7 +36,7 @@ export default () => {
       <DataStory
         client={client}
         hideActivityBar={true}
-        controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]}
+        controls={[<RunControl/>, <AddNodeControl/>]}
       />
     </div>
   );

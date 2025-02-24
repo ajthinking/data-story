@@ -4,9 +4,7 @@ import {
   createSocketClient,
   DataStory,
   WorkspaceApiClientImplement,
-  ExportControl,
   RunControl,
-  ImportControl,
   SaveControl, AddNodeControl,
 } from '@data-story/ui';
 import { useRequestApp } from './hooks/useRequestApp';
@@ -39,7 +37,7 @@ function Playground({ mode }: { mode?: 'js' | 'node' }) {
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         client={client}
-        controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>, <ExportControl/>, <ImportControl/>]}
+        controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>]}
       >
         <ToastComponent/>
       </DataStory>
