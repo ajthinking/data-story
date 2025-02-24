@@ -34,20 +34,12 @@ export function VsCodeToast({ postMessage }: {
         info.message = 'Diagram save failed!';
         info.status = 'error';
         break;
-      case DataStoryEvents.IMPORT_SUCCESS:
-        info.message = 'Diagram imported successfully!';
+      case DataStoryEvents.COPY_JSON_SUCCESS:
+        info.message = 'JSON copied to clipboard!';
         break;
-      case DataStoryEvents.IMPORT_ERROR:
+      case DataStoryEvents.COPY_JSON_ERROR:
         console.error(event.payload);
-        info.message = 'Diagram import failed!';
-        info.status = 'error';
-        break;
-      case DataStoryEvents.EXPORT_SUCCESS:
-        info.message = 'Diagram exported successfully!';
-        break;
-      case DataStoryEvents.EXPORT_ERROR:
-        console.error(event.payload);
-        info.message = 'Diagram export failed!';
+        info.message = 'Failed to copy JSON to clipboard!';
         info.status = 'error';
         break;
       default:

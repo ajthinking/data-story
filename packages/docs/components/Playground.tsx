@@ -6,6 +6,7 @@ import {
   WorkspaceApiClientImplement,
   RunControl,
   SaveControl, AddNodeControl,
+  CopyAsJsonControl,
 } from '@data-story/ui';
 import { useRequestApp } from './hooks/useRequestApp';
 import { ToastComponent } from './Toast';
@@ -37,7 +38,7 @@ function Playground({ mode }: { mode?: 'js' | 'node' }) {
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         client={client}
-        controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>]}
+        controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>, <CopyAsJsonControl/>]}
       >
         <ToastComponent/>
       </DataStory>

@@ -5,7 +5,9 @@ export enum DataStoryEvents {
   'RUN_SUCCESS' = 'RUN_SUCCESS',
   'RUN_ERROR' = 'RUN_ERROR',
   'SAVE_SUCCESS' = 'SAVE_SUCCESS',
-  'SAVE_ERROR' = 'SAVE_ERROR'
+  'SAVE_ERROR' = 'SAVE_ERROR',
+  'COPY_JSON_SUCCESS' = 'COPY_JSON_SUCCESS',
+  'COPY_JSON_ERROR' = 'COPY_JSON_ERROR'
 }
 
 export type DataStoryEventType = {
