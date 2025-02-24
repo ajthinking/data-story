@@ -39,7 +39,7 @@ export function DataStoryControls({
   const { toDiagram, updateDiagram, onRun } = useStore(selector);
 
   const context: DataStoryControlsType = useMemo(() => ({
-    getDiagram: () => {
+    getDiagram: (): Diagram => {
       return toDiagram();
     },
     updateDiagram: (diagram: Diagram) => {
