@@ -1,4 +1,4 @@
-import { AddNodeControl, DataStory, ExportControl, RunControl } from '@data-story/ui'
+import { AddNodeControl, DataStory, RunControl } from '@data-story/ui'
 import { core, str } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
@@ -40,7 +40,7 @@ export default () => {
     <div className="w-full h-1/2">
       <DataStory
         client={client}
-        controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]}
+        controls={[<RunControl/>, <AddNodeControl/>]}
       />
     </div>
   );

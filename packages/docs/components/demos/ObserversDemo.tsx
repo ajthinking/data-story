@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { AddNodeControl, DataStory, ExportControl, RunControl } from '@data-story/ui';
+import { AddNodeControl, DataStory, RunControl } from '@data-story/ui';
 import {
   CategoryScale,
   Chart as ChartJS,
@@ -129,7 +129,7 @@ const ObserversDemo = () => {
             setPoints([]);
             run();
           }}
-          controls={[<RunControl/>, <AddNodeControl/>, <ExportControl/>]}
+          controls={[<RunControl/>, <AddNodeControl/>]}
           client={client}
         />
       </div>

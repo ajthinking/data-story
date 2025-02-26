@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  DataStoryEvents,
-  DataStoryEventType,
-  useDataStoryEvent,
-} from '@data-story/ui';
+import { DataStoryEvents, DataStoryEventType, useDataStoryEvent } from '@data-story/ui';
 import { Bounce, toast, ToastContainer, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -43,19 +39,12 @@ const initToast = (event: DataStoryEventType) => {
       console.error(event.payload);
       errorToast('Diagram save failed!');
       break;
-    case DataStoryEvents.IMPORT_SUCCESS:
-      successToast('Diagram imported successfully!');
+    case DataStoryEvents.COPY_JSON_SUCCESS:
+      successToast('JSON copied to clipboard!');
       break;
-    case DataStoryEvents.IMPORT_ERROR:
+    case DataStoryEvents.COPY_JSON_ERROR:
       console.error(event.payload);
-      errorToast('Diagram import failed!');
-      break;
-    case DataStoryEvents.EXPORT_SUCCESS:
-      successToast('Diagram exported successfully!');
-      break;
-    case DataStoryEvents.EXPORT_ERROR:
-      console.error(event.payload);
-      errorToast('Diagram export failed!');
+      errorToast('Failed to copy JSON to clipboard!');
       break;
     default:
       break;
