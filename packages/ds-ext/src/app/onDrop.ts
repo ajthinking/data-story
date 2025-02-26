@@ -3,15 +3,9 @@ import { NodeDescription, str } from '@data-story/core';
 export const onDrop = (event: any, addNodeFromDescription: any) => {
   event.preventDefault();
 
-  if(isDropFromOs(event)) return onDropFromOs(
-    event,
-    addNodeFromDescription,
-  );
+  if(isDropFromOs(event)) return onDropFromOs(event, addNodeFromDescription);
 
-  if(isDropFromExplorer(event)) return onDropFromExplorer(
-    event,
-    addNodeFromDescription,
-  );
+  if(isDropFromExplorer(event)) return onDropFromExplorer(event, addNodeFromDescription);
 };
 
 export const isDropFromOs = (event: any) => {
@@ -28,19 +22,26 @@ export const onDropFromOs = (event: any, addNodeFromDescription: any) => {
   const filename = path.split('/').pop();
   const extention = filename.split('.').pop();
 
-  if (extention !== 'json') {
-    console.warn({
-      message: 'Currently, only JSON files are supported.',
-      path,
-      filename,
-      extention,
-    });
+  if (extention === 'json') {
+    const description = createJsonFileReadDescription(filename, path);
+    addNodeFromDescription(description);
 
     return;
   }
 
-  const description = createJsonFileReadDescription(filename, path);
-  addNodeFromDescription(description);
+  if (extention === 'csv') {
+    const description = createCsvFileReadDescription(filename, path);
+    addNodeFromDescription(description);
+
+    return;
+  }
+
+  console.warn({
+    message: 'Currently, only JSON and CSV files are supported.',
+    path,
+    filename,
+    extention,
+  });
 };
 
 export const onDropFromExplorer = (event: any, addNodeFromDescription: any) => {
@@ -49,19 +50,24 @@ export const onDropFromExplorer = (event: any, addNodeFromDescription: any) => {
   const filename = path.split('/').pop();
   const extention = filename.split('.').pop();
 
-  if (extention !== 'json') {
-    console.warn({
-      message: 'Currently, only JSON files are supported.',
-      path,
-      filename,
-      extention,
-    });
-
+  if (extention === 'json') {
+    const description = createJsonFileReadDescription(filename, path);
+    addNodeFromDescription(description);
     return;
   }
 
-  const description = createJsonFileReadDescription(filename, path);
-  addNodeFromDescription(description);
+  if (extention === 'csv') {
+    const description = createCsvFileReadDescription(filename, path);
+    addNodeFromDescription(description);
+    return;
+  }
+
+  console.warn({
+    message: 'Currently, only JSON and CSV files are supported.',
+    path,
+    filename,
+    extention,
+  });
 };
 
 export const createJsonFileReadDescription = (filename: string, path: string): NodeDescription => {
@@ -90,6 +96,44 @@ export const createJsonFileReadDescription = (filename: string, path: string): N
         name: 'items_path',
         label: 'Items Path',
         help: 'Items path',
+      }),
+    ],
+  };
+};
+
+export const createCsvFileReadDescription = (filename: string, path: string): NodeDescription => {
+  return {
+    name: 'CsvFile.read',
+    label: filename,
+    inputs: [],
+    outputs: [
+      {
+        name: 'output',
+        schema: {},
+      },
+      {
+        name: 'errors',
+        schema: {},
+      },
+    ],
+    params: [
+      str({
+        name: 'file_path',
+        label: 'File path (supports glob patterns)',
+        help: 'File path, e.g., **/*.csv',
+        value: path,
+      }),
+      str({
+        name: 'delimiter',
+        label: 'Delimiter',
+        help: 'CSV delimiter character (default: ,)',
+        value: ',',
+      }),
+      str({
+        name: 'batch_size',
+        label: 'Batch size',
+        help: 'Number of records to yield in each batch (default: 1000)',
+        value: '1000',
       }),
     ],
   };

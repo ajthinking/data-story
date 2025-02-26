@@ -1,4 +1,5 @@
 export { Aggregate } from './Aggregate';
+export { Anonymize } from './Anonymize';
 export { Comment } from './Comment';
 // export { Concatenate } from './Concatenate';
 export { ConsoleLog } from './ConsoleLog'
