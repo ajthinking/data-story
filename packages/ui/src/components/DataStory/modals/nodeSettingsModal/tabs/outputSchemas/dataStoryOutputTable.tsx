@@ -215,9 +215,9 @@ export function OutputTable(props: {
         <thead className="text-xs uppercase bg-gray-50 text-gray-400">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              <th className='px-6 py-3 border'/>
+              <th className='p-2 border'/>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan} className='px-6 py-3 border'>
+                <th key={header.id} colSpan={header.colSpan} className='p-2 border'>
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -226,7 +226,7 @@ export function OutputTable(props: {
                     )}
                 </th>
               ))}
-              <th className='px-6 py-3 border'/>
+              <th className='p-2 border'/>
             </tr>
           ))}
         </thead>
