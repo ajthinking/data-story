@@ -82,7 +82,7 @@ export const DataStoryComponent = (
             : <Allotment className='h-full border-0.5 relative'>
               {/*The Allotment.Pane will recalculate the width and height of the child components.*/}
               {/*The className is used to address the ReactFlow warning.*/}
-              <Allotment.Pane minSize={100} className="h-full w-96">
+              <Allotment.Pane minSize={30} className="h-full w-96">
                 <DataStoryCanvas
                   {...props}
                   onSave={handleSave}
