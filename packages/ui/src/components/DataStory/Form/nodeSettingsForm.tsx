@@ -76,18 +76,18 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
       <div
         className="shadow-lg relative flex flex-col justify-between w-full bg-white outline-none focus:outline-none h-full">
         {/* ***** HEADER ***** */}
-        <div className="flex justify-between px-8 py-2">
+        <div className="flex flex-nowrap justify-between px-8 py-2">
           <input
             {...form.register('label')}
-            className="pr-4 mt-4 bg-white flex flex-col align-center justify-center text-lg text-gray-400 font-bold tracking widest"
+            className="pr-4 mt-4 bg-white flex align-center justify-center text-lg text-gray-400 font-bold tracking widest "
           />
           <div className="flex">
             {form.getValues('label') !== node.data?.computer && <div
-              className="flex flex-col pr-4 my-2 mt-3 italic align-center justify-center text-sm text-gray-400 font-base tracking widest">
+              className="flex flex-col pr-4 my-2 italic align-center justify-center text-sm text-gray-400 font-base tracking widest">
               renamed from {node.data?.computer}
             </div>}
           </div>
-          <div className="flex items-center mt-4 text-gray-400" onClick={() => onClose(true)}>
+          <div className="flex basis-4 items-center pr-4 text-gray-400" onClick={() => onClose(true)}>
             <CloseIcon />
           </div>
         </div>

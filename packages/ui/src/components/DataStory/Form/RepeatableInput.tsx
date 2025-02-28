@@ -155,15 +155,15 @@ export function RepeatableComponent({
       <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead className="text-xs uppercase bg-gray-50 text-gray-400">
           <tr>
-            <th className='px-6 py-3 border'/>
+            <th className='p-2 border'/>
             {param.row.map((column: any) => {
               return <th
                 key={column.name}
                 scope="col"
-                className="px-6 py-3 border"
+                className="p-2 border"
               >{column.label}</th>
             })}
-            <th className='px-6 py-3 border'/>
+            <th className='p-2 border'/>
           </tr>
         </thead>
         <tbody>
