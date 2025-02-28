@@ -50,8 +50,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     });
   },
   connect: (connection: Connection) => {
-    // Assume we have a full connection
-    if (!connection.sourceHandle || !connection.targetHandle) return
+    const { source, target, targetHandle, sourceHandle } = connection;
+    if (!sourceHandle || !targetHandle || target === source) return
 
     // Operate via the diagram!
     const diagram = get().toDiagram()
@@ -59,8 +59,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
     // Add the link to the diagram
     diagram.connect({
       id: createDataStoryId(),
-      sourcePortId: connection.sourceHandle,
-      targetPortId: connection.targetHandle,
+      sourcePortId: sourceHandle,
+      targetPortId: targetHandle,
     })
 
     // Update the diagram
