@@ -33,8 +33,8 @@ export const Aggregate: Computer = {
     ),
   ],
 
-  canRun({ input, params }) {
-    return input.haveAllItemsAtInput('input')
+  canRun({ input, isAvailable }) {
+    return isAvailable() && input.haveAllItemsAtInput('input')
   },
 
   async *run({ input, output, params }) {

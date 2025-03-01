@@ -34,7 +34,7 @@ export const Await: Computer = {
     ),
   ],
 
-  canRun({ input, params }) {
+  canRun({ input, params, isAvailable }) {
     const haveChunk = input.haveItemsAtInput(
       'input',
       (params.number_of_items.value as StringableInputValue).value as number,
@@ -42,7 +42,7 @@ export const Await: Computer = {
 
     const haveRemainder = input.haveAllItemsAtInput('input')
 
-    return haveChunk || haveRemainder
+    return isAvailable() && (haveChunk || haveRemainder)
   },
 
   async *run({ input, output, params }) {
