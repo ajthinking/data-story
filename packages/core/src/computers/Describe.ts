@@ -46,8 +46,8 @@ export const Describe: Computer = {
       }),
   ],
 
-  canRun({ input }) {
-    return input.haveAllItemsAtInput('input')
+  canRun({ input, isAvailable }) {
+    return isAvailable() && input.haveAllItemsAtInput('input')
   },
 
   async *run({ input, output, params }) {

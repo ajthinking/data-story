@@ -39,13 +39,11 @@ export const Merge: Computer = {
     }),
   ],
 
-  canRun({ input, params }) {
-    // const haveRequestor = input.haveItemsAtInput('requestors') // TODO
-
+  canRun({ input, isAvailable }) {
     const haveAllRequestors = input.haveAllItemsAtInput('requestors')
     const haveAllSuppliers = input.haveAllItemsAtInput('suppliers')
 
-    return haveAllRequestors && haveAllSuppliers
+    return isAvailable() && haveAllRequestors && haveAllSuppliers
   },
 
   async *run({ input, output, params }) {
