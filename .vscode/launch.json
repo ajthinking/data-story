@@ -13,6 +13,33 @@
           "${workspaceFolder}/packages/ds-ext/dist/**/*.js"
         ],
         "preLaunchTask": "${defaultBuildTask}"
-      }
+      },
+      {
+        "name": "Debug Tinker",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "npx",
+        "runtimeArgs": [
+          "ts-node",
+          "--transpile-only",
+          "--files",
+          "--project",
+          "tsconfig.json"
+        ],
+        "sourceMaps": true,
+        "resolveSourceMapLocations": [
+          "${workspaceFolder}/**",
+          "!**/node_modules/**"
+        ],
+        "args": [
+          "${workspaceFolder}/packages/core/src/tinker.ts"
+        ],
+        "cwd": "${workspaceFolder}/packages/core",
+        "internalConsoleOptions": "openOnSessionStart",
+        "skipFiles": [
+          "<node_internals>/**",
+          "node_modules/**"
+        ]
+      },      
     ]
   }
