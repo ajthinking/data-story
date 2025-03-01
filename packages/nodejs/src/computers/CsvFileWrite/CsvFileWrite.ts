@@ -32,6 +32,8 @@ export const CsvFileWrite: Computer = {
 
   async *run({ input, params }) {
     const incoming = input.pull();
+    if(incoming.length === 0) return;
+
     const filePath = params.file_path as string;
     const delimiter = params.delimiter as string;
 
