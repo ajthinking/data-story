@@ -49,19 +49,6 @@ export class Executor {
           .then((result: IteratorResult<undefined, void>) => {
             if(result.done) {
               this.memory.setNodeStatus(node.id, 'COMPLETE');
-              // TODO: The problem with this implementation:
-              // If a node is done, but its output is not yet consumed,
-              // then yes we can mark node as complete, but we will not be
-              // able to complete decendant nodes depending on it.
-              // Because they probably still have the just outputted items to process.
-              // So, we have to wait until the "cleanup" loop.
-              // This can be solved by having a "consumed" flag on the node ??
-              // Or, upon a "rounds complete event" the input device can notify ??
-              // Or something else...
-              this.diagram.directDescendant(node).forEach(node => {
-                this.attemptToMarkNodeComplete(node);
-              })
-
               return;
             }
 
