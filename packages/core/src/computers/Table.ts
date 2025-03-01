@@ -29,12 +29,11 @@ export const Table: Computer = {
 
   async* run({ input, hooks, params: rawParams, node, storage }) {
     while(true) {
-      const incoming = input.pull()
+      const existingItems = storage!.itemsMap.get(node.id) || []
+      const newItems = input.pull().map(i => i.value)
+      const allItems = existingItems.concat(newItems)
 
-      storage!.itemsMap.set(
-        node.id,
-        (storage!.itemsMap.get(node.id) || []).concat(incoming.map(i => i.value)),
-      )
+      storage!.itemsMap.set(node.id, allItems)
 
       yield;
     }
