@@ -551,6 +551,7 @@ __metadata:
     "@types/ws": "npm:^8.5.4"
     axios: "npm:^1.3.4"
     csv-parse: "npm:^5.6.0"
+    csv-stringify: "npm:^6.5.2"
     dotenv: "npm:^16.0.3"
     glob: "npm:^11.0.0"
     openai: "npm:^3.2.1"
@@ -5037,6 +5038,13 @@ __metadata:
   version: 5.6.0
   resolution: "csv-parse@npm:5.6.0"
   checksum: 10/4c82e11f50ae0ccbac2aed716ef2502d0468bf96552083561db789fc0258ee4bb0a30106fcfb2684f153cb4042f0413e0eac3645d5466874803b7ccdeba67ac8
+  languageName: node
+  linkType: hard
+
+"csv-stringify@npm:^6.5.2":
+  version: 6.5.2
+  resolution: "csv-stringify@npm:6.5.2"
+  checksum: 10/7715664020d291ccece25a32ecca617cea8d7e320af0c4e58cabbfb52d914832c3ea63c77c9796ca032ce6b47b899c879140c55bfd380105c42038ec305607a3
   languageName: node
   linkType: hard
 
