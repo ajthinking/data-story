@@ -141,7 +141,7 @@ export class DiagramBuilder {
       if(!targetPort) throw new Error(`Target port with id ${toPortId} not found`)
 
       const link = {
-        id: `${sourceNode.id}--->${targetNode.id}`,
+        id: `${sourcePort.id}--->${targetPort.id}`,
         sourcePortId: fromPortId,
         targetPortId: toPortId,
       }
