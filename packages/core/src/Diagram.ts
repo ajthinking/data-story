@@ -137,6 +137,67 @@ export class Diagram {
     return this.nodes.filter(node => node.name === 'Input')
   }
 
+  getAncestors(node: Node, visited: Set<Node> = new Set()): Node[] {
+    const ancestorNodes: Node[] = [];
+    const stack = [node];
+    visited.add(node);
+
+    while (stack.length > 0) {
+      const current = stack.pop()!;
+      const directAncestors = this.directAncestor(current);
+
+      for (const ancestor of directAncestors) {
+        if (!visited.has(ancestor)) {
+          visited.add(ancestor);
+          ancestorNodes.push(ancestor);
+          stack.push(ancestor);
+        }
+      }
+    }
+
+    return ancestorNodes;
+  }
+
+  hasLoop(): boolean {
+    return this.getLoops().length > 0
+  }
+
+  getLoops(): Node[][] {
+    const foundLoops = new Set<string>();
+    const loops: Node[][] = [];
+
+    for (const startNode of this.nodes) {
+      const visited = new Set<Node>();
+      const findLoop = (node: Node, path: Node[] = []): void => {
+        if (path.includes(node)) {
+          const loopStart = path.indexOf(node);
+          const loopNodes = path.slice(loopStart);
+
+          // Sort node IDs to ensure consistent order for set comparison
+          const loopKey = [...loopNodes].sort((a, b) => a.id.localeCompare(b.id)).map(n => n.id).join(',');
+
+          if (!foundLoops.has(loopKey)) {
+            foundLoops.add(loopKey);
+            loops.push(loopNodes);
+          }
+          return;
+        }
+
+        path.push(node);
+        for (const ancestor of this.directAncestor(node)) {
+          if (!visited.has(ancestor)) {
+            visited.add(ancestor);
+            findLoop(ancestor, [...path]);
+          }
+        }
+      };
+
+      findLoop(startNode);
+    }
+
+    return loops;
+  }
+
   outputNodes(): Node[] {
     return this.nodes.filter(node => node.name === 'Output')
   }
