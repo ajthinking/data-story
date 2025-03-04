@@ -162,6 +162,8 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   onRun: () => {
     get()?.client?.run({
       diagram: get().toDiagram(),
+      // TODO: replace with actual execution id
+      executionId: createDataStoryId(),
     });
   },
 

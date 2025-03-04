@@ -185,13 +185,14 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     });
   }
 
-  run({ diagram }: ClientRunParams): void {
+  run({ diagram, executionId }: ClientRunParams): void {
     eventManager.emit({
       type: DataStoryEvents.RUN_START,
     });
     const msg$ = this.transport.streaming({
       type: 'run',
       diagram,
+      executionId,
     });
     msg$.subscribe(this.receivedMsg$);
   }

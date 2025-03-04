@@ -40,7 +40,6 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
   const controller = new AbortController();
   abortControllers.set(executionId, controller);
 
-  // 移除setTimeout自动abort，改由外部控制
   const abortSignal = controller.signal;
   const executor = app.getExecutor({
     diagram,

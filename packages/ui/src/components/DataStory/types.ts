@@ -24,6 +24,7 @@ export type ObserverMap = Map<string, ExecutionObserver>
 
 export interface ClientRunParams {
   diagram: Diagram,
+  executionId: string,
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
