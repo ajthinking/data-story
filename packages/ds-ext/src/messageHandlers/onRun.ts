@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { Application, coreNodeProvider, Diagram, InMemoryStorage, ReportCallback } from '@data-story/core';
+import { Application, coreNodeProvider, createDataStoryId, Diagram, InMemoryStorage, ReportCallback } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
-import { nodeJsProvider } from '@data-story/nodejs';
 import { createAndBootApp } from '../app/createAndBootApp';
+import { abortControllers } from './onAbort';
 import { loadWorkspaceEnv } from '../utils/loadWorkspaceEnv';
 
 /**
@@ -35,8 +35,11 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
   const msgId = event.msgId;
 
   setWorkspaceFolderPath();
+  const executionId = event.executionId;
   const controller = new AbortController();
-  setTimeout(() => controller.abort(), 3 * 1000);
+  abortControllers.set(executionId, controller);
+
+  // 移除setTimeout自动abort，改由外部控制
   const abortSignal = controller.signal;
   const executor = app.getExecutor({
     diagram,
@@ -67,5 +70,7 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
 
     console.log('Error in onRun!');
     console.error(error);
+  } finally {
+    abortControllers.delete(executionId);
   }
 };
