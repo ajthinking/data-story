@@ -126,6 +126,7 @@ export type StoreSchema = {
 
   /** Run the diagram */
   onRun: () => void;
+  abortRun: () => Promise<void>;
 
   /** Sidebar */
   openNodeSidebarId: string | null;
