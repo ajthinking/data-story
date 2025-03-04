@@ -35,7 +35,9 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
   const msgId = event.msgId;
 
   setWorkspaceFolderPath();
-
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 3 * 1000);
+  const abortSignal = controller.signal;
   const executor = app.getExecutor({
     diagram,
     storage: new InMemoryStorage(),
@@ -43,12 +45,14 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
   });
 
   const startTime = Date.now();
-  const execution = executor.execute();
+  console.log('[data-story:] onRun startTime', startTime);
+  const execution = executor.execute(abortSignal);
 
   try {
     for await(const update of execution) {}
 
     const endTime = Date.now();
+    console.log('[data-story:] onRun endTime', endTime);
     postMessage?.({
       msgId,
       type: 'ExecutionResult',

@@ -30,11 +30,11 @@ export class Executor {
     this.hasLoop = this.diagram.hasLoop()
   }
 
-  async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {
+  async *execute(abortSignal?: AbortSignal): AsyncGenerator<ExecutionUpdate, void, void> {
     let pendingPromises: Promise<void>[] = []
     let executionError: Error | undefined
 
-    while(!this.isComplete() && !executionError) {
+    while(!this.isComplete() && !executionError && !abortSignal?.aborted) {
       // cleanup old promises that are done
       pendingPromises = await this.clearFinishedPromises(pendingPromises)
 
@@ -72,6 +72,10 @@ export class Executor {
         this.attemptToMarkNodeComplete(notRunnable);
       }
 
+      if (abortSignal?.aborted) {
+        break;
+      }
+
       // If no promises, then we might be stuck
       if(pendingPromises.length === 0) {
         // Check for nodes we can mark as complete
@@ -96,6 +100,10 @@ export class Executor {
     if(executionError) {
       console.log('Rethrowing the execution error in an awaitable timeline')
       throw(executionError)
+    }
+
+    if (abortSignal?.aborted) {
+      throw new Error('Execution aborted');
     }
 
     yield {
