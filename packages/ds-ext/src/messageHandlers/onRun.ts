@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import { Application, coreNodeProvider, createDataStoryId, Diagram, InMemoryStorage, ReportCallback } from '@data-story/core';
+import { Diagram, InMemoryStorage } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
 import { createAndBootApp } from '../app/createAndBootApp';
+import { abortControllers } from './abortRun';
 import { abortControllers } from './onAbort';
 import { loadWorkspaceEnv } from '../utils/loadWorkspaceEnv';
 

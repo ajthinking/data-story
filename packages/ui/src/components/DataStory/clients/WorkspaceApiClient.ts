@@ -30,6 +30,8 @@ import {
   NodeDescriptionResponseSchema,
   NodesStatusInfo,
   LinkItemsParamSchema,
+  AbortRun,
+  AbortRunSchema,
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -193,6 +195,15 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     });
     msg$.subscribe(this.receivedMsg$);
   }
+
+  async abortRun(params: AbortRun): Promise<void> {
+    validateZodSchema(AbortRunSchema, params);
+    const data = await this.transport.sendAndReceive({
+      ...params,
+      type: 'abortRun',
+    });
+    console.log('[data-story:] abortRun workspaceApiClient', data);
+  };
 
   onEdgeDoubleClick(edgeId: string): void {
     this.transport.sendAndReceive({

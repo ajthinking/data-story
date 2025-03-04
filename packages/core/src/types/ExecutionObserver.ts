@@ -172,3 +172,12 @@ export const ExecutionObserverSchema = z.discriminatedUnion('type', [
 ]);
 
 export type ExecutionObserver = z.input<typeof ExecutionObserverSchema>;
+
+export const AbortRunSchema = z.object({
+  executionId: z.string({
+    required_error: 'executionId is required',
+    invalid_type_error: 'executionId must be a string',
+  }),
+});
+
+export type AbortRun = z.input<typeof AbortRunSchema>;
