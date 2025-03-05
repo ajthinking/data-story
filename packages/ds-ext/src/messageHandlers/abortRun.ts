@@ -17,7 +17,7 @@ export const abortRun: MessageHandler = async({ event, postMessage }) => {
   postMessage?.({
     success: false,
     type: 'abortRun',
-    error: 'Execution not found',
+    errorMsg: 'Execution not found',
     msgId: event.msgId
   });
 };

@@ -159,16 +159,15 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       params: diagram.params,
     });
   },
-  onRun: () => {
+  onRun: (executionId?: string) => {
     get()?.client?.run({
       diagram: get().toDiagram(),
-      // TODO: replace with actual execution id
-      executionId: createDataStoryId(),
+      executionId: executionId ?? createDataStoryId(),
     });
   },
-  abortRun: async () => {
-    await get()?.client?.abortRun?.({
-      executionId: createDataStoryId(),
+  abortRun: async (executionId: string) => {
+    return await get()?.client?.abortRun?.({
+      executionId,
     });
   },
   setParams: (params: Param[]) => {

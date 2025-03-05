@@ -10,6 +10,7 @@ import {
   GetDataFromStorageParams,
   ObserveNodeStatus,
   LinkId,
+  AbortRunResponse,
 } from '@data-story/core';
 import { Subscription } from 'rxjs';
 
@@ -25,5 +26,5 @@ export interface WorkspaceApiClientImplement {
   getDataFromStorage?: (params: GetDataFromStorageParams) => Promise<Record<LinkId, ItemValue[]>>;
   cancelObservation?:(params: CancelObservation) => Promise<void>;
   onEdgeDoubleClick?: (edgeId: string) => void;
-  abortRun?: (params: { executionId: string }) => Promise<void>;
+  abortRun?: (params: { executionId: string }) => Promise<AbortRunResponse>;
 }

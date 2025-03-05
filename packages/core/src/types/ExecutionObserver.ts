@@ -181,3 +181,12 @@ export const AbortRunSchema = z.object({
 });
 
 export type AbortRun = z.input<typeof AbortRunSchema>;
+
+export const AbortRunResponseSchema = z.object({
+  success: z.boolean(),
+  type: z.literal('abortRun'),
+  errorMsg: z.string().optional(),
+  msgId: z.string().optional(),
+});
+
+export type AbortRunResponse = z.input<typeof AbortRunResponseSchema>;
