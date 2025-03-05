@@ -5,6 +5,7 @@ import path from 'path';
 import * as fs from 'fs';
 import { JsonReadonlyProvider } from './JsonReadonlyProvider';
 import { DiagramDocument } from './DiagramDocument';
+import { loadWorkspaceEnv } from './utils/loadWorkspaceEnv';
 
 let diagramEditorProvider: DiagramEditorProvider;
 let jsonReadonlyProvider: JsonReadonlyProvider | undefined;
@@ -19,6 +20,8 @@ function createReadonlyUri(args: vscode.Uri): vscode.Uri {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+  loadWorkspaceEnv();
+
   let disposable = vscode.commands.registerCommand('ds-ext.createDemos', async () => {
     await createDemosDirectory();
   });

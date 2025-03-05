@@ -3,6 +3,7 @@ import { Application, coreNodeProvider, Diagram, InMemoryStorage, ReportCallback
 import { MessageHandler } from '../MessageHandler';
 import { nodeJsProvider } from '@data-story/nodejs';
 import { createAndBootApp } from '../app/createAndBootApp';
+import { loadWorkspaceEnv } from '../utils/loadWorkspaceEnv';
 
 /**
  * Set the workspace folder path in `process.env.WORKSPACE_FOLDER_PATH`
@@ -22,6 +23,9 @@ function setWorkspaceFolderPath() {
 }
 
 export const onRun: MessageHandler = async ({ event, postMessage, inputObserverController }) => {
+  // Load latest .env file contents before running
+  const envVars = loadWorkspaceEnv();
+
   const app = await createAndBootApp();
 
   const diagram = new Diagram({
