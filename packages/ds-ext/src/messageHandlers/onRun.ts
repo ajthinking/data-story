@@ -61,9 +61,8 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
       time: endTime - startTime,
     });
   } catch(error: any) {
-    // the execution is aborted todo:
+    // the execution is aborted
     if (error instanceof Error && error.message === 'Execution aborted') {
-      console.log('Execution aborted');
       postMessage?.({
         msgId,
         type: 'ExecutionAborted',

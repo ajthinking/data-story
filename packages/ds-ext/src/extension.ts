@@ -85,13 +85,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerCustomEditorProvider(
       'ds-ext.diagramEditor',
       diagramEditorProvider,
-      {
-        webviewOptions: {
-          // ✔️ Enable context retention
-          retainContextWhenHidden: true,
-        },
-        supportsMultipleEditorsPerDocument: false
-      }
+      // {
+      //   webviewOptions: {
+      //     // ✔️ Enable context retention
+      //     retainContextWhenHidden: true,
+      //   },
+      //   supportsMultipleEditorsPerDocument: false
+      // }
     ),
   );
 
