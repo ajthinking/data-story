@@ -85,8 +85,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.registerCustomEditorProvider(
       'ds-ext.diagramEditor',
       diagramEditorProvider,
+      // todo: During testing, I encountered several issues, so we decided to develop the implementation of the execution termination feature separately.
       // {
-      //   webviewOptions: {
+      //   webviewtptions: {
       //     // ✔️ Enable context retention
       //     retainContextWhenHidden: true,
       //   },

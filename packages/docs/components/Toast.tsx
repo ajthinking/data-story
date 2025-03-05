@@ -46,6 +46,9 @@ const initToast = (event: DataStoryEventType) => {
       console.error(event.payload);
       errorToast('Failed to copy JSON to clipboard!');
       break;
+    case DataStoryEvents.RUN_ABORT:
+      successToast('Execution aborted successfully!');
+      break;
     default:
       break;
   }

@@ -32,14 +32,13 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
     nodes: event.diagram.nodes,
     links: event.diagram.links,
   });
-  const msgId = event.msgId;
-
   setWorkspaceFolderPath();
-  const executionId = event.executionId;
+  const { msgId, executionId } = event;
+
   const controller = new AbortController();
   abortControllers.set(executionId, controller);
-
   const abortSignal = controller.signal;
+
   const executor = app.getExecutor({
     diagram,
     storage: new InMemoryStorage(),
@@ -66,6 +65,7 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
       postMessage?.({
         msgId,
         type: 'ExecutionAborted',
+        executionId,
       });
       return;
     }
