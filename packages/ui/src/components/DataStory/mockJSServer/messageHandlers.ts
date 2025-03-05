@@ -2,7 +2,6 @@ import {
   Application,
   Diagram,
   ExecutionFailure,
-  InMemoryStorage,
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
@@ -32,12 +31,10 @@ const LocalStorageKey = 'data-story-tree';
 
 export const getDefaultMsgHandlers = (app: Application, inputObserverController: InputObserverController) => {
   const run = async({ data, sendEvent }: HandlerParam) => {
-    const storage = new InMemoryStorage();
     const { diagram } = data as RunMessage;
 
     const executor = app!.getExecutor({
       diagram,
-      storage,
       inputObserverController,
     });
 

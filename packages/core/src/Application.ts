@@ -6,7 +6,6 @@ import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
 import { Computer } from './types/Computer';
 import { ServiceProvider } from './types/ServiceProvider';
-import { Storage } from './types/Storage';
 
 export class Application {
   hasBooted = false;
@@ -68,15 +67,13 @@ export class Application {
     );
   }
 
-  getExecutor({ diagram, storage, inputObserverController }: {
+  getExecutor({ diagram, inputObserverController }: {
     diagram: Diagram;
-    storage: Storage;
     inputObserverController?: InputObserverController;
   }) {
     return ExecutorFactory.create({
       diagram,
       registry: this.registry,
-      storage,
       inputObserverController,
     })
   }

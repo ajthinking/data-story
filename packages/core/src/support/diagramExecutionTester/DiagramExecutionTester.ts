@@ -1,11 +1,7 @@
 import { expect } from 'vitest';
 import { Diagram } from '../../Diagram';
 import { ExecutionUpdate } from '../../types/ExecutionUpdate';
-
-import { InMemoryStorage } from '../../InMemoryStorage';
-import { ComputerFactory } from '../../ComputerFactory';
 import { ExecutorFactory } from '../../ExecutorFactory';
-import { ComputerRecord, Registry } from '../../Registry';
 import { core } from '../../core';
 
 export const whenRunning = (diagram: Diagram) => {
@@ -23,7 +19,6 @@ export class DiagramExecutionTester {
     const executor = ExecutorFactory.create({
       diagram: this.diagram,
       registry: core.getRegistry(),
-      storage: await this.makeStorage(),
     })
 
     const execution = executor.execute()
@@ -66,9 +61,5 @@ export class DiagramExecutionTester {
     this.shouldExpectSuccess = true
 
     return this
-  }
-
-  protected async makeStorage() {
-    return new InMemoryStorage()
   }
 }

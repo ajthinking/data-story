@@ -6,7 +6,6 @@ import { HooksDevice } from './HooksDevice'
 import { Param } from '../Param'
 import { ParamsDevice } from './ParamsDevice'
 import { AbstractPort, Port } from './Port'
-import { Storage } from './Storage'
 import { Node } from './Node'
 import { InputDevice } from '../InputDevice'
 import { OutputDevice } from '../OutputDevice'
@@ -15,7 +14,6 @@ export type RunArgs = {
   input: InputDevice,
   output: OutputDevice,
   params: ParamsDevice,
-  storage?: Storage,
   hooks: HooksDevice,
   node: Node,
 }

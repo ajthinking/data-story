@@ -19,7 +19,6 @@ import {
 
 import { expectDone } from './testSteps/expectDone';
 import { ExecutionMemory } from '../../ExecutionMemory';
-import { InMemoryStorage } from '../../InMemoryStorage';
 import { InputDevice } from '../../InputDevice';
 import { ComputerFactory } from '../../ComputerFactory';
 import { LinkId } from '../../types/Link';
@@ -104,7 +103,6 @@ export class ComputerTester {
             }
           },
         }),
-        storage: new InMemoryStorage(),
         hooks: this.hooksDevice,
         node: this.node,
       }),
