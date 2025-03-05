@@ -15,6 +15,7 @@ export class Executor {
   public diagram: Diagram;
   public registry: Registry;
   public storage: Storage;
+  public hasLoop: boolean;
 
   constructor(params: {
     diagram: Diagram;
@@ -26,6 +27,7 @@ export class Executor {
     this.registry = params.registry
     this.storage = params.storage
     this.memory = params.memory
+    this.hasLoop = this.diagram.hasLoop()
   }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {
@@ -165,8 +167,11 @@ export class Executor {
    * Marks nodes as complete if some default heuristics are met.
    */
   protected attemptToMarkNodeComplete(node: Node) {
-    const loop = this.diagram.getLoopForNode(node)
-    if(loop) return this.attemptToMarkLoopNodeComplete(node)
+    // Avoid costly loop checks unless diagram has a loop
+    if(this.hasLoop) {
+      const loop = this.diagram.getLoopForNode(node)
+      if(loop) return this.attemptToMarkLoopNodeComplete(node)
+    }
 
     // Node must not be busy
     if(this.memory.getNodeStatus(node.id) === 'BUSY') return;
