@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { Diagram, InMemoryStorage } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
 import { createAndBootApp } from '../app/createAndBootApp';
-import { abortControllers } from './onAbort';
+import { abortControllers } from './abortExecution';
 import { loadWorkspaceEnv } from '../utils/loadWorkspaceEnv';
 
 /**
@@ -46,14 +46,12 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
   });
 
   const startTime = Date.now();
-  console.log('[data-story:] onRun startTime', startTime);
   const execution = executor.execute(abortSignal);
 
   try {
     for await(const update of execution) {}
 
     const endTime = Date.now();
-    console.log('[data-story:] onRun endTime', endTime);
     postMessage?.({
       msgId,
       type: 'ExecutionResult',
