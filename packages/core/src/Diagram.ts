@@ -162,6 +162,38 @@ export class Diagram {
     return this.getLoops().length > 0
   }
 
+  getLoopForNode(node: Node): Node[] {
+    const all = this.getLoops()
+    return all.find(loop => loop.includes(node))!
+  }
+
+  getLoopLinks(loop: Node[]): Link[] {
+    return this.links.filter(link => {
+      const sourceNode = this.nodes.find(node =>
+        [...node.inputs, ...node.outputs].some(port => port.id === link.sourcePortId),
+      )
+      const targetNode = this.nodes.find(node =>
+        [...node.inputs, ...node.outputs].some(port => port.id === link.targetPortId),
+      )
+      return sourceNode && targetNode && loop.includes(sourceNode) && loop.includes(targetNode)
+    })
+  }
+
+  getAnscestorLinks(node: Node): Link[] {
+    const ancestors = this.getAncestors(node)
+    const links: Link[] = [];
+
+    for(const ancestor of ancestors) {
+      const inputPorts = ancestor.inputs;
+      for(const inputPort of inputPorts) {
+        const linksAtInput = this.linksAtInputPortId(inputPort.id)
+        links.push(...linksAtInput)
+      }
+    }
+
+    return links
+  }
+
   getLoops(): Node[][] {
     const foundLoops = new Set<string>();
     const loops: Node[][] = [];

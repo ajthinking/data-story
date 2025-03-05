@@ -15,6 +15,7 @@ export class Executor {
   public diagram: Diagram;
   public registry: Registry;
   public storage: Storage;
+  public hasLoop: boolean;
 
   constructor(params: {
     diagram: Diagram;
@@ -26,6 +27,7 @@ export class Executor {
     this.registry = params.registry
     this.storage = params.storage
     this.memory = params.memory
+    this.hasLoop = this.diagram.hasLoop()
   }
 
   async *execute(): AsyncGenerator<ExecutionUpdate, void, void> {
@@ -165,6 +167,12 @@ export class Executor {
    * Marks nodes as complete if some default heuristics are met.
    */
   protected attemptToMarkNodeComplete(node: Node) {
+    // Avoid costly loop checks unless diagram has a loop
+    if(this.hasLoop) {
+      const loop = this.diagram.getLoopForNode(node)
+      if(loop) return this.attemptToMarkLoopNodeComplete(node)
+    }
+
     // Node must not be busy
     if(this.memory.getNodeStatus(node.id) === 'BUSY') return;
 
@@ -180,6 +188,39 @@ export class Executor {
     }
 
     // Passed all checks, so mark as complete
+    this.memory.setNodeStatus(node.id, 'COMPLETE')
+  }
+
+  /**
+   * Marks nodes as complete if:
+   *  - all loop nodes are non busy
+   *  - all links are empty
+   */
+  protected attemptToMarkLoopNodeComplete(node: Node) {
+    // must be a loop node
+    const loop = this.diagram.getLoopForNode(node)
+    if(!loop) throw new Error(`Node is not part of a loop: ${node.id}`)
+
+    // Ensure no node in the loop is busy
+    for(const node of loop) {
+      if(this.memory.getNodeStatus(node.id) === 'BUSY') return;
+    }
+
+    // Ensure all ancestor outside of the loop is complete
+    const ancestors = this.diagram.getAncestors(node)
+    for(const ancestor of ancestors) {
+      if(loop.includes(ancestor)) continue;
+      if(this.memory.getNodeStatus(ancestor.id) !== 'COMPLETE') return;
+    }
+
+    // Ensure no loop or ancestor link have unprocessed items
+    const links = this.diagram.getAnscestorLinks(node)
+    for(const link of links) {
+      const items = this.memory.getLinkItems(link.id)
+      if(items && items.length > 0) return;
+    }
+
+    // All checks passed, mark as complete
     this.memory.setNodeStatus(node.id, 'COMPLETE')
   }
 }
