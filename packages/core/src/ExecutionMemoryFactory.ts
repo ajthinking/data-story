@@ -10,13 +10,11 @@ import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
 import { Node, NodeId } from './types/Node'
-import { Storage } from './types/Storage'
 
 export class ExecutionMemoryFactory {
   constructor(
     public unfoldedDiagram: UnfoldedDiagram,
     public registry: Registry,
-    public storage: Storage,
     public inputObserverController?: InputObserverController,
   ) {}
 
@@ -68,7 +66,6 @@ export class ExecutionMemoryFactory {
           input: inputDevice,
           output: outputDevice,
           params: this.makeParamsDevice(node, memory),
-          storage: this.storage,
           hooks: {
             register: (hook: Hook) => {
               memory.pushHooks([hook])

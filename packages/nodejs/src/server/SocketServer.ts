@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { Application, DiagramObserverStorage, InMemoryStorage, InputObserverController } from '@data-story/core';
+import { Application, DiagramObserverStorage, InputObserverController } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
 
@@ -33,8 +33,7 @@ export class SocketServer {
     console.log('Server started on port ' + this.port);
 
     this.wsServer.on('connection', (ws) => {
-      const storage = new InMemoryStorage();
-      ws.on('message', (msg: string) => this.handleMessage(ws, msg, storage));
+      ws.on('message', (msg: string) => this.handleMessage(ws, msg));
 
       ws.on('close', () => {
         console.log('Client disconnected 😢');
@@ -51,7 +50,6 @@ export class SocketServer {
   private async handleMessage(
     ws: WebSocket,
     message: string,
-    storage: InMemoryStorage,
   ) {
     const parsed: { type: string } & Record<string, any> = JSON.parse(message);
     const handler = this.messageHandlers[parsed.type];
@@ -65,7 +63,6 @@ export class SocketServer {
       ws,
       data: parsed,
       app: this.app,
-      storage,
       inputObserverController: this.inputObserverController,
     });
   }

@@ -6,7 +6,6 @@ import { mapToRecord } from './utils/mapToRecord';
 import { arrayToRecord } from './utils/arrayToRecord';
 import { Diagram } from './Diagram';
 import { Registry } from './Registry';
-import { Storage } from './types/Storage';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
@@ -14,18 +13,15 @@ export class Executor {
   public readonly memory: ExecutionMemory;
   public diagram: Diagram;
   public registry: Registry;
-  public storage: Storage;
   public hasLoop: boolean;
 
   constructor(params: {
     diagram: Diagram;
     registry: Registry;
-    storage: Storage;
     memory: ExecutionMemory;
   }) {
     this.diagram = params.diagram
     this.registry = params.registry
-    this.storage = params.storage
     this.memory = params.memory
     this.hasLoop = this.diagram.hasLoop()
   }

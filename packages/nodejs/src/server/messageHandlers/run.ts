@@ -16,9 +16,7 @@ export const run: MessageHandler<RunMessage> = async({
   data,
   inputObserverController,
   app,
-  storage,
 }: MessageHandlerParams<RunMessage>) => {
-  storage.itemsMap.clear();
   const diagram = new Diagram({
     nodes: data.diagram.nodes,
     links: data.diagram.links,
@@ -26,7 +24,6 @@ export const run: MessageHandler<RunMessage> = async({
 
   const executor = app.getExecutor({
     diagram,
-    storage,
     inputObserverController,
   });
 

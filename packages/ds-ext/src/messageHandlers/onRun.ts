@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
-import { Application, coreNodeProvider, Diagram, InMemoryStorage, ReportCallback } from '@data-story/core';
+import { Diagram } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
-import { nodeJsProvider } from '@data-story/nodejs';
 import { createAndBootApp } from '../app/createAndBootApp';
 import { loadWorkspaceEnv } from '../utils/loadWorkspaceEnv';
 
@@ -38,7 +37,6 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
 
   const executor = app.getExecutor({
     diagram,
-    storage: new InMemoryStorage(),
     inputObserverController,
   });
 

@@ -1,7 +1,5 @@
-import { c } from 'vite/dist/node/types.d-aGj9QkWt';
 import { ComputerFactory } from './ComputerFactory';
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
-import { InMemoryStorage } from './InMemoryStorage';
 import { Registry } from './Registry';
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
 import { ConsoleLog, Create } from './computers'
@@ -23,9 +21,7 @@ describe('create', () => {
       ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
     }, {})
 
-    const storage = new InMemoryStorage();
-
-    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry, storage);
+    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry);
     const memory = factory.create();
 
     const [ link ] = diagram.links
@@ -48,9 +44,7 @@ describe('create', () => {
       ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
     }, {})
 
-    const storage = new InMemoryStorage();
-
-    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry, storage);
+    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry);
     const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
@@ -73,9 +67,7 @@ describe('create', () => {
       ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
     }, {})
 
-    const storage = new InMemoryStorage();
-
-    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry, storage);
+    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry);
     const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
@@ -101,9 +93,7 @@ describe('create', () => {
       ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
     }, {})
 
-    const storage = new InMemoryStorage();
-
-    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry, storage);
+    const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry);
     const memory = factory.create();
 
     const [ firstNode, secondNode ] = diagram.nodes;
