@@ -30,10 +30,8 @@ import {
   NodeDescriptionResponseSchema,
   NodesStatusInfo,
   LinkItemsParamSchema,
-  AbortRun,
-  AbortRunSchema,
-  AbortRunResponse,
-  AbortRunResponseSchema,
+  AbortExecution,
+  AbortExecutionSchema,
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -58,6 +56,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   constructor(private transport: Transport) {
     this.initExecutionResult();
     this.initExecutionFailure();
+    this.initExecutionAborted();
     this.initUpdateStorage();
   }
 
@@ -199,28 +198,13 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     msg$.subscribe(this.receivedMsg$);
   }
 
-  async abortRun(params: AbortRun): Promise<AbortRunResponse> {
-    validateZodSchema(AbortRunSchema, params);
+  async abortExecution(params: AbortExecution): Promise<void> {
+    validateZodSchema(AbortExecutionSchema, params);
     const data = await this.transport.sendAndReceive({
       ...params,
-      type: 'abortRun',
-    }) as AbortRunResponse;
-    validateZodSchema(AbortRunResponseSchema, data);
-
-    const { success } = data;
-    if (success) {
-      eventManager.emit({
-        type: DataStoryEvents.RUN_ABORT_SUCCESS,
-        payload: data,
-      });
-    } else {
-      eventManager.emit({
-        type: DataStoryEvents.RUN_ABORT_ERROR,
-        payload: data,
-      });
-    }
-    return data;
-  };
+      type: 'abortExecution',
+    });
+  }
 
   onEdgeDoubleClick(edgeId: string): void {
     this.transport.sendAndReceive({
@@ -241,11 +225,21 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
       })
   }
 
+  private initExecutionAborted() {
+    return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionAborted')))
+      .subscribe((data: any) => {
+        console.log('Abort run 💫')
+        eventManager.emit({
+          type: DataStoryEvents.RUN_ABORT,
+          payload: data,
+        });
+      })
+  }
+
   private initExecutionFailure() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionFailure')))
       .subscribe((data: any) => {
         console.error('Execution failed')
-
         eventManager.emit({
           type: DataStoryEvents.RUN_ERROR,
           payload: data,

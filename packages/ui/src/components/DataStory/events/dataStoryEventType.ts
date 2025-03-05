@@ -3,13 +3,12 @@ import { Observer } from 'rxjs';
 export enum DataStoryEvents {
   'RUN_START' = 'RUN_START',
   'RUN_SUCCESS' = 'RUN_SUCCESS',
+  'RUN_ABORT' = 'RUN_ABORT',
   'RUN_ERROR' = 'RUN_ERROR',
   'SAVE_SUCCESS' = 'SAVE_SUCCESS',
   'SAVE_ERROR' = 'SAVE_ERROR',
   'COPY_JSON_SUCCESS' = 'COPY_JSON_SUCCESS',
-  'COPY_JSON_ERROR' = 'COPY_JSON_ERROR',
-  'RUN_ABORT_SUCCESS' = 'RUN_ABORT_SUCCESS',
-  'RUN_ABORT_ERROR' = 'RUN_ABORT_ERROR'
+  'COPY_JSON_ERROR' = 'COPY_JSON_ERROR'
 }
 
 export type DataStoryEventType = {

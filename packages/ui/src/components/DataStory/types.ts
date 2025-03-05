@@ -7,7 +7,6 @@ import {
   type ReportCallback,
   type ExecutionObserver, NodeStatus,
   NodeId,
-  AbortRunResponse,
 } from '@data-story/core';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Edge, OnConnect, OnEdgesChange, OnNodesChange, ReactFlowInstance } from '@xyflow/react';
@@ -127,7 +126,7 @@ export type StoreSchema = {
 
   /** Run the diagram */
   onRun: (executionId?: string) => void;
-  abortRun: (executionId: string) => Promise<AbortRunResponse | undefined>;
+  abortExecution: (executionId: string) => Promise<void>;
 
   /** Sidebar */
   openNodeSidebarId: string | null;

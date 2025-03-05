@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { Diagram, InMemoryStorage } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
 import { createAndBootApp } from '../app/createAndBootApp';
-import { abortControllers } from './abortRun';
 import { abortControllers } from './onAbort';
 import { loadWorkspaceEnv } from '../utils/loadWorkspaceEnv';
 
@@ -62,6 +61,16 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
       time: endTime - startTime,
     });
   } catch(error: any) {
+    // the execution is aborted todo:
+    if (error instanceof Error && error.message === 'Execution aborted') {
+      console.log('Execution aborted');
+      postMessage?.({
+        msgId,
+        type: 'ExecutionAborted',
+      });
+      return;
+    }
+
     postMessage?.({
       msgId,
       type: 'ExecutionFailure',

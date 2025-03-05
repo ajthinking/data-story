@@ -1,35 +1,33 @@
 import { ControlButton } from '@xyflow/react';
 import { RunIcon } from '../icons/runIcon';
 import { useStore } from '../store/store';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo, useEffect } from 'react';
 import { AbortIcon } from '../icons/abortIcon';
 import { DataStoryEvents, DataStoryEventType } from '../events/dataStoryEventType';
 import { useDataStoryEvent } from '../events/eventManager';
-import { createDataStoryId } from '@data-story/core';
-// todo: refactor the running state and click throttle
+import { createDataStoryId, debounce } from '@data-story/core';
+
 export const RunControl = () => {
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const onRun = useStore((state) => state.onRun);
-  const abortRun = useStore((state) => state.abortRun);
+  const abortExecution = useStore((state) => state.abortExecution);
   const [executionId, setExecutionId] = useState<string>('');
-  // todo: 防止连续点击
-  const handleRun = () => {
+
+  const handleRun = debounce(async () => {
     if (isRunning && executionId) {
-      abortRun(executionId);
+      abortExecution(executionId);
+      setIsRunning(false);
     } else {
       const tempExecutionId = createDataStoryId();
       setExecutionId(tempExecutionId);
       onRun(tempExecutionId);
+      setIsRunning(true);
     }
-    setIsRunning(pre => !pre);
-  };
+  }, 300);
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
-    if (event.type === DataStoryEvents.RUN_SUCCESS) {
-      setIsRunning(false);
-      setExecutionId('');
-    }
-    if (event.type === DataStoryEvents.RUN_ABORT_SUCCESS) {
+    const stopRunning = event.type === DataStoryEvents.RUN_ABORT || event.type === DataStoryEvents.RUN_ERROR || event.type === DataStoryEvents.RUN_SUCCESS;
+    if (stopRunning) {
       setIsRunning(false);
       setExecutionId('');
     }

@@ -19,7 +19,7 @@ import { DuckDBStorage } from './duckDBStorage';
 import { FileStorage } from './fileStorage';
 import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
-import { abortRun } from './messageHandlers/abortRun';
+import { abortExecution } from './messageHandlers/abortExecution';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
@@ -100,7 +100,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     const unsubscribe = webviewPanel.webview.onDidReceiveMessage(event => {
       const handlers: Record<string, MessageHandler> = {
         run: onRun,
-        abortRun: abortRun,
+        abortExecution,
         getNodeDescriptions: onGetNodeDescriptions,
         updateDiagram: onUpdateDiagram,
         toast: onToast,

@@ -173,20 +173,11 @@ export const ExecutionObserverSchema = z.discriminatedUnion('type', [
 
 export type ExecutionObserver = z.input<typeof ExecutionObserverSchema>;
 
-export const AbortRunSchema = z.object({
+export const AbortExecutionSchema = z.object({
   executionId: z.string({
     required_error: 'executionId is required',
     invalid_type_error: 'executionId must be a string',
   }),
 });
 
-export type AbortRun = z.input<typeof AbortRunSchema>;
-
-export const AbortRunResponseSchema = z.object({
-  success: z.boolean(),
-  type: z.literal('abortRun'),
-  errorMsg: z.string().optional(),
-  msgId: z.string().optional(),
-});
-
-export type AbortRunResponse = z.input<typeof AbortRunResponseSchema>;
+export type AbortExecution = z.input<typeof AbortExecutionSchema>;
