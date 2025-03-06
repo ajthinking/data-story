@@ -23,12 +23,15 @@ import { abortExecution } from './messageHandlers/abortExecution';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
-  private inputObserverController!: InputObserverController;
+  // 因为
+  private InputObserverControllerMap: Map<string, InputObserverController> = new Map();
   private observerStorage!: ObserverStorage;
+  private observerStorageMap: Map<string, ObserverStorage> = new Map();
   private config: DataStoryConfig;
   private contentMap = new Map<string, DiagramDocument>();
 
   constructor(private readonly context: vscode.ExtensionContext) {
+    console.count('[data-story] DiagramEditorProvider constructor');
     this.config = loadConfig(this.context);
   }
 
@@ -45,17 +48,17 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
 
     let Storage = storages[this.config.storage];
     if(!Storage) throw new Error(`Unknown storage type: ${this.config.storage}`);
-
+    let observerStorage: ObserverStorage;
     try {
-      this.observerStorage = new Storage(diagramId);
-      await this.observerStorage.init?.();
+      observerStorage = new Storage(diagramId);
+      await observerStorage.init?.();
     } catch (error) {
       console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
-      this.observerStorage = new DiagramObserverStorage(diagramId);
-      await this.observerStorage.init?.();
+      observerStorage = new DiagramObserverStorage(diagramId);
     }
+    await observerStorage.init?.();
 
-    this.inputObserverController = new InputObserverController(this.observerStorage);
+    this.InputObserverControllerMap.set(diagramId, new InputObserverController(this.observerStorage));
   }
 
   /**
@@ -120,8 +123,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         return;
       }
 
+      const diagramId = path.basename(document.uri.fsPath);
+      const inputObserverController = this.InputObserverControllerMap.get(diagramId);
       // @ts-ignore
-      const disposable = handler({ postMessage, event, document, inputObserverController: this.inputObserverController });
+      const disposable = handler({ postMessage, event, document, inputObserverController });
       if(typeof disposable === 'function' && disposable){
         disposables.push(disposable);
       }
