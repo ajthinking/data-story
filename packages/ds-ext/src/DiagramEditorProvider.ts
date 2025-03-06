@@ -19,6 +19,7 @@ import { DuckDBStorage } from './duckDBStorage';
 import { FileStorage } from './fileStorage';
 import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
+import { abortExecution } from './messageHandlers/abortExecution';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
@@ -48,7 +49,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     try {
       this.observerStorage = new Storage(diagramId);
       await this.observerStorage.init?.();
-      console.log(`Successfully initialized storage ${this.config.storage}`);
     } catch (error) {
       console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
       this.observerStorage = new DiagramObserverStorage(diagramId);
@@ -82,6 +82,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     _token: vscode.CancellationToken,
   ): void | Thenable<void> {
     webviewPanel.webview.options = {
+      ...webviewPanel.webview.options,
       enableScripts: true,
     };
 
@@ -99,6 +100,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     const unsubscribe = webviewPanel.webview.onDidReceiveMessage(event => {
       const handlers: Record<string, MessageHandler> = {
         run: onRun,
+        abortExecution,
         getNodeDescriptions: onGetNodeDescriptions,
         updateDiagram: onUpdateDiagram,
         toast: onToast,

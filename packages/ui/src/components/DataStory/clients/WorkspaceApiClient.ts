@@ -30,6 +30,8 @@ import {
   NodeDescriptionResponseSchema,
   NodesStatusInfo,
   LinkItemsParamSchema,
+  AbortExecution,
+  AbortExecutionSchema,
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -54,6 +56,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
   constructor(private transport: Transport) {
     this.initExecutionResult();
     this.initExecutionFailure();
+    this.initExecutionAborted();
     this.initUpdateStorage();
   }
 
@@ -183,15 +186,24 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     });
   }
 
-  run({ diagram }: ClientRunParams): void {
+  run({ diagram, executionId }: ClientRunParams): void {
     eventManager.emit({
       type: DataStoryEvents.RUN_START,
     });
     const msg$ = this.transport.streaming({
       type: 'run',
       diagram,
+      executionId,
     });
     msg$.subscribe(this.receivedMsg$);
+  }
+
+  async abortExecution(params: AbortExecution): Promise<void> {
+    validateZodSchema(AbortExecutionSchema, params);
+    const data = await this.transport.sendAndReceive({
+      ...params,
+      type: 'abortExecution',
+    });
   }
 
   onEdgeDoubleClick(edgeId: string): void {
@@ -213,11 +225,21 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
       })
   }
 
+  private initExecutionAborted() {
+    return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionAborted')))
+      .subscribe((data: any) => {
+        console.log('Abort run 💫')
+        eventManager.emit({
+          type: DataStoryEvents.RUN_ABORT,
+          payload: data,
+        });
+      })
+  }
+
   private initExecutionFailure() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionFailure')))
       .subscribe((data: any) => {
         console.error('Execution failed')
-
         eventManager.emit({
           type: DataStoryEvents.RUN_ERROR,
           payload: data,

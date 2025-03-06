@@ -4,11 +4,13 @@ import {
   Diagram,
   ExecutionFailure,
 } from '@data-story/core';
+import { abortControllers } from './abortExecution';
 
 export type RunMessage = {
   msgId: string,
   type: 'run',
   diagram: Diagram,
+  executionId: string,
 }
 
 export const run: MessageHandler<RunMessage> = async({
@@ -21,31 +23,44 @@ export const run: MessageHandler<RunMessage> = async({
     nodes: data.diagram.nodes,
     links: data.diagram.links,
   })
+  const { executionId, msgId } = data
+
+  const controller = new AbortController();
+  abortControllers.set(executionId, controller);
+  const abortSignal = controller.signal;
 
   const executor = app.getExecutor({
     diagram,
     inputObserverController,
   });
 
-  const execution = executor.execute()
+  const execution = executor.execute(abortSignal)
 
   try {
     for await(const update of execution) {}
 
     ws.send(
       JSON.stringify({
-        msgId: data.msgId,
+        msgId,
         type: 'ExecutionResult',
         time: Date.now(),
       }),
     )
   } catch(error: any) {
-    if (ws.readyState === WebSocket.OPEN) {
+    if (error instanceof Error && error.message === 'Execution aborted') {
+      ws.send(
+        JSON.stringify({
+          msgId,
+          type: 'ExecutionAborted',
+          executionId,
+        }),
+      );
+    } else if (ws.readyState === WebSocket.OPEN) {
       console.log('Sending ExecutionFailure to client')
       console.log(error)
 
       const failure: ExecutionFailure = {
-        msgId: data.msgId,
+        msgId,
         type: 'ExecutionFailure',
         message: error.message,
       }

@@ -25,4 +25,5 @@ export interface WorkspaceApiClientImplement {
   getDataFromStorage?: (params: GetDataFromStorageParams) => Promise<Record<LinkId, ItemValue[]>>;
   cancelObservation?:(params: CancelObservation) => Promise<void>;
   onEdgeDoubleClick?: (edgeId: string) => void;
+  abortExecution?: (params: { executionId: string }) => Promise<void>;
 }

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { Diagram } from '@data-story/core';
 import { MessageHandler } from '../MessageHandler';
 import { createAndBootApp } from '../app/createAndBootApp';
+import { abortControllers } from './abortExecution';
 import { loadWorkspaceEnv } from '../utils/loadWorkspaceEnv';
 
 /**
@@ -31,9 +32,12 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
     nodes: event.diagram.nodes,
     links: event.diagram.links,
   });
-  const msgId = event.msgId;
-
   setWorkspaceFolderPath();
+  const { msgId, executionId } = event;
+
+  const controller = new AbortController();
+  abortControllers.set(executionId, controller);
+  const abortSignal = controller.signal;
 
   const executor = app.getExecutor({
     diagram,
@@ -41,7 +45,7 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
   });
 
   const startTime = Date.now();
-  const execution = executor.execute();
+  const execution = executor.execute(abortSignal);
 
   try {
     for await(const update of execution) {}
@@ -53,6 +57,16 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
       time: endTime - startTime,
     });
   } catch(error: any) {
+    // the execution is aborted
+    if (error instanceof Error && error.message === 'Execution aborted') {
+      postMessage?.({
+        msgId,
+        type: 'ExecutionAborted',
+        executionId,
+      });
+      return;
+    }
+
     postMessage?.({
       msgId,
       type: 'ExecutionFailure',
@@ -61,5 +75,7 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
 
     console.log('Error in onRun!');
     console.error(error);
+  } finally {
+    abortControllers.delete(executionId);
   }
 };

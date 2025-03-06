@@ -24,6 +24,7 @@ export type ObserverMap = Map<string, ExecutionObserver>
 
 export interface ClientRunParams {
   diagram: Diagram,
+  executionId: string,
 }
 
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
@@ -124,7 +125,8 @@ export type StoreSchema = {
   updateDiagram: (diagram: Diagram) => void;
 
   /** Run the diagram */
-  onRun: () => void;
+  onRun: (executionId?: string) => void;
+  abortExecution: (executionId: string) => Promise<void>;
 
   /** Sidebar */
   openNodeSidebarId: string | null;

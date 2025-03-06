@@ -15,6 +15,7 @@ type RunMessage = {
   type: 'run',
   diagram: Diagram,
   inputObservers: InputObserver[],
+  executionId: string,
 }
 
 export type HandlerParam = { data: unknown, sendEvent: (msg: Record<string, any>) => void };
@@ -30,16 +31,30 @@ export type MessageHandlers = {
 const LocalStorageKey = 'data-story-tree';
 
 export const getDefaultMsgHandlers = (app: Application, inputObserverController: InputObserverController) => {
+  const abortControllers = new Map<string, AbortController>();
+
+  const abortExecution = async ({ data, sendEvent }: HandlerParam) => {
+    const { executionId } = data as { executionId: string };
+    const controller = abortControllers.get(executionId);
+    if (controller) {
+      controller.abort();
+    }
+  };
+
   const run = async({ data, sendEvent }: HandlerParam) => {
-    const { diagram } = data as RunMessage;
+    const { diagram, executionId } = data as RunMessage;
 
     const executor = app!.getExecutor({
       diagram,
       inputObserverController,
     });
 
+    const controller = new AbortController();
+    abortControllers.set(executionId, controller);
+    const abortSignal = controller.signal;
+
     try {
-      const execution = executor?.execute();
+      const execution = executor?.execute(abortSignal);
       for await(const executionUpdate of execution) {
       }
 
@@ -49,6 +64,15 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
       }
       sendEvent(executionResult);
     } catch(error: any) {
+      // the execution is aborted
+      if (error instanceof Error && error.message === 'Execution aborted') {
+        sendEvent?.({
+          type: 'ExecutionAborted',
+          executionId,
+        });
+        return;
+      }
+
       const failure: ExecutionFailure = {
         type: 'ExecutionFailure',
         message: error?.message,
@@ -147,6 +171,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   return {
+    abortExecution,
     run,
     getNodeDescriptions,
     updateDiagram,

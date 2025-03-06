@@ -159,12 +159,17 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       params: diagram.params,
     });
   },
-  onRun: () => {
+  onRun: (executionId?: string) => {
     get()?.client?.run({
       diagram: get().toDiagram(),
+      executionId: executionId ?? createDataStoryId(),
     });
   },
-
+  abortExecution: async (executionId: string) => {
+    await get()?.client?.abortExecution?.({
+      executionId,
+    });
+  },
   setParams: (params: Param[]) => {
     set({ params })
   },
@@ -225,16 +230,18 @@ export const useGetStore = (ref: Ref<unknown>) => {
     addNodeFromDescription: state.addNodeFromDescription,
     toDiagram: state.toDiagram,
     onRun: state.onRun,
+    abortExecution: state.abortExecution,
   });
-  const { addNodeFromDescription, toDiagram, onRun } = useStore(selector, shallow);
+  const { addNodeFromDescription, toDiagram, onRun, abortExecution } = useStore(selector, shallow);
 
   useImperativeHandle(ref, () => {
     return ({
       addNodeFromDescription,
       toDiagram,
       onRun,
+      abortExecution,
     });
-  }, [addNodeFromDescription, toDiagram, onRun]);
+  }, [addNodeFromDescription, toDiagram, onRun, abortExecution]);
 }
 
 export const DataStoryCanvasProvider = ({ children }: { children: React.ReactNode }) => {

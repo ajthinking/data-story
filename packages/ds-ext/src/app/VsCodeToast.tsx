@@ -42,6 +42,9 @@ export function VsCodeToast({ postMessage }: {
         info.message = 'Failed to copy JSON to clipboard!';
         info.status = 'error';
         break;
+      case DataStoryEvents.RUN_ABORT:
+        info.message = 'Execution aborted successfully!';
+        break;
       default:
         break;
     }
