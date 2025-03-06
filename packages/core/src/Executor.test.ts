@@ -1,7 +1,5 @@
 import { Diagram } from './Diagram';
 import { Computer, RunArgs } from './types/Computer';
-import { Create, Ignore, Signal, Throw } from './computers';
-import { InMemoryStorage } from './InMemoryStorage';
 import { whenRunning } from './support/diagramExecutionTester/DiagramExecutionTester';
 import { Link } from './types/Link';
 import { Node } from './types/Node';
@@ -14,9 +12,7 @@ describe('execute', () => {
     const diagram = new Diagram()
     const registry = new Registry({}, {})
 
-    const storage = new InMemoryStorage()
-
-    const executor = ExecutorFactory.create({ diagram, registry, storage })
+    const executor = ExecutorFactory.create({ diagram, registry })
 
     const updates = executor.execute()
 
@@ -53,9 +49,7 @@ describe('execute', () => {
       } as Computer,
     }, {})
 
-    const storage = new InMemoryStorage()
-
-    const executor = ExecutorFactory.create({ diagram, registry, storage })
+    const executor = ExecutorFactory.create({ diagram, registry })
 
     const updates = executor.execute()
     const update1 = await updates.next()
@@ -95,9 +89,7 @@ describe('execute', () => {
       } as Computer,
     }, {})
 
-    const storage = new InMemoryStorage()
-
-    const executor = ExecutorFactory.create({ diagram, registry, storage })
+    const executor = ExecutorFactory.create({ diagram, registry })
 
     const updates = executor.execute()
     const update = await updates.next()
@@ -134,9 +126,7 @@ describe('execute', () => {
       } as Computer,
     }, {})
 
-    const storage = new InMemoryStorage()
-
-    const executor = ExecutorFactory.create({ diagram, registry, storage })
+    const executor = ExecutorFactory.create({ diagram, registry })
 
     const updates = executor.execute()
 
@@ -212,9 +202,7 @@ describe('execute', () => {
       Log: logComputer,
     }, {})
 
-    const storage = new InMemoryStorage()
-
-    const executor = ExecutorFactory.create({ diagram, registry, storage })
+    const executor = ExecutorFactory.create({ diagram, registry })
 
     const updates = executor.execute()
 

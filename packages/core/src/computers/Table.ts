@@ -27,14 +27,9 @@ export const Table: Computer = {
     }),
   ],
 
-  async* run({ input, hooks, params: rawParams, node, storage }) {
+  async* run({ input }) {
     while(true) {
-      const existingItems = storage!.itemsMap.get(node.id) || []
-      const newItems = input.pull().map(i => i.value)
-      const allItems = existingItems.concat(newItems)
-
-      storage!.itemsMap.set(node.id, allItems)
-
+      input.pull()
       yield;
     }
   },

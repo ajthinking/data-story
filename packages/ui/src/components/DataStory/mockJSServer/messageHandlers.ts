@@ -2,7 +2,6 @@ import {
   Application,
   Diagram,
   ExecutionFailure,
-  InMemoryStorage,
   type InputObserver,
   InputObserverController,
   type ItemValue, RequestObserverType,
@@ -43,12 +42,10 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const run = async({ data, sendEvent }: HandlerParam) => {
-    const storage = new InMemoryStorage();
     const { diagram, executionId } = data as RunMessage;
 
     const executor = app!.getExecutor({
       diagram,
-      storage,
       inputObserverController,
     });
 

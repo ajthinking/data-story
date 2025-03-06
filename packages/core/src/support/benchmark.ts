@@ -1,7 +1,5 @@
 import { Application } from '../Application';
 import { ExecutorFactory } from '../ExecutorFactory';
-import { InMemoryStorage } from '../InMemoryStorage';
-import { Create, Ignore, CreateProperties } from '../computers';
 import { core } from '../core';
 import { coreNodeProvider } from '../coreNodeProvider';
 
@@ -30,7 +28,6 @@ import { coreNodeProvider } from '../coreNodeProvider';
 
   const executor = app.getExecutor({
     diagram,
-    storage: new InMemoryStorage(),
   })
 
   const startTime = Date.now()
