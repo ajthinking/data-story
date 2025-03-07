@@ -23,17 +23,21 @@ import { abortExecution } from './messageHandlers/abortExecution';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
-  private inputObserverController!: InputObserverController;
-  private observerStorage!: ObserverStorage;
-  private config: DataStoryConfig;
+  /**
+   * Since a DiagramEditorProvider can correspond to multiple DiagramDocuments, each DiagramDocument requires its own InputObserverController and ObserverStorage.
+   * Therefore, we need to differentiate them using diagramId or uri.
+   */
+  private InputObserverControllerMap: Map<string, InputObserverController> = new Map();
+  private observerStorageMap: Map<string, ObserverStorage> = new Map();
   private contentMap = new Map<string, DiagramDocument>();
+  private config: DataStoryConfig;
 
   constructor(private readonly context: vscode.ExtensionContext) {
     this.config = loadConfig(this.context);
   }
 
   async dispose(): Promise<void> {
-    await this.observerStorage?.close();
+    await this.observerStorageMap.forEach(async (storage) => await storage.close());
   }
 
   private async initializeStorage(diagramId: string) {
@@ -45,17 +49,18 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
 
     let Storage = storages[this.config.storage];
     if(!Storage) throw new Error(`Unknown storage type: ${this.config.storage}`);
-
+    let observerStorage: ObserverStorage;
     try {
-      this.observerStorage = new Storage(diagramId);
-      await this.observerStorage.init?.();
+      observerStorage = new Storage(diagramId);
+      await observerStorage.init?.();
     } catch (error) {
       console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
-      this.observerStorage = new DiagramObserverStorage(diagramId);
-      await this.observerStorage.init?.();
+      observerStorage = new DiagramObserverStorage(diagramId);
+      await observerStorage.init?.();
     }
 
-    this.inputObserverController = new InputObserverController(this.observerStorage);
+    this.observerStorageMap.set(diagramId, observerStorage);
+    this.InputObserverControllerMap.set(diagramId, new InputObserverController(observerStorage));
   }
 
   /**
@@ -68,11 +73,11 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     _token: vscode.CancellationToken,
   ): Promise<DiagramDocument> {
     // Initialize storage with diagram ID from the file name
-    const diagramId = path.basename(uri.fsPath);
+    const diagramId = this.getDiagramId(uri);
     await this.initializeStorage(diagramId);
 
     const diagramDocument = await DiagramDocument.create(uri);
-    this.contentMap.set(uri.toString(), diagramDocument);
+    this.contentMap.set(diagramId, diagramDocument);
     return diagramDocument;
   }
 
@@ -120,8 +125,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         return;
       }
 
+      const diagramId = this.getDiagramId(document.uri);
+      const inputObserverController = this.InputObserverControllerMap.get(diagramId);
       // @ts-ignore
-      const disposable = handler({ postMessage, event, document, inputObserverController: this.inputObserverController });
+      const disposable = handler({ postMessage, event, document, inputObserverController });
       if(typeof disposable === 'function' && disposable){
         disposables.push(disposable);
       }
@@ -162,7 +169,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   }
 
   provideDiagramContent(uri: vscode.Uri): DiagramDocument {
-    const document = this.contentMap.get(uri.toString());
+    const diagramId = this.getDiagramId(uri);
+    const document = this.contentMap.get(diagramId);
     if (!document) {
       throw new Error('Could not find document');
     }
@@ -196,5 +204,9 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private async save(document: DiagramDocument, data: string): Promise<void> {
     document.update(Buffer.from(data, 'utf8'));
     await document.save();
+  }
+
+  private getDiagramId(uri: vscode.Uri): string {
+    return uri.toString();
   }
 }
