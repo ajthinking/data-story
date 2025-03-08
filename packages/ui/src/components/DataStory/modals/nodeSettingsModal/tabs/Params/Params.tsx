@@ -1,7 +1,6 @@
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { StringableWithConfig } from './StringableWithConfig';
 import { RepeatableWithConfig } from './RepeatableWithConfig';
-import { SelectInput } from '../../../../Form/SelectInput';
 import { FormFieldWrapper } from '../../../../Form/UseFormField';
 import { StringListInput } from '../../../../Form/StringListInput';
 
@@ -32,10 +31,6 @@ export function ParamsComponent({
           {param.type === 'RepeatableParam' && <RepeatableWithConfig
             param={param}
             node={node}
-          />}
-
-          {param.type === 'SelectParam' && <SelectInput
-            param={param}
           />}
         </div>)
       })}
