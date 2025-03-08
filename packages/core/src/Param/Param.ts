@@ -28,32 +28,12 @@ export type StringableParam = {
   value: StringableInputValue,
 }
 
-export type PropertySelectionParam = {
-  name: string,
-  label: string,
-  help: string,
-  type: 'PropertySelection',
-  value: string
-}
-
 export type PortSelectionParam = {
   name: string,
   label: string,
   help: string,
   type: 'PortSelectionParam',
   allowCreate: boolean,
-  value: string
-}
-
-export type SelectParam = {
-  name: string,
-  label: string,
-  help: string,
-  type: 'SelectParam',
-  options: {
-    label: string
-    value: any
-  }[],
   value: string
 }
 
@@ -78,9 +58,7 @@ export type StringListParam = {
 }
 
 export type Param =
-  SelectParam |
   StringableParam |
-  PropertySelectionParam |
   PortSelectionParam |
   RepeatableParam<Param[]> |
   StringListParam;

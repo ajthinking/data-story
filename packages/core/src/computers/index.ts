@@ -1,6 +1,5 @@
 export { Unique } from './Unique'
 export { Throw } from './Throw';
-export { Test } from './Test';
 export { Table } from './Table'
 export { Sleep } from './Sleep'
 export { Signal } from './Signal'
