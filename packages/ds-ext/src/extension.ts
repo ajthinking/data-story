@@ -55,8 +55,11 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.commands.registerCommand('ds-ext.showDiagramPreview', async (args: vscode.Uri) => {
     const diagramDocument = diagramEditorProvider.provideDiagramContent(args);
-    const diagramData = new TextDecoder().decode(diagramDocument?.data) || '{}';
-    const dataString = JSON.stringify(JSON.parse(diagramData), null, 2);
+    const diagramData = new TextDecoder().decode(diagramDocument?.data);
+    let dataString = '';
+    if (diagramData) {
+      dataString = JSON.stringify(JSON.parse(diagramData), null, 2);
+    }
     const readOnlyUri = createReadonlyUri(args);
 
     jsonReadonlyProvider!.updateContent(readOnlyUri, dataString);
