@@ -78,6 +78,8 @@ const Flow = ({
     updateEdgeCounts: state.updateEdgeCounts,
     updateEdgeStatus: state.updateEdgeStatus,
     updateDiagram: state.updateDiagram,
+    onRun: state.onRun,
+    abortExecution: state.abortExecution,
   });
 
   const {
@@ -93,6 +95,8 @@ const Flow = ({
     updateEdgeCounts,
     updateEdgeStatus,
     updateDiagram,
+    onRun,
+    abortExecution,
   } = useStore(selector, shallow);
 
   const id = useId()
@@ -183,6 +187,8 @@ const Flow = ({
     toDiagram,
     nodeDescriptions,
     addNodeFromDescription,
+    onRun,
+    abortExecution,
   });
 
   useEscapeKey(() => setSidebarKey!(''), flowRef);

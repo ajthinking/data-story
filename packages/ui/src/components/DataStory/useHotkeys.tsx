@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Direction } from './getNodesWithNewSelection';
 import { DataStoryCanvasProps } from './types';
-import { Diagram, NodeDescription } from '@data-story/core';
+import { Diagram, NodeDescription, createDataStoryId } from '@data-story/core';
+import { DataStoryEvents, DataStoryEventType } from './events/dataStoryEventType';
+import { useDataStoryEvent } from './events/eventManager';
 
 export class HotkeyManager {
   private hotkeys: {};
@@ -51,6 +53,8 @@ export function useHotkeys({
   toDiagram,
   nodeDescriptions,
   addNodeFromDescription,
+  onRun,
+  abortExecution,
 }: {
   nodes: ReactFlowNode[],
   setShowRun: (show: boolean) => void,
@@ -62,6 +66,8 @@ export function useHotkeys({
   toDiagram: () => Diagram,
   nodeDescriptions?: NodeDescription[],
   addNodeFromDescription?: (nodeDescription: NodeDescription) => void,
+  onRun?: (executionId: string) => void,
+  abortExecution?: (executionId: string) => Promise<void>,
 }) {
   useEffect(() => {
     hotkeyManager.addEvent();
@@ -89,10 +95,40 @@ export function useHotkeys({
     }
   }, [hotkeyManager, setShowAddNode, nodeDescriptions, addNodeFromDescription]);
 
+  const [isRunning, setIsRunning] = useState(false);
+  const [executionId, setExecutionId] = useState('');
+
+  const dataStoryEvent = useCallback((event: DataStoryEventType) => {
+    const stopRunning = event.type === DataStoryEvents.RUN_ABORT ||
+                       event.type === DataStoryEvents.RUN_ERROR ||
+                       event.type === DataStoryEvents.RUN_SUCCESS;
+    if (stopRunning) {
+      setIsRunning(false);
+      setExecutionId('');
+    }
+  }, []);
+
+  useDataStoryEvent(dataStoryEvent);
+
   useEffect(() => {
-    hotkeyManager.register('Shift+KeyR', () => setShowRun(true));
+    const handleRun = async () => {
+      if (!onRun || !abortExecution) return;
+
+      if (isRunning && executionId) {
+        await abortExecution(executionId);
+        setIsRunning(false);
+        setExecutionId('');
+      } else {
+        const newExecutionId = createDataStoryId();
+        setExecutionId(newExecutionId);
+        onRun(newExecutionId);
+        setIsRunning(true);
+      }
+    };
+
+    hotkeyManager.register('Shift+KeyR', handleRun);
     return () => hotkeyManager.unregister('Shift+KeyR');
-  }, [hotkeyManager, setShowRun]);
+  }, [hotkeyManager, onRun, abortExecution, executionId, isRunning, setIsRunning, setExecutionId]);
 
   useEffect(() => {
     hotkeyManager.register('Ctrl+KeyS', () => onSave?.(toDiagram?.()));
