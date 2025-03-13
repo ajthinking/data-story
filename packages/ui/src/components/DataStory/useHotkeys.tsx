@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Direction } from './getNodesWithNewSelection';
 import { DataStoryCanvasProps } from './types';
-import { Diagram } from '@data-story/core';
+import { Diagram, NodeDescription } from '@data-story/core';
 
 export class HotkeyManager {
   private hotkeys: {};
@@ -49,6 +49,8 @@ export function useHotkeys({
   hotkeyManager,
   onSave,
   toDiagram,
+  nodeDescriptions,
+  addNodeFromDescription,
 }: {
   nodes: ReactFlowNode[],
   setShowRun: (show: boolean) => void,
@@ -57,21 +59,35 @@ export function useHotkeys({
   hotkeyManager: HotkeyManager,
   setSelectedNode?: (node: ReactFlowNode) => void,
   onSave?: DataStoryCanvasProps['onSave'],
-  toDiagram: () => Diagram
+  toDiagram: () => Diagram,
+  nodeDescriptions?: NodeDescription[],
+  addNodeFromDescription?: (nodeDescription: NodeDescription) => void,
 }) {
   useEffect(() => {
     hotkeyManager.addEvent();
     return () => {
       hotkeyManager.removeEvent();
     }
-  }, []);
+  }, [hotkeyManager]);
 
   useEffect(() => {
+    const addTableNode = () => {
+      if (!nodeDescriptions || !addNodeFromDescription) return;
+      const tableNode = nodeDescriptions.find(nd => nd.name === 'Table');
+      if (tableNode) {
+        addNodeFromDescription(tableNode);
+      }
+    };
+
     hotkeyManager.register('Shift+Minus', () => {
       setShowAddNode(true);
     });
-    return () => hotkeyManager.unregister('Shift+Minus');
-  }, [hotkeyManager, setShowAddNode]);
+    hotkeyManager.register('Shift+KeyT', addTableNode);
+    return () => {
+      hotkeyManager.unregister('Shift+Minus');
+      hotkeyManager.unregister('Shift+KeyT');
+    }
+  }, [hotkeyManager, setShowAddNode, nodeDescriptions, addNodeFromDescription]);
 
   useEffect(() => {
     hotkeyManager.register('Shift+KeyR', () => setShowRun(true));

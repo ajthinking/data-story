@@ -93,6 +93,7 @@ export const DataStoryComponent = (
                   sidebarKey={sidebarKey}
                   onChange={onChange}
                   onNodeDoubleClick={handleNodeClick}
+                  nodeDescriptions={nodeDescriptions}
                 />
               </Allotment.Pane>
               <Allotment.Pane visible={!isSidebarClose} snap maxSize={800} minSize={300} preferredSize={400}>
