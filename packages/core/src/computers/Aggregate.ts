@@ -43,7 +43,7 @@ export const Aggregate: Computer = {
 
     const groups = new Map();
     for (const item of all) {
-      const key = get(item.value, property);
+      const key = property ? get(item.value, property) : null;
 
       if (!groups.has(key)) groups.set(key, []);
 
