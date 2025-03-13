@@ -54,7 +54,8 @@ export type DataStoryCanvasProps = {
   setSidebarKey?: React.Dispatch<React.SetStateAction<string>>;
   sidebarKey?: string;
   onSave?: (diagram: Diagram) => Promise<void>;
-  onChange?: (diagram: Diagram) => Promise<void>
+  onChange?: (diagram: Diagram) => Promise<void>;
+  nodeDescriptions?: NodeDescription[];
 } & DataStoryProps;
 
 export type StoreInitOptions = {

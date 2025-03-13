@@ -63,6 +63,7 @@ const Flow = ({
   client,
   onChange,
   onNodeDoubleClick,
+  nodeDescriptions,
 }: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
     nodes: state.nodes,
@@ -169,7 +170,7 @@ const Flow = ({
   const traverseNodes = useCallback((direction) => {
     const selectedNode = getNodesWithNewSelection(direction, nodes);
     if (selectedNode) addSelectedNodes([selectedNode.id]);
-  }, [nodes]);
+  }, [nodes, addSelectedNodes]);
 
   useHotkeys({
     nodes,
@@ -180,6 +181,8 @@ const Flow = ({
     hotkeyManager,
     onSave,
     toDiagram,
+    nodeDescriptions,
+    addNodeFromDescription,
   });
 
   useEscapeKey(() => setSidebarKey!(''), flowRef);
@@ -296,7 +299,7 @@ const Flow = ({
           useCallback((event) => {
             const handler = onDrop || onDropDefault;
             handler(event, addNodeFromDescription)
-          }, [addNodeFromDescription],
+          }, [addNodeFromDescription, onDrop],
           )}
       >
         <DataStoryControls
