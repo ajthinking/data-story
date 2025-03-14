@@ -34,6 +34,8 @@ jobs:
           path: |
             node_modules
             packages/**/node_modules
+            !node_modules/@data-story
+            !packages/*/node_modules/@data-story
             !**/node_modules/.cache
             !**/node_modules/**/node_modules
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
@@ -66,6 +68,8 @@ jobs:
           path: |
             node_modules
             packages/**/node_modules
+            !node_modules/@data-story
+            !packages/*/node_modules/@data-story
             !**/node_modules/.cache
             !**/node_modules/**/node_modules
           key: ${{ steps.restore-node-modules.outputs.cache-primary-key }}
