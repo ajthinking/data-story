@@ -27,6 +27,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
+      - name: Restore Cypress cache
+        uses: actions/cache/restore@v4
+        id: restore-cypress-cache
+        with:
+          path: /home/runner/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
+
       - name: Restore node_modules
         uses: actions/cache/restore@v4
         id: restore-node-modules
@@ -59,6 +68,14 @@ jobs:
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ steps.restore-yarn-cache.outputs.cache-primary-key }}
+
+      # Save Cypress cache (always execute)
+      - name: Save Cypress cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: /home/runner/.cache/Cypress
+          key: ${{ steps.restore-cypress-cache.outputs.cache-primary-key }}
 
       # Save node_modules (always execute)
       - name: Save node_modules
