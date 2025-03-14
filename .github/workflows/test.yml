@@ -14,19 +14,6 @@ jobs:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
-
-      - name: Restore yarn cache
-        uses: actions/cache/restore@v4
-        id: restore-yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
       - name: Restore Cypress cache
         uses: actions/cache/restore@v4
         id: restore-cypress-cache
@@ -54,9 +41,8 @@ jobs:
       # Install dependencies (only when cache is not hit)
       - name: Install dependencies
         if: |
-          steps.restore-yarn-cache.outputs.cache-hit != 'true' ||
           steps.restore-node-modules.outputs.cache-hit != 'true'
-        run: yarn add --cached
+        run: yarn add --immutable
 
       - name: cypress install
         if: |
@@ -69,17 +55,9 @@ jobs:
       - name: Run tests
         run: yarn run ci:test
 
-      # Save yarn cache (always execute)
-      - name: Save yarn cache
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ steps.restore-yarn-cache.outputs.cache-primary-key }}
-
       # Save Cypress cache (always execute)
       - name: Save Cypress cache
-        if: always()
+        if: success()
         uses: actions/cache/save@v4
         with:
           path: /home/runner/.cache/Cypress
@@ -87,7 +65,7 @@ jobs:
 
       # Save node_modules (always execute)
       - name: Save node_modules
-        if: always()
+        if: success()
         uses: actions/cache/save@v4
         with:
           path: |
@@ -98,3 +76,7 @@ jobs:
             !**/node_modules/.cache
             !**/node_modules/**/node_modules
           key: ${{ steps.restore-node-modules.outputs.cache-primary-key }}
+
+      - name: Cleanup
+        if: always()
+        run: yarn cache clean
