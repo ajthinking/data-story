@@ -45,7 +45,7 @@ jobs:
         if: |
           steps.restore-yarn-cache.outputs.cache-hit != 'true' ||
           steps.restore-node-modules.outputs.cache-hit != 'true'
-        run: yarn --prefer-offline
+        run: yarn add --cached
 
       - name: Run tests
         run: yarn run ci:test
