@@ -63,6 +63,9 @@ jobs:
           steps.restore-cypress-cache.outputs.cache-hit != 'true'
         run: yarn cypress install
 
+      - name: yarn build
+        run: yarn build
+
       - name: Run tests
         run: yarn run ci:test
 
