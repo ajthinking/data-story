@@ -128,14 +128,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-cypress-
 
-      - name: Download build artifacts
+      - name: Download dist artifacts
         uses: actions/download-artifact@v4
         with:
           name: dist-artifacts
           path: packages
 
-      - name: Run unit tests
-        run: yarn run ci:test-unit
+      - name: Run @data-story/core, @data-story/ui, @data-story/docs tests
+        run: yarn run ci:test-packages
 
   e2e-test:
     needs: build-artifact
