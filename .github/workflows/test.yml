@@ -3,7 +3,7 @@ name: Test CI
 on: [push, pull_request]
 
 jobs:
-  test:
+  build-artifact:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -13,15 +13,6 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Restore Cypress cache
-        uses: actions/cache/restore@v4
-        id: restore-cypress-cache
-        with:
-          path: /home/runner/.cache/Cypress
-          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cypress-
 
       - name: Restore node_modules
         uses: actions/cache/restore@v4
@@ -37,6 +28,15 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-modules-
+
+      - name: Restore Cypress cache
+        uses: actions/cache/restore@v4
+        id: restore-cypress-cache
+        with:
+          path: /home/runner/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
 
       # Install dependencies (only when cache is not hit)
       - name: Install dependencies
@@ -57,24 +57,13 @@ jobs:
         with:
           name: dist-artifacts
           path: |
-            packages/core/dis
+            packages/core/dist
             packages/ui/dist
             packages/nodejs/dist
             packages/hubspot/dist
             packages/ds-ext/dist
             packages/docs/dist
           retention-days: 1
-
-      - name: Run tests
-        run: yarn run ci:test
-
-      # Save Cypress cache (always execute)
-      - name: Save Cypress cache
-        if: success()
-        uses: actions/cache/save@v4
-        with:
-          path: /home/runner/.cache/Cypress
-          key: ${{ steps.restore-cypress-cache.outputs.cache-primary-key }}
 
       # Save node_modules (always execute)
       - name: Save node_modules
@@ -89,7 +78,45 @@ jobs:
             !**/node_modules/.cache
             !**/node_modules/**/node_modules
           key: ${{ steps.restore-node-modules.outputs.cache-primary-key }}
+      
+      # Save Cypress cache (always execute)
+      - name: Save Cypress cache
+        if: success()
+        uses: actions/cache/save@v4
+        with:
+          path: /home/runner/.cache/Cypress
+          key: ${{ steps.restore-cypress-cache.outputs.cache-primary-key }}
 
       - name: Cleanup
         if: always()
         run: yarn cache clean
+
+  unit-test:
+    needs: build-artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: packages
+
+      - name: Run unit tests
+        run: yarn run ci:test-unit
+
+  e2e-test:
+    needs: build-artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-artifacts
+          path: packages
+
+      - name: Run e2e tests
+        run: yarn run ci:e2e
