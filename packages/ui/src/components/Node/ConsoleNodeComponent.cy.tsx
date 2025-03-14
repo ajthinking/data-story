@@ -32,7 +32,7 @@ const mountConsoleNodeComponent = (items: unknown[], client?: () => WorkspaceApi
         client: client?.() || {
           observeLinkItems: (observer: ObserveLinkItems) => {
             observer.onReceive(items as LinkItemsParam[]);
-            return { subscribe:() => cy.spy() };
+            return { unsubscribe:() => cy.spy() };
           },
         },
       })
