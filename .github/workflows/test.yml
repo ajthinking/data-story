@@ -52,6 +52,19 @@ jobs:
       - name: yarn build
         run: yarn build
 
+      - name: Upload build dist artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-artifacts
+          path: |
+            packages/core/dis
+            packages/ui/dist
+            packages/nodejs/dist
+            packages/hubspot/dist
+            packages/ds-ext/dist
+            packages/docs/dist
+          retention-days: 1
+
       - name: Run tests
         run: yarn run ci:test
 

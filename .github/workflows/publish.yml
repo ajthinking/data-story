@@ -11,23 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18.x'
-          registry-url: 'https://registry.npmjs.org'
-      - name: Install dependencies
-        run: yarn
-      - name: Build
-        run: yarn build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist-artifacts
-          path: |
-            packages/core/dist
-            packages/ui/dist
-            packages/nodejs/dist
 
   publish_core:
     needs: build_and_upload_artifacts
@@ -40,9 +23,11 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      - name: Download artifacts
+      - name: Download dist artifacts from Test CI
         uses: actions/download-artifact@v4
         with:
+          workflow: Test CI
+          workflow_conclusion: success
           name: dist-artifacts
           path: packages
       - name: Check Test CI status
@@ -86,9 +71,11 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      - name: Download artifacts
+      - name: Download dist artifacts from Test CI
         uses: actions/download-artifact@v4
         with:
+          workflow: Test CI
+          workflow_conclusion: success
           name: dist-artifacts
           path: packages
       - name: Check version
@@ -123,9 +110,11 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      - name: Download artifacts
+      - name: Download dist artifacts from Test CI
         uses: actions/download-artifact@v4
         with:
+          workflow: Test CI
+          workflow_conclusion: success
           name: dist-artifacts
           path: packages
       - name: Check version
