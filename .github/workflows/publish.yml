@@ -7,13 +7,7 @@ on:
     types: [ completed ]
 
 jobs:
-  build_and_upload_artifacts:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
   publish_core:
-    needs: build_and_upload_artifacts
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:

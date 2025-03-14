@@ -97,6 +97,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        id: restore-node-modules
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+            !node_modules/@data-story
+            !packages/*/node_modules/@data-story
+            !**/node_modules/.cache
+            !**/node_modules/**/node_modules
+
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
+
+      - name: Restore Cypress cache
+        uses: actions/cache/restore@v4
+        id: restore-cypress-cache
+        with:
+          path: /home/runner/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -111,6 +142,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
+        id: restore-node-modules
+        with:
+          path: |
+            node_modules
+            packages/**/node_modules
+            !node_modules/@data-story
+            !packages/*/node_modules/@data-story
+            !**/node_modules/.cache
+            !**/node_modules/**/node_modules
+
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
+
+      - name: Restore Cypress cache
+        uses: actions/cache/restore@v4
+        id: restore-cypress-cache
+        with:
+          path: /home/runner/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
