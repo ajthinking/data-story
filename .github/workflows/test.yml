@@ -58,6 +58,11 @@ jobs:
           steps.restore-node-modules.outputs.cache-hit != 'true'
         run: yarn add --cached
 
+      - name: cypress install
+        if: |
+          steps.restore-cypress-cache.outputs.cache-hit != 'true'
+        run: yarn cypress install
+
       - name: Run tests
         run: yarn run ci:test
 
