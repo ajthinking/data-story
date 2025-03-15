@@ -69,7 +69,6 @@ export const DataStoryComponent = (
   }, [setSidebarKey, setSelectedNode, setIsSidebarClose]);
 
   const handleSave = useCallback(async(diagram: Diagram) => {
-    console.log('data-story: ui DataStory handleSave', diagram);
     client?.updateDiagram?.(diagram)
   }, [client]);
 
