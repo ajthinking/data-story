@@ -42,7 +42,7 @@ jobs:
       - name: Install dependencies
         if: |
           steps.restore-node-modules.outputs.cache-hit != 'true'
-        run: yarn add --immutable
+        run: yarn install --immutable
 
       - name: cypress install
         if: |
