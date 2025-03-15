@@ -151,25 +151,32 @@ jobs:
       - name: Check VS Code extension version
         id: check_vscode
         run: |
-          PACKAGE_VERSION=$(node -p "require('./packages/ds-ext/package.json').version")
-          echo "Version: $PACKAGE_VERSION"
-          HTTP_STATUS=$(curl -X POST \
-            -H "Accept: */*;api-version=7.2-preview.1;excludeUrls=true" \
-            -H "Accept-Encoding: gzip, deflate, br, zstd" \
-            -H "Accept-Language: en-GB,en-US;q=0.9,en;q=0.8,sv;q=0.7" \
-            -H "Content-Length: 0" \
-            -o /dev/null \
-            -w "%{http_code}" \
-            --silent \
-            "https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ajthinking/extensions/ds-ext/$PACKAGE_VERSION/stats?statType=pageview")
-          
-          if [ "$HTTP_STATUS" -eq 200 ]; then
-            echo "Version $PACKAGE_VERSION already exists. Skipping build and publish."
+          # get local version
+          LOCAL_VERSION=$(node -p "require('./packages/ds-ext/package.json').version")
+          echo "Local Version: $LOCAL_VERSION"
+      
+          # query online latest version
+          RESPONSE=$(curl -s -X POST \
+            -H "Content-Type: application/json" \
+            -H "Accept: application/json;api-version=3.0-preview" \
+            -d '{"filters":[{"criteria":[{"filterType":7,"value":"ajthinking.ds-ext"}]}],"flags":914}' \
+            "https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery")
+      
+          # parse online version
+          ONLINE_VERSION=$(echo $RESPONSE | jq -r '.results[0].extensions[0].versions[0].version')
+          echo "Online Version: $ONLINE_VERSION"
+      
+          # version comparison logic
+          if [ "$LOCAL_VERSION" = "$ONLINE_VERSION" ]; then
+            echo "::warning::Version $LOCAL_VERSION already exists. Skipping build and publish."
             echo "VERSION_EXISTS=true" >> $GITHUB_ENV
           else
-            echo "Version does not exist. Proceeding to build and publish."
+            echo "::notice::New version detected. Proceeding to build and publish."
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
+      
+        # add error handling (continue publishing when API is unavailable)
+        continue-on-error: true
 
       - name: Install dependencies
         if: env.VERSION_EXISTS == 'false'
