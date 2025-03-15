@@ -17,6 +17,15 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
+
+      - name: Check Test CI status
+        if: >
+          github.event.workflow_run.conclusion == 'failure' ||
+          github.event.workflow_run.conclusion == 'cancelled'
+        run: |
+          echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
+          exit 1 # Exit with a failure
+
       - name: Download dist artifacts from Test CI
         uses: actions/download-artifact@v4
         with:
@@ -25,14 +34,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           run-id: ${{ github.event.workflow_run.id }}
-      - name: Check Test CI status
-        if: >
-          github.event.workflow_run.conclusion == 'failure' ||
-          github.event.workflow_run.conclusion == 'cancelled'
-        run: |
-          echo "The 'Test CI' workflow is ${{ github.event.workflow_run.conclusion }}."
-          exit 1 # Exit with a failure
-      
+
       - name: Check version
         id: check
         run: |
@@ -66,6 +68,7 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
+
       - name: Download dist artifacts from Test CI
         uses: actions/download-artifact@v4
         with:
@@ -74,6 +77,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           run-id: ${{ github.event.workflow_run.id }}
+
       - name: Check version
         id: check
         run: |
@@ -106,14 +110,7 @@ jobs:
         with:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
-      - name: Download dist artifacts from Test CI
-        uses: actions/download-artifact@v4
-        with:
-          name: dist-artifacts
-          path: packages
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
+
       - name: Check version
         id: check
         run: |
