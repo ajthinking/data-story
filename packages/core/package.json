@@ -36,10 +36,10 @@
     "demo": "npx ts-node ./src/V2/old/demo.ts",
     "test": "yarn run -T vitest run",
     "watch:test": "yarn run -T vitest",
+    "build": "yarn build:esm && yarn build:cjs && yarn build-vite",
     "build:esm": "vite build --config vite.config.esm.ts",
     "build:cjs": "tsc -p tsconfig.build.json",
     "watch": "yarn build:esm --watch & yarn build:cjs --watch",
-    "build": "yarn build:esm && yarn build:cjs && yarn build-vite",
     "release": "yarn run -T release-it"
   },
   "release-it": {

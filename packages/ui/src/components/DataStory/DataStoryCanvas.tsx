@@ -253,7 +253,7 @@ const Flow = ({
           if (onChange) onChange(toDiagram())
         }}
         onNodeDoubleClick={(_, node) => {
-          onNodeDoubleClick?.(node);
+          onNodeDoubleClick?.(node as ReactFlowNode);
         }}
         onEdgeDoubleClick={(event, edge) => {
           if (!client) return;

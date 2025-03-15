@@ -2,6 +2,7 @@ import ConsoleNodeComponent from './ConsoleNodeComponent';
 import { ReactFlowProvider } from '@xyflow/react';
 import { LinkItemsParam, ObserveLinkItems } from '@data-story/core';
 import { DataStoryContext } from '../DataStory/store/store';
+import { WorkspaceApiClientImplement } from '../DataStory/clients/WorkspaceApiClientImplement';
 
 const data = {
   'params': [],
@@ -18,7 +19,7 @@ const data = {
 };
 const id = 'ConsoleLog.1';
 
-const mountConsoleNodeComponent = (items: unknown[], client?: () => void) => {
+const mountConsoleNodeComponent = (items: unknown[], client?: () => WorkspaceApiClientImplement) => {
   cy.mount(
     // @ts-ignore
     <DataStoryContext.Provider value={() => {

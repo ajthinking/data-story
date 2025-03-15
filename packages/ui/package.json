@@ -25,9 +25,9 @@
     "watch:webpack": "webpack --watch",
     "release": "yarn run -T release-it",
     "ci:unit": "yarn run -T vitest run --config vitest.config.ts --passWithNoTests",
+    "test": "yarn run ci:unit && yarn run test:component",
     "test:unit": "yarn run -T vitest --config vitest.config.ts --passWithNoTests",
     "test:component": "yarn run -T cypress run --project ../../ ../../cypress.config.ts --component --spec 'src/**/*.cy.tsx'",
-    "test": "yarn run ci:unit && yarn run test:component",
     "tinker": "npx ts-node ./src/tinker.ts"
   },
   "release-it": {
@@ -53,7 +53,6 @@
     "allotment": "^1.20.2",
     "clsx": "^2.0.0",
     "codemirror": "^6.0.1",
-    "concurrently": "^8.2.1",
     "markdown-it": "^13.0.2",
     "react-arborist": "^3.4.0",
     "react-dnd": "^16.0.1",
