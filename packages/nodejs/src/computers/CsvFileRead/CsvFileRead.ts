@@ -1,7 +1,7 @@
 import * as glob from 'glob';
 import fs from 'fs';
 import path from 'path';
-import { parse } from 'csv-parse/sync';
+import { parse } from 'csv-parse';
 import { Computer, serializeError, str } from '@data-story/core';
 
 export const CsvFileRead: Computer = {
@@ -68,23 +68,37 @@ export const CsvFileRead: Computer = {
       // Process each file found by glob
       for (const file of files) {
         try {
-          const content = fs.readFileSync(file, 'utf-8');
-          const records = parse(content, {
+          // Create read stream and parser
+          const fileStream = fs.createReadStream(file);
+          const parser = parse({
             columns: true, // Use first row as column names
             delimiter,
             skip_empty_lines: true,
             trim: true,
           });
 
-          // Add file path to each record
-          const items = records.map((record: any) => ({
-            ...record,
-            _filePath: file,
-          }));
+          // Set up pipeline
+          fileStream.pipe(parser);
 
-          // Process items in batches
-          for (let i = 0; i < items.length; i += batchSize) {
-            const batch = items.slice(i, i + batchSize);
+          let batch: any[] = [];
+
+          // Process records as they come in
+          for await (const record of parser) {
+            batch.push({
+              ...record,
+              _filePath: file,
+            });
+
+            // When batch is full, emit it
+            if (batch.length >= batchSize) {
+              output.push(batch);
+              batch = [];
+              yield;
+            }
+          }
+
+          // Emit any remaining records
+          if (batch.length > 0) {
             output.push(batch);
             yield;
           }
