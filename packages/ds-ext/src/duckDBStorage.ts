@@ -1,6 +1,7 @@
 import { DiagramId, GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
 import type { Database as DatabaseType } from 'duckdb-async';
 import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
+
 export class DuckDBStorage implements ObserverStorage {
   private db: DatabaseType | null = null;
   private insertSequence: bigint = BigInt(0);
@@ -105,8 +106,10 @@ export class DuckDBStorage implements ObserverStorage {
 
   async setNodeStatus(nodeId: NodeId, status: 'BUSY' | 'COMPLETE'): Promise<void> {
     const currentTime = new Date();
+    // Properly escape single quotes in the status string
+    const escapedStatus = status.replace(/'/g, '\'\'');
     await this.db?.all('INSERT INTO nodes (nodeId, status, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(nodeId) DO UPDATE SET status = ?, updateTime = ?',
-      nodeId, status, currentTime, currentTime, status, currentTime);
+      nodeId, escapedStatus, currentTime, currentTime, escapedStatus, currentTime);
   }
 
 }
