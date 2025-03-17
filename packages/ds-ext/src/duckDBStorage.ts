@@ -83,12 +83,13 @@ export class DuckDBStorage implements ObserverStorage {
   async appendLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
     const currentTime = new Date().toISOString();
     const values = items.map(item => {
-      const data = JSON.stringify(item);
+      // Properly escape single quotes in the JSON string
+      const data = JSON.stringify(item).replace(/'/g, '\'\'');
       return `('${linkId}', ${this.nextSequenceVal()}, '${data}', '${currentTime}', '${currentTime}')`;
     });
 
     const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime) VALUES 
-  ${values.join(', ')}`;
+    ${values.join(', ')}`;
 
     // execute batch insert
     await this.db?.run(sql);
