@@ -16,7 +16,8 @@
         "watch:app", 
         "watch",
         "watch:webpack",
-        "watch:css"
+        "watch:css",
+        "watch:nodejs"
       ],
       "cache": false,
       "persistent": true
@@ -42,6 +43,10 @@
       "persistent": true
     },
     "watch:server": {
+      "cache": false,
+      "persistent": true
+    },
+    "watch:nodejs": {
       "cache": false,
       "persistent": true
     },
