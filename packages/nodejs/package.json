@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "watch:tsc": "tsc --watch",
+    "watch:nodejs": "tsc --watch",
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "yarn run -T vitest",
     "build": "tsc",
