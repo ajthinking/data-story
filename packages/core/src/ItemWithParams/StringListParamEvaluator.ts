@@ -6,7 +6,7 @@ export class StringListParamEvaluator implements ParamsValueEvaluator<StringList
   type = 'StringListParam' as const;
 
   evaluate(itemValue: ItemValue, param: StringListParam) {
-    const value = param.value as string;
+    const value = param.input as string;
     // the value will be a string with comma or newline separated values
     const result = value.split('\n')
       .flatMap(line => line.split(','))

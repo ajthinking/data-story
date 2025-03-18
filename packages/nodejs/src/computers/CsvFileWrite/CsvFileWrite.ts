@@ -22,7 +22,7 @@ export const CsvFileWrite: Computer = {
       name: 'delimiter',
       label: 'Delimiter',
       help: 'CSV delimiter character (default: ,)',
-      value: ',',
+      input: ',',
     }),
   ],
 

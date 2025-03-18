@@ -17,7 +17,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // Ensure param is StringableParam
     if (param.type !== 'StringableParam') throw new Error(`Param "${param.name}" must be StringableParam`);
 
-    let transformedValue: any  = String(param.value?.value);
+    let transformedValue: any  = String(param.input?.rawValue);
 
     // **********************************************************************
     // INTERPOLATE GLOBAL PARAMS
@@ -85,7 +85,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // EVALUATE
     // **********************************************************************
     const selectedEvaluation = {
-      type: param.value?.['Evaluation'] as string,
+      type: param.input?.['Evaluation'] as string,
     };
 
     if (selectedEvaluation?.type === 'JSON') {
@@ -116,7 +116,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     // CAST
     // **********************************************************************
     let selectedCast = {
-      type: param.value?.['Cast'] as string,
+      type: param.input?.['Cast'] as string,
     };
 
     if (selectedCast?.type === 'stringCast') {

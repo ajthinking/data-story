@@ -23,10 +23,10 @@ export const RemoveProperties: Computer = {
         str({
           name: 'property',
           label: 'Property',
-          value: 'id',
+          input: 'id',
         }),
       ],
-      value: [],
+      input: [],
     },
   ],
 

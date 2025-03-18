@@ -256,7 +256,7 @@ describe('InputObserverController', () => {
         linkId: 'linkId', items: [{ value: 1 }] });
 
       const items = await mockStorage.getLinkItems({ linkId: 'linkId', offset: 0, limit: 100 });
-      expect(items).toEqual([{ value: 1 }]);
+      expect(items).toEqual([{ input: 1 }]);
     });
 
     it('should emit link items', () => {
@@ -337,7 +337,7 @@ describe('InputObserverController', () => {
         linkIds: ['linkId'],
         throttleMs: 200,
         onReceive: (items) => {
-          expect(items).toEqual([{ type: RequestObserverType.observeLinkItems, linkId: 'linkId', items: [{ value: 1 }, { value: 2 }] }]);
+          expect(items).toEqual([{ type: RequestObserverType.observeLinkItems, linkId: 'linkId', items: [{ input: 1 }, { input: 2 }] }]);
         },
       } as ObserveLinkItems);
 

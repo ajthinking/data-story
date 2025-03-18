@@ -29,13 +29,13 @@ export const Merge: Computer = {
       name: 'requestor_key',
       label: 'Requestor Key',
       help: 'The requestor key to merge on',
-      value: 'id',
+      input: 'id',
     }),
     str({
       name: 'supplier_key',
       label: 'Supplier Key',
       help: 'The supplier key to merge on',
-      value: 'id',
+      input: 'id',
     }),
   ],
 

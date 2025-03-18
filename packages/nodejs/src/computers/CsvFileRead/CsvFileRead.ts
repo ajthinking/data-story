@@ -29,13 +29,13 @@ export const CsvFileRead: Computer = {
       name: 'delimiter',
       label: 'Delimiter',
       help: 'CSV delimiter character (default: ,)',
-      value: ',',
+      input: ',',
     }),
     str({
       name: 'batch_size',
       label: 'Batch size',
       help: 'Number of records to yield in each batch (default: 1000)',
-      value: '1000',
+      input: '1000',
     }),
   ],
 

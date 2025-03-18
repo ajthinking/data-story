@@ -28,26 +28,26 @@ export const Request: Computer = {
   params: [
     str({
       name: 'url',
-      value: 'https://jsonplaceholder.typicode.com/todos',
+      input: 'https://jsonplaceholder.typicode.com/todos',
     }),
     str({
       name: 'method',
-      value: 'GET',
+      input: 'GET',
     }),
     json_({
       name: 'body',
-      value: '{}',
+      input: '{}',
       multiline: true,
     }),
     json_({
       name: 'config',
-      value: JSON.stringify({ headers: {} }, null, 2),
+      input: JSON.stringify({ headers: {} }, null, 2),
       multiline: true,
     }),
     str({
       name: 'item_path',
       help: 'Path to the items in the response data.',
-      value: '',
+      input: '',
     }),
   ],
 

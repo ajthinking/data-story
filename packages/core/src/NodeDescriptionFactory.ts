@@ -23,10 +23,12 @@ export const NodeDescriptionFactory = {
       inputs: diagram.nodes
         .filter(node => node.name === 'Input')
         .map(node => {
+          //@ts-ignore
           const portParam = node.params
             .find(param => param.name === 'port_name')! as StringableInputValue
 
-          const portName = portParam.value.value
+          const portName = portParam.input.rawValue;
+          console.log('[data-story] todo-bug portName', portName);
 
           return {
             name: portName,
@@ -36,10 +38,12 @@ export const NodeDescriptionFactory = {
       outputs: diagram.nodes
         .filter(node => node.name === 'Output')
         .map(node => {
+          //@ts-ignore
           const portParam = node.params
             .find(param => param.name === 'port_name')! as StringableInputValue
 
-          const portName = portParam.value.value
+          const portName = portParam.input.rawValue;
+          console.log('[data-story] todo-bug portName', portName);
 
           return {
             name: portName,

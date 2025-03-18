@@ -25,8 +25,8 @@ it('can parse hjson', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
-      value: {
-        value: '{ cool: "yes" }',
+      input: {
+        input: '{ cool: "yes" }',
         Evaluation: 'HJSON',
       },
       evaluations: [
@@ -42,8 +42,8 @@ it('can parse js function', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
-      value: {
-        value: '() => ({ sum: 1 + 1 })',
+      input: {
+        input: '() => ({ sum: 1 + 1 })',
         Evaluation: 'JS_FUNCTION',
       },
       evaluations: [
@@ -59,8 +59,8 @@ it('can parse js expression', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
-      value: {
-        value: multiline`
+      input: {
+        input: multiline`
       ({
         interesting: 'yes'
       })`,
@@ -79,8 +79,8 @@ it('can directly parse js objects starting with bracket', async () => {
   await when(Create)
     .hasParam({
       name: 'data',
-      value: {
-        value: multiline`
+      input: {
+        input: multiline`
       {
         label: 'statement'
       }`,

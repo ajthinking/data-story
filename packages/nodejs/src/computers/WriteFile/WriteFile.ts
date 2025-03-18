@@ -15,13 +15,13 @@ export const WriteFile: Computer = {
       name: 'path',
       label: 'Path',
       help: 'File path',
-      value: '${path}/output.txt',
+      input: '${path}/output.txt',
     }),
     str({
       name: 'content',
       label: 'Content',
       help: 'File content',
-      value: 'Hello world!',
+      input: 'Hello world!',
     }),
   ],
 

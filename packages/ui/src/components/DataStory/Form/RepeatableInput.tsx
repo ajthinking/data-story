@@ -127,7 +127,8 @@ const MemoRepeatableDraggableRow = React.memo(RepeatableDraggableRow, areEqual);
 const defaultRowData = (row: Param[]) => {
   const id = Math.random().toString(36).substring(7);
   const data = Object.fromEntries(row.map((column: Param) => {
-    return [column.name, column.value]
+    console.log('[data-story] column', column);
+    return [column.name, column.input]
   }));
   return {
     id,

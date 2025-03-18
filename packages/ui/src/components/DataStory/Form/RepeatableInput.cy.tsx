@@ -13,6 +13,7 @@ const MockComponent = ({ param, type }: {
 }) => {
   const { getValues } = useFormField();
   const value = getValues();
+  console.log('[data-story] todo-bug value', value);
   return (
     <>
       {

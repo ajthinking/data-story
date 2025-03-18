@@ -26,19 +26,19 @@ const Template: Computer = {
       name: 'entity',
       label: 'Entity',
       help: 'The entity to retrieve.',
-      value: 'ENTITY',
+      input: 'ENTITY',
     }),
     str({
       name: 'properties',
       label: 'Properties',
       help: 'Comma separated list of properties.',
-      value: '',
+      input: '',
     }),
     num({
       name: 'limit',
       label: 'Limit',
       help: 'The maximum number of companies to return.',
-      value: String('300'),
+      input: String('300'),
     }),
   ],
   async *run({ input, output, params }) {

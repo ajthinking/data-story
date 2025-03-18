@@ -25,7 +25,7 @@ describe('evaluate', () => {
         'name': 'remove_properties',
         'type': 'RepeatableParam',
         'row': [],
-        'value': [],
+        'input': [],
       } as unknown as RepeatableParam<any>,
       [],
     );
@@ -51,8 +51,8 @@ describe('evaluate', () => {
     );
 
     expect(result).toEqual([
-      { value: 22, port: 'unfiltered' },
-      { value: 'id', port: 'outputzdbj' },
+      { input: 22, port: 'unfiltered' },
+      { input: 'id', port: 'outputzdbj' },
     ]);
   });
 
@@ -64,8 +64,8 @@ describe('evaluate', () => {
     );
 
     expect(result).toEqual([
-      { value: 'value-11', remove_properties: [{ property: 'property-11' }] },
-      { value: 'value-22', remove_properties: [{ property: 'property-22' }] },
+      { input: 'value-11', remove_properties: [{ property: 'property-11' }] },
+      { input: 'value-22', remove_properties: [{ property: 'property-22' }] },
     ]);
   });
 

@@ -24,20 +24,20 @@ export const RequestLoopByToken: Computer = {
   params: [
     str({
       name: 'url',
-      value: 'http://localhost:3009/users',
+      input: 'http://localhost:3009/users',
     }),
     str({
       name: 'method',
-      value: 'GET',
+      input: 'GET',
     }),
     json_({
       name: 'body',
-      value: '{}',
+      input: '{}',
       multiline: true,
     }),
     json_({
       name: 'config',
-      value: JSON.stringify({
+      input: JSON.stringify({
         headers: {},
       }, null, 2),
       multiline: true,
@@ -45,22 +45,22 @@ export const RequestLoopByToken: Computer = {
     str({
       name: 'item_path',
       help: 'Path to the items in the response data.',
-      value: 'results',
+      input: 'results',
     }),
     str({
       name: 'cursor_path',
       help: 'Path to the cursor in the response data.',
-      value: 'paging.next.after',
+      input: 'paging.next.after',
     }),
     str({
       name: 'limit',
       help: 'How many items to request in each batch.',
-      value: '25',
+      input: '25',
     }),
     str({
       name: 'cursor_token',
       help: 'the token to use for pagination',
-      value: '0',
+      input: '0',
     }),
   ],
 

@@ -28,7 +28,7 @@ export const Aggregate: Computer = {
         multiline: false,
         canInterpolate: false,
         interpolate: false,
-        value: '',
+        input: '',
       },
     ),
   ],

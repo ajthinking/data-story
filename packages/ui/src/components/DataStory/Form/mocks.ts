@@ -10,8 +10,8 @@ const mockRepeatableRow = [
     'multiline': false,
     'canInterpolate': true,
     'interpolate': true,
-    'value': {
-      value: 'id',
+    'input': {
+      input: 'id',
     },
   },
   {
@@ -19,22 +19,22 @@ const mockRepeatableRow = [
     'label': 'Port',
     'help': 'The port to map to',
     'type': 'PortSelectionParam',
-    'value': '',
+    'input': '',
     'allowCreate': true,
   },
 ];
 const mockRepeatableValue = [
   {
     'id': 'wrihes',
-    'value': {
-      value: 'id444',
+    'input': {
+      input: 'id444',
     },
     'port': 'unfiltered',
   },
   {
     'id': '3f4tzr',
-    'value': {
-      value: 'id333',
+    'input': {
+      input: 'id333',
     },
     'port': 'output4ex3',
   },
@@ -45,7 +45,7 @@ export const mockParam = {
   'help': 'Where to map items',
   'type': 'RepeatableParam',
   'row': mockRepeatableRow,
-  'value': mockRepeatableValue,
+  'input': mockRepeatableValue,
 } as unknown as RepeatableParam<Param[]>;
 export const mockNode = {
   'width': 128,
@@ -68,8 +68,8 @@ export const mockNode = {
             'selected': true,
           },
         ],
-        'value': {
-          value: 'id',
+        'input': {
+          input: 'id',
           Cast: 'stringCast',
         },
       },

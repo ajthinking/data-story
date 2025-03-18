@@ -24,41 +24,41 @@ export const RequestLoopByOffset: Computer = {
   params: [
     str({
       name: 'url',
-      value: 'https://dummyjson.com/todos',
+      input: 'https://dummyjson.com/todos',
     }),
     str({
       name: 'method',
-      value: 'GET',
+      input: 'GET',
     }),
     json_({
       name: 'body',
-      value: '{}',
+      input: '{}',
       multiline: true,
     }),
     json_({
       name: 'config',
-      value: JSON.stringify({ headers: {} }, null, 2),
+      input: JSON.stringify({ headers: {} }, null, 2),
       multiline: true,
     }),
     str({
       name: 'item_path',
       help: 'Path to the items in the response data.',
-      value: 'todos',
+      input: 'todos',
     }),
     str({
       name: 'offset_name',
       help: 'Name of URL parameter to use for offset.',
-      value: 'skip',
+      input: 'skip',
     }),
     str({
       name: 'limit',
       help: 'How many items to request in each batch.',
-      value: '25',
+      input: '25',
     }),
     str({
       name: 'start_offset',
       help: 'The offset to start iteration from.',
-      value: '0',
+      input: '0',
     }),
   ],
 

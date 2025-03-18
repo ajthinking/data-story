@@ -27,7 +27,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
       label: node?.data?.label,
       outputs: JSON.stringify(node?.data?.outputs, null, 2),
       params: node?.data?.params.reduce((acc, param: Param) => {
-        acc[param.name] = param.value;
+        acc[param.name] = param.input;
         return acc;
       }, {} as Record<string, ParamValue>),
     };
@@ -55,7 +55,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
       // Param fields
       for(const [key, value] of Object.entries(submitted.params)) {
         const param = newData.params.find((p) => p.name === key)!;
-        if (param.hasOwnProperty('value')) param.value = value;
+        if (param.hasOwnProperty('input')) param.input = value;
       }
 
       updateNode({

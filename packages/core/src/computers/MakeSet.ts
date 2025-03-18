@@ -16,7 +16,7 @@ export const MakeSet: Computer = {
     str({
       name: 'property',
       label: 'Property',
-      value: '',
+      input: '',
       help: 'The property to create unique items from',
       multiline: false,
       canInterpolate: false,

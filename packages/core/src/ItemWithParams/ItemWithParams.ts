@@ -39,7 +39,7 @@ export class ItemWithParams<ExpectedType extends ItemValue = ItemValue> {
           return paramEvaluatorInstance.evaluate(value, param, globalParams);
         } catch (error) {
           console.error('error', error);
-          return param.value;
+          return param.input;
         }
       },
     });

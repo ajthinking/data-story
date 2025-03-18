@@ -25,7 +25,7 @@ export const Clone: Computer = {
     num({
       name: 'count',
       help: 'How many clones to make?',
-      value: 10,
+      input: 10,
     }),
   ],
 
