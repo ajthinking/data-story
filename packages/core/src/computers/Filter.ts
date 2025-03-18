@@ -37,11 +37,11 @@ export const Filter: Computer = {
           label: 'Port',
           help: 'The port to map to',
           type: 'PortSelectionParam',
-          value: '',
+          input: '',
           allowCreate: true,
         },
       ],
-      value: [],
+      input: [],
     },
   ],
 

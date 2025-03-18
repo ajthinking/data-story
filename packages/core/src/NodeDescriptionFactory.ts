@@ -28,7 +28,6 @@ export const NodeDescriptionFactory = {
             .find(param => param.name === 'port_name')! as StringableInputValue
 
           const portName = portParam.input.rawValue;
-          console.log('[data-story] todo-bug portName', portName);
 
           return {
             name: portName,
@@ -43,7 +42,6 @@ export const NodeDescriptionFactory = {
             .find(param => param.name === 'port_name')! as StringableInputValue
 
           const portName = portParam.input.rawValue;
-          console.log('[data-story] todo-bug portName', portName);
 
           return {
             name: portName,

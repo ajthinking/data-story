@@ -6,7 +6,6 @@ export class StringListParamEvaluator implements ParamsValueEvaluator<StringList
   type = 'StringListParam' as const;
 
   evaluate(itemValue: ItemValue, param: StringListParam) {
-    console.log('[data-story] param', param);
     const value = param.input as string;
     // the value will be a string with comma or newline separated values
     const result = value.split('\n')

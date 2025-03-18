@@ -26,7 +26,7 @@ export const RemoveProperties: Computer = {
           value: 'id',
         }),
       ],
-      value: [],
+      input: [],
     },
   ],
 
