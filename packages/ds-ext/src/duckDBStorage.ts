@@ -71,7 +71,7 @@ export class DuckDBStorage implements ObserverStorage {
     if (!data || data.length === 0) {
       return undefined;
     }
-    const result:ItemValue[] = data.map(row => JSON.parse(row.item));
+    const result: ItemValue[] = data.map(row => JSON.parse(row.item));
     return result;
   }
 
@@ -82,18 +82,32 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async appendLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
+    if (items.length === 0) {
+      return; // Nothing to insert
+    }
+
     const currentTime = new Date().toISOString();
-    const values = items.map(item => {
-      // Properly escape single quotes in the JSON string
-      const data = JSON.stringify(item).replace(/'/g, '\'\'');
-      return `('${linkId}', ${this.nextSequenceVal()}, '${data}', '${currentTime}', '${currentTime}')`;
+
+    // Create parameterized query with placeholders
+    const placeholders = items.map(() => '(?, ?, ?, ?, ?)').join(', ');
+    const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime)
+                 VALUES ${placeholders}`;
+
+    // Flatten the parameters into a single array
+    const params: any[] = [];
+    items.forEach(item => {
+      const sequenceNumber = this.nextSequenceVal();
+      params.push(
+        linkId,
+        sequenceNumber.toString(),
+        JSON.stringify(item),
+        currentTime,            // createTime
+        currentTime,             // updateTime
+      );
     });
 
-    const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime) VALUES 
-    ${values.join(', ')}`;
-
-    // execute batch insert
-    await this.db?.run(sql);
+    // Execute parameterized query
+    await this.db?.run(sql, ...params);
   }
 
   async getNodeStatus(nodeId: NodeId): Promise<'BUSY' | 'COMPLETE' | undefined> {
@@ -106,10 +120,8 @@ export class DuckDBStorage implements ObserverStorage {
 
   async setNodeStatus(nodeId: NodeId, status: 'BUSY' | 'COMPLETE'): Promise<void> {
     const currentTime = new Date();
-    // Properly escape single quotes in the status string
-    const escapedStatus = status.replace(/'/g, '\'\'');
     await this.db?.all('INSERT INTO nodes (nodeId, status, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(nodeId) DO UPDATE SET status = ?, updateTime = ?',
-      nodeId, escapedStatus, currentTime, currentTime, escapedStatus, currentTime);
+      nodeId, status, currentTime, currentTime, status, currentTime);
   }
 
 }
