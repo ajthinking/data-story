@@ -118,6 +118,7 @@
     "pretest": "yarn run compile-tests && yarn run build && yarn run lint",
     "lint": "eslint src",
     "test": "vscode-test",
+    "test:unit": "yarn run -T vitest --passWithNoTests",
     "release": "release-it"
   },
   "release-it": {

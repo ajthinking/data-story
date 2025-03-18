@@ -1,6 +1,7 @@
 import { DiagramId, GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
 import type { Database as DatabaseType } from 'duckdb-async';
 import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
+
 export class DuckDBStorage implements ObserverStorage {
   private db: DatabaseType | null = null;
   private insertSequence: bigint = BigInt(0);
@@ -70,7 +71,7 @@ export class DuckDBStorage implements ObserverStorage {
     if (!data || data.length === 0) {
       return undefined;
     }
-    const result:ItemValue[] = data.map(row => JSON.parse(row.item));
+    const result: ItemValue[] = data.map(row => JSON.parse(row.item));
     return result;
   }
 
@@ -81,17 +82,32 @@ export class DuckDBStorage implements ObserverStorage {
   }
 
   async appendLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
+    if (items.length === 0) {
+      return; // Nothing to insert
+    }
+
     const currentTime = new Date().toISOString();
-    const values = items.map(item => {
-      const data = JSON.stringify(item);
-      return `('${linkId}', ${this.nextSequenceVal()}, '${data}', '${currentTime}', '${currentTime}')`;
+
+    // Create parameterized query with placeholders
+    const placeholders = items.map(() => '(?, ?, ?, ?, ?)').join(', ');
+    const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime)
+                 VALUES ${placeholders}`;
+
+    // Flatten the parameters into a single array
+    const params: any[] = [];
+    items.forEach(item => {
+      const sequenceNumber = this.nextSequenceVal();
+      params.push(
+        linkId,
+        sequenceNumber.toString(),
+        JSON.stringify(item),
+        currentTime,            // createTime
+        currentTime,             // updateTime
+      );
     });
 
-    const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime) VALUES 
-  ${values.join(', ')}`;
-
-    // execute batch insert
-    await this.db?.run(sql);
+    // Execute parameterized query
+    await this.db?.run(sql, ...params);
   }
 
   async getNodeStatus(nodeId: NodeId): Promise<'BUSY' | 'COMPLETE' | undefined> {
