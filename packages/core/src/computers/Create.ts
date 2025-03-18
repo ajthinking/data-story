@@ -19,7 +19,7 @@ export const Create: Computer = {
     json_({
       name: 'data',
       help: 'You may use json, hson js function or expression',
-      input: JSON.stringify({ foo: 'bar' }, null, 2),
+      value: JSON.stringify({ foo: 'bar' }, null, 2),
       evaluations: [
         { ...hjsonEvaluation, selected: true },
         jsonEvaluation,

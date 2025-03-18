@@ -22,7 +22,7 @@ export const If: Computer = {
   params: [
     jsFn({
       name: 'condition',
-      input: multiline`
+      value: multiline`
         item => item.value > 0
       `,
       help: 'JavaScript function that returns true or false',

@@ -21,7 +21,7 @@ export const FlatMap: Computer = {
   params: [
     json_({
       name: 'json',
-      input: '[{\n\tfoo: bar\n}]',
+      value: '[{\n\tfoo: bar\n}]',
       help: '',
     }),
   ],

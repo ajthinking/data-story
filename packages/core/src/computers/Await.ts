@@ -29,7 +29,7 @@ export const Await: Computer = {
         multiline: false,
         canInterpolate: false,
         interpolate: false,
-        input: 'Infinity',
+        value: 'Infinity',
       },
     ),
   ],

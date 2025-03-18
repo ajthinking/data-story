@@ -21,7 +21,7 @@ export const Map: Computer = {
   params: [
     jsFn({
       name: 'mapper',
-      input: multiline`
+      value: multiline`
         item => ({
           ...item
         })

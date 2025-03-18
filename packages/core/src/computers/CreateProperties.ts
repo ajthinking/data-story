@@ -59,7 +59,7 @@ export const CreateProperties: Computer = {
           value: '',
         }),
       ],
-      input: [],
+      value: [],
     },
   ],
 

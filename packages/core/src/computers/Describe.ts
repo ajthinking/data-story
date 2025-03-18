@@ -32,7 +32,7 @@ export const Describe: Computer = {
       multiline: false,
       canInterpolate: true,
       interpolate: true,
-      input: '',
+      value: '',
     }),
     num(
       {
@@ -42,7 +42,7 @@ export const Describe: Computer = {
         multiline: false,
         canInterpolate: true,
         interpolate: true,
-        input: String(10),
+        value: String(10),
       }),
   ],
 

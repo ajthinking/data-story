@@ -22,7 +22,7 @@ export const Sample: Computer = {
     num({
       name: 'sample_rate',
       help: 'Samples every nth item',
-      input: '2' },
+      value: '2' },
     ),
   ],
 

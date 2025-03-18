@@ -20,7 +20,7 @@ export const Filter: Computer = {
     // property
     str({
       name: 'property',
-      input: 'id',
+      value: 'id',
     }),
     {
       name: 'port_map',
@@ -30,18 +30,18 @@ export const Filter: Computer = {
       row: [
         str({
           name: 'value',
-          input: 'id',
+          value: 'id',
         }),
         {
           name: 'port',
           label: 'Port',
           help: 'The port to map to',
           type: 'PortSelectionParam',
-          input: '',
+          value: '',
           allowCreate: true,
         },
       ],
-      input: [],
+      value: [],
     },
   ],
 

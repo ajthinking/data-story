@@ -23,7 +23,7 @@ export const Unique: Computer = {
   params: [
     str({
       name: 'property',
-      input: '',
+      value: '',
     }),
   ],
 

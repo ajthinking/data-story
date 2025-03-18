@@ -13,17 +13,17 @@ export const Table: Computer = {
     strList({
       name: 'only',
       help: 'If set, only the specified paths will be shown. Use comma separation',
-      input: '',
+      value: '',
     }),
     strList({
       name: 'drop',
       help: 'If set, the specified paths will be dropped. Use comma separation',
-      input: '',
+      value: '',
     }),
     str({
       name: 'destructObjects',
       help: 'If set, objects will be destructured',
-      input: 'true',
+      value: 'true',
     }),
   ],
 
