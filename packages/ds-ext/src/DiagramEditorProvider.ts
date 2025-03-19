@@ -55,6 +55,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
       await observerStorage.init?.();
     } catch (error) {
       console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
+      console.log(error);
       observerStorage = new DiagramObserverStorage(diagramId);
       await observerStorage.init?.();
     }
