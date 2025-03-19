@@ -106,9 +106,9 @@ export function activate(context: vscode.ExtensionContext) {
   outputChannel.appendLine(`fs.existsSync(duckdbAsyncPath): ${fs.existsSync(duckdbAsyncPath)}`);
   if (!fs.existsSync(duckdbAsyncPath)) {
     vscode.window.showInformationMessage(
-      'The "ds-ext" extension requires "duckdb-async". Would you like to install it now?',
+      'Data-story works best with "duckdb-async". Would you like to install it now?',
       'Yes',
-      'No',
+      'Later',
     ).then(selection => {
       if (selection === 'Yes') {
         // Create a new terminal
@@ -117,8 +117,8 @@ export function activate(context: vscode.ExtensionContext) {
         // change the directory to the install-scripts folder and run npm install duckdb-async
         terminal.sendText(`cd "${installScriptsPath}"`);
         terminal.sendText('npm install duckdb-async');
-      } else if (selection === 'No') {
-        vscode.window.showInformationMessage('Your data will be stored in memory and will not be persisted to a file.');
+      } else if (selection === 'Later') {
+        vscode.window.showInformationMessage('Execution data will be stored in memory.');
       }
     });
   }
