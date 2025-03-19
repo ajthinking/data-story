@@ -1,7 +1,7 @@
-import { promises as fs } from 'fs';
+import fs from 'fs';
 import { Computer, str } from '@data-story/core';
 import * as path from 'path';
-import { stringify } from 'csv-stringify/sync';
+import { stringify } from 'csv-stringify';
 
 export const CsvFileWrite: Computer = {
   name: 'CsvFile.write',
@@ -31,20 +31,9 @@ export const CsvFileWrite: Computer = {
   },
 
   async *run({ input, params }) {
-    const incoming = input.pull();
-    if(incoming.length === 0) return;
-
+    const BATCH_SIZE = 1000;
     const filePath = params.file_path as string;
     const delimiter = params.delimiter as string;
-
-    // Convert incoming data to array of objects
-    const data = incoming.map(i => i.value);
-
-    // Generate CSV content
-    const content = stringify(data, {
-      header: true,
-      delimiter,
-    });
 
     // Determine if the path is absolute
     const isAbsolutePath = path.isAbsolute(filePath);
@@ -56,9 +45,41 @@ export const CsvFileWrite: Computer = {
 
     try {
       // Create the directory recursively if it doesn't exist
-      await fs.mkdir(path.dirname(fullPath), { recursive: true });
-      // Write the file content
-      await fs.writeFile(fullPath, content, 'utf-8');
+      await fs.promises.mkdir(path.dirname(fullPath), { recursive: true });
+
+      // Create write stream
+      const writeStream = fs.createWriteStream(fullPath);
+
+      // Create stringifier
+      const stringifier = stringify({
+        header: true,
+        delimiter,
+      });
+
+      // Pipe stringifier to write stream
+      stringifier.pipe(writeStream);
+
+      let isFirstBatch = true;
+      while (true) {
+        const batch = input.pull(BATCH_SIZE);
+        if (batch.length === 0) break;
+
+        // Write rows
+        for (const item of batch) {
+          stringifier.write(item.value);
+        }
+
+        // Yield progress after each batch
+        yield;
+      }
+
+      // End the stringifier (this will also end the write stream)
+      stringifier.end();
+      // Wait for the write stream to finish
+      await new Promise((resolve, reject) => {
+        writeStream.on('finish', resolve);
+        writeStream.on('error', reject);
+      });
     } catch (error: any) {
       console.error('Error writing file:', error);
       throw new Error(`Failed to write file: ${error.message}`);
