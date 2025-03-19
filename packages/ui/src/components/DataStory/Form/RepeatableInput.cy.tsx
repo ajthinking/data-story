@@ -13,12 +13,11 @@ const MockComponent = ({ param, type }: {
 }) => {
   const { getValues } = useFormField();
   const value = getValues();
-  console.log('[data-story] todo-bug value', value);
   return (
     <>
       {
         //The StringableParam` is composed of `stringInput` + `dropdown`. only mocked the `stringInput` part, so retrieve `value.value`
-        type === 'StringableParam' && <div data-cy='data-story-stringable-param'>{value.value}</div>
+        type === 'StringableParam' && <div data-cy='data-story-stringable-param'>{value.rawValue}</div>
       }
       {
         type === 'PortSelectionParam' && <div data-cy='data-story-port-selection-param'>{value}</div>
@@ -36,7 +35,7 @@ const RepeatableInputWithForm = () => {
   ParamsComponentFactory.defaultInstance.availableComponents = [
     {
       getComponent: (params) => {
-        return <FormFieldWrapper fieldName={'value'}>
+        return <FormFieldWrapper fieldName={params.param.name}>
           <MockComponent param={params} type={'StringableParam'}/>
         </FormFieldWrapper>
       },
@@ -44,7 +43,7 @@ const RepeatableInputWithForm = () => {
     },
     {
       getComponent: (params) => {
-        return <FormFieldWrapper fieldName={'port'}>
+        return <FormFieldWrapper fieldName={params.param.name}>
           <MockComponent param={params} type={'PortSelectionParam'} />
         </FormFieldWrapper>
       },

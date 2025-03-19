@@ -30,6 +30,7 @@ UseFormReturn<TFieldValues, TContext>,
 export const useFormField = (): UseFormFieldReturn => {
   const { fieldName } = useContext(FormFieldContext);
   const form = useFormContext();
+  // console.log('[data-story] todo-bug fieldName', fieldName, 'getValues', form.getValues(fieldName));
   return {
     setValue: (value: any) => form.setValue(fieldName, value),
     getValues: () => form.getValues(fieldName),

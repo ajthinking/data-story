@@ -3,15 +3,15 @@ import { Param, RepeatableParam } from '@data-story/core';
 
 const mockRepeatableRow = [
   {
-    'name': 'value',
+    'name': 'input',
     'type': 'StringableParam',
-    'label': 'value',
+    'label': 'Input',
     'help': '',
     'multiline': false,
     'canInterpolate': true,
     'interpolate': true,
     'input': {
-      input: 'id',
+      rawValue: 'id',
     },
   },
   {
@@ -27,14 +27,14 @@ const mockRepeatableValue = [
   {
     'id': 'wrihes',
     'input': {
-      input: 'id444',
+      rawValue: 'id444',
     },
     'port': 'unfiltered',
   },
   {
     'id': '3f4tzr',
     'input': {
-      input: 'id333',
+      rawValue: 'id333',
     },
     'port': 'output4ex3',
   },
@@ -69,7 +69,7 @@ export const mockNode = {
           },
         ],
         'input': {
-          input: 'id',
+          rawValue: 'id',
           Cast: 'stringCast',
         },
       },
