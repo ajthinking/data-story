@@ -51,8 +51,9 @@ describe('evaluate', () => {
     );
 
     expect(result).toEqual([
-      { input: 22, port: 'unfiltered' },
-      { input: 'id', port: 'outputzdbj' },
+      { value: 22, port: 'unfiltered' },
+      { value: 'id', port: 'outputzdbj' },
+      { value: '222', port: 'outputzdbj' },
     ]);
   });
 

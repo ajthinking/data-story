@@ -11,7 +11,7 @@ export const remoteNodeProvider = {
       .withParams([
         str({
           name: 'stamp',
-          input: 'secret message passed',
+          value: 'secret message passed',
         },
         ),
       ])

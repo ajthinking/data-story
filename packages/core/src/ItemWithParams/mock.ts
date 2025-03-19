@@ -8,10 +8,10 @@ export const removePropertyData = {
       'input': 'id',
     },
   ],
-  'value': [
+  'input': [
     {
       'property': {
-        input: 'foo-1',
+        rawValue: 'foo-1',
       },
     },
   ],
@@ -72,17 +72,24 @@ export const mockPortMapData = {
       'input': '',
     },
   ],
-  'value': [
+  'input': [
     {
-      'input': {
-        input: '22',
+      'value': {
+        'rawValue': '22',
         'Cast': 'numberCast',
       },
       'port': 'unfiltered',
     },
     {
-      'input': {
-        input: 'id',
+      'value': {
+        'rawValue': 'id',
+        'Cast': 'stringCast',
+      },
+      'port': 'outputzdbj',
+    },
+    {
+      'value': {
+        'rawValue': '222',
         'Cast': 'stringCast',
       },
       'port': 'outputzdbj',
