@@ -41,7 +41,7 @@ export const RunCommand: Computer = {
   params: [
     str({
       name: 'command',
-      input: 'say "Hello World"',
+      value: 'say "Hello World"',
       help: 'Command to run',
       canInterpolate: true,
     }),
