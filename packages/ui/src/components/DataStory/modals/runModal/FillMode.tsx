@@ -15,7 +15,7 @@ const FillMode = ({ params, setParams, handleRun }) => {
 
   const defaultValues = {
     params: params.reduce((acc, param: Param) => {
-      acc[param.name] = param.value as any;
+      acc[param.name] = param.input as any;
       return acc;
     }, {}),
   };
@@ -30,7 +30,7 @@ const FillMode = ({ params, setParams, handleRun }) => {
 
       return {
         ...param,
-        value: submitted.params[param.name],
+        input: submitted.params[param.name],
       };
     });
 

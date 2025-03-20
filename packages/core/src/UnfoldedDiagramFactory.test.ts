@@ -23,8 +23,8 @@ describe('unfold', () => {
       .withParams([
         str({
           name: 'stamp',
-          value: 'foo' },
-        ),
+          value: 'foo',
+        }),
       ])
       .add('Input', { port_name: 'input' })
       .add('Map')
@@ -55,9 +55,9 @@ describe('unfold', () => {
       'Input.1': expect.arrayContaining([
         expect.objectContaining({
           name: 'stamp',
-          value:  {
+          input:  {
             Cast: 'stringCast',
-            value: 'foo',
+            rawValue: 'foo',
           },
         }),
       ]),

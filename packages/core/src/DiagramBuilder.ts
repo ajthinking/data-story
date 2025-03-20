@@ -44,7 +44,7 @@ export class DiagramBuilder {
       // The inputs have not yet been assigned ids, to it here
       inputs: diagram.inputNodes().map(inputNode => {
         const param = inputNode.params.find(param => param.name === 'port_name');
-        const inputName = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value as string
+        const inputName = isStringableParam(param?.type) ? (param?.input as StringableInputValue).rawValue : param?.input as string
 
         return {
           name: inputName,
@@ -55,7 +55,7 @@ export class DiagramBuilder {
       // The outputs have not yet been assigned ids, to it here
       outputs: diagram.outputNodes().map(outputNode => {
         const param = outputNode.params.find(param => param.name === 'port_name');
-        const outputName = isStringableParam(param?.type) ? (param?.value as StringableInputValue).value : param?.value as string
+        const outputName = isStringableParam(param?.type) ? (param?.input as StringableInputValue).rawValue : param?.input as string
 
         return {
           name: outputName,
@@ -74,7 +74,7 @@ export class DiagramBuilder {
 
       if(!param) throw new Error(`Bad param: ${key}. Param not found on ${node.id}`)
 
-      param.value = isStringableParam(param.type) ? { ...(param.value as StringableInputValue ?? {}), value } : value;
+      param.input = isStringableParam(param.type) ? { ...(param.input as StringableInputValue ?? {}), value } : value;
     }
 
     this.diagram.nodes.push(node)
@@ -279,8 +279,8 @@ export class DiagramBuilder {
       if(typeof value === 'object') {
         param = {
           ...param,
-          value: {
-            ...(param.value as Object),
+          input: {
+            ...(param.input as Object),
             ...value,
           },
         }
@@ -288,7 +288,7 @@ export class DiagramBuilder {
       }
 
       // Default
-      (param.value as StringableInputValue).value = value
+      (param.input as StringableInputValue).rawValue = value
     }
 
     this.diagram.nodes.push(node)

@@ -27,7 +27,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
       label: node?.data?.label,
       outputs: JSON.stringify(node?.data?.outputs, null, 2),
       params: node?.data?.params.reduce((acc, param: Param) => {
-        acc[param.name] = param.value;
+        acc[param.name] = param.input;
         return acc;
       }, {} as Record<string, ParamValue>),
     };
@@ -52,12 +52,14 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
       newData.label = submitted.label;
       newData.outputs = JSON.parse(submitted.outputs);
 
-      // Param fields
+      // This logic updates `param.input` with the user's latest value. However, it only updates the top level of `param.input`.
+      // If it's a `RepeatableParam` (containing `PortSelectionParam` and `StringableParam`), the `input` for `PortSelectionParam` or `StringableParam` won't be updated.
       for(const [key, value] of Object.entries(submitted.params)) {
         const param = newData.params.find((p) => p.name === key)!;
-        if (param.hasOwnProperty('value')) param.value = value;
+        if (param.hasOwnProperty('input')) param.input = value;
       }
 
+      console.log('nodeSettingsFrom newData', newData);
       updateNode({
         ...node,
         data: newData,

@@ -37,11 +37,11 @@ export const Filter: Computer = {
           label: 'Port',
           help: 'The port to map to',
           type: 'PortSelectionParam',
-          value: '',
+          input: '',
           allowCreate: true,
         },
       ],
-      value: [],
+      input: [],
     },
   ],
 
@@ -54,7 +54,7 @@ export const Filter: Computer = {
         const property = params.property as string
         const value = item.value[property]
 
-        const mapping = portMap.find((mapping: any) => mapping.value == value)
+        const mapping = portMap.find((mapping: any) => mapping.input == value)
 
         return mapping?.port ?? 'unfiltered'
       })()

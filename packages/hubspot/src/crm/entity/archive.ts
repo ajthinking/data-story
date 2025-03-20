@@ -68,7 +68,7 @@ export const archive = (name: string) => {
   }
 
   const entityParam = config.params!.find((p) => p.name === 'entity')
-  entityParam!.value = name.toLowerCase()
+  entityParam!.input = name.toLowerCase()
 
   return config
 }

@@ -9,7 +9,7 @@ import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
 
 export interface StringableInputValue extends Record<string, any> {
-  value: any,
+  rawValue: any,
   Evaluation?: string,
   Cast?: string,
 }
@@ -25,7 +25,7 @@ export type StringableParam = {
   interpolationsFromPort?: PortName[],
   casts?: Cast[],
   evaluations?: Evaluation[],
-  value: StringableInputValue,
+  input: StringableInputValue,
 }
 
 export type PortSelectionParam = {
@@ -34,7 +34,7 @@ export type PortSelectionParam = {
   help: string,
   type: 'PortSelectionParam',
   allowCreate: boolean,
-  value: string
+  input: string
 }
 
 export type RepeatableParam<RepeatableRow> = {
@@ -43,7 +43,7 @@ export type RepeatableParam<RepeatableRow> = {
   help: string,
   type: 'RepeatableParam',
   row: RepeatableRow,
-  value: Record<string, unknown>[]
+  input: Record<string, unknown>[]
 }
 
 /**
@@ -54,7 +54,7 @@ export type StringListParam = {
   label: string,
   help: string,
   type: 'StringListParam',
-  value: unknown
+  input: unknown
 }
 
 export type Param =
@@ -63,12 +63,10 @@ export type Param =
   RepeatableParam<Param[]> |
   StringListParam;
 
-export type ParamValue = Param['value']
+export type ParamValue = Param['input']
 
-// quick param builders
-
-type StringableConfigType = Omit<StringableParam, 'value' | 'type'> & {
-  value: StringableInputValue['value']
+type StringableConfigType = Omit<StringableParam, 'input' | 'type'> & {
+  value: StringableInputValue['rawValue']
 }
 
 export const strList = ({
@@ -87,7 +85,7 @@ export const strList = ({
     type: 'StringListParam',
     label: label ?? name,
     help: help ?? '',
-    value: value ?? undefined,
+    input: value ?? undefined,
   }
 }
 
@@ -114,8 +112,8 @@ export const createDefaultStringable = ({
     evaluations,
     casts,
     interpolationsFromPort,
-    value: {
-      value: value ?? '',
+    input: {
+      rawValue: value ?? '',
     },
   }
 }
@@ -151,8 +149,8 @@ export const str = ({
     casts: [
       stringCast,
     ],
-    value: {
-      value: value ?? '',
+    input: {
+      rawValue: value ?? '',
       Cast: stringCast.type,
     },
   }
@@ -189,8 +187,8 @@ export const num = ({
     casts: [
       numberCast,
     ],
-    value: {
-      value: value ?? 0,
+    input: {
+      rawValue: value ?? 0,
       Cast: numberCast.type,
     },
   }
@@ -233,8 +231,8 @@ export const json_ = ({
       numberCast,
       stringCast,
     ],
-    value: {
-      value: value ?? 0,
+    input: {
+      rawValue: value ?? 0,
       Evaluation: jsonEvaluation.type,
     },
   }
@@ -277,8 +275,8 @@ export const jsFn = ({
       numberCast,
       stringCast,
     ],
-    value: {
-      value: value ?? 0,
+    input: {
+      rawValue: value ?? 0,
       Evaluation: jsFunctionEvaluation.type,
     },
   }
@@ -319,8 +317,8 @@ export const hjson = ({
       numberCast,
       stringCast,
     ],
-    value: {
-      value: value ?? 0,
+    input: {
+      rawValue: value ?? 0,
       Evaluation: hjsonEvaluation.type,
     },
   }

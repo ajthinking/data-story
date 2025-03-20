@@ -99,7 +99,7 @@ export class ComputerTester {
               return evaluator.evaluate(emptyItem, param, this.diagram!.params);
             } catch (error) {
               console.error('error', error);
-              return param.value;
+              return param.input;
             }
           },
         }),
@@ -274,9 +274,9 @@ export class ComputerTester {
       const hasExplicitValue = this.explicitParamValues.hasOwnProperty(param.name)
 
       if(hasExplicitValue) {
-        param.value = param.type === 'StringableParam' ?  {
-          ...param.value,
-          value: this.explicitParamValues[param.name],
+        param.input = param.type === 'StringableParam' ?  {
+          ...param.input,
+          rawValue: this.explicitParamValues[param.name],
         } : this.explicitParamValues[param.name];
 
         continue

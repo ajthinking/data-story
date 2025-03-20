@@ -64,7 +64,7 @@ export function StringableInputComponent({
 }
 
 export function StringableInput(params: StringableInput) {
-  return <FormFieldWrapper fieldName={'value'}>
+  return <FormFieldWrapper fieldName={'rawValue'}>
     <StringableInputComponent {...params} />
   </FormFieldWrapper>
 }

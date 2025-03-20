@@ -5,13 +5,15 @@ export const removePropertyData = {
     {
       'name': 'property',
       'type': 'StringableParam',
-      'value': 'id',
+      'input': {
+        rawValue: 'id',
+      },
     },
   ],
-  'value': [
+  'input': [
     {
       'property': {
-        value: 'foo-1',
+        rawValue: 'foo-1',
       },
     },
   ],
@@ -23,33 +25,35 @@ export const mockRepeatableData = {
     {
       name: 'value',
       type: 'StringableParam',
-      value: 'id',
+      input: {
+        rawValue: 'id',
+      },
     },
     {
       ...removePropertyData,
     },
   ],
-  value: [
+  input: [
     {
       value: {
-        value: 'value-11',
+        rawValue: 'value-11',
       },
       remove_properties: [
         {
           'property': {
-            value: 'property-11',
+            rawValue: 'property-11',
           },
         },
       ],
     },
     {
       value: {
-        value: 'value-22',
+        rawValue: 'value-22',
       },
       remove_properties: [
         {
           'property': {
-            value: 'property-22',
+            rawValue: 'property-22',
           },
         },
       ],
@@ -64,25 +68,34 @@ export const mockPortMapData = {
     {
       'name': 'value',
       'type': 'StringableParam',
-      'value': 'id',
+      'input': {
+        rawValue: 'id',
+      },
     },
     {
       'name': 'port',
       'type': 'PortSelectionParam',
-      'value': '',
+      'input': '',
     },
   ],
-  'value': [
+  'input': [
     {
       'value': {
-        value: '22',
+        'rawValue': '22',
         'Cast': 'numberCast',
       },
       'port': 'unfiltered',
     },
     {
       'value': {
-        value: 'id',
+        'rawValue': 'id',
+        'Cast': 'stringCast',
+      },
+      'port': 'outputzdbj',
+    },
+    {
+      'value': {
+        'rawValue': '222',
         'Cast': 'stringCast',
       },
       'port': 'outputzdbj',

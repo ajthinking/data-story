@@ -10,9 +10,9 @@ export class RepeatableParamEvaluator implements ParamsValueEvaluator<Repeatable
   }
 
   evaluate(itemValue: ItemValue, param: RepeatableParam<any>, globalParams: Param[]) {
-    return param.value.map((formVal: Record<string, unknown> ) => {
+    return param.input.map((formVal: Record<string, unknown> ) => {
       const result = Object.fromEntries(param.row.map((row: Param) => {
-        const rowParam = { ...row, value: formVal[row.name] as ParamValue };
+        const rowParam = { ...row, input: formVal[row.name] as ParamValue };
         return [row.name, this.evaluator.evaluate(itemValue, rowParam, globalParams)] as const;
       }));
 
