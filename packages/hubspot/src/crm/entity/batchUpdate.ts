@@ -26,19 +26,19 @@ const Template: Computer = {
       name: 'entity',
       label: 'Entity',
       help: 'The entity to retrieve.',
-      input: 'ENTITY',
+      value: 'ENTITY',
     }),
     str({
       name: 'properties',
       label: 'Properties',
       help: 'Comma separated list of properties.',
-      input: '',
+      value: '',
     }),
     num({
       name: 'limit',
       label: 'Limit',
       help: 'The maximum number of companies to return.',
-      input: String('300'),
+      value: String('300'),
     }),
   ],
   async *run({ input, output, params }) {
@@ -66,7 +66,9 @@ export const batchUpdate = (name: string) => {
   }
 
   const entityParam = config.params!.find((p) => p.name === 'entity')
-  entityParam!.value = name.toLowerCase()
+  if (entityParam && 'input' in entityParam && entityParam.input && typeof entityParam.input === 'object' && 'rawValue' in entityParam.input) {
+    entityParam.input.rawValue = name.toLowerCase()
+  }
 
   return config
 }

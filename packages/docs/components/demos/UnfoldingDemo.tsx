@@ -24,7 +24,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) =>
         .withParams([
           str({
             name: 'stamp',
-            input: 'foo',
+            value: 'foo',
           }),
         ])
         .add('Input', { port_name: 'input' })
