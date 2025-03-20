@@ -121,7 +121,9 @@ describe('evaluate', () => {
             "name": "remove_properties",
             "row": [
               {
-                "input": "id",
+                "input": {
+                  "rawValue": "id",
+                },
                 "name": "property",
                 "type": "StringableParam",
               },
@@ -165,7 +167,9 @@ describe('evaluate', () => {
             "name": "remove_properties",
             "row": [
               {
-                "input": "id",
+                "input": {
+                  "rawValue": "id",
+                },
                 "name": "property",
                 "type": "StringableParam",
               },

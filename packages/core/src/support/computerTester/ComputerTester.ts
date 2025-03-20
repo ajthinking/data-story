@@ -276,7 +276,7 @@ export class ComputerTester {
       if(hasExplicitValue) {
         param.input = param.type === 'StringableParam' ?  {
           ...param.input,
-          value: this.explicitParamValues[param.name],
+          rawValue: this.explicitParamValues[param.name],
         } : this.explicitParamValues[param.name];
 
         continue

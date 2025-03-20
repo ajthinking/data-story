@@ -23,8 +23,8 @@ describe('unfold', () => {
       .withParams([
         str({
           name: 'stamp',
-          input: 'foo' },
-        ),
+          value: 'foo',
+        }),
       ])
       .add('Input', { port_name: 'input' })
       .add('Map')
@@ -57,7 +57,7 @@ describe('unfold', () => {
           name: 'stamp',
           input:  {
             Cast: 'stringCast',
-            input: 'foo',
+            rawValue: 'foo',
           },
         }),
       ]),

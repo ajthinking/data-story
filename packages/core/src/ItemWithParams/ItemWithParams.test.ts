@@ -13,7 +13,7 @@ describe('value', () => {
       [
         str({
           name: 'greeting',
-          input: 'Hello ${{name}}!',
+          value: 'Hello ${{name}}!',
         }),
       ],
       [],
@@ -30,7 +30,7 @@ describe('params', () => {
       [
         str({
           name: 'greeting',
-          input: 'Hello ${{name}}!',
+          value: 'Hello ${{name}}!',
         }),
       ],
       [],

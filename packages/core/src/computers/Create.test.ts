@@ -26,7 +26,7 @@ it('can parse hjson', async () => {
     .hasParam({
       name: 'data',
       input: {
-        input: '{ cool: "yes" }',
+        rawValue: '{ cool: "yes" }',
         Evaluation: 'HJSON',
       },
       evaluations: [
@@ -43,7 +43,7 @@ it('can parse js function', async () => {
     .hasParam({
       name: 'data',
       input: {
-        input: '() => ({ sum: 1 + 1 })',
+        rawValue: '() => ({ sum: 1 + 1 })',
         Evaluation: 'JS_FUNCTION',
       },
       evaluations: [
@@ -60,7 +60,7 @@ it('can parse js expression', async () => {
     .hasParam({
       name: 'data',
       input: {
-        input: multiline`
+        rawValue: multiline`
       ({
         interesting: 'yes'
       })`,
@@ -80,7 +80,7 @@ it('can directly parse js objects starting with bracket', async () => {
     .hasParam({
       name: 'data',
       input: {
-        input: multiline`
+        rawValue: multiline`
       {
         label: 'statement'
       }`,

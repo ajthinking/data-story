@@ -5,7 +5,9 @@ export const removePropertyData = {
     {
       'name': 'property',
       'type': 'StringableParam',
-      'input': 'id',
+      'input': {
+        rawValue: 'id',
+      },
     },
   ],
   'input': [
@@ -23,7 +25,9 @@ export const mockRepeatableData = {
     {
       name: 'value',
       type: 'StringableParam',
-      input: 'id',
+      input: {
+        rawValue: 'id',
+      },
     },
     {
       ...removePropertyData,
@@ -64,7 +68,9 @@ export const mockPortMapData = {
     {
       'name': 'value',
       'type': 'StringableParam',
-      'input': 'id',
+      'input': {
+        rawValue: 'id',
+      },
     },
     {
       'name': 'port',
