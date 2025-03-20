@@ -36,10 +36,10 @@ describe('pull', () => {
     const input = new InputDevice(node, unfoldedDiagram, memory)
 
     expect(input.pull()).toMatchObject([
-      { input: { i: 1 } },
-      { input: { i: 2 } },
-      { input: { i: 3 } },
-      { input: { i: 4 } },
+      { value: { i: 1 } },
+      { value: { i: 2 } },
+      { value: { i: 3 } },
+      { value: { i: 4 } },
     ])
   })
 
@@ -133,9 +133,9 @@ describe('pull', () => {
 
     const input = new InputDevice(node, unfoldedDiagram, memory)
 
-    expect(input.pull(1)).toMatchObject([{ input: { i: 1 } }])
-    expect(input.pull(2)).toMatchObject([{ input: { i: 2 } }, { input: { i: 3 } }])
-    expect(input.pull(3)).toMatchObject([{ input: { i: 4 } }])
+    expect(input.pull(1)).toMatchObject([{ value: { i: 1 } }])
+    expect(input.pull(2)).toMatchObject([{ value: { i: 2 } }, { value: { i: 3 } }])
+    expect(input.pull(3)).toMatchObject([{ value: { i: 4 } }])
   })
 })
 
@@ -170,10 +170,10 @@ describe('pullFrom', () => {
     const input = new InputDevice(node, unfoldedDiagram, memory)
 
     expect(input.pullFrom('numbers')).toMatchObject([
-      { input: { i: 1 } },
-      { input: { i: 2 } },
-      { input: { i: 3 } },
-      { input: { i: 4 } },
+      { value: { i: 1 } },
+      { value: { i: 2 } },
+      { value: { i: 3 } },
+      { value: { i: 4 } },
     ])
   })
 
