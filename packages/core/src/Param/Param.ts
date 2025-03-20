@@ -25,8 +25,6 @@ export type StringableParam = {
   interpolationsFromPort?: PortName[],
   casts?: Cast[],
   evaluations?: Evaluation[],
-  // todo-stone:
-  // after the useForm hook the input will change to ${name}
   input: StringableInputValue,
 }
 
@@ -66,8 +64,6 @@ export type Param =
   StringListParam;
 
 export type ParamValue = Param['input']
-
-// quick param builders
 
 type StringableConfigType = Omit<StringableParam, 'input' | 'type'> & {
   value: StringableInputValue['rawValue']
@@ -153,7 +149,6 @@ export const str = ({
     casts: [
       stringCast,
     ],
-    // after the useForm hook the input will change to ${name}
     input: {
       rawValue: value ?? '',
       Cast: stringCast.type,
