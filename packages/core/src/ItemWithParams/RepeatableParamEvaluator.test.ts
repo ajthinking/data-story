@@ -65,8 +65,8 @@ describe('evaluate', () => {
     );
 
     expect(result).toEqual([
-      { input: 'value-11', remove_properties: [{ property: 'property-11' }] },
-      { input: 'value-22', remove_properties: [{ property: 'property-22' }] },
+      { value: 'value-11', remove_properties: [{ property: 'property-11' }] },
+      { value: 'value-22', remove_properties: [{ property: 'property-22' }] },
     ]);
   });
 
@@ -100,88 +100,88 @@ describe('evaluate', () => {
         [
           {},
           {
+            "input": {
+              "rawValue": "value-11",
+            },
             "name": "value",
             "type": "StringableParam",
-            "value": {
-              "value": "value-11",
-            },
           },
           [],
         ],
         [
           {},
           {
-            "name": "remove_properties",
-            "row": [
-              {
-                "name": "property",
-                "type": "StringableParam",
-                "value": "id",
-              },
-            ],
-            "type": "RepeatableParam",
-            "value": [
+            "input": [
               {
                 "property": {
-                  "value": "property-11",
+                  "rawValue": "property-11",
                 },
               },
             ],
-          },
-          [],
-        ],
-        [
-          {},
-          {
-            "name": "property",
-            "type": "StringableParam",
-            "value": {
-              "value": "property-11",
-            },
-          },
-          [],
-        ],
-        [
-          {},
-          {
-            "name": "value",
-            "type": "StringableParam",
-            "value": {
-              "value": "value-22",
-            },
-          },
-          [],
-        ],
-        [
-          {},
-          {
             "name": "remove_properties",
             "row": [
               {
+                "input": "id",
                 "name": "property",
                 "type": "StringableParam",
-                "value": "id",
               },
             ],
             "type": "RepeatableParam",
-            "value": [
-              {
-                "property": {
-                  "value": "property-22",
-                },
-              },
-            ],
           },
           [],
         ],
         [
           {},
           {
+            "input": {
+              "rawValue": "property-11",
+            },
             "name": "property",
             "type": "StringableParam",
-            "value": {
-              "value": "property-22",
+          },
+          [],
+        ],
+        [
+          {},
+          {
+            "input": {
+              "rawValue": "value-22",
             },
+            "name": "value",
+            "type": "StringableParam",
+          },
+          [],
+        ],
+        [
+          {},
+          {
+            "input": [
+              {
+                "property": {
+                  "rawValue": "property-22",
+                },
+              },
+            ],
+            "name": "remove_properties",
+            "row": [
+              {
+                "input": "id",
+                "name": "property",
+                "type": "StringableParam",
+              },
+            ],
+            "type": "RepeatableParam",
+          },
+          [],
+        ],
+        [
+          {},
+          {
+            "input": {
+              "rawValue": "property-22",
+            },
+            "name": "property",
+            "type": "StringableParam",
           },
           [],
         ],

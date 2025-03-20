@@ -52,12 +52,16 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
       newData.label = submitted.label;
       newData.outputs = JSON.parse(submitted.outputs);
 
-      // Param fields
+      // 因为下面这段逻辑，所以，param.input 会被更新为最新的值
+      // 但是其中 只更新了第一层的 param.input，如果是 RepeatableParam， 其中还有portableParam 或者 stringableParam 值是不会被更新的
+      // Param fields todo-stone:
       for(const [key, value] of Object.entries(submitted.params)) {
         const param = newData.params.find((p) => p.name === key)!;
+        param[`${key}`] = value;
         if (param.hasOwnProperty('input')) param.input = value;
       }
 
+      console.log('nodeSettingsFrom newData', newData);
       updateNode({
         ...node,
         data: newData,

@@ -29,27 +29,27 @@ export const mockRepeatableData = {
       ...removePropertyData,
     },
   ],
-  value: [
+  input: [
     {
-      input: {
-        input: 'value-11',
+      value: {
+        rawValue: 'value-11',
       },
       remove_properties: [
         {
           'property': {
-            input: 'property-11',
+            rawValue: 'property-11',
           },
         },
       ],
     },
     {
-      input: {
-        input: 'value-22',
+      value: {
+        rawValue: 'value-22',
       },
       remove_properties: [
         {
           'property': {
-            input: 'property-22',
+            rawValue: 'property-22',
           },
         },
       ],
