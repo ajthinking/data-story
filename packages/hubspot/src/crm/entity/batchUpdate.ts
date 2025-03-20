@@ -66,9 +66,7 @@ export const batchUpdate = (name: string) => {
   }
 
   const entityParam = config.params!.find((p) => p.name === 'entity')
-  if (entityParam && 'input' in entityParam && entityParam.input && typeof entityParam.input === 'object' && 'rawValue' in entityParam.input) {
-    entityParam.input.rawValue = name.toLowerCase()
-  }
+  entityParam!.input = name.toLowerCase()
 
   return config
 }

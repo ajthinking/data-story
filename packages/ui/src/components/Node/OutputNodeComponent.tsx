@@ -15,7 +15,7 @@ const OutputNodeComponent = ({ id, data, selected }: { id: string; data: DataSto
   const { setOpenNodeSidebarId } = useStore(selector, shallow);
 
   const portName = (data?.params?.[0] as StringableParam)
-    .input.value
+    .input.rawValue
 
   const inputPort = data.inputs[0]
   const outputPort = data.outputs[0]

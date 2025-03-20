@@ -20,7 +20,7 @@ const CommentNodeComponent = ({ id, data }: {
 
   const contentParam = data.params.find((param) => param.name === 'content')! as StringableParam
 
-  const htmlContent = markdown.render(contentParam.input.value ?? '');
+  const htmlContent = markdown.render(contentParam.input.rawValue ?? '');
 
   return (
     (
