@@ -33,8 +33,8 @@ export class InputObserverController {
    * When we invoke `reportItems`, it triggers the `notifyObservers` callback and forwards the `items` and `inputObserver` parameters
    */
   async reportItems(memoryObserver: LinkItemsParam): Promise<void> {
-    await this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
     this.items$.next(memoryObserver);
+    await this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
   }
 
   setItems(linkId: LinkId, items: ItemValue[]): void {
@@ -42,8 +42,8 @@ export class InputObserverController {
   }
 
   async reportLinksCount(memoryObserver: LinksCountParam): Promise<void> {
-    await this.storage.setLinkCount(memoryObserver.linkId, memoryObserver.count);
     this.links$.next(memoryObserver);
+    await this.storage.setLinkCount(memoryObserver.linkId, memoryObserver.count);
   }
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
@@ -51,8 +51,8 @@ export class InputObserverController {
     if (status === 'AVAILABLE') {
       return;
     }
-    await this.storage.setNodeStatus(nodeId, status);
     this.nodeStatus$.next({ nodeId, status });
+    await this.storage.setNodeStatus(nodeId, status);
   }
 
   async getDataFromStorage({
@@ -161,14 +161,15 @@ export class InputObserverController {
       filter(payload => observer.nodeIds.includes(payload.nodeId)),
       bufferTime(observer.throttleMs ?? ThrottleMS),
       filter(it=> it.length > 0),
-      tap(async (_) => {
-        const nodes = await Promise.all(observer.nodeIds.map(async (nodeId) => {
-          const status = await this.storage.getNodeStatus(nodeId);
-          return {
-            nodeId,
-            status: status ?? 'COMPLETE',
-          }
-        }));
+      map(statuses => {
+        // Group by nodeId and keep only the latest entry for each nodeId
+        const latestByNodeId = new Map<string, { nodeId: string; status: NodeStatus }>();
+        statuses.forEach(status => {
+          latestByNodeId.set(status.nodeId, status);
+        });
+        return Array.from(latestByNodeId.values());
+      }),
+      tap(async (nodes) => {
         observer.onReceive({
           nodes: nodes as NodesStatusInfo[],
         });
