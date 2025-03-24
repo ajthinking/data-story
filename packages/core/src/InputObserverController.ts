@@ -130,8 +130,15 @@ export class InputObserverController {
       filter(payload => observer.linkIds.includes(payload.linkId)),
       map(payload => payload),
       bufferTime(observer.throttleMs ?? ThrottleMS),
-      filter(it=>it.length > 0),
-      map(bufferedCounts => bufferedCounts.flat(1)),
+      filter(it=> it.length > 0),
+      map(counts => {
+        // Group by linkId and keep only the latest entry for each linkId
+        const latestByLinkId = new Map<string, LinksCountParam>();
+        counts.forEach(count => {
+          latestByLinkId.set(count.linkId, count);
+        });
+        return Array.from(latestByLinkId.values());
+      }),
       tap(counts => {
         observer.onReceive({
           links: counts,
