@@ -59,7 +59,6 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         if (param.hasOwnProperty('input')) param.input = value;
       }
 
-      console.log('nodeSettingsFrom newData', newData);
       updateNode({
         ...node,
         data: newData,

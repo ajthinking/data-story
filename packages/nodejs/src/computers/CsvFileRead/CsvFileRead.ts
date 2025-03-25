@@ -65,11 +65,8 @@ export const CsvFileRead: Computer = {
         });
       }
 
-      console.log('Files found:', files);
       // Process each file found by glob
       for (const file of files) {
-        console.log('Processing file:', file);
-
         // Create a promise to handle the stream processing
         await new Promise<void>((resolve, reject) => {
           const items: any[] = [];
@@ -91,6 +88,7 @@ export const CsvFileRead: Computer = {
 
               // Process in batches to avoid memory issues
               if (items.length >= batchSize) {
+                console.log('Processing batch:', items.length);
                 output.push([...items]);
                 items.length = 0; // Clear the array
               }
@@ -107,11 +105,9 @@ export const CsvFileRead: Computer = {
               console.error('Error processing CSV:', err);
               reject(err);
             });
-        }).catch(fileError => {
-          output.pushTo('errors', [serializeError(fileError)]);
         });
-
-        yield; // Yield after each file is processed
+        // Yield after each file is processed
+        yield;
       }
     } catch (error: any) {
       output.pushTo('errors', [serializeError(error)]);
