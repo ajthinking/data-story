@@ -49,65 +49,60 @@ export const CsvFileRead: Computer = {
 
     let files: string[] = [];
     try {
-      if (isAbsolutePath) {
-        // If it's an absolute path, use it directly with glob
-        files = glob.sync(pathPattern, {
-          ignore: ['**/node_modules/**'],
-          absolute: true,
-        });
-      } else {
-        // If it's a relative path, resolve using the workspace folder
-        const cwd = process.env.WORKSPACE_FOLDER_PATH as string;
-        files = glob.sync(pathPattern, {
-          cwd, // Resolve relative paths from the workspace folder
-          ignore: ['**/node_modules/**'],
-          absolute: true,
-        });
+      // Resolve the path if it's relative
+      const resolvedPath = isAbsolutePath
+        ? pathPattern
+        : path.resolve(process.env.WORKSPACE_FOLDER_PATH || '', pathPattern);
+
+      // Find all files matching the pattern
+      files = glob.sync(resolvedPath);
+      if (files.length === 0) {
+        console.warn(`[data-story] No files found matching pattern: ${resolvedPath}`);
       }
 
       // Process each file found by glob
       for (const file of files) {
-        // Create a promise to handle the stream processing
-        await new Promise<void>((resolve, reject) => {
-          const items: any[] = [];
-
-          // Create readable stream instead of reading entire file into memory
-          fs.createReadStream(file)
-            .pipe(parse({
-              columns: true, // Use first row as column names
-              delimiter,
-              skip_empty_lines: true,
-              trim: true,
-            }))
-            .on('data', (record: any) => {
-              // Add file path to each record
-              items.push({
-                ...record,
-                _filePath: file,
-              });
-
-              // Process in batches to avoid memory issues
-              if (items.length >= batchSize) {
-                console.log('Processing batch:', items.length);
-                output.push([...items]);
-                items.length = 0; // Clear the array
-              }
-            })
-            .on('end', () => {
-              // Push any remaining items
-              if (items.length > 0) {
-                output.push([...items]);
-              }
-              console.log('Finished processing file:', file);
-              resolve();
-            })
-            .on('error', (err) => {
-              console.error('Error processing CSV:', err);
-              reject(err);
+        try {
+          // We need to use a different approach since we can't yield inside callbacks
+          // Create a readable stream and process the file
+          const parser = parse({
+            columns: true,
+            delimiter,
+            skip_empty_lines: true,
+            trim: true,
+          });
+          const stream = fs.createReadStream(file).pipe(parser);
+          // We'll collect records in batches
+          let batch: any[] = [];
+          console.log('[data-story] stream:', stream);
+          // Process each record as it comes in
+          for await (const record of stream) {
+            // Add file path to each record
+            batch.push({
+              ...record,
+              _filePath: file,
             });
-        });
-        // Yield after each file is processed
-        yield;
+            // Process in batches to avoid memory issues
+            if (batch.length >= batchSize) {
+              console.log('[data-story] once Processing batch:', batch.length);
+              output.push([...batch]);
+              batch = []; // Clear the batch
+              // Now we can yield directly since we're in the generator function
+              yield;
+            }
+          }
+          // Process any remaining records
+          if (batch.length > 0) {
+            console.log('[data-story] Processing remaining records:', batch.length);
+            output.push([...batch]);
+            yield;
+          }
+          console.log('[data-story] Finished processing file:', file);
+        } catch (fileError) {
+          console.error('[data-story] Error processing file:', fileError);
+          output.pushTo('errors', [serializeError(fileError)]);
+          yield;
+        }
       }
     } catch (error: any) {
       output.pushTo('errors', [serializeError(error)]);
