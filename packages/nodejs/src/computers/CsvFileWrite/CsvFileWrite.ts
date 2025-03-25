@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import * as fsSync from 'fs';
 import { Computer, str } from '@data-story/core';
 import * as path from 'path';
+import { stringify } from 'csv-stringify';
 
 export const CsvFileWrite: Computer = {
   name: 'CsvFile.write',
@@ -41,46 +42,34 @@ export const CsvFileWrite: Computer = {
     await fs.mkdir(path.dirname(fullPath), { recursive: true });
     // Use streaming approach for better performance with large files
     const writeStream = fsSync.createWriteStream(fullPath, { encoding: 'utf-8' });
+    const stringifier = stringify({
+      delimiter: delimiter,
+      header: true,
+    });
+    stringifier.pipe(writeStream);
+
+    writeStream.on('error', (err) => {
+      console.error('Stream error:', err);
+      throw new Error(`Failed to write file: ${err.message}`);
+    });
+
+    // When stream is finished
+    writeStream.on('end', () => {
+      console.log('[data-story] File written successfully:', fullPath);
+    });
+    console.log('[data-story] CsvFileWrite Starting to write file:', fullPath);
     while(true) {
       const incoming = input.pull();
       console.log('[data-story] CsvFileWrite Incoming data:', incoming.length);
-      if (incoming.length === 0) return;
-      const data = incoming.map(i => i.value);
+      if (incoming.length === 0) {
+        stringifier.end();
+        return;
+      };
 
-      try {
-        // Write header row if data exists
-        if (data.length > 0) {
-          const headers = Object.keys(data[0]);
-          writeStream.write(headers.join(delimiter) + '\n');
-          // Write data rows
-          data.forEach((row, index) => {
-            const values = headers.map(header => {
-              const value = row[header];
-              // Handle values that might contain delimiters or newlines
-              if (typeof value === 'string' && (value.includes(delimiter) || value.includes('\n') || value.includes('"'))) {
-                return `"${value.replace(/"/g, '""')}"`;
-              }
-              return value === null || value === undefined ? '' : String(value);
-            });
-            writeStream.write(values.join(delimiter) + '\n');
-          });
-        }
-
-        // Set up error handling
-        writeStream.on('error', (err) => {
-          console.error('Stream error:', err);
-          throw new Error(`Failed to write file: ${err.message}`);
-        });
-
-        // When stream is finished
-        writeStream.on('finish', () => {
-          console.log('[data-story] File written successfully:', fullPath);
-        });
+      for (const item of incoming) {
+        stringifier.write(item.value);
       }
-      catch (error: any) {
-        console.error('Error writing file:', error);
-        throw new Error(`Failed to write file: ${error.message}`);
-      }
+      yield;
     }
   },
 };
