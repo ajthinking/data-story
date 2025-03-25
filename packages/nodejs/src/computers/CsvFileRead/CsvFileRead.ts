@@ -65,46 +65,53 @@ export const CsvFileRead: Computer = {
         });
       }
 
+      console.log('Files found:', files);
       // Process each file found by glob
       for (const file of files) {
-        try {
-          // Create read stream and parser
-          const fileStream = fs.createReadStream(file);
-          const parser = parse({
-            columns: true, // Use first row as column names
-            delimiter,
-            skip_empty_lines: true,
-            trim: true,
-          });
+        console.log('Processing file:', file);
 
-          // Set up pipeline
-          fileStream.pipe(parser);
+        // Create a promise to handle the stream processing
+        await new Promise<void>((resolve, reject) => {
+          const items: any[] = [];
 
-          let batch: any[] = [];
+          // Create readable stream instead of reading entire file into memory
+          fs.createReadStream(file)
+            .pipe(parse({
+              columns: true, // Use first row as column names
+              delimiter,
+              skip_empty_lines: true,
+              trim: true,
+            }))
+            .on('data', (record: any) => {
+              // Add file path to each record
+              items.push({
+                ...record,
+                _filePath: file,
+              });
 
-          // Process records as they come in
-          for await (const record of parser) {
-            batch.push({
-              ...record,
-              _filePath: file,
+              // Process in batches to avoid memory issues
+              if (items.length >= batchSize) {
+                output.push([...items]);
+                items.length = 0; // Clear the array
+              }
+            })
+            .on('end', () => {
+              // Push any remaining items
+              if (items.length > 0) {
+                output.push([...items]);
+              }
+              console.log('Finished processing file:', file);
+              resolve();
+            })
+            .on('error', (err) => {
+              console.error('Error processing CSV:', err);
+              reject(err);
             });
-
-            // When batch is full, emit it
-            if (batch.length >= batchSize) {
-              output.push(batch);
-              batch = [];
-              yield;
-            }
-          }
-
-          // Emit any remaining records
-          if (batch.length > 0) {
-            output.push(batch);
-            yield;
-          }
-        } catch (fileError: any) {
+        }).catch(fileError => {
           output.pushTo('errors', [serializeError(fileError)]);
-        }
+        });
+
+        yield; // Yield after each file is processed
       }
     } catch (error: any) {
       output.pushTo('errors', [serializeError(error)]);
