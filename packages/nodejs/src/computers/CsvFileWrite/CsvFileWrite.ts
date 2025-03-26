@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Computer, serializeError, str } from '@data-story/core';
+import { Computer, str } from '@data-story/core';
 import * as path from 'path';
 import { stringify } from 'csv-stringify';
 

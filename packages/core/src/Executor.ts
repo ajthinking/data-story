@@ -65,7 +65,7 @@ export class Executor {
       // Attempt cleanup of not runnables (TODO: EXPENSIVE?)
       const notRunnables = this.diagram.nodes.filter(node => !runnables.includes(node))
       for(const notRunnable of notRunnables) {
-        this.attemptToMarkNodeComplete(notRunnable);
+        await this.attemptToMarkNodeComplete(notRunnable);
       }
 
       if (abortSignal?.aborted) {
@@ -76,7 +76,7 @@ export class Executor {
       if(pendingPromises.length === 0) {
         // Check for nodes we can mark as complete
         for(const node of this.diagram.nodes) {
-          this.attemptToMarkNodeComplete(node);
+          await this.attemptToMarkNodeComplete(node);
         }
       }
 
@@ -170,11 +170,11 @@ export class Executor {
   /**
    * Marks nodes as complete if some default heuristics are met.
    */
-  protected attemptToMarkNodeComplete(node: Node) {
+  protected async attemptToMarkNodeComplete(node: Node) {
     // Avoid costly loop checks unless diagram has a loop
     if(this.hasLoop) {
       const loop = this.diagram.getLoopForNode(node)
-      if(loop) return this.attemptToMarkLoopNodeComplete(node)
+      if(loop) return await this.attemptToMarkLoopNodeComplete(node)
     }
 
     // Node must not be busy
@@ -191,17 +191,20 @@ export class Executor {
       if(this.memory.getNodeStatus(ancestor.id) !== 'COMPLETE') return;
     }
 
-    this.setNodeComplete(node);
+    await this.runToEnd(node);
+    this.memory.setNodeStatus(node.id, 'COMPLETE');
   }
 
-  private async setNodeComplete(node: Node) {
-    // efore marking the node as complete, manually call `next()` until it's done.
-    const runner = this.memory.getNodeRunner(node.id)!;
-    let result = await runner.next();
-    while (!result.done) {
-      result = await runner.next();
+  private async runToEnd(node: Node) {
+    // this is batch, CsvFile.write Node must run until the end
+    if (node.name === 'CsvFile.write') {
+      console.log(`[data-story] setNodeComplete Node ${node.id} completed`);
+      const runner = this.memory.getNodeRunner(node.id)!;
+      let result = await runner.next();
+      while (!result.done) {
+        result = await runner.next();
+      }
     }
-    this.memory.setNodeStatus(node.id, 'COMPLETE');
   }
 
   /**
@@ -209,7 +212,7 @@ export class Executor {
    *  - all loop nodes are non busy
    *  - all links are empty
    */
-  protected attemptToMarkLoopNodeComplete(node: Node) {
+  protected async attemptToMarkLoopNodeComplete(node: Node) {
     // must be a loop node
     const loop = this.diagram.getLoopForNode(node)
     if(!loop) throw new Error(`Node is not part of a loop: ${node.id}`)
@@ -233,6 +236,7 @@ export class Executor {
       if(items && items.length > 0) return;
     }
 
-    this.setNodeComplete(node);
+    await this.runToEnd(node);
+    this.memory.setNodeStatus(node.id, 'COMPLETE');
   }
 }
