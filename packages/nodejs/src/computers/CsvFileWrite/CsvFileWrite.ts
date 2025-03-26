@@ -1,5 +1,4 @@
-import { promises as fs } from 'fs';
-import * as fsSync from 'fs';
+import fs from 'fs';
 import { Computer, serializeError, str } from '@data-story/core';
 import * as path from 'path';
 import { stringify } from 'csv-stringify';
@@ -40,9 +39,9 @@ export const CsvFileWrite: Computer = {
         ? filePath
         : path.join(process.env.WORKSPACE_FOLDER_PATH as string, filePath);
       // Create the directory recursively if it doesn't exist
-      await fs.mkdir(path.dirname(fullPath), { recursive: true });
+      await fs.promises.mkdir(path.dirname(fullPath), { recursive: true });
       // Use streaming approach for better performance with large files
-      const writeStream = fsSync.createWriteStream(fullPath, { encoding: 'utf-8' });
+      const writeStream = fs.createWriteStream(fullPath, { encoding: 'utf-8' });
       const stringifier = stringify({
         delimiter: delimiter,
         header: true,

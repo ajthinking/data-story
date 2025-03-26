@@ -63,7 +63,6 @@ export const CsvFileRead: Computer = {
       // Process each file found by glob
       for (const file of files) {
         try {
-          // We need to use a different approach since we can't yield inside callbacks
           // Create a readable stream and process the file
           const parser = parse({
             columns: true,
