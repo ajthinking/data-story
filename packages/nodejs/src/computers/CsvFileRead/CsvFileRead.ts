@@ -54,8 +54,10 @@ export const CsvFileRead: Computer = {
         ? pathPattern
         : path.resolve(process.env.WORKSPACE_FOLDER_PATH || '', pathPattern);
 
-      // Find all files matching the pattern
-      files = glob.sync(resolvedPath);
+      files = glob.sync(resolvedPath, {
+        ignore: ['**/node_modules/**'],
+      });
+
       if (files.length === 0) {
         console.warn(`[data-story] No files found matching pattern: ${resolvedPath}`);
       }
@@ -71,20 +73,17 @@ export const CsvFileRead: Computer = {
             trim: true,
           });
           const stream = fs.createReadStream(file).pipe(parser);
-          // We'll collect records in batches
           let batch: any[] = [];
           // Process each record as it comes in
           for await (const record of stream) {
-            // Add file path to each record
             batch.push({
               ...record,
               _filePath: file,
             });
-            // Process in batches to avoid memory issues
+
             if (batch.length >= batchSize) {
               output.push([...batch]);
               batch = []; // Clear the batch
-              // Now we can yield directly since we're in the generator function
               yield;
             }
           }
@@ -96,12 +95,10 @@ export const CsvFileRead: Computer = {
         } catch (fileError) {
           console.error('[data-story] Error processing file:', fileError);
           output.pushTo('errors', [serializeError(fileError)]);
-          yield;
         }
       }
     } catch (error: any) {
       output.pushTo('errors', [serializeError(error)]);
-      yield;
     }
   },
 };

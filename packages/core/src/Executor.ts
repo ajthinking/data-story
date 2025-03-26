@@ -65,7 +65,7 @@ export class Executor {
       // Attempt cleanup of not runnables (TODO: EXPENSIVE?)
       const notRunnables = this.diagram.nodes.filter(node => !runnables.includes(node))
       for(const notRunnable of notRunnables) {
-        await this.attemptToMarkNodeComplete(notRunnable);
+        this.attemptToMarkNodeComplete(notRunnable);
       }
 
       if (abortSignal?.aborted) {
@@ -76,7 +76,7 @@ export class Executor {
       if(pendingPromises.length === 0) {
         // Check for nodes we can mark as complete
         for(const node of this.diagram.nodes) {
-          await this.attemptToMarkNodeComplete(node);
+          this.attemptToMarkNodeComplete(node);
         }
       }
 
