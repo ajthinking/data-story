@@ -54,7 +54,7 @@ export class Executor {
             this.memory.setNodeStatus(node.id, 'AVAILABLE')
           })
           .catch((error: Error) => {
-            console.log('Registering an execution error')
+            console.error('Registering an execution error')
             executionError = error;
           })
       })
@@ -65,7 +65,7 @@ export class Executor {
       // Attempt cleanup of not runnables (TODO: EXPENSIVE?)
       const notRunnables = this.diagram.nodes.filter(node => !runnables.includes(node))
       for(const notRunnable of notRunnables) {
-        this.attemptToMarkNodeComplete(notRunnable);
+        await this.attemptToMarkNodeComplete(notRunnable);
       }
 
       if (abortSignal?.aborted) {
@@ -76,7 +76,7 @@ export class Executor {
       if(pendingPromises.length === 0) {
         // Check for nodes we can mark as complete
         for(const node of this.diagram.nodes) {
-          this.attemptToMarkNodeComplete(node);
+          await this.attemptToMarkNodeComplete(node);
         }
       }
 
@@ -94,7 +94,7 @@ export class Executor {
     }
 
     if(executionError) {
-      console.log('Rethrowing the execution error in an awaitable timeline')
+      console.error('Rethrowing the execution error in an awaitable timeline')
       throw(executionError)
     }
 
@@ -191,8 +191,17 @@ export class Executor {
       if(this.memory.getNodeStatus(ancestor.id) !== 'COMPLETE') return;
     }
 
-    // Passed all checks, so mark as complete
-    this.memory.setNodeStatus(node.id, 'COMPLETE')
+    this.setNodeComplete(node);
+  }
+
+  private async setNodeComplete(node: Node) {
+    // efore marking the node as complete, manually call `next()` until it's done.
+    const runner = this.memory.getNodeRunner(node.id)!;
+    let result = await runner.next();
+    while (!result.done) {
+      result = await runner.next();
+    }
+    this.memory.setNodeStatus(node.id, 'COMPLETE');
   }
 
   /**
@@ -224,7 +233,6 @@ export class Executor {
       if(items && items.length > 0) return;
     }
 
-    // All checks passed, mark as complete
-    this.memory.setNodeStatus(node.id, 'COMPLETE')
+    this.setNodeComplete(node);
   }
 }

@@ -74,7 +74,6 @@ export const CsvFileRead: Computer = {
           const stream = fs.createReadStream(file).pipe(parser);
           // We'll collect records in batches
           let batch: any[] = [];
-          console.log('[data-story] stream:', stream);
           // Process each record as it comes in
           for await (const record of stream) {
             // Add file path to each record
@@ -84,7 +83,6 @@ export const CsvFileRead: Computer = {
             });
             // Process in batches to avoid memory issues
             if (batch.length >= batchSize) {
-              console.log('[data-story] once Processing batch:', batch.length);
               output.push([...batch]);
               batch = []; // Clear the batch
               // Now we can yield directly since we're in the generator function
@@ -93,11 +91,9 @@ export const CsvFileRead: Computer = {
           }
           // Process any remaining records
           if (batch.length > 0) {
-            console.log('[data-story] Processing remaining records:', batch.length);
             output.push([...batch]);
             yield;
           }
-          console.log('[data-story] Finished processing file:', file);
         } catch (fileError) {
           console.error('[data-story] Error processing file:', fileError);
           output.pushTo('errors', [serializeError(fileError)]);
