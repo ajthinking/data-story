@@ -90,7 +90,7 @@ export const createJsonFileReadDescription = (filename: string, path: string): N
         name: 'file_path',
         label: 'File path',
         help: 'File path',
-        input: path,
+        value: path,
       }),
       str({
         name: 'items_path',
@@ -121,19 +121,19 @@ export const createCsvFileReadDescription = (filename: string, path: string): No
         name: 'file_path',
         label: 'File path (supports glob patterns)',
         help: 'File path, e.g., **/*.csv',
-        input: path,
+        value: path,
       }),
       str({
         name: 'delimiter',
         label: 'Delimiter',
         help: 'CSV delimiter character (default: ,)',
-        input: ',',
+        value: ',',
       }),
       str({
         name: 'batch_size',
         label: 'Batch size',
         help: 'Number of records to yield in each batch (default: 1000)',
-        input: '1000',
+        value: '1000',
       }),
     ],
   };
