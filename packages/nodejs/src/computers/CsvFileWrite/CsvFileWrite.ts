@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Computer, str } from '@data-story/core';
+import { Computer, ItemValue, ItemWithParams, str } from '@data-story/core';
 import * as path from 'path';
 import { stringify } from 'csv-stringify';
 
@@ -51,18 +51,33 @@ export const CsvFileWrite: Computer = {
         console.log('[data-story] CsvFileWrite File written successfully:', fullPath);
       });
 
+      const createColumns = (data: ItemWithParams<ItemValue>[]) => {
+        if (data.length === 0) return [];
+        // If there are more than 1000 items, process the keys from the first 1000 rows.
+        const batch = data.length > 1000 ? data.slice(0, 1000) : data;
+
+        const columns = new Set<string>();
+        batch.forEach((item) => {
+          Object.keys(item.value).forEach((key) => columns.add(key));
+        });
+        return Array.from(columns);
+      };
+
+      const incoming = input.pull();
+
       // Setup CSV stringifier
       const stringifier = stringify({
         delimiter: delimiter,
         header: true,
+        columns: createColumns(incoming),
       });
       stringifier.pipe(writeStream);
 
-      const incoming = input.pull();
       for (const item of incoming) {
         stringifier.write(item.value);
       }
       stringifier.end();
+
       yield;
     } catch (error: any) {
       console.error('Error writing file:', error);
