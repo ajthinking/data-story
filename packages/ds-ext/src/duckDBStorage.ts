@@ -88,9 +88,6 @@ export class DuckDBStorage implements ObserverStorage {
 
     const currentTime = new Date().toISOString();
 
-    // Use transactions for better performance
-    await this.db?.run('BEGIN TRANSACTION');
-
     try {
       // Process in smaller chunks to avoid stack overflow
       const chunkSize = 1000;
@@ -119,10 +116,7 @@ export class DuckDBStorage implements ObserverStorage {
         // Execute parameterized query
         await this.db?.run(sql, ...params);
       }
-      await this.db?.run('COMMIT');
     } catch (error) {
-      // Rollback on error
-      await this.db?.run('ROLLBACK');
       console.error('Error inserting items:', error);
       throw error;
     }
