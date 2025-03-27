@@ -191,20 +191,7 @@ export class Executor {
       if(this.memory.getNodeStatus(ancestor.id) !== 'COMPLETE') return;
     }
 
-    await this.runToEnd(node);
     this.memory.setNodeStatus(node.id, 'COMPLETE');
-  }
-
-  private async runToEnd(node: Node) {
-    // this is batch, CsvFile.write Node must run until the end
-    if (node.name === 'CsvFile.write') {
-      console.log(`[data-story] setNodeComplete Node ${node.id} completed`);
-      const runner = this.memory.getNodeRunner(node.id)!;
-      let result = await runner.next();
-      while (!result.done) {
-        result = await runner.next();
-      }
-    }
   }
 
   /**
@@ -236,7 +223,6 @@ export class Executor {
       if(items && items.length > 0) return;
     }
 
-    await this.runToEnd(node);
     this.memory.setNodeStatus(node.id, 'COMPLETE');
   }
 }
