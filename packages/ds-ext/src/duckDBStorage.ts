@@ -88,26 +88,44 @@ export class DuckDBStorage implements ObserverStorage {
 
     const currentTime = new Date().toISOString();
 
-    // Create parameterized query with placeholders
-    const placeholders = items.map(() => '(?, ?, ?, ?, ?)').join(', ');
-    const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime)
+    // Use transactions for better performance
+    await this.db?.run('BEGIN TRANSACTION');
+
+    try {
+      // Process in smaller chunks to avoid stack overflow
+      const chunkSize = 1000;
+
+      for (let i = 0; i < items.length; i += chunkSize) {
+        const chunk = items.slice(i, i + chunkSize);
+
+        // Create parameterized query with placeholders
+        const placeholders = chunk.map(() => '(?, ?, ?, ?, ?)').join(', ');
+        const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime)
                  VALUES ${placeholders}`;
 
-    // Flatten the parameters into a single array
-    const params: any[] = [];
-    items.forEach(item => {
-      const sequenceNumber = this.nextSequenceVal();
-      params.push(
-        linkId,
-        sequenceNumber.toString(),
-        JSON.stringify(item),
-        currentTime,            // createTime
-        currentTime,             // updateTime
-      );
-    });
+        // Flatten the parameters into a single array
+        const params: any[] = [];
+        chunk.forEach(item => {
+          const sequenceNumber = this.nextSequenceVal();
+          params.push(
+            linkId,
+            sequenceNumber.toString(),
+            JSON.stringify(item),
+            currentTime,            // createTime
+            currentTime,             // updateTime
+          );
+        });
 
-    // Execute parameterized query
-    await this.db?.run(sql, ...params);
+        // Execute parameterized query
+        await this.db?.run(sql, ...params);
+      }
+      await this.db?.run('COMMIT');
+    } catch (error) {
+      // Rollback on error
+      await this.db?.run('ROLLBACK');
+      console.error('Error inserting items:', error);
+      throw error;
+    }
   }
 
   async getNodeStatus(nodeId: NodeId): Promise<'BUSY' | 'COMPLETE' | undefined> {
