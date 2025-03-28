@@ -3,7 +3,7 @@ import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
 import { InputObserverController } from './InputObserverController'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
-import { NodeContext } from './NodeContext'
+import { NodeRunnerContext } from './NodeRunnerContext'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
 import { Registry } from './Registry'
 import { UnfoldedDiagram } from './UnfoldedDiagram'
@@ -84,9 +84,9 @@ export class ExecutionMemoryFactory {
       }
 
       // Initialize runner context
-      const context = new NodeContext(node.id);
+      const context = new NodeRunnerContext(node.id);
       const runner = createNodeRunner({ computer, inputDevice, outputDevice, node, onComplete: context.registerOnComplete })
-      context.runner = runner;
+      context.status = runner;
       memory.setNodeContext(node.id, context);
 
       memory.setNodeRunner(

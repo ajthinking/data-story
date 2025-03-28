@@ -43,7 +43,7 @@ export class Executor {
 
         // Run
         const context = this.memory.getNodeContext(node.id)
-        const runner = context!.runner!;
+        const runner = context!.status!;
         // const runner = this.memory.getNodeRunner(node.id)!;
         return runner.next()
           .then((result: IteratorResult<undefined, void>) => {

@@ -1,8 +1,8 @@
 import { NodeId } from './types/Node';
 
-export class NodeContext {
+export class NodeRunnerContext {
   private onCompleteFns: Function[] = [];
-  public runner?: AsyncGenerator<undefined, void, void>;
+  public status?: AsyncGenerator<undefined, void, void>;
   private nodeId: NodeId;
   constructor(nodeId: NodeId) {
     this.nodeId = nodeId;

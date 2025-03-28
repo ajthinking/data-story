@@ -7,12 +7,12 @@ import { InputDevice } from './InputDevice'
 import { OutputDevice } from './OutputDevice'
 import { InputObserverController } from './InputObserverController'
 import { RequestObserverType } from './types/InputObserveConfig';
-import { NodeContext } from './NodeContext'
+import { NodeRunnerContext } from './NodeRunnerContext'
 
 type MemoryValues = {
   nodeStatuses?: Map<NodeId, NodeStatus>,
   nodeRunners?: Map<NodeId, AsyncGenerator<undefined, void, void>>,
-  nodeContexts?: Map<NodeId, NodeContext>,
+  nodeContexts?: Map<NodeId, NodeRunnerContext>,
   linkItems?: Map<LinkId, ItemValue[]>,
   linkCounts?: Map<LinkId, number>
   inputDevices?: Map<NodeId, InputDevice>,
@@ -24,7 +24,7 @@ type MemoryValues = {
 export class ExecutionMemory {
   nodeStatuses: Map<NodeId, NodeStatus>
   nodeRunners: Map<NodeId, AsyncGenerator<undefined, void, void>>
-  nodeContexts: Map<NodeId, NodeContext>
+  nodeContexts: Map<NodeId, NodeRunnerContext>
   linkItems: Map<LinkId, ItemValue[]>
   linkCounts: Map<LinkId, number>
   inputDevices: Map<NodeId, InputDevice>
@@ -57,11 +57,11 @@ export class ExecutionMemory {
     return this.nodeStatuses
   }
 
-  getNodeContext(nodeId: NodeId): NodeContext | undefined {
+  getNodeContext(nodeId: NodeId): NodeRunnerContext | undefined {
     return this.nodeContexts.get(nodeId)
   }
 
-  setNodeContext(nodeId: NodeId, context: NodeContext) {
+  setNodeContext(nodeId: NodeId, context: NodeRunnerContext) {
     this.nodeContexts.set(nodeId, context)
   }
 
