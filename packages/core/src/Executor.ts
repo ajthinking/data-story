@@ -42,11 +42,13 @@ export class Executor {
         this.memory.setNodeStatus(node.id, 'BUSY')
 
         // Run
-        const runner = this.memory.getNodeRunner(node.id)!;
+        const context = this.memory.getNodeContext(node.id)
+        const runner = context!.runner!;
+        // const runner = this.memory.getNodeRunner(node.id)!;
         return runner.next()
           .then((result: IteratorResult<undefined, void>) => {
             if(result.done) {
-              this.memory.setNodeStatus(node.id, 'COMPLETE');
+              this.markNodeComplete(node);
               return;
             }
 
@@ -191,6 +193,12 @@ export class Executor {
       if(this.memory.getNodeStatus(ancestor.id) !== 'COMPLETE') return;
     }
 
+    this.markNodeComplete(node);
+  }
+
+  private markNodeComplete(node: Node) {
+    const context = this.memory.getNodeContext(node.id);
+    context?.onComplete();
     this.memory.setNodeStatus(node.id, 'COMPLETE');
   }
 
@@ -223,6 +231,6 @@ export class Executor {
       if(items && items.length > 0) return;
     }
 
-    this.memory.setNodeStatus(node.id, 'COMPLETE');
+    this.markNodeComplete(node);
   }
 }

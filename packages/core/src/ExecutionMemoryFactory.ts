@@ -61,6 +61,7 @@ export class ExecutionMemoryFactory {
       // Initialize runner generators
       const computer = this.registry.computers[node.name]
       if (!computer) throw new Error(`Computer "${node.name}" not found`)
+
       const createNodeRunner = ({ computer, inputDevice, outputDevice, node, onComplete }: {
         computer: Computer;
         inputDevice: InputDevice;
@@ -81,6 +82,7 @@ export class ExecutionMemoryFactory {
           onComplete,
         })
       }
+
       // Initialize runner context
       const context = new NodeContext(node.id);
       const runner = createNodeRunner({ computer, inputDevice, outputDevice, node, onComplete: context.registerOnComplete })

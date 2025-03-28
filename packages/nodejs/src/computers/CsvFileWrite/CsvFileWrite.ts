@@ -79,7 +79,8 @@ export const CsvFileWrite: Computer = {
       stringifier.end();
 
       onComplete?.(() => {
-        stringifier.end();
+        console.log('[data-story] CsvFileWrite onComplete!!!!!!');
+        // stringifier.end();
       });
 
       yield;
