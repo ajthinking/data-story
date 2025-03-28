@@ -49,66 +49,56 @@ export const CsvFileRead: Computer = {
 
     let files: string[] = [];
     try {
-      if (isAbsolutePath) {
-        // If it's an absolute path, use it directly with glob
-        files = glob.sync(pathPattern, {
-          ignore: ['**/node_modules/**'],
-          absolute: true,
-        });
-      } else {
-        // If it's a relative path, resolve using the workspace folder
-        const cwd = process.env.WORKSPACE_FOLDER_PATH as string;
-        files = glob.sync(pathPattern, {
-          cwd, // Resolve relative paths from the workspace folder
-          ignore: ['**/node_modules/**'],
-          absolute: true,
-        });
+      // Resolve the path if it's relative
+      const resolvedPath = isAbsolutePath
+        ? pathPattern
+        : path.resolve(process.env.WORKSPACE_FOLDER_PATH || '', pathPattern);
+
+      files = glob.sync(resolvedPath, {
+        ignore: ['**/node_modules/**'],
+      });
+
+      if (files.length === 0) {
+        console.warn(`[data-story] No files found matching pattern: ${resolvedPath}`);
       }
 
       // Process each file found by glob
       for (const file of files) {
         try {
-          // Create read stream and parser
-          const fileStream = fs.createReadStream(file);
+          // Create a readable stream and process the file
           const parser = parse({
-            columns: true, // Use first row as column names
+            columns: true,
             delimiter,
             skip_empty_lines: true,
             trim: true,
           });
-
-          // Set up pipeline
-          fileStream.pipe(parser);
-
+          const stream = fs.createReadStream(file).pipe(parser);
           let batch: any[] = [];
-
-          // Process records as they come in
-          for await (const record of parser) {
+          // Process each record as it comes in
+          for await (const record of stream) {
             batch.push({
               ...record,
               _filePath: file,
             });
 
-            // When batch is full, emit it
             if (batch.length >= batchSize) {
-              output.push(batch);
-              batch = [];
+              output.push([...batch]);
+              batch = []; // Clear the batch
               yield;
             }
           }
-
-          // Emit any remaining records
+          // Process any remaining records
           if (batch.length > 0) {
-            output.push(batch);
+            output.push([...batch]);
             yield;
           }
-        } catch (fileError: any) {
+        } catch (fileError) {
+          console.error('[data-story] Error processing file:', fileError);
           output.pushTo('errors', [serializeError(fileError)]);
         }
       }
     } catch (error: any) {
       output.pushTo('errors', [serializeError(error)]);
-      yield;
     }
   },
 };

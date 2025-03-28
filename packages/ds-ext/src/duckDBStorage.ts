@@ -88,26 +88,38 @@ export class DuckDBStorage implements ObserverStorage {
 
     const currentTime = new Date().toISOString();
 
-    // Create parameterized query with placeholders
-    const placeholders = items.map(() => '(?, ?, ?, ?, ?)').join(', ');
-    const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime)
+    try {
+      // Process in smaller chunks to avoid stack overflow
+      const chunkSize = 1000;
+
+      for (let i = 0; i < items.length; i += chunkSize) {
+        const chunk = items.slice(i, i + chunkSize);
+
+        // Create parameterized query with placeholders
+        const placeholders = chunk.map(() => '(?, ?, ?, ?, ?)').join(', ');
+        const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime)
                  VALUES ${placeholders}`;
 
-    // Flatten the parameters into a single array
-    const params: any[] = [];
-    items.forEach(item => {
-      const sequenceNumber = this.nextSequenceVal();
-      params.push(
-        linkId,
-        sequenceNumber.toString(),
-        JSON.stringify(item),
-        currentTime,            // createTime
-        currentTime,             // updateTime
-      );
-    });
+        // Flatten the parameters into a single array
+        const params: any[] = [];
+        chunk.forEach(item => {
+          const sequenceNumber = this.nextSequenceVal();
+          params.push(
+            linkId,
+            sequenceNumber.toString(),
+            JSON.stringify(item),
+            currentTime,            // createTime
+            currentTime,             // updateTime
+          );
+        });
 
-    // Execute parameterized query
-    await this.db?.run(sql, ...params);
+        // Execute parameterized query
+        await this.db?.run(sql, ...params);
+      }
+    } catch (error) {
+      console.error('Error inserting items:', error);
+      throw error;
+    }
   }
 
   async getNodeStatus(nodeId: NodeId): Promise<'BUSY' | 'COMPLETE' | undefined> {
