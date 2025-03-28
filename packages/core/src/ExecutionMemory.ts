@@ -66,10 +66,6 @@ export class ExecutionMemory {
     return this.nodeRunnerContexts.get(nodeId)?.status;
   }
 
-  setNodeRunner(nodeId: NodeId, status: AsyncGenerator<undefined, void, void>) {
-    this.nodeRunnerContexts.get(nodeId)!.status = status
-  }
-
   getLinkItems(linkId: LinkId): ItemValue[] | undefined {
     return this.linkItems.get(linkId)
   }

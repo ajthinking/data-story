@@ -82,19 +82,6 @@ describe('ExecutionMemory', () => {
     });
   });
 
-  describe('setNodeRunner', () => {
-    it('sets the runner of a node correctly', () => {
-      const memory = new ExecutionMemory();
-      const nodeId: NodeId = 'node1';
-      const context = new NodeRunnerContext(nodeId);
-      context.status = vi.fn() as any;
-      memory.setNodeRunnerContext(nodeId, context);
-
-      const retrieved = memory.getNodeRunner(nodeId);
-      expect(retrieved).toBe(context.status);
-    });
-  });
-
   describe('getNodeRunnerContext', () => {
     it('returns the correct context for a node', () => {
       const memory = new ExecutionMemory();
