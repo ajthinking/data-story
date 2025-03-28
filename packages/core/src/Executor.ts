@@ -6,6 +6,7 @@ import { mapToRecord } from './utils/mapToRecord';
 import { arrayToRecord } from './utils/arrayToRecord';
 import { Diagram } from './Diagram';
 import { Registry } from './Registry';
+import { isPromise } from './utils/isPromise';
 
 export type NodeStatus = 'AVAILABLE' | 'BUSY' | 'COMPLETE';
 
@@ -14,6 +15,15 @@ export class Executor {
   public diagram: Diagram;
   public registry: Registry;
   public hasLoop: boolean;
+  private pendingCompletionPromises: Promise<unknown>[] = [];
+  private addCompletionPromise(promise: Promise<unknown>) {
+    this.pendingCompletionPromises.push(promise)
+  }
+
+  private async awaitCompletion() {
+    await Promise.allSettled(this.pendingCompletionPromises)
+    this.pendingCompletionPromises = []
+  }
 
   constructor(params: {
     diagram: Diagram;
@@ -67,7 +77,7 @@ export class Executor {
       // Attempt cleanup of not runnables (TODO: EXPENSIVE?)
       const notRunnables = this.diagram.nodes.filter(node => !runnables.includes(node))
       for(const notRunnable of notRunnables) {
-        await this.attemptToMarkNodeComplete(notRunnable);
+        this.attemptToMarkNodeComplete(notRunnable);
       }
 
       if (abortSignal?.aborted) {
@@ -78,7 +88,7 @@ export class Executor {
       if(pendingPromises.length === 0) {
         // Check for nodes we can mark as complete
         for(const node of this.diagram.nodes) {
-          await this.attemptToMarkNodeComplete(node);
+          this.attemptToMarkNodeComplete(node);
         }
       }
 
@@ -103,6 +113,9 @@ export class Executor {
     if (abortSignal?.aborted) {
       throw new Error('Execution aborted');
     }
+
+    // Wait for all promises to resolve
+    await this.awaitCompletion();
 
     yield {
       type: 'ExecutionUpdate',
@@ -172,11 +185,11 @@ export class Executor {
   /**
    * Marks nodes as complete if some default heuristics are met.
    */
-  protected async attemptToMarkNodeComplete(node: Node) {
+  protected attemptToMarkNodeComplete(node: Node) {
     // Avoid costly loop checks unless diagram has a loop
     if(this.hasLoop) {
       const loop = this.diagram.getLoopForNode(node)
-      if(loop) return await this.attemptToMarkLoopNodeComplete(node)
+      if(loop) return this.attemptToMarkLoopNodeComplete(node)
     }
 
     // Node must not be busy
@@ -197,9 +210,11 @@ export class Executor {
   }
 
   private markNodeComplete(node: Node) {
-    const context = this.memory.getNodeRunnerContext(node.id);
-    context?.onComplete();
     this.memory.setNodeStatus(node.id, 'COMPLETE');
+    const context = this.memory.getNodeRunnerContext(node.id);
+    const onComplete = context?.onComplete();
+    if(!onComplete || !isPromise(onComplete)) return;
+    this.addCompletionPromise(onComplete);
   }
 
   /**
@@ -207,7 +222,7 @@ export class Executor {
    *  - all loop nodes are non busy
    *  - all links are empty
    */
-  protected async attemptToMarkLoopNodeComplete(node: Node) {
+  protected attemptToMarkLoopNodeComplete(node: Node) {
     // must be a loop node
     const loop = this.diagram.getLoopForNode(node)
     if(!loop) throw new Error(`Node is not part of a loop: ${node.id}`)
