@@ -3,9 +3,11 @@ import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
 import { InputObserverController } from './InputObserverController'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
+import { NodeContext } from './NodeContext'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
 import { Registry } from './Registry'
 import { UnfoldedDiagram } from './UnfoldedDiagram'
+import { Computer } from './types/Computer'
 import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
@@ -59,10 +61,13 @@ export class ExecutionMemoryFactory {
       // Initialize runner generators
       const computer = this.registry.computers[node.name]
       if (!computer) throw new Error(`Computer "${node.name}" not found`)
-
-      memory.setNodeRunner(
-        node.id,
-        computer.run({
+      const createNodeRunner = ({ computer, inputDevice, outputDevice, node }: {
+        computer: Computer;
+        inputDevice: InputDevice;
+        outputDevice: OutputDevice;
+        node: Node
+      }): AsyncGenerator<undefined, void, void> => {
+        return computer.run({
           input: inputDevice,
           output: outputDevice,
           params: this.makeParamsDevice(node, memory),
@@ -72,7 +77,17 @@ export class ExecutionMemoryFactory {
             },
           },
           node,
-        }),
+        })
+      }
+      const runner = createNodeRunner({ computer, inputDevice, outputDevice, node })
+      // Initialize runner context
+      const context = new NodeContext(node.id);
+      context.runner = runner;
+      memory.setNodeRunnerContext(node.id, context);
+
+      memory.setNodeRunner(
+        node.id,
+        runner,
       )
     }
 
