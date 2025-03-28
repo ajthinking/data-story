@@ -54,10 +54,10 @@ export const CsvFileWrite: Computer = {
       const createColumns = (data: ItemWithParams<ItemValue>[]) => {
         if (data.length === 0) return [];
         // If there are more than 1000 items, process the keys from the first 1000 rows.
-        const batch = data.length > 1000 ? data.slice(0, 1000) : data;
+        const sampleData = data.length > 1000 ? data.slice(0, 1000) : data;
 
         const columns = new Set<string>();
-        batch.forEach((item) => {
+        sampleData.forEach((item) => {
           Object.keys(item.value).forEach((key) => columns.add(key));
         });
         return Array.from(columns);
@@ -78,7 +78,6 @@ export const CsvFileWrite: Computer = {
       }
 
       onComplete?.(() => {
-        console.log('[data-story] CsvFileWrite onComplete!!!!!!');
         stringifier.end();
       });
 
