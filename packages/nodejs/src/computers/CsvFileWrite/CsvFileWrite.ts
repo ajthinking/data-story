@@ -29,7 +29,7 @@ export const CsvFileWrite: Computer = {
     return isAvailable() && input.haveAllItemsAtInput('input');
   },
 
-  async *run({ input, params }) {
+  async *run({ input, params, onComplete }) {
     try {
       const filePath = params.file_path as string;
       const delimiter = params.delimiter as string;
@@ -77,6 +77,10 @@ export const CsvFileWrite: Computer = {
         stringifier.write(item.value);
       }
       stringifier.end();
+
+      onComplete?.(() => {
+        stringifier.end();
+      });
 
       yield;
     } catch (error: any) {

@@ -61,11 +61,12 @@ export class ExecutionMemoryFactory {
       // Initialize runner generators
       const computer = this.registry.computers[node.name]
       if (!computer) throw new Error(`Computer "${node.name}" not found`)
-      const createNodeRunner = ({ computer, inputDevice, outputDevice, node }: {
+      const createNodeRunner = ({ computer, inputDevice, outputDevice, node, onComplete }: {
         computer: Computer;
         inputDevice: InputDevice;
         outputDevice: OutputDevice;
         node: Node
+        onComplete?: (fn: Function) => void
       }): AsyncGenerator<undefined, void, void> => {
         return computer.run({
           input: inputDevice,
@@ -77,13 +78,14 @@ export class ExecutionMemoryFactory {
             },
           },
           node,
+          onComplete,
         })
       }
-      const runner = createNodeRunner({ computer, inputDevice, outputDevice, node })
       // Initialize runner context
       const context = new NodeContext(node.id);
+      const runner = createNodeRunner({ computer, inputDevice, outputDevice, node, onComplete: context.registerOnComplete })
       context.runner = runner;
-      memory.setNodeRunnerContext(node.id, context);
+      memory.setNodeContext(node.id, context);
 
       memory.setNodeRunner(
         node.id,

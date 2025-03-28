@@ -16,6 +16,7 @@ export type RunArgs = {
   params: ParamsDevice,
   hooks: HooksDevice,
   node: Node,
+  onComplete?: (fn: Function) => void
 }
 
 export interface Computer {

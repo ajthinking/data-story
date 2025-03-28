@@ -12,7 +12,7 @@ import { NodeContext } from './NodeContext'
 type MemoryValues = {
   nodeStatuses?: Map<NodeId, NodeStatus>,
   nodeRunners?: Map<NodeId, AsyncGenerator<undefined, void, void>>,
-  nodeRunnerContexts?: Map<NodeId, NodeContext>,
+  nodeContexts?: Map<NodeId, NodeContext>,
   linkItems?: Map<LinkId, ItemValue[]>,
   linkCounts?: Map<LinkId, number>
   inputDevices?: Map<NodeId, InputDevice>,
@@ -24,7 +24,7 @@ type MemoryValues = {
 export class ExecutionMemory {
   nodeStatuses: Map<NodeId, NodeStatus>
   nodeRunners: Map<NodeId, AsyncGenerator<undefined, void, void>>
-  nodeRunnerContexts: Map<NodeId, NodeContext>
+  nodeContexts: Map<NodeId, NodeContext>
   linkItems: Map<LinkId, ItemValue[]>
   linkCounts: Map<LinkId, number>
   inputDevices: Map<NodeId, InputDevice>
@@ -35,7 +35,7 @@ export class ExecutionMemory {
   constructor(values: MemoryValues = {}) {
     this.nodeStatuses = values.nodeStatuses || new Map()
     this.nodeRunners = values.nodeRunners || new Map()
-    this.nodeRunnerContexts = values.nodeRunnerContexts || new Map()
+    this.nodeContexts = values.nodeContexts || new Map()
     this.linkItems = values.linkItems || new Map()
     this.linkCounts = values.linkCounts || new Map()
     this.inputDevices = values.inputDevices || new Map()
@@ -57,12 +57,12 @@ export class ExecutionMemory {
     return this.nodeStatuses
   }
 
-  getNodeRunnerContext(nodeId: NodeId): NodeContext | undefined {
-    return this.nodeRunnerContexts.get(nodeId)
+  getNodeContext(nodeId: NodeId): NodeContext | undefined {
+    return this.nodeContexts.get(nodeId)
   }
 
-  setNodeRunnerContext(nodeId: NodeId, context: NodeContext) {
-    this.nodeRunnerContexts.set(nodeId, context)
+  setNodeContext(nodeId: NodeId, context: NodeContext) {
+    this.nodeContexts.set(nodeId, context)
   }
 
   getNodeRunner(nodeId: NodeId): AsyncGenerator<undefined, void, void> | undefined {
