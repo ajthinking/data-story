@@ -24,7 +24,7 @@ export class ExecutionMemoryFactory {
     // Create a new memory
     const memory = new ExecutionMemory({
       nodeStatuses: new Map<NodeId, NodeStatus>(),
-      nodeRunners: new Map<NodeId, AsyncGenerator<undefined, void, void>>(),
+      nodeRunnerContexts: new Map<NodeId, NodeRunnerContext>(),
       linkItems: new Map<LinkId, ItemValue[]>(),
       linkCounts: new Map<LinkId, number>(),
       inputDevices: new Map<NodeId, InputDevice>(),
@@ -62,37 +62,21 @@ export class ExecutionMemoryFactory {
       const computer = this.registry.computers[node.name]
       if (!computer) throw new Error(`Computer "${node.name}" not found`)
 
-      const createNodeRunner = ({ computer, inputDevice, outputDevice, node, onComplete }: {
-        computer: Computer;
-        inputDevice: InputDevice;
-        outputDevice: OutputDevice;
-        node: Node
-        onComplete?: (fn: Function) => void
-      }): AsyncGenerator<undefined, void, void> => {
-        return computer.run({
-          input: inputDevice,
-          output: outputDevice,
-          params: this.makeParamsDevice(node, memory),
-          hooks: {
-            register: (hook: Hook) => {
-              memory.pushHooks([hook])
-            },
-          },
-          node,
-          onComplete,
-        })
-      }
-
       // Initialize runner context
       const context = new NodeRunnerContext(node.id);
-      const runner = createNodeRunner({ computer, inputDevice, outputDevice, node, onComplete: context.registerOnComplete })
-      context.status = runner;
-      memory.setNodeContext(node.id, context);
-
-      memory.setNodeRunner(
-        node.id,
-        runner,
-      )
+      context.status = computer.run({
+        input: inputDevice,
+        output: outputDevice,
+        params: this.makeParamsDevice(node, memory),
+        hooks: {
+          register: (hook: Hook) => {
+            memory.pushHooks([hook])
+          },
+        },
+        node,
+        onComplete: context.registerOnComplete,
+      })
+      memory.setNodeRunnerContext(node.id, context);
     }
 
     return memory

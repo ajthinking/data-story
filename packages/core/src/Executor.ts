@@ -42,7 +42,7 @@ export class Executor {
         this.memory.setNodeStatus(node.id, 'BUSY')
 
         // Run
-        const context = this.memory.getNodeContext(node.id)
+        const context = this.memory.getNodeRunnerContext(node.id)
         const runner = context!.status!;
         // const runner = this.memory.getNodeRunner(node.id)!;
         return runner.next()
@@ -197,7 +197,7 @@ export class Executor {
   }
 
   private markNodeComplete(node: Node) {
-    const context = this.memory.getNodeContext(node.id);
+    const context = this.memory.getNodeRunnerContext(node.id);
     context?.onComplete();
     this.memory.setNodeStatus(node.id, 'COMPLETE');
   }
