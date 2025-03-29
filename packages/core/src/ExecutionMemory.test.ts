@@ -1,7 +1,8 @@
-import { ExecutionMemory } from './ExecutionMemory';;
+import { ExecutionMemory } from './ExecutionMemory';
 import { NodeId } from './types/Node';
 import { LinkId } from './types/Link';
 import { ItemValue } from './types/ItemValue';
+import { NodeRunnerContext } from './NodeRunnerContext';
 
 describe('ExecutionMemory', () => {
   describe('getNodeStatus', () => {
@@ -64,12 +65,12 @@ describe('ExecutionMemory', () => {
     it('returns the correct runner for a node', () => {
       const memory = new ExecutionMemory();
       const nodeId: NodeId = 'node1';
-      const runner = vi.fn() as any;
-
-      memory.setNodeRunner(nodeId, runner);
+      const context = new NodeRunnerContext(nodeId);
+      context.status = vi.fn() as any;
+      memory.setNodeRunnerContext(nodeId, context);
 
       const retrieved = memory.getNodeRunner(nodeId);
-      expect(retrieved).toBe(runner);
+      expect(retrieved).toBe(context.status);
     });
 
     it('returns undefined if node runner is not set', () => {
@@ -81,16 +82,35 @@ describe('ExecutionMemory', () => {
     });
   });
 
-  describe('setNodeRunner', () => {
-    it('sets the runner of a node correctly', () => {
+  describe('getNodeRunnerContext', () => {
+    it('returns the correct context for a node', () => {
       const memory = new ExecutionMemory();
       const nodeId: NodeId = 'node1';
-      const runner = vi.fn() as any;
+      const context = new NodeRunnerContext(nodeId);
+      memory.setNodeRunnerContext(nodeId, context);
 
-      memory.setNodeRunner(nodeId, runner);
+      const retrieved = memory.getNodeRunnerContext(nodeId);
+      expect(retrieved).toBe(context);
+    });
 
-      const retrieved = memory.getNodeRunner(nodeId);
-      expect(retrieved).toBe(runner);
+    it('returns undefined if node runner context is not set', () => {
+      const memory = new ExecutionMemory();
+      const nodeId: NodeId = 'node1';
+
+      const retrieved = memory.getNodeRunnerContext(nodeId);
+      expect(retrieved).toBeUndefined();
+    });
+  });
+
+  describe('setNodeRunnerContext', () => {
+    it('sets the runner context of a node correctly', () => {
+      const memory = new ExecutionMemory();
+      const nodeId: NodeId = 'node1';
+      const context = new NodeRunnerContext(nodeId);
+      memory.setNodeRunnerContext(nodeId, context);
+
+      const retrieved = memory.getNodeRunnerContext(nodeId);
+      expect(retrieved).toBe(context);
     });
   });
 

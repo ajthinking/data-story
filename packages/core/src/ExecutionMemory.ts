@@ -7,10 +7,11 @@ import { InputDevice } from './InputDevice'
 import { OutputDevice } from './OutputDevice'
 import { InputObserverController } from './InputObserverController'
 import { RequestObserverType } from './types/InputObserveConfig';
+import { NodeRunnerContext } from './NodeRunnerContext'
 
 type MemoryValues = {
   nodeStatuses?: Map<NodeId, NodeStatus>,
-  nodeRunners?: Map<NodeId, AsyncGenerator<undefined, void, void>>,
+  nodeRunnerContexts?: Map<NodeId, NodeRunnerContext>,
   linkItems?: Map<LinkId, ItemValue[]>,
   linkCounts?: Map<LinkId, number>
   inputDevices?: Map<NodeId, InputDevice>,
@@ -21,7 +22,7 @@ type MemoryValues = {
 
 export class ExecutionMemory {
   nodeStatuses: Map<NodeId, NodeStatus>
-  nodeRunners: Map<NodeId, AsyncGenerator<undefined, void, void>>
+  nodeRunnerContexts: Map<NodeId, NodeRunnerContext>
   linkItems: Map<LinkId, ItemValue[]>
   linkCounts: Map<LinkId, number>
   inputDevices: Map<NodeId, InputDevice>
@@ -31,7 +32,7 @@ export class ExecutionMemory {
 
   constructor(values: MemoryValues = {}) {
     this.nodeStatuses = values.nodeStatuses || new Map()
-    this.nodeRunners = values.nodeRunners || new Map()
+    this.nodeRunnerContexts = values.nodeRunnerContexts || new Map()
     this.linkItems = values.linkItems || new Map()
     this.linkCounts = values.linkCounts || new Map()
     this.inputDevices = values.inputDevices || new Map()
@@ -53,12 +54,16 @@ export class ExecutionMemory {
     return this.nodeStatuses
   }
 
-  getNodeRunner(nodeId: NodeId): AsyncGenerator<undefined, void, void> | undefined {
-    return this.nodeRunners.get(nodeId)
+  getNodeRunnerContext(nodeId: NodeId): NodeRunnerContext | undefined {
+    return this.nodeRunnerContexts.get(nodeId)
   }
 
-  setNodeRunner(nodeId: NodeId, status: AsyncGenerator<undefined, void, void>) {
-    this.nodeRunners.set(nodeId, status)
+  setNodeRunnerContext(nodeId: NodeId, context: NodeRunnerContext) {
+    this.nodeRunnerContexts.set(nodeId, context)
+  }
+
+  getNodeRunner(nodeId: NodeId): AsyncGenerator<undefined, void, void> | undefined {
+    return this.nodeRunnerContexts.get(nodeId)?.status;
   }
 
   getLinkItems(linkId: LinkId): ItemValue[] | undefined {

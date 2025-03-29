@@ -24,10 +24,10 @@ import { ComputerFactory } from '../../ComputerFactory';
 import { LinkId } from '../../types/Link';
 import { Hook } from '../../types/Hook';
 import { Param } from '../../Param';
-import { toLookup } from '../../utils/toLookup';
 import { ParamEvaluator } from '../../ItemWithParams/ParamEvaluator';
 import { merge } from '../../utils/merge';
 import { UnfoldedDiagramFactory } from '../../UnfoldedDiagramFactory';
+import { NodeRunnerContext } from '../../NodeRunnerContext';
 
 export const when = (computer: Computer) => {
   return new ComputerTester(computer)
@@ -83,30 +83,33 @@ export class ComputerTester {
     this.outputDevice = this.makeOutputDevice()
 
     // Initialize runner
-    this.memory.setNodeRunner(
-      this.node.id,
-      this.computer.run({
-        input: this.inputDevice,
-        output: this.outputDevice,
-        params: new Proxy({}, {
-          get: (_, key: string) => {
-            const param = this.computer.params.find(p => p.name === key);
-            if (!param) throw new Error(`Param "${key}" does not exist`);
-
-            try {
-              const emptyItem = {}
-              const evaluator = new ParamEvaluator();
-              return evaluator.evaluate(emptyItem, param, this.diagram!.params);
-            } catch (error) {
-              console.error('error', error);
-              return param.input;
-            }
-          },
-        }),
-        hooks: this.hooksDevice,
-        node: this.node,
+    const context = new NodeRunnerContext(this.node!.id);
+    context.status = this.computer.run({
+      input: this.inputDevice,
+      output: this.outputDevice,
+      params: new Proxy({}, {
+        get: (_, key: string) => {
+          const param = this.computer.params.find(p => p.name === key);
+          if (!param) throw new Error(`Param "${key}" does not exist`);
+          try {
+            const emptyItem = {}
+            const evaluator = new ParamEvaluator();
+            return evaluator.evaluate(emptyItem, param, this.diagram!.params);
+          } catch (error) {
+            console.error('error', error);
+            return param.input;
+          }
+        },
       }),
-    )
+      hooks: {
+        register: (hook: Hook) => {
+          this.memory!.pushHooks([hook])
+        },
+      },
+      node: this.node!,
+      onComplete: context.registerOnComplete,
+    })
+    this.memory!.setNodeRunnerContext(this.node!.id, context);
 
     // Runner handle
     this.runner = this.memory.getNodeRunner(this.node.id)!
@@ -291,12 +294,12 @@ export class ComputerTester {
     const nodeStatuses = new Map<NodeId, NodeStatus>();
     const linkItems = new Map<LinkId, ItemValue[]>();
     const linkCounts = new Map<LinkId, number>();
-    const nodeRunners = new Map<NodeId, AsyncGenerator<undefined, void, void>>();
+    const nodeRunnerContexts = new Map<NodeId, NodeRunnerContext>();
 
     // The memory object
     const memory = new ExecutionMemory({
       nodeStatuses,
-      nodeRunners,
+      nodeRunnerContexts,
       linkItems,
       linkCounts,
       // TODO inputDevice
