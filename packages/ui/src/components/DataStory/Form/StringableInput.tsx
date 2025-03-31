@@ -4,6 +4,7 @@ import { FormFieldWrapper, useFormField } from './UseFormField';
 import { autocompletion } from '@codemirror/autocomplete';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
+import { json } from '@codemirror/lang-json';
 
 interface StringableInput {
   param: StringableParam;
@@ -46,9 +47,18 @@ export function StringableInputComponent({
     };
   }, []);
 
-  const extensions = useMemo(() =>
-    [javascript(), autocompletion({ override: [myCompletions] })]
-  , [myCompletions]);
+  const extensions = useMemo(() => {
+    const evaulation = param.input?.Evaluation;
+    if (evaulation === 'JS_FUNCTION' || evaulation === 'JS_EXPRESSION') {
+      console.log('evaulation is JS', evaulation);
+      return [javascript(), autocompletion({ override: [myCompletions] })];
+    }
+    if (evaulation === 'JSON' || evaulation === 'HJSON') {
+      console.log('evaulation is JSON', evaulation);
+      return [json(), autocompletion({ override: [myCompletions] })];
+    }
+    return [autocompletion({ override: [myCompletions] })];
+  }, [myCompletions, param.input?.Evaluation]);
 
   const onChange = useCallback((value, viewUpdate) => {
     setValue(value);
