@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@codemirror/autocomplete": "^6.16.2",
+    "@codemirror/lang-javascript": "^6.2.3",
     "@data-story/core": "workspace:*",
     "@floating-ui/react": "^0.26.10",
     "@tanstack/react-table": "^8.11.7",

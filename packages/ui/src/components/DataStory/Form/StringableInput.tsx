@@ -3,6 +3,7 @@ import {  useCallback } from 'react';
 import { FormFieldWrapper, useFormField } from './UseFormField';
 import { autocompletion } from '@codemirror/autocomplete';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
 
 interface StringableInput {
   param: StringableParam;
@@ -12,9 +13,10 @@ interface StringableInput {
 const basicSetup: BasicSetupOptions = {
   lineNumbers: false,
   highlightActiveLineGutter: false,
-  highlightActiveLine: false,
+  highlightActiveLine: true,
   foldGutter: false,
   autocompletion: true,
+  syntaxHighlighting: true,
 };
 
 /**
@@ -44,7 +46,7 @@ export function StringableInputComponent({
     };
   }, []);
 
-  const extensions = [autocompletion({ override: [myCompletions] }) ];
+  const extensions = [javascript(), autocompletion({ override: [myCompletions] })];
 
   const onChange = useCallback((value, viewUpdate) => {
     setValue(value);
