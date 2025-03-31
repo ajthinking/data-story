@@ -1,12 +1,10 @@
 const path = require('path');
 const dependencies = require('./package.json').dependencies;
 
-console.log('dependencies', dependencies);
 const externalsDeps = Object.keys(dependencies).filter((dep) => {
   return !dep.includes('codemirror');
 });
-// const externalsDeps = dependencies;
-console.log('externalsDeps', externalsDeps);
+
 const commonJSConfig = (env, options) => ({
   devtool: 'source-map',
   mode: 'development',
@@ -87,5 +85,3 @@ const esmConfig = (env, options) => ({
 module.exports = function () {
   return [ commonJSConfig(...arguments), esmConfig(...arguments) ];
 };
-
-// export const configs = { commonJSConfig, esmConfig };

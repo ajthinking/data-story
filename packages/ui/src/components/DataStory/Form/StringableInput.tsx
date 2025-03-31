@@ -12,8 +12,8 @@ interface StringableInput {
 
 const basicSetup: BasicSetupOptions = {
   lineNumbers: false,
-  highlightActiveLineGutter: true,
-  highlightActiveLine: true,
+  highlightActiveLineGutter: false,
+  highlightActiveLine: false,
   foldGutter: false,
   autocompletion: true,
   syntaxHighlighting: true,
