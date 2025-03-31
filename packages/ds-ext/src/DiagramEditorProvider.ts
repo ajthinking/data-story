@@ -43,7 +43,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private async initializeStorage(diagramId: string) {
     const storages = {
       DUCK_DB: DuckDBStorage,
-      FILE: JsonObserverStorage,
+      JSON: JsonObserverStorage,
       IN_MEMORY: InMemoryObserverStorage,
     };
 
