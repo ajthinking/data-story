@@ -48,7 +48,7 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
   const execution = executor.execute(abortSignal);
 
   try {
-    for await(const update of execution) {}
+    for await(const _update of execution) {}
 
     const endTime = Date.now();
     postMessage?.({

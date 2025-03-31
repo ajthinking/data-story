@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import { DiagramObserverStorage, InputObserverController, ObserverStorage } from '@data-story/core';
+import { InMemoryObserverStorage, InputObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
@@ -44,7 +44,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     const storages = {
       DUCK_DB: DuckDBStorage,
       FILE: FileStorage,
-      IN_MEMORY: DiagramObserverStorage,
+      IN_MEMORY: InMemoryObserverStorage,
     };
 
     let Storage = storages[this.config.storage];
@@ -57,7 +57,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     } catch (error) {
       console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
       console.log(error);
-      observerStorage = new DiagramObserverStorage(diagramId);
+      observerStorage = new InMemoryObserverStorage(diagramId);
       await observerStorage.init?.();
     }
 
