@@ -49,10 +49,10 @@ export function StringableInputComponent({
 
   const extensions = useMemo(() => {
     const evaulation = param.input?.Evaluation;
-    if (evaulation === 'JS_FUNCTION' || evaulation === 'JS_EXPRESSION') {
+    if (evaulation === 'JS_FUNCTION' || evaulation === 'JS_EXPRESSION' || evaulation === 'HJSON') {
       return [javascript(), autocompletion({ override: [myCompletions] })];
     }
-    if (evaulation === 'JSON' || evaulation === 'HJSON') {
+    if (evaulation === 'JSON') {
       return [json(), autocompletion({ override: [myCompletions] })];
     }
     return [autocompletion({ override: [myCompletions] })];
