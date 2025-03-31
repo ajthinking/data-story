@@ -7,7 +7,7 @@ import { DiagramId, GetLinkItemsParams, ObserverStorage } from '../types/Observe
 /**
  * implementation of ObserverStorage using Maps
  */
-export class DiagramObserverStorage implements ObserverStorage {
+export class InMemoryObserverStorage implements ObserverStorage {
   private diagramId: DiagramId;
   private linkCountsStorage: Map<LinkId, number> = new Map()
   private linkItemsStorage: Map<LinkId, ItemValue[]> = new Map()

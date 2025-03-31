@@ -3,13 +3,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 
-type FileStorageData = {
+type JsonObserverStorageData = {
   linkCounts: Record<string, number>;
   linkItems: Record<string, ItemValue[]>;
   nodes: Record<string, 'BUSY' | 'COMPLETE'>;
 }
 
-export class FileStorage implements ObserverStorage {
+export class JsonObserverStorage implements ObserverStorage {
   constructor(private diagramId: DiagramId) {}
 
   async init(): Promise<void> {
@@ -83,11 +83,11 @@ export class FileStorage implements ObserverStorage {
     return path.join(datastoryDir, 'execution.json');
   }
 
-  private read(): FileStorageData {
+  private read(): JsonObserverStorageData {
     return JSON.parse(fs.readFileSync(this.getFilePath(), 'utf-8'));
   }
 
-  private write(data: FileStorageData) {
+  private write(data: JsonObserverStorageData) {
     fs.writeFileSync(this.getFilePath(), JSON.stringify(data, null, 2));
   }
 }

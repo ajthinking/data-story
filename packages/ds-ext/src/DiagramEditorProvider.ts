@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import { DiagramObserverStorage, InputObserverController, ObserverStorage } from '@data-story/core';
+import { InMemoryObserverStorage, ObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
@@ -16,7 +16,7 @@ import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
 import { onEdgeDoubleClick } from './messageHandlers/onEdgeDoubleClick';
 import { DuckDBStorage } from './duckDBStorage';
-import { FileStorage } from './fileStorage';
+import { JsonObserverStorage } from './jsonObserverStorage';
 import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
 import { abortExecution } from './messageHandlers/abortExecution';
@@ -24,10 +24,10 @@ import { abortExecution } from './messageHandlers/abortExecution';
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
   /**
-   * Since a DiagramEditorProvider can correspond to multiple DiagramDocuments, each DiagramDocument requires its own InputObserverController and ObserverStorage.
+   * Since a DiagramEditorProvider can correspond to multiple DiagramDocuments, each DiagramDocument requires its own ObserverController and ObserverStorage.
    * Therefore, we need to differentiate them using diagramId or uri.
    */
-  private InputObserverControllerMap: Map<string, InputObserverController> = new Map();
+  private ObserverControllerMap: Map<string, ObserverController> = new Map();
   private observerStorageMap: Map<string, ObserverStorage> = new Map();
   private contentMap = new Map<string, DiagramDocument>();
   private config: DataStoryConfig;
@@ -43,8 +43,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private async initializeStorage(diagramId: string) {
     const storages = {
       DUCK_DB: DuckDBStorage,
-      FILE: FileStorage,
-      IN_MEMORY: DiagramObserverStorage,
+      JSON: JsonObserverStorage,
+      IN_MEMORY: InMemoryObserverStorage,
     };
 
     let Storage = storages[this.config.storage];
@@ -57,12 +57,12 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     } catch (error) {
       console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
       console.log(error);
-      observerStorage = new DiagramObserverStorage(diagramId);
+      observerStorage = new InMemoryObserverStorage(diagramId);
       await observerStorage.init?.();
     }
 
     this.observerStorageMap.set(diagramId, observerStorage);
-    this.InputObserverControllerMap.set(diagramId, new InputObserverController(observerStorage));
+    this.ObserverControllerMap.set(diagramId, new ObserverController(observerStorage));
   }
 
   /**
@@ -128,9 +128,9 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
       }
 
       const diagramId = this.getDiagramId(document.uri);
-      const inputObserverController = this.InputObserverControllerMap.get(diagramId);
+      const observerController = this.ObserverControllerMap.get(diagramId);
       // @ts-ignore
-      const disposable = handler({ postMessage, event, document, inputObserverController });
+      const disposable = handler({ postMessage, event, document, observerController });
       if(typeof disposable === 'function' && disposable){
         disposables.push(disposable);
       }

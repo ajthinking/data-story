@@ -5,8 +5,8 @@ import {
   LinkId,
 } from '@data-story/core';
 
-export const getDataFromStorage: MessageHandler = async({ event, postMessage, inputObserverController }) => {
-  const result: Record<LinkId, ItemValue[]> = await inputObserverController.getDataFromStorage(event as GetDataFromStorageParams);
+export const getDataFromStorage: MessageHandler = async({ event, postMessage, observerController }) => {
+  const result: Record<LinkId, ItemValue[]> = await observerController.getDataFromStorage(event as GetDataFromStorageParams);
   postMessage?.({
     ...event,
     data: result,

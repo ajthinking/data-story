@@ -16,7 +16,7 @@ export type RunMessage = {
 export const run: MessageHandler<RunMessage> = async({
   ws,
   data,
-  inputObserverController,
+  observerController,
   app,
 }: MessageHandlerParams<RunMessage>) => {
   const diagram = new Diagram({
@@ -31,7 +31,7 @@ export const run: MessageHandler<RunMessage> = async({
 
   const executor = app.getExecutor({
     diagram,
-    inputObserverController,
+    observerController,
   });
 
   const execution = executor.execute(abortSignal)

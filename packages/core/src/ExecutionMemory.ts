@@ -5,7 +5,7 @@ import { ItemValue } from './types/ItemValue'
 import { Hook } from './types/Hook'
 import { InputDevice } from './InputDevice'
 import { OutputDevice } from './OutputDevice'
-import { InputObserverController } from './InputObserverController'
+import { ObserverController } from './ObserverController'
 import { RequestObserverType } from './types/InputObserveConfig';
 import { NodeRunnerContext } from './NodeRunnerContext'
 
@@ -17,7 +17,7 @@ type MemoryValues = {
   inputDevices?: Map<NodeId, InputDevice>,
   outputDevices?: Map<NodeId, OutputDevice>,
   hooks?: any[],
-  inputObserverController?: InputObserverController,
+  observerController?: ObserverController,
 }
 
 export class ExecutionMemory {
@@ -28,7 +28,7 @@ export class ExecutionMemory {
   inputDevices: Map<NodeId, InputDevice>
   outputDevices: Map<NodeId, OutputDevice>
   hooks: Hook[]
-  inputObserverController?: InputObserverController
+  observerController?: ObserverController
 
   constructor(values: MemoryValues = {}) {
     this.nodeStatuses = values.nodeStatuses || new Map()
@@ -38,7 +38,7 @@ export class ExecutionMemory {
     this.inputDevices = values.inputDevices || new Map()
     this.outputDevices = values.outputDevices || new Map()
     this.hooks = values.hooks || [];
-    this.inputObserverController = values.inputObserverController;
+    this.observerController = values.observerController;
   }
 
   getNodeStatus(nodeId: NodeId): NodeStatus | undefined {
@@ -46,7 +46,7 @@ export class ExecutionMemory {
   }
 
   setNodeStatus(nodeId: NodeId, status: NodeStatus) {
-    this.inputObserverController?.reportNodeStatus(nodeId, status);
+    this.observerController?.reportNodeStatus(nodeId, status);
     this.nodeStatuses.set(nodeId, status)
   }
 
@@ -81,7 +81,7 @@ export class ExecutionMemory {
     const linkItems = this.linkItems.get(linkId)!
     this.linkItems.set(linkId, linkItems.concat(items))
 
-    this.inputObserverController?.reportItems({
+    this.observerController?.reportItems({
       linkId,
       type: RequestObserverType.observeLinkItems,
       items,
@@ -89,7 +89,7 @@ export class ExecutionMemory {
   }
 
   setLinkItems(linkId: LinkId, items: ItemValue[]) {
-    this.inputObserverController?.setItems(linkId, items);
+    this.observerController?.setItems(linkId, items);
 
     this.linkItems.set(linkId, items)
   }
@@ -103,7 +103,7 @@ export class ExecutionMemory {
   }
 
   setLinkCount(linkId: LinkId, count: number) {
-    this.inputObserverController?.reportLinksCount({
+    this.observerController?.reportLinksCount({
       linkId,
       type: RequestObserverType.observeLinkCounts,
       count,

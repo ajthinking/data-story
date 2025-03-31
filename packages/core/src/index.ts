@@ -28,7 +28,7 @@ export type { ItemValue } from './types/ItemValue'
 export { coreNodeProvider } from './coreNodeProvider'
 export { remoteNodeProvider } from './remoteNodeProvider'
 export { type ExecutionResult } from './ExecutionResult'
-export { InputObserverController } from './InputObserverController'
+export { ObserverController } from './ObserverController'
 export type { ExecutionFailure } from './types/ExecutionFailure'
 export { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
 export { type InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';
@@ -54,7 +54,7 @@ export type { Link, LinkId, LinkCount } from './types/Link';
 export type { NodeId } from './types/Node';
 export type { NodeStatus } from './Executor';
 export type { ObserverStorage, DiagramId, GetLinkItemsParams } from './types/ObserverStorage'
-export { DiagramObserverStorage } from './storage/diagramObserverStorage'
+export { InMemoryObserverStorage } from './storage/inMemoryObserverStorage'
 export type { LinkItemsParam } from './types/LinkItemsParam'
 export { LinkItemsParamSchema } from './types/LinkItemsParam'
 export type { LinksCountParam } from './types/LinksCountParam'

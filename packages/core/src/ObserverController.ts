@@ -21,7 +21,7 @@ import { sleep } from './utils/sleep';
 
 const ThrottleMS: number = 300;
 
-export class InputObserverController {
+export class ObserverController {
   private items$ = new Subject<LinkItemsParam>();
   private links$ = new Subject<LinksCountParam>();
   private nodeStatus$ = new Subject<{ nodeId: NodeId, status: NodeStatus }>();

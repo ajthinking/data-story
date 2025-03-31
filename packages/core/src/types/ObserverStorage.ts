@@ -9,7 +9,7 @@ import { NodeStatus } from '../Executor';
 export type DiagramId = string;
 
 /**
- * Interface for storage implementations used by InputObserverController
+ * Interface for storage implementations used by ObserverController
  */
 export type GetLinkItemsParams = {
   linkId: LinkId;

@@ -1,7 +1,7 @@
 import { Diagram } from './Diagram';
 import { DiagramBuilder } from './DiagramBuilder';
 import { ExecutorFactory } from './ExecutorFactory';
-import { InputObserverController } from './InputObserverController';
+import { ObserverController } from './ObserverController';
 import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
 import { Computer } from './types/Computer';
@@ -67,14 +67,14 @@ export class Application {
     );
   }
 
-  getExecutor({ diagram, inputObserverController }: {
+  getExecutor({ diagram, observerController }: {
     diagram: Diagram;
-    inputObserverController?: InputObserverController;
+    observerController?: ObserverController;
   }) {
     return ExecutorFactory.create({
       diagram,
       registry: this.registry,
-      inputObserverController,
+      observerController,
     })
   }
 

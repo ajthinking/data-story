@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { Application, DiagramObserverStorage, InputObserverController } from '@data-story/core';
+import { Application, InMemoryObserverStorage, ObserverController } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
 
@@ -14,7 +14,7 @@ export class SocketServer {
   private port: number;
   private messageHandlers: Record<string, MessageHandler<any>>;
   private wsServer?: WebSocket.Server;
-  private inputObserverController: InputObserverController;
+  private observerController: ObserverController;
 
   constructor({
     app,
@@ -24,8 +24,8 @@ export class SocketServer {
     this.app = app;
     this.port = port;
     this.messageHandlers = messageHandlers;
-    const storage = new DiagramObserverStorage('_');
-    this.inputObserverController = new InputObserverController(storage);
+    const storage = new InMemoryObserverStorage('_');
+    this.observerController = new ObserverController(storage);
   }
 
   start() {
@@ -63,7 +63,7 @@ export class SocketServer {
       ws,
       data: parsed,
       app: this.app,
-      inputObserverController: this.inputObserverController,
+      observerController: this.observerController,
     });
   }
 }

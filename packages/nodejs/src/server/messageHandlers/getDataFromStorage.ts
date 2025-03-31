@@ -4,9 +4,9 @@ import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 export const getDataFromStorage: MessageHandler<GetDataFromStorageParams> = async({
   ws,
   data,
-  inputObserverController,
+  observerController,
 }: MessageHandlerParams<GetDataFromStorageParams>) => {
-  const result: Record<LinkId, ItemValue[]> = await inputObserverController.getDataFromStorage(data as GetDataFromStorageParams);
+  const result: Record<LinkId, ItemValue[]> = await observerController.getDataFromStorage(data as GetDataFromStorageParams);
   ws.send(JSON.stringify({
     type: 'getDataFromStorage',
     msgId: data!.msgId,

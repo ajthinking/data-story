@@ -1,7 +1,7 @@
 import { Diagram } from './Diagram';
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { Executor } from './Executor';
-import { InputObserverController } from './InputObserverController';
+import { ObserverController } from './ObserverController';
 import { Registry } from './Registry';
 import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory';
 
@@ -9,11 +9,11 @@ export const ExecutorFactory = {
   create({
     diagram,
     registry,
-    inputObserverController,
+    observerController,
   }: {
     diagram: Diagram;
     registry: Registry;
-    inputObserverController?: InputObserverController;
+    observerController?: ObserverController;
   }) {
     const unfolded = UnfoldedDiagramFactory.create(
       diagram,
@@ -23,7 +23,7 @@ export const ExecutorFactory = {
     const memory = new ExecutionMemoryFactory(
       unfolded,
       registry,
-      inputObserverController,
+      observerController,
     ).create()
 
     return new Executor({
