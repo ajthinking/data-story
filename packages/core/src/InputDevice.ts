@@ -3,7 +3,7 @@ import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams } from './ItemWithParams'
 import { Node } from './types/Node'
 import { ItemValue } from './types/ItemValue'
-import { InputObserverController } from './InputObserverController';
+import { ObserverController } from './ObserverController';
 import { UnfoldedDiagram } from './UnfoldedDiagram'
 import { PortName } from './types/Port'
 
@@ -15,7 +15,7 @@ export class InputDevice {
     private unfoldedDiagram: UnfoldedDiagram,
     // Reference to the current execution state
     private memory: ExecutionMemory,
-    protected readonly inputObserverController?: InputObserverController,
+    protected readonly observerController?: ObserverController,
   ) {}
 
   /**

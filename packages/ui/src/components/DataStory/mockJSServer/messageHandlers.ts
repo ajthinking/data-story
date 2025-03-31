@@ -3,7 +3,7 @@ import {
   Diagram,
   ExecutionFailure,
   type InputObserver,
-  InputObserverController,
+  ObserverController,
   type ItemValue, RequestObserverType,
   type ObserveLinkItems, ObserveLinkCounts, ObserveLinkUpdate, GetDataFromStorageParams, LinkId, ObserveNodeStatus,
   CancelObservation,
@@ -30,7 +30,7 @@ export type MessageHandlers = {
 };
 const LocalStorageKey = 'data-story-tree';
 
-export const getDefaultMsgHandlers = (app: Application, inputObserverController: InputObserverController) => {
+export const getDefaultMsgHandlers = (app: Application, observerController: ObserverController) => {
   const abortControllers = new Map<string, AbortController>();
 
   const abortExecution = async ({ data, sendEvent }: HandlerParam) => {
@@ -46,7 +46,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
 
     const executor = app!.getExecutor({
       diagram,
-      inputObserverController,
+      observerController,
     });
 
     const controller = new AbortController();
@@ -82,7 +82,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const observeLinkCounts = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.addLinkCountsObserver({
+    observerController.addLinkCountsObserver({
       ...data as ObserveLinkCounts,
       onReceive: ({ links }) => {
         sendEvent({
@@ -94,7 +94,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const observeNodeStatus = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.addNodeStatusObserver({
+    observerController.addNodeStatusObserver({
       ...data as ObserveNodeStatus,
       onReceive: ({ nodes }) => {
         sendEvent({
@@ -106,7 +106,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const observeLinkItems = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.addLinkItemsObserver({
+    observerController.addLinkItemsObserver({
       ...data as ObserveLinkItems,
       onReceive: (items: ItemValue[], inputObserver: InputObserver) => {
         sendEvent({
@@ -119,7 +119,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const cancelObservation = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.deleteExecutionObserver(data as CancelObservation);
+    observerController.deleteExecutionObserver(data as CancelObservation);
     sendEvent({
       ...data as Record<string, unknown>,
       // cancelObservation: true
@@ -127,7 +127,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   }
 
   const observeLinkUpdate = ({ data, sendEvent }: HandlerParam) => {
-    inputObserverController.observeLinkUpdate({
+    observerController.observeLinkUpdate({
       ...data as ObserveLinkUpdate,
       onReceive: () => {
         sendEvent({
@@ -162,7 +162,7 @@ export const getDefaultMsgHandlers = (app: Application, inputObserverController:
   };
 
   const getDataFromStorage = async({ data, sendEvent }: HandlerParam) => {
-    const result: Record<LinkId, ItemValue[]> = await inputObserverController.getDataFromStorage(data as GetDataFromStorageParams);
+    const result: Record<LinkId, ItemValue[]> = await observerController.getDataFromStorage(data as GetDataFromStorageParams);
 
     sendEvent({
       ...data as GetDataFromStorageParams,

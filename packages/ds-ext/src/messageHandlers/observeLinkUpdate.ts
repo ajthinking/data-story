@@ -4,8 +4,8 @@ import {
   RequestObserverType,
 } from '@data-story/core';
 
-export const observeLinkUpdate: MessageHandler = async({ event, postMessage, inputObserverController }) => {
-  return inputObserverController.observeLinkUpdate({
+export const observeLinkUpdate: MessageHandler = async({ event, postMessage, observerController }) => {
+  return observerController.observeLinkUpdate({
     ...event,
     onReceive: () => {
       postMessage?.({

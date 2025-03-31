@@ -7,9 +7,9 @@ import {
 export const observeLinkCounts: MessageHandler<ObserveLinkCounts> = async({
   ws,
   data,
-  inputObserverController,
+  observerController,
 }: MessageHandlerParams<ObserveLinkCounts>) => {
-  inputObserverController.addLinkCountsObserver({
+  observerController.addLinkCountsObserver({
     ...data,
     onReceive: ({ links }) => {
       ws.send(JSON.stringify({

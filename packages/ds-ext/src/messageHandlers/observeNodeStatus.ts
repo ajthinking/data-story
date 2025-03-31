@@ -4,8 +4,8 @@ import {
   RequestObserverType,
 } from '@data-story/core';
 
-export const observeNodeStatus: MessageHandler = async({ event, postMessage, inputObserverController }) => {
-  return inputObserverController.addNodeStatusObserver({
+export const observeNodeStatus: MessageHandler = async({ event, postMessage, observerController }) => {
+  return observerController.addNodeStatusObserver({
     ...event,
     onReceive: ({ nodes }) => {
       postMessage?.({

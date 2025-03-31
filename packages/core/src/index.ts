@@ -28,7 +28,7 @@ export type { ItemValue } from './types/ItemValue'
 export { coreNodeProvider } from './coreNodeProvider'
 export { remoteNodeProvider } from './remoteNodeProvider'
 export { type ExecutionResult } from './ExecutionResult'
-export { InputObserverController } from './InputObserverController'
+export { ObserverController } from './ObserverController'
 export type { ExecutionFailure } from './types/ExecutionFailure'
 export { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
 export { type InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';

@@ -22,7 +22,7 @@ function setWorkspaceFolderPath() {
   }
 }
 
-export const onRun: MessageHandler = async ({ event, postMessage, inputObserverController }) => {
+export const onRun: MessageHandler = async ({ event, postMessage, observerController }) => {
   // Load latest .env file contents before running
   const envVars = loadWorkspaceEnv();
 
@@ -41,7 +41,7 @@ export const onRun: MessageHandler = async ({ event, postMessage, inputObserverC
 
   const executor = app.getExecutor({
     diagram,
-    inputObserverController,
+    observerController,
   });
 
   const startTime = Date.now();

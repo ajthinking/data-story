@@ -4,9 +4,9 @@ import { MessageHandler, MessageHandlerParams } from '../MessageHandler'
 export const observeNodeStatus: MessageHandler<ObserveNodeStatus> = async({
   ws,
   data,
-  inputObserverController,
+  observerController,
 }: MessageHandlerParams<ObserveNodeStatus>) => {
-  inputObserverController.addNodeStatusObserver({
+  observerController.addNodeStatusObserver({
     ...data,
     onReceive: ({ nodes }) => {
       ws.send(JSON.stringify({

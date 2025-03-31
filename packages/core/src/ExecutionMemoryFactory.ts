@@ -1,7 +1,7 @@
 import { ExecutionMemory } from './ExecutionMemory'
 import { NodeStatus } from './Executor'
 import { InputDevice } from './InputDevice'
-import { InputObserverController } from './InputObserverController'
+import { ObserverController } from './ObserverController'
 import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { NodeRunnerContext } from './NodeRunnerContext'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
@@ -17,7 +17,7 @@ export class ExecutionMemoryFactory {
   constructor(
     public unfoldedDiagram: UnfoldedDiagram,
     public registry: Registry,
-    public inputObserverController?: InputObserverController,
+    public observerController?: ObserverController,
   ) {}
 
   create() {
@@ -29,7 +29,7 @@ export class ExecutionMemoryFactory {
       linkCounts: new Map<LinkId, number>(),
       inputDevices: new Map<NodeId, InputDevice>(),
       outputDevices: new Map<NodeId, OutputDevice>(),
-      inputObserverController: this.inputObserverController,
+      observerController: this.observerController,
     })
 
     // Configure the memory's initial state

@@ -1,4 +1,4 @@
-import { InputObserverController }  from './InputObserverController';
+import { ObserverController }  from './ObserverController';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { InMemoryObserverStorage } from './storage/inMemoryObserverStorage';
 import { NodeId } from './types/Node';
@@ -10,19 +10,19 @@ import { ItemValue } from './types/ItemValue';
 import { sleep } from './utils/sleep';
 import { LinkItemsParam } from './types/LinkItemsParam';
 
-describe('InputObserverController', () => {
+describe('ObserverController', () => {
   it('should be defined', () => {
-    expect(InputObserverController).toBeDefined();
+    expect(ObserverController).toBeDefined();
   });
 
   describe('Node Status', () => {
     it('should be defined', () => {
-      expect(InputObserverController.prototype.reportNodeStatus).toBeDefined();
+      expect(ObserverController.prototype.reportNodeStatus).toBeDefined();
     });
 
     it('should return undefined if node status is not set', async () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       const status = await mockStorage.getNodeStatus('nodeId');
       expect(status).toBeUndefined();
@@ -30,7 +30,7 @@ describe('InputObserverController', () => {
 
     it('should set and get node status', async () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       await controller.reportNodeStatus('nodeId', 'BUSY');
       const status = await mockStorage.getNodeStatus('nodeId');
@@ -39,7 +39,7 @@ describe('InputObserverController', () => {
 
     it('should emit node status', () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
         observerId: 'observerId',
@@ -54,7 +54,7 @@ describe('InputObserverController', () => {
 
     it('should emit node status with throttle', () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
         observerId: 'observerId',
@@ -70,7 +70,7 @@ describe('InputObserverController', () => {
 
     it('should emit node status with multiple nodes', () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
         observerId: 'observerId',
@@ -86,7 +86,7 @@ describe('InputObserverController', () => {
 
     it('should emit node status with multiple observers', async () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
         observerId: 'observerId1',
@@ -112,7 +112,7 @@ describe('InputObserverController', () => {
         }, 200));
       }
 
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       controller.addNodeStatusObserver({
         observerId: 'observerId',
@@ -129,12 +129,12 @@ describe('InputObserverController', () => {
 
   describe('links Count', () => {
     it('should be defined', () => {
-      expect(InputObserverController.prototype.reportLinksCount).toBeDefined();
+      expect(ObserverController.prototype.reportLinksCount).toBeDefined();
     });
 
     it('should return undefined if link count is not set', async () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       const count = await mockStorage.getLinkCount('linkId');
       expect(count).toBeUndefined();
@@ -142,7 +142,7 @@ describe('InputObserverController', () => {
 
     it('should set and get link count', async () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       await controller.reportLinksCount({
         type: RequestObserverType.observeLinkCounts,
@@ -153,7 +153,7 @@ describe('InputObserverController', () => {
 
     it('should emit link count', () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
       const linksCountObserver = { type: RequestObserverType.observeLinkCounts,
         linkId: 'linkId', count: 10 } as const;
 
@@ -170,7 +170,7 @@ describe('InputObserverController', () => {
 
     it('should emit link count with throttle', () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
       const linksCountObserver = { type: RequestObserverType.observeLinkCounts,
         linkId: 'linkId', count: 10 } as const;
 
@@ -188,7 +188,7 @@ describe('InputObserverController', () => {
 
     it('should emit link count with multiple links', () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       controller.addLinkCountsObserver({
         observerId: 'observerId',
@@ -219,7 +219,7 @@ describe('InputObserverController', () => {
 
       const linksCountObserver = { type: RequestObserverType.observeLinkCounts,
         linkId: 'linkId', count: 10 } as const;
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       controller.addLinkCountsObserver({
         observerId: 'observerId',
@@ -235,7 +235,7 @@ describe('InputObserverController', () => {
 
   describe('link items', () => {
     it('should be defined', () => {
-      expect(InputObserverController.prototype.reportItems).toBeDefined();
+      expect(ObserverController.prototype.reportItems).toBeDefined();
     });
 
     it('should return undefined if link items are not set', async () => {
@@ -249,7 +249,7 @@ describe('InputObserverController', () => {
 
     it('should set and get link items', async () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       await controller.reportItems({
         type: RequestObserverType.observeLinkItems,
@@ -261,7 +261,7 @@ describe('InputObserverController', () => {
 
     it('should emit link items', () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
       const linkItemsParam: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId', items: [{ value: 1 }] };
 
@@ -279,7 +279,7 @@ describe('InputObserverController', () => {
 
     it('should emit link items with throttle', async () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
       const linkItemsParam: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId', items: [{ value: 1 }] };
 
@@ -298,7 +298,7 @@ describe('InputObserverController', () => {
 
     it('should emit link items with multiple links', () => {
       const mockStorage = new InMemoryObserverStorage('_');
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
       const linkItemsParam1: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId1', items: [{ value: 1 }] };
       const linkItemsParam2: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
@@ -330,7 +330,7 @@ describe('InputObserverController', () => {
         }, 50));
       }
 
-      const controller = new InputObserverController(mockStorage);
+      const controller = new ObserverController(mockStorage);
 
       controller.addLinkItemsObserver({
         observerId: 'observerId',
@@ -351,7 +351,7 @@ describe('InputObserverController', () => {
 
   describe('observeLinkUpdate', () => {
     let observer: ObserveLinkUpdate;
-    let controller: InputObserverController;
+    let controller: ObserverController;
     beforeEach(() => {
       observer = {
         linkIds: ['linkId'],
@@ -362,7 +362,7 @@ describe('InputObserverController', () => {
       };
 
       const mockStorage = new InMemoryObserverStorage('_');
-      controller = new InputObserverController(mockStorage);
+      controller = new ObserverController(mockStorage);
     });
 
     it('should call onReceive when items are received', async() => {
