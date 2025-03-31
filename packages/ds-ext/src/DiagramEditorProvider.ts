@@ -16,7 +16,7 @@ import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
 import { onEdgeDoubleClick } from './messageHandlers/onEdgeDoubleClick';
 import { DuckDBStorage } from './duckDBStorage';
-import { FileStorage } from './fileStorage';
+import { JsonObserverStorage } from './jsonObserverStorage';
 import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
 import { abortExecution } from './messageHandlers/abortExecution';
@@ -43,7 +43,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private async initializeStorage(diagramId: string) {
     const storages = {
       DUCK_DB: DuckDBStorage,
-      FILE: FileStorage,
+      FILE: JsonObserverStorage,
       IN_MEMORY: InMemoryObserverStorage,
     };
 
