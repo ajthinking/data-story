@@ -1,13 +1,7 @@
 const path = require('path');
 const dependencies = require('./package.json').dependencies;
 
-/**
-* External dependencies: to prevent Cypress throws an error.
-* Exclude CodeMirror: Bundling CodeMirror into bundle.cjs/bundle.mjs to prevent the documentation project from malfunctioning.
- */
-const externalsDeps = Object.keys(dependencies).filter((dep) => {
-  return !dep.includes('codemirror');
-});
+const externalsDeps = Object.keys(dependencies);
 
 const commonJSConfig = (env, options) => ({
   devtool: 'source-map',
