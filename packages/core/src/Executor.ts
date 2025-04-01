@@ -151,7 +151,7 @@ export class Executor {
   }
 
   protected async clearFinishedPromises(promises: Promise<void>[]) {
-    const passed = []
+    const passed: Promise<void>[] = []
 
     for(const promise of promises) {
       if(await isFinished(promise)) continue;

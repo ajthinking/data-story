@@ -1,5 +1,6 @@
 import { str } from '../Param';
 import { Computer } from '../types/Computer';
+import { ItemValue } from '../types/ItemValue';
 
 export const Merge: Computer = {
   name: 'Merge',
@@ -53,8 +54,8 @@ export const Merge: Computer = {
     const requestorKey = params.requestor_key as string
     const supplierKey = params.supplier_key as string
 
-    const merged = []
-    const notMerged = []
+    const merged: ItemValue[] = []
+    const notMerged: ItemValue[] = []
 
     for(const requestor of requestors) {
       const matchingSupplier = suppliers.find(supplier => {

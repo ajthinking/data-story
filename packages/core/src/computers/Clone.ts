@@ -1,6 +1,6 @@
-import { numberCast } from '../Param/casts/numberCast';
 import { num } from '../Param';
 import { Computer } from '../types/Computer';
+import { ItemValue } from '../types/ItemValue';
 
 export const Clone: Computer = {
   name: 'Clone',
@@ -35,7 +35,7 @@ export const Clone: Computer = {
       output.pushTo('original', incoming);
 
       const count = Number(params.count);
-      const clones = [];
+      const clones: ItemValue[] = [];
       const BATCH_SIZE = 10000;
 
       for (let i = 0; i < count; i++) {

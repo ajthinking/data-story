@@ -1,6 +1,6 @@
-import { a } from 'vitest/dist/suite-IbNSsUWN';
+import { ItemValue } from '../types/ItemValue';
 import { ItemWithParams } from '../ItemWithParams';
-import { num, str, StringableInputValue } from '../Param';
+import { str } from '../Param';
 import { Computer } from '../types/Computer';
 import { get } from '../utils/get';
 
@@ -51,7 +51,7 @@ export const Aggregate: Computer = {
     }
 
     for (const [key, group] of groups) {
-      const aggretion = {
+      const aggretion: ItemValue = {
         type: 'aggregate',
         key,
         length: group.length,
