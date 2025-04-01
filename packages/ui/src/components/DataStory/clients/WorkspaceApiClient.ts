@@ -43,7 +43,7 @@ export interface Transport {
   streaming<T>(params: Record<string, any>): Observable<T>;
 }
 
-const matchMsgType = (type: string) => it => it.type === type;
+const matchMsgType = (type: string) => (it: { type: string; }) => it.type === type;
 
 function removeUnserializable(params: Exclude<ExecutionObserver, CancelObservation>): Partial<ExecutionObserver> {
   const { onReceive, ...serializableParams } = params;
@@ -51,7 +51,7 @@ function removeUnserializable(params: Exclude<ExecutionObserver, CancelObservati
 }
 
 export class WorkspaceApiClient implements WorkspaceApiClientImplement {
-  private receivedMsg$ = new Subject();
+  private receivedMsg$ = new Subject<ExecutionObserver>();
 
   constructor(private transport: Transport) {
     this.initExecutionResult();
@@ -190,7 +190,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     eventManager.emit({
       type: DataStoryEvents.RUN_START,
     });
-    const msg$ = this.transport.streaming({
+    const msg$ = this.transport.streaming<ExecutionObserver>({
       type: 'run',
       diagram,
       executionId,

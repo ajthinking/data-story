@@ -32,7 +32,7 @@ export default (async () => {
          * https://github.com/microsoft/TypeScript/issues/39436
          */
         if (!baseConfig.module.noParse) {
-          baseConfig.module.noParse =(content) => {
+          baseConfig.module.noParse = (content) => {
             return /[\/\\]node_modules[\/\\]typescript[\/\\]lib[\/\\]typescript\.js$|[\/\\]node_modules[\/\\]@typescript[\/\\]vfs[\/\\]dist[\/\\]vfs\.esm\.js$/.test(content);
           }
         }
@@ -45,7 +45,7 @@ export default (async () => {
             analyzerPort: context.isServer ? 8888 : 8889,
             reportFilename: './analyze/server.html',
             openAnalyzer: process.env.ANALYZE_ENV === 'true',
-          })
+          }),
         );
       }
 
