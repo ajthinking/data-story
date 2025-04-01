@@ -1,13 +1,13 @@
 {
   "name": "@data-story/core",
   "version": "0.0.109",
-  "main": "dist/main/index.js",
   "type": "commonjs",
   "types": "dist/main/index.d.ts",
+  "main": "dist/main/index.js",
   "module": "dist/esm/index.mjs",
   "exports": {
     ".": {
-      "types": "./dist/main/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/main/index.js"
     },
