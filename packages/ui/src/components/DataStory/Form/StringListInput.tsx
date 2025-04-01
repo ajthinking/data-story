@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { FormComponent, FormComponentProps } from '../types';
 import { FormFieldWrapper, useFormField } from './UseFormField';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
-import { StringListParam } from '@data-story/core/*';
+import { StringListParam } from '@data-story/core';
 import { javascript } from '@codemirror/lang-javascript';
 
 const basicSetup: BasicSetupOptions = {

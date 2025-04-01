@@ -19,7 +19,7 @@ import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import ConsoleNodeComponent from '../Node/ConsoleNodeComponent';
 import { onDropDefault } from './onDropDefault';
-import type { NodeTypes } from '@xyflow/react/dist/esm/types';
+import type { NodeTypes } from '@xyflow/react';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';

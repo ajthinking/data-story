@@ -1,8 +1,8 @@
-import {  StringableParam } from '@data-story/core';
-import {  useCallback, useMemo } from 'react';
+import { StringableParam } from '@data-story/core';
+import { useCallback, useMemo } from 'react';
 import { FormFieldWrapper, useFormField } from './UseFormField';
 import { autocompletion } from '@codemirror/autocomplete';
-import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
+import CodeMirror, { type BasicSetupOptions } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { json } from '@codemirror/lang-json';
 
