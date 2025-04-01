@@ -1,6 +1,10 @@
 const path = require('path');
 const dependencies = require('./package.json').dependencies;
 
+/**
+* External dependencies: to prevent Cypress throws an error.
+* Exclude CodeMirror: Bundling CodeMirror into bundle.cjs/bundle.mjs to prevent the documentation project from malfunctioning.
+ */
 const externalsDeps = Object.keys(dependencies).filter((dep) => {
   return !dep.includes('codemirror');
 });
@@ -11,7 +15,6 @@ const commonJSConfig = (env, options) => ({
   entry: './src/index.ts',
 
   output: {
-    // in browse how to get path path.resolve(__dirname, 'dist')
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.cjs',
     libraryTarget: 'commonjs2',
@@ -34,7 +37,7 @@ const commonJSConfig = (env, options) => ({
     'react',
     'react-dom',
     'react/jsx-runtime',
-    ...Object.keys(externalsDeps),
+    ...externalsDeps,
   ],
   resolve: {
     extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
@@ -71,7 +74,7 @@ const esmConfig = (env, options) => ({
     'react',
     'react-dom',
     'react/jsx-runtime',
-    ...Object.keys(externalsDeps),
+    ...externalsDeps,
   ],
   resolve: {
     extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
@@ -82,6 +85,6 @@ const esmConfig = (env, options) => ({
   },
 });
 
-module.exports = function () {
-  return [ commonJSConfig(...arguments), esmConfig(...arguments) ];
+module.exports = function(...args) {
+  return [ commonJSConfig(...args), esmConfig(...args) ];
 };
