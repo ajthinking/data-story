@@ -612,7 +612,7 @@ __metadata:
     "@types/react": "npm:*"
     "@types/react-dom": "npm:*"
     "@types/ws": "npm:^8.5.4"
-    "@uiw/react-codemirror": "npm:^4.23.10"
+    "@uiw/react-codemirror": "patch:@uiw/react-codemirror@npm%3A4.23.10#~/.yarn/patches/@uiw-react-codemirror-npm-4.23.10-2db625ca86.patch"
     "@xyflow/react": "npm:^12.0.2"
     ahooks: "npm:^3.7.10"
     allotment: "npm:^1.20.2"
@@ -2988,7 +2988,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uiw/react-codemirror@npm:^4.23.10":
+"@uiw/codemirror-extensions-basic-setup@patch:@uiw/codemirror-extensions-basic-setup@npm%3A4.23.10#~/.yarn/patches/@uiw-codemirror-extensions-basic-setup-npm-4.23.10-953e998a73.patch":
+  version: 4.23.10
+  resolution: "@uiw/codemirror-extensions-basic-setup@patch:@uiw/codemirror-extensions-basic-setup@npm%3A4.23.10#~/.yarn/patches/@uiw-codemirror-extensions-basic-setup-npm-4.23.10-953e998a73.patch::version=4.23.10&hash=0e2717"
+  dependencies:
+    "@codemirror/autocomplete": "npm:^6.0.0"
+    "@codemirror/commands": "npm:^6.0.0"
+    "@codemirror/language": "npm:^6.0.0"
+    "@codemirror/lint": "npm:^6.0.0"
+    "@codemirror/search": "npm:^6.0.0"
+    "@codemirror/state": "npm:^6.0.0"
+    "@codemirror/view": "npm:^6.0.0"
+  peerDependencies:
+    "@codemirror/autocomplete": ">=6.0.0"
+    "@codemirror/commands": ">=6.0.0"
+    "@codemirror/language": ">=6.0.0"
+    "@codemirror/lint": ">=6.0.0"
+    "@codemirror/search": ">=6.0.0"
+    "@codemirror/state": ">=6.0.0"
+    "@codemirror/view": ">=6.0.0"
+  checksum: 10/e1b8d6d6a4add20adb2fa9efadd7648eeef00f64870760d2536e5926a07cb64c05ded5b263b9e52eff41234dd61c8bb07fb9d8a6ab680019461112d6b2399d61
+  languageName: node
+  linkType: hard
+
+"@uiw/react-codemirror@npm:4.23.10":
   version: 4.23.10
   resolution: "@uiw/react-codemirror@npm:4.23.10"
   dependencies:
@@ -3007,6 +3030,28 @@ __metadata:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: 10/4da175311defde1c132568c20268bf78d32896132bfd0405b5e2de7fc0904821fb1bad0ea56eef80c555726b139ca4cd2a4c105b4dfba612036d3f7db5ea9f6a
+  languageName: node
+  linkType: hard
+
+"@uiw/react-codemirror@patch:@uiw/react-codemirror@npm%3A4.23.10#~/.yarn/patches/@uiw-react-codemirror-npm-4.23.10-2db625ca86.patch":
+  version: 4.23.10
+  resolution: "@uiw/react-codemirror@patch:@uiw/react-codemirror@npm%3A4.23.10#~/.yarn/patches/@uiw-react-codemirror-npm-4.23.10-2db625ca86.patch::version=4.23.10&hash=c4e2aa"
+  dependencies:
+    "@babel/runtime": "npm:^7.18.6"
+    "@codemirror/commands": "npm:^6.1.0"
+    "@codemirror/state": "npm:^6.1.1"
+    "@codemirror/theme-one-dark": "npm:^6.0.0"
+    "@uiw/codemirror-extensions-basic-setup": "npm:4.23.10"
+    codemirror: "npm:^6.0.0"
+  peerDependencies:
+    "@babel/runtime": ">=7.11.0"
+    "@codemirror/state": ">=6.0.0"
+    "@codemirror/theme-one-dark": ">=6.0.0"
+    "@codemirror/view": ">=6.0.0"
+    codemirror: ">=6.0.0"
+    react: ">=16.8.0"
+    react-dom: ">=16.8.0"
+  checksum: 10/7dda4f4f32f539d5869e614290821e9f19ebe41f914fd20d6e8246f6782a4ef06462b0962b5e8447278165564b1f49d7a8834653c9b415dfbcfa601672841b81
   languageName: node
   linkType: hard
 

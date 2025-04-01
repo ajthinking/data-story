@@ -77,5 +77,8 @@
     "turbo": "<1.11.0",
     "vitest": "^1.6.0",
     "webpack-bundle-analyzer": "^4.10.1"
+  },
+  "resolutions": {
+    "@uiw/codemirror-extensions-basic-setup@npm:4.23.10": "patch:@uiw/codemirror-extensions-basic-setup@npm%3A4.23.10#~/.yarn/patches/@uiw-codemirror-extensions-basic-setup-npm-4.23.10-953e998a73.patch"
   }
 }
