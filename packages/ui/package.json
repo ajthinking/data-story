@@ -3,19 +3,19 @@
   "version": "0.0.109",
   "type": "commonjs",
   "main": "./dist/bundle.cjs",
-  "types": "./dist/src/index.d.ts",
   "module": "./dist/bundle.mjs",
   "exports": {
     "./data-story.css": "./dist/data-story.css",
     ".": {
+      "types": "./src/index.ts",
       "import": "./dist/bundle.mjs",
       "require": "./dist/bundle.cjs",
-      "default": "./dist/bundle.mjs",
-      "types": "./dist/src/index.d.ts"
+      "default": "./dist/bundle.mjs"
     }
   },
   "files": [
-    "/dist"
+    "/dist",
+    "/src"
   ],
   "scripts": {
     "analyze": "webpack --profile --json > stats.json && yarn run -T webpack-bundle-analyzer stats.json",
@@ -50,7 +50,7 @@
     "@floating-ui/react": "^0.26.10",
     "@tanstack/react-table": "^8.11.7",
     "@tanstack/react-virtual": "^3.5.0",
-    "@uiw/react-codemirror": "^4.23.10",
+    "@uiw/react-codemirror": "patch:@uiw/react-codemirror@npm%3A4.23.10#~/.yarn/patches/@uiw-react-codemirror-npm-4.23.10-2db625ca86.patch",
     "@xyflow/react": "^12.0.2",
     "ahooks": "^3.7.10",
     "allotment": "^1.20.2",

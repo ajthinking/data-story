@@ -7,10 +7,12 @@
   "module": "dist/esm/index.mjs",
   "exports": {
     ".": {
+      "types": "./dist/main/index.d.ts",
       "import": "./dist/esm/index.mjs",
       "require": "./dist/main/index.js"
     },
     "./test-tools": {
+      "types": "./dist/main/testTools.d.ts",
       "import": "./dist/vite/test-tools.mjs",
       "require": "./dist/vite/test-tools.umd.js"
     },
