@@ -20,23 +20,6 @@ it('wraps non array inputs', async () => {
     .ok()
 })
 
-it('can parse hjson', async () => {
-  await when(Create)
-    .hasParam({
-      name: 'data',
-      input: {
-        rawValue: '{ cool: "yes" }',
-        Evaluation: 'HJSON',
-      },
-      evaluations: [
-        { ...jsExpressionEvaluation, selected: true },
-      ],
-    })
-    .doRun()
-    .expectOutput([{ cool: 'yes' }])
-    .ok()
-})
-
 it('can parse js function', async () => {
   await when(Create)
     .hasParam({

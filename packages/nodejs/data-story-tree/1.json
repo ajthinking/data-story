@@ -63,11 +63,6 @@
           "interpolate": true,
           "evaluations": [
             {
-              "type": "HJSON",
-              "label": "HJSON",
-              "selected": true
-            },
-            {
               "type": "JSON",
               "label": "JSON"
             },
@@ -92,7 +87,7 @@
           ],
           "value": {
             "value": "{\n  id: ${i}\n}",
-            "Evaluation": "HJSON"
+            "Evaluation": "JSON"
           }
         }
       ],
