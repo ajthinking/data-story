@@ -19,11 +19,11 @@ import { DataStoryCanvasProps, StoreInitOptions, StoreSchema } from './types';
 import OutputNodeComponent from '../Node/OutputNodeComponent';
 import ConsoleNodeComponent from '../Node/ConsoleNodeComponent';
 import { onDropDefault } from './onDropDefault';
-import type { NodeTypes } from '@xyflow/react/dist/esm/types';
+import type { NodeTypes } from '@xyflow/react';
 import { HotkeyManager, useHotkeys } from './useHotkeys';
 import { useEscapeKey } from './hooks/useEscapeKey';
 import { keyManager } from './keyManager';
-import { getNodesWithNewSelection } from './getNodesWithNewSelection';
+import { Direction, getNodesWithNewSelection } from './getNodesWithNewSelection';
 import { createDataStoryId, LinkCount, LinkId, NodeStatus, RequestObserverType } from '@data-story/core';
 import { useDragNode } from './useDragNode';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
@@ -134,7 +134,7 @@ const Flow = ({
         const edgeCounts: Record<LinkId, LinkCount> = links.reduce((acc, link) => {
           acc[link.linkId] = link.count;
           return acc;
-        }, {});
+        }, {} as Record<LinkId, LinkCount>);
 
         updateEdgeCounts(edgeCounts)
       },
@@ -167,7 +167,7 @@ const Flow = ({
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
   const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
 
-  const traverseNodes = useCallback((direction) => {
+  const traverseNodes = useCallback((direction: Direction) => {
     const selectedNode = getNodesWithNewSelection(direction, nodes);
     if (selectedNode) addSelectedNodes([selectedNode.id]);
   }, [nodes, addSelectedNodes]);
@@ -282,7 +282,7 @@ const Flow = ({
         fitViewOptions={{
           padding: 0.25,
         }}
-        onDragOver={useCallback((event) => {
+        onDragOver={useCallback((event: React.DragEvent) => {
           event.preventDefault();
           // Allow dropping on edges
           const target = event.target as HTMLElement;
@@ -296,7 +296,7 @@ const Flow = ({
           }
         }, [])}
         onDrop={
-          useCallback((event) => {
+          useCallback((event: React.DragEvent) => {
             const handler = onDrop || onDropDefault;
             handler(event, addNodeFromDescription)
           }, [addNodeFromDescription, onDrop],

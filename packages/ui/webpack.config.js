@@ -1,13 +1,16 @@
 const path = require('path');
-const deps = require('./package.json').dependencies;
+const dependencies = require('./package.json').dependencies;
+
+const externalsDeps = Object.keys(dependencies);
 
 const commonJSConfig = (env, options) => ({
   devtool: 'source-map',
   mode: 'development',
   entry: './src/index.ts',
+
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
+    filename: 'bundle.cjs',
     libraryTarget: 'commonjs2',
     clean: !options.watch,
   },
@@ -28,7 +31,7 @@ const commonJSConfig = (env, options) => ({
     'react',
     'react-dom',
     'react/jsx-runtime',
-    ...Object.keys(deps),
+    ...externalsDeps,
   ],
   resolve: {
     extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
@@ -40,7 +43,7 @@ const esmConfig = (env, options) => ({
   entry: './src/index.ts',
   mode: 'development',
   output: {
-    path: path.resolve('./dist'),
+    path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.mjs',
     libraryTarget: 'module',
     clean: !options.watch,
@@ -65,7 +68,7 @@ const esmConfig = (env, options) => ({
     'react',
     'react-dom',
     'react/jsx-runtime',
-    ...Object.keys(deps),
+    ...externalsDeps,
   ],
   resolve: {
     extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
@@ -76,6 +79,6 @@ const esmConfig = (env, options) => ({
   },
 });
 
-module.exports = function () {
-  return [ commonJSConfig(...arguments), esmConfig(...arguments) ];
+module.exports = function(...args) {
+  return [ commonJSConfig(...args), esmConfig(...args) ];
 };

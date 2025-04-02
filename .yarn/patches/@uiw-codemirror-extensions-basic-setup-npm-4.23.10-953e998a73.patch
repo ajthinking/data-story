@@ -1,0 +1,222 @@
+diff --git a/cjs/index.cjs b/cjs/index.cjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..2ce5c94c9b76155719455c68e8e22e60bd2e0a0e
+--- /dev/null
++++ b/cjs/index.cjs
+@@ -0,0 +1,95 @@
++var __defProp = Object.defineProperty;
++var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
++var __getOwnPropNames = Object.getOwnPropertyNames;
++var __hasOwnProp = Object.prototype.hasOwnProperty;
++var __export = (target, all) => {
++  for (var name in all)
++    __defProp(target, name, { get: all[name], enumerable: true });
++};
++var __copyProps = (to, from, except, desc) => {
++  if (from && typeof from === "object" || typeof from === "function") {
++    for (let key of __getOwnPropNames(from))
++      if (!__hasOwnProp.call(to, key) && key !== except)
++        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
++  }
++  return to;
++};
++var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
++
++// src/index.ts
++var index_exports = {};
++__export(index_exports, {
++  basicSetup: () => basicSetup,
++  minimalSetup: () => minimalSetup
++});
++module.exports = __toCommonJS(index_exports);
++var import_view = require("@codemirror/view");
++var import_state = require("@codemirror/state");
++var import_commands = require("@codemirror/commands");
++var import_search = require("@codemirror/search");
++var import_autocomplete = require("@codemirror/autocomplete");
++var import_language = require("@codemirror/language");
++var import_lint = require("@codemirror/lint");
++var basicSetup = (options = {}) => {
++  const { crosshairCursor: initCrosshairCursor = false } = options;
++  let keymaps = [];
++  if (options.closeBracketsKeymap !== false) {
++    keymaps = keymaps.concat(import_autocomplete.closeBracketsKeymap);
++  }
++  if (options.defaultKeymap !== false) {
++    keymaps = keymaps.concat(import_commands.defaultKeymap);
++  }
++  if (options.searchKeymap !== false) {
++    keymaps = keymaps.concat(import_search.searchKeymap);
++  }
++  if (options.historyKeymap !== false) {
++    keymaps = keymaps.concat(import_commands.historyKeymap);
++  }
++  if (options.foldKeymap !== false) {
++    keymaps = keymaps.concat(import_language.foldKeymap);
++  }
++  if (options.completionKeymap !== false) {
++    keymaps = keymaps.concat(import_autocomplete.completionKeymap);
++  }
++  if (options.lintKeymap !== false) {
++    keymaps = keymaps.concat(import_lint.lintKeymap);
++  }
++  const extensions = [];
++  if (options.lineNumbers !== false) extensions.push((0, import_view.lineNumbers)());
++  if (options.highlightActiveLineGutter !== false) extensions.push((0, import_view.highlightActiveLineGutter)());
++  if (options.highlightSpecialChars !== false) extensions.push((0, import_view.highlightSpecialChars)());
++  if (options.history !== false) extensions.push((0, import_commands.history)());
++  if (options.foldGutter !== false) extensions.push((0, import_language.foldGutter)());
++  if (options.drawSelection !== false) extensions.push((0, import_view.drawSelection)());
++  if (options.dropCursor !== false) extensions.push((0, import_view.dropCursor)());
++  if (options.allowMultipleSelections !== false) extensions.push(import_state.EditorState.allowMultipleSelections.of(true));
++  if (options.indentOnInput !== false) extensions.push((0, import_language.indentOnInput)());
++  if (options.syntaxHighlighting !== false)
++    extensions.push((0, import_language.syntaxHighlighting)(import_language.defaultHighlightStyle, { fallback: true }));
++  if (options.bracketMatching !== false) extensions.push((0, import_language.bracketMatching)());
++  if (options.closeBrackets !== false) extensions.push((0, import_autocomplete.closeBrackets)());
++  if (options.autocompletion !== false) extensions.push((0, import_autocomplete.autocompletion)());
++  if (options.rectangularSelection !== false) extensions.push((0, import_view.rectangularSelection)());
++  if (initCrosshairCursor !== false) extensions.push((0, import_view.crosshairCursor)());
++  if (options.highlightActiveLine !== false) extensions.push((0, import_view.highlightActiveLine)());
++  if (options.highlightSelectionMatches !== false) extensions.push((0, import_search.highlightSelectionMatches)());
++  if (options.tabSize && typeof options.tabSize === "number")
++    extensions.push(import_language.indentUnit.of(" ".repeat(options.tabSize)));
++  return extensions.concat([import_view.keymap.of(keymaps.flat())]).filter(Boolean);
++};
++var minimalSetup = (options = {}) => {
++  let keymaps = [];
++  if (options.defaultKeymap !== false) {
++    keymaps = keymaps.concat(import_commands.defaultKeymap);
++  }
++  if (options.historyKeymap !== false) {
++    keymaps = keymaps.concat(import_commands.historyKeymap);
++  }
++  const extensions = [];
++  if (options.highlightSpecialChars !== false) extensions.push((0, import_view.highlightSpecialChars)());
++  if (options.history !== false) extensions.push((0, import_commands.history)());
++  if (options.drawSelection !== false) extensions.push((0, import_view.drawSelection)());
++  if (options.syntaxHighlighting !== false)
++    extensions.push((0, import_language.syntaxHighlighting)(import_language.defaultHighlightStyle, { fallback: true }));
++  return extensions.concat([import_view.keymap.of(keymaps.flat())]).filter(Boolean);
++};
+diff --git a/esm/index.mjs b/esm/index.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..feeb0a2e6b9fc8c9a9f901663daf08a364bcd4d6
+--- /dev/null
++++ b/esm/index.mjs
+@@ -0,0 +1,93 @@
++// src/index.ts
++import {
++  lineNumbers,
++  highlightActiveLineGutter,
++  highlightSpecialChars,
++  drawSelection,
++  dropCursor,
++  rectangularSelection,
++  crosshairCursor,
++  highlightActiveLine,
++  keymap
++} from "@codemirror/view";
++import { EditorState } from "@codemirror/state";
++import { history, defaultKeymap, historyKeymap } from "@codemirror/commands";
++import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
++import { closeBrackets, autocompletion, closeBracketsKeymap, completionKeymap } from "@codemirror/autocomplete";
++import {
++  foldGutter,
++  indentOnInput,
++  syntaxHighlighting,
++  defaultHighlightStyle,
++  bracketMatching,
++  indentUnit,
++  foldKeymap
++} from "@codemirror/language";
++import { lintKeymap } from "@codemirror/lint";
++var basicSetup = (options = {}) => {
++  const { crosshairCursor: initCrosshairCursor = false } = options;
++  let keymaps = [];
++  if (options.closeBracketsKeymap !== false) {
++    keymaps = keymaps.concat(closeBracketsKeymap);
++  }
++  if (options.defaultKeymap !== false) {
++    keymaps = keymaps.concat(defaultKeymap);
++  }
++  if (options.searchKeymap !== false) {
++    keymaps = keymaps.concat(searchKeymap);
++  }
++  if (options.historyKeymap !== false) {
++    keymaps = keymaps.concat(historyKeymap);
++  }
++  if (options.foldKeymap !== false) {
++    keymaps = keymaps.concat(foldKeymap);
++  }
++  if (options.completionKeymap !== false) {
++    keymaps = keymaps.concat(completionKeymap);
++  }
++  if (options.lintKeymap !== false) {
++    keymaps = keymaps.concat(lintKeymap);
++  }
++  const extensions = [];
++  if (options.lineNumbers !== false) extensions.push(lineNumbers());
++  if (options.highlightActiveLineGutter !== false) extensions.push(highlightActiveLineGutter());
++  if (options.highlightSpecialChars !== false) extensions.push(highlightSpecialChars());
++  if (options.history !== false) extensions.push(history());
++  if (options.foldGutter !== false) extensions.push(foldGutter());
++  if (options.drawSelection !== false) extensions.push(drawSelection());
++  if (options.dropCursor !== false) extensions.push(dropCursor());
++  if (options.allowMultipleSelections !== false) extensions.push(EditorState.allowMultipleSelections.of(true));
++  if (options.indentOnInput !== false) extensions.push(indentOnInput());
++  if (options.syntaxHighlighting !== false)
++    extensions.push(syntaxHighlighting(defaultHighlightStyle, { fallback: true }));
++  if (options.bracketMatching !== false) extensions.push(bracketMatching());
++  if (options.closeBrackets !== false) extensions.push(closeBrackets());
++  if (options.autocompletion !== false) extensions.push(autocompletion());
++  if (options.rectangularSelection !== false) extensions.push(rectangularSelection());
++  if (initCrosshairCursor !== false) extensions.push(crosshairCursor());
++  if (options.highlightActiveLine !== false) extensions.push(highlightActiveLine());
++  if (options.highlightSelectionMatches !== false) extensions.push(highlightSelectionMatches());
++  if (options.tabSize && typeof options.tabSize === "number")
++    extensions.push(indentUnit.of(" ".repeat(options.tabSize)));
++  return extensions.concat([keymap.of(keymaps.flat())]).filter(Boolean);
++};
++var minimalSetup = (options = {}) => {
++  let keymaps = [];
++  if (options.defaultKeymap !== false) {
++    keymaps = keymaps.concat(defaultKeymap);
++  }
++  if (options.historyKeymap !== false) {
++    keymaps = keymaps.concat(historyKeymap);
++  }
++  const extensions = [];
++  if (options.highlightSpecialChars !== false) extensions.push(highlightSpecialChars());
++  if (options.history !== false) extensions.push(history());
++  if (options.drawSelection !== false) extensions.push(drawSelection());
++  if (options.syntaxHighlighting !== false)
++    extensions.push(syntaxHighlighting(defaultHighlightStyle, { fallback: true }));
++  return extensions.concat([keymap.of(keymaps.flat())]).filter(Boolean);
++};
++export {
++  basicSetup,
++  minimalSetup
++};
+diff --git a/package.json b/package.json
+index b72183819565dde9c08e313d44f2ea014728c5bc..5ff9e38793ff3e478f18ddf75c3b2c1f813b3f7c 100644
+--- a/package.json
++++ b/package.json
+@@ -7,12 +7,13 @@
+   "author": "kenny wong <wowohoo@qq.com>",
+   "license": "MIT",
+   "type": "module",
+-  "main": "./cjs/index.js",
+-  "module": "./esm/index.js",
++  "main": "./cjs/index.cjs",
++  "module": "./esm/index.mjs",
+   "exports": {
+     ".": {
+-      "require": "./cjs/index.js",
+-      "import": "./esm/index.js"
++      "types": "./src/index.ts",
++      "import": "./esm/index.mjs",
++      "require": "./cjs/index.cjs"
+     },
+     "./*": "./*"
+   },

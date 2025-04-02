@@ -4,7 +4,7 @@ import {
   UseFormReturn,
 } from 'react-hook-form';
 import { createContext, ReactNode, useContext } from 'react';
-import { UseFormRegisterReturn } from 'react-hook-form/dist/types/form';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
 export const FormFieldContext = createContext<{ fieldName: string }>({ fieldName:'' });
 

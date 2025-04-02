@@ -17,7 +17,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "incremental": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "composite": true,
     "types": [
       "vitest/globals"

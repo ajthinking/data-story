@@ -1,3 +1,4 @@
+// @ts-nocheck
 import common from './hjson-common';
 import dsf from './hjson-dsf';
 

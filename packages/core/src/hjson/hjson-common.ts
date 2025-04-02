@@ -1,3 +1,4 @@
+// @ts-nocheck
 function tryParseNumber(text: string , stopAtNext: any) {
   // try to parse a number
 

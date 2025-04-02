@@ -1,0 +1,755 @@
+diff --git a/cjs/index.cjs b/cjs/index.cjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..0b833d65573173b3c2c3c38cec0ef6f6b635296d
+--- /dev/null
++++ b/cjs/index.cjs
+@@ -0,0 +1,362 @@
++var __create = Object.create;
++var __defProp = Object.defineProperty;
++var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
++var __getOwnPropNames = Object.getOwnPropertyNames;
++var __getProtoOf = Object.getPrototypeOf;
++var __hasOwnProp = Object.prototype.hasOwnProperty;
++var __export = (target, all) => {
++  for (var name in all)
++    __defProp(target, name, { get: all[name], enumerable: true });
++};
++var __copyProps = (to, from, except, desc) => {
++  if (from && typeof from === "object" || typeof from === "function") {
++    for (let key of __getOwnPropNames(from))
++      if (!__hasOwnProp.call(to, key) && key !== except)
++        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
++  }
++  return to;
++};
++var __reExport = (target, mod, secondTarget) => (__copyProps(target, mod, "default"), secondTarget && __copyProps(secondTarget, mod, "default"));
++var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
++  // If the importer is in node compatibility mode or this is not an ESM
++  // file that has been converted to a CommonJS file using a Babel-
++  // compatible transform (i.e. "__esModule" has not been set), then set
++  // "default" to the CommonJS "module.exports" for node compatibility.
++  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
++  mod
++));
++var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
++
++// src/index.tsx
++var index_exports = {};
++__export(index_exports, {
++  default: () => index_default,
++  defaultLightThemeOption: () => defaultLightThemeOption,
++  getDefaultExtensions: () => getDefaultExtensions,
++  getStatistics: () => getStatistics,
++  useCodeMirror: () => useCodeMirror
++});
++module.exports = __toCommonJS(index_exports);
++var import_react2 = __toESM(require("react"), 1);
++
++// src/useCodeMirror.ts
++var import_react = require("react");
++var import_state2 = require("@codemirror/state");
++var import_view3 = require("@codemirror/view");
++
++// src/getDefaultExtensions.ts
++var getDefaultExtensions_exports = {};
++__export(getDefaultExtensions_exports, {
++  defaultLightThemeOption: () => defaultLightThemeOption,
++  getDefaultExtensions: () => getDefaultExtensions
++});
++var import_commands = require("@codemirror/commands");
++var import_codemirror_extensions_basic_setup = require("@uiw/codemirror-extensions-basic-setup");
++var import_view2 = require("@codemirror/view");
++var import_theme_one_dark = require("@codemirror/theme-one-dark");
++var import_state = require("@codemirror/state");
++
++// src/theme/light.ts
++var import_view = require("@codemirror/view");
++var defaultLightThemeOption = import_view.EditorView.theme(
++  {
++    "&": {
++      backgroundColor: "#fff"
++    }
++  },
++  {
++    dark: false
++  }
++);
++
++// src/getDefaultExtensions.ts
++__reExport(getDefaultExtensions_exports, require("@codemirror/theme-one-dark"));
++var getDefaultExtensions = (optios = {}) => {
++  const {
++    indentWithTab: defaultIndentWithTab = true,
++    editable = true,
++    readOnly = false,
++    theme = "light",
++    placeholder: placeholderStr = "",
++    basicSetup: defaultBasicSetup = true
++  } = optios;
++  const getExtensions = [];
++  if (defaultIndentWithTab) {
++    getExtensions.unshift(import_view2.keymap.of([import_commands.indentWithTab]));
++  }
++  if (defaultBasicSetup) {
++    if (typeof defaultBasicSetup === "boolean") {
++      getExtensions.unshift((0, import_codemirror_extensions_basic_setup.basicSetup)());
++    } else {
++      getExtensions.unshift((0, import_codemirror_extensions_basic_setup.basicSetup)(defaultBasicSetup));
++    }
++  }
++  if (placeholderStr) {
++    getExtensions.unshift((0, import_view2.placeholder)(placeholderStr));
++  }
++  switch (theme) {
++    case "light":
++      getExtensions.push(defaultLightThemeOption);
++      break;
++    case "dark":
++      getExtensions.push(import_theme_one_dark.oneDark);
++      break;
++    case "none":
++      break;
++    default:
++      getExtensions.push(theme);
++      break;
++  }
++  if (editable === false) {
++    getExtensions.push(import_view2.EditorView.editable.of(false));
++  }
++  if (readOnly) {
++    getExtensions.push(import_state.EditorState.readOnly.of(true));
++  }
++  return [...getExtensions];
++};
++
++// src/utils.ts
++var getStatistics = (view) => {
++  return {
++    line: view.state.doc.lineAt(view.state.selection.main.from),
++    lineCount: view.state.doc.lines,
++    lineBreak: view.state.lineBreak,
++    length: view.state.doc.length,
++    readOnly: view.state.readOnly,
++    tabSize: view.state.tabSize,
++    selection: view.state.selection,
++    selectionAsSingle: view.state.selection.asSingle().main,
++    ranges: view.state.selection.ranges,
++    selectionCode: view.state.sliceDoc(view.state.selection.main.from, view.state.selection.main.to),
++    selections: view.state.selection.ranges.map((r) => view.state.sliceDoc(r.from, r.to)),
++    selectedText: view.state.selection.ranges.some((r) => !r.empty)
++  };
++};
++
++// src/useCodeMirror.ts
++var External = import_state2.Annotation.define();
++var emptyExtensions = [];
++function useCodeMirror(props) {
++  const {
++    value,
++    selection,
++    onChange,
++    onStatistics,
++    onCreateEditor,
++    onUpdate,
++    extensions = emptyExtensions,
++    autoFocus,
++    theme = "light",
++    height = null,
++    minHeight = null,
++    maxHeight = null,
++    width = null,
++    minWidth = null,
++    maxWidth = null,
++    placeholder: placeholderStr = "",
++    editable = true,
++    readOnly = false,
++    indentWithTab: defaultIndentWithTab = true,
++    basicSetup: defaultBasicSetup = true,
++    root,
++    initialState
++  } = props;
++  const [container, setContainer] = (0, import_react.useState)();
++  const [view, setView] = (0, import_react.useState)();
++  const [state, setState] = (0, import_react.useState)();
++  const defaultThemeOption = import_view3.EditorView.theme({
++    "&": {
++      height,
++      minHeight,
++      maxHeight,
++      width,
++      minWidth,
++      maxWidth
++    },
++    "& .cm-scroller": {
++      height: "100% !important"
++    }
++  });
++  const updateListener = import_view3.EditorView.updateListener.of((vu) => {
++    if (vu.docChanged && typeof onChange === "function" && // Fix echoing of the remote changes:
++    // If transaction is market as remote we don't have to call `onChange` handler again
++    !vu.transactions.some((tr) => tr.annotation(External))) {
++      const doc = vu.state.doc;
++      const value2 = doc.toString();
++      onChange(value2, vu);
++    }
++    onStatistics && onStatistics(getStatistics(vu));
++  });
++  const defaultExtensions = getDefaultExtensions({
++    theme,
++    editable,
++    readOnly,
++    placeholder: placeholderStr,
++    indentWithTab: defaultIndentWithTab,
++    basicSetup: defaultBasicSetup
++  });
++  let getExtensions = [updateListener, defaultThemeOption, ...defaultExtensions];
++  if (onUpdate && typeof onUpdate === "function") {
++    getExtensions.push(import_view3.EditorView.updateListener.of(onUpdate));
++  }
++  getExtensions = getExtensions.concat(extensions);
++  (0, import_react.useLayoutEffect)(() => {
++    if (container && !state) {
++      const config = {
++        doc: value,
++        selection,
++        extensions: getExtensions
++      };
++      const stateCurrent = initialState ? import_state2.EditorState.fromJSON(initialState.json, config, initialState.fields) : import_state2.EditorState.create(config);
++      setState(stateCurrent);
++      if (!view) {
++        const viewCurrent = new import_view3.EditorView({
++          state: stateCurrent,
++          parent: container,
++          root
++        });
++        setView(viewCurrent);
++        onCreateEditor && onCreateEditor(viewCurrent, stateCurrent);
++      }
++    }
++    return () => {
++      if (view) {
++        setState(void 0);
++        setView(void 0);
++      }
++    };
++  }, [container, state]);
++  (0, import_react.useEffect)(() => {
++    if (props.container) {
++      setContainer(props.container);
++    }
++  }, [props.container]);
++  (0, import_react.useEffect)(
++    () => () => {
++      if (view) {
++        view.destroy();
++        setView(void 0);
++      }
++    },
++    [view]
++  );
++  (0, import_react.useEffect)(() => {
++    if (autoFocus && view) {
++      view.focus();
++    }
++  }, [autoFocus, view]);
++  (0, import_react.useEffect)(() => {
++    if (view) {
++      view.dispatch({ effects: import_state2.StateEffect.reconfigure.of(getExtensions) });
++    }
++  }, [
++    theme,
++    extensions,
++    height,
++    minHeight,
++    maxHeight,
++    width,
++    minWidth,
++    maxWidth,
++    placeholderStr,
++    editable,
++    readOnly,
++    defaultIndentWithTab,
++    defaultBasicSetup,
++    onChange,
++    onUpdate
++  ]);
++  (0, import_react.useEffect)(() => {
++    if (value === void 0) {
++      return;
++    }
++    const currentValue = view ? view.state.doc.toString() : "";
++    if (view && value !== currentValue) {
++      view.dispatch({
++        changes: { from: 0, to: currentValue.length, insert: value || "" },
++        annotations: [External.of(true)]
++      });
++    }
++  }, [value, view]);
++  return { state, setState, view, setView, container, setContainer };
++}
++
++// src/index.tsx
++__reExport(index_exports, require("@codemirror/view"), module.exports);
++__reExport(index_exports, require("@codemirror/state"), module.exports);
++__reExport(index_exports, require("@uiw/codemirror-extensions-basic-setup"), module.exports);
++__reExport(index_exports, getDefaultExtensions_exports, module.exports);
++var ReactCodeMirror = (0, import_react2.forwardRef)((props, ref) => {
++  const {
++    className,
++    value = "",
++    selection,
++    extensions = [],
++    onChange,
++    onStatistics,
++    onCreateEditor,
++    onUpdate,
++    autoFocus,
++    theme = "light",
++    height,
++    minHeight,
++    maxHeight,
++    width,
++    minWidth,
++    maxWidth,
++    basicSetup: basicSetup2,
++    placeholder: placeholder2,
++    indentWithTab: indentWithTab2,
++    editable,
++    readOnly,
++    root,
++    initialState,
++    ...other
++  } = props;
++  const editor = (0, import_react2.useRef)(null);
++  const { state, view, container, setContainer } = useCodeMirror({
++    root,
++    value,
++    autoFocus,
++    theme,
++    height,
++    minHeight,
++    maxHeight,
++    width,
++    minWidth,
++    maxWidth,
++    basicSetup: basicSetup2,
++    placeholder: placeholder2,
++    indentWithTab: indentWithTab2,
++    editable,
++    readOnly,
++    selection,
++    onChange,
++    onStatistics,
++    onCreateEditor,
++    onUpdate,
++    extensions,
++    initialState
++  });
++  (0, import_react2.useImperativeHandle)(ref, () => ({ editor: editor.current, state, view }), [
++    editor,
++    container,
++    state,
++    view
++  ]);
++  const setEditorRef = (0, import_react2.useCallback)(
++    (el) => {
++      editor.current = el;
++      setContainer(el);
++    },
++    [setContainer]
++  );
++  if (typeof value !== "string") {
++    throw new Error(`value must be typeof string but got ${typeof value}`);
++  }
++  const defaultClassNames = typeof theme === "string" ? `cm-theme-${theme}` : "cm-theme";
++  return /* @__PURE__ */ import_react2.default.createElement("div", { ref: setEditorRef, className: `${defaultClassNames}${className ? ` ${className}` : ""}`, ...other });
++});
++ReactCodeMirror.displayName = "CodeMirror";
++var index_default = ReactCodeMirror;
+diff --git a/esm/index.mjs b/esm/index.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..db2bfdb41d7ebd80319430348c7f2a04edf6b1e1
+--- /dev/null
++++ b/esm/index.mjs
+@@ -0,0 +1,358 @@
++var __defProp = Object.defineProperty;
++var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
++var __getOwnPropNames = Object.getOwnPropertyNames;
++var __hasOwnProp = Object.prototype.hasOwnProperty;
++var __export = (target, all) => {
++  for (var name in all)
++    __defProp(target, name, { get: all[name], enumerable: true });
++};
++var __copyProps = (to, from, except, desc) => {
++  if (from && typeof from === "object" || typeof from === "function") {
++    for (let key of __getOwnPropNames(from))
++      if (!__hasOwnProp.call(to, key) && key !== except)
++        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
++  }
++  return to;
++};
++var __reExport = (target, mod, secondTarget) => (__copyProps(target, mod, "default"), secondTarget && __copyProps(secondTarget, mod, "default"));
++
++// src/index.tsx
++var index_exports = {};
++__export(index_exports, {
++  default: () => index_default,
++  defaultLightThemeOption: () => defaultLightThemeOption,
++  getDefaultExtensions: () => getDefaultExtensions,
++  getStatistics: () => getStatistics,
++  useCodeMirror: () => useCodeMirror
++});
++import React, { useRef, forwardRef, useImperativeHandle, useCallback } from "react";
++
++// src/useCodeMirror.ts
++import { useEffect, useLayoutEffect, useState } from "react";
++import { Annotation, EditorState as EditorState2, StateEffect } from "@codemirror/state";
++import { EditorView as EditorView3 } from "@codemirror/view";
++
++// src/getDefaultExtensions.ts
++var getDefaultExtensions_exports = {};
++__export(getDefaultExtensions_exports, {
++  defaultLightThemeOption: () => defaultLightThemeOption,
++  getDefaultExtensions: () => getDefaultExtensions
++});
++import { indentWithTab } from "@codemirror/commands";
++import { basicSetup } from "@uiw/codemirror-extensions-basic-setup";
++import { EditorView as EditorView2, keymap, placeholder } from "@codemirror/view";
++import { oneDark } from "@codemirror/theme-one-dark";
++import { EditorState } from "@codemirror/state";
++
++// src/theme/light.ts
++import { EditorView } from "@codemirror/view";
++var defaultLightThemeOption = EditorView.theme(
++  {
++    "&": {
++      backgroundColor: "#fff"
++    }
++  },
++  {
++    dark: false
++  }
++);
++
++// src/getDefaultExtensions.ts
++__reExport(getDefaultExtensions_exports, theme_one_dark_star);
++import * as theme_one_dark_star from "@codemirror/theme-one-dark";
++var getDefaultExtensions = (optios = {}) => {
++  const {
++    indentWithTab: defaultIndentWithTab = true,
++    editable = true,
++    readOnly = false,
++    theme = "light",
++    placeholder: placeholderStr = "",
++    basicSetup: defaultBasicSetup = true
++  } = optios;
++  const getExtensions = [];
++  if (defaultIndentWithTab) {
++    getExtensions.unshift(keymap.of([indentWithTab]));
++  }
++  if (defaultBasicSetup) {
++    if (typeof defaultBasicSetup === "boolean") {
++      getExtensions.unshift(basicSetup());
++    } else {
++      getExtensions.unshift(basicSetup(defaultBasicSetup));
++    }
++  }
++  if (placeholderStr) {
++    getExtensions.unshift(placeholder(placeholderStr));
++  }
++  switch (theme) {
++    case "light":
++      getExtensions.push(defaultLightThemeOption);
++      break;
++    case "dark":
++      getExtensions.push(oneDark);
++      break;
++    case "none":
++      break;
++    default:
++      getExtensions.push(theme);
++      break;
++  }
++  if (editable === false) {
++    getExtensions.push(EditorView2.editable.of(false));
++  }
++  if (readOnly) {
++    getExtensions.push(EditorState.readOnly.of(true));
++  }
++  return [...getExtensions];
++};
++
++// src/utils.ts
++var getStatistics = (view) => {
++  return {
++    line: view.state.doc.lineAt(view.state.selection.main.from),
++    lineCount: view.state.doc.lines,
++    lineBreak: view.state.lineBreak,
++    length: view.state.doc.length,
++    readOnly: view.state.readOnly,
++    tabSize: view.state.tabSize,
++    selection: view.state.selection,
++    selectionAsSingle: view.state.selection.asSingle().main,
++    ranges: view.state.selection.ranges,
++    selectionCode: view.state.sliceDoc(view.state.selection.main.from, view.state.selection.main.to),
++    selections: view.state.selection.ranges.map((r) => view.state.sliceDoc(r.from, r.to)),
++    selectedText: view.state.selection.ranges.some((r) => !r.empty)
++  };
++};
++
++// src/useCodeMirror.ts
++var External = Annotation.define();
++var emptyExtensions = [];
++function useCodeMirror(props) {
++  const {
++    value,
++    selection,
++    onChange,
++    onStatistics,
++    onCreateEditor,
++    onUpdate,
++    extensions = emptyExtensions,
++    autoFocus,
++    theme = "light",
++    height = null,
++    minHeight = null,
++    maxHeight = null,
++    width = null,
++    minWidth = null,
++    maxWidth = null,
++    placeholder: placeholderStr = "",
++    editable = true,
++    readOnly = false,
++    indentWithTab: defaultIndentWithTab = true,
++    basicSetup: defaultBasicSetup = true,
++    root,
++    initialState
++  } = props;
++  const [container, setContainer] = useState();
++  const [view, setView] = useState();
++  const [state, setState] = useState();
++  const defaultThemeOption = EditorView3.theme({
++    "&": {
++      height,
++      minHeight,
++      maxHeight,
++      width,
++      minWidth,
++      maxWidth
++    },
++    "& .cm-scroller": {
++      height: "100% !important"
++    }
++  });
++  const updateListener = EditorView3.updateListener.of((vu) => {
++    if (vu.docChanged && typeof onChange === "function" && // Fix echoing of the remote changes:
++    // If transaction is market as remote we don't have to call `onChange` handler again
++    !vu.transactions.some((tr) => tr.annotation(External))) {
++      const doc = vu.state.doc;
++      const value2 = doc.toString();
++      onChange(value2, vu);
++    }
++    onStatistics && onStatistics(getStatistics(vu));
++  });
++  const defaultExtensions = getDefaultExtensions({
++    theme,
++    editable,
++    readOnly,
++    placeholder: placeholderStr,
++    indentWithTab: defaultIndentWithTab,
++    basicSetup: defaultBasicSetup
++  });
++  let getExtensions = [updateListener, defaultThemeOption, ...defaultExtensions];
++  if (onUpdate && typeof onUpdate === "function") {
++    getExtensions.push(EditorView3.updateListener.of(onUpdate));
++  }
++  getExtensions = getExtensions.concat(extensions);
++  useLayoutEffect(() => {
++    if (container && !state) {
++      const config = {
++        doc: value,
++        selection,
++        extensions: getExtensions
++      };
++      const stateCurrent = initialState ? EditorState2.fromJSON(initialState.json, config, initialState.fields) : EditorState2.create(config);
++      setState(stateCurrent);
++      if (!view) {
++        const viewCurrent = new EditorView3({
++          state: stateCurrent,
++          parent: container,
++          root
++        });
++        setView(viewCurrent);
++        onCreateEditor && onCreateEditor(viewCurrent, stateCurrent);
++      }
++    }
++    return () => {
++      if (view) {
++        setState(void 0);
++        setView(void 0);
++      }
++    };
++  }, [container, state]);
++  useEffect(() => {
++    if (props.container) {
++      setContainer(props.container);
++    }
++  }, [props.container]);
++  useEffect(
++    () => () => {
++      if (view) {
++        view.destroy();
++        setView(void 0);
++      }
++    },
++    [view]
++  );
++  useEffect(() => {
++    if (autoFocus && view) {
++      view.focus();
++    }
++  }, [autoFocus, view]);
++  useEffect(() => {
++    if (view) {
++      view.dispatch({ effects: StateEffect.reconfigure.of(getExtensions) });
++    }
++  }, [
++    theme,
++    extensions,
++    height,
++    minHeight,
++    maxHeight,
++    width,
++    minWidth,
++    maxWidth,
++    placeholderStr,
++    editable,
++    readOnly,
++    defaultIndentWithTab,
++    defaultBasicSetup,
++    onChange,
++    onUpdate
++  ]);
++  useEffect(() => {
++    if (value === void 0) {
++      return;
++    }
++    const currentValue = view ? view.state.doc.toString() : "";
++    if (view && value !== currentValue) {
++      view.dispatch({
++        changes: { from: 0, to: currentValue.length, insert: value || "" },
++        annotations: [External.of(true)]
++      });
++    }
++  }, [value, view]);
++  return { state, setState, view, setView, container, setContainer };
++}
++
++// src/index.tsx
++__reExport(index_exports, getDefaultExtensions_exports);
++export * from "@codemirror/view";
++export * from "@codemirror/state";
++export * from "@uiw/codemirror-extensions-basic-setup";
++var ReactCodeMirror = forwardRef((props, ref) => {
++  const {
++    className,
++    value = "",
++    selection,
++    extensions = [],
++    onChange,
++    onStatistics,
++    onCreateEditor,
++    onUpdate,
++    autoFocus,
++    theme = "light",
++    height,
++    minHeight,
++    maxHeight,
++    width,
++    minWidth,
++    maxWidth,
++    basicSetup: basicSetup2,
++    placeholder: placeholder2,
++    indentWithTab: indentWithTab2,
++    editable,
++    readOnly,
++    root,
++    initialState,
++    ...other
++  } = props;
++  const editor = useRef(null);
++  const { state, view, container, setContainer } = useCodeMirror({
++    root,
++    value,
++    autoFocus,
++    theme,
++    height,
++    minHeight,
++    maxHeight,
++    width,
++    minWidth,
++    maxWidth,
++    basicSetup: basicSetup2,
++    placeholder: placeholder2,
++    indentWithTab: indentWithTab2,
++    editable,
++    readOnly,
++    selection,
++    onChange,
++    onStatistics,
++    onCreateEditor,
++    onUpdate,
++    extensions,
++    initialState
++  });
++  useImperativeHandle(ref, () => ({ editor: editor.current, state, view }), [
++    editor,
++    container,
++    state,
++    view
++  ]);
++  const setEditorRef = useCallback(
++    (el) => {
++      editor.current = el;
++      setContainer(el);
++    },
++    [setContainer]
++  );
++  if (typeof value !== "string") {
++    throw new Error(`value must be typeof string but got ${typeof value}`);
++  }
++  const defaultClassNames = typeof theme === "string" ? `cm-theme-${theme}` : "cm-theme";
++  return /* @__PURE__ */ React.createElement("div", { ref: setEditorRef, className: `${defaultClassNames}${className ? ` ${className}` : ""}`, ...other });
++});
++ReactCodeMirror.displayName = "CodeMirror";
++var index_default = ReactCodeMirror;
++export {
++  index_default as default,
++  defaultLightThemeOption,
++  getDefaultExtensions,
++  getStatistics,
++  useCodeMirror
++};
+diff --git a/package.json b/package.json
+index 1300846da3274f76cd3c48942ba118915f9b1a97..87aff5bfad1e541fdd296de739f3e57d69d7980c 100644
+--- a/package.json
++++ b/package.json
+@@ -6,12 +6,14 @@
+   "funding": "https://jaywcjlove.github.io/#/sponsor",
+   "author": "kenny wong <wowohoo@qq.com>",
+   "license": "MIT",
+-  "main": "./cjs/index.js",
+-  "module": "./esm/index.js",
++  "main": "./cjs/index.cjs",
++  "module": "./esm/index.mjs",
++  "type": "module",
+   "exports": {
+     ".": {
+-      "require": "./cjs/index.js",
+-      "import": "./esm/index.js"
++      "types": "./src/index.tsx",
++      "import": "./esm/index.mjs",
++      "require": "./cjs/index.cjs"
+     },
+     "./*": "./*"
+   },

@@ -98,15 +98,18 @@ const DraggableRow: FC<{
   return (
     <>
       <tr
+        //@ts-ignore https://react-dnd.github.io/react-dnd/docs/api/use-drag
         ref={previewRef} //previewRef could go here
         style={{ opacity: isDragging ? 0.5 : 1 }}
         className="bg-white border-b dark:border-gray-700"
       >
         <td
+          //@ts-ignore https://react-dnd.github.io/react-dnd/docs/api/use-drop
           ref={dropRef}
           onClick={handleExpandCollapse}
           className="border font-medium whitespace-nowrap bg-gray-50 align-top"
         >
+          {/* @ts-ignore */}
           <button className="p-2" ref={dragRef}>
             <DragIcon />
           </button>

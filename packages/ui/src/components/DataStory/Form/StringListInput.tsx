@@ -2,7 +2,8 @@ import { useCallback } from 'react';
 import { FormComponent, FormComponentProps } from '../types';
 import { FormFieldWrapper, useFormField } from './UseFormField';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
-import { StringListParam } from '@data-story/core/*';
+import { StringListParam } from '@data-story/core';
+import { javascript } from '@codemirror/lang-javascript';
 
 const basicSetup: BasicSetupOptions = {
   lineNumbers: false,
@@ -10,7 +11,9 @@ const basicSetup: BasicSetupOptions = {
   highlightActiveLine: false,
   foldGutter: false,
   autocompletion: false,
+  syntaxHighlighting: true,
 };
+const extensions = [javascript()];
 
 function StringListInputComponent({
   param,
@@ -28,6 +31,7 @@ function StringListInputComponent({
         className="text-xs h-full w-full bg-white font-mono"
         value={(getValues() ?? '').toString()}
         basicSetup={basicSetup}
+        extensions={extensions}
         onChange={onChange}
       />
     </div>

@@ -62,16 +62,19 @@ function RepeatableDraggableRow(props: RepeatableInputProps & {
 
   return <tr
     data-cy='data-story-repeatable-row'
+    //@ts-ignore https://react-dnd.github.io/react-dnd/docs/api/use-drag
     ref={previewRef}
     style={{ opacity: isDragging ? 0.5 : 1 }}
     className="bg-white border-b dark:border-gray-700">
     <td
+      //@ts-ignore https://react-dnd.github.io/react-dnd/docs/api/use-drop
       ref={dropRef}
       className="border font-medium whitespace-nowrap bg-gray-50 align-top w-10"
     >
       <button
         data-cy='data-story-repeatable-drag-row'
         className="p-2"
+        //@ts-ignore https://react-dnd.github.io/react-dnd/docs/api/use-drag
         ref={dragRef}>
         <DragIcon/>
       </button>
