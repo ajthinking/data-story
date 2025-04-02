@@ -278,3 +278,46 @@ export const jsFn = ({
     },
   }
 }
+
+export const jsExpression = ({
+  name,
+  label,
+  help,
+  multiline = true,
+  canInterpolate,
+  interpolate,
+  evaluations,
+  value,
+}: {
+  name: string,
+  label?: string,
+  help?: string,
+  multiline?: boolean,
+  canInterpolate?: boolean,
+  interpolate?: boolean,
+  evaluations?: Evaluation[],
+  value?: string,
+}): Param => {
+  return {
+    name,
+    type: 'StringableParam',
+    label: label ?? name,
+    help: help ?? '',
+    multiline: multiline ?? false,
+    canInterpolate: canInterpolate ?? true,
+    interpolate: interpolate ?? true,
+    evaluations: evaluations ?? [
+      { ...jsExpressionEvaluation, selected: true },
+      jsonEvaluation,
+      jsFunctionEvaluation,
+    ],
+    casts: [
+      numberCast,
+      stringCast,
+    ],
+    input: {
+      rawValue: value ?? 0,
+      Evaluation: jsExpressionEvaluation.type,
+    },
+  }
+}

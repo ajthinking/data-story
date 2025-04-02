@@ -1,6 +1,9 @@
 import { sleep } from '../utils/sleep';
-import { num } from '../Param';
+import { jsExpression, num } from '../Param';
 import { Computer } from '../types/Computer';
+import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
+import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 
 export const Signal: Computer = {
   name: 'Signal',
@@ -23,6 +26,22 @@ export const Signal: Computer = {
       name: 'count',
       help: 'How many times to send the signal?',
       value: 300,
+    }),
+    jsExpression({
+      name: 'expression',
+      label: 'Template expression',
+      help: 'Use this field to customize the signal. ${{i}} is available as a variable.',
+      value: [
+        '{',
+        '  id: ${{i}}',
+        '}',
+      ].join('\n'),
+      evaluations: [
+        { ...jsExpressionEvaluation, selected: true },
+        jsonEvaluation,
+        jsFunctionEvaluation,
+        // jsExpressionEvaluation,
+      ],
     }),
   ],
 
