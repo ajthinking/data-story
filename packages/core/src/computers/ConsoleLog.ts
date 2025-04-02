@@ -1,7 +1,5 @@
-import { ItemWithParams } from '../ItemWithParams/ItemWithParams';
 import { numberCast } from '../Param/casts/numberCast';
 import { stringCast } from '../Param/casts/stringCast';
-import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { createDefaultStringable } from '../Param';
@@ -28,7 +26,6 @@ export const ConsoleLog: Computer = {
       evaluations: [
         jsFunctionEvaluation,
         jsonEvaluation,
-        hjsonEvaluation,
       ],
       casts: [
         numberCast,

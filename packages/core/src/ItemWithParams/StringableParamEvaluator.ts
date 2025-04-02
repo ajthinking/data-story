@@ -2,7 +2,7 @@ import { Param, StringableParam } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
-import HjsonParse from '../hjson/hjson-parse';
+// import HjsonParse from '../hjson/hjson-parse';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 import { ParamEvaluator } from './ParamEvaluator';
 
@@ -92,9 +92,9 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
       transformedValue = JSON.parse(transformedValue);
     }
 
-    if (selectedEvaluation?.type === 'HJSON') {
-      transformedValue = HjsonParse(transformedValue);
-    }
+    // if (selectedEvaluation?.type === 'HJSON') {
+    //   transformedValue = HjsonParse(transformedValue);
+    // }
 
     if (selectedEvaluation?.type === 'JS_FUNCTION') {
       const fn = eval(transformedValue);

@@ -1,4 +1,3 @@
-import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation'
 import { when } from '../support/computerTester/ComputerTester';
@@ -30,7 +29,7 @@ it('can parse hjson', async () => {
         Evaluation: 'HJSON',
       },
       evaluations: [
-        { ...hjsonEvaluation, selected: true },
+        { ...jsExpressionEvaluation, selected: true },
       ],
     })
     .doRun()

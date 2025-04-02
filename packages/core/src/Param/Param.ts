@@ -3,7 +3,6 @@ import { Cast } from './Cast'
 import { Evaluation } from './Evaluation'
 import { numberCast } from './casts/numberCast'
 import { stringCast } from './casts/stringCast'
-import { hjsonEvaluation } from './evaluations/hjsonEvaluation'
 import { jsExpressionEvaluation } from './evaluations/jsExpressionEvaluation'
 import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
@@ -223,7 +222,6 @@ export const json_ = ({
     interpolate: interpolate ?? true,
     evaluations: evaluations ?? [
       jsonEvaluation,
-      hjsonEvaluation,
       jsFunctionEvaluation,
       jsExpressionEvaluation,
     ],
@@ -267,7 +265,6 @@ export const jsFn = ({
     interpolate: interpolate ?? true,
     evaluations: evaluations ?? [
       jsonEvaluation,
-      hjsonEvaluation,
       jsFunctionEvaluation,
       jsExpressionEvaluation,
     ],
@@ -310,7 +307,6 @@ export const hjson = ({
     canInterpolate: canInterpolate ?? true,
     interpolate: interpolate ?? true,
     evaluations: evaluations ?? [
-      hjsonEvaluation ,
       jsonEvaluation,
     ],
     casts: [
@@ -319,7 +315,7 @@ export const hjson = ({
     ],
     input: {
       rawValue: value ?? 0,
-      Evaluation: hjsonEvaluation.type,
+      Evaluation: jsonEvaluation.type,
     },
   }
 }
