@@ -13,7 +13,7 @@ describe('Signal', () => {
       .ok()
   })
 
-  it.only('outputs items with the template provided', async () => {
+  it('outputs items with the template provided', async () => {
     await when(Signal)
       .hasParams({
         period: 1,

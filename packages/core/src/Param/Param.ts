@@ -307,9 +307,9 @@ export const jsExpression = ({
     canInterpolate: canInterpolate ?? true,
     interpolate: interpolate ?? true,
     evaluations: evaluations ?? [
-      { ...jsExpressionEvaluation, selected: true },
       jsonEvaluation,
       jsFunctionEvaluation,
+      jsExpressionEvaluation,
     ],
     casts: [
       numberCast,
