@@ -1,7 +1,6 @@
 import {
   NodeDescription,
   jsonEvaluation,
-  hjsonEvaluation,
   jsExpressionEvaluation,
   jsFunctionEvaluation,
   json_,
@@ -48,7 +47,6 @@ export const fileDropper = {
               value: JSON.stringify(jsonFileContent, null, 2),
               evaluations: [
                 { ...jsonEvaluation, selected: true },
-                hjsonEvaluation,
                 jsFunctionEvaluation,
                 jsExpressionEvaluation,
               ],

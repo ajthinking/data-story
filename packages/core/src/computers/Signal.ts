@@ -1,10 +1,9 @@
 import { sleep } from '../utils/sleep';
-import { hjson, json_, num } from '../Param';
-import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
-import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
-import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
-import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
+import { jsExpression, num } from '../Param';
 import { Computer } from '../types/Computer';
+import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
+import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 
 export const Signal: Computer = {
   name: 'Signal',
@@ -28,21 +27,20 @@ export const Signal: Computer = {
       help: 'How many times to send the signal?',
       value: 300,
     }),
-    hjson({
+    jsExpression({
       name: 'expression',
       label: 'Template expression',
       help: 'Use this field to customize the signal. ${{i}} is available as a variable.',
-      // Avoid Hjson bug
       value: [
         '{',
         '  id: ${{i}}',
         '}',
       ].join('\n'),
       evaluations: [
-        { ...hjsonEvaluation, selected: true },
+        { ...jsExpressionEvaluation, selected: true },
         jsonEvaluation,
         jsFunctionEvaluation,
-        jsExpressionEvaluation,
+        // jsExpressionEvaluation,
       ],
     }),
   ],

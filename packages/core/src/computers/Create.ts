@@ -1,8 +1,4 @@
-import { json_ } from '../Param';
-import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
-import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
-import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
-import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
+import { jsExpression } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Create: Computer = {
@@ -16,16 +12,10 @@ export const Create: Computer = {
     },
   ],
   params: [
-    json_({
+    jsExpression({
       name: 'data',
       help: 'You may use json, hson js function or expression',
       value: JSON.stringify({ foo: 'bar' }, null, 2),
-      evaluations: [
-        { ...hjsonEvaluation, selected: true },
-        jsonEvaluation,
-        jsFunctionEvaluation,
-        jsExpressionEvaluation,
-      ],
     }),
   ],
 
