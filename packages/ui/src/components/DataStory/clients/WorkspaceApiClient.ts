@@ -16,7 +16,6 @@ import {
   ObserveLinkUpdate,
   ObserveNodeStatus,
   RequestObserverType,
-  LinkItemsParam,
   NodeDescriptionResponse,
   ObserveLinkCountsSchema,
   LinkCountInfoSchema,
@@ -29,9 +28,10 @@ import {
   NodeDescriptionRequestSchema,
   NodeDescriptionResponseSchema,
   NodesStatusInfo,
-  LinkItemsParamSchema,
   AbortExecution,
   AbortExecutionSchema,
+  LinkItemsUpdate,
+  LinkItemsUpdateSchema,
 } from '@data-story/core';
 import { eventManager } from '../events/eventManager';
 import { DataStoryEvents } from '../events/dataStoryEventType';
@@ -119,8 +119,8 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
         }),
       );
     const itemsSubscription = msg$.subscribe((data) => {
-      const { items, inputObserver } = data as { items: LinkItemsParam[], inputObserver: InputObserveConfig };
-      validateZodSchema(LinkItemsParamSchema, items[0]);
+      const { items, inputObserver } = data as { items: LinkItemsUpdate[], inputObserver: InputObserveConfig };
+      validateZodSchema(LinkItemsUpdateSchema, items[0]);
       params.onReceive(items, inputObserver);
     });
 

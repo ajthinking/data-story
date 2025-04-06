@@ -15,15 +15,15 @@ import { GetDataFromStorageParams, LinkItems } from './types/GetDataFromStorageP
 import { NodeStatus } from './Executor';
 import { NodeId } from './types/Node';
 import { ObserverStorage } from './types/ObserverStorage';
-import { LinkItemsParam } from './types/LinkItemsParam';
-import { LinksCountParam } from './types/LinksCountParam';
+import { LinkItemsUpdate } from './types/LinkItemsUpdate';
+import { LinksCountUpdate } from './types/LinksCountUpdate';
 import { sleep } from './utils/sleep';
 
 const ThrottleMS: number = 300;
 
 export class ObserverController {
-  private items$ = new Subject<LinkItemsParam>();
-  private links$ = new Subject<LinksCountParam>();
+  private items$ = new Subject<LinkItemsUpdate>();
+  private links$ = new Subject<LinksCountUpdate>();
   private nodeStatus$ = new Subject<{ nodeId: NodeId, status: NodeStatus }>();
   private observerMap: Map<string, Subscription> = new Map();
 
@@ -32,18 +32,18 @@ export class ObserverController {
   /**
    * When we invoke `reportItems`, it triggers the `notifyObservers` callback and forwards the `items` and `inputObserver` parameters
    */
-  async reportItems(memoryObserver: LinkItemsParam): Promise<void> {
-    this.items$.next(memoryObserver);
-    await this.storage.appendLinkItems(memoryObserver.linkId, memoryObserver.items);
+  async reportItems(update: LinkItemsUpdate): Promise<void> {
+    this.items$.next(update);
+    await this.storage.appendLinkItems(update.linkId, update.items);
   }
 
   setItems(linkId: LinkId, items: ItemValue[]): void {
     this.storage.setLinkItems(linkId, items);
   }
 
-  async reportLinksCount(memoryObserver: LinksCountParam): Promise<void> {
-    this.links$.next(memoryObserver);
-    await this.storage.setLinkCount(memoryObserver.linkId, memoryObserver.count);
+  async reportLinksCount(update: LinksCountUpdate): Promise<void> {
+    this.links$.next(update);
+    await this.storage.setLinkCount(update.linkId, update.count);
   }
 
   // The current requirement only needs to retain 'BUSY' and 'COMPLETE' in NodeStatus.
@@ -108,7 +108,7 @@ export class ObserverController {
           linkId,
           type: RequestObserverType.observeLinkItems,
           items: grouped[linkId].flatMap(item => item.items),
-        } as LinkItemsParam));
+        } as LinkItemsUpdate));
       }),
       tap(items => {
         observer.onReceive(items);
@@ -133,7 +133,7 @@ export class ObserverController {
       filter(it=> it.length > 0),
       map(counts => {
         // Group by linkId and keep only the latest entry for each linkId
-        const latestByLinkId = new Map<string, LinksCountParam>();
+        const latestByLinkId = new Map<string, LinksCountUpdate>();
         counts.forEach(count => {
           latestByLinkId.set(count.linkId, count);
         });

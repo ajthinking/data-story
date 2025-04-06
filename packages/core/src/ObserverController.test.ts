@@ -8,7 +8,7 @@ import { RequestObserverType } from './types/InputObserveConfig';
 import { LinkId } from './types/Link';
 import { ItemValue } from './types/ItemValue';
 import { sleep } from './utils/sleep';
-import { LinkItemsParam } from './types/LinkItemsParam';
+import { LinkItemsUpdate } from './types/LinkItemsUpdate';
 
 describe('ObserverController', () => {
   it('should be defined', () => {
@@ -262,7 +262,7 @@ describe('ObserverController', () => {
     it('should emit link items', () => {
       const mockStorage = new InMemoryObserverStorage('_');
       const controller = new ObserverController(mockStorage);
-      const linkItemsParam: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
+      const linkItemsParam: LinkItemsUpdate = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId', items: [{ value: 1 }] };
 
       controller.addLinkItemsObserver({
@@ -280,7 +280,7 @@ describe('ObserverController', () => {
     it('should emit link items with throttle', async () => {
       const mockStorage = new InMemoryObserverStorage('_');
       const controller = new ObserverController(mockStorage);
-      const linkItemsParam: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
+      const linkItemsParam: LinkItemsUpdate = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId', items: [{ value: 1 }] };
 
       controller.addLinkItemsObserver({
@@ -299,9 +299,9 @@ describe('ObserverController', () => {
     it('should emit link items with multiple links', () => {
       const mockStorage = new InMemoryObserverStorage('_');
       const controller = new ObserverController(mockStorage);
-      const linkItemsParam1: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
+      const linkItemsParam1: LinkItemsUpdate = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId1', items: [{ value: 1 }] };
-      const linkItemsParam2: LinkItemsParam = { type: RequestObserverType.observeLinkItems,
+      const linkItemsParam2: LinkItemsUpdate = { type: RequestObserverType.observeLinkItems,
         linkId: 'linkId2', items: [{ value: 2 }] };
 
       controller.addLinkItemsObserver({

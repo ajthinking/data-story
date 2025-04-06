@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { RequestObserverType } from './InputObserveConfig';
 import { ItemValue } from './ItemValue';
 
-export const LinkItemsParamSchema = z.object({
+export const LinkItemsUpdateSchema = z.object({
   type: z.literal(RequestObserverType.observeLinkItems, {
     required_error: 'type is required',
     invalid_type_error: 'type must be observeLinkItems',
@@ -14,4 +14,4 @@ export const LinkItemsParamSchema = z.object({
   items: z.array(z.object({}) as z.ZodType<ItemValue>),
 });
 
-export type LinkItemsParam = z.input<typeof LinkItemsParamSchema>;
+export type LinkItemsUpdate = z.input<typeof LinkItemsUpdateSchema>;
