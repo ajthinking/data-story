@@ -1,14 +1,14 @@
 import { InputObserver } from './InputObserver';
-import { LinkItemsParam, LinkItemsParamSchema } from './LinkItemsParam';
+import { LinkItemsUpdate, LinkItemsUpdateSchema } from './LinkItemsUpdate';
 import { z } from 'zod';
 
 export const NotifyObserversCallbackSchema = z.function()
   .args(
-    z.array(LinkItemsParamSchema) as z.ZodType<LinkItemsParam[]>,
+    z.array(LinkItemsUpdateSchema) as z.ZodType<LinkItemsUpdate[]>,
     z.optional(z.object({}) as unknown as z.ZodType<InputObserver>),
   ).returns(z.void());
 
 export type NotifyObserversCallback = (
-  items: LinkItemsParam[],
+  items: LinkItemsUpdate[],
   inputObserver?: InputObserver
 ) => void;

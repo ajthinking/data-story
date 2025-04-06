@@ -54,7 +54,7 @@ export type { NodeId } from './types/Node';
 export type { NodeStatus } from './Executor';
 export type { ObserverStorage, DiagramId, GetLinkItemsParams } from './types/ObserverStorage'
 export { InMemoryObserverStorage } from './storage/inMemoryObserverStorage'
-export type { LinkItemsParam } from './types/LinkItemsParam'
-export { LinkItemsParamSchema } from './types/LinkItemsParam'
-export type { LinksCountParam } from './types/LinksCountParam'
+export type { LinkItemsUpdate } from './types/LinkItemsUpdate'
+export { LinkItemsUpdateSchema } from './types/LinkItemsUpdate'
+export type { LinksCountUpdate } from './types/LinksCountUpdate'
 export { ItemWithParams } from './ItemWithParams';

@@ -13,7 +13,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { useDiagram } from '../hooks/useDiagram';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
-import { createDataStoryId, multiline, RequestObserverType, LinkItemsParam, ItemValue } from '@data-story/core';
+import { createDataStoryId, multiline, RequestObserverType, LinkItemsUpdate, ItemValue } from '@data-story/core';
 
 ChartJS.register(
   CategoryScale,
@@ -60,7 +60,7 @@ const ObserversDemo = () => {
     const observeLinkItems = {
       linkIds: diagram?.links[1]?.id ? [diagram.links[1].id] : [],
       type: RequestObserverType.observeLinkItems,
-      onReceive: (params: LinkItemsParam[]) => {
+      onReceive: (params: LinkItemsUpdate[]) => {
         const newPoints = params[0].items;
         setPoints((prevPoints) => [...prevPoints, ...newPoints].slice(-100));
       },

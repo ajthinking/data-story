@@ -1,6 +1,6 @@
 import ConsoleNodeComponent from './ConsoleNodeComponent';
 import { ReactFlowProvider } from '@xyflow/react';
-import { LinkItemsParam, ObserveLinkItems } from '@data-story/core';
+import { LinkItemsUpdate, ObserveLinkItems } from '@data-story/core';
 import { DataStoryContext } from '../DataStory/store/store';
 import { WorkspaceApiClientImplement } from '../DataStory/clients/WorkspaceApiClientImplement';
 
@@ -31,7 +31,7 @@ const mountConsoleNodeComponent = (items: unknown[], client?: () => WorkspaceApi
         }),
         client: client?.() || {
           observeLinkItems: (observer: ObserveLinkItems) => {
-            observer.onReceive(items as LinkItemsParam[]);
+            observer.onReceive(items as LinkItemsUpdate[]);
             return { unsubscribe:() => cy.spy() };
           },
         },
