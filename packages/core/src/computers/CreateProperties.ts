@@ -1,6 +1,5 @@
 import { numberCast } from '../Param/casts/numberCast';
 import { stringCast } from '../Param/casts/stringCast';
-import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
@@ -48,7 +47,6 @@ export const CreateProperties: Computer = {
           interpolate: true,
           evaluations: [
             jsonEvaluation,
-            hjsonEvaluation,
             jsFunctionEvaluation,
             jsExpressionEvaluation,
           ],

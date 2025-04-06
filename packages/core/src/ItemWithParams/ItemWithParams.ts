@@ -32,6 +32,8 @@ export class ItemWithParams<ExpectedType extends ItemValue = ItemValue> {
     this.params = new Proxy({}, {
       get: (_, key: string) => {
         const param = rawParams.find(p => p.name === key);
+        console.log('param', param);
+        console.log('key', key);
         if (!param) throw new Error(`Param "${key}" does not exist`);
 
         try {

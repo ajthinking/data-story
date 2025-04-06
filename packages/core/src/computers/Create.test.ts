@@ -1,4 +1,3 @@
-import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsExpressionEvaluation } from '../Param/evaluations/jsExpressionEvaluation'
 import { when } from '../support/computerTester/ComputerTester';
@@ -18,23 +17,6 @@ it('wraps non array inputs', async () => {
     .hasParams({ data: JSON.stringify({ a: 1 }) })
     .doRun()
     .expectOutput([{ a: 1 }])
-    .ok()
-})
-
-it('can parse hjson', async () => {
-  await when(Create)
-    .hasParam({
-      name: 'data',
-      input: {
-        rawValue: '{ cool: "yes" }',
-        Evaluation: 'HJSON',
-      },
-      evaluations: [
-        { ...hjsonEvaluation, selected: true },
-      ],
-    })
-    .doRun()
-    .expectOutput([{ cool: 'yes' }])
     .ok()
 })
 

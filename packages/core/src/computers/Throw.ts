@@ -1,7 +1,6 @@
 import { NodeRunError } from '../NodeRunError';
 import { numberCast } from '../Param/casts/numberCast';
 import { stringCast } from '../Param/casts/stringCast';
-import { hjsonEvaluation } from '../Param/evaluations/hjsonEvaluation';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 import { createDefaultStringable } from '../Param';
@@ -26,7 +25,6 @@ export const Throw: Computer = {
       evaluations: [
         jsFunctionEvaluation,
         jsonEvaluation,
-        hjsonEvaluation,
       ],
       casts: [
         numberCast,

@@ -15,7 +15,6 @@ import {
 } from '@floating-ui/react';
 import { FormFieldWrapper, useFormField } from '../DataStory/Form/UseFormField';
 import {
-  hjsonEvaluation,
   jsExpressionEvaluation,
   jsFunctionEvaluation,
   jsonEvaluation,
@@ -93,8 +92,6 @@ const getLabelFromType = (type: string) => {
       return stringCast.label;
     case numberCast.type:
       return numberCast.label;
-    case hjsonEvaluation.type:
-      return hjsonEvaluation.label;
     case jsExpressionEvaluation.type:
       return jsExpressionEvaluation.label;
     case jsFunctionEvaluation.type:
