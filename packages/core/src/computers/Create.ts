@@ -14,7 +14,7 @@ export const Create: Computer = {
   params: [
     jsExpression({
       name: 'data',
-      help: 'You may use json, hson js function or expression',
+      help: 'You may use json, js function or expression',
       value: JSON.stringify({ foo: 'bar' }, null, 2),
     }),
   ],

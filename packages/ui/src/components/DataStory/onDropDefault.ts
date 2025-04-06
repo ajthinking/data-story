@@ -43,7 +43,7 @@ export const fileDropper = {
           params: [
             json_({
               name: 'data',
-              help: 'You may use json, hson js function or expression',
+              help: 'You may use json, js function or expression',
               value: JSON.stringify(jsonFileContent, null, 2),
               evaluations: [
                 { ...jsonEvaluation, selected: true },
