@@ -81,11 +81,16 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
       linkIds: linkIds,
       type: RequestObserverType.observeLinkUpdate,
       throttleMs: tableThrottleMs,
+      limit: initialScreenCount,
       onReceive: (linkIds) => {
-        // if linkOffsets all items.length < initialScreenCount then load more
-        if (itemsRef.current.length < initialScreenCount) {
-          loadMore.current();
+        // If we have enough initial items, attempt unsubscribe
+        if (itemsRef.current.length >= initialScreenCount) {
+          subscription?.unsubscribe();
+          return;
         }
+
+        // Load more items
+        loadMore.current();
       },
     }
     const subscription = client?.observeLinkUpdate?.(tableUpdate);
