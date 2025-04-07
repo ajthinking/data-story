@@ -4,6 +4,7 @@ import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } 
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
+import { Subscription } from 'rxjs';
 
 const initialScreenCount: number = 15;
 const tableThrottleMs: number = 100;
@@ -76,19 +77,26 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   useEffect(() => {
     if (!client?.observeLinkUpdate || !linkIds) return;
 
+    let subscription: Subscription | undefined;
+
     const tableUpdate: ObserveLinkUpdate = {
       observerId: createDataStoryId(),
       linkIds: linkIds,
       type: RequestObserverType.observeLinkUpdate,
       throttleMs: tableThrottleMs,
+      limit: initialScreenCount,
       onReceive: (linkIds) => {
-        // if linkOffsets all items.length < initialScreenCount then load more
-        if (itemsRef.current.length < initialScreenCount) {
-          loadMore.current();
+        // If we have enough initial items, attempt unsubscribe
+        if (itemsRef.current.length >= initialScreenCount) {
+          subscription?.unsubscribe();
+          return;
         }
+
+        // Load more items
+        loadMore.current();
       },
     }
-    const subscription = client?.observeLinkUpdate?.(tableUpdate);
+    subscription = client?.observeLinkUpdate?.(tableUpdate);
     return () => {
       subscription?.unsubscribe();
     };
