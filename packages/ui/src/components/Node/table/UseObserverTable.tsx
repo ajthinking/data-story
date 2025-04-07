@@ -4,6 +4,7 @@ import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } 
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
+import { Subscription } from 'rxjs';
 
 const initialScreenCount: number = 15;
 const tableThrottleMs: number = 100;
@@ -76,6 +77,8 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   useEffect(() => {
     if (!client?.observeLinkUpdate || !linkIds) return;
 
+    let subscription: Subscription | undefined;
+
     const tableUpdate: ObserveLinkUpdate = {
       observerId: createDataStoryId(),
       linkIds: linkIds,
@@ -93,7 +96,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
         loadMore.current();
       },
     }
-    const subscription = client?.observeLinkUpdate?.(tableUpdate);
+    subscription = client?.observeLinkUpdate?.(tableUpdate);
     return () => {
       subscription?.unsubscribe();
     };
