@@ -501,16 +501,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@data-story/core@workspace:packages/core"
   dependencies:
-    "@types/node": "npm:18.14.2"
     axios: "npm:^1.3.4"
-    dotenv: "npm:^16.0.3"
     nanoid: "npm:3"
     rxjs: "npm:^7.8.1"
     vite: "npm:^5.0.10"
     vite-plugin-externalize-deps: "npm:^0.8.0"
-    webpack: "npm:^5.88.1"
-    webpack-cli: "npm:^5.1.4"
-    webpack-shebang-plugin: "npm:^1.1.8"
     zod: "npm:^3.24.1"
   peerDependencies:
     vitest: ^1.6.0
@@ -555,9 +550,6 @@ __metadata:
     axios: "npm:^1.3.4"
     dotenv: "npm:^16.0.3"
     openai: "npm:^3.2.1"
-    webpack: "npm:^5.88.1"
-    webpack-cli: "npm:^5.1.4"
-    webpack-shebang-plugin: "npm:^1.1.8"
     ws: "npm:^8.12.1"
   languageName: unknown
   linkType: soft
@@ -568,7 +560,6 @@ __metadata:
   dependencies:
     "@data-story/core": "workspace:*"
     "@types/glob": "npm:^8.1.0"
-    "@types/node": "npm:18.14.2"
     "@types/ws": "npm:^8.5.4"
     axios: "npm:^1.3.4"
     csv-parse: "npm:^5.6.0"
@@ -576,9 +567,6 @@ __metadata:
     dotenv: "npm:^16.0.3"
     glob: "npm:^11.0.0"
     openai: "npm:^3.2.1"
-    webpack: "npm:^5.88.1"
-    webpack-cli: "npm:^5.1.4"
-    webpack-shebang-plugin: "npm:^1.1.8"
     ws: "npm:^8.12.1"
   bin:
     server: dist/server.js
@@ -600,7 +588,6 @@ __metadata:
     "@tanstack/react-virtual": "npm:^3.5.0"
     "@types/glob": "npm:^8.1.0"
     "@types/markdown-it": "npm:^13.0.6"
-    "@types/node": "npm:18.14.2"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:*"
     "@types/ws": "npm:^8.5.4"
@@ -609,7 +596,6 @@ __metadata:
     ahooks: "npm:^3.7.10"
     allotment: "npm:^1.20.2"
     autoprefixer: "npm:^10.4.13"
-    axios: "npm:^1.3.4"
     clsx: "npm:^2.0.0"
     css-loader: "npm:^6.8.1"
     markdown-it: "npm:^13.0.2"
@@ -621,10 +607,6 @@ __metadata:
     rxjs: "npm:^7.8.1"
     style-loader: "npm:^3.3.3"
     tailwindcss: "npm:^3.2.7"
-    webpack: "npm:^5.88.1"
-    webpack-cli: "npm:^5.1.4"
-    ws: "npm:^8.12.1"
-    zod: "npm:^3.24.1"
     zustand: "npm:^4.3.9"
   peerDependencies:
     react: ^18.2.0
@@ -2613,12 +2595,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.x":
-  version: 20.16.10
-  resolution: "@types/node@npm:20.16.10"
+"@types/node@npm:^18.14.2":
+  version: 18.19.86
+  resolution: "@types/node@npm:18.19.86"
   dependencies:
-    undici-types: "npm:~6.19.2"
-  checksum: 10/f0832d16fed07737c2c3edd6cb6414a22e8379173e56e701ab8890b8798c8f9bc37337332631818f813ff7f8c0e168e9900e8f44cdfd2406d15150289c813acc
+    undici-types: "npm:~5.26.4"
+  checksum: 10/83e8f07305b102776c1970c2fbe2347eba15f6cca3d50cf8991d5f4e463ee7e204fbb3dec599892d25e613ed3b93f7fb5794b0de874ea6ba884affbe99670cc2
   languageName: node
   linkType: hard
 
@@ -2746,24 +2728,6 @@ __metadata:
     typescript:
       optional: true
   checksum: 10/4d51cdbc170e72275efc5ef5fce48a81ec431e4edde8374f4d0213d8d370a06823e1a61ae31d502a5f1b0d1f48fc4d29a1b1b5c2dcf809d66d3872ccf6e46ac7
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/parser@npm:^8.3.0":
-  version: 8.7.0
-  resolution: "@typescript-eslint/parser@npm:8.7.0"
-  dependencies:
-    "@typescript-eslint/scope-manager": "npm:8.7.0"
-    "@typescript-eslint/types": "npm:8.7.0"
-    "@typescript-eslint/typescript-estree": "npm:8.7.0"
-    "@typescript-eslint/visitor-keys": "npm:8.7.0"
-    debug: "npm:^4.3.4"
-  peerDependencies:
-    eslint: ^8.57.0 || ^9.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 10/896ac60f8426f9e5c23198c89555f6f88f7957c5b16bb7b966dac45c5f5e7076c1a050bcee2e0eddff88055b9c0d7bdfaef9c64889e3bdf3356d20356b0daa04
   languageName: node
   linkType: hard
 
@@ -5564,6 +5528,7 @@ __metadata:
   dependencies:
     "@stylistic/eslint-plugin": "npm:^0.1.2"
     "@types/mocha": "npm:^10.0.6"
+    "@types/node": "npm:^18.14.2"
     "@typescript-eslint/parser": "npm:^6.9.0"
     cypress: "npm:^13.6.1"
     eslint: "npm:^8.52.0"
@@ -5581,7 +5546,9 @@ __metadata:
     turbo: "npm:<1.11.0"
     typescript: "npm:5.6.2"
     vitest: "npm:^1.6.0"
+    webpack: "npm:^5.88.1"
     webpack-bundle-analyzer: "npm:^4.10.1"
+    webpack-cli: "npm:^5.1.4"
   languageName: unknown
   linkType: soft
 
@@ -5971,12 +5938,10 @@ __metadata:
     "@data-story/nodejs": "workspace:*"
     "@data-story/ui": "workspace:*"
     "@types/mocha": "npm:^10.0.7"
-    "@types/node": "npm:20.x"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
     "@types/vscode": "npm:^1.80.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.3.0"
-    "@typescript-eslint/parser": "npm:^8.3.0"
     "@vitejs/plugin-react": "npm:^4.3.1"
     "@vscode/test-cli": "npm:^0.0.10"
     "@vscode/test-electron": "npm:^2.4.1"
@@ -5988,10 +5953,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     rxjs: "npm:^7.8.1"
-    ts-loader: "npm:^9.5.1"
     vite: "npm:^5.4.7"
-    webpack: "npm:^5.94.0"
-    webpack-cli: "npm:^5.1.4"
   languageName: unknown
   linkType: soft
 
@@ -15029,6 +14991,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 10/0097779d94bc0fd26f0418b3a05472410408877279141ded2bd449167be1aed7ea5b76f756562cb3586a07f251b90799bab22d9019ceba49c037c76445f7cddd
+  languageName: node
+  linkType: hard
+
 "undici-types@npm:~6.19.2":
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
@@ -15748,13 +15717,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-shebang-plugin@npm:^1.1.8":
-  version: 1.1.8
-  resolution: "webpack-shebang-plugin@npm:1.1.8"
-  checksum: 10/1fb1863d44daef6565717b394bdd537b8cd574b9991be14b2a9a13d0c920f19f0a923ffeb42f8aa796049e032dac710d0ad063dc1cab3eab213fb7b22e8136ff
-  languageName: node
-  linkType: hard
-
 "webpack-sources@npm:^3.2.3":
   version: 3.2.3
   resolution: "webpack-sources@npm:3.2.3"
@@ -15762,7 +15724,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5.88.1, webpack@npm:^5.94.0":
+"webpack@npm:^5.88.1":
   version: 5.95.0
   resolution: "webpack@npm:5.95.0"
   dependencies:

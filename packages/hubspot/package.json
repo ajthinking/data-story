@@ -35,7 +35,6 @@
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/ws": "^8.5.4",
-    "webpack-shebang-plugin": "^1.1.8"
+    "@types/ws": "^8.5.4"
   }
 }
