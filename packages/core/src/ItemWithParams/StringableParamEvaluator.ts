@@ -92,7 +92,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     }
 
     if (selectedEvaluation?.type === 'JS_FUNCTION') {
-      const fn = eval(transformedValue);
+      const fn = createJSTransformFunction(transformedValue);
       transformedValue = fn(itemValue);
     }
 
@@ -129,3 +129,13 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     return param.type === this.type;
   }
 }
+
+const functionCache = new Map<string, WeakRef<Function>>();
+const createJSTransformFunction = (code: string) => {
+  const cachedFn = functionCache.get(code)?.deref();
+  if (cachedFn) return cachedFn;
+
+  const fn = new Function('item', `return (${code})(item)`);
+  functionCache.set(code, new WeakRef(fn));
+  return fn;
+};
