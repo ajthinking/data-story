@@ -592,7 +592,7 @@ __metadata:
     "@types/react-dom": "npm:*"
     "@types/ws": "npm:^8.5.4"
     "@uiw/react-codemirror": "patch:@uiw/react-codemirror@npm%3A4.23.10#~/.yarn/patches/@uiw-react-codemirror-npm-4.23.10-2db625ca86.patch"
-    "@xyflow/react": "npm:^12.0.2"
+    "@xyflow/react": "npm:12.5.5"
     ahooks: "npm:^3.7.10"
     allotment: "npm:^1.20.2"
     autoprefixer: "npm:^10.4.13"
@@ -3293,23 +3293,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xyflow/react@npm:^12.0.2":
-  version: 12.3.1
-  resolution: "@xyflow/react@npm:12.3.1"
+"@xyflow/react@npm:12.5.5":
+  version: 12.5.5
+  resolution: "@xyflow/react@npm:12.5.5"
   dependencies:
-    "@xyflow/system": "npm:0.0.43"
+    "@xyflow/system": "npm:0.0.55"
     classcat: "npm:^5.0.3"
     zustand: "npm:^4.4.0"
   peerDependencies:
     react: ">=17"
     react-dom: ">=17"
-  checksum: 10/a55a4ffa4916fad294793ef141a8b53c109037db9425ff3707395086d8326a3a7c08809920e331741f3607161d3b6ecd3ad7ba50c47833c63e4c9b29e9905dd9
+  checksum: 10/64a7977779ecd4290dd09163c336a69ea976adbb08644dda20be6f356a9519386b195713a090f43c9ebe77cc52c136857a8456ebe8680b6e48be918bcd87f36b
   languageName: node
   linkType: hard
 
-"@xyflow/system@npm:0.0.43":
-  version: 0.0.43
-  resolution: "@xyflow/system@npm:0.0.43"
+"@xyflow/system@npm:0.0.55":
+  version: 0.0.55
+  resolution: "@xyflow/system@npm:0.0.55"
   dependencies:
     "@types/d3-drag": "npm:^3.0.7"
     "@types/d3-selection": "npm:^3.0.10"
@@ -3318,7 +3318,7 @@ __metadata:
     d3-drag: "npm:^3.0.0"
     d3-selection: "npm:^3.0.0"
     d3-zoom: "npm:^3.0.0"
-  checksum: 10/180de23bc8303580d4e2da5d9130f3a89df14e841531717e02d5fe7db770824015446c2606d38cfa3c9ad413a1ca1f782bf8830e5625dfc952828baa69d1f803
+  checksum: 10/6135462949901015a47f4013ee7e98fde709314ec0eb301f071c7394db5887ec18c5edff386b6ec8c14de87b792e2d2a3bbe35aae87a60d876acde4026b4bfd3
   languageName: node
   linkType: hard
 
