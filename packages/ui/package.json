@@ -58,12 +58,12 @@
     "markdown-it": "^13.0.2",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
+    "react-hook-form": "^7.43.8",
     "rxjs": "^7.8.1",
     "zustand": "^4.3.9"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
-    "@types/glob": "^8.1.0",
     "@types/markdown-it": "^13.0.6",
     "@types/react": "^18",
     "@types/react-dom": "*",
@@ -72,7 +72,6 @@
     "css-loader": "^6.8.1",
     "postcss": "^8.4.21",
     "postcss-loader": "^7.3.3",
-    "react-hook-form": "^7.43.8",
     "style-loader": "^3.3.3",
     "tailwindcss": "^3.2.7"
   },
