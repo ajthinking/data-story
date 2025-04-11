@@ -1,3 +1,5 @@
+import './withResolversPolyfill';
+
 export { DataStory } from './components/DataStory';
 export { DataStoryCanvas } from './components/DataStory/DataStoryCanvas';
 export { DataStoryCanvasProvider } from './components/DataStory/store/store';
