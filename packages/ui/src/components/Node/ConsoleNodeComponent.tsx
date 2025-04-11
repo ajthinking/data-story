@@ -5,7 +5,7 @@ import { useStore } from '../DataStory/store/store';
 import { shallow } from 'zustand/shallow';
 import { createDataStoryId, ObserveLinkItems, RequestObserverType } from '@data-story/core';
 import { StoreSchema } from '../DataStory/types';
-import { useHandleConnections } from '@xyflow/react';
+import { useNodeConnections } from '@xyflow/react';
 
 const ConsoleNodeComponent = ({ id, data, selected }: {
   id: string,
@@ -23,7 +23,7 @@ const useObserverConsole = ({ id }: { id: string }) => {
   });
   const { toDiagram, client } = useStore(selector, shallow);
 
-  const connections = useHandleConnections({ type: 'target', id: `${id}.input` });
+  const connections = useNodeConnections({ handleType: 'target', id: `${id}.input` });
 
   // Add the node to the inputObservers when the node is mounted
   useEffect(() => {
