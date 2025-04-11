@@ -18,11 +18,11 @@
     "/src"
   ],
   "scripts": {
-    "analyze": "webpack --profile --json > stats.json && yarn run -T webpack-bundle-analyzer stats.json",
-    "build": "echo _____RUNNING_UI_BUILD_____ && webpack && yarn run build:css",
+    "analyze": "yarn run -T webpack --profile --json > stats.json && yarn run -T webpack-bundle-analyzer stats.json",
+    "build": "echo _____RUNNING_UI_BUILD_____ && yarn run -T webpack && yarn run build:css",
     "build:css": "yarn run -T postcss ./src/styles/globals.css -o ./dist/data-story.css",
     "watch:css": "yarn run build:css --watch",
-    "watch:webpack": "webpack --watch",
+    "watch:webpack": "yarn run -T webpack --watch",
     "release": "yarn run -T release-it",
     "ci:unit": "yarn run -T vitest run --config vitest.config.ts --passWithNoTests",
     "test": "yarn run ci:unit && yarn run test:component",
