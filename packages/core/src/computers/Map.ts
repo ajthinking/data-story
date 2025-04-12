@@ -18,9 +18,7 @@ export const Map: Computer = {
     jsFn({
       name: 'mapper',
       value: multiline`
-        item => ({
-          ...item
-        })
+        item => Object.assign({}, item)
       `,
       help: '',
     }),

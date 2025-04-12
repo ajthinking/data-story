@@ -4,6 +4,7 @@ import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 import { ParamEvaluator } from './ParamEvaluator';
+import { createJSTransformExpression, createJSTransformFunction } from './JSTransform';
 
 export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
   type = 'StringableParam' as const;
@@ -98,9 +99,7 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
 
     if (selectedEvaluation?.type === 'JS_EXPRESSION') {
       try {
-        // Wrap with parentheses to ensure brackets are not interpreted as a block
-        const nonBlockExpression = `(${transformedValue})`;
-        transformedValue = eval(nonBlockExpression);
+        transformedValue = createJSTransformExpression(transformedValue);
       } catch(error) {
         console.log(`Failed to evaluate JS expression: ${transformedValue}`)
         throw error
@@ -129,13 +128,3 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     return param.type === this.type;
   }
 }
-
-const functionCache = new Map<string, WeakRef<Function>>();
-const createJSTransformFunction = (code: string) => {
-  const cachedFn = functionCache.get(code)?.deref();
-  if (cachedFn) return cachedFn;
-
-  const fn = new Function('item', `return (${code})(item)`);
-  functionCache.set(code, new WeakRef(fn));
-  return fn;
-};
