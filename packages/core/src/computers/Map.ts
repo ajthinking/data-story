@@ -27,9 +27,7 @@ export const Map: Computer = {
   async *run({ input, output, params }) {
     while(true) {
       const incoming = input.pull()
-
       const replacers = incoming.map(item => item.params.mapper) as ItemValue[]
-
       output.push(replacers)
 
       yield;
