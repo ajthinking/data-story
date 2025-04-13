@@ -77,8 +77,6 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
   useEffect(() => {
     if (!client?.observeLinkUpdate || !linkIds) return;
 
-    let subscription: Subscription | undefined;
-
     const tableUpdate: ObserveLinkUpdate = {
       observerId: createDataStoryId(),
       linkIds: linkIds,
@@ -88,7 +86,6 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
       onReceive: (linkIds) => {
         // If we have enough initial items, attempt unsubscribe
         if (itemsRef.current.length >= initialScreenCount) {
-          subscription?.unsubscribe();
           return;
         }
 
@@ -96,7 +93,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
         loadMore.current();
       },
     }
-    subscription = client?.observeLinkUpdate?.(tableUpdate);
+    const subscription = client?.observeLinkUpdate?.(tableUpdate);
     return () => {
       subscription?.unsubscribe();
     };
