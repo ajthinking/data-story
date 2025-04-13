@@ -4,7 +4,6 @@ import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } 
 import { useLatest } from 'ahooks';
 import { shallow } from 'zustand/shallow';
 import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
-import { Subscription } from 'rxjs';
 
 const initialScreenCount: number = 15;
 const tableThrottleMs: number = 100;
