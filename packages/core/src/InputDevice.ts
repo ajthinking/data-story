@@ -21,7 +21,7 @@ export class InputDevice {
   /**
    * Shorthand to pull items at 'input'
    */
-  pull(count: number = 20000) {
+  pull(count?: number) {
     return this.pullFrom('input', count)
   }
 

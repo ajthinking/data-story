@@ -18,15 +18,18 @@ export const Map: Computer = {
     jsFn({
       name: 'mapper',
       value: multiline`
-        item => Object.assign({}, item)
+        item => ({
+          ...item
+        })
       `,
       help: '',
     }),
   ],
 
   async *run({ input, output, params }) {
+    const mapTestingBatchLimit = 20000;
     while(true) {
-      const incoming = input.pull()
+      const incoming = input.pull(mapTestingBatchLimit)
       const replacers = incoming.map(item => item.params.mapper) as ItemValue[]
       output.push(replacers)
 
