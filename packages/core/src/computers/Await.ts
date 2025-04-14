@@ -49,6 +49,7 @@ export const Await: Computer = {
     let hasPulledAny = false
 
     while(true) {
+      // not set the batch limit, because the param has number_of_items
       const incoming = input.pull()
 
       const pulledCount = incoming.length

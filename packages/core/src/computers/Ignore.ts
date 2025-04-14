@@ -1,4 +1,5 @@
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const Ignore: Computer = {
   name: 'Ignore',
@@ -12,7 +13,7 @@ export const Ignore: Computer = {
 
   async *run({ input }) {
     while(true) {
-      input.pull()
+      input.pull(BatchLimit)
       yield;
     }
   },

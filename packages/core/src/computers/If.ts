@@ -1,6 +1,7 @@
 import { jsFn } from '../Param';
 import { multiline } from '../utils/multiline';
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const If: Computer = {
   name: 'If',
@@ -31,7 +32,7 @@ export const If: Computer = {
 
   async *run({ input, output, params }) {
     while(true) {
-      const items = input.pull()
+      const items = input.pull(BatchLimit)
 
       for (const item of items) {
         output.pushTo(

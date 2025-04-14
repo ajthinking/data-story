@@ -1,5 +1,6 @@
 import { json_ } from '../Param';
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const FlatMap: Computer = {
   name: 'FlatMap',
@@ -22,7 +23,7 @@ export const FlatMap: Computer = {
 
   async *run({ input, output, params }) {
     while(true) {
-      const incoming = input.pull()
+      const incoming = input.pull(BatchLimit)
 
       const replacers = incoming.flatMap(item => {
         return item.params.json as Object;

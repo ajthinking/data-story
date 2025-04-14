@@ -1,6 +1,7 @@
 import { str } from '../Param';
 import { ItemWithParams } from '../ItemWithParams';
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const RemoveProperties: Computer = {
   name: 'RemoveProperties',
@@ -31,7 +32,7 @@ export const RemoveProperties: Computer = {
   ],
 
   async* run({ input, output, params }) {
-    const items = input.pull();
+    const items = input.pull(BatchLimit);
     const param = (params.remove_properties ?? []) as unknown as {
       property: string,
     }[];

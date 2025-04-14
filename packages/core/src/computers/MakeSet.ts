@@ -1,5 +1,6 @@
 import { str } from '../Param';
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const MakeSet: Computer = {
   name: 'MakeSet',
@@ -26,7 +27,7 @@ export const MakeSet: Computer = {
     const seen = new Set();
 
     while (true) {
-      const items = input.pull();
+      const items = input.pull(BatchLimit);
 
       for (let item of items) {
         const property = params.property as string;
