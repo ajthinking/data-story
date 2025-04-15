@@ -33,7 +33,8 @@
     "ci:e2e": "start-server-and-test 'turbo dev --parallel -- --port 3009' 3009 'cy:e2e' ",
     "core:test": "turbo test --filter=@data-story/core",
     "cy:e2e": "cypress run --e2e",
-    "cy:open": "cypress open"
+    "cy:open": "cypress open",
+    "fix-deps": "yarn constraints fix"
   },
   "release-it": {
     "increment": false,
@@ -63,6 +64,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^18.14.2",
     "@typescript-eslint/parser": "^6.9.0",
+    "@yarnpkg/types": "^4.0.1",
     "cypress": "^13.6.1",
     "eslint": "^8.52.0",
     "eslint-plugin-import": "^2.25.0",
