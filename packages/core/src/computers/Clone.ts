@@ -1,6 +1,7 @@
 import { num } from '../Param';
 import { Computer } from '../types/Computer';
 import { ItemValue } from '../types/ItemValue';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const Clone: Computer = {
   name: 'Clone',
@@ -31,7 +32,7 @@ export const Clone: Computer = {
 
   async *run({ input, output, params }) {
     while (true) {
-      const incoming = input.pull();
+      const incoming = input.pull(BatchLimit);
       output.pushTo('original', incoming);
 
       const count = Number(params.count);

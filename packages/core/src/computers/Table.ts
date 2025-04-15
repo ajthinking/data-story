@@ -1,5 +1,6 @@
 import { num, str, strList } from '../Param';
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const Table: Computer = {
   name: 'Table',
@@ -29,7 +30,7 @@ export const Table: Computer = {
 
   async* run({ input }) {
     while(true) {
-      input.pull()
+      input.pull(BatchLimit)
       yield;
     }
   },

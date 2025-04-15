@@ -2,6 +2,7 @@ import { jsFn } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { multiline } from '../utils/multiline';
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const Map: Computer = {
   name: 'Map',
@@ -28,10 +29,8 @@ export const Map: Computer = {
 
   async *run({ input, output, params }) {
     while(true) {
-      const incoming = input.pull()
-
+      const incoming = input.pull(BatchLimit)
       const replacers = incoming.map(item => item.params.mapper) as ItemValue[]
-
       output.push(replacers)
 
       yield;

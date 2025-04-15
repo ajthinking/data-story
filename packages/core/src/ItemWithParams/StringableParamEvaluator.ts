@@ -4,6 +4,7 @@ import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 import { ParamEvaluator } from './ParamEvaluator';
+import { createJSTransformExpression, createJSTransformFunction } from './JSTransform';
 
 export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
   type = 'StringableParam' as const;
@@ -92,15 +93,13 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
     }
 
     if (selectedEvaluation?.type === 'JS_FUNCTION') {
-      const fn = eval(transformedValue);
+      const fn = createJSTransformFunction(transformedValue);
       transformedValue = fn(itemValue);
     }
 
     if (selectedEvaluation?.type === 'JS_EXPRESSION') {
       try {
-        // Wrap with parentheses to ensure brackets are not interpreted as a block
-        const nonBlockExpression = `(${transformedValue})`;
-        transformedValue = eval(nonBlockExpression);
+        transformedValue = createJSTransformExpression(transformedValue);
       } catch(error) {
         console.log(`Failed to evaluate JS expression: ${transformedValue}`)
         throw error

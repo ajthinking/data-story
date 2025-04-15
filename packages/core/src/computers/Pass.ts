@@ -1,4 +1,5 @@
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const Pass: Computer = {
   name: 'Pass',
@@ -15,7 +16,7 @@ export const Pass: Computer = {
 
   async *run({ input, output }) {
     while(true) {
-      const incoming = input.pull()
+      const incoming = input.pull(BatchLimit)
       output.push(incoming)
 
       yield;

@@ -1,4 +1,5 @@
 import { Computer } from '../types/Computer';
+import { BatchLimit } from '../utils/batchLimit';
 
 export const Log: Computer = {
   name: 'Log',
@@ -13,7 +14,7 @@ export const Log: Computer = {
   async *run({ input, output }) {
     while(true) {
       // log the *item* - not ItemWithParams
-      const incoming = input.pull().map(i => i.value)
+      const incoming = input.pull(BatchLimit).map(i => i.value)
       console.log(JSON.stringify(incoming, null, 2))
 
       yield;
