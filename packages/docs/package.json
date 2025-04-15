@@ -25,7 +25,7 @@
     "@data-story/ui": "workspace:*",
     "ahooks": "^3.8.1",
     "chart.js": "^4.4.2",
-    "next": "^13.0.6",
+    "next": "^14.2.28",
     "nextra": "latest",
     "nextra-theme-docs": "latest",
     "react": "^18.2.0",
