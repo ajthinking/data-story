@@ -52,7 +52,7 @@
     "@tanstack/react-virtual": "^3.5.0",
     "@uiw/react-codemirror": "patch:@uiw/react-codemirror@npm%3A4.23.10#~/.yarn/patches/@uiw-react-codemirror-npm-4.23.10-2db625ca86.patch",
     "@xyflow/react": "12.5.5",
-    "ahooks": "^3.7.10",
+    "ahooks": "^3.8.1",
     "allotment": "^1.20.2",
     "clsx": "^2.0.0",
     "markdown-it": "^13.0.2",

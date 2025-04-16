@@ -28,9 +28,9 @@
     "next": "^14.2.28",
     "nextra": "^3.3.1",
     "nextra-theme-docs": "^3.3.1",
-    "react": "^18.2.0",
+    "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^18.3.1",
     "react-toastify": "^10.0.4"
   },
   "devDependencies": {

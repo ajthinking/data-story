@@ -34,7 +34,7 @@
     "core:test": "turbo test --filter=@data-story/core",
     "cy:e2e": "cypress run --e2e",
     "cy:open": "cypress open",
-    "fix-deps": "yarn constraints fix"
+    "constraints": "yarn constraints"
   },
   "release-it": {
     "increment": false,
