@@ -63,8 +63,5 @@
   "devDependencies": {
     "vite": "^5.0.10",
     "vite-plugin-externalize-deps": "^0.8.0"
-  },
-  "peerDependencies": {
-    "vitest": "^1.6.0"
   }
 }

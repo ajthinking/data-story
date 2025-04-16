@@ -140,9 +140,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
-    "autoprefixer": "^10.4.20",
     "eslint": "^9.9.1",
-    "postcss": "^8.4.47",
     "vite": "^5.4.7"
   },
   "dependencies": {

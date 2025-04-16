@@ -20,7 +20,7 @@
   "scripts": {
     "analyze": "yarn run -T webpack --profile --json > stats.json && yarn run -T webpack-bundle-analyzer stats.json",
     "build": "echo _____RUNNING_UI_BUILD_____ && yarn run -T webpack && yarn run build:css",
-    "build:css": "yarn run -T postcss ./src/styles/globals.css -o ./dist/data-story.css",
+    "build:css": "postcss ./src/styles/globals.css -o ./dist/data-story.css",
     "watch:css": "yarn run build:css --watch",
     "watch:webpack": "yarn run -T webpack --watch",
     "release": "yarn run -T release-it",
@@ -71,6 +71,7 @@
     "autoprefixer": "^10.4.13",
     "css-loader": "^6.8.1",
     "postcss": "^8.4.21",
+    "postcss-cli": "^11.0.0",
     "postcss-loader": "^7.3.3",
     "style-loader": "^3.3.3",
     "tailwindcss": "^3.2.7"
