@@ -26,20 +26,15 @@
     "ahooks": "^3.8.1",
     "chart.js": "^4.4.2",
     "next": "^14.2.28",
-    "nextra": "latest",
-    "nextra-theme-docs": "latest",
+    "nextra": "^3.3.1",
+    "nextra-theme-docs": "^3.3.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-toastify": "^10.0.4"
   },
   "devDependencies": {
-    "@types/node": "*",
-    "@types/react": "^18",
-    "autoprefixer": "^10.4.16",
     "cross-env": "^7.0.3",
-    "postcss": "^8.5.3",
-    "source-map-loader": "^4.0.1",
-    "tailwindcss": "^3.3.3"
+    "source-map-loader": "^4.0.1"
   }
 }

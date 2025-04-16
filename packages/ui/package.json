@@ -65,16 +65,10 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "@types/markdown-it": "^13.0.6",
-    "@types/react": "^18",
-    "@types/react-dom": "*",
-    "@types/ws": "^8.5.4",
-    "autoprefixer": "^10.4.13",
     "css-loader": "^6.8.1",
-    "postcss": "^8.4.21",
     "postcss-cli": "^11.0.0",
     "postcss-loader": "^7.3.3",
-    "style-loader": "^3.3.3",
-    "tailwindcss": "^3.2.7"
+    "style-loader": "^3.3.3"
   },
   "peerDependencies": {
     "react": "^18.2.0",

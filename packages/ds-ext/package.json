@@ -132,8 +132,6 @@
     }
   },
   "devDependencies": {
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
     "@types/vscode": "^1.80.0",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@vitejs/plugin-react": "^4.3.1",
