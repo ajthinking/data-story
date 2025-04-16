@@ -109,9 +109,9 @@
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
-    "build": "yarn run -T webpack && vite build",
+    "build": "yarn run -T webpack && yarn run -T vite build",
     "watch:extension": "yarn run -T webpack --watch",
-    "watch:app": "vite build -w",
+    "watch:app": " yarn run -T vite build -w",
     "package": "yarn run -T webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
@@ -132,16 +132,13 @@
     }
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.7",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/vscode": "^1.80.0",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1",
-    "eslint": "^9.9.1",
-    "vite": "^5.4.7"
+    "@vscode/test-electron": "^2.4.1"
   },
   "dependencies": {
     "@data-story/core": "workspace:*",

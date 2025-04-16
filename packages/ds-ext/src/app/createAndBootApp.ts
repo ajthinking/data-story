@@ -1,5 +1,5 @@
 import { Application, coreNodeProvider, remoteNodeProvider } from '@data-story/core';
-import { nodeJsProvider } from '../../../nodejs/dist';
+import { nodeJsProvider } from '@data-story/nodejs';
 
 export const createAndBootApp = async () => {
   const app = new Application();
