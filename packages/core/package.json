@@ -34,13 +34,13 @@
     "src/**/*"
   ],
   "scripts": {
-    "build-vite": "vite build",
+    "build-vite": "yarn run -T vite build",
     "tinker": "npx ts-node ./src/tinker.ts",
     "demo": "npx ts-node ./src/V2/old/demo.ts",
     "test": "yarn run -T vitest run",
     "watch:test": "yarn run -T vitest",
     "build": "yarn build:esm && yarn build:cjs && yarn build-vite",
-    "build:esm": "vite build --config vite.config.esm.ts",
+    "build:esm": "yarn run -T vite build --config vite.config.esm.ts",
     "build:cjs": "tsc -p tsconfig.build.json",
     "watch": "yarn build:esm --watch & yarn build:cjs --watch",
     "release": "yarn run -T release-it"
@@ -56,15 +56,11 @@
     }
   },
   "dependencies": {
-    "nanoid": "3",
+    "nanoid": "^3.3.8",
     "rxjs": "^7.8.1",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "vite": "^5.0.10",
     "vite-plugin-externalize-deps": "^0.8.0"
-  },
-  "peerDependencies": {
-    "vitest": "^1.6.0"
   }
 }

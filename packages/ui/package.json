@@ -20,7 +20,7 @@
   "scripts": {
     "analyze": "yarn run -T webpack --profile --json > stats.json && yarn run -T webpack-bundle-analyzer stats.json",
     "build": "echo _____RUNNING_UI_BUILD_____ && yarn run -T webpack && yarn run build:css",
-    "build:css": "yarn run -T postcss ./src/styles/globals.css -o ./dist/data-story.css",
+    "build:css": "postcss ./src/styles/globals.css -o ./dist/data-story.css",
     "watch:css": "yarn run build:css --watch",
     "watch:webpack": "yarn run -T webpack --watch",
     "release": "yarn run -T release-it",
@@ -52,7 +52,7 @@
     "@tanstack/react-virtual": "^3.5.0",
     "@uiw/react-codemirror": "patch:@uiw/react-codemirror@npm%3A4.23.10#~/.yarn/patches/@uiw-react-codemirror-npm-4.23.10-2db625ca86.patch",
     "@xyflow/react": "12.5.5",
-    "ahooks": "^3.7.10",
+    "ahooks": "^3.8.1",
     "allotment": "^1.20.2",
     "clsx": "^2.0.0",
     "markdown-it": "^13.0.2",
@@ -65,15 +65,10 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "@types/markdown-it": "^13.0.6",
-    "@types/react": "^18",
-    "@types/react-dom": "*",
-    "@types/ws": "^8.5.4",
-    "autoprefixer": "^10.4.13",
     "css-loader": "^6.8.1",
-    "postcss": "^8.4.21",
+    "postcss-cli": "^11.0.0",
     "postcss-loader": "^7.3.3",
-    "style-loader": "^3.3.3",
-    "tailwindcss": "^3.2.7"
+    "style-loader": "^3.3.3"
   },
   "peerDependencies": {
     "react": "^18.2.0",
