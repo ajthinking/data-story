@@ -1,6 +1,8 @@
 import { str } from '../Param';
 import { Computer } from '../types/Computer';
 import { ItemValue } from '../types/ItemValue';
+import { buildNestedObject } from '../utils/buildNestedObject';
+import { merge } from '../utils/merge';
 
 export const Merge: Computer = {
   name: 'Merge',
@@ -38,6 +40,12 @@ export const Merge: Computer = {
       help: 'The supplier key to merge on',
       value: 'id',
     }),
+    str({
+      name: 'merge_key',
+      label: 'Merge Key',
+      help: 'Optional key to merge into',
+      value: '',
+    }),
   ],
 
   canRun({ input, isAvailable }) {
@@ -66,10 +74,15 @@ export const Merge: Computer = {
       })
 
       if(matchingSupplier) {
-        merged.push({
-          ...requestor.value,
-          ...matchingSupplier.value,
-        })
+        const mergableSupplierValue = buildNestedObject(
+          params.merge_key as string,
+          matchingSupplier.value,
+        )
+
+        merged.push(merge(
+          requestor.value,
+          mergableSupplierValue,
+        ))
       } else {
         notMerged.push(requestor)
       }
