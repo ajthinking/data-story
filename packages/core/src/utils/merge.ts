@@ -2,13 +2,18 @@ type Obj = {
   [key: string]: any
 }
 
-export const merge = (first: Obj, second: Obj) => {
-  // Iterate through `source` properties and if an `Object` set property to merge of `target` and `source` properties
+export const merge = (first: Obj = {}, second: Obj = {}): Obj => {
+  const result: Obj = { ...first };
   for (const key of Object.keys(second)) {
-    if (second[key] instanceof Object)
-      Object.assign(second[key], merge(first[key], second[key]));
+    if (
+      second[key] &&
+      typeof second[key] === 'object' &&
+      !Array.isArray(second[key])
+    ) {
+      result[key] = merge(first[key] || {}, second[key]);
+    } else {
+      result[key] = second[key];
+    }
   }
-  // Join `target` and modified `source`
-  Object.assign(first || {}, second);
-  return first;
-}
+  return result;
+};
