@@ -13,3 +13,24 @@ it('merges nested objects', () => {
 
   expect(merge(first, second)).toEqual({ a: { b: 'new', c: 2 } });
 });
+
+it('merges with deep differences', () => {
+  const first = { id: 1 }
+  const second = {
+    id: 2,
+    associations: {
+      person: {
+        name: 'John',
+      },
+    },
+  }
+
+  expect(merge(first, second)).toEqual({
+    id: 2,
+    associations: {
+      person: {
+        name: 'John',
+      },
+    },
+  })
+})

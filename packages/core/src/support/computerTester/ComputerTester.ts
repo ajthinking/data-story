@@ -89,8 +89,10 @@ export class ComputerTester {
       output: this.outputDevice,
       params: new Proxy({}, {
         get: (_, key: string) => {
-          const param = this.computer.params.find(p => p.name === key);
+          const params = this.makeParams();
+          const param = params.find(p => p.name === key) as Param;
           if (!param) throw new Error(`Param "${key}" does not exist`);
+
           try {
             const emptyItem = {}
             const evaluator = new ParamEvaluator();
@@ -266,27 +268,27 @@ export class ComputerTester {
   protected makeParams(): Param[] {
     const params = this.computer.params || []
 
-    for(let param of params) {
+    const mergedParams = params.map(param => {
       const explicitParam = this.explicitParams.find(p => p.name === param.name)
-
       if(explicitParam) {
-        param = merge(param, explicitParam) as Param
-        continue;
+        return merge(param, explicitParam) as Param
       }
 
       const hasExplicitValue = this.explicitParamValues.hasOwnProperty(param.name)
-
       if(hasExplicitValue) {
-        param.input = param.type === 'StringableParam' ?  {
+        const mergedParam = { ...param };
+        mergedParam.input = param.type === 'StringableParam' ?  {
           ...param.input,
           rawValue: this.explicitParamValues[param.name],
         } : this.explicitParamValues[param.name];
 
-        continue
+        return mergedParam;
       }
-    }
 
-    return params
+      return param;
+    })
+
+    return mergedParams;
   }
 
   protected makeExecutionMemory() {

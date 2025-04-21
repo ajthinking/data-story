@@ -7,10 +7,12 @@ export const createJSTransformFunction = (code: string) => {
   functionCache.set(code, new WeakRef(fn));
   return fn;
 };
+
 const expressionCache = new Map<string, WeakRef<Function>>();
 export const createJSTransformExpression = (code: string) => {
   const cachedFn = expressionCache.get(code)?.deref();
-  if (cachedFn) return cachedFn;
+  if (cachedFn) return cachedFn();
+
   const fn = new Function(`return ${code}`);
   expressionCache.set(code, new WeakRef(fn));
   return fn();
