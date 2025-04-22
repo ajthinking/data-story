@@ -56,7 +56,6 @@ export function TableCell(props: { tableRef: React.RefObject<HTMLTableElement | 
     role,
     dismiss,
   ]);
-  console.log(floatingStyles, 'floatingStyles');
 
   const Tooltip = () => {
     return (
@@ -68,9 +67,13 @@ export function TableCell(props: { tableRef: React.RefObject<HTMLTableElement | 
           maxHeight: `${TOOLTIPT_MAX_HEIGHT}px`,
         }}
         {...getFloatingProps()}
-        className="select-text overflow-auto whitespace-pre-wrap break-words z-50 bg-white shadow-lg rounded-md "
+        className="select-text overflow-auto whitespace-pre-wrap break-words z-50 bg-white shadow-lg rounded-md"
+        onWheel={(e) => {
+          e.stopPropagation();
+        }}
       >
         {formatTooltipContent(content) as string}
+
       </pre>
     );
   }
