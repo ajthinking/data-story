@@ -13,6 +13,7 @@ import {
 } from '@floating-ui/react';
 
 export const FIXED_HEIGHT = 24;
+const TOOLTIPT_MAX_HEIGHT = FIXED_HEIGHT * 11;
 
 const formatCellContent = (content: unknown) => {
   let result = formatTooltipContent(content) as string;
@@ -61,11 +62,18 @@ export function TableCell(props: { tableRef: React.RefObject<HTMLTableElement | 
       <pre
         data-cy={'data-story-table-tooltip'}
         ref={refs.setFloating}
-        style={floatingStyles}
+        style={{
+          ...floatingStyles,
+          maxHeight: `${TOOLTIPT_MAX_HEIGHT}px`,
+        }}
         {...getFloatingProps()}
-        className="select-text overflow-auto whitespace-pre-wrap break-words z-50 bg-white shadow-lg rounded-md "
+        className="select-text overflow-auto whitespace-pre-wrap break-words z-50 bg-white shadow-lg rounded-md"
+        onWheel={(e) => {
+          e.stopPropagation();
+        }}
       >
         {formatTooltipContent(content) as string}
+
       </pre>
     );
   }
