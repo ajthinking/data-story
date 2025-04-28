@@ -50,7 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     vscode.commands.registerCommand('ds-ext.createDemos', async () => {
       await createDemosDirectory();
-    })
+    }),
   );
 
   // --- Your existing listener registration logic ---
@@ -111,7 +111,7 @@ export function activate(context: vscode.ExtensionContext) {
     }),
     vscode.commands.registerCommand('datastory.restartServer', () => {
       serverLauncher?.restartServer();
-    })
+    }),
     // Add command IDs to package.json -> contributes.commands
     // e.g., "datastory.startServer", "DataStory: Start Server"
   );

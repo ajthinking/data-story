@@ -9,7 +9,7 @@ enum ServerStatus {
   Starting = 'Starting',
   Running = 'Running',
   Stopping = 'Stopping',
-  Error = 'Error',
+  Error = 'Error'
 }
 
 export class ServerLauncher implements vscode.Disposable {
@@ -17,16 +17,16 @@ export class ServerLauncher implements vscode.Disposable {
   private status: ServerStatus = ServerStatus.Stopped;
   private statusBarItem: vscode.StatusBarItem;
   private outputChannel: vscode.OutputChannel;
-  private serverScriptPath: string;
-  private port = 3007; // Example: Default port, make this configurable later
+  private nodejsPackagePath: string;
+  private port = 3300; // Example: Default port, make this configurable later
   private workspaceDir: string | undefined;
   private isDisposed = false;
   private readonly extensionContext: vscode.ExtensionContext;
 
   constructor(context: vscode.ExtensionContext) {
     this.extensionContext = context;
-    // Resolve the path to the bundled server script
-    this.serverScriptPath = path.join(context.extensionPath, 'server', 'server_bundle.js'); // Adjust this path if needed
+    // Resolve the path to the nodejs package
+    this.nodejsPackagePath = path.join(context.extensionPath, '..', 'nodejs'); // Path to the nodejs package in the monorepo
 
     // Create VS Code UI elements
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -58,33 +58,52 @@ export class ServerLauncher implements vscode.Disposable {
     }
 
     this.updateStatus(ServerStatus.Starting);
-    this.outputChannel.appendLine(`[Launcher] Starting server script: ${this.serverScriptPath}`);
+    this.outputChannel.appendLine(`[Launcher] Starting server using watch:server script from: ${this.nodejsPackagePath}`);
     this.outputChannel.appendLine(`[Launcher] Config: Port=${this.port}, Workspace=${this.workspaceDir}`);
     vscode.window.showInformationMessage('Starting DataStory server...');
 
     try {
-      // Use process.execPath to ensure the Node.js executable running the extension
-      // is also used to run the server script.
+      // Use npm or yarn to run the watch:server script
+      const npmCmd = os.platform() === 'win32' ? 'npm.cmd' : 'npm';
+      // We need to modify the test-server.ts file to use our port before running the watch:server script
+      const testServerPath = path.join(this.nodejsPackagePath, 'test-server.ts');
+
+      // First, let's check if the file exists
+      try {
+        const fs = require('fs');
+        const testServerContent = fs.readFileSync(testServerPath, 'utf8');
+
+        // Replace the port in the test-server.ts file
+        const updatedContent = testServerContent.replace(
+          /port: \d+,/,
+          `port: ${this.port},`,
+        );
+
+        fs.writeFileSync(testServerPath, updatedContent, 'utf8');
+        this.outputChannel.appendLine(`[Launcher] Updated test-server.ts to use port ${this.port}`);
+      } catch (err: any) {
+        this.outputChannel.appendLine(`[Launcher] Error updating test-server.ts: ${err.message}`);
+      }
+
       this.childProcess = cp.spawn(
-        process.execPath, // Path to Node.js executable
+        npmCmd,
         [
-          this.serverScriptPath,
-          '--port', this.port.toString(),
-          '--workspace', this.workspaceDir,
+          'run',
+          'watch:server',
         ],
         {
           stdio: ['pipe', 'pipe', 'pipe'], // Pipe stdin, stdout, stderr
           env: { ...process.env }, // Inherit parent environment
-          // cwd: this.workspaceDir, // Optional: Set CWD if server relies on it
-          // shell: os.platform() === 'win32' // May help on Windows sometimes, but avoid if possible
-        }
+          cwd: this.nodejsPackagePath, // Set CWD to the nodejs package
+          shell: true, // Use shell for npm commands
+        },
       );
 
       this.childProcess.stdout?.on('data', (data) => {
         const message = data.toString();
         this.outputChannel.append(message); // Log stdout
         // Simple check for server readiness (customize this string based on your server's output)
-        if (message.includes(`Server listening on port ${this.port}`) && this.status === ServerStatus.Starting) {
+        if (message.includes(`Server started on port ${this.port}`) && this.status === ServerStatus.Starting) {
           this.updateStatus(ServerStatus.Running);
           vscode.window.showInformationMessage(`DataStory server running on port ${this.port}.`);
         }
