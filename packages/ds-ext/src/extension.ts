@@ -1,37 +1,59 @@
 import * as vscode from 'vscode';
-import { DiagramEditorProvider } from './DiagramEditorProvider';
-import { createDemosDirectory } from './commands/createDemosDirectory';
 import path from 'path';
 import * as fs from 'fs';
+import { TextDecoder } from 'util'; // Node.js built-in
+
+// --- Your existing imports ---
+import { DiagramEditorProvider } from './DiagramEditorProvider';
+import { createDemosDirectory } from './commands/createDemosDirectory';
 import { JsonReadonlyProvider } from './JsonReadonlyProvider';
-import { DiagramDocument } from './DiagramDocument';
+import { DiagramDocument } from './DiagramDocument'; // Assuming this is used by DiagramEditorProvider
 import { loadWorkspaceEnv } from './utils/loadWorkspaceEnv';
 
+// --- New Import ---
+import { ServerLauncher } from './serverLauncher'; // Adjust path if needed
+
+// --- Global Variables ---
 let diagramEditorProvider: DiagramEditorProvider;
 let jsonReadonlyProvider: JsonReadonlyProvider | undefined;
+let serverLauncher: ServerLauncher | undefined; // <-- Add ServerLauncher instance
 
 function createReadonlyUri(args: vscode.Uri): vscode.Uri {
   const fileName = path.basename(args.path, '.json');
   const readOnlyUri = vscode.Uri.parse(
     `json-readonly:Preview_${fileName}.json`,
   );
-
   return readOnlyUri;
 }
 
+// --- Activation Function ---
 export function activate(context: vscode.ExtensionContext) {
-  loadWorkspaceEnv();
+  loadWorkspaceEnv(); // Load environment variables first
 
-  let disposable = vscode.commands.registerCommand('ds-ext.createDemos', async () => {
-    await createDemosDirectory();
-  });
+  // --- 1. Initialize Server Launcher ---
+  // It needs the context for paths and subscriptions
+  serverLauncher = new ServerLauncher(context);
+  // Note: The ServerLauncher constructor should add itself to context.subscriptions
 
-  diagramEditorProvider = new DiagramEditorProvider(context);
+  // --- 2. Initialize Your Providers (Pass Launcher/Port if needed) ---
+  // Modify DiagramEditorProvider to accept ServerLauncher if it needs the port
+  // For now, assuming DiagramEditorProvider knows the default port (e.g., 3001)
+  // or can get it from configuration later. If it needs the dynamic port,
+  // you'll need to pass `serverLauncher` or `serverLauncher.getPort()` to it.
+  diagramEditorProvider = new DiagramEditorProvider(context /*, serverLauncher */); // Pass if needed
   jsonReadonlyProvider = new JsonReadonlyProvider();
   context.subscriptions.push(
     vscode.workspace.registerTextDocumentContentProvider('json-readonly', jsonReadonlyProvider),
   );
 
+  // --- 3. Register Existing Commands ---
+  context.subscriptions.push(
+    vscode.commands.registerCommand('ds-ext.createDemos', async () => {
+      await createDemosDirectory();
+    })
+  );
+
+  // --- Your existing listener registration logic ---
   const registerDiagramChangeAndCloseListeners = (diagramDocument: DiagramDocument, readOnlyUri: vscode.Uri): void => {
     const changeSubscription = diagramDocument.onDidChange(async(diagramInfo) => {
       const diagramJson = JSON.parse(new TextDecoder().decode(diagramInfo.document.data));
@@ -47,10 +69,10 @@ export function activate(context: vscode.ExtensionContext) {
     const closeSubscription = vscode.workspace.onDidCloseTextDocument(closedDoc => {
       if (closedDoc.uri.toString() === readOnlyUri.toString()) {
         changeSubscription.dispose();
-        closeSubscription .dispose();
+        closeSubscription.dispose();
       }
     });
-    context.subscriptions.push(changeSubscription, closeSubscription );
+    context.subscriptions.push(changeSubscription, closeSubscription);
   };
 
   vscode.commands.registerCommand('ds-ext.showDiagramPreview', async (args: vscode.Uri) => {
@@ -79,7 +101,23 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
 
-  const outputChannel = vscode.window.createOutputChannel('DS-Ext');
+  // --- 4. Register NEW Server Control Commands ---
+  context.subscriptions.push(
+    vscode.commands.registerCommand('datastory.startServer', () => {
+      serverLauncher?.startServer();
+    }),
+    vscode.commands.registerCommand('datastory.stopServer', () => {
+      serverLauncher?.stopServer();
+    }),
+    vscode.commands.registerCommand('datastory.restartServer', () => {
+      serverLauncher?.restartServer();
+    })
+    // Add command IDs to package.json -> contributes.commands
+    // e.g., "datastory.startServer", "DataStory: Start Server"
+  );
+
+  // --- Existing Output Channel & Custom Editor Registration ---
+  const outputChannel = vscode.window.createOutputChannel('DS-Ext Server'); // Maybe rename for clarity
   outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');
   outputChannel.appendLine(`ds-ext is installed at ${context.extensionPath}`);
   // outputChannel.show();
@@ -122,9 +160,32 @@ export function activate(context: vscode.ExtensionContext) {
       }
     });
   }
+
+  // --- 5. Auto-start the server (Optional) ---
+  // Start the server automatically when the extension activates.
+  // Add error handling if startServer can reject promises
+  serverLauncher?.startServer().catch(err => {
+    console.error('Failed to auto-start server:', err);
+    vscode.window.showErrorMessage('Failed to automatically start the DataStory server.');
+  });
+
+  console.log('ds-ext activation complete.');
 }
 
-export function deactivate(context: any) {
+// --- Deactivation Function ---
+export function deactivate() {
+  console.log('Deactivating "ds-ext" extension.');
+  // Disposal of serverLauncher, diagramEditorProvider, jsonReadonlyProvider,
+  // commands, listeners, etc., should be handled automatically because they
+  // (or the objects that own them) were pushed onto context.subscriptions.
+  // The ServerLauncher's dispose method will handle stopping the server process.
+
+  // Clear global references if needed (optional, helps GC)
+  serverLauncher = undefined;
   diagramEditorProvider.dispose();
   jsonReadonlyProvider?.dispose();
+  // diagramEditorProvider = undefined; // If it's not managed by subscriptions directly
+  // jsonReadonlyProvider = undefined; // If it's not managed by subscriptions directly
+
+  console.log('ds-ext deactivation finished.');
 }

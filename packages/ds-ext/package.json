@@ -13,7 +13,11 @@
   ],
   "activationEvents": [
     "onCommand:ds-ext.showReactApp",
-    "onCommand:ds-ext.openAsJson"
+    "onCommand:ds-ext.openAsJson",
+    "onCommand:datastory.showUI",
+    "onCommand:datastory.startServer",
+    "onCommand:datastory.stopServer",
+    "onCommand:datastory.restartServer"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -31,6 +35,22 @@
           "light": "./themes/preview-dark.svg",
           "dark": "./themes/preview-white.svg"
         }
+      },
+      {
+        "command": "datastory.showUI",
+        "title": "DataStory: Show UI"
+      },
+      {
+        "command": "datastory.startServer",
+        "title": "DataStory: Start Server"
+      },
+      {
+        "command": "datastory.stopServer",
+        "title": "DataStory: Stop Server"
+      },
+      {
+        "command": "datastory.restartServer",
+        "title": "DataStory: Restart Server"
       }
     ],
     "menus": {
