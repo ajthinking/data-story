@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import path from 'path';
 import * as fs from 'fs';
 import { TextDecoder } from 'util'; // Node.js built-in
-
 // --- Your existing imports ---
 import { DiagramEditorProvider } from './DiagramEditorProvider';
 import { createDemosDirectory } from './commands/createDemosDirectory';
@@ -52,7 +51,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // --- Your existing listener registration logic ---
   const registerDiagramChangeAndCloseListeners = (diagramDocument: DiagramDocument, readOnlyUri: vscode.Uri): void => {
-    const changeSubscription = diagramDocument.onDidChange(async(diagramInfo) => {
+    const changeSubscription = diagramDocument.onDidChange(async (diagramInfo) => {
       const diagramJson = JSON.parse(new TextDecoder().decode(diagramInfo.document.data));
 
       // update the content of the read-only document
@@ -131,6 +130,10 @@ export function activate(context: vscode.ExtensionContext) {
         supportsMultipleEditorsPerDocument: true,
       },
     ),
+  );
+
+  context.subscriptions.push(
+    serverLauncher,
   );
 
   const installScriptsPath = path.join(context.extensionPath, 'install-scripts');

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
-import * as os from 'os';
+import terminate from 'terminate';
 
 // Define possible server states
 enum ServerStatus {
@@ -29,6 +29,7 @@ export class ServerLauncher implements vscode.Disposable {
 
   constructor(context: vscode.ExtensionContext) {
     this.extensionContext = context;
+    // todo: replace with published nodejs package
     // Resolve the path to the nodejs package
     this.nodejsPackagePath = path.join(context.extensionPath, '..', 'nodejs'); // Path to the nodejs package in the monorepo
 
@@ -62,44 +63,25 @@ export class ServerLauncher implements vscode.Disposable {
     }
 
     this.updateStatus(ServerStatus.Starting);
-    this.outputChannel.appendLine(`[Launcher] Starting server using watch:server script from: ${this.nodejsPackagePath}`);
+    this.outputChannel.appendLine(`[Launcher] Starting server from: ${this.nodejsPackagePath}`);
     this.outputChannel.appendLine(`[Launcher] Config: Port=${this.port}, Workspace=${this.workspaceDir}`);
     vscode.window.showInformationMessage('Starting DataStory server...');
 
     try {
-      // Use npm or yarn to run the watch:server script
-      const npmCmd = os.platform() === 'win32' ? 'npm.cmd' : 'npm';
+      const nodeCmd = 'node';
       // We need to modify the test-server.ts file to use our port before running the watch:server script
-      const testServerPath = path.join(this.nodejsPackagePath, 'test-server.ts');
+      const serverEntry = path.join(this.nodejsPackagePath, 'dist', 'ds-server.js');
 
       // First, let's check if the file exists
-      try {
-        const fs = require('fs');
-        const testServerContent = fs.readFileSync(testServerPath, 'utf8');
-
-        // Replace the port in the test-server.ts file
-        const updatedContent = testServerContent.replace(
-          /port: \d+,/,
-          `port: ${this.port},`,
-        );
-
-        fs.writeFileSync(testServerPath, updatedContent, 'utf8');
-        this.outputChannel.appendLine(`[Launcher] Updated test-server.ts to use port ${this.port}`);
-      } catch (err: any) {
-        this.outputChannel.appendLine(`[Launcher] Error updating test-server.ts: ${err.message}`);
-      }
-
       this.childProcess = cp.spawn(
-        npmCmd,
+        nodeCmd,
         [
-          'run',
-          'watch:server',
+          serverEntry, '-p', this.port.toString(), '-w', this.workspaceDir,
         ],
         {
-          stdio: ['pipe', 'pipe', 'pipe'], // Pipe stdin, stdout, stderr
+          stdio: [ 'pipe', 'pipe', 'pipe' ], // Pipe stdin, stdout, stderr
+          shell: false,
           env: { ...process.env }, // Inherit parent environment
-          cwd: this.nodejsPackagePath, // Set CWD to the nodejs package
-          shell: true, // Use shell for npm commands
         },
       );
 
@@ -152,22 +134,8 @@ export class ServerLauncher implements vscode.Disposable {
     vscode.window.showInformationMessage('Stopping DataStory server...');
     this.outputChannel.appendLine('[Launcher] Attempting to stop server process (SIGTERM)...');
 
-    // Send SIGTERM for graceful shutdown. The 'close' event will handle the final state update.
-    const killed = this.childProcess.kill('SIGTERM');
-    if (!killed) {
-      this.outputChannel.appendLine('[Launcher] Failed to send SIGTERM (process already exited?). Forcing cleanup.');
-      // If kill returns false, the process might already be dead or unkillable.
-      // Force cleanup state, the 'close' event might still fire.
-      this.handleServerExit(null, 'killfailed');
-    }
-
-    // Optional: Add a timeout to force kill with SIGKILL if SIGTERM doesn't work
-    // setTimeout(() => {
-    //     if (this.childProcess) {
-    //         this.outputChannel.appendLine('[Launcher] Server did not stop gracefully, sending SIGKILL.');
-    //         this.childProcess.kill('SIGKILL');
-    //     }
-    // }, 5000); // 5 second timeout
+    // Use the terminate package in case of https://github.com/volta-cli/volta/issues/36
+    terminate(this.childProcess.pid!);
   }
 
   public async restartServer(): Promise<void> {
@@ -203,16 +171,14 @@ export class ServerLauncher implements vscode.Disposable {
       } else if (signal === 'error' || signal === 'catch' || signal === 'killfailed') {
         // Handle specific error signals from our logic
         this.updateStatus(ServerStatus.Error, `Failed: ${signal}`);
-      }
-      else {
+      } else {
         // Normal exit (code 0 or null with SIGTERM/no signal)
         vscode.window.showInformationMessage('DataStory server stopped.');
         this.updateStatus(ServerStatus.Stopped);
       }
     } else if (this.isDisposed) {
       this.updateStatus(ServerStatus.Stopped, 'Disposed'); // Ensure final state is Stopped on dispose
-    }
-    else {
+    } else {
       // If status was Stopping, transition to Stopped
       this.updateStatus(ServerStatus.Stopped);
     }
@@ -227,7 +193,6 @@ export class ServerLauncher implements vscode.Disposable {
   private updateStatus(newStatus: ServerStatus, details?: string): void {
     this.status = newStatus;
     let statusBarText = '';
-    let statusBarIcon = ''; // Use VS Code $(icon-name) syntax
     let statusBarCommand: string | undefined;
     let statusBarTooltip = `DataStory Server: ${newStatus}`;
     if (details) {
@@ -236,33 +201,28 @@ export class ServerLauncher implements vscode.Disposable {
 
     switch (newStatus) {
       case ServerStatus.Stopped:
-        statusBarIcon = 'debug-stop';
         statusBarText = 'Stopped';
         statusBarCommand = 'datastory.startServer'; // Command to start
         break;
       case ServerStatus.Starting:
-        statusBarIcon = 'sync~spin'; // Animated icon
         statusBarText = 'Starting';
         statusBarCommand = undefined; // No action while starting
         break;
       case ServerStatus.Running:
-        statusBarIcon = 'debug-alt';
         statusBarText = 'Running';
         statusBarCommand = 'datastory.restartServer'; // Command to restart
         break;
       case ServerStatus.Stopping:
-        statusBarIcon = 'sync~spin';
         statusBarText = 'Stopping';
         statusBarCommand = undefined;
         break;
       case ServerStatus.Error:
-        statusBarIcon = 'error';
         statusBarText = 'Error';
         statusBarCommand = 'datastory.startServer'; // Command to try starting again
         break;
     }
 
-    this.statusBarItem.text = `$( ${statusBarIcon} ) DataStory: ${statusBarText}`;
+    this.statusBarItem.text = `DataStory: ${statusBarText}`;
     this.statusBarItem.command = statusBarCommand;
     this.statusBarItem.tooltip = statusBarTooltip;
     this.outputChannel.appendLine(`[Launcher] Status changed to: ${newStatus}${details ? ' (' + details + ')' : ''}`);
@@ -292,7 +252,7 @@ export class ServerLauncher implements vscode.Disposable {
       // Send document data to the Node.js server
       await this.sendToServer('registerDocument', {
         uri: uriString,
-        data: documentData
+        data: documentData,
       });
       this.outputChannel.appendLine(`[Launcher] Document registered: ${uriString}`);
       return true;
@@ -315,7 +275,7 @@ export class ServerLauncher implements vscode.Disposable {
       // Send updated document data to the Node.js server
       await this.sendToServer('updateDocument', {
         uri: uriString,
-        data: documentData
+        data: documentData,
       });
       this.outputChannel.appendLine(`[Launcher] Document updated: ${uriString}`);
       return true;
@@ -337,7 +297,7 @@ export class ServerLauncher implements vscode.Disposable {
       const axios = require('axios');
       this.httpClient = axios.create({
         baseURL: `http://localhost:${this.port}`,
-        timeout: 5000
+        timeout: 5000,
       });
     }
 
@@ -359,7 +319,6 @@ export class ServerLauncher implements vscode.Disposable {
     // Ensure child process reference is cleared if stopServer is async or fails
     if (this.childProcess) {
       this.outputChannel.appendLine('[Launcher] Forcing kill during disposal.');
-      this.childProcess.kill('SIGKILL'); // Force kill on dispose
       this.childProcess = undefined;
     }
     this.updateStatus(ServerStatus.Stopped, 'Disposed'); // Final status update
