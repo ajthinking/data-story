@@ -35,12 +35,9 @@ export function activate(context: vscode.ExtensionContext) {
   serverLauncher = new ServerLauncher(context);
   // Note: The ServerLauncher constructor should add itself to context.subscriptions
 
-  // --- 2. Initialize Your Providers (Pass Launcher/Port if needed) ---
-  // Modify DiagramEditorProvider to accept ServerLauncher if it needs the port
-  // For now, assuming DiagramEditorProvider knows the default port (e.g., 3001)
-  // or can get it from configuration later. If it needs the dynamic port,
-  // you'll need to pass `serverLauncher` or `serverLauncher.getPort()` to it.
-  diagramEditorProvider = new DiagramEditorProvider(context /*, serverLauncher */); // Pass if needed
+  // --- 2. Initialize Your Providers (Pass ServerLauncher to DiagramEditorProvider) ---
+  // Pass the ServerLauncher instance to DiagramEditorProvider so it can register documents with the Node.js server
+  diagramEditorProvider = new DiagramEditorProvider(context, serverLauncher);
   jsonReadonlyProvider = new JsonReadonlyProvider();
   context.subscriptions.push(
     vscode.workspace.registerTextDocumentContentProvider('json-readonly', jsonReadonlyProvider),

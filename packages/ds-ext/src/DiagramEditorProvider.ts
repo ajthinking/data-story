@@ -20,6 +20,7 @@ import { JsonObserverStorage } from './jsonObserverStorage';
 import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
 import { abortExecution } from './messageHandlers/abortExecution';
+import { ServerLauncher } from './serverLauncher';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
@@ -32,7 +33,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   private contentMap = new Map<string, DiagramDocument>();
   private config: DataStoryConfig;
 
-  constructor(private readonly context: vscode.ExtensionContext) {
+  constructor(
+    private readonly context: vscode.ExtensionContext,
+    private readonly serverLauncher?: ServerLauncher
+  ) {
     this.config = loadConfig(this.context);
   }
 
@@ -83,15 +87,46 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     return diagramDocument;
   }
 
-  resolveCustomEditor(
+  async resolveCustomEditor(
     document: DiagramDocument,
     webviewPanel: vscode.WebviewPanel,
     _token: vscode.CancellationToken,
-  ): void | Thenable<void> {
+  ): Promise<void> {
     webviewPanel.webview.options = {
       ...webviewPanel.webview.options,
       enableScripts: true,
     };
+
+    // Register document with the Node.js server if available
+    if (this.serverLauncher) {
+      try {
+        // Get diagram data from the document
+        const diagramData = new TextDecoder().decode(document.data);
+        let diagram = {};
+        if (diagramData) {
+          diagram = JSON.parse(diagramData);
+        }
+
+        // Register the document with the server
+        await this.serverLauncher.registerDocument(document.uri, diagram);
+
+        // Set up document change listener to update the server
+        const changeSubscription = document.onDidChange(async (e) => {
+          const updatedData = new TextDecoder().decode(e.document.data);
+          if (updatedData) {
+            const updatedDiagram = JSON.parse(updatedData);
+            await this.serverLauncher?.updateDocument(document.uri, updatedDiagram);
+          }
+        });
+
+        // Clean up subscription when webview is disposed
+        webviewPanel.onDidDispose(() => {
+          changeSubscription.dispose();
+        });
+      } catch (error) {
+        console.error('Failed to register document with Node.js server:', error);
+      }
+    }
 
     // Set the webview's HTML content
     webviewPanel.webview.html = this.getWebviewContent(webviewPanel.webview, document);
