@@ -517,15 +517,18 @@ __metadata:
   resolution: "@data-story/nodejs@workspace:packages/nodejs"
   dependencies:
     "@data-story/core": "workspace:*"
+    "@data-story/hubspot": "workspace:*"
     "@types/glob": "npm:^8.1.0"
+    "@types/minimist": "npm:^1"
     csv-parse: "npm:^5.6.0"
     csv-stringify: "npm:^6.5.2"
     dotenv: "npm:^16.4.0"
     glob: "npm:^11.0.0"
+    minimist: "npm:^1.2.8"
     pm2: "npm:^5.4.2"
     ws: "npm:^8.12.1"
   bin:
-    server: dist/server.js
+    server: dist/ds-server.js
   languageName: unknown
   linkType: soft
 
@@ -2732,6 +2735,13 @@ __metadata:
   version: 5.1.2
   resolution: "@types/minimatch@npm:5.1.2"
   checksum: 10/94db5060d20df2b80d77b74dd384df3115f01889b5b6c40fa2dfa27cfc03a68fb0ff7c1f2a0366070263eb2e9d6bfd8c87111d4bc3ae93c3f291297c1bf56c85
+  languageName: node
+  linkType: hard
+
+"@types/minimist@npm:^1":
+  version: 1.2.5
+  resolution: "@types/minimist@npm:1.2.5"
+  checksum: 10/477047b606005058ab0263c4f58097136268007f320003c348794f74adedc3166ffc47c80ec3e94687787f2ab7f4e72c468223946e79892cf0fd9e25e9970a90
   languageName: node
   linkType: hard
 
