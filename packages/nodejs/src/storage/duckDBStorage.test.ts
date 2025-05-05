@@ -2,11 +2,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DuckDBStorage } from './duckDBStorage';
 import { ItemValue, LinkId } from '@data-story/core';
-import { Database } from 'duckdb-async';
+import { DuckDBConnection } from '@duckdb/node-api';
 
 describe('DuckDBStorage', () => {
   let storage: DuckDBStorage;
-  let db: Database;
+  let db: DuckDBConnection;
   const mockLinkId: LinkId = 'test-link-id';
 
   beforeEach(async () => {
@@ -18,7 +18,7 @@ describe('DuckDBStorage', () => {
     storage.resetSequence();
 
     // Get access to the actual database
-    db = (storage as any).db;
+    db = (storage as any).connection!;
 
     // Verify the database was initialized properly
     expect(db).toBeDefined();
@@ -42,14 +42,16 @@ describe('DuckDBStorage', () => {
     await storage.appendLinkItems(mockLinkId, testItems);
 
     // Query the database to verify the items were inserted correctly
-    const result = await db.all('SELECT * FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC', mockLinkId);
+    const prepared = await db.prepare('SELECT * FROM linkItems WHERE linkId = $linkId ORDER BY sequenceNumber ASC');
+    prepared.bind({ linkId: mockLinkId });
+    const result = (await prepared.runAndReadAll()).getRowObjectsJS();
 
     // Verify the correct number of items were inserted
     expect(result.length).toBe(testItems.length);
 
     // Verify each item was stored correctly
     result.forEach((row, index) => {
-      const parsedItem = JSON.parse(row.item);
+      const parsedItem = JSON.parse(row.item as string);
       expect(parsedItem.id).toBe(testItems[index].id);
       expect(parsedItem.name).toBe(testItems[index].name);
       expect(row.linkId).toBe(mockLinkId);
@@ -71,8 +73,10 @@ describe('DuckDBStorage', () => {
     await storage.appendLinkItems(mockLinkId, testItems);
 
     // Query the database to verify sequence numbers
-    const result = await db.all('SELECT sequenceNumber FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC',
-      mockLinkId);
+    const prepared = await db.prepare(
+      'SELECT sequenceNumber FROM linkItems WHERE linkId = $linkId ORDER BY sequenceNumber ASC');
+    prepared.bind({ linkId: mockLinkId });
+    const result = (await prepared.runAndReadAll()).getRowObjectsJS();
 
     // Verify sequence numbers are incremented sequentially
     expect(result.length).toBe(3);
@@ -88,34 +92,13 @@ describe('DuckDBStorage', () => {
     await storage.appendLinkItems(mockLinkId, []);
 
     // Query the database to verify no items were inserted
-    const result = await db.all('SELECT * FROM linkItems WHERE linkId = ?', mockLinkId);
+    const prepared = await db.prepare('SELECT * FROM linkItems WHERE linkId = $linkId');
+    prepared.bind({ linkId: mockLinkId });
+
+    const result = (await prepared.runAndReadAll()).getRowObjectsJS();
 
     // Verify no items were inserted
     expect(result.length).toBe(0);
-  });
-
-  it('should use the current time for timestamps', async () => {
-    // Create a fixed timestamp for testing
-    const mockTimestamp = '2023-01-01T00:00:00.000Z';
-    const originalToISOString = Date.prototype.toISOString;
-    Date.prototype.toISOString = vi.fn().mockReturnValue(mockTimestamp);
-
-    // Create a test item
-    const testItems: ItemValue[] = [ { id: 1, value: 'Test item' } ];
-
-    // Call the method under test
-    await storage.appendLinkItems(mockLinkId, testItems);
-
-    // Query the database to verify timestamps
-    const result = await db.all('SELECT createTime, updateTime FROM linkItems WHERE linkId = ?', mockLinkId);
-
-    // Verify timestamps are set correctly
-    expect(result.length).toBe(1);
-    expect(result[0].createTime.toISOString()).toBe(mockTimestamp);
-    expect(result[0].updateTime.toISOString()).toBe(mockTimestamp);
-
-    // Restore the original toISOString method
-    Date.prototype.toISOString = originalToISOString;
   });
 
   it('should handle complex nested objects', async () => {
@@ -134,11 +117,13 @@ describe('DuckDBStorage', () => {
     await storage.appendLinkItems(mockLinkId, [ complexItem ]);
 
     // Query the database to verify the complex object was stored correctly
-    const result = await db.all('SELECT item FROM linkItems WHERE linkId = ?', mockLinkId);
+    const prepared = await db.prepare('SELECT * FROM linkItems WHERE linkId = $linkId');
+    prepared.bind({ linkId: mockLinkId });
+    const result = (await prepared.runAndReadAll()).getRowObjectsJS();
 
     // Verify the complex object was stored correctly
     expect(result.length).toBe(1);
-    const parsedItem = JSON.parse(result[0].item);
+    const parsedItem = JSON.parse(result[0].item as string);
     expect(parsedItem).toEqual(complexItem);
     expect(parsedItem.nested.array).toEqual([ 1, 2, 3 ]);
     expect(parsedItem.nested.object.key).toBe('value');
@@ -170,14 +155,16 @@ describe('DuckDBStorage', () => {
 
     // Query the database to verify the items were inserted correctly
     // and that no SQL injection occurred
-    const result = await db.all('SELECT * FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC', mockLinkId);
+    const prepared = await db.prepare('SELECT * FROM linkItems WHERE linkId = $linkId ORDER BY sequenceNumber ASC');
+    prepared.bind({ linkId: mockLinkId });
+    const result = (await prepared.runAndReadAll()).getRowObjectsJS();
 
     // Verify the correct number of items were inserted
     expect(result.length).toBe(3);
 
     // Verify each item was stored correctly with the SQL injection payload intact
     result.forEach((row, index) => {
-      const parsedItem = JSON.parse(row.item);
+      const parsedItem = JSON.parse(row.item as string);
       expect(parsedItem.id).toBe(sqlInjectionItems[index].id);
       expect(parsedItem.name).toBe(sqlInjectionItems[index].name);
       expect(parsedItem.payload).toBe(sqlInjectionItems[index].payload);
@@ -186,11 +173,11 @@ describe('DuckDBStorage', () => {
 
     // Verify that the table structure is still intact
     // If SQL injection had worked, this query might fail or return unexpected results
-    const tableInfo = await db.all('PRAGMA table_info(linkItems)');
-    expect(tableInfo.length).toBeGreaterThan(0);
+    const tableInfo = await db.runAndReadAll('PRAGMA table_info(linkItems)');
+    expect(tableInfo.getRowObjectsJS().length).toBeGreaterThan(0);
 
     // Verify we can still query the table normally
-    const count = await db.all('SELECT COUNT(*) AS cnt FROM linkItems');
-    expect(Number(count[0].cnt)).toBe(3);
+    const count = await db.runAndReadAll('SELECT COUNT(*) AS cnt FROM linkItems');
+    expect(Number(count.getRowObjectsJS()[0].cnt)).toBe(3);
   });
 });

@@ -50,10 +50,6 @@ export class ServerLauncher implements vscode.Disposable {
       console.warn('[ServerLauncher] Attempted to start server after disposal.');
       return;
     }
-    if (this.status === ServerStatus.Starting || this.status === ServerStatus.Running) {
-      vscode.window.showInformationMessage('Server is already starting or running.');
-      return;
-    }
 
     this.workspaceDir = this.getWorkspacePath();
     if (!this.workspaceDir) {
@@ -65,13 +61,13 @@ export class ServerLauncher implements vscode.Disposable {
     this.updateStatus(ServerStatus.Starting);
     this.outputChannel.appendLine(`[Launcher] Starting server from: ${this.nodejsPackagePath}`);
     this.outputChannel.appendLine(`[Launcher] Config: Port=${this.port}, Workspace=${this.workspaceDir}`);
-    vscode.window.showInformationMessage('Starting DataStory server...');
 
     try {
       const nodeCmd = 'node';
       // We need to modify the test-server.ts file to use our port before running the watch:server script
       const serverEntry = path.join(this.nodejsPackagePath, 'dist', 'ds-server.js');
 
+      const maxHeapSize = 1024 * 12; // 12GB
       // First, let's check if the file exists
       this.childProcess = cp.spawn(
         nodeCmd,
@@ -81,18 +77,13 @@ export class ServerLauncher implements vscode.Disposable {
         {
           stdio: [ 'pipe', 'pipe', 'pipe' ], // Pipe stdin, stdout, stderr
           shell: false,
-          env: { ...process.env }, // Inherit parent environment
+          env: { ...process.env, NODE_OPTIONS: `--max_old_space_size=${maxHeapSize}` }, // Inherit parent environment
         },
       );
 
       this.childProcess.stdout?.on('data', (data) => {
         const message = data.toString();
         this.outputChannel.append(message); // Log stdout
-        // Simple check for server readiness (customize this string based on your server's output)
-        if (message.includes(`Server started on port ${this.port}`) && this.status === ServerStatus.Starting) {
-          this.updateStatus(ServerStatus.Running);
-          vscode.window.showInformationMessage(`DataStory server running on port ${this.port}.`);
-        }
       });
 
       this.childProcess.stderr?.on('data', (data) => {
@@ -131,7 +122,6 @@ export class ServerLauncher implements vscode.Disposable {
     }
 
     this.updateStatus(ServerStatus.Stopping);
-    vscode.window.showInformationMessage('Stopping DataStory server...');
     this.outputChannel.appendLine('[Launcher] Attempting to stop server process (SIGTERM)...');
 
     // Use the terminate package in case of https://github.com/volta-cli/volta/issues/36
@@ -172,8 +162,6 @@ export class ServerLauncher implements vscode.Disposable {
         // Handle specific error signals from our logic
         this.updateStatus(ServerStatus.Error, `Failed: ${signal}`);
       } else {
-        // Normal exit (code 0 or null with SIGTERM/no signal)
-        vscode.window.showInformationMessage('DataStory server stopped.');
         this.updateStatus(ServerStatus.Stopped);
       }
     } else if (this.isDisposed) {

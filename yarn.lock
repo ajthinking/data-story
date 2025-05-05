@@ -475,6 +475,7 @@ __metadata:
   resolution: "@data-story/core@workspace:packages/core"
   dependencies:
     nanoid: "npm:^3.3.8"
+    rfdc: "npm:^1.4.1"
     rxjs: "npm:^7.8.1"
     vite-plugin-externalize-deps: "npm:^0.8.0"
     zod: "npm:^3.24.1"
@@ -518,13 +519,15 @@ __metadata:
   dependencies:
     "@data-story/core": "workspace:*"
     "@data-story/hubspot": "workspace:*"
+    "@duckdb/node-api": "npm:^1.2.2-alpha.18"
     "@types/glob": "npm:^8.1.0"
+    "@types/lodash-es": "npm:^4"
     "@types/minimist": "npm:^1"
     csv-parse: "npm:^5.6.0"
     csv-stringify: "npm:^6.5.2"
     dotenv: "npm:^16.4.0"
-    duckdb-async: "npm:^1.2.1"
     glob: "npm:^11.0.0"
+    lodash-es: "npm:^4.17.21"
     minimist: "npm:^1.2.8"
     pm2: "npm:^5.4.2"
     ws: "npm:^8.12.1"
@@ -572,6 +575,74 @@ __metadata:
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
   checksum: 10/b95682a852448e8ef50d6f8e3b7ba288aab3fd98a2bafbe46881a3db0c6e7248a2debe9e1ee0d4137c521e4743ca5bbcb1c0765c9d7b3e0ef53231506fec42b4
+  languageName: node
+  linkType: hard
+
+"@duckdb/node-api@npm:^1.2.2-alpha.18":
+  version: 1.2.2-alpha.18
+  resolution: "@duckdb/node-api@npm:1.2.2-alpha.18"
+  dependencies:
+    "@duckdb/node-bindings": "npm:1.2.2-alpha.18"
+  checksum: 10/6332ebeef33a193b44ba6282391e197a740bd2aaf45a292e35238174573b61508880fb293cb9f5d7750c5f0d87378f253f315c77a9ee4ea054024013329a52c9
+  languageName: node
+  linkType: hard
+
+"@duckdb/node-bindings-darwin-arm64@npm:1.2.2-alpha.18":
+  version: 1.2.2-alpha.18
+  resolution: "@duckdb/node-bindings-darwin-arm64@npm:1.2.2-alpha.18"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@duckdb/node-bindings-darwin-x64@npm:1.2.2-alpha.18":
+  version: 1.2.2-alpha.18
+  resolution: "@duckdb/node-bindings-darwin-x64@npm:1.2.2-alpha.18"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@duckdb/node-bindings-linux-arm64@npm:1.2.2-alpha.18":
+  version: 1.2.2-alpha.18
+  resolution: "@duckdb/node-bindings-linux-arm64@npm:1.2.2-alpha.18"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@duckdb/node-bindings-linux-x64@npm:1.2.2-alpha.18":
+  version: 1.2.2-alpha.18
+  resolution: "@duckdb/node-bindings-linux-x64@npm:1.2.2-alpha.18"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@duckdb/node-bindings-win32-x64@npm:1.2.2-alpha.18":
+  version: 1.2.2-alpha.18
+  resolution: "@duckdb/node-bindings-win32-x64@npm:1.2.2-alpha.18"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@duckdb/node-bindings@npm:1.2.2-alpha.18":
+  version: 1.2.2-alpha.18
+  resolution: "@duckdb/node-bindings@npm:1.2.2-alpha.18"
+  dependencies:
+    "@duckdb/node-bindings-darwin-arm64": "npm:1.2.2-alpha.18"
+    "@duckdb/node-bindings-darwin-x64": "npm:1.2.2-alpha.18"
+    "@duckdb/node-bindings-linux-arm64": "npm:1.2.2-alpha.18"
+    "@duckdb/node-bindings-linux-x64": "npm:1.2.2-alpha.18"
+    "@duckdb/node-bindings-win32-x64": "npm:1.2.2-alpha.18"
+  dependenciesMeta:
+    "@duckdb/node-bindings-darwin-arm64":
+      optional: true
+    "@duckdb/node-bindings-darwin-x64":
+      optional: true
+    "@duckdb/node-bindings-linux-arm64":
+      optional: true
+    "@duckdb/node-bindings-linux-x64":
+      optional: true
+    "@duckdb/node-bindings-win32-x64":
+      optional: true
+  checksum: 10/9ccaaec5ce4e147b02de1473ca2ed9c98c08da8212db76e01f84ad55bd4cf8c70db62d9579684fabcde4fb404706fff85b172408f38b139e768a970f3e0cee64
   languageName: node
   linkType: hard
 
@@ -1133,23 +1204,6 @@ __metadata:
   bin:
     node-pre-gyp: bin/node-pre-gyp
   checksum: 10/59529a2444e44fddb63057152452b00705aa58059079191126c79ac1388ae4565625afa84ed4dd1bf017d1111ab6e47907f7c5192e06d83c9496f2f3e708680a
-  languageName: node
-  linkType: hard
-
-"@mapbox/node-pre-gyp@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@mapbox/node-pre-gyp@npm:2.0.0"
-  dependencies:
-    consola: "npm:^3.2.3"
-    detect-libc: "npm:^2.0.0"
-    https-proxy-agent: "npm:^7.0.5"
-    node-fetch: "npm:^2.6.7"
-    nopt: "npm:^8.0.0"
-    semver: "npm:^7.5.3"
-    tar: "npm:^7.4.0"
-  bin:
-    node-pre-gyp: bin/node-pre-gyp
-  checksum: 10/c08eb199cca4cfb8f938216c9b6d63ca47c06260626a2a02ffc946aefec61ec93b75d0a718fb8f6fa8326035ecea6048062bf451ca1579280b1cb37ec4856629
   languageName: node
   linkType: hard
 
@@ -2713,6 +2767,22 @@ __metadata:
   version: 3.0.5
   resolution: "@types/linkify-it@npm:3.0.5"
   checksum: 10/fac28f41a6e576282300a459d70ea0d33aab70dbb77c3d09582bb0335bb00d862b6de69585792a4d590aae4173fbab0bf28861e2d90ca7b2b1439b52688e9ff6
+  languageName: node
+  linkType: hard
+
+"@types/lodash-es@npm:^4":
+  version: 4.17.12
+  resolution: "@types/lodash-es@npm:4.17.12"
+  dependencies:
+    "@types/lodash": "npm:*"
+  checksum: 10/56b9a433348b11c31051c6fa9028540a033a08fb80b400c589d740446c19444d73b217cf1471d4036448ef686a83e8cf2a35d1fadcb3f2105f26701f94aebb07
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.17.16
+  resolution: "@types/lodash@npm:4.17.16"
+  checksum: 10/9a8bb7471a7521bd65d528e1bd14f79819a3eeb6f8a35a8a44649a7d773775c0813e93fd93bd32ccf350bb076c0bf02c6d47877c4625f526f6dd4d283c746aec
   languageName: node
   linkType: hard
 
@@ -5040,13 +5110,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"consola@npm:^3.2.3":
-  version: 3.4.2
-  resolution: "consola@npm:3.4.2"
-  checksum: 10/32192c9f50d7cac27c5d7c4ecd3ff3679aea863e6bf5bd6a9cc2b05d1cd78addf5dae71df08c54330c142be8e7fbd46f051030129b57c6aacdd771efe409c4b2
-  languageName: node
-  linkType: hard
-
 "console-control-strings@npm:^1.0.0, console-control-strings@npm:^1.1.0":
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
@@ -6112,15 +6175,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"duckdb-async@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "duckdb-async@npm:1.2.1"
-  dependencies:
-    duckdb: "npm:^1.2.1"
-  checksum: 10/4f61d5f59c72267ec5e27b7b59799f1b65675016bcbc5aeb51b4f397cf0091e9a7a83c47f01b709813f98ddd1e5dfd243e6ec06321bb29e7398b9e5377303c30
-  languageName: node
-  linkType: hard
-
 "duckdb@npm:1.1.3":
   version: 1.1.3
   resolution: "duckdb@npm:1.1.3"
@@ -6129,17 +6183,6 @@ __metadata:
     node-addon-api: "npm:^7.0.0"
     node-gyp: "npm:^9.3.0"
   checksum: 10/a730b2e103c9a578d49761a85456229725386512aa6e86713590c4fc591bfa2bcab83ed574d0c2fddeb7270f31c8c965a963e2aa8d00332bafbb19a82f94ff34
-  languageName: node
-  linkType: hard
-
-"duckdb@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "duckdb@npm:1.2.1"
-  dependencies:
-    "@mapbox/node-pre-gyp": "npm:^2.0.0"
-    node-addon-api: "npm:^7.0.0"
-    node-gyp: "npm:^9.3.0"
-  checksum: 10/84e9c089d955e16fdf8e9b4e6a36cbc53325d60319aaedf41665aa7f54cc899e48e5fbfb668b2a4e61955d7cb65b08d522eec9e949037cd7434fd61069ec29c6
   languageName: node
   linkType: hard
 
@@ -14616,7 +14659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^7.4.0, tar@npm:^7.4.3":
+"tar@npm:^7.4.3":
   version: 7.4.3
   resolution: "tar@npm:7.4.3"
   dependencies:

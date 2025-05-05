@@ -37,6 +37,21 @@ const startServer = async () => {
   await server.start();
 };
 
+process.on('uncaughtException', (error: Error, origin: NodeJS.UncaughtExceptionOrigin) => {
+  console.error('----- Uncaught Exception -----');
+  console.error('Error:', error);
+  console.error('Origin:', origin); // 'uncaughtException' or 'unhandledRejection' (though less common here)
+  console.error('Stack Trace:', error.stack); // Log the stack trace!
+  console.error('----- Exiting Process -----');
+});
+process.on('unhandledRejection', (reason, p) => {
+  console.log('Unhandled Rejection at: Promise ', p, ' reason: ', reason);
+  // application specific logging, throwing an error, or other logic here
+});
+process.on('exit', (code) => {
+  console.log('Exit code', code);
+});
+
 startServer()
   .then(() => {
     console.log('Working directory', workingDir);
