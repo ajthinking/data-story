@@ -34,7 +34,7 @@ const startServer = async () => {
     port: port,
   });
 
-  server.start();
+  await server.start();
 };
 
 startServer()

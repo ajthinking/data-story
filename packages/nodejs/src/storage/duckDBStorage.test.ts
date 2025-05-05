@@ -1,23 +1,17 @@
 /* eslint-disable @stylistic/quotes */
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { DuckDBStorage } from '../duckDBStorage';
-import { LinkId, ItemValue } from '@data-story/core';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { DuckDBStorage } from './duckDBStorage';
+import { ItemValue, LinkId } from '@data-story/core';
 import { Database } from 'duckdb-async';
-
-// Mock only the createDataStoryDBPath function to use in-memory database
-vi.mock('../commands/createDataStoryDBPath', () => ({
-  createDataStoryDBPath: vi.fn().mockReturnValue(':memory:'),
-}));
 
 describe('DuckDBStorage', () => {
   let storage: DuckDBStorage;
   let db: Database;
-  const mockDiagramId = 'test-diagram-id';
   const mockLinkId: LinkId = 'test-link-id';
 
   beforeEach(async () => {
     // Create a new instance of DuckDBStorage
-    storage = new DuckDBStorage(mockDiagramId);
+    storage = new DuckDBStorage(':memory:');
     await storage.init();
 
     // Reset the sequence counter
@@ -77,7 +71,8 @@ describe('DuckDBStorage', () => {
     await storage.appendLinkItems(mockLinkId, testItems);
 
     // Query the database to verify sequence numbers
-    const result = await db.all('SELECT sequenceNumber FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC', mockLinkId);
+    const result = await db.all('SELECT sequenceNumber FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC',
+      mockLinkId);
 
     // Verify sequence numbers are incremented sequentially
     expect(result.length).toBe(3);
@@ -106,7 +101,7 @@ describe('DuckDBStorage', () => {
     Date.prototype.toISOString = vi.fn().mockReturnValue(mockTimestamp);
 
     // Create a test item
-    const testItems: ItemValue[] = [{ id: 1, value: 'Test item' }];
+    const testItems: ItemValue[] = [ { id: 1, value: 'Test item' } ];
 
     // Call the method under test
     await storage.appendLinkItems(mockLinkId, testItems);
@@ -129,14 +124,14 @@ describe('DuckDBStorage', () => {
       id: 1,
       name: 'Complex item',
       nested: {
-        array: [1, 2, 3],
+        array: [ 1, 2, 3 ],
         object: { key: 'value' },
         withQuotes: 'Item with \'quotes\'',
       },
     };
 
     // Call the method under test
-    await storage.appendLinkItems(mockLinkId, [complexItem]);
+    await storage.appendLinkItems(mockLinkId, [ complexItem ]);
 
     // Query the database to verify the complex object was stored correctly
     const result = await db.all('SELECT item FROM linkItems WHERE linkId = ?', mockLinkId);
@@ -145,7 +140,7 @@ describe('DuckDBStorage', () => {
     expect(result.length).toBe(1);
     const parsedItem = JSON.parse(result[0].item);
     expect(parsedItem).toEqual(complexItem);
-    expect(parsedItem.nested.array).toEqual([1, 2, 3]);
+    expect(parsedItem.nested.array).toEqual([ 1, 2, 3 ]);
     expect(parsedItem.nested.object.key).toBe('value');
     expect(parsedItem.nested.withQuotes).toBe('Item with \'quotes\'');
   });
@@ -195,7 +190,7 @@ describe('DuckDBStorage', () => {
     expect(tableInfo.length).toBeGreaterThan(0);
 
     // Verify we can still query the table normally
-    const count = await db.all('SELECT COUNT(*) as count FROM linkItems');
-    expect(Number(count[0].count)).toBe(3);
+    const count = await db.all('SELECT COUNT(*) AS cnt FROM linkItems');
+    expect(Number(count[0].cnt)).toBe(3);
   });
 });

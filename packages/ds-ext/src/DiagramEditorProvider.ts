@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import { InMemoryObserverStorage, ObserverController, ObserverStorage } from '@data-story/core';
+import { ObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onRun } from './messageHandlers/onRun';
 import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
@@ -15,8 +15,6 @@ import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
 import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
 import { cancelObservation } from './messageHandlers/cancelObservation';
 import { onEdgeDoubleClick } from './messageHandlers/onEdgeDoubleClick';
-import { DuckDBStorage } from './duckDBStorage';
-import { JsonObserverStorage } from './jsonObserverStorage';
 import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
 import { abortExecution } from './messageHandlers/abortExecution';
@@ -44,31 +42,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     await this.observerStorageMap.forEach(async (storage) => await storage.close());
   }
 
-  private async initializeStorage(diagramId: string) {
-    const storages = {
-      DUCK_DB: DuckDBStorage,
-      JSON: JsonObserverStorage,
-      IN_MEMORY: InMemoryObserverStorage,
-    };
-
-    let Storage = storages[this.config.storage];
-    if(!Storage) throw new Error(`Unknown storage type: ${this.config.storage}`);
-    let observerStorage: ObserverStorage;
-    try {
-      observerStorage = new Storage(diagramId);
-      await observerStorage.init?.();
-      console.log('Initialized storage of type ' + this.config.storage);
-    } catch (error) {
-      console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
-      console.log(error);
-      observerStorage = new InMemoryObserverStorage(diagramId);
-      await observerStorage.init?.();
-    }
-
-    this.observerStorageMap.set(diagramId, observerStorage);
-    this.ObserverControllerMap.set(diagramId, new ObserverController(observerStorage));
-  }
-
   /**
    * openCustomDocument is called when the first time an editor for a given resource is opened.
    * When multiple instances of the editor are opened or closed, the OpenCustomDocument method won't be re-invoked.
@@ -80,7 +53,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   ): Promise<DiagramDocument> {
     // Initialize storage with diagram ID from the file name
     const diagramId = this.getDiagramId(uri);
-    await this.initializeStorage(diagramId);
 
     const diagramDocument = await DiagramDocument.create(uri);
     this.contentMap.set(diagramId, diagramDocument);

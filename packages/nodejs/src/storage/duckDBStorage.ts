@@ -1,42 +1,58 @@
-import { DiagramId, GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
+import { GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
 import type { Database as DatabaseType } from 'duckdb-async';
-import { createDataStoryDBPath } from './commands/createDataStoryDBPath';
+import { Database } from 'duckdb-async';
 
 export class DuckDBStorage implements ObserverStorage {
   private db: DatabaseType | null = null;
   private insertSequence: bigint = BigInt(0);
-  private diagramId: DiagramId;
 
-  constructor(diagramId: DiagramId) {
-    this.diagramId = diagramId;
+  constructor(private dbPath: string) {
   }
 
   async init() {
-    const { Database } = await import('duckdb-async');
-    const dbPath = createDataStoryDBPath();
-    this.db = await Database.create(dbPath);
+    this.db = await Database.create(this.dbPath);
     await this.db.all(`
-      CREATE TABLE IF NOT EXISTS linkCounts (
-        linkId TEXT PRIMARY KEY,
-        count INT,
-        createTime TIMESTAMP,
-        updateTime TIMESTAMP
-      );
-    
-      CREATE TABLE IF NOT EXISTS linkItems (
-        linkId TEXT,
-        sequenceNumber BIGINT,
-        item JSON,
-        createTime TIMESTAMP,
-        updateTime TIMESTAMP
-      );
+        CREATE TABLE IF NOT EXISTS linkCounts
+        (
+            linkId
+            TEXT
+            PRIMARY
+            KEY,
+            COUNT
+            INT,
+            createTime
+            TIMESTAMP,
+            updateTime
+            TIMESTAMP
+        );
 
-      CREATE TABLE IF NOT EXISTS nodes (
-        nodeId TEXT PRIMARY KEY,
-        status TEXT,
-        createTime TIMESTAMP,
-        updateTime TIMESTAMP
-      );
+        CREATE TABLE IF NOT EXISTS linkItems
+        (
+            linkId
+            TEXT,
+            sequenceNumber
+            BIGINT,
+            item
+            JSON,
+            createTime
+            TIMESTAMP,
+            updateTime
+            TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS nodes
+        (
+            nodeId
+            TEXT
+            PRIMARY
+            KEY,
+            status
+            TEXT,
+            createTime
+            TIMESTAMP,
+            updateTime
+            TIMESTAMP
+        );
     `);
   }
 
@@ -62,12 +78,22 @@ export class DuckDBStorage implements ObserverStorage {
 
   async setLinkCount(linkId: LinkId, count: LinkCount): Promise<void> {
     const currentTime = new Date();
-    await this.db?.all('INSERT INTO linkCounts (linkId, count, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(linkId) DO UPDATE SET count = ?, updateTime = ?',
-      linkId, count, currentTime, currentTime, count, currentTime);
+    await this.db?.all(
+      'INSERT INTO linkCounts (linkId, count, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(linkId) DO UPDATE SET COUNT = ?, updateTime = ?',
+      linkId,
+      count,
+      currentTime,
+      currentTime,
+      count,
+      currentTime);
   }
 
   async getLinkItems({ linkId, offset, limit }: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
-    const data = await this.db?.all('SELECT item FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC LIMIT ? OFFSET ?', linkId, limit, offset);
+    const data = await this.db?.all(
+      'SELECT item FROM linkItems WHERE linkId = ? ORDER BY sequenceNumber ASC LIMIT ? OFFSET ?',
+      linkId,
+      limit,
+      offset);
     if (!data || data.length === 0) {
       return undefined;
     }
@@ -98,7 +124,7 @@ export class DuckDBStorage implements ObserverStorage {
         // Create parameterized query with placeholders
         const placeholders = chunk.map(() => '(?, ?, ?, ?, ?)').join(', ');
         const sql = `INSERT INTO linkItems (linkId, sequenceNumber, item, createTime, updateTime)
-                 VALUES ${placeholders}`;
+                     VALUES ${placeholders}`;
 
         // Flatten the parameters into a single array
         const params: any[] = [];
@@ -132,8 +158,14 @@ export class DuckDBStorage implements ObserverStorage {
 
   async setNodeStatus(nodeId: NodeId, status: 'BUSY' | 'COMPLETE'): Promise<void> {
     const currentTime = new Date();
-    await this.db?.all('INSERT INTO nodes (nodeId, status, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(nodeId) DO UPDATE SET status = ?, updateTime = ?',
-      nodeId, status, currentTime, currentTime, status, currentTime);
+    await this.db?.all(
+      'INSERT INTO nodes (nodeId, status, createTime, updateTime) VALUES (?, ?, ?, ?) ON CONFLICT(nodeId) DO UPDATE SET status = ?, updateTime = ?',
+      nodeId,
+      status,
+      currentTime,
+      currentTime,
+      status,
+      currentTime);
   }
 
 }

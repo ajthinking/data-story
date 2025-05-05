@@ -523,6 +523,7 @@ __metadata:
     csv-parse: "npm:^5.6.0"
     csv-stringify: "npm:^6.5.2"
     dotenv: "npm:^16.4.0"
+    duckdb-async: "npm:^1.2.1"
     glob: "npm:^11.0.0"
     minimist: "npm:^1.2.8"
     pm2: "npm:^5.4.2"
@@ -1132,6 +1133,23 @@ __metadata:
   bin:
     node-pre-gyp: bin/node-pre-gyp
   checksum: 10/59529a2444e44fddb63057152452b00705aa58059079191126c79ac1388ae4565625afa84ed4dd1bf017d1111ab6e47907f7c5192e06d83c9496f2f3e708680a
+  languageName: node
+  linkType: hard
+
+"@mapbox/node-pre-gyp@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@mapbox/node-pre-gyp@npm:2.0.0"
+  dependencies:
+    consola: "npm:^3.2.3"
+    detect-libc: "npm:^2.0.0"
+    https-proxy-agent: "npm:^7.0.5"
+    node-fetch: "npm:^2.6.7"
+    nopt: "npm:^8.0.0"
+    semver: "npm:^7.5.3"
+    tar: "npm:^7.4.0"
+  bin:
+    node-pre-gyp: bin/node-pre-gyp
+  checksum: 10/c08eb199cca4cfb8f938216c9b6d63ca47c06260626a2a02ffc946aefec61ec93b75d0a718fb8f6fa8326035ecea6048062bf451ca1579280b1cb37ec4856629
   languageName: node
   linkType: hard
 
@@ -5022,6 +5040,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"consola@npm:^3.2.3":
+  version: 3.4.2
+  resolution: "consola@npm:3.4.2"
+  checksum: 10/32192c9f50d7cac27c5d7c4ecd3ff3679aea863e6bf5bd6a9cc2b05d1cd78addf5dae71df08c54330c142be8e7fbd46f051030129b57c6aacdd771efe409c4b2
+  languageName: node
+  linkType: hard
+
 "console-control-strings@npm:^1.0.0, console-control-strings@npm:^1.1.0":
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
@@ -6087,6 +6112,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"duckdb-async@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "duckdb-async@npm:1.2.1"
+  dependencies:
+    duckdb: "npm:^1.2.1"
+  checksum: 10/4f61d5f59c72267ec5e27b7b59799f1b65675016bcbc5aeb51b4f397cf0091e9a7a83c47f01b709813f98ddd1e5dfd243e6ec06321bb29e7398b9e5377303c30
+  languageName: node
+  linkType: hard
+
 "duckdb@npm:1.1.3":
   version: 1.1.3
   resolution: "duckdb@npm:1.1.3"
@@ -6095,6 +6129,17 @@ __metadata:
     node-addon-api: "npm:^7.0.0"
     node-gyp: "npm:^9.3.0"
   checksum: 10/a730b2e103c9a578d49761a85456229725386512aa6e86713590c4fc591bfa2bcab83ed574d0c2fddeb7270f31c8c965a963e2aa8d00332bafbb19a82f94ff34
+  languageName: node
+  linkType: hard
+
+"duckdb@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "duckdb@npm:1.2.1"
+  dependencies:
+    "@mapbox/node-pre-gyp": "npm:^2.0.0"
+    node-addon-api: "npm:^7.0.0"
+    node-gyp: "npm:^9.3.0"
+  checksum: 10/84e9c089d955e16fdf8e9b4e6a36cbc53325d60319aaedf41665aa7f54cc899e48e5fbfb668b2a4e61955d7cb65b08d522eec9e949037cd7434fd61069ec29c6
   languageName: node
   linkType: hard
 
@@ -14571,7 +14616,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^7.4.3":
+"tar@npm:^7.4.0, tar@npm:^7.4.3":
   version: 7.4.3
   resolution: "tar@npm:7.4.3"
   dependencies:

@@ -1,7 +1,8 @@
 import WebSocket from 'ws';
-import { Application, InMemoryObserverStorage, ObserverController } from '@data-story/core';
+import { Application, ObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
+import { createStorage } from '../storage/createStorage';
 
 interface SocketServerOptions {
   app: Application;
@@ -16,6 +17,8 @@ export class SocketServer {
   private wsServer?: WebSocket.Server;
   private observerController: ObserverController;
 
+  private observerStorage: ObserverStorage;
+
   constructor({
     app,
     messageHandlers = defaultMessageHandlers,
@@ -24,11 +27,13 @@ export class SocketServer {
     this.app = app;
     this.port = port;
     this.messageHandlers = messageHandlers;
-    const storage = new InMemoryObserverStorage('_');
-    this.observerController = new ObserverController(storage);
+    this.observerStorage = createStorage();
+    this.observerController = new ObserverController(this.observerStorage);
   }
 
-  start() {
+  async start() {
+    await this.observerStorage.init?.();
+    console.log('Storage initialized');
     this.wsServer = new WebSocket.Server({ port: this.port });
     console.log('Server started on port ' + this.port);
 
