@@ -42,7 +42,7 @@ export const DataStoryComponent = (
     loading: diagramDataLoading,
     error: diagramDataError,
   } = useRequest(async() => {
-    return client.getDiagram?.({ path: diagramId });
+    return client.getDiagram?.({ diagramId });
   }, {
     refreshDeps: [client, diagramId], // Will re-fetch if client changes
   });
@@ -69,8 +69,8 @@ export const DataStoryComponent = (
   }, [setSidebarKey, setSelectedNode, setIsSidebarClose]);
 
   const handleSave = useCallback(async(diagram: Diagram) => {
-    client?.updateDiagram?.(diagram)
-  }, [client]);
+    client?.updateDiagram?.(diagram, diagramId);
+  }, [client, diagramId]);
 
   return (
     <DataStoryCanvasProvider>

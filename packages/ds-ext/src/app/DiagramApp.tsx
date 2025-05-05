@@ -11,7 +11,7 @@ export default function DiagramApp() {
 
   const handleChange = useCallback(
     debounce(async (diagram: Diagram) => {
-      client!.updateDiagram?.(diagram);
+      client!.updateDiagram?.(diagram, dsExtensionInitialData().documentId);
     }, 100), // Debounced with 100ms delay
     [client]);
 

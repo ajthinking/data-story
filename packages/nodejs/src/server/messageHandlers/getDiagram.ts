@@ -5,14 +5,15 @@ import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 interface GetDiagramMessage {
   type: 'getDiagram';
   msgId: string;
+  diagramId?: string;
 }
 
 export const getDiagram: MessageHandler<GetDiagramMessage> = async ({
   ws,
   data,
 }: MessageHandlerParams<GetDiagramMessage>) => {
-  if ('path' in data && typeof data.path === 'string') {
-    const diagramData = await fs.readFile(data.path, 'utf-8');
+  if ('diagramId' in data && typeof data.diagramId === 'string') {
+    const diagramData = await fs.readFile(data.diagramId, 'utf-8');
     const diagram = JSON.parse(diagramData);
     ws.send(JSON.stringify({
       ...data,
