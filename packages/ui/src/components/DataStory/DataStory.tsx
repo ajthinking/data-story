@@ -18,7 +18,7 @@ function handleRequestError(requestError?: Error): void {
 export const DataStoryComponent = (
   props: DataStoryProps,
 ) => {
-  const { client, initSidebarKey, children, onChange } = props;
+  const { client, initSidebarKey, children, onChange, diagramId } = props;
   const [selectedNode, setSelectedNode] = useState<ReactFlowNode>();
   const [isSidebarClose, setIsSidebarClose] = useState(!!props.hideSidebar);
   const partialStoreRef = useRef<Partial<StoreSchema>>(null);
@@ -42,9 +42,9 @@ export const DataStoryComponent = (
     loading: diagramDataLoading,
     error: diagramDataError,
   } = useRequest(async() => {
-    return client.getDiagram?.({});
+    return client.getDiagram?.({ path: diagramId });
   }, {
-    refreshDeps: [client], // Will re-fetch if client changes
+    refreshDeps: [client, diagramId], // Will re-fetch if client changes
   });
   handleRequestError(diagramDataError);
 

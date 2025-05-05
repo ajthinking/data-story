@@ -29,7 +29,7 @@
       },
       {
         "command": "ds-ext.showDiagramPreview",
-        "title": "Show Diagram Preview11",
+        "title": "Show Diagram Preview",
         "category": "DataStory",
         "icon": {
           "light": "./themes/preview-dark.svg",

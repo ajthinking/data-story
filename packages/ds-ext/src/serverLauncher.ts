@@ -13,8 +13,6 @@ enum ServerStatus {
 }
 
 export class ServerLauncher implements vscode.Disposable {
-  // Map to track documents by their URI string
-  private documentMap = new Map<string, any>();
   private childProcess: cp.ChildProcess | undefined;
   private status: ServerStatus = ServerStatus.Stopped;
   private statusBarItem: vscode.StatusBarItem;
@@ -24,8 +22,10 @@ export class ServerLauncher implements vscode.Disposable {
   private workspaceDir: string | undefined;
   private isDisposed = false;
   private readonly extensionContext: vscode.ExtensionContext;
-  // HTTP client for communicating with the Node.js server
-  private httpClient: { post: (url: string, data: any) => Promise<any> } | null = null;
+
+  get serverEndpoint(): string {
+    return `ws://localhost:${this.port}`;
+  }
 
   constructor(context: vscode.ExtensionContext) {
     this.extensionContext = context;
@@ -235,79 +235,6 @@ export class ServerLauncher implements vscode.Disposable {
       return folders[0].uri.fsPath;
     }
     return undefined;
-  }
-
-  // --- vscode.Disposable Implementation ---
-
-  // Register a document with the server
-  public async registerDocument(uri: vscode.Uri, documentData: any): Promise<boolean> {
-    if (this.status !== ServerStatus.Running) {
-      this.outputChannel.appendLine('[Launcher] Cannot register document: server not running');
-      return false;
-    }
-
-    const uriString = uri.toString();
-    this.documentMap.set(uriString, documentData);
-    try {
-      // Send document data to the Node.js server
-      await this.sendToServer('registerDocument', {
-        uri: uriString,
-        data: documentData,
-      });
-      this.outputChannel.appendLine(`[Launcher] Document registered: ${uriString}`);
-      return true;
-    } catch (error: any) {
-      this.outputChannel.appendLine(`[Launcher] Error registering document: ${error.message}`);
-      return false;
-    }
-  }
-
-  // Update a document on the server
-  public async updateDocument(uri: vscode.Uri, documentData: any): Promise<boolean> {
-    if (this.status !== ServerStatus.Running) {
-      this.outputChannel.appendLine('[Launcher] Cannot update document: server not running');
-      return false;
-    }
-
-    const uriString = uri.toString();
-    this.documentMap.set(uriString, documentData);
-    try {
-      // Send updated document data to the Node.js server
-      await this.sendToServer('updateDocument', {
-        uri: uriString,
-        data: documentData,
-      });
-      this.outputChannel.appendLine(`[Launcher] Document updated: ${uriString}`);
-      return true;
-    } catch (error: any) {
-      this.outputChannel.appendLine(`[Launcher] Error updating document: ${error.message}`);
-      return false;
-    }
-  }
-
-  // Get server port
-  public getPort(): number {
-    return this.port;
-  }
-
-  // Send data to the Node.js server
-  private async sendToServer(endpoint: string, data: any): Promise<any> {
-    if (!this.httpClient) {
-      // Lazy-load the HTTP client
-      const axios = require('axios');
-      this.httpClient = axios.create({
-        baseURL: `http://localhost:${this.port}`,
-        timeout: 5000,
-      });
-    }
-
-    try {
-      const response = await this.httpClient!.post(`/api/${endpoint}`, data);
-      return response.data;
-    } catch (error: any) {
-      this.outputChannel.appendLine(`[Launcher] Server communication error: ${error.message}`);
-      throw error;
-    }
   }
 
   dispose() {

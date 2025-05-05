@@ -2,15 +2,16 @@ import { Observable, retry, share } from 'rxjs';
 import {
   createTransport,
   type TransportConfig,
-  type WorkspaceApiClientImplement,
   WorkspaceApiClient,
+  type WorkspaceApiClientImplement,
 } from '@data-story/ui';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { dsExtensionInitialData } from './dsExtensionInitialData';
 
 function createSocketTransport(socket: WebSocketSubject<any>) {
   const maxReconnectTries = 100;
   const reconnectTimeoutMs = 1000;
-  let messages$: Observable<{ msgId: string;[p: string]: unknown }> = socket.pipe(
+  let messages$: Observable<{ msgId: string; [p: string]: unknown }> = socket.pipe(
     retry({ count: maxReconnectTries, delay: reconnectTimeoutMs }),
     share(),
   );
@@ -28,10 +29,10 @@ export const createVsCodeClient = (): {
   dispose: () => void
 } => {
   const socket$ = webSocket({
-    url: 'ws://localhost:3300',
+    url: dsExtensionInitialData().serverEndpoint,
     openObserver: {
       next: () => {
-        console.log(`Connected to server: ${'ws://localhost:3300'}`);
+        console.log(`Connected to server: ${dsExtensionInitialData().serverEndpoint}`);
       },
     },
     closeObserver: {

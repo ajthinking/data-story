@@ -35,7 +35,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
 
   constructor(
     private readonly context: vscode.ExtensionContext,
-    private readonly serverLauncher?: ServerLauncher
+    private readonly serverLauncher: ServerLauncher
   ) {
     this.config = loadConfig(this.context);
   }
@@ -97,37 +97,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
       enableScripts: true,
     };
 
-    // Register document with the Node.js server if available
-    if (this.serverLauncher) {
-      try {
-        // Get diagram data from the document
-        const diagramData = new TextDecoder().decode(document.data);
-        let diagram = {};
-        if (diagramData) {
-          diagram = JSON.parse(diagramData);
-        }
-
-        // Register the document with the server
-        await this.serverLauncher.registerDocument(document.uri, diagram);
-
-        // Set up document change listener to update the server
-        const changeSubscription = document.onDidChange(async (e) => {
-          const updatedData = new TextDecoder().decode(e.document.data);
-          if (updatedData) {
-            const updatedDiagram = JSON.parse(updatedData);
-            await this.serverLauncher?.updateDocument(document.uri, updatedDiagram);
-          }
-        });
-
-        // Clean up subscription when webview is disposed
-        webviewPanel.onDidDispose(() => {
-          changeSubscription.dispose();
-        });
-      } catch (error) {
-        console.error('Failed to register document with Node.js server:', error);
-      }
-    }
-
     // Set the webview's HTML content
     webviewPanel.webview.html = this.getWebviewContent(webviewPanel.webview, document);
 
@@ -179,6 +148,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
 
   private getWebviewContent(webview: vscode.Webview, document: DiagramDocument): string {
     const mainScript = path.join(this.context.extensionPath, 'dist', 'app', 'app.mjs');
+    const diagramFilePath = document.uri.fsPath;
 
     const scriptUri = webview.asWebviewUri(
       vscode.Uri.file(mainScript),
@@ -199,6 +169,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
             <script>
                 // Provide the VS Code API and initial data (file URI and diagram content)
                 window.vscode = acquireVsCodeApi();
+                window.dsInitialData = {
+                  documentId: "${diagramFilePath}",
+                  serverEndpoint: "${this.serverLauncher.serverEndpoint}"
+                }
             </script>
         </body>
         </html>

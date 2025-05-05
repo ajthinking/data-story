@@ -4,6 +4,7 @@ import { AddNodeControl, CopyAsJsonControl, DataStory, RunControl } from '@data-
 import { VsCodeToast } from './VsCodeToast';
 import { onDrop } from './onDrop';
 import { createVsCodeClient } from './createVsCodeClient';
+import { dsExtensionInitialData } from './dsExtensionInitialData';
 
 export default function DiagramApp() {
   const { client, dispose } = createVsCodeClient();
@@ -23,6 +24,7 @@ export default function DiagramApp() {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <DataStory
+        diagramId={dsExtensionInitialData().documentId}
         client={client}
         hideSidebar={false}
         hideActivityBar={true}
