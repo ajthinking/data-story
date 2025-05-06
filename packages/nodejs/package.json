@@ -36,13 +36,13 @@
     "csv-stringify": "^6.5.2",
     "dotenv": "^16.4.0",
     "glob": "^11.0.0",
-    "lodash-es": "^4.17.21",
+    "lodash": "^4.17.21",
     "minimist": "^1.2.8",
     "ws": "^8.12.1"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
-    "@types/lodash-es": "^4",
+    "@types/lodash": "^4",
     "@types/minimist": "^1",
     "pm2": "^5.4.2"
   }

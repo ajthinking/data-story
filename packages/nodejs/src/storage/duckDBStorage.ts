@@ -1,6 +1,6 @@
 import { GetLinkItemsParams, ItemValue, LinkCount, LinkId, NodeId, ObserverStorage } from '@data-story/core';
 import { DuckDBConnection, DuckDBInstance, timestampValue } from '@duckdb/node-api';
-import { chunk } from 'lodash-es';
+import { chunk } from 'lodash';
 
 export class DuckDBStorage implements ObserverStorage {
   private connection?: DuckDBConnection;
@@ -116,11 +116,11 @@ export class DuckDBStorage implements ObserverStorage {
     if (items.length === 0) {
       return; // Nothing to insert
     }
-    const currentTime = new Date();
-    const currentTimestamp = timestampValue(BigInt(+currentTime * 1000));
-
     const appender = await this.connection!.createAppender('linkItems');
+    const currentTime = new Date();
+    const currentTimestamp = timestampValue(BigInt(currentTime.getTime() * 1000));
     try {
+      console.time('Inserting items');
       for (const itemChunk of chunk(items, 1000)) {
         for (const item of itemChunk) {
           appender.appendVarchar(linkId);
@@ -130,12 +130,14 @@ export class DuckDBStorage implements ObserverStorage {
           appender.appendTimestamp(currentTimestamp);
           appender.endRow();
         }
-        console.count(`Inserted ${itemChunk.length} items`);
+        console.timeLog('Inserting items', `Inserted ${itemChunk.length} items`);
       }
       appender.closeSync();
     } catch (error) {
       console.error('Error inserting items:', error);
       throw error;
+    } finally {
+      console.timeEnd('Inserting items');
     }
   }
 

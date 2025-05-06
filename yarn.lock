@@ -521,13 +521,13 @@ __metadata:
     "@data-story/hubspot": "workspace:*"
     "@duckdb/node-api": "npm:^1.2.2-alpha.18"
     "@types/glob": "npm:^8.1.0"
-    "@types/lodash-es": "npm:^4"
+    "@types/lodash": "npm:^4"
     "@types/minimist": "npm:^1"
     csv-parse: "npm:^5.6.0"
     csv-stringify: "npm:^6.5.2"
     dotenv: "npm:^16.4.0"
     glob: "npm:^11.0.0"
-    lodash-es: "npm:^4.17.21"
+    lodash: "npm:^4.17.21"
     minimist: "npm:^1.2.8"
     pm2: "npm:^5.4.2"
     ws: "npm:^8.12.1"
@@ -2770,16 +2770,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash-es@npm:^4":
-  version: 4.17.12
-  resolution: "@types/lodash-es@npm:4.17.12"
-  dependencies:
-    "@types/lodash": "npm:*"
-  checksum: 10/56b9a433348b11c31051c6fa9028540a033a08fb80b400c589d740446c19444d73b217cf1471d4036448ef686a83e8cf2a35d1fadcb3f2105f26701f94aebb07
-  languageName: node
-  linkType: hard
-
-"@types/lodash@npm:*":
+"@types/lodash@npm:^4":
   version: 4.17.16
   resolution: "@types/lodash@npm:4.17.16"
   checksum: 10/9a8bb7471a7521bd65d528e1bd14f79819a3eeb6f8a35a8a44649a7d773775c0813e93fd93bd32ccf350bb076c0bf02c6d47877c4625f526f6dd4d283c746aec

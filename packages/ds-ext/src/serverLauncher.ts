@@ -67,20 +67,21 @@ export class ServerLauncher implements vscode.Disposable {
       // We need to modify the test-server.ts file to use our port before running the watch:server script
       const serverEntry = path.join(this.nodejsPackagePath, 'dist', 'ds-server.js');
 
-      const maxHeapSize = 1024 * 12; // 12GB
       // First, let's check if the file exists
       this.childProcess = cp.spawn(
         nodeCmd,
         [
+          '--max_old_space_size=10240',
           serverEntry, '-p', this.port.toString(), '-w', this.workspaceDir,
         ],
         {
           stdio: [ 'pipe', 'pipe', 'pipe' ], // Pipe stdin, stdout, stderr
           shell: false,
-          env: { ...process.env, NODE_OPTIONS: `--max_old_space_size=${maxHeapSize}` }, // Inherit parent environment
+          env: { ...process.env }, // Inherit parent environment
         },
       );
 
+      // todo: add health check
       this.childProcess.stdout?.on('data', (data) => {
         const message = data.toString();
         this.outputChannel.append(message); // Log stdout
