@@ -3,6 +3,8 @@ import { Application, ObserverController, ObserverStorage } from '@data-story/co
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
 import { createStorage } from '../storage/createStorage';
+import { healthCheckHandler } from './health-check';
+import { createServer, Server } from 'http';
 
 interface SocketServerOptions {
   app: Application;
@@ -15,6 +17,7 @@ export class SocketServer {
   private port: number;
   private messageHandlers: Record<string, MessageHandler<any>>;
   private wsServer?: WebSocket.Server;
+  private httpServer?: Server;
   private observerController: ObserverController;
 
   private observerStorage: ObserverStorage;
@@ -34,7 +37,8 @@ export class SocketServer {
   async start() {
     await this.observerStorage.init?.();
     console.log('Storage initialized');
-    this.wsServer = new WebSocket.Server({ port: this.port });
+    this.httpServer = createServer(healthCheckHandler);
+    this.wsServer = new WebSocket.Server({ server: this.httpServer });
     console.log('Server started on port ' + this.port);
 
     this.wsServer.on('connection', (ws) => {
@@ -50,6 +54,8 @@ export class SocketServer {
 
       console.log('Client connected 💓');
     });
+
+    await new Promise(resolve => this.httpServer!.listen(this.port, () => resolve(0)));
   }
 
   private async handleMessage(
