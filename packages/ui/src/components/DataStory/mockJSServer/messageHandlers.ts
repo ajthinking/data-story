@@ -42,6 +42,7 @@ export const getDefaultMsgHandlers = (app: Application, observerController: Obse
   };
 
   const run = async({ data, sendEvent }: HandlerParam) => {
+    const startTime = performance.now();
     const { diagram, executionId } = data as RunMessage;
 
     const executor = app!.getExecutor({
@@ -60,7 +61,7 @@ export const getDefaultMsgHandlers = (app: Application, observerController: Obse
 
       const executionResult = {
         type: 'ExecutionResult',
-        time: Date.now(),
+        time: performance.now() - startTime,
       }
       sendEvent(executionResult);
     } catch(error: any) {
