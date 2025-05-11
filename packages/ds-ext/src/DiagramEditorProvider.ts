@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import { ObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import { onToast } from './messageHandlers/onToast';
 import { onEdgeDoubleClick } from './messageHandlers/onEdgeDoubleClick';
@@ -11,24 +10,14 @@ import { ServerLauncher } from './serverLauncher';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
-  /**
-   * Since a DiagramEditorProvider can correspond to multiple DiagramDocuments, each DiagramDocument requires its own ObserverController and ObserverStorage.
-   * Therefore, we need to differentiate them using diagramId or uri.
-   */
-  private ObserverControllerMap: Map<string, ObserverController> = new Map();
-  private observerStorageMap: Map<string, ObserverStorage> = new Map();
   private contentMap = new Map<string, DiagramDocument>();
   private config: DataStoryConfig;
 
   constructor(
     private readonly context: vscode.ExtensionContext,
-    private readonly serverLauncher: ServerLauncher
+    private readonly serverLauncher: ServerLauncher,
   ) {
     this.config = loadConfig(this.context);
-  }
-
-  async dispose(): Promise<void> {
-    await this.observerStorageMap.forEach(async (storage) => await storage.close());
   }
 
   /**
@@ -81,10 +70,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         return;
       }
 
-      const diagramId = this.getDiagramId(document.uri);
-      const observerController = this.ObserverControllerMap.get(diagramId);
       // @ts-ignore
-      const disposable = handler({ postMessage, event, document, observerController });
+      const disposable = handler({ postMessage, event, document });
       if(typeof disposable === 'function' && disposable){
         disposables.push(disposable);
       }
@@ -160,11 +147,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     cancellation: vscode.CancellationToken,
   ): Thenable<vscode.CustomDocumentBackup> {
     return document.backup(context.destination, cancellation);
-  }
-
-  private async save(document: DiagramDocument, data: string): Promise<void> {
-    document.update(Buffer.from(data, 'utf8'));
-    await document.save();
   }
 
   private getDiagramId(uri: vscode.Uri): string {
