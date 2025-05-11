@@ -1,4 +1,18 @@
-# Development Installation
+## Usage Notes
+
+### To increase the memory limit for the extension
+
+Set [`datastory.additionalDsServerCliArgs`](vscode://settings/datastory.additionalDsServerCliArgs) with the following:
+```json
+{
+    "datastory.additionalDsServerCliArgs": [
+        "--max_old_space_size=10240"
+    ]
+}
+```
+
+## Development Notes
+
 * clone repo
 * in root, also run `yarn` and `yarn build`
 * open repo with VS Code

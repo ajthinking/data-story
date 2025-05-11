@@ -122,6 +122,18 @@
           "name": "Node Details"
         }
       ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "DataStory Extension Configuration",
+      "properties": {
+        "datastory.additionalDsServerCliArgs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Additional arguments (as string array) to pass to the ds-server process (e.g., for nodejs flags)."
+        }
+      }
     }
   },
   "vsce": {

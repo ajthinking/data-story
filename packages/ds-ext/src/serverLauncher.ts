@@ -78,13 +78,19 @@ export class ServerLauncher implements vscode.Disposable {
       // We need to modify the test-server.ts file to use our port before running the watch:server script
       const serverEntry = path.join(this.serverEntryPath, 'ds-server.min.js');
 
+      // Get additional argument from VSCode settings
+      const additionalDsServer = vscode.workspace.getConfiguration('datastory')
+        .get<string[]>('additionalDsServerCliArgs') || [];
+
       // First, let's check if the file exists
+      const args = [
+        ...additionalDsServer,
+        serverEntry, '-p', this.port.toString(), '-w', this.workspaceDir,
+      ];
+      this.outputChannel.appendLine(`[Launcher] Running command: ${nodeCmd} ${args.join(' ')}`);
       this.childProcess = cp.spawn(
         nodeCmd,
-        [
-          '--max_old_space_size=10240',
-          serverEntry, '-p', this.port.toString(), '-w', this.workspaceDir,
-        ],
+        args,
         {
           stdio: [ 'pipe', 'pipe', 'pipe' ], // Pipe stdin, stdout, stderr
           shell: false,
