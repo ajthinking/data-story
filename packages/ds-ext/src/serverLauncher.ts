@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
 import terminate from 'terminate';
+import { DsServerHealthChecker } from './dsServerHealthChecker';
 
 // Define possible server states
 enum ServerStatus {
@@ -27,6 +28,8 @@ export class ServerLauncher implements vscode.Disposable {
     return `ws://localhost:${this.port}`;
   }
 
+  private serverHealthChecker?: DsServerHealthChecker;
+
   constructor(context: vscode.ExtensionContext) {
     this.extensionContext = context;
     // todo: replace with published nodejs package
@@ -40,7 +43,13 @@ export class ServerLauncher implements vscode.Disposable {
     this.updateStatus(ServerStatus.Stopped);
     this.statusBarItem.show();
 
-    context.subscriptions.push(this); // Register for disposal
+    // Register for disposal
+    this.serverHealthChecker = new DsServerHealthChecker(`http://localhost:${this.port}/health`,
+      5000,
+      3000,
+      this.outputChannel);
+    context.subscriptions.push(this,
+      this.serverHealthChecker);
   }
 
   // --- Public Methods ---
@@ -105,6 +114,7 @@ export class ServerLauncher implements vscode.Disposable {
         this.outputChannel.appendLine(`[Launcher] Server process exited with code ${code}, signal ${signal}.`);
         this.handleServerExit(code, signal);
       });
+      this.serverHealthChecker!.start();
     } catch (error: any) {
       this.outputChannel.appendLine(`[Launcher CATCH] Error spawning server: ${error.message}`);
       vscode.window.showErrorMessage(`Error launching server: ${error.message}`);
