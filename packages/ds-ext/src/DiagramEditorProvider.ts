@@ -3,21 +3,10 @@ import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
 import { ObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
-import { onRun } from './messageHandlers/onRun';
-import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
-import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
-import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
-import { observeLinkItems } from './messageHandlers/observeLinkItems';
-import { observeLinkCounts } from './messageHandlers/observeLinkCounts';
-import { observeNodeStatus } from './messageHandlers/observeNodeStatus';
-import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
-import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
-import { cancelObservation } from './messageHandlers/cancelObservation';
 import { onEdgeDoubleClick } from './messageHandlers/onEdgeDoubleClick';
 import { loadConfig } from './loadConfig';
 import { DataStoryConfig } from './DataStoryConfig';
-import { abortExecution } from './messageHandlers/abortExecution';
 import { ServerLauncher } from './serverLauncher';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
@@ -82,18 +71,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     const disposables: (Promise<() => void>)[] = [];
     const unsubscribe = webviewPanel.webview.onDidReceiveMessage(event => {
       const handlers: Record<string, MessageHandler> = {
-        run: onRun,
-        abortExecution,
-        getNodeDescriptions: onGetNodeDescriptions,
-        updateDiagram: onUpdateDiagram,
         toast: onToast,
-        getDiagram,
-        observeLinkItems,
-        observeLinkCounts,
-        observeNodeStatus,
-        observeLinkUpdate,
-        getDataFromStorage,
-        cancelObservation,
         onEdgeDoubleClick,
       };
 
