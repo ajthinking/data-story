@@ -1,5 +1,5 @@
 {
     "dependencies": {
-      "duckdb-async": "^1.1.3"
+        "@duckdb/node-api": "^1.2.2-alpha.18"
     }
 }

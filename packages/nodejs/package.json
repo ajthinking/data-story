@@ -14,7 +14,8 @@
     "watch:nodejs": "tsc --watch",
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "yarn run -T vitest",
-    "build": "tsc",
+    "build": "tsc && yarn build:server",
+    "build:server": "esbuild --bundle --platform=node ./ds-server.ts --external:@duckdb --outfile=dist/ds-server.min.js",
     "release": "yarn run -T release-it",
     "watch:server": "pm2 start ./ds-server.ts --watch --no-daemon"
   },

@@ -1,4 +1,4 @@
-import WebSocket from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 import { Application, ObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
@@ -16,7 +16,7 @@ export class SocketServer {
   private app: Application;
   private port: number;
   private messageHandlers: Record<string, MessageHandler<any>>;
-  private wsServer?: WebSocket.Server;
+  private wsServer?: WebSocketServer;
   private httpServer?: Server;
   private observerController: ObserverController;
 
@@ -38,7 +38,7 @@ export class SocketServer {
     await this.observerStorage.init?.();
     console.log('Storage initialized');
     this.httpServer = createServer(healthCheckHandler);
-    this.wsServer = new WebSocket.Server({ server: this.httpServer });
+    this.wsServer = new WebSocketServer({ server: this.httpServer });
     console.log('Server started on port ' + this.port);
 
     this.wsServer.on('connection', (ws) => {

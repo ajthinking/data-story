@@ -136,31 +136,6 @@ export function activate(context: vscode.ExtensionContext) {
     serverLauncher,
   );
 
-  const installScriptsPath = path.join(context.extensionPath, 'install-scripts');
-  const duckdbAsyncPath = path.join(installScriptsPath, 'node_modules', 'duckdb-async');
-
-  // Check if duckdb-async is installed to prevent the user from needing to reload the window for installation.
-  outputChannel.appendLine(`duckdbAsyncPath: ${duckdbAsyncPath}`);
-  outputChannel.appendLine(`fs.existsSync(duckdbAsyncPath): ${fs.existsSync(duckdbAsyncPath)}`);
-  if (!fs.existsSync(duckdbAsyncPath)) {
-    vscode.window.showInformationMessage(
-      'Data-story works best with "duckdb-async". Would you like to install it now?',
-      'Yes',
-      'Later',
-    ).then(selection => {
-      if (selection === 'Yes') {
-        // Create a new terminal
-        const terminal = vscode.window.createTerminal('DuckDB Setup');
-        terminal.show();
-        // change the directory to the install-scripts folder and run npm install duckdb-async
-        terminal.sendText(`cd "${installScriptsPath}"`);
-        terminal.sendText('npm install duckdb-async');
-      } else if (selection === 'Later') {
-        vscode.window.showInformationMessage('Execution data will be stored in memory.');
-      }
-    });
-  }
-
   // --- 5. Auto-start the server (Optional) ---
   // Start the server automatically when the extension activates.
   // Add error handling if startServer can reject promises

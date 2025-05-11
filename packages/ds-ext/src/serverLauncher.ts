@@ -18,7 +18,7 @@ export class ServerLauncher implements vscode.Disposable {
   private status: ServerStatus = ServerStatus.Stopped;
   private statusBarItem: vscode.StatusBarItem;
   private outputChannel: vscode.OutputChannel;
-  private nodejsPackagePath: string;
+  private serverEntryPath: string;
   private port = 3300; // Example: Default port, make this configurable later
   private workspaceDir: string | undefined;
   private isDisposed = false;
@@ -34,7 +34,7 @@ export class ServerLauncher implements vscode.Disposable {
     this.extensionContext = context;
     // todo: replace with published nodejs package
     // Resolve the path to the nodejs package
-    this.nodejsPackagePath = path.join(context.extensionPath, '..', 'nodejs'); // Path to the nodejs package in the monorepo
+    this.serverEntryPath = path.join(context.extensionPath, 'install-scripts');
 
     // Create VS Code UI elements
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -48,6 +48,7 @@ export class ServerLauncher implements vscode.Disposable {
       5000,
       3000,
       this.outputChannel);
+    // Register for disposal
     context.subscriptions.push(this,
       this.serverHealthChecker);
   }
@@ -55,6 +56,7 @@ export class ServerLauncher implements vscode.Disposable {
   // --- Public Methods ---
 
   public async startServer(): Promise<void> {
+    await this.prepareServerEntry();
     if (this.isDisposed) {
       console.warn('[ServerLauncher] Attempted to start server after disposal.');
       return;
@@ -68,13 +70,13 @@ export class ServerLauncher implements vscode.Disposable {
     }
 
     this.updateStatus(ServerStatus.Starting);
-    this.outputChannel.appendLine(`[Launcher] Starting server from: ${this.nodejsPackagePath}`);
+    this.outputChannel.appendLine(`[Launcher] Starting server from: ${this.serverEntryPath}`);
     this.outputChannel.appendLine(`[Launcher] Config: Port=${this.port}, Workspace=${this.workspaceDir}`);
 
     try {
       const nodeCmd = 'node';
       // We need to modify the test-server.ts file to use our port before running the watch:server script
-      const serverEntry = path.join(this.nodejsPackagePath, 'dist', 'ds-server.js');
+      const serverEntry = path.join(this.serverEntryPath, 'ds-server.min.js');
 
       // First, let's check if the file exists
       this.childProcess = cp.spawn(
@@ -90,7 +92,6 @@ export class ServerLauncher implements vscode.Disposable {
         },
       );
 
-      // todo: add health check
       this.childProcess.stdout?.on('data', (data) => {
         const message = data.toString();
         this.outputChannel.append(message); // Log stdout
@@ -162,6 +163,24 @@ export class ServerLauncher implements vscode.Disposable {
 
   // --- Private Methods ---
 
+  private async prepareServerEntry() {
+    const prepareScript = path.join(this.serverEntryPath, 'prepare-ds-server.js');
+    const prepareCmd = 'node';
+    const stdout = cp.execSync(`${prepareCmd} ${prepareScript} --dry-run`);
+    const output = stdout.toString().trim();
+    this.outputChannel.appendLine(`[Launcher] ${output}`);
+    if (output.includes('not found')) {
+      const selection = await vscode.window.showInformationMessage(
+        '@duckdb/node-api is required to run the server with DuckDB storage. Would you like to install it now?',
+        'Yes',
+        'Later, I\'ll do it myself',
+      );
+      if (selection === 'Yes') {
+        cp.spawn(`${prepareCmd} ${prepareScript}`, { stdio: 'inherit', cwd: this.serverEntryPath, shell: true });
+      }
+    }
+  }
+
   private handleServerExit(code: number | null, signal: NodeJS.Signals | string | null): void {
     // Only update status if not already stopped/stopping by explicit command or disposal
     if (this.status !== ServerStatus.Stopping && !this.isDisposed) {
@@ -187,6 +206,7 @@ export class ServerLauncher implements vscode.Disposable {
     this.childProcess?.stderr?.removeAllListeners();
     this.childProcess?.removeAllListeners(); // Remove 'error', 'close' listeners
     this.childProcess = undefined;
+    this.serverHealthChecker?.dispose();
   }
 
   private updateStatus(newStatus: ServerStatus, details?: string): void {
