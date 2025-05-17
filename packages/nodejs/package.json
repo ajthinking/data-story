@@ -1,9 +1,9 @@
 {
   "name": "@data-story/nodejs",
   "version": "0.0.109",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "type": "commonjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "bin": {
     "server": "dist/ds-server.js"
   },

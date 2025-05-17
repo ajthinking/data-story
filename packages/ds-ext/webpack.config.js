@@ -22,7 +22,7 @@ const extensionConfig = {
   externals: [
     {
       vscode: 'commonjs vscode', // the vscode-module is created on-the-fly and must be excluded.
-      'duckdb-async': 'commonjs duckdb-async',
+      '@duckdb/node-api': 'commonjs @duckdb/node-api',
     },
   ],
   resolve: {
