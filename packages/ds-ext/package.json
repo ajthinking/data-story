@@ -129,7 +129,9 @@
       "properties": {
         "datastory.additionalDsServerCliArgs": {
           "type": "array",
-          "items": { "type": "string" },
+          "items": {
+            "type": "string"
+          },
           "default": [],
           "description": "Additional arguments (as string array) to pass to the ds-server process (e.g., for nodejs flags)."
         }

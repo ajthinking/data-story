@@ -15,7 +15,7 @@
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "yarn run -T vitest",
     "build": "tsc && yarn build:server",
-    "build:server": "esbuild --bundle --platform=node ./ds-server.ts --external:@duckdb --outfile=dist/ds-server.min.js",
+    "build:server": "yarn run -T esbuild --bundle --platform=node ./ds-server.ts --external:@duckdb --outfile=dist/ds-server.min.js",
     "release": "yarn run -T release-it",
     "watch:server": "pm2 start ./ds-server.ts --watch --no-daemon"
   },

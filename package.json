@@ -70,6 +70,7 @@
     "@yarnpkg/types": "^4.0.1",
     "autoprefixer": "^10.4.16",
     "cypress": "^13.6.1",
+    "esbuild": "^0.25.4",
     "eslint": "^8.52.0",
     "eslint-plugin-import": "^2.25.0",
     "eslint-plugin-react-hooks": "^4.6.0",
