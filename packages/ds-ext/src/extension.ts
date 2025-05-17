@@ -157,7 +157,6 @@ export function deactivate() {
 
   // Clear global references if needed (optional, helps GC)
   serverLauncher = undefined;
-  diagramEditorProvider.dispose();
   jsonReadonlyProvider?.dispose();
   // diagramEditorProvider = undefined; // If it's not managed by subscriptions directly
   // jsonReadonlyProvider = undefined; // If it's not managed by subscriptions directly
