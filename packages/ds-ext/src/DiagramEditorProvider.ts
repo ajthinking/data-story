@@ -91,6 +91,9 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
       vscode.Uri.file(mainScript),
     );
 
+    const serverEndpoint = this.serverLauncher.serverEndpoint;
+    console.log('serverEndpoint', serverEndpoint);
+    console.log('diagramFilePath', JSON.stringify(diagramFilePath));
     // Return HTML content for the Webview
     return `
         <!DOCTYPE html>
@@ -107,7 +110,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
                 // Provide the VS Code API and initial data (file URI and diagram content)
                 window.vscode = acquireVsCodeApi();
                 window.dsInitialData = {
-                  documentId: "${diagramFilePath}",
+                  documentId: ${JSON.stringify(diagramFilePath)},
                   serverEndpoint: "${this.serverLauncher.serverEndpoint}"
                 }
             </script>

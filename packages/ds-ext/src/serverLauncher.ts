@@ -19,10 +19,9 @@ export class ServerLauncher implements vscode.Disposable {
   private statusBarItem: vscode.StatusBarItem;
   private outputChannel: vscode.OutputChannel;
   private serverEntryPath: string;
-  private port = 3300; // Example: Default port, make this configurable later
+  private port = 3300;
   private workspaceDir: string | undefined;
   private isDisposed = false;
-  private readonly extensionContext: vscode.ExtensionContext;
 
   get serverEndpoint(): string {
     return `ws://localhost:${this.port}`;
@@ -31,10 +30,9 @@ export class ServerLauncher implements vscode.Disposable {
   private serverHealthChecker?: DsServerHealthChecker;
 
   constructor(context: vscode.ExtensionContext) {
-    this.extensionContext = context;
-    // todo: replace with published nodejs package
     // Resolve the path to the nodejs package
     this.serverEntryPath = path.join(context.extensionPath, 'install-scripts');
+    // todo: replace with published nodejs package
 
     // Create VS Code UI elements
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -43,11 +41,13 @@ export class ServerLauncher implements vscode.Disposable {
     this.updateStatus(ServerStatus.Stopped);
     this.statusBarItem.show();
 
-    // Register for disposal
-    this.serverHealthChecker = new DsServerHealthChecker(`http://localhost:${this.port}/health`,
-      5000,
-      3000,
-      this.outputChannel);
+    // Register for disposal with object parameter pattern
+    this.serverHealthChecker = new DsServerHealthChecker({
+      endpoint: `http://localhost:${this.port}/health`,
+      intervalMs: 5000,
+      slowThresholdMs: 3000,
+      outputChannel: this.outputChannel
+    });
     // Register for disposal
     context.subscriptions.push(this,
       this.serverHealthChecker);
@@ -55,6 +55,18 @@ export class ServerLauncher implements vscode.Disposable {
 
   // --- Public Methods ---
 
+  /**
+   *Starts the DataStory Node.js server process.
+   *
+   *This method:
+   *1. Prepares the server entry point by ensuring dependencies are installed
+   *2. Validates workspace path availability
+   *3. Spawns a Node.js child process with the server entry point
+   *4. Sets up event listeners for stdout, stderr, errors, and process exit
+   *5. Starts the health checker to monitor server responsiveness
+   *
+   *@returns Promise that resolves when the server process has been started (not when it's ready)
+   */
   public async startServer(): Promise<void> {
     await this.prepareServerEntry();
     if (this.isDisposed) {
@@ -129,6 +141,17 @@ export class ServerLauncher implements vscode.Disposable {
     }
   }
 
+  /**
+   *Stops the running DataStory server process.
+   *
+   *This method:
+   *1. Checks if the server is currently running
+   *2. Updates the server status to 'Stopping'
+   *3. Sends a termination signal to the child process
+   *4. The actual shutdown is handled by the 'close' event listener in startServer()
+   *
+   *@returns Promise that resolves when the stop command has been issued (not when server is fully stopped)
+   */
   public async stopServer(): Promise<void> {
     if (this.isDisposed) {
       console.warn('[ServerLauncher] Attempted to stop server after disposal.');
@@ -146,6 +169,15 @@ export class ServerLauncher implements vscode.Disposable {
     terminate(this.childProcess.pid!);
   }
 
+  /**
+   *Restarts the DataStory server process.
+   *
+   *This method:
+   *1. If server is running, stops it and sets up a one-time listener to start it again after shutdown
+   *2. If server is not running, starts it immediately
+   *
+   *@returns Promise that resolves when the restart command has been processed
+   */
   public async restartServer(): Promise<void> {
     if (this.isDisposed) {
       console.warn('[ServerLauncher] Attempted to restart server after disposal.');
@@ -167,8 +199,16 @@ export class ServerLauncher implements vscode.Disposable {
     }
   }
 
-  // --- Private Methods ---
-
+  /**
+   *Prepares the server entry point by ensuring required dependencies are installed.
+   *
+   *This method:
+   *1. Executes the prepare-ds-server.js script in dry-run mode to check dependencies
+   *2. If dependencies are missing, prompts the user to install them
+   *3. Executes the installation if the user agrees
+   *
+   *@private
+   */
   private async prepareServerEntry() {
     const prepareScript = path.join(this.serverEntryPath, 'prepare-ds-server.js');
     const prepareCmd = 'node';
@@ -187,6 +227,19 @@ export class ServerLauncher implements vscode.Disposable {
     }
   }
 
+  /**
+   *Handles the server process exit event.
+   *
+   *This method:
+   *1. Updates the server status based on exit code and signal
+   *2. Shows appropriate notifications for unexpected exits
+   *3. Cleans up process listeners and references
+   *4. Disposes of the health checker
+   *
+   *@param code - The exit code from the process (null if process was terminated by signal)
+   *@param signal - The signal that caused the exit (null if process exited normally)
+   *@private
+   */
   private handleServerExit(code: number | null, signal: NodeJS.Signals | string | null): void {
     // Only update status if not already stopped/stopping by explicit command or disposal
     if (this.status !== ServerStatus.Stopping && !this.isDisposed) {
@@ -215,6 +268,18 @@ export class ServerLauncher implements vscode.Disposable {
     this.serverHealthChecker?.dispose();
   }
 
+  /**
+   *Updates the server status and reflects it in the VS Code status bar.
+   *
+   *This method:
+   *1. Updates the internal status state
+   *2. Sets appropriate status bar text, tooltip, and command based on the new status
+   *3. Logs the status change to the output channel
+   *
+   *@param newStatus - The new server status
+   *@param details - Optional details about the status change
+   *@private
+   */
   private updateStatus(newStatus: ServerStatus, details?: string): void {
     this.status = newStatus;
     let statusBarText = '';
@@ -253,6 +318,12 @@ export class ServerLauncher implements vscode.Disposable {
     this.outputChannel.appendLine(`[Launcher] Status changed to: ${newStatus}${details ? ' (' + details + ')' : ''}`);
   }
 
+  /**
+   *Gets the path of the first workspace folder.
+   *
+   *@returns The filesystem path of the first workspace folder, or undefined if no workspace is open
+   *@private
+   */
   private getWorkspacePath(): string | undefined {
     // Return the path of the first workspace folder
     const folders = vscode.workspace.workspaceFolders;
@@ -262,6 +333,17 @@ export class ServerLauncher implements vscode.Disposable {
     return undefined;
   }
 
+  /**
+   *Implements vscode.Disposable interface.
+   *Cleans up resources when the extension is deactivated.
+   *
+   *This method:
+   *1. Marks the launcher as disposed
+   *2. Attempts to gracefully stop the server
+   *3. Disposes of UI components (status bar, output channel)
+   *4. Forces termination of the child process if necessary
+   *5. Updates the final status
+   */
   dispose() {
     this.outputChannel.appendLine('[Launcher] Disposing...');
     this.isDisposed = true;

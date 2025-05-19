@@ -12,13 +12,46 @@ export interface HealthCheckWithTime {
   durationMs: number;
 }
 
+// Define interface for constructor parameters
+export interface DsServerHealthCheckerOptions {
+  endpoint: string;
+  intervalMs: number;
+  slowThresholdMs: number;
+  outputChannel: OutputChannel;
+}
+
 export class DsServerHealthChecker {
   private subscription?: Subscription;
   private health$: Observable<HealthCheckWithTime>;
+  private endpoint: string;
+  private intervalMs: number;
+  private slowThresholdMs: number;
+  private outputChannel: OutputChannel;
 
+  constructor(options: DsServerHealthCheckerOptions);
   constructor(
-    private endpoint: string, private intervalMs: number, private slowThresholdMs: number,
-    private outputChannel: OutputChannel) {
+    endpoint: string, intervalMs: number, slowThresholdMs: number, outputChannel: OutputChannel
+  );
+  constructor(
+    endpointOrOptions: string | DsServerHealthCheckerOptions,
+    intervalMs?: number,
+    slowThresholdMs?: number,
+    outputChannel?: OutputChannel
+  ) {
+    // Handle both parameter patterns
+    if (typeof endpointOrOptions === 'object') {
+      // Object parameter pattern
+      this.endpoint = endpointOrOptions.endpoint;
+      this.intervalMs = endpointOrOptions.intervalMs;
+      this.slowThresholdMs = endpointOrOptions.slowThresholdMs;
+      this.outputChannel = endpointOrOptions.outputChannel;
+    } else {
+      // Individual parameters pattern
+      this.endpoint = endpointOrOptions;
+      this.intervalMs = intervalMs!;
+      this.slowThresholdMs = slowThresholdMs!;
+      this.outputChannel = outputChannel!;
+    }
     this.health$ = interval(this.intervalMs).pipe(
       exhaustMap(async () => {
         const start = performance.now();

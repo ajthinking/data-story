@@ -1,3 +1,15 @@
+/**
+ * Entry point for the DataStory Node.js server.
+ *
+ * This script:
+ * 1. Loads environment variables from .env.local
+ * 2. Parses command-line arguments for port and working directory
+ * 3. Changes working directory to the specified or default
+ * 4. Initializes and starts the DataStory socket server with specified port and working directory
+ *
+ * @param port - The port number to use for the server (default: 3300)
+ * @param workingDir - The working directory for the server (default: current directory)
+ */
 import { Application, coreNodeProvider } from '@data-story/core';
 import * as dotenv from 'dotenv';
 import { hubspotProvider } from '@data-story/hubspot';

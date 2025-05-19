@@ -1,21 +1,18 @@
 import * as vscode from 'vscode';
 import path from 'path';
-import * as fs from 'fs';
 import { TextDecoder } from 'util'; // Node.js built-in
-// --- Your existing imports ---
 import { DiagramEditorProvider } from './DiagramEditorProvider';
 import { createDemosDirectory } from './commands/createDemosDirectory';
 import { JsonReadonlyProvider } from './JsonReadonlyProvider';
-import { DiagramDocument } from './DiagramDocument'; // Assuming this is used by DiagramEditorProvider
+import { DiagramDocument } from './DiagramDocument';
 import { loadWorkspaceEnv } from './utils/loadWorkspaceEnv';
 
-// --- New Import ---
-import { ServerLauncher } from './serverLauncher'; // Adjust path if needed
+import { ServerLauncher } from './serverLauncher';
 
 // --- Global Variables ---
 let diagramEditorProvider: DiagramEditorProvider;
 let jsonReadonlyProvider: JsonReadonlyProvider | undefined;
-let serverLauncher: ServerLauncher | undefined; // <-- Add ServerLauncher instance
+let serverLauncher: ServerLauncher | undefined;
 
 function createReadonlyUri(args: vscode.Uri): vscode.Uri {
   const fileName = path.basename(args.path, '.json');
@@ -30,12 +27,9 @@ export function activate(context: vscode.ExtensionContext) {
   loadWorkspaceEnv(); // Load environment variables first
 
   // --- 1. Initialize Server Launcher ---
-  // It needs the context for paths and subscriptions
   serverLauncher = new ServerLauncher(context);
-  // Note: The ServerLauncher constructor should add itself to context.subscriptions
 
   // --- 2. Initialize Your Providers (Pass ServerLauncher to DiagramEditorProvider) ---
-  // Pass the ServerLauncher instance to DiagramEditorProvider so it can register documents with the Node.js server
   diagramEditorProvider = new DiagramEditorProvider(context, serverLauncher);
   jsonReadonlyProvider = new JsonReadonlyProvider();
   context.subscriptions.push(
@@ -108,12 +102,10 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('datastory.restartServer', () => {
       serverLauncher?.restartServer();
     }),
-    // Add command IDs to package.json -> contributes.commands
-    // e.g., "datastory.startServer", "DataStory: Start Server"
   );
 
   // --- Existing Output Channel & Custom Editor Registration ---
-  const outputChannel = vscode.window.createOutputChannel('DS-Ext Server'); // Maybe rename for clarity
+  const outputChannel = vscode.window.createOutputChannel('DS-Ext Server');
   outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');
   outputChannel.appendLine(`ds-ext is installed at ${context.extensionPath}`);
   // outputChannel.show();
@@ -124,7 +116,6 @@ export function activate(context: vscode.ExtensionContext) {
       diagramEditorProvider,
       {
         webviewOptions: {
-          // ✔️ Enable context retention
           retainContextWhenHidden: true,
         },
         supportsMultipleEditorsPerDocument: true,
@@ -137,8 +128,6 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   // --- 5. Auto-start the server (Optional) ---
-  // Start the server automatically when the extension activates.
-  // Add error handling if startServer can reject promises
   serverLauncher?.startServer().catch(err => {
     console.error('Failed to auto-start server:', err);
     vscode.window.showErrorMessage('Failed to automatically start the DataStory server.');
@@ -147,14 +136,8 @@ export function activate(context: vscode.ExtensionContext) {
   console.log('ds-ext activation complete.');
 }
 
-// --- Deactivation Function ---
 export function deactivate() {
   console.log('Deactivating "ds-ext" extension.');
-  // Disposal of serverLauncher, diagramEditorProvider, jsonReadonlyProvider,
-  // commands, listeners, etc., should be handled automatically because they
-  // (or the objects that own them) were pushed onto context.subscriptions.
-  // The ServerLauncher's dispose method will handle stopping the server process.
-
   // Clear global references if needed (optional, helps GC)
   serverLauncher = undefined;
   jsonReadonlyProvider?.dispose();
