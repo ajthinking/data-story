@@ -7,17 +7,13 @@ import { JsonObserverStorage } from './jsonObserverStorage';
 
 export const createStorage = (): ObserverStorage => {
   const config = getWorkingDirConfig();
-  console.log('Creating storage', config.storage);
   if (config.storage === 'JSON') {
     const filePath = createDataStoryJSONPath({ config, diagramId: 'todo-diagramId' });
-    console.log('Using JSON storage', filePath);
     return new JsonObserverStorage(filePath);
   } else if (config.storage === 'DUCK_DB') {
     const dbPath = createDataStoryDBPath({ config });
-    console.log('Using DuckDB storage', dbPath);
     return new DuckDBStorage(dbPath);
   }
-  console.log('Using in-memory storage');
   return new InMemoryObserverStorage('todo-diagramId');
 };
 

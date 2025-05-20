@@ -12,7 +12,6 @@ export const observeLinkCounts: MessageHandler<ObserveLinkCounts> = async({
   observerController.addLinkCountsObserver({
     ...data,
     onReceive: ({ links }) => {
-      console.count(RequestObserverType.observeLinkCounts);
       ws.send(JSON.stringify({
         links: links,
         type: RequestObserverType.observeLinkCounts,
