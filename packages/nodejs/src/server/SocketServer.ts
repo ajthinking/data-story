@@ -3,7 +3,7 @@ import { Application, ObserverController, ObserverStorage } from '@data-story/co
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
 import { createStorage } from '../storage/createStorage';
-import { healthCheckHandler } from './health-check';
+import { healthCheckHandler } from './healthCheck';
 import { createServer, Server } from 'http';
 
 interface SocketServerOptions {

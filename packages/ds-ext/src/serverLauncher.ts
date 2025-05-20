@@ -53,8 +53,6 @@ export class ServerLauncher implements vscode.Disposable {
       this.serverHealthChecker);
   }
 
-  // --- Public Methods ---
-
   /**
    *Starts the DataStory Node.js server process.
    *

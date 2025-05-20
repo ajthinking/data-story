@@ -109,6 +109,7 @@ export class DuckDBStorage implements ObserverStorage {
     const conn = this.connection!;
     const prepared = await conn.prepare('DELETE FROM linkItems WHERE linkId = $linkId');
     prepared.bind({ linkId });
+    await prepared.run();
     await this.appendLinkItems(linkId, items);
   }
 
