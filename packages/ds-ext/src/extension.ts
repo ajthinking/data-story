@@ -104,11 +104,8 @@ export function activate(context: vscode.ExtensionContext) {
     }),
   );
 
-  // --- Existing Output Channel & Custom Editor Registration ---
-  const outputChannel = vscode.window.createOutputChannel('DS-Ext Server');
-  outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');
-  outputChannel.appendLine(`ds-ext is installed at ${context.extensionPath}`);
-  // outputChannel.show();
+  serverLauncher?.outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');
+  serverLauncher?.outputChannel.appendLine(`ds-ext is installed at ${context.extensionPath}`);
 
   context.subscriptions.push(
     vscode.window.registerCustomEditorProvider(

@@ -14,10 +14,10 @@ enum ServerStatus {
 }
 
 export class ServerLauncher implements vscode.Disposable {
+  public outputChannel: vscode.OutputChannel;
   private childProcess: cp.ChildProcess | undefined;
   private status: ServerStatus = ServerStatus.Stopped;
   private statusBarItem: vscode.StatusBarItem;
-  private outputChannel: vscode.OutputChannel;
   private serverEntryPath: string;
   private port = 3300;
   private workspaceDir: string | undefined;
