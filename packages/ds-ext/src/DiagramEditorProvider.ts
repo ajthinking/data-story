@@ -4,21 +4,16 @@ import path from 'path';
 import { MessageHandler } from './MessageHandler';
 import { onToast } from './messageHandlers/onToast';
 import { onEdgeDoubleClick } from './messageHandlers/onEdgeDoubleClick';
-import { loadConfig } from './loadConfig';
-import { DataStoryConfig } from './DataStoryConfig';
 import { ServerLauncher } from './serverLauncher';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
   private contentMap = new Map<string, DiagramDocument>();
-  private config: DataStoryConfig;
 
   constructor(
     private readonly context: vscode.ExtensionContext,
     private readonly serverLauncher: ServerLauncher,
-  ) {
-    this.config = loadConfig(this.context);
-  }
+  ) {}
 
   /**
    * openCustomDocument is called when the first time an editor for a given resource is opened.

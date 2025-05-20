@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export interface DsServerConfig {
-  storage: 'DUCK_DB' | 'IN_MEMORY',
+  storage: 'DUCK_DB' | 'JSON' | 'IN_MEMORY',
 }
 
 const defaultConfig: DsServerConfig = {
