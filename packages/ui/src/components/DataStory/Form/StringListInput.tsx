@@ -25,7 +25,12 @@ function StringListInputComponent({
     setValue(value);
   }, [setValue]);
 
-  return (<div className="group flex flex-col-reverse bg-gray-50 h-full border-gray-50 border-2">
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    // Stop the event from bubbling up to the VSCode iframe event handler
+    e.stopPropagation();
+  }, []);
+
+  return (<div onKeyDown={handleKeyDown} className="group flex flex-col-reverse bg-gray-50 h-full border-gray-50 border-2">
     <div className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
       <CodeMirror
         className="text-xs h-full w-full bg-white font-mono"

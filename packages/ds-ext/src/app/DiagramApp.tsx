@@ -14,14 +14,8 @@ export default function DiagramApp() {
     }, 100), // Debounced with 100ms delay
     [client]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    // Stop the event from bubbling up to the VSCode iframe event handler
-    e.stopPropagation();
-  }, []);
-
   return (
-    <div onKeyDown={handleKeyDown}
-      style={{ width: '100%', height: '100vh' }}>
+    <div style={{ width: '100%', height: '100vh' }}>
       <DataStory
         client={client}
         hideSidebar={false}

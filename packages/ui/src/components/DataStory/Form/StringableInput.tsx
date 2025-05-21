@@ -62,8 +62,13 @@ export function StringableInputComponent({
     setValue(value);
   }, [setValue]);
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    // Stop the event from bubbling up to the VSCode iframe event handler
+    e.stopPropagation();
+  }, []);
+
   return (
-    <div className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
+    <div onKeyDown={handleKeyDown} className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
       <CodeMirror
         className="text-xs h-full w-full bg-white font-mono"
         value={(getValues() ?? '').toString()}
