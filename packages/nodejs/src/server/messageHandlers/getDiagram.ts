@@ -12,17 +12,21 @@ export const getDiagram: MessageHandler<GetDiagramMessage> = async ({
   ws,
   data,
 }: MessageHandlerParams<GetDiagramMessage>) => {
+  let diagram: Diagram | undefined;
+
   if ('diagramId' in data && typeof data.diagramId === 'string') {
-    const diagramData = await fs.readFile(data.diagramId, 'utf-8');
-    const diagram = JSON.parse(diagramData);
-    ws.send(JSON.stringify({
-      ...data,
-      type: 'getDiagram',
-      diagram,
-    }));
-    return;
+    try {
+      const diagramData = await fs.readFile(data.diagramId, 'utf-8');
+      diagramData && (diagram = JSON.parse(diagramData));
+    } catch (error) {
+      console.error('Error reading diagram file:', error);
+    }
   }
-  const diagram = new Diagram();
+
+  if (!diagram) {
+    diagram = new Diagram();
+  }
+
   ws.send(JSON.stringify({
     ...data,
     type: 'getDiagram',
