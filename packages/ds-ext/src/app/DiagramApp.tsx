@@ -14,8 +14,14 @@ export default function DiagramApp() {
     }, 100), // Debounced with 100ms delay
     [client]);
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    // Stop the event from bubbling up to the VSCode iframe event handler
+    e.stopPropagation();
+  }, []);
+
   return (
-    <div style={{ width: '100%', height: '100vh' }}>
+    <div onKeyDown={handleKeyDown}
+      style={{ width: '100%', height: '100vh' }}>
       <DataStory
         client={client}
         hideSidebar={false}
@@ -24,7 +30,7 @@ export default function DiagramApp() {
         key={'abc'}
         onChange={handleChange}
         onDrop={onDrop}
-        controls={[<RunControl/>, <AddNodeControl/>, <CopyAsJsonControl/>]}
+        controls={[<RunControl />, <AddNodeControl />, <CopyAsJsonControl />]}
       />
       <VsCodeToast postMessage={window.vscode.postMessage} />
     </div>
