@@ -46,7 +46,7 @@ export class ServerLauncher implements vscode.Disposable {
       endpoint: `http://localhost:${this.port}/health`,
       intervalMs: 5000,
       slowThresholdMs: 3000,
-      outputChannel: this.outputChannel
+      outputChannel: this.outputChannel,
     });
     // Register for disposal
     context.subscriptions.push(this,

@@ -36,7 +36,7 @@ export class DsServerHealthChecker {
     endpointOrOptions: string | DsServerHealthCheckerOptions,
     intervalMs?: number,
     slowThresholdMs?: number,
-    outputChannel?: OutputChannel
+    outputChannel?: OutputChannel,
   ) {
     // Handle both parameter patterns
     if (typeof endpointOrOptions === 'object') {

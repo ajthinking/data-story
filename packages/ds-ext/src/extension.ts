@@ -136,6 +136,7 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() {
   console.log('Deactivating "ds-ext" extension.');
   // Clear global references if needed (optional, helps GC)
+  serverLauncher?.dispose();
   serverLauncher = undefined;
   jsonReadonlyProvider?.dispose();
   // diagramEditorProvider = undefined; // If it's not managed by subscriptions directly
