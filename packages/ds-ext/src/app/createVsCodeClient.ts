@@ -1,28 +1,55 @@
-import { Observable } from 'rxjs';
+import { Observable, retry, share } from 'rxjs';
 import {
   createTransport,
   type TransportConfig,
-  type WorkspaceApiClientImplement,
   WorkspaceApiClient,
+  type WorkspaceApiClientImplement,
 } from '@data-story/ui';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { dsExtensionInitialData } from './dsExtensionInitialData';
 
-function createVsCodeTransport(vscode: any) {
+function createSocketTransport(socket: WebSocketSubject<any>) {
+  const maxReconnectTries = 100;
+  const reconnectTimeoutMs = 1000;
+  let messages$: Observable<{ msgId: string; [p: string]: unknown }> = socket.pipe(
+    retry({ count: maxReconnectTries, delay: reconnectTimeoutMs }),
+    share(),
+  );
   const config: TransportConfig = {
     postMessage: (msg) => {
-      vscode.postMessage(msg);
+      socket.next(msg);
     },
-    messages$: new Observable<{ msgId: string; [p: string]: unknown }>((subscriber) => {
-      window.addEventListener('message', (event) => {
-        if (event.data.msgId) {
-          subscriber.next(event.data);
-        }
-      });
-    }),
+    messages$: messages$,
   };
   return createTransport(config);
 }
 
-export const createVsCodeClient = (vscode: any): WorkspaceApiClientImplement => {
-  const transport = createVsCodeTransport(vscode);
-  return new WorkspaceApiClient(transport);
+export const createVsCodeClient = (): {
+  client: WorkspaceApiClientImplement,
+  dispose: () => void
+} => {
+  const socket$ = webSocket({
+    url: dsExtensionInitialData().serverEndpoint,
+    openObserver: {
+      next: () => {
+        console.log(`Connected to server: ${dsExtensionInitialData().serverEndpoint}`);
+      },
+    },
+    closeObserver: {
+      next: () => {
+        console.log('WebSocket closed.');
+      },
+    },
+  });
+
+  const socketKeepAlive = socket$.subscribe();
+
+  const transport = createSocketTransport(socket$);
+  return {
+    client: new WorkspaceApiClient(transport),
+    dispose: () => {
+      socketKeepAlive.unsubscribe();
+      socket$.complete();
+    },
+  };
 };

@@ -36,7 +36,7 @@ export class CustomizeJSClient implements WorkspaceApiClientImplement {
     this.jsClient.run(params);
   };
 
-  getDiagram = async(params: { path?: string }) => {
+  getDiagram = async(params: { diagramId?: string }) => {
     return this.diagram;
   };
 

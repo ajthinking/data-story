@@ -22,13 +22,9 @@
     ],
     "declaration": true
   },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
-  },
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "./ds-server.ts"
   ],
   "exclude": [
     "./node_modules"

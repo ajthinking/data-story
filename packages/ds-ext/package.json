@@ -13,7 +13,11 @@
   ],
   "activationEvents": [
     "onCommand:ds-ext.showReactApp",
-    "onCommand:ds-ext.openAsJson"
+    "onCommand:ds-ext.openAsJson",
+    "onCommand:datastory.showUI",
+    "onCommand:datastory.startServer",
+    "onCommand:datastory.stopServer",
+    "onCommand:datastory.restartServer"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -25,12 +29,28 @@
       },
       {
         "command": "ds-ext.showDiagramPreview",
-        "title": "Show Diagram Preview11",
+        "title": "Show Diagram Preview",
         "category": "DataStory",
         "icon": {
           "light": "./themes/preview-dark.svg",
           "dark": "./themes/preview-white.svg"
         }
+      },
+      {
+        "command": "datastory.showUI",
+        "title": "DataStory: Show UI"
+      },
+      {
+        "command": "datastory.startServer",
+        "title": "DataStory: Start Server"
+      },
+      {
+        "command": "datastory.stopServer",
+        "title": "DataStory: Stop Server"
+      },
+      {
+        "command": "datastory.restartServer",
+        "title": "DataStory: Restart Server"
       }
     ],
     "menus": {
@@ -102,6 +122,20 @@
           "name": "Node Details"
         }
       ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "DataStory Extension Configuration",
+      "properties": {
+        "datastory.additionalDsServerCliArgs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Additional arguments (as string array) to pass to the ds-server process (e.g., for nodejs flags)."
+        }
+      }
     }
   },
   "vsce": {
@@ -109,10 +143,10 @@
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
-    "build": "yarn run -T webpack && yarn run -T vite build",
-    "watch:extension": "yarn run -T webpack --watch",
-    "watch:app": " yarn run -T vite build -w",
-    "package": "yarn run -T webpack --mode production --devtool hidden-source-map",
+    "build": "yarn run -T set-env NODE_ENV=production && yarn run -T webpack && yarn run -T vite build",
+    "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T webpack --watch",
+    "watch:app": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w",
+    "package": "yarn run -T set-env NODE_ENV=production && yarn run -T webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "yarn run compile-tests && yarn run build && yarn run lint",
@@ -143,10 +177,10 @@
     "@data-story/nodejs": "workspace:*",
     "@data-story/ui": "workspace:*",
     "dotenv": "^16.4.0",
-    "duckdb-async": "1.1.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "terminate": "^2.8.0"
   },
   "repository": {
     "type": "git",

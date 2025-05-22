@@ -1,0 +1,180 @@
+<mxfile host="65bd71144e">
+    <diagram id="_xOPVgzpJdSz8g3OR4fl" name="after">
+        <mxGraphModel dx="1827" dy="2742" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-1" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-3" target="Px8ffN_2vrCRR-E6GCHT-4">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-3" value="Diagram UI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="100" y="-190" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-15" style="edgeStyle=none;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;endArrow=classic;endFill=1;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-4" target="Px8ffN_2vrCRR-E6GCHT-6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-4" value="VSCode Client" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="100" y="270" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-6" value="&lt;font color=&quot;#4d4d4d&quot;&gt;DiagramEditorProvider.ts&lt;br&gt;&lt;/font&gt;&lt;br&gt;getWebviewContent" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="270" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-16" style="edgeStyle=none;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;endArrow=classic;endFill=1;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-9" target="Px8ffN_2vrCRR-E6GCHT-6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-9" value="&lt;font color=&quot;#4d4d4d&quot;&gt;DiagramEditorProvider.ts&lt;br&gt;&lt;/font&gt;&lt;br&gt;resolveCustomEditor" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="-10" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-11" value="get dsInitialData" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="260" y="270" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-17" value="when user open a .ds file, &lt;br&gt;Set the webview's HTML content" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=Helvetica;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="500" y="130" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-18" value="&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;font color=&quot;#000000&quot;&gt;resolveCustomEditor&lt;/font&gt;&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;font-size: 11.9px;&quot;&gt;&lt;font color=&quot;#4d4d4d&quot;&gt;The handlers in resolveCustomEditor only handle toast and onEdgeDoubleClick events.&lt;/font&gt;&lt;/span&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 12px;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="shape=note;strokeWidth=2;fontSize=14;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#666600;fontFamily=Helvetica;align=left;" vertex="1" parent="1">
+                    <mxGeometry x="580" y="20" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-27" value="" style="edgeStyle=none;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;endArrow=classic;endFill=1;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-19" target="Px8ffN_2vrCRR-E6GCHT-26">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-19" value="&lt;font color=&quot;#4d4d4d&quot;&gt;serverLauncher.ts&lt;br&gt;&lt;/font&gt;&lt;br&gt;ServerLauncher" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="655" y="270" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-29" value="" style="edgeStyle=none;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;endArrow=classic;endFill=1;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-26" target="Px8ffN_2vrCRR-E6GCHT-28">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-26" value="&lt;font color=&quot;#4d4d4d&quot;&gt;ds-server.ts&lt;br&gt;&lt;/font&gt;&lt;br&gt;startServer" style="whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="1030" y="270" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-28" value="&lt;font color=&quot;#4d4d4d&quot;&gt;socketServer.ts&lt;br&gt;&lt;/font&gt;&lt;br&gt;SocketServer" style="whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="1030" y="-190" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-30" value="start socket server" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=Helvetica;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="1100" y="160" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-31" value="" style="endArrow=classic;startArrow=classic;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-3" target="Px8ffN_2vrCRR-E6GCHT-28">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="740" y="120" as="sourcePoint"/>
+                        <mxPoint x="790" y="70" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-32" value="socket message" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=Helvetica;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="565" y="-195" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-33" value="" style="endArrow=classic;startArrow=classic;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-3" target="Px8ffN_2vrCRR-E6GCHT-9">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="620" y="120" as="sourcePoint"/>
+                        <mxPoint x="670" y="70" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-34" value="VSCode postMessage" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=Helvetica;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="-105" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-36" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontFamily=Helvetica;fontColor=#4D4D4D;endArrow=classic;endFill=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-35" target="Px8ffN_2vrCRR-E6GCHT-19">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-37" style="edgeStyle=none;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontFamily=Helvetica;fontColor=#4D4D4D;endArrow=classic;endFill=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="Px8ffN_2vrCRR-E6GCHT-35" target="Px8ffN_2vrCRR-E6GCHT-6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-35" value="&lt;font color=&quot;#4d4d4d&quot;&gt;extension.ts&lt;/font&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="540" y="410" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-38" value="new ServerLauncher(context)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=Helvetica;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="655" y="370" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-40" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 12px; text-align: center;&quot;&gt;SocketServer&lt;/span&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;font color=&quot;#4d4d4d&quot;&gt;&lt;span style=&quot;font-size: 11.9px;&quot;&gt;The handlers in SocketServer handle events other than toast and onEdgeDoubleClick.&lt;/span&gt;&lt;/font&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-size: 12px;&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="shape=note;strokeWidth=2;fontSize=14;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#666600;fontFamily=Helvetica;align=left;" vertex="1" parent="1">
+                    <mxGeometry x="1200" y="-240" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-41" value="" style="endArrow=none;dashed=1;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="357" y="550" as="sourcePoint"/>
+                        <mxPoint x="357" y="-420" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-42" value="" style="endArrow=none;dashed=1;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="918" y="570" as="sourcePoint"/>
+                        <mxPoint x="918" y="-440" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-21" value="start the socket server using&amp;nbsp;ds-server.min.js" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=default;fontFamily=Helvetica;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="770" y="230" width="260" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-39" value="new DiagramEditorProvider(context, serverLauncher);" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=default;fontFamily=Helvetica;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="230" y="370" width="310" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-47" value="&lt;span style=&quot;color: rgb(77, 77, 77); font-size: 12px;&quot;&gt;ds-ext UI layer&lt;/span&gt;" style="shape=note;strokeWidth=2;fontSize=14;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#666600;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="-420" width="110.00000000000001" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-48" value="&lt;span style=&quot;color: rgb(77, 77, 77); font-size: 12px;&quot;&gt;ds-ext VSCode Server layer&lt;/span&gt;" style="shape=note;strokeWidth=2;fontSize=14;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#666600;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+                    <mxGeometry x="580" y="-420" width="110.00000000000001" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="Px8ffN_2vrCRR-E6GCHT-49" value="&lt;span style=&quot;color: rgb(77, 77, 77); font-size: 12px;&quot;&gt;ds-nodejs Socket Server layer&lt;/span&gt;" style="shape=note;strokeWidth=2;fontSize=14;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#666600;labelBackgroundColor=none;fontFamily=Helvetica;" vertex="1" parent="1">
+                    <mxGeometry x="1140" y="-420" width="110.00000000000001" height="80" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="I1b4N8MrnVlwlFKcgvAj" name="before">
+        <mxGraphModel dx="1005" dy="2003" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-3" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="pdU1W_6GgI6_twobgKY6-1" target="pdU1W_6GgI6_twobgKY6-2">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-1" value="Diagram UI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+                    <mxGeometry x="100" y="-10" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-2" value="VSCode Client" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="100" y="270" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-8" value="" style="edgeStyle=none;html=1;fontColor=#4D4D4D;" edge="1" parent="1" source="pdU1W_6GgI6_twobgKY6-4" target="pdU1W_6GgI6_twobgKY6-7">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-4" value="&lt;font color=&quot;#4d4d4d&quot;&gt;DiagramEditorProvider.ts&lt;br&gt;&lt;/font&gt;&lt;br&gt;resolveCustomEditor" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="270" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-7" value="observerStorage" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="130" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-13" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontColor=#4D4D4D;endArrow=classic;endFill=1;" edge="1" parent="1" source="pdU1W_6GgI6_twobgKY6-9" target="pdU1W_6GgI6_twobgKY6-7">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-9" value="&lt;font color=&quot;#4d4d4d&quot;&gt;DiagramEditorProvider.ts&lt;br&gt;&lt;/font&gt;&lt;br&gt;openCustomDocument" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;rounded=1;" vertex="1" parent="1">
+                    <mxGeometry x="425" y="-10" width="135" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-11" value="" style="endArrow=classic;startArrow=classic;html=1;fontColor=#4D4D4D;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pdU1W_6GgI6_twobgKY6-2" target="pdU1W_6GgI6_twobgKY6-4">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="390" y="460" as="sourcePoint"/>
+                        <mxPoint x="440" y="410" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-12" value="VSCode.postMessage" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="290" y="260" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-14" value="initial Storage" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="500" y="80" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pdU1W_6GgI6_twobgKY6-15" value="handlers using storage" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="500" y="210" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="nua2Y7bhf_i4EmzkiWJa-1" value="&lt;span style=&quot;color: rgb(77, 77, 77); font-size: 11.9px;&quot;&gt;The openCustomDocument function is invoked the first time an editor for a given .ds is opened.&lt;/span&gt;" style="shape=note;strokeWidth=2;fontSize=14;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#666600;labelBackgroundColor=none;fontFamily=Helvetica;align=left;" vertex="1" parent="1">
+                    <mxGeometry x="590" y="-60" width="210" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="nua2Y7bhf_i4EmzkiWJa-2" value="" style="endArrow=classic;startArrow=classic;html=1;fontFamily=Helvetica;fontColor=#4D4D4D;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pdU1W_6GgI6_twobgKY6-1" target="pdU1W_6GgI6_twobgKY6-4">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="310" y="30" as="sourcePoint"/>
+                        <mxPoint x="360" y="-20" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="nua2Y7bhf_i4EmzkiWJa-3" value="VSCode postMessage" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontFamily=Helvetica;fontColor=#4D4D4D;" vertex="1" parent="1">
+                    <mxGeometry x="285" y="95" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="nua2Y7bhf_i4EmzkiWJa-4" value="&lt;span style=&quot;color: rgb(17, 0, 0); font-size: 11.9px;&quot;&gt;Handle all handlers in resolveCustomEditor.&lt;/span&gt;" style="shape=note;strokeWidth=2;fontSize=14;size=20;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#666600;labelBackgroundColor=none;fontFamily=Helvetica;align=left;" vertex="1" parent="1">
+                    <mxGeometry x="580" y="275" width="250" height="50" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

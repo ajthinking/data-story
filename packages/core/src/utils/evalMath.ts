@@ -10,7 +10,8 @@ export function evalMath(expression: string): number {
   // Evaluate the expression
   let result: number;
   try {
-    result = eval(expression);
+    // https://esbuild.github.io/content-types/#direct-eval
+    result = (0, eval)(expression);
   } catch (error: any) {
     throw new Error(`Error evaluating expression: ${error.message}`);
   }

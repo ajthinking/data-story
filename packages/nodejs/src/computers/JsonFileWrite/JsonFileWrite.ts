@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import { Computer, str } from '@data-story/core';
 import * as path from 'path';
+import { getWorkingDirConfig } from '../../server/getWorkingDirConfig';
 
 export const JsonFileWrite: Computer = {
   name: 'JsonFile.write',
@@ -34,7 +35,7 @@ export const JsonFileWrite: Computer = {
     // Resolve the full path based on whether it's absolute or relative
     const fullPath = isAbsolutePath
       ? filePath // Use the absolute path directly
-      : path.join(process.env.WORKSPACE_FOLDER_PATH as string, filePath); // Prepend the workspace root for relative paths
+      : path.join(getWorkingDirConfig().workingDir, filePath); // Prepend the workspace root for relative paths
 
     try {
       // Create the directory recursively if it doesn't exist

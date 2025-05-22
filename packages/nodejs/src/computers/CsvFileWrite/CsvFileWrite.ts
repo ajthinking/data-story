@@ -2,6 +2,7 @@ import fs from 'fs';
 import { Computer, ItemValue, ItemWithParams, str } from '@data-story/core';
 import * as path from 'path';
 import { stringify } from 'csv-stringify';
+import { getWorkingDirConfig } from '../../server/getWorkingDirConfig';
 
 export const CsvFileWrite: Computer = {
   name: 'CsvFile.write',
@@ -37,7 +38,7 @@ export const CsvFileWrite: Computer = {
       const isAbsolutePath = path.isAbsolute(filePath);
       const fullPath = isAbsolutePath
         ? filePath
-        : path.join(process.env.WORKSPACE_FOLDER_PATH as string, filePath);
+        : path.join(getWorkingDirConfig().workingDir, filePath);
       // Create the directory recursively if it doesn't exist
       await fs.promises.mkdir(path.dirname(fullPath), { recursive: true });
 

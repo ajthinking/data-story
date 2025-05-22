@@ -4,12 +4,14 @@ import { ExecutionMemory } from './ExecutionMemory'
 import { ItemWithParams, isItemWithParams } from './ItemWithParams'
 import { PortName } from './types/Port'
 import { Node } from './types/Node';
+import rfdc from 'rfdc';
 
+const cloneDeep = rfdc();
 export type PortLinkMap = Record<PortName, LinkId[]>
 
 const formatItems = (items: ItemValue[]): ItemValue[] => {
   try {
-    return structuredClone(items);
+    return cloneDeep(items);
   } catch (e) {
     try {
       return JSON.parse(JSON.stringify(items));

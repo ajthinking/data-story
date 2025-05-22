@@ -1,6 +1,6 @@
 import { Application, ObserverController } from '@data-story/core';
 import { Message } from './Message';
-import WebSocket from 'ws';
+import { WebSocket } from 'ws';
 
 export interface MessageHandlerParams<MessageType extends Message> {
   ws: WebSocket;

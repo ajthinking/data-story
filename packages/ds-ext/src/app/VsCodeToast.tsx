@@ -17,9 +17,10 @@ export function VsCodeToast({ postMessage }: {
     };
     switch (event.type) {
       case DataStoryEvents.RUN_SUCCESS:
+        const formatter = new Intl.NumberFormat('en-US');
         info.message = multiline`
           Diagram executed successfully!
-          Execution time: ${event.payload.time} ms
+          Execution time: ${formatter.format(event.payload.time)} ms
         `;
         break;
       case DataStoryEvents.RUN_ERROR:
