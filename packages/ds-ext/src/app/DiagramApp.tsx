@@ -24,7 +24,7 @@ export default function DiagramApp() {
         key={'abc'}
         onChange={handleChange}
         onDrop={onDrop}
-        controls={[<RunControl/>, <AddNodeControl/>, <CopyAsJsonControl/>]}
+        controls={[<RunControl />, <AddNodeControl />, <CopyAsJsonControl />]}
       />
       <VsCodeToast postMessage={window.vscode.postMessage} />
     </div>
