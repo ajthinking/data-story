@@ -146,7 +146,7 @@
     "build": "yarn run -T webpack && yarn run -T vite build",
     "watch:extension": "yarn run -T webpack --watch",
     "watch:app": " yarn run -T vite build -w",
-    "package": "yarn run -T webpack --mode production --devtool hidden-source-map",
+    "package": "yarn run -T set-env NODE_ENV=production && yarn run -T webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "yarn run compile-tests && yarn run build && yarn run lint",

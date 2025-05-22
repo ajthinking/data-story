@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "analyze": "cross-env ANALYZE_ENV=true next build",
+    "analyze": "yarn run -T set-env ANALYZE_ENV=true && next build",
     "lint": "next lint"
   },
   "repository": {
@@ -34,7 +34,6 @@
     "react-toastify": "^10.0.4"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "source-map-loader": "^4.0.1"
   }
 }
