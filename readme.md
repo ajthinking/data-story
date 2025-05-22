@@ -1,11 +1,13 @@
 ## DataStory :dizzy:
 
-![tests](https://github.com/ajthinking/data-story/actions/workflows/test.yml/badge.svg)
+[![tests](https://github.com/ajthinking/data-story/actions/workflows/test.yml/badge.svg)](https://github.com/ajthinking/data-story/actions/workflows/test.yml)
 ![status](https://img.shields.io/badge/status-unstable-yellow)
-![npm version](https://img.shields.io/npm/v/@data-story/core?label=core&color=green)
-![npm version](https://img.shields.io/npm/v/@data-story/ui?label=ui&color=green)
-![npm version](https://img.shields.io/npm/v/@data-story/nodejs?label=nodejs&color=green)
-![vs code extension](https://vsmarketplacebadges.dev/version/ajthinking.ds-ext.svg)
+[![npm version](https://img.shields.io/npm/v/@data-story/core?label=core&color=green)](https://www.npmjs.com/package/@data-story/core)
+[![npm version](https://img.shields.io/npm/v/@data-story/ui?label=ui&color=green)](https://www.npmjs.com/package/@data-story/ui)
+[![npm version](https://img.shields.io/npm/v/@data-story/nodejs?label=nodejs&color=green)](https://www.npmjs.com/package/@data-story/nodejs)
+[![vs code extension](https://vsmarketplacebadges.dev/version/ajthinking.ds-ext.svg)](https://marketplace.visualstudio.com/items?itemName=ajthinking.ds-ext)
+[![MIT](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/license/mit)
+
 
 🛠️ Real-time, observable, [Flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) for React, Node.js and VS Code. <a href="https://datastory.dev" target="_blank">Docs</a>
 | <a href="https://datastory.dev/playground" target="_blank">Playground</a>
@@ -49,6 +51,3 @@ yarn cy:open
 
 # test on ci, only run @data-story/ui,  @data-story/core and e2e tests
 ````
-
-## License
-[MIT](https://opensource.org/license/mit)
