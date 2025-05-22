@@ -14,7 +14,8 @@ import { Application, coreNodeProvider } from '@data-story/core';
 import * as dotenv from 'dotenv';
 import { hubspotProvider } from '@data-story/hubspot';
 import minimist from 'minimist';
-import { nodeJsProvider, SocketServer } from './src';
+import { nodeJsProvider } from './src';
+import { SocketServer } from './src/server/SocketServer';
 
 dotenv.config({ path: '.env.local' });
 const argv = minimist(process.argv.slice(2), {
