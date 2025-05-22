@@ -177,7 +177,6 @@
     "@data-story/nodejs": "workspace:*",
     "@data-story/ui": "workspace:*",
     "dotenv": "^16.4.0",
-    "duckdb-async": "1.1.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rxjs": "^7.8.1",

@@ -25,7 +25,9 @@ Set [`datastory.additionalDsServerCliArgs`](vscode://settings/datastory.addition
 7. With the new instance, open a directory
 8. Create a *.ds file (must have a content)
 
-## Before publish ds-ext to VSCode extension marketplace
+## publish ds-ext to VSCode extension marketplace
 
 * run `yarn build` under `packages/nodejs`
 * then `cp packages/nodejs/dist/ds-server.min.js packages/ds-ext/install-scripts/`
+* `vsce package --no-yarn --skip-license`
+* `vsce publish`
