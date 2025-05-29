@@ -105,7 +105,7 @@ function DropDownOperator(props: {
   const { getValues } = useFormField();
   const value = useMemo(getValues, [getValues]);
 
-  function getContent(): (JSX.Element | string)[] | JSX.Element {
+  function getContent(): JSX.Element[] {
     const pills = Object.keys(value ?? {})
       .map((key) => {
         return ((key === 'Evaluation' || key === 'Cast') && getLabelFromType(value[key]))
@@ -117,34 +117,27 @@ function DropDownOperator(props: {
           : ''
       }).filter((pill) => pill !== '');
 
-    const placeholderElement = () => {
-      return (<div className="scale-75 text-slate-400"
-        style={{
-          fontSize: '12px',
-        }}>
-        Please select an option
-      </div>)
-    }
-
-    return pills.length > 0 ? pills : placeholderElement();
+    return pills;
   }
+
+  const content = getContent();
 
   return <div
     ref={props.refs.setReference}
     {...props.referenceProps}
     className="flex flex-row justify-between cursor-pointer">
     {/*create the tag show the selected option*/}
-    <div className="flex items-center divide-solid">
-      {getContent()}
+    <div className="flex items-center">
+
     </div>
     <div>
       <button
         className="px-2 py-1 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+        {content.length > 0 ? content : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
           stroke="currentColor" className="w-3 h-3">
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-        </svg>
+        </svg>}
       </button>
     </div>
   </div>;
