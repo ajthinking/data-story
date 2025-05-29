@@ -3,7 +3,6 @@ import {
   type InputObserver,
   NodeDescription,
   Param,
-  RepeatableParam,
   type ReportCallback,
   type ExecutionObserver, NodeStatus,
   NodeId,
@@ -73,10 +72,6 @@ export type FormCommonProps = {
 
 export type FormComponentProps = FormCommonProps & {
   param: Param;
-}
-
-export type RepeatableInputProps = FormCommonProps & {
-  param: RepeatableParam<Param[]>;
 }
 
 export interface FormComponent<TParams extends Param> {
