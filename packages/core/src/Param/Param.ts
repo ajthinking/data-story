@@ -36,15 +36,6 @@ export type PortSelectionParam = {
   input: string
 }
 
-export type RepeatableParam<RepeatableRow> = {
-  name: string,
-  label: string,
-  help: string,
-  type: 'RepeatableParam',
-  row: RepeatableRow,
-  input: Record<string, unknown>[]
-}
-
 /**
  * This type can represent ["a", "b", "c"] using 'a, b, c', which facilitates user input
  * */
@@ -59,7 +50,6 @@ export type StringListParam = {
 export type Param =
   StringableParam |
   PortSelectionParam |
-  RepeatableParam<Param[]> |
   StringListParam;
 
 export type ParamValue = Param['input']

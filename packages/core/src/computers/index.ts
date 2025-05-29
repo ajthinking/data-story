@@ -7,7 +7,6 @@ export { Sample } from './Sample';
 export { RequestLoopByToken } from './RequestLoopByToken'
 export { RequestLoopByOffset } from './RequestLoopByOffset'
 export { Request } from './Request'
-export { RemoveProperties } from './RemoveProperties';
 export { Pass } from './Pass';
 export { Output } from './Output';
 export { Merge } from './Merge'
@@ -19,10 +18,8 @@ export { Input } from './Input';
 export { Ignore } from './Ignore'
 export { If } from './If';
 export { FlatMap } from './FlatMap';
-export { Filter } from './Filter';
 export { Fake } from './Fake'
 export { Describe } from './Describe'
-export { CreateProperties } from './CreateProperties'
 export { Create } from './Create'
 export { ConsoleLog } from './ConsoleLog'
 export { Comment } from './Comment';

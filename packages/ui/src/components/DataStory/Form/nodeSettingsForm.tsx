@@ -53,7 +53,6 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
       newData.outputs = JSON.parse(submitted.outputs);
 
       // This logic updates `param.input` with the user's latest value. However, it only updates the top level of `param.input`.
-      // If it's a `RepeatableParam` (containing `PortSelectionParam` and `StringableParam`), the `input` for `PortSelectionParam` or `StringableParam` won't be updated.
       for(const [key, value] of Object.entries(submitted.params)) {
         const param = newData.params.find((p) => p.name === key)!;
         if (param.hasOwnProperty('input')) param.input = value;
