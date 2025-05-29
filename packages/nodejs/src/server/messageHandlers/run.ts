@@ -23,6 +23,7 @@ export const run: MessageHandler<RunMessage> = async({
     nodes: data.diagram.nodes,
     links: data.diagram.links,
   })
+  const startTime = performance.now();
   const { executionId, msgId } = data
 
   const controller = new AbortController();
@@ -43,7 +44,7 @@ export const run: MessageHandler<RunMessage> = async({
       JSON.stringify({
         msgId,
         type: 'ExecutionResult',
-        time: Date.now(),
+        time: performance.now() - startTime,
       }),
     )
   } catch(error: any) {

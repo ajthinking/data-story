@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { parse } from 'csv-parse';
 import { Computer, serializeError, str } from '@data-story/core';
+import { getWorkingDirConfig } from '../../server/getWorkingDirConfig';
 
 export const CsvFileRead: Computer = {
   name: 'CsvFile.read',
@@ -52,7 +53,7 @@ export const CsvFileRead: Computer = {
       // Resolve the path if it's relative
       const resolvedPath = isAbsolutePath
         ? pathPattern
-        : path.resolve(process.env.WORKSPACE_FOLDER_PATH || '', pathPattern);
+        : path.resolve(getWorkingDirConfig().workingDir, pathPattern);
 
       files = glob.sync(resolvedPath, {
         ignore: ['**/node_modules/**'],

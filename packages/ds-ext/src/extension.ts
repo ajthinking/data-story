@@ -1,39 +1,51 @@
 import * as vscode from 'vscode';
+import path from 'path';
+import { TextDecoder } from 'util'; // Node.js built-in
 import { DiagramEditorProvider } from './DiagramEditorProvider';
 import { createDemosDirectory } from './commands/createDemosDirectory';
-import path from 'path';
-import * as fs from 'fs';
 import { JsonReadonlyProvider } from './JsonReadonlyProvider';
 import { DiagramDocument } from './DiagramDocument';
 import { loadWorkspaceEnv } from './utils/loadWorkspaceEnv';
 
+import { ServerLauncher } from './serverLauncher';
+
+// --- Global Variables ---
 let diagramEditorProvider: DiagramEditorProvider;
 let jsonReadonlyProvider: JsonReadonlyProvider | undefined;
+let serverLauncher: ServerLauncher | undefined;
 
 function createReadonlyUri(args: vscode.Uri): vscode.Uri {
   const fileName = path.basename(args.path, '.json');
   const readOnlyUri = vscode.Uri.parse(
     `json-readonly:Preview_${fileName}.json`,
   );
-
   return readOnlyUri;
 }
 
+// --- Activation Function ---
 export function activate(context: vscode.ExtensionContext) {
-  loadWorkspaceEnv();
+  loadWorkspaceEnv(); // Load environment variables first
 
-  let disposable = vscode.commands.registerCommand('ds-ext.createDemos', async () => {
-    await createDemosDirectory();
-  });
+  // --- 1. Initialize Server Launcher ---
+  serverLauncher = new ServerLauncher(context);
 
-  diagramEditorProvider = new DiagramEditorProvider(context);
+  // --- 2. Initialize Your Providers (Pass ServerLauncher to DiagramEditorProvider) ---
+  diagramEditorProvider = new DiagramEditorProvider(context, serverLauncher);
   jsonReadonlyProvider = new JsonReadonlyProvider();
   context.subscriptions.push(
     vscode.workspace.registerTextDocumentContentProvider('json-readonly', jsonReadonlyProvider),
   );
 
+  // --- 3. Register Existing Commands ---
+  context.subscriptions.push(
+    vscode.commands.registerCommand('ds-ext.createDemos', async () => {
+      await createDemosDirectory();
+    }),
+  );
+
+  // --- Your existing listener registration logic ---
   const registerDiagramChangeAndCloseListeners = (diagramDocument: DiagramDocument, readOnlyUri: vscode.Uri): void => {
-    const changeSubscription = diagramDocument.onDidChange(async(diagramInfo) => {
+    const changeSubscription = diagramDocument.onDidChange(async (diagramInfo) => {
       const diagramJson = JSON.parse(new TextDecoder().decode(diagramInfo.document.data));
 
       // update the content of the read-only document
@@ -47,10 +59,10 @@ export function activate(context: vscode.ExtensionContext) {
     const closeSubscription = vscode.workspace.onDidCloseTextDocument(closedDoc => {
       if (closedDoc.uri.toString() === readOnlyUri.toString()) {
         changeSubscription.dispose();
-        closeSubscription .dispose();
+        closeSubscription.dispose();
       }
     });
-    context.subscriptions.push(changeSubscription, closeSubscription );
+    context.subscriptions.push(changeSubscription, closeSubscription);
   };
 
   vscode.commands.registerCommand('ds-ext.showDiagramPreview', async (args: vscode.Uri) => {
@@ -79,10 +91,21 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
 
-  const outputChannel = vscode.window.createOutputChannel('DS-Ext');
-  outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');
-  outputChannel.appendLine(`ds-ext is installed at ${context.extensionPath}`);
-  // outputChannel.show();
+  // --- 4. Register NEW Server Control Commands ---
+  context.subscriptions.push(
+    vscode.commands.registerCommand('datastory.startServer', () => {
+      serverLauncher?.startServer();
+    }),
+    vscode.commands.registerCommand('datastory.stopServer', () => {
+      serverLauncher?.stopServer();
+    }),
+    vscode.commands.registerCommand('datastory.restartServer', () => {
+      serverLauncher?.restartServer();
+    }),
+  );
+
+  serverLauncher?.outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');
+  serverLauncher?.outputChannel.appendLine(`ds-ext is installed at ${context.extensionPath}`);
 
   context.subscriptions.push(
     vscode.window.registerCustomEditorProvider(
@@ -90,7 +113,6 @@ export function activate(context: vscode.ExtensionContext) {
       diagramEditorProvider,
       {
         webviewOptions: {
-          // ✔️ Enable context retention
           retainContextWhenHidden: true,
         },
         supportsMultipleEditorsPerDocument: true,
@@ -98,33 +120,24 @@ export function activate(context: vscode.ExtensionContext) {
     ),
   );
 
-  const installScriptsPath = path.join(context.extensionPath, 'install-scripts');
-  const duckdbAsyncPath = path.join(installScriptsPath, 'node_modules', 'duckdb-async');
+  context.subscriptions.push(
+    serverLauncher,
+  );
 
-  // Check if duckdb-async is installed to prevent the user from needing to reload the window for installation.
-  outputChannel.appendLine(`duckdbAsyncPath: ${duckdbAsyncPath}`);
-  outputChannel.appendLine(`fs.existsSync(duckdbAsyncPath): ${fs.existsSync(duckdbAsyncPath)}`);
-  if (!fs.existsSync(duckdbAsyncPath)) {
-    vscode.window.showInformationMessage(
-      'Data-story works best with "duckdb-async". Would you like to install it now?',
-      'Yes',
-      'Later',
-    ).then(selection => {
-      if (selection === 'Yes') {
-        // Create a new terminal
-        const terminal = vscode.window.createTerminal('DuckDB Setup');
-        terminal.show();
-        // change the directory to the install-scripts folder and run npm install duckdb-async
-        terminal.sendText(`cd "${installScriptsPath}"`);
-        terminal.sendText('npm install duckdb-async');
-      } else if (selection === 'Later') {
-        vscode.window.showInformationMessage('Execution data will be stored in memory.');
-      }
-    });
-  }
+  // --- 5. Auto-start the server (Optional) ---
+  serverLauncher?.startServer().catch(err => {
+    console.error('Failed to auto-start server:', err);
+    vscode.window.showErrorMessage('Failed to automatically start the DataStory server.');
+  });
+
+  console.log('ds-ext activation complete.');
 }
 
-export function deactivate(context: any) {
-  diagramEditorProvider.dispose();
+export function deactivate() {
+  console.log('Deactivating "ds-ext" extension.');
+  // Clear global references if needed (optional, helps GC)
+  // todo: the deactivate method doesn't get called when close vscode
+  serverLauncher?.dispose();
+  serverLauncher = undefined;
   jsonReadonlyProvider?.dispose();
 }

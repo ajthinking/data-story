@@ -1,7 +1,5 @@
-import { GetLinkItemsParams, ItemValue, LinkId, NodeId, ObserverStorage, DiagramId } from '@data-story/core';
+import { GetLinkItemsParams, ItemValue, LinkId, NodeId, ObserverStorage } from '@data-story/core';
 import * as fs from 'fs';
-import * as path from 'path';
-import * as vscode from 'vscode';
 
 type JsonObserverStorageData = {
   linkCounts: Record<string, number>;
@@ -10,24 +8,12 @@ type JsonObserverStorageData = {
 }
 
 export class JsonObserverStorage implements ObserverStorage {
-  constructor(private diagramId: DiagramId) {}
+  constructor(private filePath: string) {
+  }
 
   async init(): Promise<void> {
-    const datastoryDir = path.join(
-      vscode.workspace.workspaceFolders![0].uri.fsPath,
-      '.datastory',
-      'storage',
-      this.diagramId,
-    );
-
-    // Ensure the directory exists
-    if (!fs.existsSync(datastoryDir)) {
-      fs.mkdirSync(datastoryDir, { recursive: true });
-    }
-
     // Initialize storage file if it doesn't exist
-    const filePath = this.getFilePath();
-    if (!fs.existsSync(filePath)) {
+    if (!fs.existsSync(this.filePath)) {
       this.write({
         linkCounts: {},
         linkItems: {},
@@ -77,17 +63,11 @@ export class JsonObserverStorage implements ObserverStorage {
     this.write(data);
   }
 
-  private getFilePath() {
-    const workspacePath = vscode.workspace.workspaceFolders![0].uri.fsPath;
-    const datastoryDir = path.join(workspacePath, '.datastory', 'storage', this.diagramId);
-    return path.join(datastoryDir, 'execution.json');
-  }
-
   private read(): JsonObserverStorageData {
-    return JSON.parse(fs.readFileSync(this.getFilePath(), 'utf-8'));
+    return JSON.parse(fs.readFileSync(this.filePath, 'utf-8'));
   }
 
   private write(data: JsonObserverStorageData) {
-    fs.writeFileSync(this.getFilePath(), JSON.stringify(data, null, 2));
+    fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2));
   }
 }

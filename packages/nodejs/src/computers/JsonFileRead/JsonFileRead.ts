@@ -2,6 +2,7 @@ import * as glob from 'glob';
 import fs from 'fs';
 import path from 'path'; // Import path module
 import { Computer, get, asArray, ItemValue, serializeError, str } from '@data-story/core';
+import { getWorkingDirConfig } from '../../server/getWorkingDirConfig';
 
 export const JsonFileRead: Computer = {
   name: 'JsonFile.read',
@@ -48,7 +49,7 @@ export const JsonFileRead: Computer = {
         });
       } else {
         // If it's a relative path, resolve using the workspace folder
-        const cwd = process.env.WORKSPACE_FOLDER_PATH as string;
+        const cwd = getWorkingDirConfig().workingDir;
         files = glob.sync(pathPattern, {
           cwd, // Resolve relative paths from the workspace folder
           ignore: ['**/node_modules/**'],
