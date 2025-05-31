@@ -30,3 +30,9 @@ it('can parse an empty list', () => {
   const result = parseStringList(list);
   expect(result).toEqual([]);
 });
+
+it('can handle undefined input', () => {
+  const list = undefined;
+  const result = parseStringList(list);
+  expect(result).toEqual([]);
+});
