@@ -93,6 +93,7 @@ const getLabelFromType = (type: string) => {
     [jsExpressionEvaluation.type]: jsExpressionEvaluation.shortLabel,
     [jsFunctionEvaluation.type]: jsFunctionEvaluation.shortLabel,
     [jsonEvaluation.type]: jsonEvaluation.shortLabel,
+    'STRING_LIST': 'list',
   }
 
   return labelMap[type];

@@ -5,6 +5,7 @@ import { get } from '../utils/get';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 import { ParamEvaluator } from './ParamEvaluator';
 import { createJSTransformExpression, createJSTransformFunction } from './JSTransform';
+import { parseStringList } from '../utils/parseStringList';
 
 export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
   type = 'StringableParam' as const;
@@ -104,6 +105,12 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
         console.log(`Failed to evaluate JS expression: ${transformedValue}`)
         throw error
       }
+    }
+
+    if (selectedEvaluation?.type === 'STRING_LIST') {
+      console.log({ before: transformedValue });
+      transformedValue = parseStringList(transformedValue);
+      console.log({ after: transformedValue });
     }
 
     // **********************************************************************

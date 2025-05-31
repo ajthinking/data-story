@@ -1,18 +1,13 @@
 import { Param, StringableParam, StringListParam } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
+import { parseStringList } from '../utils/parseStringList';
 
 export class StringListParamEvaluator implements ParamsValueEvaluator<StringListParam> {
   type = 'StringListParam' as const;
 
   evaluate(itemValue: ItemValue, param: StringListParam) {
-    const value = param.input as string;
-    // the value will be a string with comma or newline separated values
-    const result = value.split('\n')
-      .flatMap(line => line.split(','))
-      .map(v => v.trim())
-      .filter(v => v.length > 0);
-    return result;
+    return parseStringList(itemValue.value)
   }
 
   canEvaluate(param: Param): param is StringListParam {

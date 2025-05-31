@@ -74,7 +74,9 @@ export const strList = ({
     type: 'StringListParam',
     label: label ?? name,
     help: help ?? '',
-    input: value ?? undefined,
+    input: {
+      rawValue: value ?? undefined,
+    },
   }
 }
 
