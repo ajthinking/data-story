@@ -22,12 +22,10 @@ export function getFormatterOnlyAndDropParam(items: ItemValue[], data: DataStory
 
   return {
     only: (() => {
-      console.log({ onlyParam });
       if(onlyParam === undefined) return [];
       return parseStringList(onlyParam?.input?.rawValue);
     })(),
     drop: (() => {
-      console.log({ dropParam });
       if(dropParam === undefined) return [];
       return parseStringList(dropParam?.input?.rawValue);
     })(),
