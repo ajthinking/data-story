@@ -2,12 +2,10 @@ import { Param } from '../Param';
 import { ItemValue } from '../types/ItemValue';
 import { StringableParamEvaluator } from './StringableParamEvaluator';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
-import { StringListParamEvaluator } from './StringListParamEvaluator';
 
 export class ParamEvaluator implements ParamsValueEvaluator<any>{
   private evaluators: ParamsValueEvaluator<Param>[] = [
     new StringableParamEvaluator(),
-    new StringListParamEvaluator(),
   ]
 
   canEvaluate(param: Param): param is Param {
