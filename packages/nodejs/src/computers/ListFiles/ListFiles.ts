@@ -1,4 +1,4 @@
-import { Computer, createDefaultStringable } from '@data-story/core';
+import { Computer, str } from '@data-story/core';
 import { promises as fs } from 'fs'
 import * as nodePath from 'path'
 
@@ -19,7 +19,7 @@ export const ListFiles: Computer = {
     },
   }],
   params: [
-    createDefaultStringable({
+    str({
       name: 'path',
       label: 'Path',
       help: 'Dir to list',
@@ -27,7 +27,6 @@ export const ListFiles: Computer = {
       canInterpolate: false,
       interpolate: false,
       evaluations: [],
-      casts: [],
       value: '/',
     }),
   ],

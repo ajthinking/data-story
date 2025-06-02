@@ -1,6 +1,5 @@
 import { sleep } from '../utils/sleep';
-import { numberCast } from '../Param/casts/numberCast';
-import { createDefaultStringable } from '../Param';
+import { num } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Sleep: Computer = {
@@ -15,17 +14,14 @@ export const Sleep: Computer = {
     schema: {},
   }],
   params: [
-    createDefaultStringable({
+    num({
       name: 'duration',
       label: 'Duration',
       help: 'How many ms to sleep?',
       multiline: false,
       canInterpolate: true,
       interpolate: true,
-      casts: [
-        { ...numberCast, selected: true },
-      ],
-      value: String(100),
+      value: 100,
     }),
   ],
 

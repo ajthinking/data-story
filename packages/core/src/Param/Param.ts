@@ -54,61 +54,6 @@ export type Param =
 
 export type ParamValue = Param['input']
 
-type StringableConfigType = Omit<StringableParam, 'input' | 'type'> & {
-  value: StringableInputValue['rawValue']
-}
-
-export const strList = ({
-  name,
-  label,
-  help,
-  value,
-}: {
-  name: string,
-  label?: string,
-  help?: string,
-  value?: unknown,
-}): StringListParam => {
-  return {
-    name,
-    type: 'StringListParam',
-    label: label ?? name,
-    help: help ?? '',
-    input: {
-      rawValue: value ?? undefined,
-    },
-  }
-}
-
-export const createDefaultStringable = ({
-  name,
-  label,
-  help,
-  multiline,
-  canInterpolate,
-  interpolate,
-  evaluations,
-  casts,
-  interpolationsFromPort,
-  value,
-}:StringableConfigType): StringableParam => {
-  return {
-    name,
-    type: 'StringableParam',
-    label,
-    help,
-    multiline,
-    canInterpolate,
-    interpolate,
-    evaluations,
-    casts,
-    interpolationsFromPort,
-    input: {
-      rawValue: value ?? '',
-    },
-  }
-}
-
 export const str = ({
   name,
   label,

@@ -1,4 +1,4 @@
-import { createDefaultStringable, str } from '../Param';
+import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Input: Computer = {
@@ -13,7 +13,7 @@ export const Input: Computer = {
     schema: {},
   }],
   params: [
-    createDefaultStringable({
+    str({
       name: 'port_name',
       label: 'Port Name',
       value: 'input',

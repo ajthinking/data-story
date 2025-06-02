@@ -1,7 +1,7 @@
-import { createDefaultStringable } from '@data-story/core';
+import { str } from '@data-story/core';
 
 const DefineMode = ({ params, setParams, setDefineMode }) => {
-  const sampleParam = createDefaultStringable({
+  const sampleParam = str({
     name: 'sampleParam',
     label: 'sampleParam',
     help: '',
@@ -9,7 +9,6 @@ const DefineMode = ({ params, setParams, setDefineMode }) => {
     canInterpolate: true,
     interpolate: true,
     evaluations: [],
-    casts: [],
     value: 'default value',
   })
 
