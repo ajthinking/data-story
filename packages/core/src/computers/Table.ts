@@ -1,4 +1,4 @@
-import { num, str, strList } from '../Param';
+import { str } from '../Param';
 import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 

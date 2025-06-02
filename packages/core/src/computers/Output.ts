@@ -1,4 +1,4 @@
-import { createDefaultStringable, str } from '../Param';
+import { str } from '../Param';
 import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
@@ -14,7 +14,7 @@ export const Output: Computer = {
     schema: {},
   }],
   params: [
-    createDefaultStringable({
+    str({
       name: 'port_name',
       label: 'Port Name',
       value: 'output',

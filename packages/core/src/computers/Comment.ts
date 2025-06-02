@@ -1,5 +1,5 @@
 import { multiline } from '../utils/multiline';
-import { createDefaultStringable } from '../Param';
+import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Comment: Computer = {
@@ -8,7 +8,7 @@ export const Comment: Computer = {
   inputs: [],
   outputs: [],
   params: [
-    createDefaultStringable( {
+    str( {
       name: 'content',
       label: 'Content',
       help: 'Markdown content',
@@ -16,7 +16,6 @@ export const Comment: Computer = {
       canInterpolate: false,
       interpolate: false,
       evaluations: [],
-      casts: [],
       value: multiline`
         ### Comment
         paragraph
