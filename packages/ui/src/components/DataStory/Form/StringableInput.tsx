@@ -1,8 +1,8 @@
 import { StringableParam } from '@data-story/core';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { FormFieldWrapper, useFormField } from './UseFormField';
 import { autocompletion } from '@codemirror/autocomplete';
-import CodeMirror, { type BasicSetupOptions } from '@uiw/react-codemirror';
+import CodeMirror, { ReactCodeMirrorRef, type BasicSetupOptions } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { json } from '@codemirror/lang-json';
 
@@ -31,11 +31,59 @@ const completions = [
 
 const parameterReg = /[$@][a-zA-Z0-9]*$/;
 
+const oldExecCmd = document.execCommand.bind(document);
+const editors = new Set<Element>();
+
+console.log('oold execmd', oldExecCmd);
+console.log('editor', editors);
+
+function shouldHack(el: Element | null) {
+  for(const e of editors) {
+    if (e && e.contains(el)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// editors.add(...);
+
 export function StringableInputComponent({
   param,
   onCursorPositionChange,
 }: StringableInput) {
-  const { getValues,  setValue } = useFormField();
+  const { getValues, setValue } = useFormField();
+  const codeMirrorRef = useRef<ReactCodeMirrorRef>(null);
+
+  useEffect(() => {
+    document.execCommand = (cmd, ...args) => {
+      const el = document.activeElement;
+      console.log('check editor', el, editors, editors.has(el!))
+      if (el && shouldHack(el)) {
+        if (cmd == 'paste') {
+          console.log('document paste')
+          navigator.clipboard.readText().then(txt => {
+            const dt = new DataTransfer();
+            dt.setData('text/plain', txt);
+            el.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt }));
+          }).catch(console.error);
+
+          return true;
+        } else if (cmd == 'cut' || cmd == 'copy') {
+          console.log('cmd', cmd)
+          const dt = new DataTransfer();
+          el.dispatchEvent(new ClipboardEvent(cmd, { clipboardData: dt }));
+          void navigator.clipboard.writeText(dt.getData('text/plain'));
+
+          return true;
+        }
+      }
+
+      return oldExecCmd(cmd, ...args);
+    };
+    console.log(document.execCommand, 'execomanad after')
+  }, [])
+  editors.add(codeMirrorRef?.current?.editor!);
 
   const myCompletions = useCallback((context) => {
     let before = context.matchBefore(parameterReg);
@@ -60,16 +108,21 @@ export function StringableInputComponent({
 
   const onChange = useCallback((value, viewUpdate) => {
     setValue(value);
+    console.log('onchange')
   }, [setValue]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     // Stop the event from bubbling up to the VSCode iframe event handler
-    e.stopPropagation();
+    //e.stopPropagation();
+    console.log('keydown')
   }, []);
 
   return (
     <div onKeyDown={handleKeyDown} className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
+      <input/>
+      <div contentEditable className='w-150 h-30'>div</div>
       <CodeMirror
+        ref={codeMirrorRef}
         className="text-xs h-full w-full bg-white font-mono"
         value={(getValues() ?? '').toString()}
         basicSetup={basicSetup}
