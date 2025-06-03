@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import DiagramApp from './DiagramApp';
-import TableApp from './TableApp';
+
+import './fixMacVsCode';
 
 // TypeScript null-check or assertion for the root element
 const rootElement = document.getElementById('root') as HTMLElement | null;
