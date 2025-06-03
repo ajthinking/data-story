@@ -4,6 +4,7 @@ import { FormFieldWrapper, useFormField } from './UseFormField';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { StringListParam } from '@data-story/core';
 import { javascript } from '@codemirror/lang-javascript';
+import { keyboardHandler } from './VsCodeCopyPasteFix';
 
 const basicSetup: BasicSetupOptions = {
   lineNumbers: false,
@@ -13,49 +14,45 @@ const basicSetup: BasicSetupOptions = {
   autocompletion: false,
   syntaxHighlighting: true,
 };
-const extensions = [javascript()];
+const extensions = [ javascript() ];
 
 function StringListInputComponent({
   param,
   node,
 }: FormComponentProps) {
-  const { getValues,  setValue } = useFormField();
+  const { getValues, setValue } = useFormField();
 
   const onChange = useCallback((value, viewUpdate) => {
     setValue(value);
-  }, [setValue]);
+  }, [ setValue ]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    // Stop the event from bubbling up to the VSCode iframe event handler
-    e.stopPropagation();
-  }, []);
-
-  return (<div onKeyDown={handleKeyDown} className="group flex flex-col-reverse bg-gray-50 h-full border-gray-50 border-2">
-    <div className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
-      <CodeMirror
-        className="text-xs h-full w-full bg-white font-mono"
-        value={(getValues() ?? '').toString()}
-        basicSetup={basicSetup}
-        extensions={extensions}
-        onChange={onChange}
-      />
+  return (
+    <div onKeyDown={keyboardHandler} className="group flex flex-col-reverse bg-gray-50 h-full border-gray-50 border-2">
+      <div className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
+        <CodeMirror
+          className="text-xs h-full w-full bg-white font-mono"
+          value={(getValues() ?? '').toString()}
+          basicSetup={basicSetup}
+          extensions={extensions}
+          onChange={onChange}
+        />
+      </div>
     </div>
-  </div>
   );
 }
 
 export function StringListInput(props: FormComponentProps) {
   return <FormFieldWrapper fieldName={props.param.name}>
     <StringListInputComponent {...props} />
-  </FormFieldWrapper>
+  </FormFieldWrapper>;
 }
 
 export class StringListComponent implements FormComponent<StringListParam> {
   getComponent(params: FormComponentProps) {
-    return (<StringListInput {...params} />)
+    return (<StringListInput {...params} />);
   }
 
   getType() {
-    return 'StringListParam'
+    return 'StringListParam';
   }
 }

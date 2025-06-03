@@ -5,6 +5,7 @@ import { autocompletion } from '@codemirror/autocomplete';
 import CodeMirror, { type BasicSetupOptions } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { json } from '@codemirror/lang-json';
+import { keyboardHandler } from './VsCodeCopyPasteFix';
 
 interface StringableInput {
   param: StringableParam;
@@ -62,13 +63,8 @@ export function StringableInputComponent({
     setValue(value);
   }, [ setValue ]);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    // Stop the event from bubbling up to the VSCode iframe event handler
-    e.stopPropagation();
-  }, []);
-
   return (
-    <div onKeyDown={handleKeyDown} className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
+    <div onKeyDown={keyboardHandler} className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
       <CodeMirror
         className="text-xs h-full w-full bg-white font-mono"
         value={(getValues() ?? '').toString()}
