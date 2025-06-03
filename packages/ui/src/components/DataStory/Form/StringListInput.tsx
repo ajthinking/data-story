@@ -4,7 +4,6 @@ import { FormFieldWrapper, useFormField } from './UseFormField';
 import CodeMirror, { BasicSetupOptions } from '@uiw/react-codemirror';
 import { StringListParam } from '@data-story/core';
 import { javascript } from '@codemirror/lang-javascript';
-import { keyboardHandler } from './VsCodeCopyPasteFix';
 
 const basicSetup: BasicSetupOptions = {
   lineNumbers: false,
@@ -27,7 +26,7 @@ function StringListInputComponent({
   }, [ setValue ]);
 
   return (
-    <div onKeyDown={keyboardHandler} className="group flex flex-col-reverse bg-gray-50 h-full border-gray-50 border-2">
+    <div className="group flex flex-col-reverse bg-gray-50 h-full border-gray-50 border-2">
       <div className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
         <CodeMirror
           className="text-xs h-full w-full bg-white font-mono"

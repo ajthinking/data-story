@@ -15,12 +15,7 @@ function isInCodeMirrorEditor(el: Element | null) {
   return false;
 }
 
-function isMacVsCode() {
-  const nav: any = typeof navigator !== 'undefined' ? navigator : { userAgent: '', vendor: '', platform: '' };
-  return /Mac/.test(nav.platform) && window['vscode'] != null;
-}
-
-function fixMacVsCodeCopyPaste() {
+function fixCopyPaste() {
   // @ts-expect-error hacked is defined at runtime
   if (document.execCommand.hacked) {
     return;
@@ -53,8 +48,6 @@ function fixMacVsCodeCopyPaste() {
   document.execCommand = hackExecCommand;
 }
 
-if (isMacVsCode()) {
-  fixMacVsCodeCopyPaste();
-}
+fixCopyPaste();
 
 // see https://github.com/microsoft/vscode/issues/232692 for more info

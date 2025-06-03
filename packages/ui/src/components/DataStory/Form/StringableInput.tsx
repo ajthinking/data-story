@@ -5,7 +5,6 @@ import { autocompletion } from '@codemirror/autocomplete';
 import CodeMirror, { type BasicSetupOptions } from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { json } from '@codemirror/lang-json';
-import { keyboardHandler } from './VsCodeCopyPasteFix';
 
 interface StringableInput {
   param: StringableParam;
@@ -64,7 +63,7 @@ export function StringableInputComponent({
   }, [ setValue ]);
 
   return (
-    <div onKeyDown={keyboardHandler} className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
+    <div className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
       <CodeMirror
         className="text-xs h-full w-full bg-white font-mono"
         value={(getValues() ?? '').toString()}
