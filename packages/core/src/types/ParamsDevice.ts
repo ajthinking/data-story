@@ -1,7 +1,5 @@
-import { Param } from '../Param';
-
-type ParamId = string
+import { ParamId, StaticEvaluatedParamValue } from '../Param';
 
 export type ParamsDevice = {
-  [key: ParamId]: Param['input'],
+  [key: ParamId]: StaticEvaluatedParamValue,
 };

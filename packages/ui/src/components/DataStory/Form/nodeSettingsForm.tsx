@@ -1,6 +1,6 @@
 import { InputSchemas, OutputSchemas, Params } from '../modals/nodeSettingsModal/tabs';
 import { useEffect, useMemo, useState } from 'react';
-import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
+import { Param, ParamInput, pascalToSentenceCase } from '@data-story/core';
 import { FormProvider, useForm } from 'react-hook-form';
 import { NodeSettingsFormProps, StoreSchema } from '../types';
 import { useStore } from '../store/store';
@@ -29,7 +29,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
       params: node?.data?.params.reduce((acc, param: Param) => {
         acc[param.name] = param.input;
         return acc;
-      }, {} as Record<string, ParamValue>),
+      }, {} as Record<string, ParamInput>),
     };
   }, [node]);
 
@@ -45,7 +45,7 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
     form.handleSubmit((submitted: {
       label: string,
       outputs: string,
-      params: Record<string, ParamValue>
+      params: Record<string, ParamInput>
     }) => {
       // Root level fields
       const newData = { ...node.data };

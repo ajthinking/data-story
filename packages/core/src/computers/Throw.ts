@@ -32,8 +32,9 @@ export const Throw: Computer = {
 
   async *run({ input, node }) {
     const [item] = input.pull(1)
+    const fuck = item.params.message
     throw new NodeRunError({
-      message: item.params.message as string,
+      message: item.params.message,
       node,
     })
   },

@@ -11,7 +11,7 @@ export { createDataStoryId } from './utils/createDataStoryId'
 export type { NodeDescription, NodeDescriptionRequest, NodeDescriptionResponse } from './types/NodeDescription'
 export { NodeDescriptionResponseSchema, NodeDescriptionRequestSchema } from './types/NodeDescription';
 export type { Port, AbstractPort } from './types/Port'
-export type { Param, ParamValue } from './Param'
+export type { Param, ParamInput as ParamValue } from './Param'
 export { Application } from './Application'
 export type { ServiceProvider } from './types/ServiceProvider'
 export { DiagramBuilder } from './DiagramBuilder'

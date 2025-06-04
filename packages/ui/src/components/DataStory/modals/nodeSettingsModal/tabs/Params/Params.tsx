@@ -1,7 +1,6 @@
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { StringableWithConfig } from './StringableWithConfig';
 import { FormFieldWrapper } from '../../../../Form/UseFormField';
-import { StringListInput } from '../../../../Form/StringListInput';
 
 export function ParamsComponent({
   node,
@@ -16,11 +15,6 @@ export function ParamsComponent({
           {param.help && (<div className="mt-2 mb-2 text-xs text-slate-400">{param.help || 'no-help'}</div>)}
 
           {param.type === 'StringableParam' && <StringableWithConfig
-            param={param}
-            node={node}
-          />}
-
-          {param.type === 'StringListParam' && <StringListInput
             param={param}
             node={node}
           />}
