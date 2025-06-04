@@ -5,8 +5,10 @@ import { DataStoryEvents, DataStoryEventType } from '../events/dataStoryEventTyp
 import { useDataStoryEvent } from '../events/eventManager';
 
 export function useRunControl() {
-  const [isRunning, setIsRunning] = useState(false);
-  const [executionId, setExecutionId] = useState('');
+  const isRunning = useStore((state) => state.isRunning);
+  const setIsRunning = useStore((state) => state.setIsRunning);
+  const executionId = useStore((state) => state.executionId);
+  const setExecutionId = useStore((state) => state.setExecutionId);
   const onRun = useStore((state) => state.onRun);
   const abortExecution = useStore((state) => state.abortExecution);
 
