@@ -1,6 +1,5 @@
 import { Param, StringableParam } from '../Param';
 import { ItemValue } from '../types/ItemValue';
-import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 import { ParamEvaluator } from './ParamEvaluator';
@@ -63,7 +62,6 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
         const args = expression.split(',').map(arg => arg.trim());
 
         const functions: Record<string, Function> = {
-          evalMath: (expression: string) => evalMath(expression),
           env: (expression: string) => {
             if (typeof process === 'undefined') throw new Error('env() is not available in the browser');
 

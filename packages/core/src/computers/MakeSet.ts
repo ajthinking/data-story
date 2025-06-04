@@ -30,7 +30,7 @@ export const MakeSet: Computer = {
       const items = input.pull(BatchLimit);
 
       for (let item of items) {
-        const property = params.property as string;
+        const property = params.property;
         const value = item.value[property];
 
         if (!seen.has(value)) {

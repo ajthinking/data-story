@@ -12,7 +12,7 @@ export class ParamEvaluator implements ParamsValueEvaluator<any>{
     return this.evaluators.some(e => e.canEvaluate(param));
   }
 
-  evaluate(itemValue: ItemValue, param: Param, globalParams: Param[]) {
+  evaluate(itemValue: ItemValue, param: Param, globalParams: Param[]): any {
     const evaluator = this.evaluators.find(e => e.canEvaluate(param));
     if(!evaluator) return param.input;
 

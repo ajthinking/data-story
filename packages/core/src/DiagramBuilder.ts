@@ -1,5 +1,5 @@
 import { Diagram } from './Diagram';
-import { Param, ParamValue, StringableInputValue } from './Param';
+import { Param, ParamInput, StringableInputValue } from './Param';
 import { Computer } from './types/Computer';
 import { Node } from './types/Node';
 import { NodeDescription } from './types/NodeDescription';
@@ -9,9 +9,9 @@ import { isStringableParam } from './utils/isStringableParam';
 // type ParamConfig = Record<string, ParamValue> | Partial<Param>
 type ParamConfig = {
   [paramName: string]: (
-    | ParamValue
+    | ParamInput
     | Partial<Param>
-    | Record<string, ParamValue & Partial<Param>>
+    | Record<string, ParamInput & Partial<Param>>
     | any // TODO ¯\_(ツ)_/¯
   )
 }
@@ -41,10 +41,10 @@ export class DiagramBuilder {
       id: nodeId,
       label: name,
       name: name,
-      // The inputs have not yet been assigned ids, to it here
+      // The inputs have not yet been assigned ids, do it here
       inputs: diagram.inputNodes().map(inputNode => {
-        const param = inputNode.params.find(param => param.name === 'port_name');
-        const inputName = isStringableParam(param?.type) ? (param?.input as StringableInputValue).rawValue : param?.input as string
+        const param = inputNode.params.find(param => param.name === 'port_name')!;
+        const inputName = param?.input.rawValue
 
         return {
           name: inputName,
@@ -54,8 +54,8 @@ export class DiagramBuilder {
       }),
       // The outputs have not yet been assigned ids, to it here
       outputs: diagram.outputNodes().map(outputNode => {
-        const param = outputNode.params.find(param => param.name === 'port_name');
-        const outputName = isStringableParam(param?.type) ? (param?.input as StringableInputValue).rawValue : param?.input as string
+        const param = outputNode.params.find(param => param.name === 'port_name')!;
+        const outputName = param?.input.rawValue
 
         return {
           name: outputName,

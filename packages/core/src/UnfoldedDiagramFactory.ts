@@ -68,7 +68,9 @@ export class UnfoldedDiagramFactory {
             if(!isInputNode) return false;
 
             const param = node.params[0];
-            const portName: string = isStringableParam(param?.type) ? (param?.input as StringableInputValue).rawValue : param?.input;
+            const portName: string = isStringableParam(param?.type)
+              ? (param?.input as StringableInputValue).rawValue
+              : param?.input.rawValue;
             if(!portName) throw new Error(`No port name found for input node "${node.id}". The node was ${JSON.stringify(node)}`)
 
             const matchesPortName = portName === inputPort.name;
@@ -95,7 +97,9 @@ export class UnfoldedDiagramFactory {
             if(!isOutputNode) return false;
 
             const param = node.params[0];
-            const portName: string = isStringableParam(param?.type) ? (param?.input as StringableInputValue).rawValue : param?.input;
+            const portName: string = isStringableParam(param?.type)
+              ? (param?.input as StringableInputValue).rawValue
+              : param?.input.rawValue;
             if(!portName) throw new Error(`No port name found for output node "${node.id}. The node was ${JSON.stringify(node)}"`)
 
             const matchesPortName = portName === outputPort.name

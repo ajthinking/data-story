@@ -7,8 +7,8 @@ import { jsExpressionEvaluation } from './evaluations/jsExpressionEvaluation'
 import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
 
-export interface StringableInputValue extends Record<string, any> {
-  rawValue: any,
+export interface StringableInputValue {
+  rawValue: string,
   Evaluation?: string,
   Cast?: string,
 }
@@ -27,32 +27,15 @@ export type StringableParam = {
   input: StringableInputValue,
 }
 
-export type PortSelectionParam = {
-  name: string,
-  label: string,
-  help: string,
-  type: 'PortSelectionParam',
-  allowCreate: boolean,
-  input: string
-}
+export type ParamId = string
 
-/**
- * This type can represent ["a", "b", "c"] using 'a, b, c', which facilitates user input
- * */
-export type StringListParam = {
-  name: string,
-  label: string,
-  help: string,
-  type: 'StringListParam',
-  input: unknown
-}
+export type Param = StringableParam;
 
-export type Param =
-  StringableParam |
-  PortSelectionParam |
-  StringListParam;
+export type ParamInput = Param['input']
 
-export type ParamValue = Param['input']
+export type EvaluatedParamValue = any
+
+export type StaticEvaluatedParamValue = any
 
 export const str = ({
   name,
@@ -124,7 +107,7 @@ export const num = ({
       numberCast,
     ],
     input: {
-      rawValue: value ?? 0,
+      rawValue: String(value ?? 0),
       Cast: numberCast.type,
     },
   }
@@ -167,7 +150,7 @@ export const json_ = ({
       stringCast,
     ],
     input: {
-      rawValue: value ?? 0,
+      rawValue: String(value ?? 0),
       Evaluation: jsonEvaluation.type,
     },
   }
@@ -210,7 +193,7 @@ export const jsFn = ({
       stringCast,
     ],
     input: {
-      rawValue: value ?? 0,
+      rawValue: String(value ?? 0),
       Evaluation: jsFunctionEvaluation.type,
     },
   }
@@ -253,7 +236,7 @@ export const jsExpression = ({
       stringCast,
     ],
     input: {
-      rawValue: value ?? 0,
+      rawValue: String(value ?? 0),
       Evaluation: jsExpressionEvaluation.type,
     },
   }
