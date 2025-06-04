@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useRunControl } from './controls/useRunControl';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { Direction } from './getNodesWithNewSelection';
 import { DataStoryCanvasProps } from './types';
@@ -89,10 +90,11 @@ export function useHotkeys({
     }
   }, [hotkeyManager, setShowAddNode, nodeDescriptions, addNodeFromDescription]);
 
+  const { handleRun } = useRunControl();
   useEffect(() => {
-    hotkeyManager.register('Shift+KeyR', () => setShowRun(true));
+    hotkeyManager.register('Shift+KeyR', handleRun);
     return () => hotkeyManager.unregister('Shift+KeyR');
-  }, [hotkeyManager, setShowRun]);
+  }, [hotkeyManager, handleRun]);
 
   useEffect(() => {
     hotkeyManager.register('Ctrl+KeyS', () => onSave?.(toDiagram?.()));
