@@ -115,6 +115,12 @@ export type StoreSchema = {
   params: Param[],
   setParams: (params: Param[]) => void;
 
+  /** Run State */
+  isRunning: boolean;
+  setIsRunning: (running: boolean) => void;
+  executionId: string;
+  setExecutionId: (id: string) => void;
+
   /** When DataStory component initializes */
   onInit: (options: StoreInitOptions) => void;
 
