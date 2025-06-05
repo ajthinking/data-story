@@ -142,7 +142,7 @@
     "dependencies": false
   },
   "scripts": {
-    "vscode:prepublish": "yarn run package",
+    "vscode:prepublish": "node ./prepublish.js && yarn run package",
     "build": "yarn run -T set-env NODE_ENV=production && yarn run -T webpack && yarn run -T vite build",
     "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T webpack --watch",
     "watch:app": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w",
@@ -170,7 +170,8 @@
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.4.1"
+    "@vscode/test-electron": "^2.4.1",
+    "tar": "^7.4.3"
   },
   "dependencies": {
     "@data-story/core": "workspace:*",
