@@ -30,7 +30,7 @@ const initToast = (event: DataStoryEventType) => {
       break;
     case DataStoryEvents.RUN_ERROR:
       console.error(event.payload);
-      errorToast(`Diagram execution failed! Error was: ${event.payload.error}`);
+      errorToast(`Diagram execution failed! Error was: ${event.payload.message}`);
       break;
     case DataStoryEvents.SAVE_SUCCESS:
       successToast('Diagram saved successfully!');
