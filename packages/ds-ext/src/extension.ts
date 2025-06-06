@@ -28,6 +28,9 @@ export function activate(context: vscode.ExtensionContext) {
 
   // --- 1. Initialize Server Launcher ---
   serverLauncher = new ServerLauncher(context);
+  context.subscriptions.push(
+    serverLauncher,
+  );
 
   // --- 2. Initialize Your Providers (Pass ServerLauncher to DiagramEditorProvider) ---
   diagramEditorProvider = new DiagramEditorProvider(context, serverLauncher);
@@ -120,12 +123,8 @@ export function activate(context: vscode.ExtensionContext) {
     ),
   );
 
-  context.subscriptions.push(
-    serverLauncher,
-  );
-
   // --- 5. Auto-start the server (Optional) ---
-  serverLauncher?.startServer().catch(err => {
+  serverLauncher.startServer().catch(err => {
     console.error('Failed to auto-start server:', err);
     vscode.window.showErrorMessage('Failed to automatically start the DataStory server.');
   });
@@ -135,9 +134,5 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {
   console.log('Deactivating "ds-ext" extension.');
-  // Clear global references if needed (optional, helps GC)
-  // todo: the deactivate method doesn't get called when close vscode
-  serverLauncher?.dispose();
-  serverLauncher = undefined;
   jsonReadonlyProvider?.dispose();
 }
