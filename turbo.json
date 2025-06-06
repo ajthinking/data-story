@@ -12,12 +12,8 @@
     },
     "ext:dev": {
       "dependsOn": [
-        "watch:extension", 
-        "watch:app", 
-        "watch",
-        "watch:webpack",
-        "watch:css",
-        "watch:nodejs"
+        "watch:extension",
+        "watch:app"
       ],
       "cache": false,
       "persistent": true
