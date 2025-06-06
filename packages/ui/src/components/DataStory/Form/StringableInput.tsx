@@ -11,7 +11,7 @@ interface StringableInput {
   onCursorPositionChange: (position: number) => void; // Add this line
 }
 
-const basicSetup: BasicSetupOptions = {
+export const basicSetup: BasicSetupOptions = {
   lineNumbers: false,
   highlightActiveLineGutter: false,
   highlightActiveLine: false,
