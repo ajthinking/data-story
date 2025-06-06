@@ -22,6 +22,7 @@ export { RemoveProperties } from './RemoveProperties';
 export { Request } from './Request'
 export { RequestLoopByOffset } from './RequestLoopByOffset'
 export { RequestLoopByToken } from './RequestLoopByToken'
+export { Router } from './Router'
 export { Sample } from './Sample';
 export { Signal } from './Signal'
 export { Sleep } from './Sleep'
