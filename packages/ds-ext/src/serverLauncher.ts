@@ -159,6 +159,8 @@ export class ServerLauncher implements vscode.Disposable {
 
   private async terminateServer(): Promise<void> {
     if (this.childProcess && this.childProcess.pid) {
+      // write '<exit>/n' to stdin
+      this.childProcess.stdin?.write('<exit>\n');
       // Use the terminate package in case of https://github.com/volta-cli/volta/issues/36
       await terminate(this.childProcess.pid);
     }
