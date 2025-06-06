@@ -96,6 +96,8 @@ export type StoreSchema = {
   /** The Nodes */
   nodes: ReactFlowNode[];
   updateNode: (node: ReactFlowNode) => void;
+  updateNodeInternalsCallback: ((nodeId: string) => void) | null;
+  setUpdateNodeInternalsCallback: (callback: (nodeId: string) => void) => void;
   addNode: (node: ReactFlowNode) => void;
   addNodeFromDescription: (nodeDescription: NodeDescription) => void;
   onNodesChange: OnNodesChange;

@@ -18,9 +18,10 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     updateNode: state.updateNode,
+    updateNodeInternalsCallback: state.updateNodeInternalsCallback,
   });
 
-  const { updateNode, toDiagram } = useStore(selector);
+  const { updateNode, toDiagram, updateNodeInternalsCallback } = useStore(selector);
 
   const defaultValues = useMemo(() => {
     return  {
@@ -90,6 +91,8 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         ...node,
         data: newData,
       })
+
+      updateNodeInternalsCallback?.(node.id);
 
       onSave?.(toDiagram());
     })()

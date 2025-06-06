@@ -135,6 +135,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
       }),
     })
   },
+  updateNodeInternalsCallback: null,
+  setUpdateNodeInternalsCallback: (callback: (nodeId: string) => void) => {
+    set({ updateNodeInternalsCallback: callback })
+  },
   setNodes: (nodes: ReactFlowNode[]) => {
     set({
       nodes: [...nodes],
