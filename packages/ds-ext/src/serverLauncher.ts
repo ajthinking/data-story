@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
-import terminate from 'terminate';
+import terminate from 'terminate/promise';
 import { DsServerHealthChecker } from './dsServerHealthChecker';
 
 // Define possible server states
@@ -154,17 +154,13 @@ export class ServerLauncher implements vscode.Disposable {
     this.updateStatus(ServerStatus.Stopping);
     this.outputChannel.appendLine('[Launcher] Attempting to stop server process (SIGTERM)...');
 
-    // Use the terminate package in case of https://github.com/volta-cli/volta/issues/36
-    this.terminateServer();
+    await this.terminateServer();
   }
 
-  private terminateServer(): void {
-    // cp.execSync(`notify-send "if DataStory" "Server is shutting down... ${this.childProcess?.exitCode}"`);
-    if (this.childProcess && this.childProcess.pid && this.childProcess.exitCode == null) {
-      while (this.childProcess.exitCode == null) {
-        // cp.execSync('notify-send "then DataStory" "Server is shutting down..."');
-        terminate(this.childProcess.pid);
-      }
+  private async terminateServer(): Promise<void> {
+    if (this.childProcess && this.childProcess.pid) {
+      // Use the terminate package in case of https://github.com/volta-cli/volta/issues/36
+      await terminate(this.childProcess.pid);
     }
   }
 

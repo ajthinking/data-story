@@ -487,7 +487,6 @@ __metadata:
   resolution: "@data-story/docs@workspace:packages/docs"
   dependencies:
     "@data-story/hubspot": "workspace:*"
-    "@data-story/nodejs": "workspace:*"
     "@data-story/ui": "workspace:*"
     ahooks: "npm:^3.8.1"
     chart.js: "npm:^4.4.2"
