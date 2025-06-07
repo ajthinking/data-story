@@ -10,7 +10,7 @@
         },
         "build:webview": {
             "outputs": [
-                "./dist/app"
+                "./dist/app/**"
             ]
         },
         "build:ds-server": {
@@ -46,10 +46,18 @@
             "persistent": true,
             "cache": false
         },
-        "dev": {
+        "watch:ds-server": {
+            "with": [
+                "@data-story/nodejs#watch:server"
+            ],
+            "cache": false,
+            "persistent": true
+        },
+        "watch": {
             "with": [
                 "watch:extension",
-                "watch:webview"
+                "watch:webview",
+                "watch:ds-server"
             ],
             "cache": false,
             "persistent": true
