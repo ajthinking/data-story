@@ -3,33 +3,29 @@
         "//"
     ],
     "tasks": {
-        "build:nodejs": {
+        "build:css": {
             "outputs": [
-                "./dist/**",
-                "!./dist/ds-server.min.js"
+                "./dist/data-story.css"
             ]
         },
-        "build:server": {
+        "build:webpack": {
             "outputs": [
-                "./dist/ds-server.min.js"
+                "./dist/**",
+                "!./dist/data-story.css"
             ]
         },
         "build": {
             "dependsOn": [
-                "^build",
-                "build:nodejs",
-                "build:server"
+                "build:css",
+                "build:webpack",
+                "^build"
             ]
         },
-        "start": {
+        "watch:css": {
             "cache": false,
             "persistent": true
         },
-        "watch:server": {
-            "cache": false,
-            "persistent": true
-        },
-        "watch:nodejs": {
+        "watch:webpack": {
             "cache": false,
             "persistent": true
         },
@@ -38,8 +34,9 @@
                 "build"
             ],
             "with": [
-                "watch:server",
-                "watch:nodejs"
+                "watch:webpack",
+                "watch:css",
+                "@data-story/core#watch"
             ],
             "cache": false,
             "persistent": true

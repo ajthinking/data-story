@@ -4,11 +4,17 @@
     ],
     "tasks": {
         "build:extension": {
+            "dependsOn": [
+                "^build"
+            ],
             "outputs": [
                 "./dist/extension.*"
             ]
         },
         "build:webview": {
+            "dependsOn": [
+                "^build"
+            ],
             "outputs": [
                 "./dist/app/**"
             ]
@@ -27,7 +33,8 @@
                 "build:extension",
                 "build:webview",
                 "build:ds-server",
-                "build:duckdb"
+                "build:duckdb",
+                "^build"
             ]
         },
         "watch:extension": {
@@ -42,6 +49,9 @@
         "watch:webview": {
             "dependsOn": [
                 "^build"
+            ],
+            "with": [
+                "@data-story/ui#watch"
             ],
             "persistent": true,
             "cache": false

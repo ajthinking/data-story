@@ -61,8 +61,8 @@ yarn cy:open
 
 ### Turbo tasks naming convention
 
-| name        | description                                                                                                                                          |
-|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `build:xxx` | Start a one-shot task to build artifacts                                                                                                             |
-| `watch:xxx` | Start a long running process that produce build artifacts                                                                                            |
-| `start:xxx` | Start a long running process that produce build artifacts and launch a server to accept incoming requests, e.g. webpack dev server, nodejs ds-server |
+| name        | description                                                                                                                  |
+|-------------|------------------------------------------------------------------------------------------------------------------------------|
+| `build:xxx` | Start a one-shot task to build artifacts                                                                                     |
+| `watch:xxx` | Start a long running process that produce build artifacts                                                                    |
+| `dev:xxx`   | Start a long running process that launch a dev server to accept incoming requests, e.g. webpack dev server, nodejs ds-server |
