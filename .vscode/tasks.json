@@ -3,8 +3,7 @@
     "tasks": [
       {
         "type": "npm",
-        "script": "ext:dev",
-        "problemMatcher": "$ts-webpack-watch",
+        "script": "watch:ds-ext",
         "isBackground": true,
         "presentation": {
           "reveal": "never",

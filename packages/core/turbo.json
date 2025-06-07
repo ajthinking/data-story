@@ -3,33 +3,38 @@
         "//"
     ],
     "tasks": {
-        "build:nodejs": {
+        "build:vite": {
             "outputs": [
-                "./dist/**",
-                "!./dist/ds-server.min.js"
+                "./dist/vite/**"
             ]
         },
-        "build:server": {
+        "build:cjs": {
             "outputs": [
-                "./dist/ds-server.min.js"
+                "./dist/main/**"
+            ]
+        },
+        "build:esm": {
+            "outputs": [
+                "./dist/esm/**"
             ]
         },
         "build": {
             "dependsOn": [
                 "^build",
-                "build:nodejs",
-                "build:server"
+                "build:vite",
+                "build:cjs",
+                "build:esm"
             ]
         },
-        "start": {
+        "watch:vite": {
             "cache": false,
             "persistent": true
         },
-        "watch:server": {
+        "watch:cjs": {
             "cache": false,
             "persistent": true
         },
-        "watch:nodejs": {
+        "watch:esm": {
             "cache": false,
             "persistent": true
         },
@@ -38,8 +43,9 @@
                 "build"
             ],
             "with": [
-                "watch:server",
-                "watch:nodejs"
+                "watch:vite",
+                "watch:cjs",
+                "watch:esm"
             ],
             "cache": false,
             "persistent": true
