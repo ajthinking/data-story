@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
-import terminate from 'terminate';
+import terminate from 'terminate/promise';
 import { DsServerHealthChecker } from './dsServerHealthChecker';
 
 // Define possible server states
@@ -151,20 +151,19 @@ export class ServerLauncher implements vscode.Disposable {
    *@returns Promise that resolves when the stop command has been issued (not when server is fully stopped)
    */
   public async stopServer(): Promise<void> {
-    if (this.isDisposed) {
-      console.warn('[ServerLauncher] Attempted to stop server after disposal.');
-      return;
-    }
-    if (!this.childProcess || this.status === ServerStatus.Stopped || this.status === ServerStatus.Stopping) {
-      vscode.window.showInformationMessage('Server is not running or already stopping.');
-      return;
-    }
-
     this.updateStatus(ServerStatus.Stopping);
     this.outputChannel.appendLine('[Launcher] Attempting to stop server process (SIGTERM)...');
 
-    // Use the terminate package in case of https://github.com/volta-cli/volta/issues/36
-    terminate(this.childProcess.pid!);
+    await this.terminateServer();
+  }
+
+  private async terminateServer(): Promise<void> {
+    if (this.childProcess && this.childProcess.pid) {
+      // write '<exit>/n' to stdin
+      this.childProcess.stdin?.write('<exit>\n');
+      // Use the terminate package in case of https://github.com/volta-cli/volta/issues/36
+      await terminate(this.childProcess.pid);
+    }
   }
 
   /**
@@ -343,16 +342,9 @@ export class ServerLauncher implements vscode.Disposable {
    *5. Updates the final status
    */
   dispose() {
-    this.outputChannel.appendLine('[Launcher] Disposing...');
-    this.isDisposed = true;
-    this.stopServer(); // Attempt graceful shutdown
+    this.terminateServer();
     this.statusBarItem.dispose();
     this.outputChannel.dispose();
-    // Ensure child process reference is cleared if stopServer is async or fails
-    if (this.childProcess) {
-      this.outputChannel.appendLine('[Launcher] Forcing kill during disposal.');
-      this.childProcess = undefined;
-    }
-    this.updateStatus(ServerStatus.Stopped, 'Disposed'); // Final status update
+    this.isDisposed = true;
   }
 }

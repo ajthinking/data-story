@@ -57,6 +57,13 @@ process.on('uncaughtException', (error: Error, origin: NodeJS.UncaughtExceptionO
   console.error('Stack Trace:', error.stack); // Log the stack trace!
   console.error('----- Exiting Process -----');
 });
+
+process.stdin.on('data', data => {
+  if (data.toString('utf-8').includes('<exit>')) {
+    process.exit(0);
+  }
+});
+
 process.on('unhandledRejection', (reason, p) => {
   console.log('Unhandled Rejection at: Promise ', p, ' reason: ', reason);
   // application specific logging, throwing an error, or other logic here

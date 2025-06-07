@@ -16,6 +16,10 @@ const extensionConfig = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'extension.js',
     libraryTarget: 'commonjs2',
+    clean:{
+      keep: /app\//
+    }
+
   },
   externals: [
     {

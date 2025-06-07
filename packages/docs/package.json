@@ -21,7 +21,6 @@
   "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
     "@data-story/hubspot": "workspace:*",
-    "@data-story/nodejs": "workspace:*",
     "@data-story/ui": "workspace:*",
     "ahooks": "^3.8.1",
     "chart.js": "^4.4.2",

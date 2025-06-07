@@ -487,7 +487,6 @@ __metadata:
   resolution: "@data-story/docs@workspace:packages/docs"
   dependencies:
     "@data-story/hubspot": "workspace:*"
-    "@data-story/nodejs": "workspace:*"
     "@data-story/ui": "workspace:*"
     ahooks: "npm:^3.8.1"
     chart.js: "npm:^4.4.2"
@@ -4766,6 +4765,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chokidar@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "chokidar@npm:4.0.3"
+  dependencies:
+    readdirp: "npm:^4.0.1"
+  checksum: 10/bf2a575ea5596000e88f5db95461a9d59ad2047e939d5a4aac59dd472d126be8f1c1ff3c7654b477cf532d18f42a97279ef80ee847972fd2a25410bf00b80b59
+  languageName: node
+  linkType: hard
+
 "chownr@npm:^3.0.0":
   version: 3.0.0
   resolution: "chownr@npm:3.0.0"
@@ -5773,6 +5781,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^6.9.0"
     "@yarnpkg/types": "npm:^4.0.1"
     autoprefixer: "npm:^10.4.16"
+    chokidar: "npm:^4.0.3"
     cross-env: "npm:^7.0.3"
     cypress: "npm:^13.6.1"
     esbuild: "npm:^0.25.4"
@@ -5788,13 +5797,14 @@ __metadata:
     tailwindcss: "npm:^3.3.3"
     ts-loader: "npm:^9.5.1"
     ts-node: "npm:10.9.2"
-    turbo: "npm:<1.11.0"
+    turbo: "npm:^2.5.4"
     typescript: "npm:5.6.2"
     vite: "npm:^5.4.8"
     vitest: "npm:^1.6.1"
     webpack: "npm:^5.88.1"
     webpack-bundle-analyzer: "npm:^4.10.1"
     webpack-cli: "npm:^5.1.4"
+    zx: "npm:^8.5.5"
   languageName: unknown
   linkType: soft
 
@@ -6160,6 +6170,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     rxjs: "npm:^7.8.1"
+    tar: "npm:^7.4.3"
     terminate: "npm:^2.8.0"
   languageName: unknown
   linkType: soft
@@ -12742,6 +12753,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"readdirp@npm:^4.0.1":
+  version: 4.1.2
+  resolution: "readdirp@npm:4.1.2"
+  checksum: 10/7b817c265940dba90bb9c94d82920d76c3a35ea2d67f9f9d8bd936adcfe02d50c802b14be3dd2e725e002dddbe2cc1c7a0edfb1bc3a365c9dfd5a61e612eea1e
+  languageName: node
+  linkType: hard
+
 "readdirp@npm:~3.6.0":
   version: 3.6.0
   resolution: "readdirp@npm:3.6.0"
@@ -14802,58 +14820,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-darwin-64@npm:1.10.16":
-  version: 1.10.16
-  resolution: "turbo-darwin-64@npm:1.10.16"
+"turbo-darwin-64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "turbo-darwin-64@npm:2.5.4"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:1.10.16":
-  version: 1.10.16
-  resolution: "turbo-darwin-arm64@npm:1.10.16"
+"turbo-darwin-arm64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "turbo-darwin-arm64@npm:2.5.4"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-64@npm:1.10.16":
-  version: 1.10.16
-  resolution: "turbo-linux-64@npm:1.10.16"
+"turbo-linux-64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "turbo-linux-64@npm:2.5.4"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:1.10.16":
-  version: 1.10.16
-  resolution: "turbo-linux-arm64@npm:1.10.16"
+"turbo-linux-arm64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "turbo-linux-arm64@npm:2.5.4"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-windows-64@npm:1.10.16":
-  version: 1.10.16
-  resolution: "turbo-windows-64@npm:1.10.16"
+"turbo-windows-64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "turbo-windows-64@npm:2.5.4"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-windows-arm64@npm:1.10.16":
-  version: 1.10.16
-  resolution: "turbo-windows-arm64@npm:1.10.16"
+"turbo-windows-arm64@npm:2.5.4":
+  version: 2.5.4
+  resolution: "turbo-windows-arm64@npm:2.5.4"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo@npm:<1.11.0":
-  version: 1.10.16
-  resolution: "turbo@npm:1.10.16"
+"turbo@npm:^2.5.4":
+  version: 2.5.4
+  resolution: "turbo@npm:2.5.4"
   dependencies:
-    turbo-darwin-64: "npm:1.10.16"
-    turbo-darwin-arm64: "npm:1.10.16"
-    turbo-linux-64: "npm:1.10.16"
-    turbo-linux-arm64: "npm:1.10.16"
-    turbo-windows-64: "npm:1.10.16"
-    turbo-windows-arm64: "npm:1.10.16"
+    turbo-darwin-64: "npm:2.5.4"
+    turbo-darwin-arm64: "npm:2.5.4"
+    turbo-linux-64: "npm:2.5.4"
+    turbo-linux-arm64: "npm:2.5.4"
+    turbo-windows-64: "npm:2.5.4"
+    turbo-windows-arm64: "npm:2.5.4"
   dependenciesMeta:
     turbo-darwin-64:
       optional: true
@@ -14869,7 +14887,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: 10/7aca670d135dad376daaffaeef3dc24cfd53a0463b009e2870335cb6a5bfd30086217f34d7632c902f8df8391bf0a3289c1ed79ae251462de708a27db6df9f6e
+  checksum: 10/43dd952192a1261de3845ecac96d4f42ea6d8e49eaa4c339c029dbe010a1323957ef4b0080f8f06e3cd0169c1f00c356d32cbabde1ee08c72b0708f90994a774
   languageName: node
   linkType: hard
 
@@ -16198,5 +16216,14 @@ __metadata:
   version: 2.0.4
   resolution: "zwitch@npm:2.0.4"
   checksum: 10/f22ec5fc2d5f02c423c93d35cdfa83573a3a3bd98c66b927c368ea4d0e7252a500df2a90a6b45522be536a96a73404393c958e945fdba95e6832c200791702b6
+  languageName: node
+  linkType: hard
+
+"zx@npm:^8.5.5":
+  version: 8.5.5
+  resolution: "zx@npm:8.5.5"
+  bin:
+    zx: build/cli.js
+  checksum: 10/2da68c39c53bd3e9cefd48682e2d2c22d8d4e153779c20625fe0be7d654877520b93f4431f169f8aab8c1bf3909fdd47f42c3a14d43444332cb72381ab27a4d0
   languageName: node
   linkType: hard
