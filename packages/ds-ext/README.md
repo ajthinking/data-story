@@ -27,8 +27,6 @@ Set [`datastory.additionalDsServerCliArgs`](vscode://settings/datastory.addition
 
 ## publish ds-ext to VSCode extension marketplace
 
-* run `yarn build` under `packages/nodejs`
-* then `cp packages/nodejs/dist/ds-server.min.js packages/ds-ext/install-scripts/` in root
-* run `yarn vscode:prepublish` under `packages/ds-ext`
+* run `yarn turbo ds-ext#build`
 * run `vsce package --no-yarn --skip-license` under `packages/ds-ext`
 * run `vsce publish` under `packages/ds-ext`

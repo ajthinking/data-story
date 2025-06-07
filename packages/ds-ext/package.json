@@ -142,11 +142,12 @@
     "dependencies": false
   },
   "scripts": {
-    "vscode:prepublish": "node ./prepublish.js && yarn run package",
-    "build": "yarn run -T set-env NODE_ENV=production && yarn run -T webpack && yarn run -T vite build",
+    "build:webview": "yarn run -T set-env NODE_ENV=production && yarn run -T vite build",
+    "build:extension": "yarn run -T set-env NODE_ENV=production && yarn run -T webpack --mode production --devtool hidden-source-map",
+    "build:ds-server": "yarn run -T zx scripts/prepare-ds-server.mjs",
+    "build:duckdb": "yarn run -T zx scripts/download-duckdb-bindings.mjs",
     "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T webpack --watch",
-    "watch:app": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w",
-    "package": "yarn run -T set-env NODE_ENV=production && yarn run -T webpack --mode production --devtool hidden-source-map",
+    "watch:webview": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "yarn run compile-tests && yarn run build && yarn run lint",
