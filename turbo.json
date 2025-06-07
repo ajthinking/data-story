@@ -1,19 +1,11 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
+  "tasks": {
     "dev": {
       "dependsOn": [
         "watch:webpack",
         "watch",
         "watch:css"
-      ],
-      "cache": false,
-      "persistent": true
-    },
-    "ext:dev": {
-      "dependsOn": [
-        "watch:extension",
-        "watch:app"
       ],
       "cache": false,
       "persistent": true

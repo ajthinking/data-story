@@ -1,0 +1,58 @@
+{
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build:extension": {
+            "outputs": [
+                "./dist/extension.*"
+            ]
+        },
+        "build:webview": {
+            "outputs": [
+                "./dist/app"
+            ]
+        },
+        "build:ds-server": {
+            "cache": false,
+            "dependsOn": [
+                "@data-story/nodejs#build"
+            ]
+        },
+        "build:duckdb": {
+            "cache": false
+        },
+        "build": {
+            "dependsOn": [
+                "build:extension",
+                "build:webview",
+                "build:ds-server",
+                "build:duckdb"
+            ]
+        },
+        "watch:extension": {
+            "dependsOn": [
+                "^build",
+                "build:ds-server",
+                "build:duckdb"
+            ],
+            "persistent": true,
+            "cache": false
+        },
+        "watch:webview": {
+            "dependsOn": [
+                "^build"
+            ],
+            "persistent": true,
+            "cache": false
+        },
+        "dev": {
+            "with": [
+                "watch:extension",
+                "watch:webview"
+            ],
+            "cache": false,
+            "persistent": true
+        }
+    }
+}
