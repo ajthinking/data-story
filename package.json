@@ -70,6 +70,7 @@
     "@typescript-eslint/parser": "^6.9.0",
     "@yarnpkg/types": "^4.0.1",
     "autoprefixer": "^10.4.16",
+    "chokidar": "^4.0.3",
     "cross-env": "^7.0.3",
     "cypress": "^13.6.1",
     "esbuild": "^0.25.4",

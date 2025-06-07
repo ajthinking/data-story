@@ -148,6 +148,7 @@
     "build:duckdb": "yarn run -T zx scripts/download-duckdb-bindings.mjs",
     "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T webpack --watch",
     "watch:webview": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w",
+    "watch:ds-server": "yarn run -T zx scripts/watch-ds-server.mjs",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "yarn run compile-tests && yarn run build && yarn run lint",

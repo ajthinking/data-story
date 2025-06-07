@@ -8,18 +8,21 @@
 [![vs code extension](https://vsmarketplacebadges.dev/version/ajthinking.ds-ext.svg)](https://marketplace.visualstudio.com/items?itemName=ajthinking.ds-ext)
 [![MIT](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/license/mit)
 
-
-🛠️ Real-time, observable, [Flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) for React, Node.js and VS Code. <a href="https://datastory.dev" target="_blank">Docs</a>
+🛠️ Real-time, observable, [Flow-based programming](http://en.wikipedia.org/wiki/Flow-based_programming) for React,
+Node.js and VS Code. <a href="https://datastory.dev" target="_blank">Docs</a>
 | <a href="https://datastory.dev/playground" target="_blank">Playground</a>
 
 ![ds-tech-gif](https://github.com/user-attachments/assets/d2dbbdda-8757-43b1-a749-c24646e3d315)
 
 ### VS Code extension
-A _preliminary implementation_ is available under name [`ds-ext`](https://marketplace.visualstudio.com/items?itemName=ajthinking.ds-ext).
+
+A _preliminary implementation_ is available under name [
+`ds-ext`](https://marketplace.visualstudio.com/items?itemName=ajthinking.ds-ext).
 
 ![trimmed-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/0941a210-252a-4c23-9309-f115b7c212e0)
 
 ### Usage with React
+
 ```tsx
 import '@data-story/ui/data-story.css';
 import { DataStory } from '@data-story/ui'
@@ -34,11 +37,13 @@ export default function Home() {
 ```
 
 ## Installation
+
 ```bash
 yarn add @data-story/ui
 ```
 
 ## Testing
+
 When you're writing tests in your local environment
 
 ```bash 
@@ -51,3 +56,13 @@ yarn cy:open
 
 # test on ci, only run @data-story/ui,  @data-story/core and e2e tests
 ````
+
+## Development Notes
+
+### Turbo tasks naming convention
+
+| name        | description                                                                                                                                          |
+|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `build:xxx` | Start a one-shot task to build artifacts                                                                                                             |
+| `watch:xxx` | Start a long running process that produce build artifacts                                                                                            |
+| `start:xxx` | Start a long running process that produce build artifacts and launch a server to accept incoming requests, e.g. webpack dev server, nodejs ds-server |
