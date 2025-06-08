@@ -1,7 +1,12 @@
-import { $, usePowerShell, usePwsh } from 'zx';
+import {$, usePwsh, os } from 'zx';
 
-if ($.shell.toLowerCase().includes('pwsh')) {
+
+async function fixPowerShellQuote() {
+  if(os.platform() !== 'win32') {
+    return;
+  }
   usePwsh();
-} else if ($.shell.toLowerCase().includes('powershell')) {
-  usePowerShell();
+  console.log($.shell)
 }
+
+await fixPowerShellQuote();

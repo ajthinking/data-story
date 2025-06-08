@@ -25,8 +25,9 @@ if (!fs.existsSync(duckDBBaseDir)) {
 
 async function downloadAndExtract(packageName, version, targetDir) {
   // 1. Get tarball URL using zx
-  $.verbose = false; // Suppress command output
-  const { stdout } = await $`npm view ${packageName}@${version} dist.tarball`;
+  $.verbose = true; // Suppress command output
+  const packageWithVersion = `${packageName}@${version}`;
+  const { stdout } = await $`npm view ${packageWithVersion} dist.tarball`;
   const tarballUrl = stdout.trim();
 
   if (!tarballUrl) {
