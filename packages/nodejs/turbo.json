@@ -7,11 +7,17 @@
             "outputs": [
                 "./dist/**",
                 "!./dist/ds-server.min.js"
+            ],
+            "dependsOn": [
+                "^build"
             ]
         },
         "build:server": {
             "outputs": [
                 "./dist/ds-server.min.js"
+            ],
+            "dependsOn": [
+                "^build"
             ]
         },
         "build": {
