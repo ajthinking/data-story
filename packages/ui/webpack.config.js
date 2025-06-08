@@ -13,7 +13,7 @@ const commonJSConfig = (env, options) => ({
     filename: 'bundle.cjs',
     libraryTarget: 'commonjs2',
     clean: {
-      keep: /data-story.css/,
+      keep: /(data-story.css)|(bundle.mjs(\.map|\.LICENSE.txt)?)/,
     },
   },
   module: {
@@ -49,7 +49,7 @@ const esmConfig = (env, options) => ({
     filename: 'bundle.mjs',
     libraryTarget: 'module',
     clean: {
-      keep: /data-story.css/,
+      keep: /(data-story.css)|(bundle.cjs(\.map|\.LICENSE.txt)?)/,
     },
     library: {
       type: 'module',
