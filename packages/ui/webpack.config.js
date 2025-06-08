@@ -13,7 +13,7 @@ const commonJSConfig = (env, options) => ({
     filename: 'bundle.cjs',
     libraryTarget: 'commonjs2',
     clean: {
-      keep: /datastory.css/,
+      keep: /data-story.css/,
     },
   },
   module: {
@@ -48,7 +48,9 @@ const esmConfig = (env, options) => ({
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.mjs',
     libraryTarget: 'module',
-    clean: !options.watch,
+    clean: {
+      keep: /data-story.css/,
+    },
     library: {
       type: 'module',
     },
