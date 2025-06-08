@@ -40,6 +40,22 @@
             ],
             "cache": false,
             "persistent": true
+        },
+        "test:unit": {
+            "dependsOn": [
+                "build"
+            ]
+        },
+        "test:component": {
+            "dependsOn": [
+                "build"
+            ]
+        },
+        "test": {
+            "dependsOn": [
+                "test:unit",
+                "test:component"
+            ]
         }
     }
 }
