@@ -67,30 +67,24 @@ async function downloadAndExtract(packageName, version, targetDir) {
 }
 
 async function main() {
-  for (const binding of bindingsToInstall) {
-    const platformSpecificPackageName = `@duckdb/node-bindings-${binding.name}`;
-    // Target path should be node_modules/@duckdb/node-bindings-platform-arch/
-    const targetPackageDir = path.join(duckDBBaseDir, `node-bindings-${binding.name}`);
-
-    // Check if directory already exists and contains content
-    if (fs.existsSync(targetPackageDir) && fs.readdirSync(targetPackageDir).length > 0) {
-      console.log(`  Skipping ${platformSpecificPackageName}: directory already exists and is not empty.`);
-      continue;
-    }
-
-    console.log(`  Processing ${platformSpecificPackageName}...`);
     try {
-      await downloadAndExtract(
-        platformSpecificPackageName,
-        DUCKDB_BINDINGS_VERSION,
-        targetPackageDir);
+        await Promise.all(bindingsToInstall.map(async (binding) => {
+            const platformSpecificPackageName = `@duckdb/node-bindings-${binding.name}`;
+            // Target path should be node_modules/@duckdb/node-bindings-platform-arch/
+            const targetPackageDir = path.join(duckDBBaseDir, `node-bindings-${binding.name}`);
+            // Check if directory already exists and contains content (simple check, can be improved if needed)
+            if (fs.existsSync(targetPackageDir) && fs.readdirSync(targetPackageDir).length > 0) {
+                console.log(`  Skipping ${platformSpecificPackageName}: directory already exists and is not empty.`);
+                return;
+            }
+            console.log(`  Processing ${platformSpecificPackageName}...`);
+            await downloadAndExtract(platformSpecificPackageName, DUCKDB_BINDINGS_VERSION, targetPackageDir);
+        }));
+        console.log('All DuckDB Node.js bindings installation attempt completed.');
     } catch (error) {
-      console.error(`  Failed to install ${platformSpecificPackageName}. Error: ${error instanceof Error ? error.message : String(
-        error)}`);
-      throw error;
+        console.error('Failed to install one or more bindings. Error:', error);
+        throw error;
     }
-  }
-  console.log('All DuckDB Node.js bindings installation attempt completed.');
 }
 
 await main().catch(err => {
