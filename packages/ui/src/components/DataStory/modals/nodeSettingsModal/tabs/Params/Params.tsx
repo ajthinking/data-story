@@ -1,8 +1,6 @@
 import { ReactFlowNode } from '../../../../../Node/ReactFlowNode';
 import { StringableWithConfig } from './StringableWithConfig';
-import { RepeatableWithConfig } from './RepeatableWithConfig';
 import { FormFieldWrapper } from '../../../../Form/UseFormField';
-import { StringListInput } from '../../../../Form/StringListInput';
 
 export function ParamsComponent({
   node,
@@ -16,19 +14,7 @@ export function ParamsComponent({
           <label title="axx" className="my-2 text-sm tracking-wide font-bold uppercase text-slate-400">{param.label || 'no-label'}</label>
           {param.help && (<div className="mt-2 mb-2 text-xs text-slate-400">{param.help || 'no-help'}</div>)}
 
-          {/* Horizontal layout */}
           {param.type === 'StringableParam' && <StringableWithConfig
-            param={param}
-            node={node}
-          />}
-
-          {param.type === 'StringListParam' && <StringListInput
-            param={param}
-            node={node}
-          />}
-
-          {/* Vertical layout */}
-          {param.type === 'RepeatableParam' && <RepeatableWithConfig
             param={param}
             node={node}
           />}

@@ -41,7 +41,7 @@ export default {
       selector: 'import',
       format: [ 'camelCase', 'PascalCase' ],
     } ],
-    eqeqeq: 'warn',
+    eqeqeq: ['warn', "smart"],
     'no-throw-literal': 'warn',
     semi: 'warn',
   },

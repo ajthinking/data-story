@@ -3,7 +3,6 @@ import {
   type InputObserver,
   NodeDescription,
   Param,
-  RepeatableParam,
   type ReportCallback,
   type ExecutionObserver, NodeStatus,
   NodeId,
@@ -76,10 +75,6 @@ export type FormComponentProps = FormCommonProps & {
   param: Param;
 }
 
-export type RepeatableInputProps = FormCommonProps & {
-  param: RepeatableParam<Param[]>;
-}
-
 export interface FormComponent<TParams extends Param> {
   getComponent: (params: FormCommonProps & { param: TParams }) => React.ReactNode;
   getType: () => string;
@@ -102,6 +97,8 @@ export type StoreSchema = {
   /** The Nodes */
   nodes: ReactFlowNode[];
   updateNode: (node: ReactFlowNode) => void;
+  updateNodeInternalsCallback: ((nodeId: string) => void) | null;
+  setUpdateNodeInternalsCallback: (callback: (nodeId: string) => void) => void;
   addNode: (node: ReactFlowNode) => void;
   addNodeFromDescription: (nodeDescription: NodeDescription) => void;
   onNodesChange: OnNodesChange;
@@ -120,6 +117,12 @@ export type StoreSchema = {
   /** Global Params */
   params: Param[],
   setParams: (params: Param[]) => void;
+
+  /** Run State */
+  isRunning: boolean;
+  setIsRunning: (running: boolean) => void;
+  executionId: string;
+  setExecutionId: (id: string) => void;
 
   /** When DataStory component initializes */
   onInit: (options: StoreInitOptions) => void;

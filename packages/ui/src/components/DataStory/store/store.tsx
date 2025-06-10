@@ -24,6 +24,11 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
   params: [],
   openNodeSidebarId: null,
   focusOnFlow: () => void 0,
+  isRunning: false,
+  setIsRunning: (running: boolean) => set({ isRunning: running }),
+
+  executionId: '',
+  setExecutionId: (id: string) => set({ executionId: id }),
 
   // METHODS
   toDiagram: () => {
@@ -129,6 +134,10 @@ export const createStore = () => createWithEqualityFn<StoreSchema>((set, get) =>
         return existingNode
       }),
     })
+  },
+  updateNodeInternalsCallback: null,
+  setUpdateNodeInternalsCallback: (callback: (nodeId: string) => void) => {
+    set({ updateNodeInternalsCallback: callback })
   },
   setNodes: (nodes: ReactFlowNode[]) => {
     set({

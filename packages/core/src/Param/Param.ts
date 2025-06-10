@@ -7,8 +7,8 @@ import { jsExpressionEvaluation } from './evaluations/jsExpressionEvaluation'
 import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
 
-export interface StringableInputValue extends Record<string, any> {
-  rawValue: any,
+export interface StringableInputValue {
+  rawValue: string,
   Evaluation?: string,
   Cast?: string,
 }
@@ -27,95 +27,15 @@ export type StringableParam = {
   input: StringableInputValue,
 }
 
-export type PortSelectionParam = {
-  name: string,
-  label: string,
-  help: string,
-  type: 'PortSelectionParam',
-  allowCreate: boolean,
-  input: string
-}
+export type ParamId = string
 
-export type RepeatableParam<RepeatableRow> = {
-  name: string,
-  label: string,
-  help: string,
-  type: 'RepeatableParam',
-  row: RepeatableRow,
-  input: Record<string, unknown>[]
-}
+export type Param = StringableParam;
 
-/**
- * This type can represent ["a", "b", "c"] using 'a, b, c', which facilitates user input
- * */
-export type StringListParam = {
-  name: string,
-  label: string,
-  help: string,
-  type: 'StringListParam',
-  input: unknown
-}
+export type ParamInput = Param['input']
 
-export type Param =
-  StringableParam |
-  PortSelectionParam |
-  RepeatableParam<Param[]> |
-  StringListParam;
+export type EvaluatedParamValue = any
 
-export type ParamValue = Param['input']
-
-type StringableConfigType = Omit<StringableParam, 'input' | 'type'> & {
-  value: StringableInputValue['rawValue']
-}
-
-export const strList = ({
-  name,
-  label,
-  help,
-  value,
-}: {
-  name: string,
-  label?: string,
-  help?: string,
-  value?: unknown,
-}): StringListParam => {
-  return {
-    name,
-    type: 'StringListParam',
-    label: label ?? name,
-    help: help ?? '',
-    input: value ?? undefined,
-  }
-}
-
-export const createDefaultStringable = ({
-  name,
-  label,
-  help,
-  multiline,
-  canInterpolate,
-  interpolate,
-  evaluations,
-  casts,
-  interpolationsFromPort,
-  value,
-}:StringableConfigType): StringableParam => {
-  return {
-    name,
-    type: 'StringableParam',
-    label,
-    help,
-    multiline,
-    canInterpolate,
-    interpolate,
-    evaluations,
-    casts,
-    interpolationsFromPort,
-    input: {
-      rawValue: value ?? '',
-    },
-  }
-}
+export type StaticEvaluatedParamValue = any
 
 export const str = ({
   name,
@@ -187,7 +107,7 @@ export const num = ({
       numberCast,
     ],
     input: {
-      rawValue: value ?? 0,
+      rawValue: String(value ?? 0),
       Cast: numberCast.type,
     },
   }
@@ -230,7 +150,7 @@ export const json_ = ({
       stringCast,
     ],
     input: {
-      rawValue: value ?? 0,
+      rawValue: String(value ?? 0),
       Evaluation: jsonEvaluation.type,
     },
   }
@@ -273,7 +193,7 @@ export const jsFn = ({
       stringCast,
     ],
     input: {
-      rawValue: value ?? 0,
+      rawValue: String(value ?? 0),
       Evaluation: jsFunctionEvaluation.type,
     },
   }
@@ -316,7 +236,7 @@ export const jsExpression = ({
       stringCast,
     ],
     input: {
-      rawValue: value ?? 0,
+      rawValue: String(value ?? 0),
       Evaluation: jsExpressionEvaluation.type,
     },
   }

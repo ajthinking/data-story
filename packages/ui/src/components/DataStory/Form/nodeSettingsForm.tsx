@@ -1,6 +1,6 @@
 import { InputSchemas, OutputSchemas, Params } from '../modals/nodeSettingsModal/tabs';
 import { useEffect, useMemo, useState } from 'react';
-import { Param, ParamValue, pascalToSentenceCase } from '@data-story/core';
+import { createDataStoryId, Param, ParamInput, parseStringList, pascalToSentenceCase } from '@data-story/core';
 import { FormProvider, useForm } from 'react-hook-form';
 import { NodeSettingsFormProps, StoreSchema } from '../types';
 import { useStore } from '../store/store';
@@ -18,18 +18,20 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
   const selector = (state: StoreSchema) => ({
     toDiagram: state.toDiagram,
     updateNode: state.updateNode,
+    updateNodeInternalsCallback: state.updateNodeInternalsCallback,
   });
 
-  const { updateNode, toDiagram } = useStore(selector);
+  const { updateNode, toDiagram, updateNodeInternalsCallback } = useStore(selector);
 
   const defaultValues = useMemo(() => {
     return  {
       label: node?.data?.label,
       outputs: JSON.stringify(node?.data?.outputs, null, 2),
+      outputPortNames: node?.data?.outputs?.map((o: any) => o.name).join('\n'),
       params: node?.data?.params.reduce((acc, param: Param) => {
         acc[param.name] = param.input;
         return acc;
-      }, {} as Record<string, ParamValue>),
+      }, {} as Record<string, ParamInput>),
     };
   }, [node]);
 
@@ -45,15 +47,41 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
     form.handleSubmit((submitted: {
       label: string,
       outputs: string,
-      params: Record<string, ParamValue>
+      params: Record<string, ParamInput>
     }) => {
       // Root level fields
       const newData = { ...node.data };
       newData.label = submitted.label;
-      newData.outputs = JSON.parse(submitted.outputs);
+
+      // --- OUTPUTS LOGIC START ---
+      // Get previous outputs
+      const prevOutputs = node.data.outputs || [];
+      // Get new output names from form state
+      const { outputPortNames } = form.getValues();
+
+      // 1. Remove any outputs that are no longer present
+      // 2. Add any new outputs
+      // 3. Reorder outputs to match the order in the form
+      const newNames: string[] = parseStringList(outputPortNames);
+      // Build a map of previous outputs by name for fast lookup
+      const prevByName = new Map((prevOutputs as any[]).map(o => [o.name, o]));
+      // Use the first previous output as a template for required fields
+      const template = prevOutputs[0] || {};
+      // Compose the new outputs array in the correct order
+      const newOutputs = newNames.map(name => {
+        const existing = prevByName.get(name);
+        if (existing) return { ...existing, version: new Date() };
+        return {
+          ...template, // fallback for required fields (like schema)
+          id: createDataStoryId(),
+          name,
+          version: new Date(),
+        };
+      });
+      newData.outputs = newOutputs;
+      // --- OUTPUTS LOGIC END ---
 
       // This logic updates `param.input` with the user's latest value. However, it only updates the top level of `param.input`.
-      // If it's a `RepeatableParam` (containing `PortSelectionParam` and `StringableParam`), the `input` for `PortSelectionParam` or `StringableParam` won't be updated.
       for(const [key, value] of Object.entries(submitted.params)) {
         const param = newData.params.find((p) => p.name === key)!;
         if (param.hasOwnProperty('input')) param.input = value;
@@ -63,6 +91,8 @@ export const NodeSettingsForm: React.FC<NodeSettingsFormProps> = ({ node, onClos
         ...node,
         data: newData,
       })
+
+      updateNodeInternalsCallback?.(node.id);
 
       onSave?.(toDiagram());
     })()

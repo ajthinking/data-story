@@ -11,7 +11,7 @@ interface StringableInput {
   onCursorPositionChange: (position: number) => void; // Add this line
 }
 
-const basicSetup: BasicSetupOptions = {
+export const basicSetup: BasicSetupOptions = {
   lineNumbers: false,
   highlightActiveLineGutter: false,
   highlightActiveLine: false,
@@ -35,7 +35,7 @@ export function StringableInputComponent({
   param,
   onCursorPositionChange,
 }: StringableInput) {
-  const { getValues,  setValue } = useFormField();
+  const { getValues, setValue } = useFormField();
 
   const myCompletions = useCallback((context) => {
     let before = context.matchBefore(parameterReg);
@@ -50,25 +50,20 @@ export function StringableInputComponent({
   const extensions = useMemo(() => {
     const evaulation = param.input?.Evaluation;
     if (evaulation === 'JS_FUNCTION' || evaulation === 'JS_EXPRESSION') {
-      return [javascript(), autocompletion({ override: [myCompletions] })];
+      return [ javascript(), autocompletion({ override: [ myCompletions ] }) ];
     }
     if (evaulation === 'JSON') {
-      return [json(), autocompletion({ override: [myCompletions] })];
+      return [ json(), autocompletion({ override: [ myCompletions ] }) ];
     }
-    return [autocompletion({ override: [myCompletions] })];
-  }, [myCompletions, param.input?.Evaluation]);
+    return [ autocompletion({ override: [ myCompletions ] }) ];
+  }, [ myCompletions, param.input?.Evaluation ]);
 
-  const onChange = useCallback((value, viewUpdate) => {
+  const onChange = useCallback((value) => {
     setValue(value);
-  }, [setValue]);
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    // Stop the event from bubbling up to the VSCode iframe event handler
-    e.stopPropagation();
-  }, []);
+  }, [ setValue ]);
 
   return (
-    <div onKeyDown={handleKeyDown} className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
+    <div className="flex w-full text-gray-500 max-h-64 overflow-y-auto">
       <CodeMirror
         className="text-xs h-full w-full bg-white font-mono"
         value={(getValues() ?? '').toString()}
@@ -83,5 +78,5 @@ export function StringableInputComponent({
 export function StringableInput(params: StringableInput) {
   return <FormFieldWrapper fieldName={'rawValue'}>
     <StringableInputComponent {...params} />
-  </FormFieldWrapper>
+  </FormFieldWrapper>;
 }

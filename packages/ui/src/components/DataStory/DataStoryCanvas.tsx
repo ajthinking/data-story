@@ -8,6 +8,7 @@ import {
   ReactFlow,
   ReactFlowProvider,
   useStoreApi,
+  useUpdateNodeInternals,
 } from '@xyflow/react';
 import NodeComponent from '../Node/NodeComponent';
 import { useGetStore, useStore } from './store/store';
@@ -78,6 +79,8 @@ const Flow = ({
     updateEdgeCounts: state.updateEdgeCounts,
     updateEdgeStatus: state.updateEdgeStatus,
     updateDiagram: state.updateDiagram,
+    updateNodeInternalsCallback: state.updateNodeInternalsCallback,
+    setUpdateNodeInternalsCallback: state.setUpdateNodeInternalsCallback,
   });
 
   const {
@@ -93,11 +96,20 @@ const Flow = ({
     updateEdgeCounts,
     updateEdgeStatus,
     updateDiagram,
+    setUpdateNodeInternalsCallback,
   } = useStore(selector, shallow);
 
   const id = useId()
   const reactFlowStore = useStoreApi();
   const { addSelectedNodes, setNodes } = reactFlowStore.getState();
+
+  const updateNodeInternals = useUpdateNodeInternals();
+
+  useEffect(() => {
+    setUpdateNodeInternalsCallback((nodeId: string) => {
+      updateNodeInternals(nodeId);
+    });
+  }, [updateNodeInternals, setUpdateNodeInternalsCallback]);
 
   const flowRef = useRef<HTMLDivElement>(null);
 

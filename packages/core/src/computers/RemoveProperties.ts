@@ -1,5 +1,3 @@
-import { str } from '../Param';
-import { ItemWithParams } from '../ItemWithParams';
 import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
@@ -16,34 +14,48 @@ export const RemoveProperties: Computer = {
   }],
   params: [
     {
-      name: 'remove_properties',
-      label: 'Remove Properties',
-      help: 'The list of keys will be deleted in the output json',
-      type: 'RepeatableParam',
-      row: [
-        str({
-          name: 'property',
-          label: 'Property',
-          value: 'id',
-        }),
+      name: 'properties_to_remove',
+      label: 'Properties to Remove',
+      type: 'StringableParam',
+      multiline: true,
+      canInterpolate: false,
+      input: {
+        rawValue: 'p1\np2\np3',
+        Evaluation: 'STRING_LIST',
+      },
+      evaluations: [
+        {
+          type: 'JSON',
+          label: 'json',
+          shortLabel: 'json',
+        },
+        {
+          type: 'STRING_LIST',
+          label: 'list',
+          shortLabel: 'list',
+        },
       ],
-      input: [],
+      help: 'Comma-or-line-separated list of properties to remove from each item',
     },
   ],
 
-  async* run({ input, output, params }) {
-    const items = input.pull(BatchLimit);
-    const param = (params.remove_properties ?? []) as unknown as {
-      property: string,
-    }[];
+  async *run({ input, output }) {
+    while(true) {
+      const incoming = input.pull(BatchLimit)
+      output.push(incoming.map(item => {
+        const propertiesToRemove = item.params.properties_to_remove as string[];
+        console.log({ propertiesToRemove })
 
-    const properties = param.map(p => p.property);
-    const result = items.map((item) => {
-      const [ newItem ] = input.pullNew({ ...item.value });
-      properties.forEach(p => delete newItem.value[p]);
-      return newItem;
-    });
+        for(const prop of propertiesToRemove) {
+          if (prop in item.value) {
+            delete item.value[prop];
+          }
+        }
 
-    output.pushTo('output', result);
+        return item.value;
+      }))
+
+      yield;
+    }
   },
 };

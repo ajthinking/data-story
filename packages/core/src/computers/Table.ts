@@ -1,4 +1,4 @@
-import { num, str, strList } from '../Param';
+import { str } from '../Param';
 import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
@@ -11,16 +11,44 @@ export const Table: Computer = {
   }],
   outputs: [],
   params: [
-    strList({
+    {
+      type: 'StringableParam',
       name: 'only',
+      label: 'Only',
+      multiline: true,
+      canInterpolate: false,
       help: 'If set, only the specified paths will be shown. Use comma separation',
-      value: '',
-    }),
-    strList({
+      input: {
+        rawValue: '',
+        Evaluation: 'STRING_LIST',
+      },
+      evaluations: [
+        {
+          type: 'STRING_LIST',
+          label: 'list',
+          shortLabel: 'list',
+        },
+      ],
+    },
+    {
+      type: 'StringableParam',
       name: 'drop',
+      label: 'Drop',
+      multiline: true,
+      canInterpolate: false,
       help: 'If set, the specified paths will be dropped. Use comma separation',
-      value: '',
-    }),
+      input: {
+        rawValue: '',
+        Evaluation: 'STRING_LIST',
+      },
+      evaluations: [
+        {
+          type: 'STRING_LIST',
+          label: 'list',
+          shortLabel: 'list',
+        },
+      ],
+    },
     str({
       name: 'destructObjects',
       help: 'If set, objects will be destructured',

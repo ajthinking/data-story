@@ -5,34 +5,10 @@ import { useCallback, useState, useMemo, useEffect } from 'react';
 import { AbortIcon } from '../icons/abortIcon';
 import { DataStoryEvents, DataStoryEventType } from '../events/dataStoryEventType';
 import { useDataStoryEvent } from '../events/eventManager';
-import { createDataStoryId, debounce } from '@data-story/core';
+import { useRunControl } from './useRunControl';
 
 export const RunControl = () => {
-  const [isRunning, setIsRunning] = useState<boolean>(false);
-  const onRun = useStore((state) => state.onRun);
-  const abortExecution = useStore((state) => state.abortExecution);
-  const [executionId, setExecutionId] = useState<string>('');
-
-  const handleRun = debounce(async () => {
-    if (isRunning && executionId) {
-      abortExecution(executionId);
-      setIsRunning(false);
-    } else {
-      const tempExecutionId = createDataStoryId();
-      setExecutionId(tempExecutionId);
-      onRun(tempExecutionId);
-      setIsRunning(true);
-    }
-  }, 300);
-
-  const dataStoryEvent = useCallback((event: DataStoryEventType) => {
-    const stopRunning = event.type === DataStoryEvents.RUN_ABORT || event.type === DataStoryEvents.RUN_ERROR || event.type === DataStoryEvents.RUN_SUCCESS;
-    if (stopRunning) {
-      setIsRunning(false);
-      setExecutionId('');
-    }
-  }, []);
-  useDataStoryEvent(dataStoryEvent);
+  const { isRunning, handleRun } = useRunControl();
 
   return (
     <ControlButton
@@ -40,7 +16,7 @@ export const RunControl = () => {
       aria-label="run"
       onClick={handleRun}
     >
-      {isRunning ? <AbortIcon /> : <RunIcon/> }
+      {isRunning ? <AbortIcon /> : <RunIcon />}
     </ControlButton>
   );
 };

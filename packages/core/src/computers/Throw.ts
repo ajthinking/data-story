@@ -3,7 +3,7 @@ import { numberCast } from '../Param/casts/numberCast';
 import { stringCast } from '../Param/casts/stringCast';
 import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
-import { createDefaultStringable } from '../Param';
+import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Throw: Computer = {
@@ -15,7 +15,7 @@ export const Throw: Computer = {
   }],
   outputs: [],
   params: [
-    createDefaultStringable({
+    str({
       name: 'message',
       label: 'message',
       help: 'What to throw',
@@ -26,18 +26,15 @@ export const Throw: Computer = {
         jsFunctionEvaluation,
         jsonEvaluation,
       ],
-      casts: [
-        numberCast,
-        stringCast,
-      ],
       value: 'Some error',
     }),
   ],
 
   async *run({ input, node }) {
     const [item] = input.pull(1)
+    const fuck = item.params.message
     throw new NodeRunError({
-      message: item.params.message as string,
+      message: item.params.message,
       node,
     })
   },

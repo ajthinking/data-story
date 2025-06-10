@@ -1,10 +1,10 @@
 import { Param, StringableParam } from '../Param';
 import { ItemValue } from '../types/ItemValue';
-import { evalMath } from '../utils/evalMath';
 import { get } from '../utils/get';
 import { ParamsValueEvaluator } from '../types/ParamsValueEvaluator';
 import { ParamEvaluator } from './ParamEvaluator';
 import { createJSTransformExpression, createJSTransformFunction } from './JSTransform';
+import { parseStringList } from '../utils/parseStringList';
 
 export class StringableParamEvaluator implements ParamsValueEvaluator<StringableParam> {
   type = 'StringableParam' as const;
@@ -62,7 +62,6 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
         const args = expression.split(',').map(arg => arg.trim());
 
         const functions: Record<string, Function> = {
-          evalMath: (expression: string) => evalMath(expression),
           env: (expression: string) => {
             if (typeof process === 'undefined') throw new Error('env() is not available in the browser');
 
@@ -104,6 +103,12 @@ export class StringableParamEvaluator implements ParamsValueEvaluator<Stringable
         console.log(`Failed to evaluate JS expression: ${transformedValue}`)
         throw error
       }
+    }
+
+    if (selectedEvaluation?.type === 'STRING_LIST') {
+      console.log({ before: transformedValue });
+      transformedValue = parseStringList(transformedValue);
+      console.log({ after: transformedValue });
     }
 
     // **********************************************************************

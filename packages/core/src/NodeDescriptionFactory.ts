@@ -25,7 +25,7 @@ export const NodeDescriptionFactory = {
         .map(node => {
           //@ts-ignore
           const portParam = node.params
-            .find(param => param.name === 'port_name')! as StringableInputValue
+            .find(param => param.name === 'port_name')!
 
           const portName = portParam.input.rawValue;
 
@@ -39,7 +39,7 @@ export const NodeDescriptionFactory = {
         .map(node => {
           //@ts-ignore
           const portParam = node.params
-            .find(param => param.name === 'port_name')! as StringableInputValue
+            .find(param => param.name === 'port_name')!
 
           const portName = portParam.input.rawValue;
 

@@ -66,7 +66,7 @@ export const batchArchive = (name: string) => {
   }
 
   const entityParam = config.params!.find((p) => p.name === 'entity')
-  entityParam!.input = name.toLowerCase()
+  entityParam!.input.rawValue = name.toLowerCase()
 
   return config
 }

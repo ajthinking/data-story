@@ -1,5 +1,5 @@
 import { ItemValue } from '../types/ItemValue';
-import { Param, ParamValue } from '../Param';
+import { Param, EvaluatedParamValue } from '../Param';
 import { ParamEvaluator } from './ParamEvaluator';
 
 export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWithParams => {
@@ -21,7 +21,7 @@ export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWi
 export class ItemWithParams<ExpectedType extends ItemValue = ItemValue> {
   type = 'ItemWithParams' as const
   value: ExpectedType;
-  params: Record<string, ParamValue>;
+  params: Record<string, EvaluatedParamValue>;
 
   constructor(
     value: ExpectedType,

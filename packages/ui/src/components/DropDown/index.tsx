@@ -87,31 +87,16 @@ const DropdownLi = (params: DropdownLiProps) => {
   </FormFieldWrapper>)
 }
 const getLabelFromType = (type: string) => {
-  switch(type) {
-    case  stringCast.type:
-      return stringCast.label;
-    case numberCast.type:
-      return numberCast.label;
-    case jsExpressionEvaluation.type:
-      return jsExpressionEvaluation.label;
-    case jsFunctionEvaluation.type:
-      return jsFunctionEvaluation.label;
-    case jsonEvaluation.type:
-      return jsonEvaluation.label;
-    default:
-      return type;
+  const labelMap = {
+    [stringCast.type]: stringCast.shortLabel,
+    [numberCast.type]: numberCast.shortLabel,
+    [jsExpressionEvaluation.type]: jsExpressionEvaluation.shortLabel,
+    [jsFunctionEvaluation.type]: jsFunctionEvaluation.shortLabel,
+    [jsonEvaluation.type]: jsonEvaluation.shortLabel,
+    'STRING_LIST': 'list',
   }
-}
 
-const getBgColor = (key: string) => {
-  switch(key) {
-    case 'Cast':
-      return 'rgb(212 136 6 / 70%)';
-    case 'Evaluation':
-      return 'rgb(8 151 156 / 70%)';
-    default:
-      return 'rgb(8 151 156 / 70%)';
-  }
+  return labelMap[type];
 }
 
 function DropDownOperator(props: {
@@ -121,32 +106,22 @@ function DropDownOperator(props: {
   const { getValues } = useFormField();
   const value = useMemo(getValues, [getValues]);
 
-  function getContent(): (JSX.Element | string)[] | JSX.Element {
+  function getContent(): JSX.Element[] {
     const pills = Object.keys(value ?? {})
       .map((key) => {
         return ((key === 'Evaluation' || key === 'Cast') && getLabelFromType(value[key]))
           ? (<div key={key}
-            className="rounded-md p-0.5 scale-75 text-white w-20 text-center"
-            style={{
-              fontSize: '12px',
-              backgroundColor: getBgColor(key),
-            }}>
+            className="border-b border-gray-300 bg-gray-300/25 text-gray-700 text-xxs font-bold px-2 tracking-widest font-mono text-center"
+          >
             {getLabelFromType(value[key])}
           </div>)
           : ''
       }).filter((pill) => pill !== '');
 
-    const placeholderElement = () => {
-      return (<div className="scale-75 text-slate-400"
-        style={{
-          fontSize: '12px',
-        }}>
-        Please select an option
-      </div>)
-    }
-
-    return pills.length > 0 ? pills : placeholderElement();
+    return pills;
   }
+
+  const content = getContent();
 
   return <div
     ref={props.refs.setReference}
@@ -154,16 +129,16 @@ function DropDownOperator(props: {
     className="flex flex-row justify-between cursor-pointer">
     {/*create the tag show the selected option*/}
     <div className="flex items-center">
-      {getContent()}
+
     </div>
     <div>
       <button
-        className="px-2 py-1 text-gray-200 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
+        className="px-2 py-1 group-hover:text-gray-800 focus:text-gray-800 font-medium text-xs inline-flex items-center"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+        {content.length > 0 ? content : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
           stroke="currentColor" className="w-3 h-3">
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-        </svg>
+        </svg>}
       </button>
     </div>
   </div>;
