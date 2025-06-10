@@ -4,6 +4,97 @@ import { get } from '../utils/get';
 import { Computer } from '../types/Computer';
 import { asArray } from '../utils/asArray';
 
+interface SerializedHttpResponse {
+  status: number;
+  statusText: string;
+  headers: any;
+  data: any;
+  config: any;
+  request?: {
+    responseURL?: string;
+    method?: string;
+  };
+}
+
+interface SerializedHttpError {
+  message: string;
+  name: string;
+  response?: {
+    status: number;
+    statusText: string;
+    headers: any;
+    data: any;
+  };
+  request?: {
+    responseURL?: string;
+    method?: string;
+  };
+  config?: any;
+}
+
+async function requestAndSerialize(
+  method: string,
+  url: string,
+  body: any,
+  config: any,
+  item_path: any,
+  get: (obj: any, path: any) => any,
+  asArray: (input: any) => any[],
+): Promise<{
+    response?: SerializedHttpResponse,
+    items?: any[],
+    error?: SerializedHttpError,
+  }> {
+  try {
+    let response;
+    if(method === 'GET') {
+      response = await axios.get(url, config)
+    } else if(method === 'POST') {
+      response = await axios.post(url, body, config)
+    } else {
+      throw new Error(`Unsupported method: ${method}`)
+    }
+    const serializedResponse: SerializedHttpResponse = {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+      data: response.data,
+      config: response.config,
+      request: response.request ? {
+        responseURL: response.request.responseURL,
+        method: response.request.method,
+      } : undefined,
+    }
+    const itemables = get(response.data, item_path)
+    const items = asArray(itemables)
+    return { response: serializedResponse, items }
+  } catch (err) {
+    const error = err as any
+    let errorInfo: SerializedHttpError = {
+      message: error.message,
+      name: error.name,
+    }
+    if (error.response) {
+      errorInfo.response = {
+        status: error.response.status,
+        statusText: error.response.statusText,
+        headers: error.response.headers,
+        data: error.response.data,
+      }
+    }
+    if (error.request) {
+      errorInfo.request = {
+        responseURL: error.request.responseURL,
+        method: error.request.method,
+      }
+    }
+    if (error.config) {
+      errorInfo.config = error.config
+    }
+    return { error: errorInfo }
+  }
+}
+
 export const Request: Computer = {
   name: 'Request',
   label: 'Request',
@@ -61,21 +152,16 @@ export const Request: Computer = {
         config: any,
         item_path: any
       }
-
-      if(method === 'GET') {
-        const response = await axios.get(url, config)
-        const itemables = get(response.data, item_path)
-        const items = asArray(itemables)
-        output.pushTo('items', items)
+      const result = await requestAndSerialize(method, url, body, config, item_path, get, asArray)
+      if (result.response) {
+        output.pushTo('response', [result.response])
       }
-
-      if(method === 'POST') {
-        const response = await axios.post(url, body, config)
-        const itemables = get(response.data, item_path)
-        const items = asArray(itemables)
-        output.pushTo('items', items)
+      if (result.items) {
+        output.pushTo('items', result.items)
       }
-
+      if (result.error) {
+        output.pushTo('error', [result.error])
+      }
       yield;
     }
   },
