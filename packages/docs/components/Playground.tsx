@@ -34,10 +34,16 @@ function Playground({ mode }: { mode?: 'js' | 'node' }) {
 
   if (loading || !client) return null;
 
+  const handleEdgeDoubleClick = (edgeId: string) => {
+    console.log('Edge double clicked:', edgeId);
+    // Add your edge double click logic here
+  };
+
   return (
     <div className="w-full" style={{ height: 'calc(100vh - 72px)' }} data-cy="playground">
       <DataStory
         client={client}
+        onEdgeDoubleClick={handleEdgeDoubleClick}
         controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>, <CopyAsJsonControl/>]}
       >
         <ToastComponent/>
