@@ -3,6 +3,10 @@ import { json_, str } from '../Param';
 import { get } from '../utils/get';
 import { Computer } from '../types/Computer';
 import { asArray } from '../utils/asArray';
+import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation';
+import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
+import { ItemValue } from '../types/ItemValue';
+import { ItemWithParams } from '../ItemWithParams';
 
 interface SerializedHttpResponse {
   status: number;
@@ -40,8 +44,12 @@ async function requestAndSerialize(
   item_path: any,
   get: (obj: any, path: any) => any,
   asArray: (input: any) => any[],
+  invokingItem: ItemWithParams,
 ): Promise<{
-    response?: SerializedHttpResponse,
+    responseAndItem?: {
+      response: SerializedHttpResponse,
+      requestingItem: ItemValue,
+    }
     items?: any[],
     error?: SerializedHttpError,
   }> {
@@ -67,7 +75,13 @@ async function requestAndSerialize(
     }
     const itemables = get(response.data, item_path)
     const items = asArray(itemables)
-    return { response: serializedResponse, items }
+    return {
+      responseAndItem: {
+        response: serializedResponse,
+        requestingItem: invokingItem.value,
+      },
+      items,
+    }
   } catch (err) {
     const error = err as any
     let errorInfo: SerializedHttpError = {
@@ -120,6 +134,12 @@ export const Request: Computer = {
     str({
       name: 'url',
       value: 'https://jsonplaceholder.typicode.com/todos',
+      canInterpolate: true,
+      interpolate: true,
+      evaluations: [
+        jsFunctionEvaluation,
+        jsonEvaluation,
+      ],
     }),
     str({
       name: 'method',
@@ -152,9 +172,9 @@ export const Request: Computer = {
         config: any,
         item_path: any
       }
-      const result = await requestAndSerialize(method, url, body, config, item_path, get, asArray)
-      if (result.response) {
-        output.pushTo('response', [result.response])
+      const result = await requestAndSerialize(method, url, body, config, item_path, get, asArray, incoming)
+      if (result.responseAndItem) {
+        output.pushTo('response', [result.responseAndItem])
       }
       if (result.items) {
         output.pushTo('items', result.items)
