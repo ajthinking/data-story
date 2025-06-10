@@ -1,0 +1,54 @@
+{
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build:nodejs": {
+            "outputs": [
+                "./dist/**",
+                "!./dist/ds-server.min.js"
+            ],
+            "dependsOn": [
+                "^build"
+            ]
+        },
+        "build:server": {
+            "outputs": [
+                "./dist/ds-server.min.js"
+            ],
+            "dependsOn": [
+                "^build"
+            ]
+        },
+        "build": {
+            "dependsOn": [
+                "^build",
+                "build:nodejs",
+                "build:server"
+            ]
+        },
+        "start": {
+            "cache": false,
+            "persistent": true
+        },
+        "watch:server": {
+            "cache": false,
+            "persistent": true
+        },
+        "watch:nodejs": {
+            "cache": false,
+            "persistent": true
+        },
+        "watch": {
+            "dependsOn": [
+                "build"
+            ],
+            "with": [
+                "watch:server",
+                "watch:nodejs"
+            ],
+            "cache": false,
+            "persistent": true
+        }
+    }
+}

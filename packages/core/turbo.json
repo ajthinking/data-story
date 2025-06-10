@@ -1,0 +1,54 @@
+{
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build:vite": {
+            "outputs": [
+                "./dist/vite/**"
+            ]
+        },
+        "build:cjs": {
+            "outputs": [
+                "./dist/main/**"
+            ]
+        },
+        "build:esm": {
+            "outputs": [
+                "./dist/esm/**"
+            ]
+        },
+        "build": {
+            "dependsOn": [
+                "^build",
+                "build:vite",
+                "build:cjs",
+                "build:esm"
+            ]
+        },
+        "watch:vite": {
+            "cache": false,
+            "persistent": true
+        },
+        "watch:cjs": {
+            "cache": false,
+            "persistent": true
+        },
+        "watch:esm": {
+            "cache": false,
+            "persistent": true
+        },
+        "watch": {
+            "dependsOn": [
+                "build"
+            ],
+            "with": [
+                "watch:vite",
+                "watch:cjs",
+                "watch:esm"
+            ],
+            "cache": false,
+            "persistent": true
+        }
+    }
+}

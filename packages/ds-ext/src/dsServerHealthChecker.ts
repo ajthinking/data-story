@@ -30,7 +30,7 @@ export class DsServerHealthChecker {
 
   constructor(options: DsServerHealthCheckerOptions);
   constructor(
-    endpoint: string, intervalMs: number, slowThresholdMs: number, outputChannel: OutputChannel
+    endpoint: string, intervalMs: number, slowThresholdMs: number, outputChannel: OutputChannel,
   );
   constructor(
     endpointOrOptions: string | DsServerHealthCheckerOptions,
@@ -63,7 +63,7 @@ export class DsServerHealthChecker {
           }
           const info = (await response.json()) as HealthCheckInfo;
           return { info, durationMs };
-        } catch(e) {
+        } catch (e) {
           const durationMs = performance.now() - start;
           this.outputChannel.appendLine(`[HEALTH] Health check failed: ${e}`);
           return { info: null, durationMs };
@@ -87,6 +87,10 @@ export class DsServerHealthChecker {
   start() {
     this.subscription = this.health$.subscribe(({ info, durationMs }) => {
       if (durationMs > this.slowThresholdMs) {
+        if (info) {
+          this.outputChannel.appendLine('[HEALTH]' + this.formatHealthInfo(info));
+          this.outputChannel.appendLine(`[HEALTH] Request time: ${durationMs.toFixed(2)} ms`);
+        }
         vscode.window.showWarningMessage('DataStory Server is slow or unresponsive', 'Open logs').then(open => {
           if (open) {
             this.outputChannel.show();
@@ -94,10 +98,7 @@ export class DsServerHealthChecker {
         });
       }
 
-      if (info) {
-        this.outputChannel.appendLine('[HEALTH]' + this.formatHealthInfo(info));
-        this.outputChannel.appendLine(`[HEALTH] Request time: ${durationMs.toFixed(2)} ms`);
-      } else {
+      if (!info) {
         this.outputChannel.appendLine('[HEALTH] Health check failed');
         this.outputChannel.appendLine(`[HEALTH] Request time: ${durationMs.toFixed(2)} ms`);
       }

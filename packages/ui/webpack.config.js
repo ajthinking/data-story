@@ -12,7 +12,9 @@ const commonJSConfig = (env, options) => ({
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.cjs',
     libraryTarget: 'commonjs2',
-    clean: !options.watch,
+    clean: {
+      keep: /(data-story.css)|(bundle.mjs(\.map|\.LICENSE.txt)?)/,
+    },
   },
   module: {
     rules: [
@@ -23,7 +25,7 @@ const commonJSConfig = (env, options) => ({
       },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader', 'postcss-loader' ],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },
@@ -34,7 +36,7 @@ const commonJSConfig = (env, options) => ({
     ...externalsDeps,
   ],
   resolve: {
-    extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
 });
 
@@ -46,7 +48,9 @@ const esmConfig = (env, options) => ({
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.mjs',
     libraryTarget: 'module',
-    clean: !options.watch,
+    clean: {
+      keep: /(data-story.css)|(bundle.cjs(\.map|\.LICENSE.txt)?)/,
+    },
     library: {
       type: 'module',
     },
@@ -60,7 +64,7 @@ const esmConfig = (env, options) => ({
       },
       {
         test: /\.css$/,
-        use: [ 'style-loader', 'css-loader', 'postcss-loader' ],
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },
@@ -71,7 +75,7 @@ const esmConfig = (env, options) => ({
     ...externalsDeps,
   ],
   resolve: {
-    extensions: [ '.js', '.jsx', '.ts', '.tsx' ],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   externalsType: 'module',
   experiments: {
@@ -79,6 +83,6 @@ const esmConfig = (env, options) => ({
   },
 });
 
-module.exports = function(...args) {
-  return [ commonJSConfig(...args), esmConfig(...args) ];
+module.exports = function (...args) {
+  return [commonJSConfig(...args), esmConfig(...args)];
 };
