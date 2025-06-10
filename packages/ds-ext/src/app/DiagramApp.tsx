@@ -5,9 +5,13 @@ import { VsCodeToast } from './VsCodeToast';
 import { onDrop } from './onDrop';
 import { createSocketClient } from './createSocketClient';
 import { dsExtensionInitialData } from './dsExtensionInitialData';
-import { createVsCodeClient } from 'createVsCodeClient';
+import { createVsCodeClient } from './createVsCodeClient';
 
 export default function DiagramApp() {
+  /**
+   * socketClient: This is the main client of ds-ext, responsible for handling diagram data.
+   * vscodeClient: Primarily used to manage native operations in VSCode.
+   */
   const { client: socketClient, dispose } = createSocketClient();
   const vscodeClient = createVsCodeClient(window.vscode);
 

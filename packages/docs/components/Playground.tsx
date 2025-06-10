@@ -36,7 +36,8 @@ function Playground({ mode }: { mode?: 'js' | 'node' }) {
 
   const handleEdgeDoubleClick = (edgeId: string) => {
     console.log('Edge double clicked:', edgeId);
-    // Add your edge double click logic here
+    // open new tab with edgeId
+    window.open(`https://www.datastory.dev/edge/${edgeId}`);
   };
 
   return (

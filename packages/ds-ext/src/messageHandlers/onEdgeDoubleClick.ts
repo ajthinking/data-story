@@ -2,15 +2,33 @@ import { MessageHandler } from '../MessageHandler';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { Diagram } from '@data-story/core';
 
 export const onEdgeDoubleClick: MessageHandler = async ({ event }) => {
+  console.log('onEdgeDoubleClick', event);
   const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
-  const tempFilePath = path.join(workspaceRoot, 'temp_table_view.txt');
 
-  const content = `TODO: open the Table component here. Use the edge id (${event.edgeId}) to get the relevant data`;
+  // Create a new .ds file named after the edge ID
+  const edgeId = event.edgeId;
+  const dsFileName = `${edgeId}.ds.table`;
+  const dsFilePath = path.join(workspaceRoot, dsFileName);
 
-  fs.writeFileSync(tempFilePath, content);
+  console.log('Creating DS file:', dsFilePath);
 
-  const document = await vscode.workspace.openTextDocument(tempFilePath);
-  await vscode.window.showTextDocument(document, { preview: false });
+  // Create an initial empty diagram file if it doesn't exist
+  if (!fs.existsSync(dsFilePath)) {
+    fs.writeFileSync(dsFilePath, '');
+  }
+
+  // Create a URI for the new file
+  const dsFileUri = vscode.Uri.file(dsFilePath);
+
+  // Open the file with the custom editor
+  try {
+    await vscode.commands.executeCommand('vscode.openWith', dsFileUri, 'ds-ext.diagramEditor');
+    console.log('Successfully opened DS file:', dsFilePath);
+  } catch (error) {
+    console.error('Failed to open DS file:', error);
+    vscode.window.showErrorMessage(`Failed to open edge diagram: ${error}`);
+  }
 };
