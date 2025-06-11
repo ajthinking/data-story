@@ -23,6 +23,8 @@ export const ReactFlowFactory = {
           type: (() => {
             if (node.name === 'Comment') return 'commentNodeComponent';
             if (node.name === 'Input') return 'inputNodeComponent';
+            if (node.name === 'LoopBack') return 'loopBackComponent';
+            if (node.name === 'LoopStart') return 'loopStartComponent';
             if (node.name === 'Output') return 'outputNodeComponent';
             if (node.name === 'Table') return 'tableNodeComponent';
             if (node.name === 'ConsoleLog') return 'consoleNodeComponent';

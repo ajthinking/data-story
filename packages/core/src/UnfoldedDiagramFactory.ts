@@ -19,6 +19,43 @@ export class UnfoldedDiagramFactory {
     const instance = new this(diagram, nestedNodes)
     instance.unfold()
 
+    // Add here
+    // Link LoopBack nodes to matching LoopStart nodes by port_name
+    const nodes = instance.diagram.nodes;
+    const links = instance.diagram.links;
+
+    // Helper to extract port_name param value from a node
+    function getPortName(node: any): string | undefined {
+      const param = node.params?.find((p: any) => p.name === 'port_name');
+      // Support both StringableParam and plain param
+      return param && (param.value ?? (param.input && param.input.rawValue));
+    }
+
+    const loopBacks = nodes.filter(n => n.name === 'LoopBack');
+    const loopStarts = nodes.filter(n => n.name === 'LoopStart');
+
+    for (const loopBack of loopBacks) {
+      const loopBackPortName = getPortName(loopBack);
+      if (!loopBackPortName) continue;
+      const targetLoopStart = loopStarts.find(loopStart => getPortName(loopStart) === loopBackPortName);
+      if (!targetLoopStart) continue;
+
+      // Find output port on LoopBack and input port on LoopStart
+      const outputPort = loopBack.outputs?.[0]?.id;
+      const inputPort = targetLoopStart.inputs?.[0]?.id;
+      if (!outputPort || !inputPort) continue;
+
+      // Add the link if it doesn't already exist
+      const exists = links.some(l => l.sourcePortId === outputPort && l.targetPortId === inputPort);
+      if (!exists) {
+        links.push({
+          id: `${loopBack.id}:${outputPort}->${targetLoopStart.id}:${inputPort}`,
+          sourcePortId: outputPort,
+          targetPortId: inputPort,
+        });
+      }
+    }
+
     return {
       diagram,
       unfoldedGlobalParams: instance.unfoldedGlobalParams,
