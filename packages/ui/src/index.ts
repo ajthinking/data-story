@@ -19,3 +19,4 @@ export { createSocketClient } from './components/DataStory/clients/createSocketC
 export { createTransport, type TransportConfig } from './components/DataStory/clients/createTransport';
 export { WorkspaceApiClient, type Transport } from './components/DataStory/clients/WorkspaceApiClient';
 export * from './components/DataStory/controls/index';
+export { default as TableNodeComponent } from './components/Node/table/TableNodeComponent';

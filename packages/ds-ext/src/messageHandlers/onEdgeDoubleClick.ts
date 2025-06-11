@@ -2,7 +2,6 @@ import { MessageHandler } from '../MessageHandler';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { Diagram } from '@data-story/core';
 
 export const onEdgeDoubleClick: MessageHandler = async ({ event }) => {
   console.log('onEdgeDoubleClick', event);
@@ -10,7 +9,7 @@ export const onEdgeDoubleClick: MessageHandler = async ({ event }) => {
 
   // Create a new .ds file named after the edge ID
   const edgeId = event.edgeId;
-  const dsFileName = `${edgeId}.ds.table`;
+  const dsFileName = `edge-${edgeId}.ds`;
   const dsFilePath = path.join(workspaceRoot, dsFileName);
 
   console.log('Creating DS file:', dsFilePath);
