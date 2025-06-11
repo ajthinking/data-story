@@ -9,7 +9,7 @@ export const onEdgeDoubleClick: MessageHandler = async ({ event }) => {
 
   // Create a new .ds file named after the edge ID
   const edgeId = event.edgeId;
-  const dsFileName = `edge-${edgeId}.ds`;
+  const dsFileName = `${edgeId}.table.ds`;
   const dsFilePath = path.join(workspaceRoot, dsFileName);
 
   console.log('Creating DS file:', dsFilePath);

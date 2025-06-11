@@ -59,3 +59,4 @@ export type { Param, ParamInput as ParamValue } from './Param'
 export type { Port, AbstractPort } from './types/Port'
 export type { ReportCallback } from './types/ReportCallback';
 export type { ServiceProvider } from './types/ServiceProvider'
+export { Table } from './computers'
