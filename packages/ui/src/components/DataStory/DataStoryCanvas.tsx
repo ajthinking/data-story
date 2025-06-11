@@ -270,9 +270,6 @@ const Flow = ({
         }}
         onEdgeDoubleClick={(_, edge) => {
           onEdgeDoubleClick?.(edge.id);
-          console.log('edge double clicked', edge.id)
-          // if (!client) return;
-          // if (client.onEdgeDoubleClick) client.onEdgeDoubleClick(edge.id);
         }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);

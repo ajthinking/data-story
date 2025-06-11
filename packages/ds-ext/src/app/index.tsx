@@ -21,7 +21,6 @@ const getEdgeIdFromPath = (path: string) => {
 const filePath = getCurrentFilePath();
 const edgeId = getEdgeIdFromPath(filePath);
 const isTableFile = filePath.endsWith('.table.ds');
-console.log('isTableFile', isTableFile);
 
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);

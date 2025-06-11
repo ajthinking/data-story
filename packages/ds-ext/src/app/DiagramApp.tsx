@@ -28,8 +28,6 @@ export default function DiagramApp() {
   }, [dispose]);
 
   function handleEdgeDoubleClick(edgeId: string): void {
-    console.log('Edge double clicked:', edgeId);
-    console.log('vscode commands:', window.vscode.commands);
     vscodeClient.onEdgeDoubleClick(edgeId);
   }
 

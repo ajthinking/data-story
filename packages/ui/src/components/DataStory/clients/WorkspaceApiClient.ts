@@ -207,13 +207,6 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     });
   }
 
-  onEdgeDoubleClick(edgeId: string): void {
-    this.transport.sendAndReceive({
-      type: 'onEdgeDoubleClick',
-      edgeId,
-    });
-  }
-
   //<editor-fold desc="Message init">
   private initExecutionResult() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionResult')))
@@ -254,6 +247,5 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
         return;
       })
   }
-
   //</editor-fold>
 }

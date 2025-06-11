@@ -40,7 +40,6 @@ class VsCodeApiClient {
   }
 
   onEdgeDoubleClick(edgeId: string): void {
-    console.log('sendAndReceive onEdgeDoubleClick', edgeId);
     this.transport.sendAndReceive({
       type: 'onEdgeDoubleClick',
       edgeId,

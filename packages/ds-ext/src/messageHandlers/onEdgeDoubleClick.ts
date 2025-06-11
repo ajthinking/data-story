@@ -4,15 +4,12 @@ import * as path from 'path';
 import * as fs from 'fs';
 
 export const onEdgeDoubleClick: MessageHandler = async ({ event }) => {
-  console.log('onEdgeDoubleClick', event);
   const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath || '';
 
   // Create a new .ds file named after the edge ID
   const edgeId = event.edgeId;
   const dsFileName = `${edgeId}.table.ds`;
   const dsFilePath = path.join(workspaceRoot, dsFileName);
-
-  console.log('Creating DS file:', dsFilePath);
 
   // Create an initial empty diagram file if it doesn't exist
   if (!fs.existsSync(dsFilePath)) {
