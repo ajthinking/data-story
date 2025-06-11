@@ -11,12 +11,14 @@ export { FlatMap } from './FlatMap';
 export { If } from './If';
 export { Ignore } from './Ignore'
 export { Input } from './Input';
+export { LoopStart } from './LoopStart';
 export { InstantThrow } from './InstantThrow';
 export { Log } from './Log';
 export { MakeSet } from './MakeSet';
 export { Map } from './Map'
 export { Merge } from './Merge'
 export { Output } from './Output';
+export { LoopBack } from './LoopBack';
 export { Pass } from './Pass';
 export { RemoveProperties } from './RemoveProperties';
 export { Request } from './Request'

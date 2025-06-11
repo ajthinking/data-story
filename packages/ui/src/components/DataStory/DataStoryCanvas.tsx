@@ -30,11 +30,15 @@ import { useDragNode } from './useDragNode';
 import { ReactFlowNode } from '../Node/ReactFlowNode';
 import { useCopyPaste } from './useCopyPaste';
 import '../../styles/dataStoryCanvasStyle.css';
+import LoopBackComponent from '../Node/LoopBackComponent';
+import LoopStartComponent from '../Node/LoopStartComponent';
 
 const nodeTypes = {
   commentNodeComponent: CommentNodeComponent,
   nodeComponent: NodeComponent,
   inputNodeComponent: InputNodeComponent,
+  loopBackComponent: LoopBackComponent,
+  loopStartComponent: LoopStartComponent,
   outputNodeComponent: OutputNodeComponent,
   tableNodeComponent: TableNodeComponent,
   consoleNodeComponent: ConsoleNodeComponent,
