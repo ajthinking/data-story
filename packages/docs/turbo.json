@@ -5,7 +5,10 @@
     "tasks": {
         "dev": {
             "cache": false,
-            "persistent": true
+            "persistent": true,
+            "with": [
+                "@data-story/ui#watch"
+            ]
         }
     }
 }

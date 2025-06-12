@@ -1,55 +1,48 @@
-import { Observable, retry, share } from 'rxjs';
+import { Observable } from 'rxjs';
 import {
   createTransport,
   type TransportConfig,
-  WorkspaceApiClient,
   type WorkspaceApiClientImplement,
+  WorkspaceApiClient,
+  Transport,
 } from '@data-story/ui';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { dsExtensionInitialData } from './dsExtensionInitialData';
 
-function createSocketTransport(socket: WebSocketSubject<any>) {
-  const maxReconnectTries = 100;
-  const reconnectTimeoutMs = 1000;
-  let messages$: Observable<{ msgId: string; [p: string]: unknown }> = socket.pipe(
-    retry({ count: maxReconnectTries, delay: reconnectTimeoutMs }),
-    share(),
-  );
+function createVsCodeTransport(vscode: any) {
   const config: TransportConfig = {
     postMessage: (msg) => {
-      socket.next(msg);
+      vscode.postMessage(msg);
     },
-    messages$: messages$,
+    messages$: new Observable<{ msgId: string; [p: string]: unknown }>((subscriber) => {
+      window.addEventListener('message', (event) => {
+        if (event.data.msgId) {
+          subscriber.next(event.data);
+        }
+      });
+    }),
   };
   return createTransport(config);
 }
 
-export const createVsCodeClient = (): {
-  client: WorkspaceApiClientImplement,
-  dispose: () => void
-} => {
-  const socket$ = webSocket({
-    url: dsExtensionInitialData().serverEndpoint,
-    openObserver: {
-      next: () => {
-        console.log(`Connected to server: ${dsExtensionInitialData().serverEndpoint}`);
-      },
-    },
-    closeObserver: {
-      next: () => {
-        console.log('WebSocket closed.');
-      },
-    },
-  });
-
-  const socketKeepAlive = socket$.subscribe();
-
-  const transport = createSocketTransport(socket$);
-  return {
-    client: new WorkspaceApiClient(transport),
-    dispose: () => {
-      socketKeepAlive.unsubscribe();
-      socket$.complete();
-    },
-  };
+export const createVsCodeClient = (vscode: any) => {
+  const transport = createVsCodeTransport(vscode);
+  return new VsCodeApiClient(transport);
 };
+
+class VsCodeApiClient {
+  constructor(private transport: Transport) {
+  }
+
+  toast(message: string) {
+    this.transport.sendAndReceive({
+      type: 'toast',
+      message,
+    });
+  }
+
+  onEdgeDoubleClick(edgeId: string): void {
+    this.transport.sendAndReceive({
+      type: 'onEdgeDoubleClick',
+      edgeId,
+    });
+  }
+}
