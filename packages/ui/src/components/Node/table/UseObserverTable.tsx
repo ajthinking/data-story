@@ -1,29 +1,21 @@
-import { useStore } from '../../DataStory/store/store';
-import { StoreSchema } from '../../DataStory/types';
 import { createDataStoryId, ItemValue, ObserveLinkUpdate, RequestObserverType } from '@data-story/core';
 import { useLatest } from 'ahooks';
-import { shallow } from 'zustand/shallow';
 import { MutableRefObject, useEffect, useLayoutEffect, useRef } from 'react';
+import { WorkspaceApiClientImplement } from '../../DataStory/clients/WorkspaceApiClientImplement';
 
-const initialScreenCount: number = 15;
-const tableThrottleMs: number = 100;
+const initialScreenCount = 15;
+const tableThrottleMs = 100;
 
-export function useObserverTable({ id, setIsDataFetched, setItems, items, parentRef }: {
-  id: string,
-  setIsDataFetched: (value: boolean) => void,
+export function useObserverTable({ linkIds = [], client, setIsDataFetched, setItems, items, parentRef }: {
+  linkIds?: string[];
+  setIsDataFetched: (value: boolean) => void;
   setItems: (value: any) => void
   items: ItemValue[];
   parentRef: React.MutableRefObject<HTMLDivElement | null>;
+  client?: WorkspaceApiClientImplement; // TODO: specify proper type
 }): {
     loadMore: MutableRefObject<() => Promise<void> | undefined>
-  } {
-  const selector = (state: StoreSchema) => ({
-    toDiagram: state.toDiagram,
-    client: state.client,
-  });
-  const { toDiagram, client } = useStore(selector, shallow);
-  const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
-
+  }{
   const pendingRequest = useRef(false);
   const linkOffsets = useRef<Map<string, number>>(new Map());
   const itemsRef = useRef(items);
@@ -97,7 +89,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
       subscription?.unsubscribe();
     };
     // use linkIdsString replace linkIds to prevent infinite loop
-  }, [client, id, linkIdsString, loadMore, toDiagram]);
+  }, [client, linkIdsString, loadMore]);
 
   useLayoutEffect(() => {
     const currentRef = parentRef.current;
@@ -116,7 +108,7 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     return () => {
       currentRef?.removeEventListener('scroll', handleScroll);
     };
-  }, [loadMore, parentRef.current]);
+  }, [loadMore, parentRef]);
 
   return { loadMore };
 }

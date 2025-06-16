@@ -1,15 +1,14 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DataStoryEvents, DataStoryEventType } from '../DataStory/events/dataStoryEventType';
+import { DataStoryEvents, DataStoryEventType } from '../../DataStory/events/dataStoryEventType';
 import { ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ItemValue } from '@data-story/core';
-import { LoadingComponent } from '../Node/table/LoadingComponent';
-import { FIXED_HEIGHT, TableCell } from '../Node/table/TableCell';
-import { MemoizedTableBody } from '../Node/table/MemoizedTableBody';
-import { MemoizedTableHeader } from '../Node/table/MemoizedTableHeader';
-import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix, ColumnWidthOptions } from '../Node/table/CellsMatrix';
-import { getFormatterOnlyAndDropParam } from '../Node/table/GetFormatterOnlyAndDropParam';
-import { ItemCollection } from '../Node/table/ItemCollection';
+import { LoadingComponent } from './LoadingComponent';
+import { FIXED_HEIGHT, TableCell } from './TableCell';
+import { MemoizedTableBody } from './MemoizedTableBody';
+import { MemoizedTableHeader } from './MemoizedTableHeader';
+import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix, ColumnWidthOptions } from './CellsMatrix';
+import { ItemCollection } from './ItemCollection';
 
 export interface TableProps {
   id: string;
