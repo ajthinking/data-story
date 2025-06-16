@@ -10,7 +10,7 @@ import { MemoizedTableHeader } from './MemoizedTableHeader';
 import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix, ColumnWidthOptions } from './CellsMatrix';
 import { ItemCollection } from './ItemCollection';
 
-export interface TableProps {
+export interface StandaloneTableProps {
   id: string;
   data?: ItemValue[];
   params?: {
@@ -21,6 +21,8 @@ export interface TableProps {
   className?: string;
   style?: React.CSSProperties;
   onLoadMore?: () => Promise<void>;
+  isDataFetched: boolean;
+  setIsDataFetched: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
@@ -30,13 +32,13 @@ const StandaloneTable = ({
   id,
   data = [],
   params = {},
-  className = '',
   style = {},
   onLoadMore,
-}: TableProps) => {
+  isDataFetched,
+  setIsDataFetched,
+}: StandaloneTableProps) => {
   const [items, setItems] = useState<ItemValue[]>(data);
   const tableRef = useRef<HTMLTableElement>(null);
-  const [isDataFetched, setIsDataFetched] = useState(data.length > 0);
   const parentRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef(items);
   itemsRef.current = items;
@@ -47,37 +49,7 @@ const StandaloneTable = ({
       setItems(data);
       setIsDataFetched(true);
     }
-  }, [data]);
-
-  // Listen for custom events
-  useEffect(() => {
-    const handleNodeData = (event: CustomEvent) => {
-      const detail = event.detail;
-      if (detail && detail.nodeId === id && Array.isArray(detail.data)) {
-        setItems(prev => [...prev, ...detail.data]);
-        setIsDataFetched(true);
-      }
-    };
-
-    const handleDataStoryEvent = (event: CustomEvent) => {
-      const detail = event.detail;
-      if (detail && detail.type === DataStoryEvents.RUN_START) {
-        setItems([]);
-        setIsDataFetched(false);
-      }
-      if (detail && detail.type === DataStoryEvents.RUN_SUCCESS) {
-        setIsDataFetched(true);
-      }
-    };
-
-    window.addEventListener('data-story-node-data', handleNodeData as EventListener);
-    window.addEventListener('data-story-event', handleDataStoryEvent as EventListener);
-
-    return () => {
-      window.removeEventListener('data-story-node-data', handleNodeData as EventListener);
-      window.removeEventListener('data-story-event', handleDataStoryEvent as EventListener);
-    };
-  }, [id]);
+  }, [data, setIsDataFetched]);
 
   // Setup infinite scrolling
   useEffect(() => {
@@ -220,7 +192,7 @@ const StandaloneTable = ({
   return (
     <div
       ref={tableRef}
-      className={`text-xs border rounded border-gray-300 ${className}`}
+      className={'text-xs border rounded border-gray-300'}
       style={style}
     >
       <div data-cy={'data-story-table'} className="text-gray-600 max-w-[750px] bg-gray-100 rounded font-mono">

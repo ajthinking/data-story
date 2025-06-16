@@ -1,14 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import {
-  DataStory,
-  TableNodeComponent,
-  DataStoryEvents,
-  DataStoryNodeData,
-} from '@data-story/ui';
-import { multiline, Table } from '@data-story/core';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { DataStory, StandaloneTable, DataStoryEvents, DataStoryNodeData, useObserverTable } from '@data-story/ui';
+import { ItemValue, multiline, Table } from '@data-story/core';
+import { useDiagram } from '../hooks/useDiagram';
+import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 
+const selectedEdgeId = 'EU77IV0tBd';
 export default () => {
-  const selectedEdgeId = 'EU77IV0tBd';
   // Create table props
   const tableId = `Table.${selectedEdgeId || 'demo'}`;
   const tableProps = {
@@ -27,7 +24,48 @@ export default () => {
     } as unknown as DataStoryNodeData,
     selected: false,
   };
+  const { app, diagram, loading } = useDiagram((builder) =>
+    builder
+      .add('Signal', {
+        period: 100,
+        count: 1000,
+        expression: '{ x: ${{i}} }',
+      })
+      .add('Map', {
+        mapper: multiline`
+      item => ({
+        x: \${{x}},
+        y: Math.sin(\${{x}} / 4) + Math.cos(\${{x}} / 3) * Math.exp(-\${{x}} / 100) + Math.random() * 0.5
+      })
+      `,
+      })
+      .add('Table')
+      .connect()
+      .place()
+      .get(),
+  );
 
+  const client = useMemo(() => (diagram ? new CustomizeJSClient({ diagram, app }) : undefined), [diagram, app]);
+
+  const linkIds = [selectedEdgeId]
+  const [items, setItems] = useState<ItemValue[]>([]);
+  const [isDataFetched, setIsDataFetched] = useState(false);
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const { loadMore } = useObserverTable({
+    linkIds,
+    client,
+    setIsDataFetched,
+    setItems,
+    items,
+    parentRef,
+  });
+
+  const handleLoadMore = useCallback(async () => {
+    if (loadMore.current) {
+      await loadMore.current();
+    }
+  }, [loadMore]);
   // Simulate data for the table when it's shown
   React.useEffect(() => {
     // Create a custom event to simulate data being sent to the table
@@ -60,21 +98,26 @@ export default () => {
 
   return (
     <div className="flex flex-col gap-4">
-
       <div className="mt-4 p-4 border rounded-md">
         <div className="flex justify-between mb-4">
           <h3 className="text-lg font-medium">Edge Data: {selectedEdgeId}</h3>
-          <button
-            className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-          >
-            Close
-          </button>
+          <button className="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300">Close</button>
         </div>
         <div style={{ width: '750px', height: '400px' }}>
-          <TableNodeComponent {...tableProps} />
+          <StandaloneTable
+            isDataFetched={isDataFetched}
+            setIsDataFetched={setIsDataFetched}
+            id={tableProps.id}
+            data={items}
+            params={{
+              only: undefined,
+              drop: undefined,
+              destructObjects: false,
+            }}
+            onLoadMore={handleLoadMore}
+          />
         </div>
       </div>
-
     </div>
   );
 };

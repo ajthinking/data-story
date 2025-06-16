@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { DataStoryNodeData } from '../ReactFlowNode';
 import StandaloneTable from './StandaloneTable';
 import CustomHandle from '../CustomHandle';
@@ -7,6 +7,8 @@ import { ItemValue } from '@data-story/core';
 import { useStore } from '../../DataStory/store/store';
 import { StoreSchema } from '../../DataStory/types';
 import { shallow } from 'zustand/shallow';
+import { DataStoryEvents, DataStoryEventType } from '../../DataStory/events/dataStoryEventType';
+import { useDataStoryEvent } from '../../DataStory/events/eventManager';
 
 /**
  * TableNodeComponent renders a table node in the DataStory diagram
@@ -16,7 +18,6 @@ interface TableNodeComponentProps {
   id: string;
   data: DataStoryNodeData;
   selected: boolean;
-  className?: string;
   style?: React.CSSProperties;
 }
 
@@ -24,7 +25,6 @@ const TableNodeComponent = ({
   id,
   data,
   selected,
-  className = 'text-xs border rounded border-gray-300',
   style,
 }: TableNodeComponentProps) => {
   const [items, setItems] = useState<ItemValue[]>([]);
@@ -53,17 +53,29 @@ const TableNodeComponent = ({
     }
   }, [loadMore]);
 
-  // Extract table parameters from the node data
+  const dataStoryEvent = useCallback((event: DataStoryEventType) => {
+    if (event.type === DataStoryEvents.RUN_START) {
+      setItems([]);
+      setIsDataFetched(false);
+    }
+    if (event.type === DataStoryEvents.RUN_SUCCESS) {
+      setIsDataFetched(true);
+    }
+  }, []);
+  useDataStoryEvent(dataStoryEvent);
+  const input = useMemo(() => data.inputs[0], [data]);
+  console.log('table node input', input)
   const tableParams: any = data?.params || {};
 
   return (
     <div>
-      <CustomHandle id={id} isConnectable={true} isInput={true} />
+      <CustomHandle id={input.id} isConnectable={true} isInput={true} />
       <StandaloneTable
+        isDataFetched={isDataFetched}
+        setIsDataFetched={setIsDataFetched}
         id={id}
         data={items}
         params={tableParams}
-        className={className}
         style={style}
         onLoadMore={handleLoadMore}
       />
