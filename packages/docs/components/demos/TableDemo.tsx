@@ -106,9 +106,7 @@ export default () => {
         <div style={{ width: '750px', height: '400px' }}>
           <StandaloneTable
             isDataFetched={isDataFetched}
-            setIsDataFetched={setIsDataFetched}
-            id={tableProps.id}
-            data={items}
+            items={items}
             params={{
               only: undefined,
               drop: undefined,

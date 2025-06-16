@@ -71,8 +71,7 @@ const TableNodeComponent = ({
       <StandaloneTable
         wrapClassName={`${selected ? 'shadow-xl shadow-blue-100 ring-1 ring-blue-200' : ''} mt-[-12px]`}
         isDataFetched={isDataFetched}
-        setIsDataFetched={setIsDataFetched}
-        data={items}
+        items={items}
         params={tableParams}
         onLoadMore={handleLoadMore}
       />

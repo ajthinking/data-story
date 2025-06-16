@@ -89,3 +89,6 @@ yarn.lock
 
 # Private
 private-analyze-build-size.js
+
+# windsurf
+.windsurf*

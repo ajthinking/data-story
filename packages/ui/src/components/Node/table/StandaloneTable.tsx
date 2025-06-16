@@ -10,7 +10,7 @@ import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix, ColumnWidthOpt
 import { ItemCollection } from './ItemCollection';
 
 export interface StandaloneTableProps {
-  data?: ItemValue[];
+  items?: ItemValue[];
   params?: {
     only?: string;
     drop?: string;
@@ -19,33 +19,20 @@ export interface StandaloneTableProps {
   wrapClassName?: string;
   onLoadMore?: () => Promise<void>;
   isDataFetched: boolean;
-  setIsDataFetched: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 /**
  * A standalone table component that can be used outside of the DataStory context
  */
 const StandaloneTable = ({
-  data = [],
+  items = [],
   params = {},
   wrapClassName,
   onLoadMore,
   isDataFetched,
-  setIsDataFetched,
 }: StandaloneTableProps) => {
-  const [items, setItems] = useState<ItemValue[]>(data);
   const tableRef = useRef<HTMLTableElement>(null);
   const parentRef = useRef<HTMLDivElement>(null);
-  const itemsRef = useRef(items);
-  itemsRef.current = items;
-
-  // Update items when data prop changes
-  useEffect(() => {
-    if (data.length > 0) {
-      setItems(data);
-      setIsDataFetched(true);
-    }
-  }, [data, setIsDataFetched]);
 
   // Setup infinite scrolling
   useEffect(() => {
@@ -53,7 +40,6 @@ const StandaloneTable = ({
 
     const handleScroll = () => {
       const { scrollHeight, scrollTop, clientHeight } = parentRef.current!;
-      // Using Math.ceil prevents errors in floating-point calculations.
       const isBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
       if (isBottom) {
         onLoadMore();
