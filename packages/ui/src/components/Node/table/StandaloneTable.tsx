@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DataStoryEvents, DataStoryEventType } from '../../DataStory/events/dataStoryEventType';
 import { ColumnDef, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { ItemValue } from '@data-story/core';
@@ -11,15 +10,13 @@ import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix, ColumnWidthOpt
 import { ItemCollection } from './ItemCollection';
 
 export interface StandaloneTableProps {
-  id: string;
   data?: ItemValue[];
   params?: {
     only?: string;
     drop?: string;
     destructObjects?: boolean;
   };
-  className?: string;
-  style?: React.CSSProperties;
+  wrapClassName?: string;
   onLoadMore?: () => Promise<void>;
   isDataFetched: boolean;
   setIsDataFetched: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,10 +26,9 @@ export interface StandaloneTableProps {
  * A standalone table component that can be used outside of the DataStory context
  */
 const StandaloneTable = ({
-  id,
   data = [],
   params = {},
-  style = {},
+  wrapClassName,
   onLoadMore,
   isDataFetched,
   setIsDataFetched,
@@ -191,9 +187,7 @@ const StandaloneTable = ({
 
   return (
     <div
-      ref={tableRef}
-      className={'text-xs border rounded border-gray-300'}
-      style={style}
+      className={`text-xs border rounded border-gray-300 ${wrapClassName}`}
     >
       <div data-cy={'data-story-table'} className="text-gray-600 max-w-[750px] bg-gray-100 rounded font-mono">
         {isDataFetched ? (

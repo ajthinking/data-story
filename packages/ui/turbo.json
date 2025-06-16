@@ -30,9 +30,6 @@
             "persistent": true
         },
         "watch": {
-            "dependsOn": [
-                "build"
-            ],
             "with": [
                 "watch:webpack",
                 "watch:css",

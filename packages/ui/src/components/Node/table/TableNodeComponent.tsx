@@ -18,14 +18,12 @@ interface TableNodeComponentProps {
   id: string;
   data: DataStoryNodeData;
   selected: boolean;
-  style?: React.CSSProperties;
 }
 
 const TableNodeComponent = ({
   id,
   data,
   selected,
-  style,
 }: TableNodeComponentProps) => {
   const [items, setItems] = useState<ItemValue[]>([]);
   const parentRef = useRef<HTMLDivElement | null>(null);
@@ -71,12 +69,11 @@ const TableNodeComponent = ({
     <div>
       <CustomHandle id={input.id} isConnectable={true} isInput={true} />
       <StandaloneTable
+        wrapClassName={`${selected ? 'shadow-xl shadow-blue-100 ring-1 ring-blue-200' : ''} mt-[-12px]`}
         isDataFetched={isDataFetched}
         setIsDataFetched={setIsDataFetched}
-        id={id}
         data={items}
         params={tableParams}
-        style={style}
         onLoadMore={handleLoadMore}
       />
     </div>
