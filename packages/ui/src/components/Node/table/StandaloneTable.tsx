@@ -17,8 +17,8 @@ export interface StandaloneTableProps {
     destructObjects?: boolean;
   };
   wrapClassName?: string;
-  onLoadMore?: () => Promise<void>;
   isDataFetched: boolean;
+  parentRef: React.MutableRefObject<HTMLDivElement | null>
 }
 
 /**
@@ -28,30 +28,10 @@ const StandaloneTable = ({
   items = [],
   params = {},
   wrapClassName,
-  onLoadMore,
   isDataFetched,
+  parentRef,
 }: StandaloneTableProps) => {
   const tableRef = useRef<HTMLTableElement>(null);
-  const parentRef = useRef<HTMLDivElement>(null);
-
-  // Setup infinite scrolling
-  useEffect(() => {
-    if (!parentRef.current || !onLoadMore) return;
-
-    const handleScroll = () => {
-      const { scrollHeight, scrollTop, clientHeight } = parentRef.current!;
-      const isBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-      if (isBottom) {
-        onLoadMore();
-      }
-    };
-
-    const currentRef = parentRef.current;
-    currentRef.addEventListener('scroll', handleScroll);
-    return () => {
-      currentRef?.removeEventListener('scroll', handleScroll);
-    };
-  }, [onLoadMore]);
 
   const { headers, rows } = useMemo(() => {
     const { only, drop, destructObjects } = params;
@@ -119,29 +99,32 @@ const StandaloneTable = ({
   const virtualRows = rowVirtualizer.getVirtualItems();
   const virtualColumns = columnVirtualizer.getVirtualItems();
 
-  let virtualPaddingVars = {
-    '--virtual-padding-left': 0,
-    '--virtual-padding-right': 0,
-    '--virtual-padding-right-display': 'none',
-    '--virtual-padding-left-display': 'none',
-  } as React.CSSProperties;
-
-  if (columnVirtualizer && virtualColumns?.length) {
-    let virtualPaddingLeft: number | undefined;
-    let virtualPaddingRight: number | undefined;
-
-    virtualPaddingLeft = virtualColumns[0]?.start ?? 0;
-    virtualPaddingRight =
-      columnVirtualizer.getTotalSize() -
-      (virtualColumns[virtualColumns.length - 1]?.end ?? 0);
-
-    virtualPaddingVars = {
-      '--virtual-padding-left': virtualPaddingLeft,
-      '--virtual-padding-right': virtualPaddingRight,
-      '--virtual-padding-right-display': virtualPaddingRight ? 'flex' : 'none',
-      '--virtual-padding-left-display': virtualPaddingLeft ? 'flex' : 'none',
+  const virtualPaddingVars = useMemo(() => {
+    let virtualPaddingVars = {
+      '--virtual-padding-left': 0,
+      '--virtual-padding-right': 0,
+      '--virtual-padding-right-display': 'none',
+      '--virtual-padding-left-display': 'none',
     } as React.CSSProperties;
-  }
+
+    if (columnVirtualizer && virtualColumns?.length) {
+      let virtualPaddingLeft: number | undefined;
+      let virtualPaddingRight: number | undefined;
+
+      virtualPaddingLeft = virtualColumns[0]?.start ?? 0;
+      virtualPaddingRight =
+        columnVirtualizer.getTotalSize() -
+        (virtualColumns[virtualColumns.length - 1]?.end ?? 0);
+
+      virtualPaddingVars = {
+        '--virtual-padding-left': virtualPaddingLeft,
+        '--virtual-padding-right': virtualPaddingRight,
+        '--virtual-padding-right-display': 'flex',
+        '--virtual-padding-left-display': 'flex',
+      } as React.CSSProperties;
+    }
+    return virtualPaddingVars;
+  }, [virtualColumns, columnVirtualizer]);
 
   const { calculateColumnWidth } = useMemo(() => {
     const cellsMatrixClass = new CellsMatrix({

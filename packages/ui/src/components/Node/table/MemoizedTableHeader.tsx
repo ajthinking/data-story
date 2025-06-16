@@ -36,6 +36,7 @@ export const MemoizedTableHeader = memo(({
             virtualColumns.map((virtualColumn, index) => {
               const headerColumn = headerGroup.headers[virtualColumn.index];
               const columnWidth = calculateColumnWidth(index);
+              const isLastColumn = index === virtualColumns.length - 1;
 
               return (
                 <th
@@ -46,7 +47,8 @@ export const MemoizedTableHeader = memo(({
                     position: 'relative',
                     width: `${columnWidth}px`,
                   }}
-                  className="max-w-[256px] whitespace-nowrap bg-gray-200 text-left border-r-0.5 last:border-r-0 border-gray-300"
+                  className={`max-w-[256px] whitespace-nowrap bg-gray-200 text-left last:border-r-0 border-r-0.5 border-gray-300
+                  ${isLastColumn ? 'border-r-0' : ''}`}
                 >
                   {flexRender(headerColumn.column.columnDef.header, headerColumn.getContext())}
                 </th>

@@ -48,10 +48,13 @@ export const MemoizedTableBody = memo(({
             {virtualColumns.map((virtualColumn, index) => {
               const cell = row.getVisibleCells()[virtualColumn.index];
               const columnWidth = calculateColumnWidth(index);
+              const isLastColumn = index === virtualColumns.length - 1;
+
               return (
                 <td
                   key={cell.id}
-                  className="max-w-[256px] whitespace-nowrap text-left border-r-0.5 last:border-r-0 border-gray-300"
+                  className={`max-w-[256px] whitespace-nowrap text-left last:border-r-0 border-r-0.5 border-gray-300
+                  ${isLastColumn ? 'border-r-0' : ''}`}
                   style={{
                     display: 'flex',
                     position: 'relative',

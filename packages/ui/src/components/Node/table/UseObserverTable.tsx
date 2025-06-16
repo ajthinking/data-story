@@ -12,7 +12,7 @@ export function useObserverTable({ linkIds = [], client, setIsDataFetched, setIt
   setItems: (value: any) => void
   items: ItemValue[];
   parentRef: React.MutableRefObject<HTMLDivElement | null>;
-  client?: WorkspaceApiClientImplement; // TODO: specify proper type
+  client?: WorkspaceApiClientImplement;
 }): {
     loadMore: MutableRefObject<() => Promise<void> | undefined>
   }{
@@ -108,7 +108,7 @@ export function useObserverTable({ linkIds = [], client, setIsDataFetched, setIt
     return () => {
       currentRef?.removeEventListener('scroll', handleScroll);
     };
-  }, [loadMore, parentRef]);
+  }, [loadMore, parentRef.current]);
 
   return { loadMore };
 }

@@ -36,7 +36,7 @@ const TableNodeComponent = ({
   const { toDiagram, client } = useStore(selector, shallow);
   const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
 
-  const { loadMore } = useObserverTable({
+  useObserverTable({
     linkIds,
     client,
     setIsDataFetched,
@@ -44,12 +44,6 @@ const TableNodeComponent = ({
     items,
     parentRef,
   });
-
-  const handleLoadMore = useCallback(async () => {
-    if (loadMore.current) {
-      await loadMore.current();
-    }
-  }, [loadMore]);
 
   const dataStoryEvent = useCallback((event: DataStoryEventType) => {
     if (event.type === DataStoryEvents.RUN_START) {
@@ -62,7 +56,7 @@ const TableNodeComponent = ({
   }, []);
   useDataStoryEvent(dataStoryEvent);
   const input = useMemo(() => data.inputs[0], [data]);
-  console.log('table node input', input)
+  console.log('table node input', input, 'items :', items);
   const tableParams: any = data?.params || {};
 
   return (
@@ -73,7 +67,7 @@ const TableNodeComponent = ({
         isDataFetched={isDataFetched}
         items={items}
         params={tableParams}
-        onLoadMore={handleLoadMore}
+        parentRef={parentRef}
       />
     </div>
   );
