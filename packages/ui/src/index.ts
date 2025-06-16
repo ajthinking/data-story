@@ -21,3 +21,5 @@ export { WorkspaceApiClient, type Transport } from './components/DataStory/clien
 export * from './components/DataStory/controls/index';
 export { default as TableNodeComponent } from './components/Node/table/TableNodeComponent';
 export type { DataStoryNodeData } from './components/Node/ReactFlowNode';
+export { StandaloneTable } from './components/Table';
+export type { TableProps } from './components/Table';

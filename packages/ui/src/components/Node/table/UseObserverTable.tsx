@@ -22,13 +22,13 @@ export function useObserverTable({ id, setIsDataFetched, setItems, items, parent
     client: state.client,
   });
   const { toDiagram, client } = useStore(selector, shallow);
+  const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
 
   const pendingRequest = useRef(false);
   const linkOffsets = useRef<Map<string, number>>(new Map());
   const itemsRef = useRef(items);
   itemsRef.current = items;
 
-  const linkIds = toDiagram()?.getInputLinkIdsFromNodeIdAndPortName?.(id);
   const linkIdsString = JSON.stringify(linkIds);
 
   const loadMore = useLatest(async () => {
