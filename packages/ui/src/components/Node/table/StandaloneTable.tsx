@@ -8,14 +8,12 @@ import { MemoizedTableBody } from './MemoizedTableBody';
 import { MemoizedTableHeader } from './MemoizedTableHeader';
 import { CELL_MAX_WIDTH, CELL_MIN_WIDTH, CELL_WIDTH, CellsMatrix, ColumnWidthOptions } from './CellsMatrix';
 import { ItemCollection } from './ItemCollection';
+import { getFormatterOnlyAndDropParam } from './GetFormatterOnlyAndDropParam';
+import { DataStoryNodeData } from '../ReactFlowNode';
 
 export interface StandaloneTableProps {
   items?: ItemValue[];
-  params?: {
-    only?: string;
-    drop?: string;
-    destructObjects?: boolean;
-  };
+  data:  DataStoryNodeData,
   wrapClassName?: string;
   isDataFetched: boolean;
   parentRef: React.MutableRefObject<HTMLDivElement | null>
@@ -26,22 +24,18 @@ export interface StandaloneTableProps {
  */
 const StandaloneTable = ({
   items = [],
-  params = {},
   wrapClassName,
   isDataFetched,
   parentRef,
+  data,
 }: StandaloneTableProps) => {
   const tableRef = useRef<HTMLTableElement>(null);
 
   const { headers, rows } = useMemo(() => {
-    const { only, drop, destructObjects } = params;
+    const { only, drop, destructObjects } = getFormatterOnlyAndDropParam(items, data);
     const itemCollection = new ItemCollection(items);
-    return itemCollection.toTable({
-      only: only ? only.split(',').map(s => s.trim()) : undefined,
-      drop: drop ? drop.split(',').map(s => s.trim()) : undefined,
-      destructObjects: destructObjects ?? false,
-    });
-  }, [items, params]);
+    return itemCollection.toTable({ only, drop, destructObjects });
+  }, [items, data]);
 
   const columns: ColumnDef<Record<string, unknown>>[] = useMemo(
     () =>

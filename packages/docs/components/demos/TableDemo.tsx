@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { DataStory, StandaloneTable } from '@data-story/ui';
+import { DataStoryNodeData, StandaloneTable } from '@data-story/ui';
+import { Table } from '@data-story/core';
 
 const tableItems = [
   { id: 1, name: 'John', age: 30, city: 'New York' },
@@ -11,17 +12,25 @@ const tableItems = [
 export default () => {
   const parentRef = useRef<HTMLDivElement>(null);
 
+  const data = {
+    ...Table,
+    inputs: [
+      {
+        ...Table.inputs[0],
+        id: 'mockTable.input',
+        schema: {},
+      },
+    ],
+    outputs: [],
+  } as unknown as DataStoryNodeData;
+
   return (
     <div className="mt-4 p-4">
       <StandaloneTable
         wrapClassName="w-[300px]"
         isDataFetched={true}
         items={tableItems}
-        params={{
-          only: undefined,
-          drop: undefined,
-          destructObjects: false,
-        }}
+        data={data}
         parentRef={parentRef}
       />
     </div>

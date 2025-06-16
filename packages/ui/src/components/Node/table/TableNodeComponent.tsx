@@ -57,7 +57,6 @@ const TableNodeComponent = ({
   useDataStoryEvent(dataStoryEvent);
   const input = useMemo(() => data.inputs[0], [data]);
   console.log('table node input', input, 'items :', items);
-  const tableParams: any = data?.params || {};
 
   return (
     <div>
@@ -66,8 +65,8 @@ const TableNodeComponent = ({
         wrapClassName={`${selected ? 'shadow-xl shadow-blue-100 ring-1 ring-blue-200' : ''} mt-[-12px]`}
         isDataFetched={isDataFetched}
         items={items}
-        params={tableParams}
         parentRef={parentRef}
+        data={data}
       />
     </div>
   );
