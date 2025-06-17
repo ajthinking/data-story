@@ -46,4 +46,5 @@ export default {
   'Observers': 'Observers',
   'contributing': 'Contributing',
   'hotkeys': 'Hotkeys',
+  'table': 'Table',
 }

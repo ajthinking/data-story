@@ -1,4 +1,4 @@
-import { asyncScheduler, observeOn, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { EventHandler, DataStoryEventType } from './dataStoryEventType';
 import { useEffect } from 'react';
 import { useLatest } from 'ahooks';
