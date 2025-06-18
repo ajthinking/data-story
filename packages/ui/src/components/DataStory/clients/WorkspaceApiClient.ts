@@ -68,7 +68,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     return data.availableNodes ?? [];
   }
 
-  updateDiagram(diagram: Diagram): Promise<void> {
+  updateDiagram(diagram: Diagram, diagramId?: string): Promise<void> {
     try {
       eventManager.emit({
         type: DataStoryEvents.SAVE_SUCCESS,
@@ -76,6 +76,7 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
       return this.transport.sendAndReceive({
         type: 'updateDiagram',
         diagram,
+        diagramId,
       });
     } catch(e) {
       eventManager.emit({
@@ -85,11 +86,11 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     }
   }
 
-  async getDiagram({ path }: { path?: string }): Promise<Diagram> {
+  async getDiagram({ diagramId }: { diagramId?: string }): Promise<Diagram> {
     try {
       const data = await this.transport.sendAndReceive({
         type: 'getDiagram',
-        path,
+        diagramId: diagramId,
       });
       return (data as { msgId: string; diagram: Diagram; [key: string]: any; })?.diagram;
     } catch(e) {
@@ -206,13 +207,6 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
     });
   }
 
-  onEdgeDoubleClick(edgeId: string): void {
-    this.transport.sendAndReceive({
-      type: 'onEdgeDoubleClick',
-      edgeId,
-    });
-  }
-
   //<editor-fold desc="Message init">
   private initExecutionResult() {
     return this.receivedMsg$.pipe(filter(matchMsgType('ExecutionResult')))
@@ -253,6 +247,5 @@ export class WorkspaceApiClient implements WorkspaceApiClientImplement {
         return;
       })
   }
-
   //</editor-fold>
 }

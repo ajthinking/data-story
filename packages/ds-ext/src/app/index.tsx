@@ -2,18 +2,31 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import DiagramApp from './DiagramApp';
+import TableApp from './TableApp';
 
 import './fixCodeMirrorCopyPaste';
+import { dsExtensionInitialData } from './dsExtensionInitialData';
 
-// TypeScript null-check or assertion for the root element
 const rootElement = document.getElementById('root') as HTMLElement | null;
+
+const getCurrentFilePath = () => {
+  const { documentId } = dsExtensionInitialData();
+  return documentId;
+};
+const getEdgeIdFromPath = (path: string) => {
+  const filename = path.split(/[\\/]/).pop() || '';
+  return filename.replace(/\.table\.ds$/, '');
+};
+
+const filePath = getCurrentFilePath();
+const edgeId = getEdgeIdFromPath(filePath);
+const isTableFile = filePath.endsWith('.table.ds');
 
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <DiagramApp />
-      {/* <TableApp /> */}
+      {isTableFile ? <TableApp edgeId={edgeId} /> : <DiagramApp />}
     </React.StrictMode>,
   );
 } else {

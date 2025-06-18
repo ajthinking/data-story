@@ -9,7 +9,6 @@ export const CopyAsJsonControl = () => {
 
   const copyAsJson = async () => {
     const diagram = getDiagram();
-    console.log('diagram:', diagram);
 
     try {
       const jsonString = JSON.stringify({

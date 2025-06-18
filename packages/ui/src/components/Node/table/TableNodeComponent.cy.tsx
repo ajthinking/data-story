@@ -220,7 +220,6 @@ describe('test TableNodeComponent for table', () => {
     const client =  {
       getDataFromStorage: (data:  Record<string, ItemValue[]>) => {
         initialScreenCount1--;
-        console.log('initialScreenCount', initialScreenCount1);
         return Promise.resolve({ tableLinkId: items });
       },
       observeLinkUpdate: (params: ObserveLinkUpdate) => {

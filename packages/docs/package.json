@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "analyze": "cross-env ANALYZE_ENV=true next build",
+    "analyze": "yarn run -T set-env ANALYZE_ENV=true && next build",
     "lint": "next lint"
   },
   "repository": {
@@ -21,7 +21,6 @@
   "homepage": "https://github.com/shuding/nextra-docs-template#readme",
   "dependencies": {
     "@data-story/hubspot": "workspace:*",
-    "@data-story/nodejs": "workspace:*",
     "@data-story/ui": "workspace:*",
     "ahooks": "^3.8.1",
     "chart.js": "^4.4.2",
@@ -34,7 +33,6 @@
     "react-toastify": "^10.0.4"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "source-map-loader": "^4.0.1"
   }
 }

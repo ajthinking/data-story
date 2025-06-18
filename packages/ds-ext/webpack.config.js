@@ -1,5 +1,3 @@
-//@ts-check
-
 'use strict';
 
 const path = require('path');
@@ -10,7 +8,7 @@ const path = require('path');
 /** @type WebpackConfig */
 const extensionConfig = {
   target: 'node', // VS Code extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
-  mode: 'development', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development', // use production mode for tree shaking when building for production
 
   entry: './src/extension.ts', // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
   output: {
@@ -18,11 +16,15 @@ const extensionConfig = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'extension.js',
     libraryTarget: 'commonjs2',
+    clean:{
+      keep: /app\//
+    }
+
   },
   externals: [
     {
       vscode: 'commonjs vscode', // the vscode-module is created on-the-fly and must be excluded.
-      'duckdb-async': 'commonjs duckdb-async',
+      '@duckdb/node-api': 'commonjs @duckdb/node-api',
     },
   ],
   resolve: {
@@ -48,6 +50,14 @@ const extensionConfig = {
   devtool: 'nosources-source-map',
   infrastructureLogging: {
     level: 'log', // enables logging required for problem matchers
+  },
+  optimization: {
+    // Enable tree shaking
+    usedExports: true,
+    minimize: process.env.NODE_ENV === 'production',
+    concatenateModules: process.env.NODE_ENV === 'production', // Scope hoisting
+    providedExports: true,
+    mangleExports: process.env.NODE_ENV === 'production',
   },
 };
 

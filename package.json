@@ -11,13 +11,14 @@
     "packages/private/*"
   ],
   "scripts": {
+    "set-env": "cross-env",
     "demo": "yarn workspace @data-story/core run demo",
     "tc": "yarn workspace @data-story/core run tinker",
     "tn": "yarn workspace @data-story/nodejs run tinker",
     "tui": "yarn workspace @data-story/ui run tinker",
-    "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && yarn build && turbo dev --parallel",
-    "ext:dev": "turbo run ext:dev --parallel",
-    "watch:server": "kill-port 3300 && yarn workspace @data-story/nodejs run watch:server",
+    "dev": "echo _____RUNNING_ROOT_DEV_____ && yarn kill && turbo @data-story/docs#dev",
+    "watch:ds-ext": "yarn kill && turbo run ds-ext#watch",
+    "dev:server": "kill-port 3300 && turbo @data-story/nodejs#dev",
     "kill": "kill-port 3000 3300",
     "build": "turbo build",
     "docs:add-nodes": "npx ts-node ./scripts/addNodesToDocs.ts",
@@ -69,7 +70,10 @@
     "@typescript-eslint/parser": "^6.9.0",
     "@yarnpkg/types": "^4.0.1",
     "autoprefixer": "^10.4.16",
+    "chokidar": "^4.0.3",
+    "cross-env": "^7.0.3",
     "cypress": "^13.6.1",
+    "esbuild": "^0.25.4",
     "eslint": "^8.52.0",
     "eslint-plugin-import": "^2.25.0",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -82,13 +86,14 @@
     "tailwindcss": "^3.3.3",
     "ts-loader": "^9.5.1",
     "ts-node": "10.9.2",
-    "turbo": "<1.11.0",
+    "turbo": "^2.5.4",
     "typescript": "5.6.2",
     "vite": "^5.4.8",
     "vitest": "^1.6.1",
     "webpack": "^5.88.1",
     "webpack-bundle-analyzer": "^4.10.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "zx": "^8.5.5"
   },
   "resolutions": {
     "@uiw/codemirror-extensions-basic-setup@npm:4.23.10": "patch:@uiw/codemirror-extensions-basic-setup@npm%3A4.23.10#~/.yarn/patches/@uiw-codemirror-extensions-basic-setup-npm-4.23.10-953e998a73.patch"

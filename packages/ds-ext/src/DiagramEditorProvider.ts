@@ -1,69 +1,19 @@
 import * as vscode from 'vscode';
 import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
-import { InMemoryObserverStorage, ObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
-import { onRun } from './messageHandlers/onRun';
-import { onGetNodeDescriptions } from './messageHandlers/onGetNodeDescriptions';
-import { onUpdateDiagram } from './messageHandlers/onUpdateDiagram';
-import { getDiagram } from './messageHandlers/getDiagram';
 import { onToast } from './messageHandlers/onToast';
-import { observeLinkItems } from './messageHandlers/observeLinkItems';
-import { observeLinkCounts } from './messageHandlers/observeLinkCounts';
-import { observeNodeStatus } from './messageHandlers/observeNodeStatus';
-import { observeLinkUpdate } from './messageHandlers/observeLinkUpdate';
-import { getDataFromStorage } from './messageHandlers/getDataFromStorage';
-import { cancelObservation } from './messageHandlers/cancelObservation';
 import { onEdgeDoubleClick } from './messageHandlers/onEdgeDoubleClick';
-import { DuckDBStorage } from './duckDBStorage';
-import { JsonObserverStorage } from './jsonObserverStorage';
-import { loadConfig } from './loadConfig';
-import { DataStoryConfig } from './DataStoryConfig';
-import { abortExecution } from './messageHandlers/abortExecution';
+import { ServerLauncher } from './serverLauncher';
 
 export class DiagramEditorProvider implements vscode.CustomEditorProvider<DiagramDocument> {
   public readonly onDidChangeCustomDocument = new vscode.EventEmitter<vscode.CustomDocumentEditEvent<DiagramDocument>>().event;
-  /**
-   * Since a DiagramEditorProvider can correspond to multiple DiagramDocuments, each DiagramDocument requires its own ObserverController and ObserverStorage.
-   * Therefore, we need to differentiate them using diagramId or uri.
-   */
-  private ObserverControllerMap: Map<string, ObserverController> = new Map();
-  private observerStorageMap: Map<string, ObserverStorage> = new Map();
   private contentMap = new Map<string, DiagramDocument>();
-  private config: DataStoryConfig;
 
-  constructor(private readonly context: vscode.ExtensionContext) {
-    this.config = loadConfig(this.context);
-  }
-
-  async dispose(): Promise<void> {
-    await this.observerStorageMap.forEach(async (storage) => await storage.close());
-  }
-
-  private async initializeStorage(diagramId: string) {
-    const storages = {
-      DUCK_DB: DuckDBStorage,
-      JSON: JsonObserverStorage,
-      IN_MEMORY: InMemoryObserverStorage,
-    };
-
-    let Storage = storages[this.config.storage];
-    if(!Storage) throw new Error(`Unknown storage type: ${this.config.storage}`);
-    let observerStorage: ObserverStorage;
-    try {
-      observerStorage = new Storage(diagramId);
-      await observerStorage.init?.();
-      console.log('Initialized storage of type ' + this.config.storage);
-    } catch (error) {
-      console.log(`Failed to initialize storage ${this.config.storage}. Using in-memory storage instead.`);
-      console.log(error);
-      observerStorage = new InMemoryObserverStorage(diagramId);
-      await observerStorage.init?.();
-    }
-
-    this.observerStorageMap.set(diagramId, observerStorage);
-    this.ObserverControllerMap.set(diagramId, new ObserverController(observerStorage));
-  }
+  constructor(
+    private readonly context: vscode.ExtensionContext,
+    private readonly serverLauncher: ServerLauncher,
+  ) {}
 
   /**
    * openCustomDocument is called when the first time an editor for a given resource is opened.
@@ -76,18 +26,17 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
   ): Promise<DiagramDocument> {
     // Initialize storage with diagram ID from the file name
     const diagramId = this.getDiagramId(uri);
-    await this.initializeStorage(diagramId);
 
     const diagramDocument = await DiagramDocument.create(uri);
     this.contentMap.set(diagramId, diagramDocument);
     return diagramDocument;
   }
 
-  resolveCustomEditor(
+  async resolveCustomEditor(
     document: DiagramDocument,
     webviewPanel: vscode.WebviewPanel,
     _token: vscode.CancellationToken,
-  ): void | Thenable<void> {
+  ): Promise<void> {
     webviewPanel.webview.options = {
       ...webviewPanel.webview.options,
       enableScripts: true,
@@ -106,18 +55,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     const disposables: (Promise<() => void>)[] = [];
     const unsubscribe = webviewPanel.webview.onDidReceiveMessage(event => {
       const handlers: Record<string, MessageHandler> = {
-        run: onRun,
-        abortExecution,
-        getNodeDescriptions: onGetNodeDescriptions,
-        updateDiagram: onUpdateDiagram,
         toast: onToast,
-        getDiagram,
-        observeLinkItems,
-        observeLinkCounts,
-        observeNodeStatus,
-        observeLinkUpdate,
-        getDataFromStorage,
-        cancelObservation,
         onEdgeDoubleClick,
       };
 
@@ -127,10 +65,8 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
         return;
       }
 
-      const diagramId = this.getDiagramId(document.uri);
-      const observerController = this.ObserverControllerMap.get(diagramId);
       // @ts-ignore
-      const disposable = handler({ postMessage, event, document, observerController });
+      const disposable = handler({ postMessage, event, document });
       if(typeof disposable === 'function' && disposable){
         disposables.push(disposable);
       }
@@ -144,11 +80,13 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
 
   private getWebviewContent(webview: vscode.Webview, document: DiagramDocument): string {
     const mainScript = path.join(this.context.extensionPath, 'dist', 'app', 'app.mjs');
+    const diagramFilePath = document.uri.fsPath;
 
     const scriptUri = webview.asWebviewUri(
       vscode.Uri.file(mainScript),
     );
 
+    const serverEndpoint = this.serverLauncher.serverEndpoint;
     // Return HTML content for the Webview
     return `
         <!DOCTYPE html>
@@ -164,6 +102,10 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
             <script>
                 // Provide the VS Code API and initial data (file URI and diagram content)
                 window.vscode = acquireVsCodeApi();
+                window.dsInitialData = {
+                  documentId: ${JSON.stringify(diagramFilePath)},
+                  serverEndpoint: "${serverEndpoint}"
+                }
             </script>
         </body>
         </html>
@@ -201,11 +143,6 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     cancellation: vscode.CancellationToken,
   ): Thenable<vscode.CustomDocumentBackup> {
     return document.backup(context.destination, cancellation);
-  }
-
-  private async save(document: DiagramDocument, data: string): Promise<void> {
-    document.update(Buffer.from(data, 'utf8'));
-    await document.save();
   }
 
   private getDiagramId(uri: vscode.Uri): string {

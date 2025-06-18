@@ -29,7 +29,9 @@ export interface ClientRunParams {
 export type AcitvityBarType = 'node' | 'diagram' | 'settings' | 'explorer';
 export type ControlsType = 'run' | 'addNode' | 'save' | 'export' | 'import';
 export type DataStoryProps = {
+  diagramId?: string,
   onNodeDoubleClick?: (node: ReactFlowNode) => void,
+  onEdgeDoubleClick?: (edgeId: string) => void,
   children?: React.ReactNode;
   client: WorkspaceApiClientImplement,
   initDiagram?: Diagram | null;

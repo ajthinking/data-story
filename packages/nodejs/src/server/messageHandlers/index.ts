@@ -1,6 +1,7 @@
 export { getNodeDescriptions } from './getNodeDescriptions'
 export { run } from './run'
 export { getDiagram } from './getDiagram'
+export { updateDiagram } from './updateDiagram'
 export { observeLinkItems } from './observeLinkItems'
 export { observeLinkCounts } from './observeLinkCounts'
 export { observeLinkUpdate } from './observeLinkUpdate'

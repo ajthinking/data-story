@@ -4,6 +4,7 @@ import {
   type TransportConfig,
   type WorkspaceApiClientImplement,
   WorkspaceApiClient,
+  Transport,
 } from '@data-story/ui';
 
 function createVsCodeTransport(vscode: any) {
@@ -22,7 +23,26 @@ function createVsCodeTransport(vscode: any) {
   return createTransport(config);
 }
 
-export const createVsCodeClient = (vscode: any): WorkspaceApiClientImplement => {
+export const createVsCodeClient = (vscode: any) => {
   const transport = createVsCodeTransport(vscode);
-  return new WorkspaceApiClient(transport);
+  return new VsCodeApiClient(transport);
 };
+
+class VsCodeApiClient {
+  constructor(private transport: Transport) {
+  }
+
+  toast(message: string) {
+    this.transport.sendAndReceive({
+      type: 'toast',
+      message,
+    });
+  }
+
+  onEdgeDoubleClick(edgeId: string): void {
+    this.transport.sendAndReceive({
+      type: 'onEdgeDoubleClick',
+      edgeId,
+    });
+  }
+}

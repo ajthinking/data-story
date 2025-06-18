@@ -1,22 +1,24 @@
 {
   "name": "@data-story/nodejs",
   "version": "0.0.109",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "type": "commonjs",
-  "types": "dist/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "bin": {
-    "server": "dist/server.js"
+    "server": "dist/ds-server.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "watch:nodejs": "tsc --watch",
+    "build:nodejs": "yarn run -T tsc",
+    "watch:nodejs": "yarn run -T tsc --watch",
+    "build:server": "yarn run -T esbuild --bundle --minify --platform=node ./ds-server.ts --external:@duckdb --outfile=dist/ds-server.min.js",
+    "watch:server": "yarn run -T esbuild --bundle --platform=node ./ds-server.ts --external:@duckdb --outfile=dist/ds-server.min.js --watch",
+    "dev": "pm2 start ./ds-server.ts --watch --no-daemon",
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "yarn run -T vitest",
-    "build": "tsc",
-    "release": "yarn run -T release-it",
-    "watch:server": "pm2 start ./test-server.ts --watch --no-daemon"
+    "release": "yarn run -T release-it"
   },
   "release-it": {
     "git": false,
@@ -30,14 +32,20 @@
   },
   "dependencies": {
     "@data-story/core": "workspace:*",
+    "@data-story/hubspot": "workspace:*",
+    "@duckdb/node-api": "^1.2.2-alpha.18",
     "csv-parse": "^5.6.0",
     "csv-stringify": "^6.5.2",
     "dotenv": "^16.4.0",
     "glob": "^11.0.0",
+    "lodash": "^4.17.21",
+    "minimist": "^1.2.8",
     "ws": "^8.12.1"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
+    "@types/lodash": "^4",
+    "@types/minimist": "^1",
     "pm2": "^5.4.2"
   }
 }

@@ -1,0 +1,58 @@
+{
+    "extends": [
+        "//"
+    ],
+    "tasks": {
+        "build:css": {
+            "outputs": [
+                "./dist/data-story.css"
+            ]
+        },
+        "build:webpack": {
+            "outputs": [
+                "./dist/**",
+                "!./dist/data-story.css"
+            ]
+        },
+        "build": {
+            "dependsOn": [
+                "build:css",
+                "build:webpack",
+                "^build"
+            ]
+        },
+        "watch:css": {
+            "cache": false,
+            "persistent": true
+        },
+        "watch:webpack": {
+            "cache": false,
+            "persistent": true
+        },
+        "watch": {
+            "with": [
+                "watch:webpack",
+                "watch:css",
+                "@data-story/core#watch"
+            ],
+            "cache": false,
+            "persistent": true
+        },
+        "test:unit": {
+            "dependsOn": [
+                "build"
+            ]
+        },
+        "test:component": {
+            "dependsOn": [
+                "build"
+            ]
+        },
+        "test": {
+            "dependsOn": [
+                "test:unit",
+                "test:component"
+            ]
+        }
+    }
+}

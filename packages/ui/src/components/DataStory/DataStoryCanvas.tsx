@@ -68,6 +68,7 @@ const Flow = ({
   client,
   onChange,
   onNodeDoubleClick,
+  onEdgeDoubleClick,
   nodeDescriptions,
 }: DataStoryCanvasProps) => {
   const selector = (state: StoreSchema) => ({
@@ -271,9 +272,8 @@ const Flow = ({
         onNodeDoubleClick={(_, node) => {
           onNodeDoubleClick?.(node as ReactFlowNode);
         }}
-        onEdgeDoubleClick={(event, edge) => {
-          if (!client) return;
-          if (client.onEdgeDoubleClick) client.onEdgeDoubleClick(edge.id);
+        onEdgeDoubleClick={(_, edge) => {
+          onEdgeDoubleClick?.(edge.id);
         }}
         onEdgesChange={(changes: EdgeChange[]) => {
           onEdgesChange(changes);
