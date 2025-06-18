@@ -3,7 +3,7 @@ import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { Executor } from './Executor';
 import { ObserverController } from './ObserverController';
 import { Registry } from './Registry';
-import { ExecutableDiagramFactory } from './ExecutableDiagramFactory';
+import { createExecutableDiagram } from './createExecutableDiagram';
 
 export const ExecutorFactory = {
   create({
@@ -15,7 +15,7 @@ export const ExecutorFactory = {
     registry: Registry;
     observerController?: ObserverController;
   }) {
-    const unfolded = ExecutableDiagramFactory.create(
+    const unfolded = createExecutableDiagram(
       diagram,
       registry.nestedNodes,
     )

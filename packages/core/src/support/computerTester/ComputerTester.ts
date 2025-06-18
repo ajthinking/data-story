@@ -26,7 +26,7 @@ import { Hook } from '../../types/Hook';
 import { Param } from '../../Param';
 import { ParamEvaluator } from '../../ItemWithParams/ParamEvaluator';
 import { merge } from '../../utils/merge';
-import { ExecutableDiagramFactory } from '../../ExecutableDiagramFactory';
+import { createExecutableDiagram } from '../../createExecutableDiagram';
 import { NodeRunnerContext } from '../../NodeRunnerContext';
 
 export const when = (computer: Computer) => {
@@ -236,17 +236,17 @@ export class ComputerTester {
 
   protected makeInputDevice() {
     const diagramClone = this.diagram!.clone()
-    const unfoldedDiagram = new ExecutableDiagramFactory(
+    const executableDiagram = createExecutableDiagram(
       diagramClone,
       {},
-    ).unfold()
+    )
 
     return new InputDevice(
       {
         ...this.node!,
         params: this.makeParams(),
       },
-      unfoldedDiagram,
+      executableDiagram,
       this.memory!,
     )
   }

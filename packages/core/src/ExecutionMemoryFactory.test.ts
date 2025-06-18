@@ -1,7 +1,7 @@
 import { ComputerFactory } from './ComputerFactory';
 import { ExecutionMemoryFactory } from './ExecutionMemoryFactory';
 import { Registry } from './Registry';
-import { ExecutableDiagramFactory } from './ExecutableDiagramFactory';
+import { createExecutableDiagram } from './createExecutableDiagram';
 import { ConsoleLog, Create } from './computers'
 import { core } from './core';
 
@@ -14,7 +14,7 @@ describe('create', () => {
       .connect()
       .get();
 
-    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = createExecutableDiagram(diagram, {})
 
     const registry = new Registry({
       Create: new ComputerFactory().getInstance(Create),
@@ -37,7 +37,7 @@ describe('create', () => {
       .add('ConsoleLog')
       .get();
 
-    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = createExecutableDiagram(diagram, {})
 
     const registry = new Registry({
       Create: new ComputerFactory().getInstance(Create),
@@ -60,7 +60,7 @@ describe('create', () => {
       .connect()
       .get();
 
-    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = createExecutableDiagram(diagram, {})
 
     const registry = new Registry({
       Create: new ComputerFactory().getInstance(Create),
@@ -86,7 +86,7 @@ describe('create', () => {
       .add('ConsoleLog')
       .get();
 
-    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = createExecutableDiagram(diagram, {})
 
     const registry = new Registry({
       Create: new ComputerFactory().getInstance(Create),

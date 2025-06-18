@@ -1,7 +1,7 @@
-import { ExecutableDiagramFactory, core, nodes } from '.';
+import { core } from '.';
 import { DiagramQuery } from './DiagramQuery';
+import { createExecutableDiagram } from './createExecutableDiagram';
 import { str } from './Param'
-const { Create, Table, Input, Map, Output, ConsoleLog, Ignore } = nodes;
 
 describe('unfold', () => {
   it('unfolds a diagram without nested nodes without modifying the diagram', async () => {
@@ -12,7 +12,7 @@ describe('unfold', () => {
       .connect()
       .get();
 
-    const unfolded = new ExecutableDiagramFactory(diagram, {}).unfold();
+    const unfolded = createExecutableDiagram(diagram, {});
 
     expect(unfolded.diagram).toEqual(diagram);
   })
@@ -39,7 +39,7 @@ describe('unfold', () => {
       .connect()
       .get()
 
-    const { diagram: unfoldedDiagram, unfoldedGlobalParams } = ExecutableDiagramFactory.create(diagram, {
+    const { diagram: unfoldedDiagram, unfoldedGlobalParams } = createExecutableDiagram(diagram, {
       'NestedNode': nestedNode,
     });
 
@@ -80,7 +80,7 @@ describe('unfold', () => {
       .connect()
       .get()
 
-    const { diagram: unfoldedDiagram } = ExecutableDiagramFactory.create(diagram, {
+    const { diagram: unfoldedDiagram } = createExecutableDiagram(diagram, {
       'NestedNode': nestedNode,
     });
 
