@@ -4,7 +4,7 @@ import { ItemWithParams } from './ItemWithParams'
 import { Node } from './types/Node'
 import { ItemValue } from './types/ItemValue'
 import { ObserverController } from './ObserverController';
-import { UnfoldedDiagram } from './UnfoldedDiagram'
+import { ExecutableDiagram } from './ExecutableDiagram'
 import { PortName } from './types/Port'
 
 export class InputDevice {
@@ -12,7 +12,7 @@ export class InputDevice {
     // The node that is using this input device
     private node: Node,
     // The node topology
-    private unfoldedDiagram: UnfoldedDiagram,
+    private unfoldedDiagram: ExecutableDiagram,
     // Reference to the current execution state
     private memory: ExecutionMemory,
     protected readonly observerController?: ObserverController,

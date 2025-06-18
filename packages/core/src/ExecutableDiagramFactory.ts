@@ -1,11 +1,11 @@
 import { Diagram } from './Diagram'
 import { Param, StringableInputValue } from './Param'
 import { NestedNodes } from './Registry'
-import { UnfoldedDiagram } from './UnfoldedDiagram'
+import { ExecutableDiagram } from './ExecutableDiagram'
 import { Node, NodeId } from './types/Node'
 import { isStringableParam } from './utils/isStringableParam';
 
-export class UnfoldedDiagramFactory {
+export class ExecutableDiagramFactory {
   public unfoldedGlobalParams: Record<NodeId, Param[]> = {}
   constructor(
     public diagram: Diagram,
@@ -15,7 +15,7 @@ export class UnfoldedDiagramFactory {
   static create(
     diagram: Diagram,
     nestedNodes: NestedNodes,
-  ): UnfoldedDiagram {
+  ): ExecutableDiagram {
     const instance = new this(diagram, nestedNodes)
     instance.unfold()
 
@@ -62,7 +62,7 @@ export class UnfoldedDiagramFactory {
     }
   }
 
-  unfold(): UnfoldedDiagram {
+  unfold(): ExecutableDiagram {
     const replacables = this.diagram.nodes.filter(node => node.name in this.nestedNodes)
 
     for(const node of replacables) {
