@@ -37,7 +37,7 @@ export { stringifyError } from './utils/stringifyError'
 export { type Computer } from './types/Computer'
 export { type ExecutionResult } from './ExecutionResult'
 export { type InputObserveConfig, RequestObserverType } from './types/InputObserveConfig';
-export { ExecutableDiagramFactory as ExecutableDiagramFactory } from './ExecutableDiagramFactory'
+export { createExecutableDiagram } from './createExecutableDiagram'
 export * as nodes from './computers'
 export * from './Param'
 export type { AbortExecution, LinkCountInfo, ObserveLinkCounts, ExecutionObserver, ObserveLinkItems, ObserveNodeStatus, CancelObservation, ObserveLinkUpdate, NodesStatusInfo } from './types/ExecutionObserver'

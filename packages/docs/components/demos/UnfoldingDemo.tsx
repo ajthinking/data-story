@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { AddNodeControl, DataStory, RunControl } from '@data-story/ui';
-import { multiline, str, ExecutableDiagramFactory } from '@data-story/core';
+import { multiline, str } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
+import { createExecutableDiagram } from '@data-story/core';
 
 export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) => {
   const { app: bootedApp, loading: isBooting } = useRequestApp();
@@ -71,7 +72,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) =>
         FooBarStamper: nestedNode,
       };
 
-      const unfolded = new ExecutableDiagramFactory(diagram.clone(), nestedNodes).unfold();
+      const unfolded = createExecutableDiagram(diagram.clone(), nestedNodes);
 
       console.log({
         msg: 'Main Client Diagram',
