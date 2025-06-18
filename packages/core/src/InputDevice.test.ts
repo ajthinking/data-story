@@ -2,7 +2,7 @@ import { Diagram } from './Diagram'
 import { ExecutionMemory } from './ExecutionMemory'
 import { InputDevice } from './InputDevice'
 import { str } from './Param'
-import { UnfoldedDiagramFactory } from './UnfoldedDiagramFactory'
+import { ExecutableDiagramFactory } from './ExecutableDiagramFactory'
 import { Node } from './types/Node'
 
 describe('pull', () => {
@@ -25,7 +25,7 @@ describe('pull', () => {
       links,
     })
 
-    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
@@ -59,7 +59,7 @@ describe('pull', () => {
         nodes: [node],
       })
 
-      const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+      const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
 
       const memory = new ExecutionMemory()
 
@@ -92,7 +92,7 @@ describe('pull', () => {
         .set('link-2', [{ i: 3 }, { i: 4 }]),
     })
 
-    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
 
     const input = new InputDevice(node, unfoldedDiagram, memory)
     input.pull()
@@ -129,7 +129,7 @@ describe('pull', () => {
         .set('link-2', [{ i: 3 }, { i: 4 }]),
     })
 
-    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
 
     const input = new InputDevice(node, unfoldedDiagram, memory)
 
@@ -159,7 +159,7 @@ describe('pullFrom', () => {
       links,
     })
 
-    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
@@ -196,7 +196,7 @@ describe('pullFrom', () => {
       links,
     })
 
-    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
 
     const memory = new ExecutionMemory({
       linkItems: new Map()
@@ -242,7 +242,7 @@ describe('params', () => {
       links,
     })
 
-    const unfoldedDiagram = new UnfoldedDiagramFactory(diagram, {}). unfold()
+    const unfoldedDiagram = new ExecutableDiagramFactory(diagram, {}). unfold()
 
     const memory = new ExecutionMemory({
       linkItems: new Map()

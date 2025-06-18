@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { AddNodeControl, DataStory, RunControl } from '@data-story/ui';
-import { multiline, str, UnfoldedDiagramFactory } from '@data-story/core';
+import { multiline, str, ExecutableDiagramFactory } from '@data-story/core';
 import { CustomizeJSClient } from '../splash/CustomizeJSClient';
 import { useRequestApp } from '../hooks/useRequestApp';
 
@@ -71,7 +71,7 @@ export default ({ part }: { part: 'MAIN' | 'NESTED_NODE' | 'MAIN_UNFOLDED' }) =>
         FooBarStamper: nestedNode,
       };
 
-      const unfolded = new UnfoldedDiagramFactory(diagram.clone(), nestedNodes).unfold();
+      const unfolded = new ExecutableDiagramFactory(diagram.clone(), nestedNodes).unfold();
 
       console.log({
         msg: 'Main Client Diagram',

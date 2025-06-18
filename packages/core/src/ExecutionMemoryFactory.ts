@@ -6,7 +6,7 @@ import { ParamEvaluator } from './ItemWithParams/ParamEvaluator'
 import { NodeRunnerContext } from './NodeRunnerContext'
 import { OutputDevice, PortLinkMap } from './OutputDevice'
 import { Registry } from './Registry'
-import { UnfoldedDiagram } from './UnfoldedDiagram'
+import { ExecutableDiagram } from './ExecutableDiagram'
 import { Computer } from './types/Computer'
 import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
@@ -15,7 +15,7 @@ import { Node, NodeId } from './types/Node'
 
 export class ExecutionMemoryFactory {
   constructor(
-    public unfoldedDiagram: UnfoldedDiagram,
+    public unfoldedDiagram: ExecutableDiagram,
     public registry: Registry,
     public observerController?: ObserverController,
   ) {}

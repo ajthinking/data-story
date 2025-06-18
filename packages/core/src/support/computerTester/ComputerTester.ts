@@ -26,7 +26,7 @@ import { Hook } from '../../types/Hook';
 import { Param } from '../../Param';
 import { ParamEvaluator } from '../../ItemWithParams/ParamEvaluator';
 import { merge } from '../../utils/merge';
-import { UnfoldedDiagramFactory } from '../../UnfoldedDiagramFactory';
+import { ExecutableDiagramFactory } from '../../ExecutableDiagramFactory';
 import { NodeRunnerContext } from '../../NodeRunnerContext';
 
 export const when = (computer: Computer) => {
@@ -236,7 +236,7 @@ export class ComputerTester {
 
   protected makeInputDevice() {
     const diagramClone = this.diagram!.clone()
-    const unfoldedDiagram = new UnfoldedDiagramFactory(
+    const unfoldedDiagram = new ExecutableDiagramFactory(
       diagramClone,
       {},
     ).unfold()
