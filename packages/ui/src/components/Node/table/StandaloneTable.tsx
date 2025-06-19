@@ -14,9 +14,10 @@ import { DataStoryNodeData } from '../ReactFlowNode';
 export interface StandaloneTableProps {
   items?: ItemValue[];
   data:  DataStoryNodeData,
-  wrapClassName?: string;
   isDataFetched: boolean;
   parentRef: React.MutableRefObject<HTMLDivElement | null>
+  wrapClassName?: string;
+  rowCount?: number;
 }
 
 /**
@@ -28,6 +29,7 @@ const StandaloneTable = ({
   isDataFetched,
   parentRef,
   data,
+  rowCount = 10,
 }: StandaloneTableProps) => {
   const tableRef = useRef<HTMLTableElement>(null);
 
@@ -141,18 +143,19 @@ const StandaloneTable = ({
     if (showNoData) {
       return '40px';
     }
-    if (rows.length <= 9) {
+    if (rows.length < rowCount) {
+      // + 1 for header
       return (rows.length + 1) * FIXED_HEIGHT + 'px';
     }
     // The 14px extra height is determined through testing to ensure that the table scrollbar does not obscure the height of the table body when it appears.
-    return 11 * FIXED_HEIGHT + 14 + 'px';
-  }, [showNoData, rows.length]);
+    return (rowCount + 1) * FIXED_HEIGHT + 14 + 'px';
+  }, [showNoData, rows.length, rowCount]);
 
   return (
     <div
-      className={`${wrapClassName} text-xs border rounded border-gray-300 max-w-[1050px]`}
+      className={`${wrapClassName ?? ''} max-h-[4050px] max-w-[4050px] text-xs border rounded border-gray-300`}
     >
-      <div data-cy={'data-story-table'} className="text-gray-600 w-full bg-gray-100 rounded font-mono">
+      <div data-cy={'data-story-table'} className="text-gray-600 w-full h-full bg-gray-100 rounded font-mono">
         {isDataFetched ? (
           <div
             ref={parentRef}
@@ -162,7 +165,7 @@ const StandaloneTable = ({
               ...virtualPaddingVars,
             }}
             data-cy={'data-story-table-scroll'}
-            className="max-h-64 min-w-6 nowheel overflow-auto scrollbar rounded-sm w-full"
+            className="h-full min-w-6 nowheel overflow-auto scrollbar rounded-sm w-full"
           >
             <table className="table-fixed grid">
               <MemoizedTableHeader

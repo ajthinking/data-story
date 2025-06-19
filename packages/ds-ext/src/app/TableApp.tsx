@@ -7,6 +7,7 @@ interface TableAppProps {
   client: WorkspaceApiClientImplement;
 }
 
+const initialScreenCount = 20;
 export const TableApp = ({ edgeId, client }: TableAppProps) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [items, setItems] = useState<ItemValue[]>([]);
@@ -35,7 +36,7 @@ export const TableApp = ({ edgeId, client }: TableAppProps) => {
 
   useEffect(() => {
     async function fetchData() {
-      await loadMore.current();
+      await loadMore.current(initialScreenCount);
     }
     fetchData();
   }, [loadMore.current]);
@@ -47,6 +48,7 @@ export const TableApp = ({ edgeId, client }: TableAppProps) => {
         items={items}
         data={data}
         parentRef={parentRef}
+        rowCount={initialScreenCount}
       />
     </div>
   );
