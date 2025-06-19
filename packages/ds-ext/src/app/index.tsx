@@ -43,13 +43,10 @@ const App = () => {
         <TableApp
           edgeId={edgeId}
           client={socketClient}
-          // todo: maybe remove
-          dispose={dispose}
         />
       ) : (
         <DiagramApp
           client={socketClient}
-          dispose={dispose}
         />
       )}
     </React.StrictMode>

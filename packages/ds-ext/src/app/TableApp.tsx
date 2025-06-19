@@ -1,24 +1,18 @@
-import React, { useRef } from 'react';
-import { DataStoryNodeData, StandaloneTable, WorkspaceApiClientImplement } from '@data-story/ui';
-import { Table } from '@data-story/core';
+import React, { useRef, useState, useEffect } from 'react';
+import { DataStoryNodeData, StandaloneTable, useObserverTable, WorkspaceApiClientImplement } from '@data-story/ui';
+import { ItemValue, Table } from '@data-story/core';
 
-const tableItems = [
-  { id: 1, name: 'John', age: 30, city: 'New York' },
-  { id: 2, name: 'Jane', age: 25, city: 'San Francisco' },
-  { id: 3, name: 'Bob', age: 40, city: 'Chicago' },
-  { id: 4, name: 'Alice', age: 35, city: 'Seattle' },
-  { id: 5, name: 'Tom', age: 28, city: 'Boston' },
-];
 interface TableAppProps {
   edgeId: string;
   client: WorkspaceApiClientImplement;
-  dispose: () => void;
 }
 
-export default ({ edgeId, client, dispose }: TableAppProps) => {
+export const TableApp = ({ edgeId, client }: TableAppProps) => {
   const parentRef = useRef<HTMLDivElement>(null);
-
+  const [items, setItems] = useState<ItemValue[]>([]);
+  const [isDataFetched, setIsDataFetched] = useState(true);
   const data = {
+    id: edgeId,
     ...Table,
     inputs: [
       {
@@ -30,15 +24,33 @@ export default ({ edgeId, client, dispose }: TableAppProps) => {
     outputs: [],
   } as unknown as DataStoryNodeData;
 
+  const { loadMore } = useObserverTable({
+    linkIds: [edgeId],
+    client,
+    setIsDataFetched,
+    setItems,
+    items,
+    parentRef,
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      await loadMore.current();
+    }
+    fetchData();
+  }, [loadMore.current]);
+
   return (
     <div className="mt-4 p-4">
       <StandaloneTable
         wrapClassName="w-[300px]"
-        isDataFetched={true}
-        items={tableItems}
+        isDataFetched={isDataFetched}
+        items={items}
         data={data}
         parentRef={parentRef}
       />
     </div>
   );
 };
+
+export default React.memo(TableApp);

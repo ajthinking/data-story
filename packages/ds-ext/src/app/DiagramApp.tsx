@@ -8,10 +8,9 @@ import { createVsCodeClient } from './createVsCodeClient';
 
 interface DiagramAppProps {
   client: WorkspaceApiClientImplement;
-  dispose: () => void;
 }
 
-export default function DiagramApp({ client: socketClient, dispose }: DiagramAppProps) {
+export default function DiagramApp({ client: socketClient}: DiagramAppProps) {
   /**
    * socketClient: This is the main client of ds-ext, responsible for handling diagram data.
    * vscodeClient: Primarily used to manage native operations in VSCode.
