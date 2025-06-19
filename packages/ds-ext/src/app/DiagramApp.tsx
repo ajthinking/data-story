@@ -1,31 +1,31 @@
 import React, { useEffect, useCallback } from 'react';
 import { debounce, Diagram } from '@data-story/core';
-import { AddNodeControl, CopyAsJsonControl, DataStory, RunControl } from '@data-story/ui';
+import { AddNodeControl, CopyAsJsonControl, DataStory, RunControl, WorkspaceApiClientImplement } from '@data-story/ui';
 import { VsCodeToast } from './VsCodeToast';
 import { onDrop } from './onDrop';
-import { createSocketClient } from './createSocketClient';
 import { dsExtensionInitialData } from './dsExtensionInitialData';
 import { createVsCodeClient } from './createVsCodeClient';
 
-export default function DiagramApp() {
+interface DiagramAppProps {
+  client: WorkspaceApiClientImplement;
+  dispose: () => void;
+}
+
+export default function DiagramApp({ client: socketClient, dispose }: DiagramAppProps) {
   /**
    * socketClient: This is the main client of ds-ext, responsible for handling diagram data.
    * vscodeClient: Primarily used to manage native operations in VSCode.
    */
-  const { client: socketClient, dispose } = createSocketClient();
   const vscodeClient = createVsCodeClient(window.vscode);
 
   const handleChange = useCallback(
     debounce(async (diagram: Diagram) => {
       socketClient!.updateDiagram?.(diagram, dsExtensionInitialData().documentId);
     }, 100), // Debounced with 100ms delay11
-    [socketClient]);
+    [socketClient]
+  );
 
-  useEffect(() => {
-    return () => {
-      dispose();
-    };
-  }, [dispose]);
+  // useEffect for dispose is now handled in the parent component (index.tsx)
 
   function handleEdgeDoubleClick(edgeId: string): void {
     vscodeClient.onEdgeDoubleClick(edgeId);
@@ -44,8 +44,9 @@ export default function DiagramApp() {
         onEdgeDoubleClick={handleEdgeDoubleClick}
         onDrop={onDrop}
         controls={[<RunControl />, <AddNodeControl />, <CopyAsJsonControl />]}
-      />
-      <VsCodeToast postMessage={window.vscode.postMessage} />
+      >
+        <VsCodeToast postMessage={window.vscode.postMessage} />
+      </DataStory>
     </div>
   );
 }

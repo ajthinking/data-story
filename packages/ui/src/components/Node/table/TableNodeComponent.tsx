@@ -56,7 +56,6 @@ const TableNodeComponent = ({
   }, []);
   useDataStoryEvent(dataStoryEvent);
   const input = useMemo(() => data.inputs[0], [data]);
-  console.log('table node input', input, 'items :', items);
 
   return (
     <div>

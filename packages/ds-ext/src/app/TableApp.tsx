@@ -1,32 +1,44 @@
-import React from 'react';
-import { TableNodeComponent, DataStoryEvents, DataStoryNodeData } from '@data-story/ui';
+import React, { useRef } from 'react';
+import { DataStoryNodeData, StandaloneTable, WorkspaceApiClientImplement } from '@data-story/ui';
 import { Table } from '@data-story/core';
 
-export default function TableApp(props: { edgeId: string }) {
-  const tableId = `Table.${props.edgeId}`;
-  const tableProps = {
-    id: tableId,
-    data: {
-      ...Table,
-      inputs: [
-        {
-          ...Table.inputs[0],
-          id: `${tableId}.input`,
-        },
-        ...Table.inputs.slice(1)
-      ]
-    }  as unknown as DataStoryNodeData,
-    selected: false
-  };
+const tableItems = [
+  { id: 1, name: 'John', age: 30, city: 'New York' },
+  { id: 2, name: 'Jane', age: 25, city: 'San Francisco' },
+  { id: 3, name: 'Bob', age: 40, city: 'Chicago' },
+  { id: 4, name: 'Alice', age: 35, city: 'Seattle' },
+  { id: 5, name: 'Tom', age: 28, city: 'Boston' },
+];
+interface TableAppProps {
+  edgeId: string;
+  client: WorkspaceApiClientImplement;
+  dispose: () => void;
+}
 
-  // console.log('tableProps', tableProps);
+export default ({ edgeId, client, dispose }: TableAppProps) => {
+  const parentRef = useRef<HTMLDivElement>(null);
+
+  const data = {
+    ...Table,
+    inputs: [
+      {
+        ...Table.inputs[0],
+        id: `${edgeId}.input`,
+        schema: {},
+      },
+    ],
+    outputs: [],
+  } as unknown as DataStoryNodeData;
+
   return (
-    <div style={{ width: '100%', height: '100vh', padding: '20px' }}>
-      <h2 style={{ marginBottom: '20px' }}>Table Component Preview</h2>
-      <div style={{ width: '250px', height: '100px' }}>
-        <p>table place holder (todo: implement the table component)</p>
-        {/* <TableNodeComponent {...tableProps} /> */}
-      </div>
+    <div className="mt-4 p-4">
+      <StandaloneTable
+        wrapClassName="w-[300px]"
+        isDataFetched={true}
+        items={tableItems}
+        data={data}
+        parentRef={parentRef}
+      />
     </div>
   );
-}
+};
