@@ -14,7 +14,7 @@ export function useObserverTable({ linkIds = [], client, setIsDataFetched, setIt
   parentRef: React.MutableRefObject<HTMLDivElement | null>;
   client?: WorkspaceApiClientImplement;
 }): {
-    loadMore: MutableRefObject<() => Promise<void> | undefined>
+    loadMore: MutableRefObject<(limit?: number) => Promise<void> | undefined>
   }{
   const pendingRequest = useRef(false);
   const linkOffsets = useRef<Map<string, number>>(new Map());
@@ -23,7 +23,7 @@ export function useObserverTable({ linkIds = [], client, setIsDataFetched, setIt
 
   const linkIdsString = JSON.stringify(linkIds);
 
-  const loadMore = useLatest(async () => {
+  const loadMore = useLatest(async (limit = initialScreenCount) => {
     if (pendingRequest.current) return;
 
     if (!client?.getDataFromStorage || !linkIds) return;
@@ -43,7 +43,7 @@ export function useObserverTable({ linkIds = [], client, setIsDataFetched, setIt
         const result = await client?.getDataFromStorage?.({
           type: 'getDataFromStorage',
           linkId,
-          limit: initialScreenCount,
+          limit,
           offset: currentOffset,
         });
 

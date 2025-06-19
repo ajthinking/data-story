@@ -56,13 +56,12 @@ const TableNodeComponent = ({
   }, []);
   useDataStoryEvent(dataStoryEvent);
   const input = useMemo(() => data.inputs[0], [data]);
-  console.log('table node input', input, 'items :', items);
 
   return (
     <div>
       <CustomHandle id={input.id} isConnectable={true} isInput={true} />
       <StandaloneTable
-        wrapClassName={`${selected ? 'shadow-xl shadow-blue-100 ring-1 ring-blue-200' : ''} mt-[-12px]`}
+        wrapClassName={`${selected ? 'shadow-xl shadow-blue-100 ring-1 ring-blue-200' : ''} mt-[-12px] max-h-64 max-w-[750px]`}
         isDataFetched={isDataFetched}
         items={items}
         parentRef={parentRef}
