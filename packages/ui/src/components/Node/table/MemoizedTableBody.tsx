@@ -53,8 +53,8 @@ export const MemoizedTableBody = memo(({
               return (
                 <td
                   key={cell.id}
-                  className={`max-w-[256px] whitespace-nowrap text-left last:border-r-0 border-r-0.5 border-gray-300
-                  ${isLastColumn ? 'border-r-0' : ''}`}
+                  className={`max-w-[256px] whitespace-nowrap text-left border-gray-300
+                  ${isLastColumn ? 'border-r-0' : 'border-r-0.5'}`}
                   style={{
                     display: 'flex',
                     position: 'relative',

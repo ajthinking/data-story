@@ -150,9 +150,9 @@ const StandaloneTable = ({
 
   return (
     <div
-      className={`text-xs border rounded border-gray-300 ${wrapClassName}`}
+      className={`${wrapClassName} text-xs border rounded border-gray-300 max-w-[1050px]`}
     >
-      <div data-cy={'data-story-table'} className="text-gray-600 max-w-[750px] bg-gray-100 rounded font-mono">
+      <div data-cy={'data-story-table'} className="text-gray-600 w-full bg-gray-100 rounded font-mono">
         {isDataFetched ? (
           <div
             ref={parentRef}
@@ -164,7 +164,7 @@ const StandaloneTable = ({
             data-cy={'data-story-table-scroll'}
             className="max-h-64 min-w-6 nowheel overflow-auto scrollbar rounded-sm w-full"
           >
-            <table className="table-fixed grid max-w-[750px]">
+            <table className="table-fixed grid">
               <MemoizedTableHeader
                 headerGroups={getHeaderGroups()}
                 virtualColumns={virtualColumns}

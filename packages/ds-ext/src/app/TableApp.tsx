@@ -43,7 +43,6 @@ export const TableApp = ({ edgeId, client }: TableAppProps) => {
   return (
     <div className="mt-4 p-4">
       <StandaloneTable
-        wrapClassName="w-[300px]"
         isDataFetched={isDataFetched}
         items={items}
         data={data}
