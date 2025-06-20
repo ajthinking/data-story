@@ -27,10 +27,7 @@ export class JsonObserverStorage implements ObserverStorage {
    * Creates necessary directories and loads data into memory
    */
   async init(): Promise<void> {
-    // 确保目录存在 / Ensure directory exists
     await fsPromises.mkdir(path.dirname(this.filePath), { recursive: true });
-
-    // 初始化时加载数据到内存 / Load data into memory during initialization
     if (!fs.existsSync(this.filePath)) {
       this.cache = {
         linkCounts: {},
@@ -135,7 +132,6 @@ export class JsonObserverStorage implements ObserverStorage {
     if (!this.isDirty || !this.cache) return;
 
     try {
-      // 异步写入文件，使用格式化的JSON以便于调试
       // Asynchronously write to file using formatted JSON for easier debugging
       await fsPromises.writeFile(
         this.filePath,
