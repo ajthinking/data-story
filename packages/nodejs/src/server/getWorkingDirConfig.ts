@@ -16,7 +16,6 @@ export interface WorkingDirDsServerConfig extends DsServerConfig {
 export function getWorkingDirConfig(): WorkingDirDsServerConfig {
   const workingDir = process.cwd();
   const configPath = path.join(workingDir, 'datastory.config.json');
-  console.log('Using config path', configPath);
   try {
     const raw = fs.readFileSync(configPath, 'utf-8');
     const config = JSON.parse(raw);
