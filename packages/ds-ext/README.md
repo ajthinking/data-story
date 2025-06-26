@@ -12,18 +12,18 @@ Set [`datastory.additionalDsServerCliArgs`](vscode://settings/datastory.addition
 ```
 
 ## Development Notes
+1. Clone the repository.
+2. In the root directory, run `yarn` to install dependencies, then `yarn build` to build the project.
+3. Open the repo with an editor supporting the VS Code extension API, such as VS Code, Windsurf, or Cursor (collectively "Editor").
+4. In the "Run and Debug" tab, click "Run Extension" to launch a new Editor instance.
+5. In the new instance, open a directory and create a *.ds file with some content.
+![alt text](./image/watch-ds-ext.png)
 
-1. clone repo
-2. in root, also run `yarn` and `yarn build`
-3. open repo with VS Code
-4. cd <repo_root>/nodejs
-5. run `yarn watch:server -- -w <path_to_diagram_files_dir>`
-    * e.g. `yarn watch:server -- -w C:\User\s\Doc\Code\test-file`
-6. In "Run and Debug" tab, click "Run Extension"
-    * This opens a new instance of VS Code
-    * The sixth step should follow the fifth step, as the fifth step will start the development server locally; otherwise, VSCode will automatically launch a socket server.
-7. With the new instance, open a directory
-8. Create a *.ds file (must have a content)
+6. The Editor's terminal will automatically run the `watch:ds-ext` task.
+   * After modifying code under `data-ui/core/ds-ext`, restart the extension (Ctrl/Cmd + Shift + F5, then type "Reload Window") to apply changes in the new Editor instance.
+   * After modifying code under `data-nodejs`, wait for the `watch:ds-ext` task to output `Copied ds-server.min.js`, then restart the DataStory server to apply changes in the new Editor instance.
+![alt text](./image/datastory-restart-server.png)
+
 
 ## publish ds-ext to VSCode extension marketplace
 
