@@ -13,47 +13,47 @@ export class DuckDBStorage implements ObserverStorage {
     const dbInstance = await DuckDBInstance.create(this.dbPath);
     this.connection = await dbInstance.connect();
     await this.connection.run(`
-        CREATE TABLE IF NOT EXISTS linkCounts
-        (
-            linkId
-            TEXT
-            PRIMARY
+      CREATE TABLE IF NOT EXISTS linkCounts
+      (
+        linkId
+          TEXT
+          PRIMARY
             KEY,
-            COUNT
-            INT,
-            createTime
-            TIMESTAMP,
-            updateTime
-            TIMESTAMP
-        );
+        COUNT
+          INT,
+        createTime
+          TIMESTAMP,
+        updateTime
+          TIMESTAMP
+      );
 
-        CREATE TABLE IF NOT EXISTS linkItems
-        (
-            linkId
-            TEXT,
-            sequenceNumber
-            BIGINT,
-            item
-            TEXT,
-            createTime
-            TIMESTAMP,
-            updateTime
-            TIMESTAMP
-        );
+      CREATE TABLE IF NOT EXISTS linkItems
+      (
+        linkId
+          TEXT,
+        sequenceNumber
+          BIGINT,
+        item
+          TEXT,
+        createTime
+          TIMESTAMP,
+        updateTime
+          TIMESTAMP
+      );
 
-        CREATE TABLE IF NOT EXISTS nodes
-        (
-            nodeId
-            TEXT
-            PRIMARY
+      CREATE TABLE IF NOT EXISTS nodes
+      (
+        nodeId
+          TEXT
+          PRIMARY
             KEY,
-            status
-            TEXT,
-            createTime
-            TIMESTAMP,
-            updateTime
-            TIMESTAMP
-        );
+        status
+          TEXT,
+        createTime
+          TIMESTAMP,
+        updateTime
+          TIMESTAMP
+      );
     `);
   }
 
@@ -73,23 +73,39 @@ export class DuckDBStorage implements ObserverStorage {
     const conn = this.connection!;
     const prepared = await conn.prepare('SELECT count FROM linkCounts WHERE linkId = $linkId');
     prepared.bind({ linkId });
-    const result = (await prepared.runAndReadAll()).getRowObjectsJS();
-    if (result && result.length > 0) {
-      return result[0].count as LinkCount;
+    debug(`[DuckDBStorage] Running prepared.run for getLinkCount: linkId=${linkId}`);
+    debug(`[DuckDBStorage] Running prepared.runAndReadAll for getLinkCount: linkId=${linkId}`);
+    try {
+      const result = (await prepared.runAndReadAll()).getRowObjectsJS();
+      if (result && result.length > 0) {
+        return result[0].count as LinkCount;
+      }
+      return undefined;
+    } catch (error) {
+      console.error(`[DuckDBStorage] Error in getLinkCount: ${error}`);
+      throw error;
+    } finally {
+      debug(`[DuckDBStorage] Completed prepared.runAndReadAll for getLinkCount: linkId=${linkId}`);
     }
-    return undefined;
   }
 
   async setLinkCount(linkId: LinkId, count: LinkCount): Promise<void> {
     const conn = this.connection!;
-    const prepared = await conn.prepare(
-      'INSERT INTO linkCounts (linkId, count, createTime, updateTime) VALUES ($linkId, $count, current_localtimestamp(), current_localtimestamp()) ON CONFLICT(linkId) DO UPDATE SET COUNT = $count, updateTime = current_localtimestamp()');
-    prepared.bind(
-      {
-        linkId,
-        count,
-      });
-    await prepared.run();
+    debug(`[DuckDBStorage] Running direct SQL for setLinkCount: linkId=${linkId}, count=${count}`);
+    try {
+      // Escape single quotes in linkId to prevent SQL injection
+      const escapedLinkId = linkId.replace(/'/g, '\'\'');
+      const sql = `INSERT INTO linkCounts (linkId, count, createTime, updateTime)
+                   VALUES ('${escapedLinkId}', ${count}, current_localtimestamp(), current_localtimestamp())
+                   ON CONFLICT(linkId) DO UPDATE SET count      = ${count},
+                                                     updateTime = current_localtimestamp()`;
+      await conn.run(sql);
+    } catch (error) {
+      console.error(`[DuckDBStorage] Error in setLinkCount: ${error}`);
+      throw error;
+    } finally {
+      debug(`[DuckDBStorage] Completed direct SQL for setLinkCount: linkId=${linkId}, count=${count}`);
+    }
   }
 
   async getLinkItems({ linkId, offset, limit }: GetLinkItemsParams): Promise<ItemValue[] | undefined> {
@@ -97,11 +113,20 @@ export class DuckDBStorage implements ObserverStorage {
     const prepared = await conn.prepare(
       'SELECT item FROM linkItems WHERE linkId = $linkId ORDER BY sequenceNumber ASC LIMIT $limit OFFSET $offset');
     prepared.bind({ linkId, limit, offset });
-    const data = (await prepared.runAndReadAll()).getRowObjectsJS();
-    if (!data || data.length === 0) {
-      return undefined;
+    debug(`[DuckDBStorage] Running prepared.run for getLinkItems: linkId=${linkId}, offset=${offset}, limit=${limit}`);
+    debug(`[DuckDBStorage] Running prepared.runAndReadAll for getLinkItems: linkId=${linkId}, offset=${offset}, limit=${limit}`);
+    try {
+      const data = (await prepared.runAndReadAll()).getRowObjectsJS();
+      if (!data || data.length === 0) {
+        return undefined;
+      }
+      return data.map(row => JSON.parse(row.item as string));
+    } catch (error) {
+      console.error(`[DuckDBStorage] Error in getLinkItems: ${error}`);
+      throw error;
+    } finally {
+      debug(`[DuckDBStorage] Completed prepared.runAndReadAll for getLinkItems: linkId=${linkId}, offset=${offset}, limit=${limit}`);
     }
-    return data.map(row => JSON.parse(row.item as string));
   }
 
   async setLinkItems(linkId: LinkId, items: ItemValue[]): Promise<void> {
@@ -109,7 +134,15 @@ export class DuckDBStorage implements ObserverStorage {
     const conn = this.connection!;
     const prepared = await conn.prepare('DELETE FROM linkItems WHERE linkId = $linkId');
     prepared.bind({ linkId });
-    await prepared.run();
+    debug(`[DuckDBStorage] Running prepared.run for setLinkItems (DELETE): linkId=${linkId}, items.length=${items.length}`);
+    try {
+      await prepared.run();
+    } catch (error) {
+      console.error(`[DuckDBStorage] Error in setLinkItems (DELETE): ${error}`);
+      throw error;
+    } finally {
+      debug(`[DuckDBStorage] Completed prepared.run for setLinkItems (DELETE): linkId=${linkId}, items.length=${items.length}`);
+    }
     await this.appendLinkItems(linkId, items);
   }
 
@@ -121,7 +154,7 @@ export class DuckDBStorage implements ObserverStorage {
     const currentTime = new Date();
     const currentTimestamp = timestampValue(BigInt(currentTime.getTime() * 1000));
     try {
-      console.time('Inserting items');
+      debug('Inserting items');
       for (const itemChunk of chunk(items, 1000)) {
         for (const item of itemChunk) {
           appender.appendVarchar(linkId);
@@ -131,14 +164,15 @@ export class DuckDBStorage implements ObserverStorage {
           appender.appendTimestamp(currentTimestamp);
           appender.endRow();
         }
-        console.timeLog('Inserting items', `Inserted ${itemChunk.length} items`);
+        debug('Inserting items', `Inserted ${itemChunk.length} items`);
       }
-      appender.closeSync();
     } catch (error) {
       console.error('Error inserting items:', error);
       throw error;
     } finally {
-      console.timeEnd('Inserting items');
+      appender.closeSync();
+      debug('Inserting items completed');
+      debug(`[DuckDBStorage] Completed appendLinkItems: linkId=${linkId}, items.length=${items.length}`);
     }
   }
 
@@ -146,18 +180,43 @@ export class DuckDBStorage implements ObserverStorage {
     const conn = this.connection!;
     const prepared = await conn.prepare('SELECT status FROM nodes WHERE nodeId = $nodeId');
     prepared.bind({ nodeId });
-    const result = (await prepared.runAndReadAll()).getRowObjectsJS();
-    if (result && result.length > 0) {
-      return result[0].status as 'BUSY' | 'COMPLETE';
+    debug(`[DuckDBStorage] Running prepared.run for getNodeStatus: nodeId=${nodeId}`);
+    debug(`[DuckDBStorage] Running prepared.runAndReadAll for getNodeStatus: nodeId=${nodeId}`);
+    try {
+      const result = (await prepared.runAndReadAll()).getRowObjectsJS();
+      if (result && result.length > 0) {
+        return result[0].status as 'BUSY' | 'COMPLETE';
+      }
+    } catch (error) {
+      console.error(`[DuckDBStorage] Error in getNodeStatus: ${error}`);
+      throw error;
+    } finally {
+      debug(`[DuckDBStorage] Completed prepared.runAndReadAll for getNodeStatus: nodeId=${nodeId}`);
     }
   }
 
   async setNodeStatus(nodeId: NodeId, status: 'BUSY' | 'COMPLETE'): Promise<void> {
     const conn = this.connection!;
-    const prepared = await conn.prepare(
-      'INSERT INTO nodes (nodeId, status, createTime, updateTime) VALUES ($nodeId, $status, current_localtimestamp(), current_localtimestamp()) ON CONFLICT(nodeId) DO UPDATE SET status = $status, updateTime = current_localtimestamp()',
-    );
-    prepared.bind({ nodeId, status });
-    await prepared.run();
+    debug(`[DuckDBStorage] Running direct SQL for setNodeStatus: nodeId=${nodeId}, status=${status}`);
+    try {
+      // Escape single quotes in nodeId to prevent SQL injection
+      const escapedNodeId = nodeId.replace(/'/g, '\'\'');
+      const sql = `INSERT INTO nodes (nodeId, status, createTime, updateTime)
+                   VALUES ('${escapedNodeId}', '${status}', current_localtimestamp(), current_localtimestamp())
+                   ON CONFLICT(nodeId) DO UPDATE SET status     = '${status}',
+                                                     updateTime = current_localtimestamp()`;
+      await conn.run(sql);
+    } catch (error) {
+      console.error(`[DuckDBStorage] Error in setNodeStatus: ${error}`);
+      throw error;
+    } finally {
+      debug(`[DuckDBStorage] Completed direct SQL for setNodeStatus: nodeId=${nodeId}, status=${status}`);
+    }
+  }
+}
+
+function debug(...args: any[]) {
+  if (process.env.DEBUG === 'true') {
+    console.log(...args);
   }
 }
