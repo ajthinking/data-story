@@ -204,6 +204,7 @@ export class ObserverController {
     this.observerMap.forEach((subscription) => subscription.unsubscribe());
     this.observerMap.clear();
 
+    this.storage.close();
     // Complete all subjects
     this.items$.complete();
     this.links$.complete();

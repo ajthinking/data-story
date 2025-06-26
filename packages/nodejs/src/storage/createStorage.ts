@@ -8,7 +8,7 @@ import { JsonObserverStorage } from './jsonObserverStorage';
 export const createStorage = (): ObserverStorage => {
   const config = getWorkingDirConfig();
   if (config.storage === 'JSON') {
-    const filePath = createDataStoryJSONPath({ config, diagramId: 'todo-diagramId' });
+    const filePath = createDataStoryJSONPath({ config, diagramId: `storage-json-${Date.now()}` });
     return new JsonObserverStorage(filePath);
   } else if (config.storage === 'DUCK_DB') {
     const dbPath = createDataStoryDBPath({ config });

@@ -28,11 +28,7 @@ export const JsonFileWrite: Computer = {
     const incoming = input.pull();
     const filePath = params.file_path as string;
     const content = JSON.stringify(incoming.map(i => i.value), null, 2);
-
-    // Determine if the path is absolute
     const isAbsolutePath = path.isAbsolute(filePath);
-
-    // Resolve the full path based on whether it's absolute or relative
     const fullPath = isAbsolutePath
       ? filePath // Use the absolute path directly
       : path.join(getWorkingDirConfig().workingDir, filePath); // Prepend the workspace root for relative paths
