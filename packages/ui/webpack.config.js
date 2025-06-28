@@ -59,7 +59,13 @@ const esmConfig = (env, options) => ({
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: {
+          loader: 'ts-loader',
+          options: {
+            configFile: path.resolve(__dirname, 'tsconfig.lib.json'),
+            projectReferences: true,
+          },
+        },
         exclude: '/node_modules/',
       },
       {
