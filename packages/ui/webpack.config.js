@@ -3,6 +3,7 @@ const dependencies = require('./package.json').dependencies;
 
 const externalsDeps = Object.keys(dependencies);
 
+const webpackCleanKeep = /(data-story.css)|(bundle.[mc]js(\.map|\.LICENSE.txt)?)|(src\/)/;
 const commonJSConfig = (env, options) => ({
   devtool: 'source-map',
   mode: 'development',
@@ -13,7 +14,7 @@ const commonJSConfig = (env, options) => ({
     filename: 'bundle.cjs',
     libraryTarget: 'commonjs2',
     clean: {
-      keep: /(data-story.css)|(bundle.mjs(\.map|\.LICENSE.txt)?)|(src\/)/,
+      keep: webpackCleanKeep,
     },
   },
   module: {
@@ -49,7 +50,7 @@ const esmConfig = (env, options) => ({
     filename: 'bundle.mjs',
     libraryTarget: 'module',
     clean: {
-      keep: /(data-story.css)|(bundle.cjs(\.map|\.LICENSE.txt)?)|(src\/)/,
+      keep: webpackCleanKeep,
     },
     library: {
       type: 'module',
