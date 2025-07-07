@@ -25,7 +25,7 @@ export default () => {
   } as unknown as DataStoryNodeData;
 
   return (
-    <div className="mt-4 p-4">
+    <div>
       <StandaloneTable
         wrapClassName="w-[300px]"
         isDataFetched={true}

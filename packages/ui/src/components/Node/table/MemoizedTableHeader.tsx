@@ -47,8 +47,8 @@ export const MemoizedTableHeader = memo(({
                     position: 'relative',
                     width: `${columnWidth}px`,
                   }}
-                  className={`max-w-[256px] whitespace-nowrap bg-gray-200 text-left last:border-r-0 border-r-0.5 border-gray-300
-                  ${isLastColumn ? 'border-r-0' : ''}`}
+                  className={`max-w-[256px] whitespace-nowrap bg-gray-200 text-left border-gray-300
+                  ${isLastColumn ? 'border-r-0' : 'border-r-0.5'}`}
                 >
                   {flexRender(headerColumn.column.columnDef.header, headerColumn.getContext())}
                 </th>
