@@ -3,6 +3,7 @@ const dependencies = require('./package.json').dependencies;
 
 const externalsDeps = Object.keys(dependencies);
 
+const webpackCleanKeep = /(data-story.css)|(bundle.[mc]js(\.map|\.LICENSE.txt)?)|(src\/)/;
 const commonJSConfig = (env, options) => ({
   devtool: 'source-map',
   mode: 'development',
@@ -13,7 +14,7 @@ const commonJSConfig = (env, options) => ({
     filename: 'bundle.cjs',
     libraryTarget: 'commonjs2',
     clean: {
-      keep: /(data-story.css)|(bundle.mjs(\.map|\.LICENSE.txt)?)/,
+      keep: webpackCleanKeep,
     },
   },
   module: {
@@ -49,7 +50,7 @@ const esmConfig = (env, options) => ({
     filename: 'bundle.mjs',
     libraryTarget: 'module',
     clean: {
-      keep: /(data-story.css)|(bundle.cjs(\.map|\.LICENSE.txt)?)/,
+      keep: webpackCleanKeep,
     },
     library: {
       type: 'module',
@@ -59,7 +60,13 @@ const esmConfig = (env, options) => ({
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: {
+          loader: 'ts-loader',
+          options: {
+            configFile: path.resolve(__dirname, 'tsconfig.lib.json'),
+            projectReferences: true,
+          },
+        },
         exclude: '/node_modules/',
       },
       {

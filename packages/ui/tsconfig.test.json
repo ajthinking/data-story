@@ -21,29 +21,17 @@
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "noImplicitAny": false,
-    "types": [
-      "node",
-      "react",
-      "cypress"
-    ],
-    "sourceMap": true
-  },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS",
-      "target": "ESNext"
-    }
+    "types": ["node", "react", "cypress"],
+    "sourceMap": true,
+    "composite": true
   },
   "include": [
+    "../cypress.d.ts",
+    "./cypress-webpack.config.ts"
   ],
   "exclude": [
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.test.json"
-    }
+    "node_modules",
+    "dist",
+    "cypress.config.ts",
   ]
 }
