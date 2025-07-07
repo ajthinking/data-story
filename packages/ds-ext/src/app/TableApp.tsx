@@ -42,7 +42,7 @@ export const TableApp = ({ edgeId, client }: TableAppProps) => {
   }, [loadMore.current]);
 
   return (
-    <div className="mt-4 p-4">
+    <div>
       <StandaloneTable
         isDataFetched={isDataFetched}
         items={items}
