@@ -221,6 +221,9 @@ const Flow = ({
       // For each incoming edge, connect it to all outgoing edges
       incomingEdges.forEach(inEdge => {
         outgoingEdges.forEach(outEdge => {
+          // Ensure the source and target are not targeted for deletion
+          if (nodesToDelete.some(n => n.id === inEdge.source) || nodesToDelete.some(n => n.id === outEdge.target)) return;
+
           // Create a connection that will be handled by the store's connect method
           connect({
             source: inEdge.source,
