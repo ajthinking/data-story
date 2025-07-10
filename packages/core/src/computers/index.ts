@@ -7,6 +7,7 @@ export { ConsoleLog } from './ConsoleLog'
 export { Create } from './Create'
 export { Describe } from './Describe'
 export { Fake } from './Fake'
+export { FilterMap } from './FilterMap'
 export { FlatMap } from './FlatMap';
 export { If } from './If';
 export { Ignore } from './Ignore'
