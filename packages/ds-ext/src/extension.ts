@@ -105,6 +105,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('datastory.restartServer', () => {
       serverLauncher?.restartServer();
     }),
+    vscode.commands.registerCommand('datastory.showOutput', () => {
+      serverLauncher?.outputChannel.show();
+    }),
   );
 
   serverLauncher?.outputChannel.appendLine('Congratulations, your extension "ds-ext" is now active!');

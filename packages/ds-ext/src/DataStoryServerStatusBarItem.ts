@@ -48,7 +48,7 @@ export class DataStoryServerStatusBarItem implements vscode.Disposable {
         this.statusBarItem.tooltip = 'Starting server...';
         break;
       case ServerStatus.Running:
-        this.statusBarItem.command = 'datastory.stopServer';
+        this.statusBarItem.command = 'datastory.showOutput';
         this.statusBarItem.tooltip = 'Server running';
         break;
       case ServerStatus.Stopping:
