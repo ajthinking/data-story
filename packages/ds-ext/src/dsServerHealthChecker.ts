@@ -1,4 +1,4 @@
-import { catchError, exhaustMap, interval, Observable, of, Subscription } from 'rxjs';
+import { catchError, exhaustMap, filter, interval, Observable, of, Subscription } from 'rxjs';
 import vscode, { type OutputChannel } from 'vscode';
 
 export interface HealthCheckInfo {
@@ -22,11 +22,12 @@ export interface DsServerHealthCheckerOptions {
 
 export class DsServerHealthChecker {
   private subscription?: Subscription;
-  private health$: Observable<HealthCheckWithTime>;
+  public health$: Observable<HealthCheckWithTime>;
   private endpoint: string;
   private intervalMs: number;
   private slowThresholdMs: number;
   private outputChannel: OutputChannel;
+  private active = true;
 
   constructor(options: DsServerHealthCheckerOptions);
   constructor(
@@ -53,24 +54,38 @@ export class DsServerHealthChecker {
       this.outputChannel = outputChannel!;
     }
     this.health$ = interval(this.intervalMs).pipe(
-      exhaustMap(async () => {
-        const start = performance.now();
-        try {
-          const response = await fetch(this.endpoint);
-          const durationMs = performance.now() - start;
-          if (!response.ok) {
-            return { info: null, durationMs };
-          }
-          const info = (await response.json()) as HealthCheckInfo;
-          return { info, durationMs };
-        } catch (e) {
-          const durationMs = performance.now() - start;
-          this.outputChannel.appendLine(`[HEALTH] Health check failed: ${e}`);
-          return { info: null, durationMs };
-        }
-      }),
+      filter(() => this.active),
+      exhaustMap(() => this.ping()),
       catchError(() => of({ info: null, durationMs: 0 })),
     );
+  }
+
+  activate() {
+    this.active = true;
+  }
+
+  deactivate() {
+    this.active = false;
+  }
+
+  /**
+   * Perform a health check
+   */
+  async ping(): Promise<HealthCheckWithTime> {
+    const start = performance.now();
+    try {
+      const response = await fetch(this.endpoint);
+      const durationMs = performance.now() - start;
+      if (!response.ok) {
+        return { info: null, durationMs };
+      }
+      const info = (await response.json()) as HealthCheckInfo;
+      return { info, durationMs };
+    } catch (e) {
+      const durationMs = performance.now() - start;
+      this.outputChannel.appendLine(`[HEALTH] Health check failed: ${e}`);
+      return { info: null, durationMs };
+    }
   }
 
   formatHealthInfo(info: HealthCheckInfo): string {

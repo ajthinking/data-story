@@ -23,12 +23,17 @@
   "contributes": {
     "commands": [
       {
-        "command": "ds-ext.createDemos",
+        "command": "datastory.createDemos",
         "title": "Create Demo Diagrams",
         "category": "DataStory"
       },
       {
-        "command": "ds-ext.showDiagramPreview",
+        "command": "datastory.showOutput",
+        "title": "Show Output",
+        "category": "DataStory"
+      },
+      {
+        "command": "datastory.showDiagramPreview",
         "title": "Show Diagram Preview",
         "category": "DataStory",
         "icon": {
@@ -56,14 +61,14 @@
     "menus": {
       "editor/title": [
         {
-          "command": "ds-ext.showDiagramPreview",
+          "command": "datastory.showDiagramPreview",
           "when": "resourceLangId == 'diagramJson'",
           "group": "navigation"
         }
       ],
       "view/title": [
         {
-          "command": "ds-ext.showDiagramPreview",
+          "command": "datastory.showDiagramPreview",
           "when": "resourceLangId == 'diagramJson'",
           "group": "navigation"
         }
