@@ -3,31 +3,24 @@ import * as cp from 'child_process';
 import * as path from 'path';
 import terminate from 'terminate/promise';
 import { DsServerHealthChecker } from './dsServerHealthChecker';
-
-// Define possible server states
-enum ServerStatus {
-  Stopped = 'Stopped',
-  Starting = 'Starting',
-  Running = 'Running',
-  Stopping = 'Stopping',
-  Error = 'Error'
-}
+import { BehaviorSubject } from 'rxjs';
+import { DataStoryServerStatusBarItem, ServerStatus } from './DataStoryServerStatusBarItem';
 
 export class ServerLauncher implements vscode.Disposable {
   public outputChannel: vscode.OutputChannel;
   private childProcess: cp.ChildProcess | undefined;
-  private status: ServerStatus = ServerStatus.Stopped;
-  private statusBarItem: vscode.StatusBarItem;
-  private serverEntryPath: string;
+  private $status = new BehaviorSubject(ServerStatus.Stopped);
+  private readonly serverEntryPath: string;
   private port = 3300;
   private workspaceDir: string | undefined;
   private isDisposed = false;
+  private readonly statusBarItem: DataStoryServerStatusBarItem;
 
   get serverEndpoint(): string {
     return `ws://localhost:${this.port}`;
   }
 
-  private serverHealthChecker: DsServerHealthChecker;
+  private readonly serverHealthChecker: DsServerHealthChecker;
 
   constructor(context: vscode.ExtensionContext) {
     // Resolve the path to the nodejs package
@@ -35,11 +28,22 @@ export class ServerLauncher implements vscode.Disposable {
     // todo: replace with published nodejs package
 
     // Create VS Code UI elements
-    this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
     this.outputChannel = vscode.window.createOutputChannel('DataStory Server'); // Dedicated output channel
 
     this.updateStatus(ServerStatus.Stopped);
-    this.statusBarItem.show();
+
+    // Create status bar item
+    this.statusBarItem = new DataStoryServerStatusBarItem(
+      this.$status,
+      (status) => {
+        if (status === ServerStatus.Running) {
+          void vscode.window.showInformationMessage('Server started at: ' + this.serverEndpoint);
+          this.statusBarItem.updateTooltip(`Server running at ${this.serverEndpoint}, click to stop`);
+        } else if (status === ServerStatus.Error) {
+          void vscode.window.showInformationMessage('Server stopped unexpectedly');
+        }
+      },
+    );
 
     // Register for disposal with object parameter pattern
     this.serverHealthChecker = new DsServerHealthChecker({
@@ -50,7 +54,7 @@ export class ServerLauncher implements vscode.Disposable {
     });
     // Register for disposal
     context.subscriptions.push(this,
-      this.serverHealthChecker);
+      this.serverHealthChecker, this.statusBarItem);
   }
 
   /**
@@ -112,7 +116,7 @@ export class ServerLauncher implements vscode.Disposable {
         const message = data.toString();
         this.outputChannel.append(`[Server] ${message}`); // Log stdout
         if (message.includes('Server started')) {
-          vscode.window.showInformationMessage('Server started at: ' + this.serverEndpoint);
+          this.updateStatus(ServerStatus.Running);
         }
       });
 
@@ -242,10 +246,10 @@ export class ServerLauncher implements vscode.Disposable {
    */
   private handleServerExit(code: number | null, signal: NodeJS.Signals | string | null): void {
     // Only update status if not already stopped/stopping by explicit command or disposal
-    if (this.status !== ServerStatus.Stopping && !this.isDisposed) {
+    if (this.$status.value !== ServerStatus.Stopping && !this.isDisposed) {
       if (code !== 0 && code !== null) {
         // Non-zero exit code usually indicates an error
-        vscode.window.showErrorMessage(`Server stopped unexpectedly (code ${code}, signal ${signal}). Check Output channel.`);
+        void vscode.window.showErrorMessage(`Server stopped unexpectedly (code ${code}, signal ${signal}). Check Output channel.`);
         this.updateStatus(ServerStatus.Error, `Exited code ${code}`);
       } else if (signal === 'error' || signal === 'catch' || signal === 'killfailed') {
         // Handle specific error signals from our logic
@@ -281,40 +285,7 @@ export class ServerLauncher implements vscode.Disposable {
    *@private
    */
   private updateStatus(newStatus: ServerStatus, details?: string): void {
-    this.status = newStatus;
-    let statusBarText = '';
-    let statusBarCommand: string | undefined;
-    let statusBarTooltip = `DataStory Server: ${newStatus}`;
-    if (details) {
-      statusBarTooltip += ` (${details})`;
-    }
-
-    switch (newStatus) {
-      case ServerStatus.Stopped:
-        statusBarText = 'Stopped';
-        statusBarCommand = 'datastory.startServer'; // Command to start
-        break;
-      case ServerStatus.Starting:
-        statusBarText = 'Starting';
-        statusBarCommand = undefined; // No action while starting
-        break;
-      case ServerStatus.Running:
-        statusBarText = 'Running';
-        statusBarCommand = 'datastory.restartServer'; // Command to restart
-        break;
-      case ServerStatus.Stopping:
-        statusBarText = 'Stopping';
-        statusBarCommand = undefined;
-        break;
-      case ServerStatus.Error:
-        statusBarText = 'Error';
-        statusBarCommand = 'datastory.startServer'; // Command to try starting again
-        break;
-    }
-
-    this.statusBarItem.text = `DataStory: ${statusBarText}`;
-    this.statusBarItem.command = statusBarCommand;
-    this.statusBarItem.tooltip = statusBarTooltip;
+    this.$status.next(newStatus);
     this.outputChannel.appendLine(`[Launcher] Status changed to: ${newStatus}${details ? ' (' + details + ')' : ''}`);
   }
 
@@ -345,7 +316,7 @@ export class ServerLauncher implements vscode.Disposable {
    *5. Updates the final status
    */
   dispose() {
-    this.terminateServer();
+    void this.terminateServer();
     this.statusBarItem.dispose();
     this.outputChannel.dispose();
     this.isDisposed = true;
