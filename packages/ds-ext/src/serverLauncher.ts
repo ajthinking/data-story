@@ -27,7 +27,7 @@ export class ServerLauncher implements vscode.Disposable {
     return `ws://localhost:${this.port}`;
   }
 
-  private serverHealthChecker?: DsServerHealthChecker;
+  private serverHealthChecker: DsServerHealthChecker;
 
   constructor(context: vscode.ExtensionContext) {
     // Resolve the path to the nodejs package
@@ -110,7 +110,10 @@ export class ServerLauncher implements vscode.Disposable {
 
       this.childProcess.stdout?.on('data', (data) => {
         const message = data.toString();
-        this.outputChannel.append(message); // Log stdout
+        this.outputChannel.append(`[Server] ${message}`); // Log stdout
+        if (message.includes('Server started')) {
+          vscode.window.showInformationMessage('Server started at: ' + this.serverEndpoint);
+        }
       });
 
       this.childProcess.stderr?.on('data', (data) => {
