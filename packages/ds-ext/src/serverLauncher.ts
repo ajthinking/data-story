@@ -3,8 +3,9 @@ import * as cp from 'child_process';
 import * as path from 'path';
 import terminate from 'terminate/promise';
 import { DsServerHealthChecker } from './dsServerHealthChecker';
-import { BehaviorSubject, filter, firstValueFrom } from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom, switchMap } from 'rxjs';
 import { DataStoryServerStatusBarItem, ServerStatus } from './DataStoryServerStatusBarItem';
+import { toDisposable } from './utils/vscode-rxjs';
 
 export class ServerLauncher implements vscode.Disposable {
   public outputChannel: vscode.OutputChannel;
@@ -58,9 +59,24 @@ export class ServerLauncher implements vscode.Disposable {
       slowThresholdMs: 3000,
       outputChannel: this.outputChannel,
     });
+    const liveUpdateServerStatus =
+      this.$status.pipe(
+        filter(it => it === ServerStatus.Running),
+        switchMap(() => this.serverHealthChecker.health$),
+      ).subscribe(health => {
+        const tooltip = [ `Server running at ${this.serverEndpoint}` ];
+        if (health.info) {
+          tooltip.push(this.serverHealthChecker.formatHealthInfo(health.info));
+        }
+        this.statusBarItem.updateTooltip(tooltip.join('\n'));
+      });
     // Register for disposal
-    context.subscriptions.push(this,
-      this.serverHealthChecker, this.statusBarItem);
+    context.subscriptions.push(
+      this,
+      this.serverHealthChecker,
+      this.statusBarItem,
+      toDisposable(liveUpdateServerStatus),
+    );
   }
 
   /**
