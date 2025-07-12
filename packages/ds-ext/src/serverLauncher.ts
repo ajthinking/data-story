@@ -44,9 +44,15 @@ export class ServerLauncher implements vscode.Disposable {
       this.$status,
       (status) => {
         if (status === ServerStatus.Running) {
+          this.serverHealthChecker.activate();
           void vscode.window.showInformationMessage('Server started at: ' + this.serverEndpoint);
         } else if (status === ServerStatus.Error) {
           void vscode.window.showInformationMessage('Server stopped unexpectedly');
+          this.serverHealthChecker.deactivate();
+          this.statusBarItem.updateTooltip('Server stopped unexpectedly, Click to start server');
+        } else if (status === ServerStatus.Stopped || status === ServerStatus.Stopping) {
+          this.serverHealthChecker.deactivate();
+          this.statusBarItem.updateTooltip('Click to start server');
         }
       },
     );
@@ -181,10 +187,18 @@ export class ServerLauncher implements vscode.Disposable {
    *@returns Promise that resolves when the stop command has been issued (not when server is fully stopped)
    */
   public async stopServer(): Promise<void> {
-    this.updateStatus(ServerStatus.Stopping);
-    this.outputChannel.appendLine('[Launcher] Attempting to stop server process (SIGTERM)...');
+    try {
+      this.updateStatus(ServerStatus.Stopping);
+      this.outputChannel.appendLine('[Launcher] Attempting to stop server process (SIGTERM)...');
 
-    await this.terminateServer();
+      await this.terminateServer();
+    } catch (e) {
+      if (this.$status.value === ServerStatus.Stopped) {
+        // ignore
+      } else {
+        this.outputChannel.appendLine(`[Launcher ERROR] Failed to stop server process: ${e}`);
+      }
+    }
   }
 
   private async terminateServer(): Promise<void> {

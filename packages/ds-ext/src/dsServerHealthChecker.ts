@@ -1,4 +1,4 @@
-import { catchError, exhaustMap, interval, Observable, of, Subscription } from 'rxjs';
+import { catchError, exhaustMap, filter, interval, Observable, of, Subscription } from 'rxjs';
 import vscode, { type OutputChannel } from 'vscode';
 
 export interface HealthCheckInfo {
@@ -27,6 +27,7 @@ export class DsServerHealthChecker {
   private intervalMs: number;
   private slowThresholdMs: number;
   private outputChannel: OutputChannel;
+  private active = true;
 
   constructor(options: DsServerHealthCheckerOptions);
   constructor(
@@ -53,9 +54,18 @@ export class DsServerHealthChecker {
       this.outputChannel = outputChannel!;
     }
     this.health$ = interval(this.intervalMs).pipe(
+      filter(() => this.active),
       exhaustMap(() => this.ping()),
       catchError(() => of({ info: null, durationMs: 0 })),
     );
+  }
+
+  activate() {
+    this.active = true;
+  }
+
+  deactivate() {
+    this.active = false;
   }
 
   /**
