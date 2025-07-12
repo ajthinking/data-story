@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { DataStoryCommands } from './vscode-commands';
 
 // Re-export the ServerStatus enum to avoid circular dependencies
 export enum ServerStatus {
@@ -40,7 +41,7 @@ export class DataStoryServerStatusBarItem implements vscode.Disposable {
 
     switch (status) {
       case ServerStatus.Stopped:
-        this.statusBarItem.command = 'datastory.startServer';
+        this.statusBarItem.command = DataStoryCommands.StartServer;
         this.statusBarItem.tooltip = 'Click to start server';
         break;
       case ServerStatus.Starting:
@@ -48,7 +49,7 @@ export class DataStoryServerStatusBarItem implements vscode.Disposable {
         this.statusBarItem.tooltip = 'Starting server...';
         break;
       case ServerStatus.Running:
-        this.statusBarItem.command = 'datastory.showOutput';
+        this.statusBarItem.command = DataStoryCommands.ShowOutput;
         this.statusBarItem.tooltip = 'Server running';
         break;
       case ServerStatus.Stopping:
@@ -56,7 +57,7 @@ export class DataStoryServerStatusBarItem implements vscode.Disposable {
         this.statusBarItem.tooltip = 'Stopping server...';
         break;
       case ServerStatus.Error:
-        this.statusBarItem.command = 'datastory.startServer';
+        this.statusBarItem.command = DataStoryCommands.RestartServer;
         this.statusBarItem.tooltip = 'Click to start server';
         break;
     }

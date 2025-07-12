@@ -3,7 +3,7 @@ import * as cp from 'child_process';
 import * as path from 'path';
 import terminate from 'terminate/promise';
 import { DsServerHealthChecker } from './dsServerHealthChecker';
-import { BehaviorSubject, filter, firstValueFrom, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom, mergeWith, switchMap } from 'rxjs';
 import { DataStoryServerStatusBarItem, ServerStatus } from './DataStoryServerStatusBarItem';
 import { toDisposable } from './utils/vscode-rxjs';
 
@@ -45,7 +45,6 @@ export class ServerLauncher implements vscode.Disposable {
       (status) => {
         if (status === ServerStatus.Running) {
           void vscode.window.showInformationMessage('Server started at: ' + this.serverEndpoint);
-          this.statusBarItem.updateTooltip(`Server running at ${this.serverEndpoint}, click to stop`);
         } else if (status === ServerStatus.Error) {
           void vscode.window.showInformationMessage('Server stopped unexpectedly');
         }
@@ -62,7 +61,9 @@ export class ServerLauncher implements vscode.Disposable {
     const liveUpdateServerStatus =
       this.$status.pipe(
         filter(it => it === ServerStatus.Running),
-        switchMap(() => this.serverHealthChecker.health$),
+        switchMap(() => this.serverHealthChecker.health$.pipe(
+          mergeWith(this.serverHealthChecker.ping()),
+        )),
       ).subscribe(health => {
         const tooltip = [ `Server running at ${this.serverEndpoint}` ];
         if (health.info) {
