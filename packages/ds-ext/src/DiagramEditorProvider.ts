@@ -43,6 +43,7 @@ export class DiagramEditorProvider implements vscode.CustomEditorProvider<Diagra
     };
 
     // Set the webview's HTML content
+    await this.serverLauncher.ensureStarted();
     webviewPanel.webview.html = this.getWebviewContent(webviewPanel.webview, document);
 
     const postMessage = (msg: any) => {

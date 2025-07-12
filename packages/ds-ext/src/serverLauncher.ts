@@ -3,7 +3,7 @@ import * as cp from 'child_process';
 import * as path from 'path';
 import terminate from 'terminate/promise';
 import { DsServerHealthChecker } from './dsServerHealthChecker';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, filter, firstValueFrom } from 'rxjs';
 import { DataStoryServerStatusBarItem, ServerStatus } from './DataStoryServerStatusBarItem';
 
 export class ServerLauncher implements vscode.Disposable {
@@ -15,6 +15,12 @@ export class ServerLauncher implements vscode.Disposable {
   private workspaceDir: string | undefined;
   private isDisposed = false;
   private readonly statusBarItem: DataStoryServerStatusBarItem;
+
+  ensureStarted() {
+    return firstValueFrom(this.$status.pipe(
+      filter(it => it === ServerStatus.Running),
+    ));
+  }
 
   get serverEndpoint(): string {
     return `ws://localhost:${this.port}`;
