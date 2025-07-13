@@ -134,7 +134,7 @@ export class Diagram {
   }
 
   inputNodes(): Node[] {
-    return this.nodes.filter(node => node.name === 'Input')
+    return this.nodes.filter(node => node.type === 'Input')
   }
 
   getAncestors(node: Node, visited: Set<Node> = new Set()): Node[] {
@@ -231,6 +231,6 @@ export class Diagram {
   }
 
   outputNodes(): Node[] {
-    return this.nodes.filter(node => node.name === 'Output')
+    return this.nodes.filter(node => node.type === 'Output')
   }
 }

@@ -63,7 +63,7 @@ describe('addComputers', () => {
   it('adds computers to the application', () => {
     const app = new Application()
     const computer = {
-      name: 'Signal',
+      type: 'Signal',
       run: async function*(_) {},
     } as Computer;
 
@@ -82,7 +82,7 @@ describe('descriptions', ()  => {
     app.addComputers([ Signal ])
 
     expect(app.descriptions()).toMatchObject([
-      { name: 'Signal' },
+      { type: 'Signal' },
     ])
   })
 })

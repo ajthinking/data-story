@@ -8,7 +8,7 @@ describe('add', () => {
     const diagram = new Diagram()
     const node: Node = {
       id: 'node-id',
-      name: 'MyNode',
+      type: 'MyNode',
       inputs: [],
       outputs: [],
       params: [],
@@ -30,7 +30,7 @@ describe('nodeWithOutputPortId', () => {
 
     const node: Node = {
       id: 'node-id',
-      name: 'MyNode',
+      type: 'MyNode',
       inputs: [],
       outputs: [output],
       params: [],
@@ -70,7 +70,7 @@ describe('getLoops', () => {
   it('returns empty array when no loops exist', () => {
     const node1: Node = {
       id: 'Node.1',
-      name: 'Node',
+      type: 'Node',
       inputs: [],
       outputs: [{ id: 'Node.1.output', name: 'output', schema: {} }],
       params: [],
@@ -78,7 +78,7 @@ describe('getLoops', () => {
 
     const node2: Node = {
       id: 'Node.2',
-      name: 'Node',
+      type: 'Node',
       inputs: [{ id: 'Node.2.input', name: 'input', schema: {} }],
       outputs: [],
       params: [],
@@ -101,7 +101,7 @@ describe('getLoops', () => {
   it('finds simple two-node loop', () => {
     const node1: Node = {
       id: 'Loop.1',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.1.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.1.output', name: 'output', schema: {} }],
       params: [],
@@ -109,7 +109,7 @@ describe('getLoops', () => {
 
     const node2: Node = {
       id: 'Loop.2',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.2.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.2.output', name: 'output', schema: {} }],
       params: [],
@@ -143,7 +143,7 @@ describe('getLoops', () => {
   it('finds three-node loop', () => {
     const node1: Node = {
       id: 'Loop.1',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.1.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.1.output', name: 'output', schema: {} }],
       params: [],
@@ -151,7 +151,7 @@ describe('getLoops', () => {
 
     const node2: Node = {
       id: 'Loop.2',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.2.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.2.output', name: 'output', schema: {} }],
       params: [],
@@ -159,7 +159,7 @@ describe('getLoops', () => {
 
     const node3: Node = {
       id: 'Loop.3',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.3.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.3.output', name: 'output', schema: {} }],
       params: [],
@@ -200,7 +200,7 @@ describe('getLoops', () => {
     // First loop: Loop.1 <--> Loop.2
     const loop1Node1: Node = {
       id: 'Loop.1',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.1.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.1.output', name: 'output', schema: {} }],
       params: [],
@@ -208,7 +208,7 @@ describe('getLoops', () => {
 
     const loop1Node2: Node = {
       id: 'Loop.2',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.2.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.2.output', name: 'output', schema: {} }],
       params: [],
@@ -217,7 +217,7 @@ describe('getLoops', () => {
     // Second loop: Loop.3 <--> Loop.4
     const loop2Node1: Node = {
       id: 'Loop.3',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.3.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.3.output', name: 'output', schema: {} }],
       params: [],
@@ -225,7 +225,7 @@ describe('getLoops', () => {
 
     const loop2Node2: Node = {
       id: 'Loop.4',
-      name: 'Loop',
+      type: 'Loop',
       inputs: [{ id: 'Loop.4.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Loop.4.output', name: 'output', schema: {} }],
       params: [],
@@ -283,7 +283,7 @@ describe('getAncestors', () => {
   it('returns empty array for node with no ancestors', () => {
     const node: Node = {
       id: 'Node.1',
-      name: 'Node',
+      type: 'Node',
       inputs: [],
       outputs: [],
       params: [],
@@ -296,7 +296,7 @@ describe('getAncestors', () => {
   it('returns direct ancestors', () => {
     const ancestor: Node = {
       id: 'Ancestor.1',
-      name: 'Ancestor',
+      type: 'Ancestor',
       inputs: [],
       outputs: [{ id: 'Ancestor.1.output', name: 'output', schema: {} }],
       params: [],
@@ -304,7 +304,7 @@ describe('getAncestors', () => {
 
     const child: Node = {
       id: 'Child.1',
-      name: 'Child',
+      type: 'Child',
       inputs: [{ id: 'Child.1.input', name: 'input', schema: {} }],
       outputs: [],
       params: [],
@@ -327,7 +327,7 @@ describe('getAncestors', () => {
   it('returns all ancestors in a chain', () => {
     const grandparent: Node = {
       id: 'Grandparent.1',
-      name: 'Grandparent',
+      type: 'Grandparent',
       inputs: [],
       outputs: [{ id: 'Grandparent.1.output', name: 'output', schema: {} }],
       params: [],
@@ -335,7 +335,7 @@ describe('getAncestors', () => {
 
     const parent: Node = {
       id: 'Parent.1',
-      name: 'Parent',
+      type: 'Parent',
       inputs: [{ id: 'Parent.1.input', name: 'input', schema: {} }],
       outputs: [{ id: 'Parent.1.output', name: 'output', schema: {} }],
       params: [],
@@ -343,7 +343,7 @@ describe('getAncestors', () => {
 
     const child: Node = {
       id: 'Child.1',
-      name: 'Child',
+      type: 'Child',
       inputs: [{ id: 'Child.1.input', name: 'input', schema: {} }],
       outputs: [],
       params: [],
@@ -376,7 +376,7 @@ describe('getAncestors', () => {
   it('handles cycles without infinite recursion', () => {
     const node1: Node = {
       id: 'CycleNode.1',
-      name: 'CycleNode',
+      type: 'CycleNode',
       inputs: [{ id: 'CycleNode.1.input', name: 'input', schema: {} }],
       outputs: [{ id: 'CycleNode.1.output', name: 'output', schema: {} }],
       params: [],
@@ -384,7 +384,7 @@ describe('getAncestors', () => {
 
     const node2: Node = {
       id: 'CycleNode.2',
-      name: 'CycleNode',
+      type: 'CycleNode',
       inputs: [{ id: 'CycleNode.2.input', name: 'input', schema: {} }],
       outputs: [{ id: 'CycleNode.2.output', name: 'output', schema: {} }],
       params: [],
@@ -418,7 +418,7 @@ describe('clone', () => {
   it('creates a deep clone of the diagram', () => {
     const node: Node = {
       id: 'node-id',
-      name: 'MyNode',
+      type: 'MyNode',
       inputs: [],
       outputs: [],
       params: [],

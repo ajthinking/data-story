@@ -5,7 +5,7 @@ import { Computer } from '../types/Computer';
 import { get } from '../utils/get';
 
 export const Aggregate: Computer = {
-  name: 'Aggregate',
+  type: 'Aggregate',
   label: 'Aggregate',
   inputs: [
     {

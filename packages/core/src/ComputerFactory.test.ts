@@ -4,13 +4,13 @@ import { Computer } from './types/Computer'
 describe('get', () => {
   it('creates a computer from a sparse config', () => {
     const config = {
-      name: 'test computer',
+      type: 'test computer',
     } as Computer
 
     const computer = new ComputerFactory().getInstance(config)
 
     expect(computer).toMatchObject({
-      name: 'test computer',
+      type: 'test computer',
       label: 'test computer',
       category: undefined,
       inputs: [],
@@ -23,7 +23,7 @@ describe('get', () => {
 
   it('upgrades simple string inputs and outputs to Port', () => {
     const config = {
-      name: 'test computer',
+      type: 'test computer',
       inputs: [
         {
           name: 'input1',
@@ -49,7 +49,7 @@ describe('get', () => {
     const computer = new ComputerFactory().getInstance(config)
 
     expect(computer).toMatchObject({
-      name: 'test computer',
+      type: 'test computer',
       inputs: [
         { name: 'input1', schema: {} },
         { name: 'input2', schema: {} },

@@ -9,7 +9,7 @@ describe('pull', () => {
   it('returns items at port named "input" wrapped as ItemWithParams', () => {
     const node: Node = {
       id: 'target',
-      name: 'node-type',
+      type: 'node-type',
       inputs: [{ id: 'target-input-id', name: 'input', schema: {} }],
       outputs: [],
       params: [],
@@ -49,7 +49,7 @@ describe('pull', () => {
     expect(() => {
       const node: Node = {
         id: 'target',
-        name: 'node-type',
+        type: 'node-type',
         inputs: [{ id: 'target-input-id', name: 'some-other-name', schema: {} }],
         outputs: [],
         params: [],
@@ -70,7 +70,7 @@ describe('pull', () => {
   it('removes the items pulled from the links', () => {
     const node: Node = {
       id: 'target',
-      name: 'node-type',
+      type: 'node-type',
       inputs: [{ id: 'target-input-id', name: 'input', schema: {} }],
       outputs: [],
       params: [],
@@ -107,7 +107,7 @@ describe('pull', () => {
   it('may pull a specified number of items', () => {
     const node: Node = {
       id: 'target',
-      name: 'node-type',
+      type: 'node-type',
       inputs: [{ id: 'target-input-id', name: 'input', schema: {} }],
       outputs: [],
       params: [],
@@ -143,7 +143,7 @@ describe('pullFrom', () => {
   it('returns items at named port', () => {
     const node: Node = {
       id: 'target',
-      name: 'node-type',
+      type: 'node-type',
       inputs: [{ id: 'target-input-id', name: 'numbers', schema: {} }],
       outputs: [],
       params: [],
@@ -180,7 +180,7 @@ describe('pullFrom', () => {
   it('removes the items pulled from the links', () => {
     const node: Node = {
       id: 'target',
-      name: 'node-type',
+      type: 'node-type',
       inputs: [{ id: 'target-input-id', name: 'numbers', schema: {} }],
       outputs: [],
       params: [],
@@ -219,7 +219,7 @@ describe('params', () => {
   it('has getters for params returning interpolated values', () => {
     const node: Node = {
       id: 'target',
-      name: 'node-type',
+      type: 'node-type',
       inputs: [{ id: 'target-input-id', name: 'input', schema: {} }],
       outputs: [],
       params: [str({

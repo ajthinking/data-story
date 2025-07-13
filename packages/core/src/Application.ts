@@ -38,12 +38,12 @@ export class Application {
 
   addComputers(computers: Computer[]) {
     for (const computer of computers) {
-      this.registry.computers[computer.name] = computer;
+      this.registry.computers[computer.type] = computer;
     }
   }
 
-  addNestedNode(name: string, diagram: Diagram) {
-    this.registry.nestedNodes[name] = diagram;
+  addNestedNode(type: string, diagram: Diagram) {
+    this.registry.nestedNodes[type] = diagram;
   }
 
   descriptions() {

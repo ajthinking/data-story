@@ -5,7 +5,7 @@ import { Computer } from './types/Computer'
 describe('fromComputer', () => {
   it('returns a NodeDescription', () => {
     const config = {
-      name: 'test',
+      type: 'test',
       inputs: [{
         name: 'input1',
         schema: {},
@@ -17,7 +17,7 @@ describe('fromComputer', () => {
     const nodeDescription = NodeDescriptionFactory.fromComputer(computer)
 
     expect(nodeDescription).toMatchObject({
-      name: 'test',
+      type: 'test',
       label: 'test',
       inputs: [{
         name: 'input1',

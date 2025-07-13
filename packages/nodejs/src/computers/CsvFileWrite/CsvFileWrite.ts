@@ -5,7 +5,7 @@ import { stringify } from 'csv-stringify';
 import { getWorkingDirConfig } from '../../server/getWorkingDirConfig';
 
 export const CsvFileWrite: Computer = {
-  name: 'CsvFile.write',
+  type: 'CsvFile.write',
   label: 'CsvFile.write',
   category: 'NodeJs',
   inputs: [{

@@ -6,7 +6,7 @@ import { jsFunctionEvaluation } from '../Param/evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from '../Param/evaluations/jsonEvaluation';
 
 export const Signal: Computer = {
-  name: 'Signal',
+  type: 'Signal',
   label: 'Signal',
   inputs: [],
   outputs: [{

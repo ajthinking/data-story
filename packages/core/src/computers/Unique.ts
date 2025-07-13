@@ -4,7 +4,7 @@ import { Computer } from '../types/Computer';
 import { get } from '../utils/get';
 
 export const Unique: Computer = {
-  name: 'Unique',
+  type: 'Unique',
   label: 'Unique',
   inputs: [{
     name: 'input',

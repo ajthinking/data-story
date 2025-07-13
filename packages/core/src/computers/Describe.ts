@@ -6,7 +6,7 @@ import { num, str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Describe: Computer = {
-  name: 'Describe',
+  type: 'Describe',
   label: 'Describe',
   inputs: [
     {

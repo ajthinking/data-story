@@ -4,7 +4,7 @@ import { ItemValue } from '../types/ItemValue';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Clone: Computer = {
-  name: 'Clone',
+  type: 'Clone',
   label: 'Clone',
   inputs: [
     {

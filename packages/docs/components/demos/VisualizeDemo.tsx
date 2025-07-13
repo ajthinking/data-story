@@ -57,7 +57,7 @@ export default () => {
   const { app, loading } = useRequestApp();
   const client = useMemo(() => new CustomizeJSClient({ diagram, app }), [diagram, app]);
 
-  const mapNode = diagram.nodes.find(n => n.name === 'Map');
+  const mapNode = diagram.nodes.find(n => n.type === 'Map');
   const mapperParam = mapNode!.params.find(p => p.name === 'mapper') as any;
   mapperParam.value = {
     ...mapperParam.value,

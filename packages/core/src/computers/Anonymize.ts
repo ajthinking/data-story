@@ -4,7 +4,7 @@ import { anonymize } from '../utils/anonymize';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Anonymize: Computer = {
-  name: 'Anonymize',
+  type: 'Anonymize',
   label: 'Anonymize',
   inputs: [{
     name: 'input',

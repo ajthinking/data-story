@@ -13,7 +13,7 @@ it('forwards schema to linked ports', () => {
 
   const node1: Node = {
     id: 'node1',
-    name: 'MyNode',
+    type: 'MyNode',
     inputs: [],
     outputs: [outputPort],
     params: [],
@@ -27,7 +27,7 @@ it('forwards schema to linked ports', () => {
 
   const node2: Node = {
     id: 'node2',
-    name: 'MyNode',
+    type: 'MyNode',
     inputs: [inputPort],
     outputs: [],
     params: [],

@@ -2,7 +2,7 @@ import { num, StringableInputValue } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Await: Computer = {
-  name: 'Await',
+  type: 'Await',
   label: 'Await',
   inputs: [
     {

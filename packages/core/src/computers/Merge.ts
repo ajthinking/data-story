@@ -5,7 +5,7 @@ import { buildNestedObject } from '../utils/buildNestedObject';
 import { merge } from '../utils/merge';
 
 export const Merge: Computer = {
-  name: 'Merge',
+  type: 'Merge',
   label: 'Merge',
   inputs: [
     {

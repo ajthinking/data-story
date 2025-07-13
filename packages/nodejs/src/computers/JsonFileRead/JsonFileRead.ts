@@ -5,7 +5,7 @@ import { Computer, get, asArray, ItemValue, serializeError, str } from '@data-st
 import { getWorkingDirConfig } from '../../server/getWorkingDirConfig';
 
 export const JsonFileRead: Computer = {
-  name: 'JsonFile.read',
+  type: 'JsonFile.read',
   label: 'JsonFile.read',
   category: 'NodeJs',
   inputs: [],

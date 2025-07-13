@@ -2,7 +2,7 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Ignore: Computer = {
-  name: 'Ignore',
+  type: 'Ignore',
   label: 'Ignore',
   inputs: [{
     name: 'input',

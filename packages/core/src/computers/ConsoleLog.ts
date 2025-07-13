@@ -6,7 +6,7 @@ import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const ConsoleLog: Computer = {
-  name: 'ConsoleLog',
+  type: 'ConsoleLog',
   label: 'Console.log',
   inputs: [
     {

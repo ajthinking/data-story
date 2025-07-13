@@ -4,7 +4,7 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const FilterMap: Computer = {
-  name: 'FilterMap',
+  type: 'FilterMap',
   label: 'FilterMap',
   inputs: [{
     name: 'input',
