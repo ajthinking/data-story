@@ -7,7 +7,7 @@ import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Throw: Computer = {
-  name: 'Throw',
+  type: 'Throw',
   label: 'Throw',
   inputs: [{
     name: 'input',

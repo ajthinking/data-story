@@ -26,8 +26,8 @@ function getPortName(node: any): string | undefined {
 }
 
 const connectLoops = (diagram: Diagram) => {
-  const loopBacks = diagram.nodes.filter(n => n.name === 'LoopBack');
-  const loopStarts = diagram.nodes.filter(n => n.name === 'LoopStart');
+  const loopBacks = diagram.nodes.filter(n => n.type === 'LoopBack');
+  const loopStarts = diagram.nodes.filter(n => n.type === 'LoopStart');
 
   for (const loopBack of loopBacks) {
     const loopBackPortName = getPortName(loopBack);
@@ -53,13 +53,13 @@ const connectLoops = (diagram: Diagram) => {
 }
 
 export const unfoldDiagram = (diagram: Diagram, nestedNodes: NestedNodes): ExecutableDiagram => {
-  const replacables = diagram.nodes.filter(node => node.name in nestedNodes)
+  const replacables = diagram.nodes.filter(node => node.type in nestedNodes)
 
   const unfoldedGlobalParams: Record<NodeId, Param[]> = {}
 
   for(const node of replacables) {
-    const nestedDiagram = nestedNodes[node.name]
-    if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.name}"`)
+    const nestedDiagram = nestedNodes[node.type]
+    if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.type}"`)
 
     diagram.nodes.push(...nestedDiagram.nodes)
     diagram.links.push(...nestedDiagram.links)
@@ -83,8 +83,8 @@ const unfoldNode = (node: Node, diagram: Diagram, nestedNodes: NestedNodes, unfo
   if(index === -1) throw new Error('Node not found in diagram')
   diagram.nodes.splice(index, 1)
 
-  const nestedDiagram = nestedNodes[node.name]
-  if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.name}"`)
+  const nestedDiagram = nestedNodes[node.type]
+  if(!nestedDiagram) throw new Error(`No nesteddiagram found for node type "${node.type}"`)
 
   // Rewire incoming links
   for(const inputPort of node.inputs) {
@@ -93,7 +93,7 @@ const unfoldNode = (node: Node, diagram: Diagram, nestedNodes: NestedNodes, unfo
     for(const link of links) {
       const newTargetNode = nestedDiagram.nodes
         .find(node => {
-          const isInputNode = node.name === 'Input'
+          const isInputNode = node.type === 'Input'
           if(!isInputNode) return false;
 
           const param = node.params[0];
@@ -107,10 +107,10 @@ const unfoldNode = (node: Node, diagram: Diagram, nestedNodes: NestedNodes, unfo
           return matchesPortName
         })
 
-      if(!newTargetNode) throw new Error(`No input node found for input port "${inputPort.name}" on the nesteddiagram of "${node.name}"`)
+      if(!newTargetNode) throw new Error(`No input node found for input port "${inputPort.name}" on the nesteddiagram of "${node.type}"`)
 
       const newInputPort = newTargetNode.inputs[0]
-      if(!newInputPort) throw new Error(`No input port found for input port "${inputPort.name}" on the nesteddiagram of "${node.name}". The node was ${JSON.stringify(node)}`)
+      if(!newInputPort) throw new Error(`No input port found for input port "${inputPort.name}" on the nesteddiagram of "${node.type}". The node was ${JSON.stringify(node)}`)
 
       link.targetPortId = newInputPort.id
     }
@@ -122,7 +122,7 @@ const unfoldNode = (node: Node, diagram: Diagram, nestedNodes: NestedNodes, unfo
     for(const link of links) {
       const newSourceNode = nestedDiagram.nodes
         .find(node => {
-          const isOutputNode = node.name === 'Output'
+          const isOutputNode = node.type === 'Output'
           if(!isOutputNode) return false;
 
           const param = node.params[0];
@@ -136,10 +136,10 @@ const unfoldNode = (node: Node, diagram: Diagram, nestedNodes: NestedNodes, unfo
           return matchesPortName
         })
 
-      if(!newSourceNode) throw new Error(`No output node found for output port "${outputPort.name}" on the nesteddiagram of "${node.name}"`)
+      if(!newSourceNode) throw new Error(`No output node found for output port "${outputPort.name}" on the nesteddiagram of "${node.type}"`)
 
       const newOutputPort = newSourceNode.outputs[0]
-      if(!newOutputPort) throw new Error(`No output port found for output port "${outputPort.name}" on the nesteddiagram of "${node.name}"`)
+      if(!newOutputPort) throw new Error(`No output port found for output port "${outputPort.name}" on the nesteddiagram of "${node.type}"`)
 
       link.sourcePortId = newOutputPort.id
     }

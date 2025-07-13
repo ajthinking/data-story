@@ -3,7 +3,7 @@ import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Comment: Computer = {
-  name: 'Comment',
+  type: 'Comment',
   label: 'Comment',
   inputs: [],
   outputs: [],

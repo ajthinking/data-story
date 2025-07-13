@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import { Computer, str } from '@data-story/core';
 
 export const ReadFiles: Computer = {
-  name: 'ReadFiles',
+  type: 'ReadFiles',
   label: 'ReadFiles',
   category: 'NodeJs',
   inputs: [{

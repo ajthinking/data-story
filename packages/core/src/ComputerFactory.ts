@@ -15,8 +15,8 @@ export class ComputerFactory {
     return {
       // Properties
       ...structuredClone({
-        name: template.name ?? 'unnamed',
-        label: template.label ?? template.name ?? 'unlabeled',
+        type: template.type ?? 'unnamed',
+        label: template.label ?? template.type ?? 'unlabeled',
         category: template.category,
         inputs: template.inputs?.map(portableToPort) ?? [],
         outputs: template.outputs?.map(portableToPort) ?? [],

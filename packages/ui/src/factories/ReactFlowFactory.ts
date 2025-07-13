@@ -15,19 +15,19 @@ export const ReactFlowFactory = {
           },
           data: {
             params: node.params,
-            computer: node.name,
-            label: (node?.label || node.name) as string,
+            computer: node.type,
+            label: (node?.label || node.type) as string,
             inputs: node.inputs,
             outputs: node.outputs,
           },
           type: (() => {
-            if (node.name === 'Comment') return 'commentNodeComponent';
-            if (node.name === 'Input') return 'inputNodeComponent';
-            if (node.name === 'LoopBack') return 'loopBackComponent';
-            if (node.name === 'LoopStart') return 'loopStartComponent';
-            if (node.name === 'Output') return 'outputNodeComponent';
-            if (node.name === 'Table') return 'tableNodeComponent';
-            if (node.name === 'ConsoleLog') return 'consoleNodeComponent';
+            if (node.type === 'Comment') return 'commentNodeComponent';
+            if (node.type === 'Input') return 'inputNodeComponent';
+            if (node.type === 'LoopBack') return 'loopBackComponent';
+            if (node.type === 'LoopStart') return 'loopStartComponent';
+            if (node.type === 'Output') return 'outputNodeComponent';
+            if (node.type === 'Table') return 'tableNodeComponent';
+            if (node.type === 'ConsoleLog') return 'consoleNodeComponent';
 
             return 'nodeComponent';
           })(),

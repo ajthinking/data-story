@@ -37,8 +37,8 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
     .sort((a: NodeDescription, b: NodeDescription) => {
       // Prioritize sorting by type if either is "Input" or "Output"
       const typePriority = { Input: 1, Output: 2 }; // Define priority for types
-      const aTypePriority = typePriority[a.name] || Number.MAX_SAFE_INTEGER; // Default to a very high number if not "Input" or "Output"
-      const bTypePriority = typePriority[b.name] || Number.MAX_SAFE_INTEGER; // Same here
+      const aTypePriority = typePriority[a.type] || Number.MAX_SAFE_INTEGER; // Default to a very high number if not "Input" or "Output"
+      const bTypePriority = typePriority[b.type] || Number.MAX_SAFE_INTEGER; // Same here
 
       if (aTypePriority < bTypePriority) return -1; // Move "Input" or "Output" to the front
       if (aTypePriority > bTypePriority) return 1;
@@ -82,17 +82,17 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
                   'ml-2': index % 2 === 0,
                 },
               )}
-              key={nodeDescription.name}
+              key={nodeDescription.type}
               onClick={() => doAddNode(nodeDescription)}
               draggable="true"
               onDragStart={(event) => {
-                event.dataTransfer.setData('application/reactflow', nodeDescription.name);
+                event.dataTransfer.setData('application/reactflow', nodeDescription.type);
                 event.dataTransfer.effectAllowed = 'move';
               }}
             >
               <div className='text-gray-500 text-xs overflow-hidden'>
                 <span className='text-indigo-500 font-mono'>{nodeDescription.category || 'Core'}::</span>
-                {nodeDescription.label || nodeDescription.name}
+                {nodeDescription.label || nodeDescription.type}
               </div>
             </button>
           );

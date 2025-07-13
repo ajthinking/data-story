@@ -4,7 +4,7 @@ import { EntityPage } from './EntityPage';
 import { CrmEntityName } from './CrmEntityName';
 
 const Template: Computer = {
-  name: 'NAME',
+  type: 'NAME',
   label: 'LABEL',
   inputs: [{
     name: 'incoming',

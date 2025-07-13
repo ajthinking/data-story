@@ -59,8 +59,8 @@ export class ExecutionMemoryFactory {
       memory.outputDevices.set(node.id, outputDevice)
 
       // Initialize runner generators
-      const computer = this.registry.computers[node.name]
-      if (!computer) throw new Error(`Computer "${node.name}" not found`)
+      const computer = this.registry.computers[node.type]
+      if (!computer) throw new Error(`Computer "${node.type}" not found`)
 
       // Initialize runner context
       const context = new NodeRunnerContext(node.id);

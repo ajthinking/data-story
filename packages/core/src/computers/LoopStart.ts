@@ -2,7 +2,7 @@ import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const LoopStart: Computer = {
-  name: 'LoopStart',
+  type: 'LoopStart',
   label: 'Loop Start',
   inputs: [{
     name: 'input',

@@ -3,7 +3,7 @@ import { Param } from '../Param';
 import { AbstractPort } from './Port';
 
 export type NodeDescription = {
-  name: string,
+  type: string,
   label?: string,
   category?: string,
   inputs: AbstractPort[],

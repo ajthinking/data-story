@@ -3,7 +3,7 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const LoopBack: Computer = {
-  name: 'LoopBack',
+  type: 'LoopBack',
   label: 'Loop Back',
   inputs: [{
     name: 'input',

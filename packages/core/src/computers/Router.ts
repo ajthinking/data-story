@@ -5,7 +5,7 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Router: Computer = {
-  name: 'Router',
+  type: 'Router',
   label: 'Router',
   inputs: [{
     name: 'input',

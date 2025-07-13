@@ -25,7 +25,7 @@ export class DiagramBuilder {
   constructor(private nodeDescriptions: NodeDescription[]) {}
 
   add(nodeName: string, config?: AddNodeConfig) {
-    const description = this.nodeDescriptions.find(e => e.name === nodeName)
+    const description = this.nodeDescriptions.find(e => e.type === nodeName)
 
     if (!description) throw new Error(`Description for a Node ${nodeName} not found`)
 
@@ -40,7 +40,7 @@ export class DiagramBuilder {
     const node: Node = {
       id: nodeId,
       label: name,
-      name: name,
+      type: name,
       // The inputs have not yet been assigned ids, do it here
       inputs: diagram.inputNodes().map(inputNode => {
         const param = inputNode.params.find(param => param.name === 'port_name')!;
@@ -223,11 +223,11 @@ export class DiagramBuilder {
   }
 
   private nodeDescriptionToDiagramNode(nodeDescription: NodeDescription): Node {
-    const id = `${nodeDescription.name}.${this.getScopedId(nodeDescription.name)}`;
+    const id = `${nodeDescription.type}.${this.getScopedId(nodeDescription.type)}`;
 
     return structuredClone({
       id,
-      name: nodeDescription.name,
+      type: nodeDescription.type,
       label: nodeDescription.label,
       inputs: nodeDescription.inputs.map(input => {
         return {
@@ -296,7 +296,7 @@ export class DiagramBuilder {
 
   protected getScopedId(nodeName: string) {
     const max = this.diagram.nodes
-      .filter(node => node.name === nodeName)
+      .filter(node => node.type === nodeName)
       .map(node => node.id)
       .map(id => id.split('.')[1])
       .map(id => parseInt(id))

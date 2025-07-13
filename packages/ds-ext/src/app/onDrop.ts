@@ -72,7 +72,7 @@ export const onDropFromExplorer = (event: any, addNodeFromDescription: any) => {
 
 export const createJsonFileReadDescription = (filename: string, path: string): NodeDescription => {
   return {
-    name: 'JsonFile.read',
+    type: 'JsonFile.read',
     label: filename,
     inputs: [],
     outputs: [

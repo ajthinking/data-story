@@ -6,7 +6,7 @@ import { NodeDescription } from './types/NodeDescription';
 export const NodeDescriptionFactory = {
   fromComputer: (computer: Computer): NodeDescription => {
     return {
-      name: computer.name,
+      type: computer.type,
       label: computer.label,
       category: computer.category,
       inputs: computer.inputs,
@@ -17,11 +17,11 @@ export const NodeDescriptionFactory = {
 
   fromDiagram: (name: string, diagram: Diagram): NodeDescription => {
     return {
-      name,
+      type: name,
       label: name,
       category: undefined,
       inputs: diagram.nodes
-        .filter(node => node.name === 'Input')
+        .filter(node => node.type === 'Input')
         .map(node => {
           //@ts-ignore
           const portParam = node.params
@@ -35,7 +35,7 @@ export const NodeDescriptionFactory = {
           }
         }),
       outputs: diagram.nodes
-        .filter(node => node.name === 'Output')
+        .filter(node => node.type === 'Output')
         .map(node => {
           //@ts-ignore
           const portParam = node.params
