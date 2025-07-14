@@ -24,6 +24,7 @@ export const remoteNodeProvider = {
           })`,
       })
       .add('Output', { port_name: 'stamped' })
+      .connect()
       .get();
 
     // *************************************

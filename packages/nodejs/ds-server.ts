@@ -16,6 +16,7 @@ import { hubspotProvider } from '@data-story/hubspot';
 import minimist from 'minimist';
 import { nodeJsProvider } from './src';
 import { SocketServer } from './src/server/SocketServer';
+import { remoteNodeProvider } from '@data-story/core';
 
 dotenv.config({ path: '.env.local' });
 const argv = minimist(process.argv.slice(2), {
@@ -38,6 +39,7 @@ const startServer = async () => {
     coreNodeProvider,
     nodeJsProvider,
     hubspotProvider,
+    remoteNodeProvider,
   ]);
 
   await app.boot();
