@@ -39,7 +39,6 @@ export class SocketServer {
     console.log('Storage initialized');
     this.httpServer = createServer(healthCheckHandler);
     this.wsServer = new WebSocketServer({ server: this.httpServer });
-    console.log('Server started on port ' + this.port);
 
     this.wsServer.on('connection', (ws) => {
       ws.on('message', (msg: string) => this.handleMessage(ws, msg));
@@ -55,6 +54,7 @@ export class SocketServer {
       console.log('Client connected 💓');
     });
 
+    console.log('Server started on port ' + this.port);
     await new Promise(resolve => this.httpServer!.listen(this.port, () => resolve(0)));
   }
 
