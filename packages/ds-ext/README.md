@@ -2,10 +2,10 @@
 
 ### To increase the memory limit for the extension
 
-Set [`datastory.additionalDsServerCliArgs`](vscode://settings/datastory.additionalDsServerCliArgs) with the following:
+Set [`ds-ext.additionalDsServerCliArgs`](vscode://settings/ds-ext.additionalDsServerCliArgs) with the following:
 ```json
 {
-    "datastory.additionalDsServerCliArgs": [
+    "ds-ext.additionalDsServerCliArgs": [
         "--max_old_space_size=10240"
     ]
 }

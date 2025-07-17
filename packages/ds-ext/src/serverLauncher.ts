@@ -122,7 +122,7 @@ export class ServerLauncher implements vscode.Disposable {
       const serverEntry = path.join(this.serverEntryPath, 'ds-server.min.js');
 
       // Get additional argument from VSCode settings
-      const additionalDsServer = vscode.workspace.getConfiguration('datastory')
+      const additionalDsServer = vscode.workspace.getConfiguration('ds-ext')
         .get<string[]>('additionalDsServerCliArgs') || [];
 
       // First, let's check if the file exists
