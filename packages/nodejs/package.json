@@ -36,7 +36,7 @@
     "@duckdb/node-api": "^1.2.2-alpha.18",
     "csv-parse": "^5.6.0",
     "csv-stringify": "^6.5.2",
-    "dotenv": "^16.4.0",
+    "dotenv": "^17.2.0",
     "glob": "^11.0.0",
     "lodash": "^4.17.21",
     "minimist": "^1.2.8",
