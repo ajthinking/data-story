@@ -9,6 +9,7 @@ export type DataStoryControlsType = {
   updateDiagram: (diagram: Diagram) => void;
   onSave?: DataStoryCanvasProps['onSave'];
   setShowAddNode: (showAddNode: boolean) => void;
+  setShowConfig: (showConfig: boolean) => void;
 };
 
 const DataStoryControlsContext = React.createContext<DataStoryControlsType>(null as unknown as DataStoryControlsType);
@@ -23,10 +24,12 @@ export function useDataStoryControls() {
 
 export function DataStoryControls({
   setShowAddNode,
+  setShowConfig,
   controls = [],
   onSave,
 }: {
   setShowAddNode: (showAddNode: boolean) => void;
+  setShowConfig: (showConfig: boolean) => void;
   controls?: React.ReactNode[];
   onSave?: DataStoryCanvasProps['onSave'];
 }) {
@@ -46,7 +49,8 @@ export function DataStoryControls({
     },
     onSave: onSave,
     setShowAddNode: setShowAddNode,
-  }), [onSave, setShowAddNode, toDiagram, updateDiagram]);
+    setShowConfig: setShowConfig,
+  }), [onSave, setShowAddNode, setShowConfig, toDiagram, updateDiagram]);
 
   return (
     <DataStoryControlsContext.Provider value={context}>

@@ -1,4 +1,5 @@
 import { NodeSettingsForm } from '../Form/nodeSettingsForm';
+import { ConfigSidebar } from './config';
 import { NodeSettingsSidebarProps, StoreSchema } from '../types';
 import { Placeholder } from '../common/placeholder';
 import { NodeDescription } from '@data-story/core';
@@ -39,6 +40,8 @@ const SidebarComponent = (props: NodeSettingsSidebarProps) => {
         return node?.id && node?.data
           ? <NodeSettingsForm node={node} onClose={onClose} onSave={onSave}/>
           : <Placeholder content={'Click on a node to see its configuration'}/>;
+      case 'config':
+        return <ConfigSidebar setSidebarKey={setSidebarKey} />
       default:
         return null;
     }

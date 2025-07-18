@@ -183,6 +183,7 @@ const Flow = ({
   const hotkeyManager = useMemo(() => new HotkeyManager(flowRef), []);
   const setShowRun = useCallback((show: boolean) => setSidebarKey!(show ? 'run' : ''), [setSidebarKey]);
   const setShowAddNode = useCallback((show: boolean) => setSidebarKey!(show ? 'addNode' : ''), [setSidebarKey]);
+  const setShowConfig = useCallback((show: boolean) => setSidebarKey!(show ? 'config' : ''), [setSidebarKey]);
 
   const traverseNodes = useCallback((direction: Direction) => {
     const selectedNode = getNodesWithNewSelection(direction, nodes);
@@ -325,6 +326,7 @@ const Flow = ({
           onSave={onSave}
           controls={controls}
           setShowAddNode={setShowAddNode}
+          setShowConfig={setShowConfig}
         />
         <Background color='#E7E7E7' variant={BackgroundVariant.Lines}/>
       </ReactFlow>

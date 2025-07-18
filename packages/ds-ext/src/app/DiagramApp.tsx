@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { debounce, Diagram } from '@data-story/core';
-import { AddNodeControl, CopyAsJsonControl, DataStory, RunControl, WorkspaceApiClientImplement } from '@data-story/ui';
+import { AddNodeControl, ConfigControl, CopyAsJsonControl, DataStory, RunControl, WorkspaceApiClientImplement } from '@data-story/ui';
 import { VsCodeToast } from './VsCodeToast';
 import { onDrop } from './onDrop';
 import { dsExtensionInitialData } from './dsExtensionInitialData';
@@ -10,7 +10,7 @@ interface DiagramAppProps {
   client: WorkspaceApiClientImplement;
 }
 
-export default function DiagramApp({ client: socketClient}: DiagramAppProps) {
+export default function DiagramApp({ client: socketClient }: DiagramAppProps) {
   /**
    * socketClient: This is the main client of ds-ext, responsible for handling diagram data.
    * vscodeClient: Primarily used to manage native operations in VSCode.
@@ -21,7 +21,7 @@ export default function DiagramApp({ client: socketClient}: DiagramAppProps) {
     debounce(async (diagram: Diagram) => {
       socketClient!.updateDiagram?.(diagram, dsExtensionInitialData().documentId);
     }, 100), // Debounced with 100ms delay11
-    [socketClient]
+    [socketClient],
   );
 
   // useEffect for dispose is now handled in the parent component (index.tsx)
@@ -42,7 +42,7 @@ export default function DiagramApp({ client: socketClient}: DiagramAppProps) {
         onChange={handleChange}
         onEdgeDoubleClick={handleEdgeDoubleClick}
         onDrop={onDrop}
-        controls={[<RunControl />, <AddNodeControl />, <CopyAsJsonControl />]}
+        controls={[<RunControl />, <AddNodeControl />, <CopyAsJsonControl />, <ConfigControl />]}
       >
         <VsCodeToast postMessage={window.vscode.postMessage} />
       </DataStory>
