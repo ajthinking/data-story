@@ -6,7 +6,7 @@ import {
   WorkspaceApiClientImplement,
   RunControl,
   SaveControl, AddNodeControl,
-  CopyAsJsonControl,
+  CopyAsJsonControl, ConfigControl,
 } from '@data-story/ui';
 import { useRequestApp } from './hooks/useRequestApp';
 import { ToastComponent } from './Toast';
@@ -45,7 +45,7 @@ function Playground({ mode }: { mode?: 'js' | 'node' }) {
       <DataStory
         client={client}
         onEdgeDoubleClick={handleEdgeDoubleClick}
-        controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>, <CopyAsJsonControl/>]}
+        controls={[<RunControl/>, <AddNodeControl/>, <SaveControl/>, <CopyAsJsonControl/>, <ConfigControl/>]}
       >
         <ToastComponent/>
       </DataStory>
