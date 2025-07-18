@@ -10,6 +10,7 @@ export function getDsExtConfig(): DsExtConfig {
   return {
     additionalDsServerCliArgs: config.get<string[]>('additionalDsServerCliArgs', []),
     dsServerPort: config.get<number>('dsServerPort', 3300),
+    useExternalServer: config.get<boolean>('useExternalServer', false),
   };
 }
 

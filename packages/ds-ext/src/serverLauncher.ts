@@ -21,9 +21,8 @@ export class ServerLauncher implements vscode.Disposable {
   private externalProcessServer: AbstractServer | undefined;
 
   constructor(context: vscode.ExtensionContext) {
-    // Resolve the path to the nodejs package
+    // Resolve the path to the ds-server module
     this.serverEntryPath = path.join(context.extensionPath, 'install-scripts');
-    // todo: replace with published nodejs package
 
     // Create VS Code UI elements
     this.outputChannel = vscode.window.createOutputChannel('DataStory Server'); // Dedicated output channel
@@ -92,18 +91,6 @@ export class ServerLauncher implements vscode.Disposable {
     ));
   }
 
-  /**
-   *Starts the DataStory Node.js server process.
-   *
-   *This method:
-   *1. Prepares the server entry point by ensuring dependencies are installed
-   *2. Validates workspace path availability
-   *3. Spawns a Node.js child process with the server entry point
-   *4. Sets up event listeners for stdout, stderr, errors, and process exit
-   *5. Starts the health checker to monitor server responsiveness
-   *
-   *@returns Promise that resolves when the server process has been started (not when it's ready)
-   */
   public async startServer(): Promise<void> {
     await this.prepareServerEntry();
     if (this.isDisposed) {
@@ -137,7 +124,10 @@ export class ServerLauncher implements vscode.Disposable {
           this.handleServerExit(code, signal);
         },
       };
-      this.externalProcessServer = new InProcessServer(options);
+      this.externalProcessServer =
+        config.useExternalServer
+          ? new ExternalProcessServer(options)
+          : new InProcessServer(options);
       this.externalProcessServer.start();
       this.serverHealthChecker.start();
     } catch (error: any) {

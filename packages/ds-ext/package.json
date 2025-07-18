@@ -136,7 +136,7 @@
         "ds-ext.useExternalServer": {
           "type": "boolean",
           "default": false,
-          "description": "TODO: Use an external DataStory server."
+          "description": "Use an external DataStory server to improve data-processing performance (requires restart)"
         },
         "ds-ext.additionalDsServerCliArgs": {
           "type": "array",
