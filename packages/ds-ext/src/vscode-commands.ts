@@ -1,4 +1,4 @@
-import vscode from 'vscode';
+import * as vscode from 'vscode';
 import { ServerLauncher } from './serverLauncher';
 import { createDemosDirectory } from './commands/createDemosDirectory';
 import { DiagramEditorProvider } from './DiagramEditorProvider';

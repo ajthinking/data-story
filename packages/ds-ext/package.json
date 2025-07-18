@@ -5,6 +5,7 @@
   "version": "0.0.110",
   "publisher": "ajthinking",
   "icon": "icon.png",
+  "type": "module",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -132,6 +133,11 @@
       "type": "object",
       "title": "DataStory",
       "properties": {
+        "ds-ext.useExternalServer": {
+          "type": "boolean",
+          "default": false,
+          "description": "TODO: Use an external DataStory server."
+        },
         "ds-ext.additionalDsServerCliArgs": {
           "type": "array",
           "items": {
@@ -139,6 +145,11 @@
           },
           "default": [],
           "description": "Additional arguments (as string array) to pass to the ds-server process (e.g., for nodejs flags)."
+        },
+        "ds-ext.dsServerPort": {
+          "type": "number",
+          "default": 3300,
+          "description": "The port to use for the DataStory server."
         }
       }
     }
@@ -148,10 +159,10 @@
   },
   "scripts": {
     "build:webview": "yarn run -T set-env NODE_ENV=production && yarn run -T vite build",
-    "build:extension": "yarn run -T set-env NODE_ENV=production && yarn run -T webpack --mode production --devtool hidden-source-map",
+    "build:extension": "yarn run -T set-env NODE_ENV=production && yarn run -T zx esbuild.extension.config.js",
     "build:ds-server": "yarn run -T zx scripts/prepare-ds-server.mjs",
     "build:duckdb": "yarn run -T zx scripts/download-duckdb-bindings.mjs",
-    "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T webpack --watch",
+    "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T zx esbuild.extension.config.js --watch",
     "watch:webview": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w",
     "watch:ds-server": "yarn run -T zx scripts/watch-ds-server.mjs",
     "compile-tests": "tsc -p . --outDir out",
@@ -178,13 +189,14 @@
     "@vitejs/plugin-react": "^4.3.1",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.19.0",
     "tar": "^7.4.3"
   },
   "dependencies": {
     "@data-story/core": "workspace:*",
     "@data-story/nodejs": "workspace:*",
     "@data-story/ui": "workspace:*",
-    "dotenv": "^16.4.0",
+    "dotenv": "^17.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rxjs": "^7.8.1",

@@ -1,33 +1,24 @@
 import * as vscode from 'vscode';
 import * as cp from 'child_process';
 import * as path from 'path';
-import terminate from 'terminate/promise';
 import { DsServerHealthChecker } from './dsServerHealthChecker';
 import { BehaviorSubject, filter, firstValueFrom, mergeWith, switchMap } from 'rxjs';
 import { DataStoryServerStatusBarItem, ServerStatus } from './DataStoryServerStatusBarItem';
 import { toDisposable } from './utils/vscode-rxjs';
+import { getDsExtConfig } from './utils/DsExtConfig';
+import { ExternalProcessServer, ExternalProcessServerOptions } from './ExternalProcessServer';
+import { AbstractServer } from './AbstractServer';
+import { InProcessServer } from './InProcessServer';
 
 export class ServerLauncher implements vscode.Disposable {
   public outputChannel: vscode.OutputChannel;
-  private childProcess: cp.ChildProcess | undefined;
   private $status = new BehaviorSubject(ServerStatus.Stopped);
   private readonly serverEntryPath: string;
-  private port = 3300;
   private workspaceDir: string | undefined;
   private isDisposed = false;
   private readonly statusBarItem: DataStoryServerStatusBarItem;
-
-  ensureStarted() {
-    return firstValueFrom(this.$status.pipe(
-      filter(it => it === ServerStatus.Running),
-    ));
-  }
-
-  get serverEndpoint(): string {
-    return `ws://localhost:${this.port}`;
-  }
-
   private readonly serverHealthChecker: DsServerHealthChecker;
+  private externalProcessServer: AbstractServer | undefined;
 
   constructor(context: vscode.ExtensionContext) {
     // Resolve the path to the nodejs package
@@ -39,10 +30,18 @@ export class ServerLauncher implements vscode.Disposable {
 
     this.updateStatus(ServerStatus.Stopped);
 
+    // Register for disposal with object parameter pattern
+    this.serverHealthChecker = new DsServerHealthChecker({
+      endpoint: `http://localhost:${this.port}/health`,
+      intervalMs: 5000,
+      slowThresholdMs: 3000,
+      outputChannel: this.outputChannel,
+    });
     // Create status bar item
     this.statusBarItem = new DataStoryServerStatusBarItem(
       this.$status,
       (status) => {
+        console.log(`serverHealthChecker ${this.serverHealthChecker}`);
         if (status === ServerStatus.Running) {
           this.serverHealthChecker.activate();
           void vscode.window.showInformationMessage('Server started at: ' + this.serverEndpoint);
@@ -56,14 +55,6 @@ export class ServerLauncher implements vscode.Disposable {
         }
       },
     );
-
-    // Register for disposal with object parameter pattern
-    this.serverHealthChecker = new DsServerHealthChecker({
-      endpoint: `http://localhost:${this.port}/health`,
-      intervalMs: 5000,
-      slowThresholdMs: 3000,
-      outputChannel: this.outputChannel,
-    });
     const liveUpdateServerStatus =
       this.$status.pipe(
         filter(it => it === ServerStatus.Running),
@@ -84,6 +75,21 @@ export class ServerLauncher implements vscode.Disposable {
       this.statusBarItem,
       toDisposable(liveUpdateServerStatus),
     );
+  }
+
+  get serverEndpoint(): string {
+    return `ws://localhost:${this.port}`;
+  }
+
+  // Get port from configuration
+  private get port(): number {
+    return getDsExtConfig().dsServerPort;
+  }
+
+  ensureStarted() {
+    return firstValueFrom(this.$status.pipe(
+      filter(it => it === ServerStatus.Running),
+    ));
   }
 
   /**
@@ -117,57 +123,23 @@ export class ServerLauncher implements vscode.Disposable {
     this.outputChannel.appendLine(`[Launcher] Config: Port=${this.port}, Workspace=${this.workspaceDir}`);
 
     try {
-      const nodeCmd = 'node';
-      // We need to modify the test-server.ts file to use our port before running the watch:server script
-      const serverEntry = path.join(this.serverEntryPath, 'ds-server.min.js');
-
-      // Get additional argument from VSCode settings
-      const additionalDsServer = vscode.workspace.getConfiguration('ds-ext')
-        .get<string[]>('additionalDsServerCliArgs') || [];
-
-      // First, let's check if the file exists
-      const args = [
-        ...additionalDsServer,
-        serverEntry, '-p', this.port.toString(), '-w', this.workspaceDir,
-      ];
-      this.outputChannel.appendLine(`[Launcher] Running command: ${nodeCmd} ${args.join(' ')}`);
-      this.childProcess = cp.spawn(
-        nodeCmd,
-        args,
-        {
-          stdio: [ 'pipe', 'pipe', 'pipe' ], // Pipe stdin, stdout, stderr
-          shell: false,
-          env: { ...process.env }, // Inherit parent environment
+      const config = getDsExtConfig();
+      const options: ExternalProcessServerOptions = {
+        nodeCmd: 'node',
+        serverEntryPath: this.serverEntryPath,
+        dsExtConfig: config,
+        workspaceDir: this.workspaceDir,
+        outputChannel: this.outputChannel,
+        onStatusUpdate: (status: ServerStatus, details?: string) => {
+          this.updateStatus(status, details);
         },
-      );
-
-      this.childProcess.stdout?.on('data', (data) => {
-        const message = data.toString();
-        this.outputChannel.append(`[Server] ${message}`); // Log stdout
-        if (message.includes('Server started')) {
-          this.updateStatus(ServerStatus.Running);
-        }
-      });
-
-      this.childProcess.stderr?.on('data', (data) => {
-        const message = data.toString();
-        this.outputChannel.appendLine(`[Server ERROR] ${message}`); // Log stderr
-        // Optionally show error message immediately, or wait for exit code
-        // vscode.window.showErrorMessage(`Server error: ${message.substring(0, 100)}...`);
-        // Consider setting status to Error only on non-zero exit or specific errors
-      });
-
-      this.childProcess.on('error', (err) => {
-        this.outputChannel.appendLine(`[Launcher ERROR] Failed to start server process: ${err.message}`);
-        vscode.window.showErrorMessage(`Failed to start server: ${err.message}`);
-        this.handleServerExit(null, 'error'); // Treat launch error as an exit
-      });
-
-      this.childProcess.on('close', (code, signal) => {
-        this.outputChannel.appendLine(`[Launcher] Server process exited with code ${code}, signal ${signal}.`);
-        this.handleServerExit(code, signal);
-      });
-      this.serverHealthChecker!.start();
+        onServerExit: (code: number | null, signal: NodeJS.Signals | string | null) => {
+          this.handleServerExit(code, signal);
+        },
+      };
+      this.externalProcessServer = new InProcessServer(options);
+      this.externalProcessServer.start();
+      this.serverHealthChecker.start();
     } catch (error: any) {
       this.outputChannel.appendLine(`[Launcher CATCH] Error spawning server: ${error.message}`);
       vscode.window.showErrorMessage(`Error launching server: ${error.message}`);
@@ -191,22 +163,13 @@ export class ServerLauncher implements vscode.Disposable {
       this.updateStatus(ServerStatus.Stopping);
       this.outputChannel.appendLine('[Launcher] Attempting to stop server process (SIGTERM)...');
 
-      await this.terminateServer();
+      await this.externalProcessServer?.stop();
     } catch (e) {
       if (this.$status.value === ServerStatus.Stopped) {
         // ignore
       } else {
         this.outputChannel.appendLine(`[Launcher ERROR] Failed to stop server process: ${e}`);
       }
-    }
-  }
-
-  private async terminateServer(): Promise<void> {
-    if (this.childProcess && this.childProcess.pid) {
-      // write '<exit>/n' to stdin
-      this.childProcess.stdin?.write('<exit>\n');
-      // Use the terminate package in case of https://github.com/volta-cli/volta/issues/36
-      await terminate(this.childProcess.pid);
     }
   }
 
@@ -225,18 +188,37 @@ export class ServerLauncher implements vscode.Disposable {
       return;
     }
     this.outputChannel.appendLine('[Launcher] Restarting server...');
-    if (this.childProcess) {
+    if (this.externalProcessServer) {
       // If running, stop it first. Listen for close event before starting again.
-      this.childProcess.once('close', () => {
-        // Check if disposed *during* the stop process before restarting
-        if (!this.isDisposed) {
-          this.startServer();
-        }
-      });
       await this.stopServer();
+      await this.startServer();
     } else {
       // If not running, just start it.
       await this.startServer();
+    }
+  }
+
+  /**
+   *Implements vscode.Disposable interface.
+   *Cleans up resources when the extension is deactivated.
+   *
+   *This method:
+   *1. Marks the launcher as disposed
+   *2. Attempts to gracefully stop the server
+   *3. Disposes of UI components (status bar, output channel)
+   *4. Forces termination of the child process if necessary
+   *5. Updates the final status
+   */
+  dispose() {
+    void this.terminateServer();
+    this.statusBarItem.dispose();
+    this.outputChannel.dispose();
+    this.isDisposed = true;
+  }
+
+  private async terminateServer(): Promise<void> {
+    if (this.externalProcessServer) {
+      await this.externalProcessServer.stop();
     }
   }
 
@@ -302,10 +284,7 @@ export class ServerLauncher implements vscode.Disposable {
     }
 
     // Clean up process listeners and reference
-    this.childProcess?.stdout?.removeAllListeners();
-    this.childProcess?.stderr?.removeAllListeners();
-    this.childProcess?.removeAllListeners(); // Remove 'error', 'close' listeners
-    this.childProcess = undefined;
+    this.externalProcessServer = undefined;
     this.serverHealthChecker?.dispose();
   }
 
@@ -339,23 +318,5 @@ export class ServerLauncher implements vscode.Disposable {
       return folders[0].uri.fsPath;
     }
     return undefined;
-  }
-
-  /**
-   *Implements vscode.Disposable interface.
-   *Cleans up resources when the extension is deactivated.
-   *
-   *This method:
-   *1. Marks the launcher as disposed
-   *2. Attempts to gracefully stop the server
-   *3. Disposes of UI components (status bar, output channel)
-   *4. Forces termination of the child process if necessary
-   *5. Updates the final status
-   */
-  dispose() {
-    void this.terminateServer();
-    this.statusBarItem.dispose();
-    this.outputChannel.dispose();
-    this.isDisposed = true;
   }
 }
