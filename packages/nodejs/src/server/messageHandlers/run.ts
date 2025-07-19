@@ -22,6 +22,7 @@ export const run: MessageHandler<RunMessage> = async({
   const diagram = new Diagram({
     nodes: data.diagram.nodes,
     links: data.diagram.links,
+    params: data.diagram.params,
   })
   const startTime = performance.now();
   const { executionId, msgId } = data
