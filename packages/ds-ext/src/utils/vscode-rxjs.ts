@@ -1,5 +1,5 @@
 import { SubscriptionLike } from 'rxjs';
-import vscode from 'vscode';
+import * as vscode from 'vscode';
 
 export function toDisposable(subscription: SubscriptionLike) {
   return {

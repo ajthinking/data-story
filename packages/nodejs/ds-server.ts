@@ -10,29 +10,25 @@
  * @param port - The port number to use for the server (default: 3300)
  * @param workingDir - The working directory for the server (default: current directory)
  */
-import { Application, coreNodeProvider } from '@data-story/core';
+import { Application, coreNodeProvider, remoteNodeProvider } from '@data-story/core';
 import * as dotenv from 'dotenv';
 import { hubspotProvider } from '@data-story/hubspot';
 import minimist from 'minimist';
 import { nodeJsProvider } from './src';
 import { SocketServer } from './src/server/SocketServer';
-import { remoteNodeProvider } from '@data-story/core';
 
-dotenv.config({ path: '.env.local' });
-const argv = minimist(process.argv.slice(2), {
-  string: [ 'port', 'workingDir' ],
-  alias: {
-    port: 'p',
-    workingDir: 'w',
-  },
-});
-
-const port = argv.port || 3300;
-const workingDir = argv.workingDir || process.cwd();
-
-process.chdir(workingDir);
-
-const startServer = async () => {
+const startServer = async ({
+  port,
+  workingDir,
+  abortSignal,
+}: {
+  port: number;
+  workingDir: string;
+  abortSignal?: AbortSignal;
+}) => {
+  process.chdir(workingDir);
+  dotenv.config({ path: '.env.local' });
+  console.log('Working directory', workingDir);
   const app = new Application();
 
   app.register([
@@ -46,9 +42,12 @@ const startServer = async () => {
 
   const server = new SocketServer({
     app,
-    port: port,
+    port,
   });
 
+  abortSignal?.addEventListener('abort', async () => {
+    await server.stop();
+  });
   await server.start();
 };
 
@@ -74,9 +73,28 @@ process.on('exit', (code) => {
   console.log('Exit code', code);
 });
 
-startServer()
-  .then(() => {
-    console.log('Working directory', workingDir);
-  }).catch((e) => {
-    console.error('Error starting server', e);
+// Check if this file is being run directly (not imported as a module)
+if (require.main === module) {
+  const argv = minimist(process.argv.slice(2), {
+    string: [ 'port', 'workingDir' ],
+    alias: {
+      port: 'p',
+      workingDir: 'w',
+    },
   });
+
+  const port = argv.port || 3300;
+  const workingDir = argv.workingDir || process.cwd();
+  startServer({
+    port,
+    workingDir,
+  })
+    .then(() => {
+      console.log('Working directory', workingDir);
+    }).catch((e) => {
+      console.error('Error starting server', e);
+    });
+}
+
+// Export functions for when this file is imported as a module
+export { startServer };

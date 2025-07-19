@@ -1,5 +1,6 @@
-import vscode from 'vscode';
+import * as vscode from 'vscode';
 
+console.log('EventEmitter', !!vscode.EventEmitter);
 export class JsonReadonlyProvider implements vscode.TextDocumentContentProvider {
   // Store the content corresponding to each URI
   private contentMap = new Map<string, string>();
