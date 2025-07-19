@@ -5,7 +5,7 @@
   "version": "0.0.110",
   "publisher": "ajthinking",
   "icon": "icon.png",
-  "type": "module",
+  "type": "commonjs",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -159,10 +159,10 @@
   },
   "scripts": {
     "build:webview": "yarn run -T set-env NODE_ENV=production && yarn run -T vite build",
-    "build:extension": "yarn run -T set-env NODE_ENV=production && yarn run -T zx esbuild.extension.config.js",
+    "build:extension": "yarn run -T set-env NODE_ENV=production && yarn run -T zx esbuild.extension.config.mjs",
     "build:ds-server": "yarn run -T zx scripts/prepare-ds-server.mjs",
     "build:duckdb": "yarn run -T zx scripts/download-duckdb-bindings.mjs",
-    "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T zx esbuild.extension.config.js --watch",
+    "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T zx esbuild.extension.config.mjs --watch",
     "watch:webview": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w",
     "watch:ds-server": "yarn run -T zx scripts/watch-ds-server.mjs",
     "compile-tests": "tsc -p . --outDir out",

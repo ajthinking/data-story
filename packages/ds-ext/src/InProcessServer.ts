@@ -36,7 +36,7 @@ export class InProcessServer implements AbstractServer {
       this.options.outputChannel.appendLine(`[InProcess] Importing server module from: ${serverEntryMjs}, ${import.meta.resolve?.(serverEntryMjs)}`);
 
       // Dynamically import the mjs module
-      const serverModule = require(serverEntryMjs);
+      const serverModule = await import(serverEntryMjs);
 
       if (!serverModule.startServer || typeof serverModule.startServer !== 'function') {
         throw new Error('startServer function not found in the server module');

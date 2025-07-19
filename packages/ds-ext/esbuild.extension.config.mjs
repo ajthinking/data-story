@@ -8,7 +8,7 @@ async function main() {
   const ctx = await esbuild.context({
     entryPoints: ['src/extension.ts'],
     bundle: true,
-    format: 'esm',
+    format: 'cjs',
     minify: isProduction,
     sourcemap: !isProduction,
     sourcesContent: false,
@@ -20,8 +20,7 @@ async function main() {
       /* add to the end of plugins array */
       esbuildProblemMatcherPlugin,
     ],
-    inject: ['src/cjs-shim.ts'],
-
+    // inject: ['src/cjs-shim.ts'],
   });
   if (watch) {
     await ctx.watch();
