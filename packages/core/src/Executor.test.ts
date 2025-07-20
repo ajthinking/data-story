@@ -10,7 +10,7 @@ import { core } from './core';
 describe('execute', () => {
   it('can execute an empty diagram and return an execution update', async () => {
     const diagram = new Diagram()
-    const registry = new Registry({}, {})
+    const registry = new Registry({}, {}, [])
 
     const executor = ExecutorFactory.create({ diagram, registry })
 
@@ -47,7 +47,7 @@ describe('execute', () => {
           proof = 'dummy-rocks'
         },
       } as Computer,
-    }, {})
+    }, {}, [])
 
     const executor = ExecutorFactory.create({ diagram, registry })
 
@@ -87,7 +87,7 @@ describe('execute', () => {
           // Do nothing
         },
       } as Computer,
-    }, {})
+    }, {}, [])
 
     const executor = ExecutorFactory.create({ diagram, registry })
 
@@ -124,7 +124,7 @@ describe('execute', () => {
           output.push([{ type: 'Zergling' }])
         },
       } as Computer,
-    }, {})
+    }, {}, [])
 
     const executor = ExecutorFactory.create({ diagram, registry })
 
@@ -200,7 +200,7 @@ describe('execute', () => {
     const registry = new Registry({
       Create: createComputer,
       Log: logComputer,
-    }, {})
+    }, {}, [])
 
     const executor = ExecutorFactory.create({ diagram, registry })
 

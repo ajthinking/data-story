@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { Param } from '../Param';
 import { AbstractPort } from './Port';
-import { ComputerType } from '../Registry';
+import { ComputerType } from '../types/Computer';
 
 export type NodeDescription = {
   type: ComputerType,

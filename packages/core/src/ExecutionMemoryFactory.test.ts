@@ -19,7 +19,7 @@ describe('create', () => {
     const registry = new Registry({
       Create: new ComputerFactory().getInstance(Create),
       ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
-    }, {})
+    }, {}, [])
 
     const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry);
     const memory = factory.create();
@@ -42,7 +42,7 @@ describe('create', () => {
     const registry = new Registry({
       Create: new ComputerFactory().getInstance(Create),
       ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
-    }, {})
+    }, {}, [])
 
     const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry);
     const memory = factory.create();
@@ -65,7 +65,7 @@ describe('create', () => {
     const registry = new Registry({
       Create: new ComputerFactory().getInstance(Create),
       ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
-    }, {})
+    }, {}, [])
 
     const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry);
     const memory = factory.create();
@@ -91,7 +91,7 @@ describe('create', () => {
     const registry = new Registry({
       Create: new ComputerFactory().getInstance(Create),
       ConsoleLog: new ComputerFactory().getInstance(ConsoleLog),
-    }, {})
+    }, {}, [])
 
     const factory = new ExecutionMemoryFactory(unfoldedDiagram, registry);
     const memory = factory.create();

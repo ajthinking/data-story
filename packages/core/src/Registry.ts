@@ -1,21 +1,22 @@
 import { Diagram } from './Diagram';
-import { Computer } from './types/Computer';
+import { Computer, ComputerType } from './types/Computer';
 
-export type NodeName = string
-export type NestedNodes = Record<NodeName, Diagram>
-
-export type ComputerName = string
-export type ComputerRecord = Record<ComputerName, Computer>
+export type ComputerRecord = Record<ComputerType, Computer>
+export type ConfiguredComputerAliases = Computer[]
+export type NestedNodesRecord = Record<string, Diagram>
 
 export class Registry {
   computers: ComputerRecord = {};
-  nestedNodes: NestedNodes = {};
+  configuredComputerAliases: ConfiguredComputerAliases = [];
+  nestedNodes: NestedNodesRecord = {};
 
   constructor(
     computers: ComputerRecord,
-    nestedNodes: NestedNodes,
+    nestedNodes: NestedNodesRecord,
+    configuredComputerAliases: ConfiguredComputerAliases,
   ) {
     this.computers = computers;
     this.nestedNodes = nestedNodes;
+    this.configuredComputerAliases = configuredComputerAliases;
   }
 }

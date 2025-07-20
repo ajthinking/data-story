@@ -10,17 +10,8 @@ import { Node } from './Node'
 import { InputDevice } from '../InputDevice'
 import { OutputDevice } from '../OutputDevice'
 
-export type RunArgs = {
-  input: InputDevice,
-  output: OutputDevice,
-  params: ParamsDevice,
-  hooks: HooksDevice,
-  node: Node,
-  onComplete?: (fn: Function) => void
-}
-
 export interface Computer {
-  type: string
+  type: ComputerType
   label: string
   category?: string
   inputs: AbstractPort[]
@@ -33,3 +24,14 @@ export interface Computer {
     params: Record<string, Param>
   }) => boolean
 }
+
+export type RunArgs = {
+  input: InputDevice,
+  output: OutputDevice,
+  params: ParamsDevice,
+  hooks: HooksDevice,
+  node: Node,
+  onComplete?: (fn: Function) => void
+}
+
+export type ComputerType = string
