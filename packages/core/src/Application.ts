@@ -27,10 +27,6 @@ export class Application {
       await provider.boot(this)
     }
 
-    this.providers.forEach(provider => {
-      provider.boot(this);
-    });
-
     this.hasBooted = true;
 
     return this;
@@ -62,11 +58,13 @@ export class Application {
       return NodeDescriptionFactory.fromDiagram(name, diagram);
     });
 
-    return [
+    const all = [
       ...fromComputers,
       ...fromConfiguredComputers,
       ...fromNestedNodes,
     ];
+
+    return all;
   }
 
   getDiagramBuilder() {
