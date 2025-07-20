@@ -163,7 +163,7 @@
     "build:ds-server": "yarn run -T zx scripts/prepare-ds-server.mjs",
     "build:duckdb": "yarn run -T zx scripts/download-duckdb-bindings.mjs",
     "watch:extension": "yarn run -T set-env NODE_ENV=development && yarn run -T zx esbuild.extension.config.mjs --watch",
-    "watch:webview": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w",
+    "watch:webview": "yarn run -T set-env NODE_ENV=development && yarn run -T vite build -w --mode development",
     "watch:ds-server": "yarn run -T zx scripts/watch-ds-server.mjs",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
@@ -189,7 +189,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
-    "esbuild": "^0.19.0",
+    "esbuild": "^0.25.8",
     "tar": "^7.4.3"
   },
   "dependencies": {
