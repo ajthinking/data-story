@@ -14,7 +14,7 @@
     "build:nodejs": "yarn run -T tsc",
     "watch:nodejs": "yarn run -T tsc --watch",
     "build:server": "yarn run -T esbuild --bundle --minify --platform=node ./ds-server.ts --external:@duckdb --outfile=dist/ds-server.min.js",
-    "watch:server": "yarn run -T esbuild --bundle --platform=node ./ds-server.ts --external:@duckdb --outfile=dist/ds-server.min.js --watch --watch-delay=500",
+    "watch:server": "yarn run -T esbuild --bundle --platform=node ./ds-server.ts --external:@duckdb --outfile=dist/ds-server.min.js --watch",
     "dev": "pm2 start ./ds-server.ts --watch --no-daemon",
     "tinker": "npx ts-node ./src/tinker.ts",
     "test": "yarn run -T vitest",
