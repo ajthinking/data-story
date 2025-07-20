@@ -1,9 +1,10 @@
 import { z } from 'zod';
 import { Param } from '../Param';
 import { AbstractPort } from './Port';
+import { ComputerType } from '../Registry';
 
 export type NodeDescription = {
-  type: string,
+  type: ComputerType,
   label?: string,
   category?: string,
   inputs: AbstractPort[],
