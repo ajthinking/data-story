@@ -82,7 +82,7 @@ export const AddNodeFormContent = (props: AddNodeModalContentProps) => {
                   'ml-2': index % 2 === 0,
                 },
               )}
-              key={nodeDescription.type}
+              key={nodeDescription.label}
               onClick={() => doAddNode(nodeDescription)}
               draggable="true"
               onDragStart={(event) => {
