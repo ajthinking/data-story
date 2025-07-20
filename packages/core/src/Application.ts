@@ -12,7 +12,7 @@ export class Application {
 
   providers: ServiceProvider[] = [];
   hooks = new Map<string, Function>();
-  private registry = new Registry({}, {});
+  private registry = new Registry({}, {}, []);
 
   register(provider: ServiceProvider | ServiceProvider[]) {
     this.providers.push(
@@ -42,6 +42,10 @@ export class Application {
     }
   }
 
+  addConfiguredComputerAlias(computer: Computer) {
+    this.registry.configuredComputerAliases.push(computer);
+  }
+
   addNestedNode(type: string, diagram: Diagram) {
     this.registry.nestedNodes[type] = diagram;
   }
@@ -51,12 +55,16 @@ export class Application {
       return NodeDescriptionFactory.fromComputer(computer);
     });
 
+    const fromConfiguredComputers = this.registry.configuredComputerAliases
+      .map(computer => NodeDescriptionFactory.fromComputer(computer));
+
     const fromNestedNodes = Object.entries(this.registry.nestedNodes).map(([name, diagram]) => {
       return NodeDescriptionFactory.fromDiagram(name, diagram);
     });
 
     return [
       ...fromComputers,
+      ...fromConfiguredComputers,
       ...fromNestedNodes,
     ];
   }

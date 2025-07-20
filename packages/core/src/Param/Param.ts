@@ -13,8 +13,10 @@ export interface StringableInputValue {
   Cast?: string,
 }
 
+export type ParamName = string
+
 export type StringableParam = {
-  name: string,
+  name: ParamName,
   label: string,
   help: string,
   type: 'StringableParam',
@@ -47,7 +49,7 @@ export const str = ({
   evaluations,
   value,
 }: {
-  name: string,
+  name: ParamName,
   label?: string,
   help?: string,
   multiline?: boolean,
@@ -85,7 +87,7 @@ export const num = ({
   evaluations,
   value,
 }: {
-  name: string,
+  name: ParamName,
   label?: string,
   help?: string,
   multiline?: boolean,
@@ -123,7 +125,7 @@ export const json_ = ({
   evaluations,
   value,
 }: {
-  name: string,
+  name: ParamName,
   label?: string,
   help?: string,
   multiline?: boolean,
@@ -166,7 +168,7 @@ export const jsFn = ({
   evaluations,
   value,
 }: {
-  name: string,
+  name: ParamName,
   label?: string,
   help?: string,
   multiline?: boolean,
@@ -209,7 +211,7 @@ export const jsExpression = ({
   evaluations,
   value,
 }: {
-  name: string,
+  name: ParamName,
   label?: string,
   help?: string,
   multiline?: boolean,

@@ -1,13 +1,13 @@
 import { Diagram } from './Diagram'
 import { Param, StringableInputValue } from './Param'
-import { NestedNodes } from './Registry'
+import { NestedNodesRecord } from './Registry'
 import { ExecutableDiagram } from './ExecutableDiagram'
 import { Node, NodeId } from './types/Node'
 import { isStringableParam } from './utils/isStringableParam';
 
 export const createExecutableDiagram = (
   diagram: Diagram,
-  nestedNodes: NestedNodes,
+  nestedNodes: NestedNodesRecord,
 ): ExecutableDiagram => {
   const { unfoldedGlobalParams } = unfoldDiagram(diagram, nestedNodes)
   connectLoops(diagram)
@@ -52,7 +52,7 @@ const connectLoops = (diagram: Diagram) => {
   }
 }
 
-export const unfoldDiagram = (diagram: Diagram, nestedNodes: NestedNodes): ExecutableDiagram => {
+export const unfoldDiagram = (diagram: Diagram, nestedNodes: NestedNodesRecord): ExecutableDiagram => {
   const replacables = diagram.nodes.filter(node => node.type in nestedNodes)
 
   const unfoldedGlobalParams: Record<NodeId, Param[]> = {}
@@ -78,7 +78,7 @@ export const unfoldDiagram = (diagram: Diagram, nestedNodes: NestedNodes): Execu
   }
 }
 
-const unfoldNode = (node: Node, diagram: Diagram, nestedNodes: NestedNodes, unfoldedGlobalParams: Record<NodeId, Param[]>) => {
+const unfoldNode = (node: Node, diagram: Diagram, nestedNodes: NestedNodesRecord, unfoldedGlobalParams: Record<NodeId, Param[]>) => {
   const index = diagram.nodes.indexOf(node)
   if(index === -1) throw new Error('Node not found in diagram')
   diagram.nodes.splice(index, 1)
