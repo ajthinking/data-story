@@ -40,6 +40,13 @@ const addFooBarStamper = (app: Application) => {
 }
 
 const addDownloadEntity = (app: Application) => {
+  const entities = [
+    'contacts',
+    'companies',
+    'deals',
+    'tickets',
+  ]
+
   const node = {
     'nodes': [
       {
@@ -994,4 +1001,20 @@ const addDownloadEntity = (app: Application) => {
   } as any;
 
   app.addNestedNode('DownloadEntity', node);
+
+  for(const entity of entities) {
+    const computer = structuredClone({
+      type: 'DownloadEntity',
+      label: entity,
+      run: undefined as any,
+      params: node.params,
+      inputs: node.inputs,
+      outputs: node.outputs,
+    })
+
+    const [entityParam] = computer.params
+    entityParam.input.rawValue = entity
+
+    app.addConfiguredComputerAlias(computer)
+  }
 }
