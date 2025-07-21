@@ -10,11 +10,14 @@ export default () => {
   const { data: diagram, loading: diagramLoading } = useRequest(async() => {
     await core.boot();
     const diagram = core.getDiagramBuilder()
-      .add('Signal', { label: 'Read',period: 20, count: 100000 })
-      .add('Pass', { label: 'Transform' })
-      .add('Sample', { label: 'Filter' })
-      .add('Ignore', { label: 'Act' })
-      .add('Ignore', { label: 'Ignore' })
+      .add('Create')
+      .add('Request')
+      .add('Sleep', { duration: 200 })
+      .add('Table')
+      .add('Throw', {
+        message: 'Something went wrong',
+        position: { x: 450, y: 250 },
+      })
       .add('Comment', {
         content: multiline`
           ### DataStory 🔥
@@ -23,10 +26,10 @@ export default () => {
         position: { x: 100, y: -150 },
       })
       .connect(`
-        Signal.1.output ---> Pass.1.input
-        Pass.1.output ---> Sample.1.input
-        Sample.1.sampled ---> Ignore.1.input
-        Sample.1.not_sampled ---> Ignore.2.input
+        Create.1.output ---> Request.1.input
+        Request.1.items ---> Sleep.1.input
+        Request.1.error ---> Throw.1.input
+        Sleep.1.output ---> Table.1.input
       `)
       .place()
       .jiggle({ x: 60, y: 25 })
