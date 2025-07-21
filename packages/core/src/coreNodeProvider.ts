@@ -13,20 +13,12 @@ export const coreNodeProvider: ServiceProvider = {
     // ************************************************
     // Add configured aliases demo: Photos node
     // ************************************************
-    const photosComputer: Computer = {
-      // Clonables
-      ...structuredClone({
-        ...computers.Request,
-        run: undefined,
-      }),
-      // Non-clonables
-      label: 'Photos',
-      run: computers.Request.run,
-    }
-
-    const [ urlParam ] = photosComputer.params
-    urlParam.input.rawValue = 'https://jsonplaceholder.typicode.com/photos'
-
-    app.addConfiguredComputerAlias(photosComputer);
+    app.addConfiguredComputerAlias('Request', (original) => {
+      const clone = structuredClone(original)
+      clone.label = 'Photos'
+      const [ urlParam ] = clone.params
+      urlParam.input.rawValue = 'https://jsonplaceholder.typicode.com/photos'
+      return clone
+    });
   },
 }
