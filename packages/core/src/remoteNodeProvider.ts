@@ -1003,18 +1003,13 @@ const addDownloadEntity = (app: Application) => {
   app.addNestedNode('DownloadEntity', node);
 
   for(const entity of entities) {
-    const computer = structuredClone({
-      type: 'DownloadEntity',
-      label: entity,
-      run: undefined as any,
-      params: node.params,
-      inputs: node.inputs,
-      outputs: node.outputs,
-    })
+    app.addConfiguredComputerAlias('DownloadEntity', (original => {
+      const clone = structuredClone(original)
+      const [entityParam] = clone.params
+      entityParam.input.rawValue = entity
+      clone.label = entity
 
-    const [entityParam] = computer.params
-    entityParam.input.rawValue = entity
-
-    app.addConfiguredComputerAlias(computer)
+      return clone
+    }))
   }
 }

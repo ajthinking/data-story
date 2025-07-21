@@ -6,6 +6,7 @@ import { NodeDescriptionFactory } from './NodeDescriptionFactory';
 import { Registry } from './Registry';
 import { Computer } from './types/Computer';
 import { ServiceProvider } from './types/ServiceProvider';
+import { NodeDescription } from './types/NodeDescription';
 
 export class Application {
   hasBooted = false;
@@ -38,33 +39,26 @@ export class Application {
     }
   }
 
-  addConfiguredComputerAlias(computer: Computer) {
-    this.registry.configuredComputerAliases.push(computer);
+  addConfiguredComputerAlias(
+    type: string,
+    aliasFactory: (original: NodeDescription) => NodeDescription,
+  ) {
+    this.registry.configuredComputerAliases.push({
+      type,
+      aliasFactory,
+    })
   }
 
   addNestedNode(type: string, diagram: Diagram) {
     this.registry.nestedNodes[type] = diagram;
   }
 
-  descriptions() {
-    const fromComputers = Object.values(this.registry.computers).map(computer => {
-      return NodeDescriptionFactory.fromComputer(computer);
-    });
-
-    const fromConfiguredComputers = this.registry.configuredComputerAliases
-      .map(computer => NodeDescriptionFactory.fromComputer(computer));
-
-    const fromNestedNodes = Object.entries(this.registry.nestedNodes).map(([name, diagram]) => {
-      return NodeDescriptionFactory.fromDiagram(name, diagram);
-    });
-
-    const all = [
-      ...fromComputers,
-      ...fromConfiguredComputers,
-      ...fromNestedNodes,
-    ];
-
-    return all;
+  descriptions(): NodeDescription[] {
+    return [
+      ...this.descriptionsFromComputers(),
+      ...this.descriptionsFromNestedNodes(),
+      ...this.descriptionsFromConfiguredComputers(),
+    ]
   }
 
   getDiagramBuilder() {
@@ -87,8 +81,31 @@ export class Application {
   getRegistry() {
     return this.registry;
   }
-}
 
-export type BootedApplication = Application & {
-  hasBooted: true;
+  private descriptionsFromComputers() {
+    return Object.values(this.registry.computers).map(computer => {
+      return NodeDescriptionFactory.fromComputer(computer);
+    });
+  }
+
+  private descriptionsFromConfiguredComputers() {
+    const configurations = this.registry.configuredComputerAliases
+    const originalDescriptions = [
+      ...this.descriptionsFromComputers(),
+      ...this.descriptionsFromNestedNodes(),
+    ]
+
+    return configurations.map(({ type, aliasFactory }) => {
+      const original = originalDescriptions.find(description => description.type === type)
+      if (!original) throw new Error(`No original description found for type ${type}`)
+
+      return aliasFactory(original)
+    })
+  }
+
+  private descriptionsFromNestedNodes() {
+    return Object.entries(this.registry.nestedNodes).map(([name, diagram]) => {
+      return NodeDescriptionFactory.fromDiagram(name, diagram);
+    });
+  }
 }
