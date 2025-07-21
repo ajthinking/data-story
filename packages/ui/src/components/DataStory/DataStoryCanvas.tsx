@@ -300,7 +300,7 @@ const Flow = ({
         maxZoom={8}
         fitView={true}
         fitViewOptions={{
-          padding: 0.25,
+          padding: { x: 0.05, y: 0.05 },
         }}
         onDragOver={useCallback((event: React.DragEvent) => {
           event.preventDefault();
