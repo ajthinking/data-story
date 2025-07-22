@@ -1,4 +1,4 @@
-import vscode from 'vscode';
+import * as vscode from 'vscode';
 import { ServerLauncher } from './serverLauncher';
 import { createDemosDirectory } from './commands/createDemosDirectory';
 import { DiagramEditorProvider } from './DiagramEditorProvider';
@@ -7,12 +7,12 @@ import { DiagramDocument } from './DiagramDocument';
 import path from 'path';
 
 export const DataStoryCommands = {
-  StartServer: 'datastory.startServer',
-  StopServer: 'datastory.stopServer',
-  RestartServer: 'datastory.restartServer',
-  ShowOutput: 'datastory.showOutput',
-  CreateDemos: 'datastory.createDemos',
-  ShowDiagramPreview: 'datastory.showDiagramPreview',
+  StartServer: 'ds-ext.startServer',
+  StopServer: 'ds-ext.stopServer',
+  RestartServer: 'ds-ext.restartServer',
+  ShowOutput: 'ds-ext.showOutput',
+  CreateDemos: 'ds-ext.createDemos',
+  ShowDiagramPreview: 'ds-ext.showDiagramPreview',
 };
 
 export function registerDataStoryCommands(
@@ -39,6 +39,7 @@ export function registerDataStoryCommands(
     }),
 
     vscode.commands.registerCommand(DataStoryCommands.ShowDiagramPreview, async (args: vscode.Uri) => {
+      console.log('args', args);
       const diagramDocument = diagramEditorProvider.provideDiagramContent(args);
       const diagramData = new TextDecoder().decode(diagramDocument?.data);
       let dataString = '';

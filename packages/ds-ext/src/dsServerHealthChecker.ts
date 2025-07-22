@@ -1,5 +1,5 @@
 import { catchError, exhaustMap, filter, interval, Observable, of, Subscription } from 'rxjs';
-import vscode, { type OutputChannel } from 'vscode';
+import { type OutputChannel, window } from 'vscode';
 
 export interface HealthCheckInfo {
   status: boolean,
@@ -106,7 +106,7 @@ export class DsServerHealthChecker {
           this.outputChannel.appendLine('[HEALTH]' + this.formatHealthInfo(info));
           this.outputChannel.appendLine(`[HEALTH] Request time: ${durationMs.toFixed(2)} ms`);
         }
-        vscode.window.showWarningMessage('DataStory Server is slow or unresponsive', 'Open logs').then(open => {
+        window.showWarningMessage('DataStory Server is slow or unresponsive', 'Open logs').then(open => {
           if (open) {
             this.outputChannel.show();
           }

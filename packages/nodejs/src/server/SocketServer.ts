@@ -1,4 +1,4 @@
-import { WebSocketServer, WebSocket } from 'ws';
+import { WebSocket, WebSocketServer } from 'ws';
 import { Application, ObserverController, ObserverStorage } from '@data-story/core';
 import { MessageHandler } from './MessageHandler';
 import * as defaultMessageHandlers from './messageHandlers';
@@ -34,6 +34,10 @@ export class SocketServer {
     this.observerController = new ObserverController(this.observerStorage);
   }
 
+  stop() {
+    this.httpServer?.close();
+  }
+
   async start() {
     await this.observerStorage.init?.();
     console.log('Storage initialized');
@@ -55,7 +59,10 @@ export class SocketServer {
     });
 
     console.log('Server started on port ' + this.port);
-    await new Promise(resolve => this.httpServer!.listen(this.port, () => resolve(0)));
+    await new Promise((resolve) => {
+      this.httpServer!.listen(this.port, () => resolve(0));
+      this.httpServer!.on('close', () => resolve(0));
+    });
   }
 
   private async handleMessage(

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { asyncScheduler, BehaviorSubject, subscribeOn, Subscription } from 'rxjs';
 import { DataStoryCommands } from './vscode-commands';
 
 // Re-export the ServerStatus enum to avoid circular dependencies
@@ -30,7 +30,7 @@ export class DataStoryServerStatusBarItem implements vscode.Disposable {
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
     this.statusBarItem.show();
 
-    this.subscription = this.$status.subscribe(status => {
+    this.subscription = this.$status.pipe(subscribeOn(asyncScheduler)).subscribe(status => {
       this.updateStatusBar(status);
       this.onStatusUpdated(status);
     });
