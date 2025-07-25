@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { NodeId } from '../types/Node';
-import { LinkId } from '../types/Link';
-import { PortId } from '../types/PortId';
-import { PortName } from '../types/Port';
+import { NodeId } from './Node';
+import { LinkId } from './Link';
+import { PortId } from './PortId';
+import { PortName } from './Port';
 import { ParamName } from '../Param/Param';
 
 // Port schemas

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { RunMessageSchema, SerializedDiagramSchema } from '../validation/schemas';
+import { RunMessageSchema, SerializedDiagramSchema } from './schemas';
 import { Diagram } from '../Diagram';
 
 describe('Integration: Diagram validation', () => {

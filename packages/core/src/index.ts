@@ -72,5 +72,5 @@ export {
   LinkSchema,
   SerializedDiagramSchema,
   RunMessageSchema
-} from './validation/schemas'
-export type { SerializedDiagram, RunMessage } from './validation/schemas'
+} from './types/schemas'
+export type { SerializedDiagram, RunMessage } from './types/schemas'
