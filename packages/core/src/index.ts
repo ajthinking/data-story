@@ -60,3 +60,17 @@ export type { Port, AbstractPort } from './types/Port'
 export type { ReportCallback } from './types/ReportCallback';
 export type { ServiceProvider } from './types/ServiceProvider'
 export { Table } from './computers'
+
+// Validation schemas
+export { 
+  PortSchema, 
+  AbstractPortSchema,
+  StringableInputValueSchema,
+  StringableParamSchema, 
+  ParamSchema,
+  NodeSchema,
+  LinkSchema,
+  SerializedDiagramSchema,
+  RunMessageSchema
+} from './validation/schemas'
+export type { SerializedDiagram, RunMessage } from './validation/schemas'

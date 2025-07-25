@@ -3,15 +3,10 @@ import { MessageHandler, MessageHandlerParams } from '../MessageHandler';
 import {
   Diagram,
   ExecutionFailure,
+  RunMessageSchema,
+  RunMessage,
 } from '@data-story/core';
 import { abortControllers } from './abortExecution';
-
-export type RunMessage = {
-  msgId: string,
-  type: 'run',
-  diagram: Diagram,
-  executionId: string,
-}
 
 export const run: MessageHandler<RunMessage> = async({
   ws,
@@ -19,13 +14,31 @@ export const run: MessageHandler<RunMessage> = async({
   observerController,
   app,
 }: MessageHandlerParams<RunMessage>) => {
+  // Validate the incoming message
+  try {
+    RunMessageSchema.parse(data);
+  } catch (validationError: any) {
+    const failure: ExecutionFailure = {
+      msgId: data.msgId || 'unknown',
+      type: 'ExecutionFailure',
+      message: `Invalid run message: ${validationError.message}`,
+    };
+    
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify(failure));
+    }
+    return;
+  }
+
   const diagram = new Diagram({
     nodes: data.diagram.nodes,
     links: data.diagram.links,
     params: data.diagram.params,
-  })
+    viewport: data.diagram.viewport,
+  });
+  
   const startTime = performance.now();
-  const { executionId, msgId } = data
+  const { executionId, msgId } = data;
 
   const controller = new AbortController();
   abortControllers.set(executionId, controller);
