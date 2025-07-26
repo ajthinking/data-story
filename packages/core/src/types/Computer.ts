@@ -9,6 +9,7 @@ import { AbstractPort, Port } from './Port'
 import { Node } from './Node'
 import { InputDevice } from '../InputDevice'
 import { OutputDevice } from '../OutputDevice'
+import { z } from 'zod';
 
 export interface Computer {
   type: 'Computer',
@@ -34,5 +35,5 @@ export type RunArgs = {
   node: Node,
   onComplete?: (fn: Function) => void
 }
-
-export type ComputerType = string
+export const ComputerTypeSchema = z.string();
+export type ComputerType = z.infer<typeof ComputerTypeSchema>;
