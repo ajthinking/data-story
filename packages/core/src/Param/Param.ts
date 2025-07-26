@@ -1,37 +1,42 @@
-import { PortName } from '../types/Port'
-import { Cast } from './Cast'
-import { Evaluation } from './Evaluation'
+import { PortName, PortNameSchema } from '../types/Port'
+import { Cast, CastSchema } from './Cast'
+import { Evaluation, EvaluationSchema } from './Evaluation'
 import { numberCast } from './casts/numberCast'
 import { stringCast } from './casts/stringCast'
 import { jsExpressionEvaluation } from './evaluations/jsExpressionEvaluation'
 import { jsFunctionEvaluation } from './evaluations/jsFunctionEvaluation'
 import { jsonEvaluation } from './evaluations/jsonEvaluation'
+import { z } from 'zod';
 
-export interface StringableInputValue {
-  rawValue: string,
-  Evaluation?: string,
-  Cast?: string,
-}
+export const StringableInputValueSchema = z.object({
+  rawValue: z.string(),
+  Evaluation: z.string().optional(),
+  Cast: z.string().optional(),
+});
+export type StringableInputValue = z.infer<typeof StringableInputValueSchema>;
 
-export type ParamName = string
+export const ParamNameSchema = z.string();
+export type ParamName = z.infer<typeof ParamNameSchema>;
 
-export type StringableParam = {
-  name: ParamName,
-  label: string,
-  help: string,
-  type: 'StringableParam',
-  multiline: boolean,
-  canInterpolate: boolean,
-  interpolate?: boolean,
-  interpolationsFromPort?: PortName[],
-  casts?: Cast[],
-  evaluations?: Evaluation[],
-  input: StringableInputValue,
-}
+export const StringableParamSchema = z.object({
+  name: ParamNameSchema,
+  label: z.string(),
+  help: z.string(),
+  type: z.literal('StringableParam'),
+  multiline: z.boolean(),
+  canInterpolate: z.boolean(),
+  interpolate: z.boolean().optional(),
+  interpolationsFromPort: z.array(PortNameSchema).optional(),
+  casts: z.array(CastSchema).optional(),
+  evaluations: z.array(EvaluationSchema).optional(),
+  input: StringableInputValueSchema,
+});
+export type StringableParam = z.infer<typeof StringableParamSchema>;
 
 export type ParamId = string
 
-export type Param = StringableParam;
+export const ParamSchema = StringableParamSchema;
+export type Param = z.infer<typeof ParamSchema>;
 
 export type ParamInput = Param['input']
 

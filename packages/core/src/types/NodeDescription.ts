@@ -1,17 +1,18 @@
 import { z } from 'zod';
-import { Param } from '../Param';
-import { AbstractPort } from './Port';
-import { ComputerType } from '../types/Computer';
+import { Param, ParamSchema } from '../Param';
+import { AbstractPort, AbstractPortSchema } from './Port';
+import { ComputerType, ComputerTypeSchema } from '../types/Computer';
 
-export type NodeDescription = {
-  type: 'NodeDescription',
-  computerType: ComputerType,
-  label?: string,
-  category?: string,
-  inputs: AbstractPort[],
-  outputs: AbstractPort[],
-  params: Param[],
-}
+export const NodeDescriptionSchema = z.object({
+  type: z.literal('NodeDescription'),
+  computerType: ComputerTypeSchema,
+  label: z.string().optional(),
+  category: z.string().optional(),
+  inputs: z.array(AbstractPortSchema),
+  outputs: z.array(AbstractPortSchema),
+  params: z.array(ParamSchema),
+});
+export type NodeDescription = z.infer<typeof NodeDescriptionSchema>;
 
 /**
  * @schema NodeDescriptionResponse
