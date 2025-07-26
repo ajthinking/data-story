@@ -5,6 +5,7 @@ import { Param } from './Param'
 import { PortName } from './types/Port';
 
 export class Diagram {
+  type = 'Diagram'
   nodes: Node[]
   links: Link[]
   params: Param[]
