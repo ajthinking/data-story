@@ -22,7 +22,7 @@ export class PositionGuesser {
     const maxY = this.diagram.nodes.map((node) => node.position!.y).reduce((max, y) => Math.max(max, y), 0)
 
     const isStarterNode = node.inputs.length === 0;
-    const name = (node as Node).type ?? (node as NodeDescription).type;
+    const name = (node as Node).type ?? (node as NodeDescription).computerType;
     const isInputNode = name === 'Input';
 
     if(isStarterNode || isInputNode) {

@@ -2,7 +2,8 @@ import { promises as fs } from 'fs';
 import { Computer, str } from '@data-story/core';
 
 export const WriteFile: Computer = {
-  type: 'WriteFile',
+  type: 'Computer',
+  computerType: 'WriteFile',
   label: 'WriteFile',
   category: 'NodeJs',
   inputs: [{

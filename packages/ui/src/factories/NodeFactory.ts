@@ -30,11 +30,11 @@ export const NodeFactory = {
     nodeDescription: NodeDescription,
     diagram: Diagram,
   ): Node {
-    const id = `${nodeDescription.type}.${createDataStoryId()}`;
+    const id = `${nodeDescription.computerType}.${createDataStoryId()}`;
 
     return structuredClone({
       id,
-      type: nodeDescription.type,
+      type: nodeDescription.computerType,
       label: nodeDescription.label,
       inputs: nodeDescription.inputs.map(input => {
         return {

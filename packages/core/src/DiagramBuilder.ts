@@ -25,7 +25,7 @@ export class DiagramBuilder {
   constructor(private nodeDescriptions: NodeDescription[]) {}
 
   add(nodeName: string, config?: AddNodeConfig) {
-    const description = this.nodeDescriptions.find(e => e.type === nodeName)
+    const description = this.nodeDescriptions.find(e => e.computerType === nodeName)
 
     if (!description) throw new Error(`Description for a Node ${nodeName} not found`)
 
@@ -223,11 +223,11 @@ export class DiagramBuilder {
   }
 
   private nodeDescriptionToDiagramNode(nodeDescription: NodeDescription): Node {
-    const id = `${nodeDescription.type}.${this.getScopedId(nodeDescription.type)}`;
+    const id = `${nodeDescription.computerType}.${this.getScopedId(nodeDescription.computerType)}`;
 
     return structuredClone({
       id,
-      type: nodeDescription.type,
+      type: nodeDescription.computerType,
       label: nodeDescription.label,
       inputs: nodeDescription.inputs.map(input => {
         return {

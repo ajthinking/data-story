@@ -2,7 +2,8 @@ import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Input: Computer = {
-  type: 'Input',
+  type: 'Computer',
+  computerType: 'Input',
   label: 'Input',
   inputs: [{
     name: 'input',

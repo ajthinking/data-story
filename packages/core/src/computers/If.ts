@@ -4,7 +4,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const If: Computer = {
-  type: 'If',
+  type: 'Computer',
+  computerType: 'If',
   label: 'If',
   inputs: [{
     name: 'input',

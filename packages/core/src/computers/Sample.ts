@@ -2,7 +2,8 @@ import { num } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Sample: Computer = {
-  type: 'Sample',
+  type: 'Computer',
+  computerType: 'Sample',
   label: 'Sample',
   inputs: [{
     name: 'input',

@@ -4,7 +4,8 @@ import { get } from '../utils/get';
 import { Computer } from '../types/Computer';
 
 export const RequestLoopByOffset: Computer = {
-  type: 'RequestLoopByOffset',
+  type: 'Computer',
+  computerType: 'RequestLoopByOffset',
   label: 'RequestLoopByOffset',
   inputs: [],
   outputs: [

@@ -11,7 +11,8 @@ import { InputDevice } from '../InputDevice'
 import { OutputDevice } from '../OutputDevice'
 
 export interface Computer {
-  type: ComputerType
+  type: 'Computer',
+  computerType: ComputerType
   label: string
   category?: string
   inputs: AbstractPort[]

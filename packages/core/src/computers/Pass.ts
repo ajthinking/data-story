@@ -2,7 +2,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Pass: Computer = {
-  type: 'Pass',
+  type: 'Computer',
+  computerType: 'Pass',
   label: 'Pass',
   inputs: [{
     name: 'input',

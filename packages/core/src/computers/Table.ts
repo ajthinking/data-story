@@ -3,7 +3,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Table: Computer = {
-  type: 'Table',
+  type: 'Computer',
+  computerType: 'Table',
   label: 'Table',
   inputs: [{
     name: 'input',

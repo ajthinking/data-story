@@ -3,7 +3,8 @@ import { num } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Sleep: Computer = {
-  type: 'Sleep',
+  type: 'Computer',
+  computerType: 'Sleep',
   label: 'Sleep',
   inputs: [{
     name: 'input',

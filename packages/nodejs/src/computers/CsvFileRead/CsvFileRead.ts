@@ -6,7 +6,8 @@ import { Computer, serializeError, str } from '@data-story/core';
 import { getWorkingDirConfig } from '../../server/getWorkingDirConfig';
 
 export const CsvFileRead: Computer = {
-  type: 'CsvFile.read',
+  type: 'Computer',
+  computerType: 'CsvFile.read',
   label: 'CsvFile.read',
   category: 'NodeJs',
   inputs: [],
