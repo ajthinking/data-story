@@ -180,7 +180,7 @@ describe('execute', () => {
     const order: string[] = []
 
     const createComputer = {
-      type: 'Create',
+      computerType: 'Create',
       async *run({ output }: RunArgs) {
         order.push('running create')
         output.push([{ i: 1 }])
@@ -188,7 +188,7 @@ describe('execute', () => {
     } as Computer
 
     const logComputer = {
-      type: 'Log',
+      computerType: 'Log',
       async *run({ input }: RunArgs) {
         // console.log ... or something
 

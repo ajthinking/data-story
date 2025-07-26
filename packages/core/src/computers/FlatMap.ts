@@ -3,7 +3,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const FlatMap: Computer = {
-  type: 'FlatMap',
+  type: 'Computer',
+  computerType: 'FlatMap',
   label: 'FlatMap',
   inputs: [{
     name: 'input',

@@ -74,7 +74,7 @@ export function useHotkeys({
   useEffect(() => {
     const addTableNode = () => {
       if (!nodeDescriptions || !addNodeFromDescription) return;
-      const tableNode = nodeDescriptions.find(nd => nd.type === 'Table');
+      const tableNode = nodeDescriptions.find(nd => nd.computerType === 'Table');
       if (tableNode) {
         addNodeFromDescription(tableNode);
       }

@@ -110,7 +110,8 @@ async function requestAndSerialize(
 }
 
 export const Request: Computer = {
-  type: 'Request',
+  type: 'Computer',
+  computerType: 'Request',
   label: 'Request',
   inputs: [{
     name: 'input',

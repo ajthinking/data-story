@@ -3,7 +3,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Output: Computer = {
-  type: 'Output',
+  type: 'Computer',
+  computerType: 'Output',
   label: 'Output',
   inputs: [{
     name: 'input',

@@ -193,11 +193,11 @@ export class ComputerTester {
 
   protected makeDiagram(): Diagram {
     // To make testing easier,replacing the dynamic id with a fixed value of 1
-    const nodeId = `${this.computer.type}.1`
+    const nodeId = `${this.computer.computerType}.1`
     // Create a new Node from the computer + params (TODO: this is a general need)
     const node: Node = {
       id: nodeId,
-      type: this.computer.type,
+      type: this.computer.computerType,
       inputs: (this.computer.inputs || []).map(input => ({
         id: `${nodeId}.${input.name}`,
         name: input.name,

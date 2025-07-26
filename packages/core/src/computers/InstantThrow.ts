@@ -1,7 +1,8 @@
 import { Computer } from '../types/Computer';
 
 export const InstantThrow: Computer = {
-  type: 'InstantThrow',
+  type: 'Computer',
+  computerType: 'InstantThrow',
   label: 'InstantThrow',
   inputs: [],
   outputs: [],

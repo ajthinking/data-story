@@ -5,7 +5,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Map: Computer = {
-  type: 'Map',
+  type: 'Computer',
+  computerType: 'Map',
   label: 'Map',
   inputs: [{
     name: 'input',

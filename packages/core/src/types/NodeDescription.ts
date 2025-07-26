@@ -4,7 +4,8 @@ import { AbstractPort } from './Port';
 import { ComputerType } from '../types/Computer';
 
 export type NodeDescription = {
-  type: ComputerType,
+  type: 'NodeDescription',
+  computerType: ComputerType,
   label?: string,
   category?: string,
   inputs: AbstractPort[],

@@ -3,7 +3,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const MakeSet: Computer = {
-  type: 'MakeSet',
+  type: 'Computer',
+  computerType: 'MakeSet',
   label: 'MakeSet',
   inputs: [{
     name: 'input',

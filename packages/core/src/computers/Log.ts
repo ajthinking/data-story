@@ -2,7 +2,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const Log: Computer = {
-  type: 'Log',
+  type: 'Computer',
+  computerType: 'Log',
   label: 'Log',
   inputs: [{
     name: 'input',

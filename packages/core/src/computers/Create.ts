@@ -2,7 +2,8 @@ import { jsExpression } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Create: Computer = {
-  type: 'Create',
+  type: 'Computer',
+  computerType: 'Create',
   label: 'Create',
   inputs: [],
   outputs: [

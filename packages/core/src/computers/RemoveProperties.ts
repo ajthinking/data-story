@@ -2,7 +2,8 @@ import { Computer } from '../types/Computer';
 import { BatchLimit } from '../utils/batchLimit';
 
 export const RemoveProperties: Computer = {
-  type: 'RemoveProperties',
+  type: 'Computer',
+  computerType: 'RemoveProperties',
   label: 'RemoveProperties',
   inputs: [{
     name: 'input',

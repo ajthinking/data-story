@@ -33,7 +33,8 @@ export const fileDropper = {
         // Furthermore, the definition of the Create node might change
         // Consider having datastory register DnD-ables?
         const description: NodeDescription = {
-          type: 'Create',
+          type: 'NodeDescription',
+          computerType: 'Create',
           label: file.name,
           inputs: [],
           outputs: [{

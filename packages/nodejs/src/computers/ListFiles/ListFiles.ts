@@ -3,7 +3,8 @@ import { promises as fs } from 'fs'
 import * as nodePath from 'path'
 
 export const ListFiles: Computer = {
-  type: 'ListFiles',
+  type: 'Computer',
+  computerType: 'ListFiles',
   label: 'ListFiles',
   category: 'NodeJs',
   inputs: [{

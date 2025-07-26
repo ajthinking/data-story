@@ -4,7 +4,8 @@ import * as path from 'path';
 import { getWorkingDirConfig } from '../../server/getWorkingDirConfig';
 
 export const JsonFileWrite: Computer = {
-  type: 'JsonFile.write',
+  type: 'Computer',
+  computerType: 'JsonFile.write',
   label: 'JsonFile.write',
   category: 'NodeJs',
   inputs: [{

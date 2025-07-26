@@ -6,7 +6,8 @@ import { NodeDescription } from './types/NodeDescription';
 export const NodeDescriptionFactory = {
   fromComputer: (computer: Computer): NodeDescription => {
     return {
-      type: computer.type,
+      type: 'NodeDescription',
+      computerType: computer.computerType,
       label: computer.label,
       category: computer.category,
       inputs: computer.inputs,
@@ -17,7 +18,8 @@ export const NodeDescriptionFactory = {
 
   fromDiagram: (name: string, diagram: Diagram): NodeDescription => {
     return {
-      type: name,
+      type: 'NodeDescription',
+      computerType: name,
       label: name,
       category: undefined,
       inputs: diagram.nodes

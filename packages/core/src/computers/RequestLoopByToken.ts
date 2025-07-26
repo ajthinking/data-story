@@ -4,7 +4,8 @@ import { json_, str } from '../Param';
 import { get } from '../utils/get';
 
 export const RequestLoopByToken: Computer = {
-  type: 'RequestLoopByToken',
+  type: 'Computer',
+  computerType: 'RequestLoopByToken',
   label: 'RequestLoopByToken',
   inputs: [],
   outputs: [

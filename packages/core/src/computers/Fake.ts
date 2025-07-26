@@ -3,7 +3,8 @@ import { multiline } from '../utils/multiline';
 import { sleep } from '../utils/sleep';
 
 export const Fake: Computer = {
-  type: 'Fake',
+  type: 'Computer',
+  computerType: 'Fake',
   label: 'Fake',
   inputs: [],
   outputs: [],

@@ -3,7 +3,8 @@ import { str } from '../Param';
 import { Computer } from '../types/Computer';
 
 export const Comment: Computer = {
-  type: 'Comment',
+  type: 'Computer',
+  computerType: 'Comment',
   label: 'Comment',
   inputs: [],
   outputs: [],

@@ -35,7 +35,7 @@ export class Application {
 
   addComputers(computers: Computer[]) {
     for (const computer of computers) {
-      this.registry.computers[computer.type] = computer;
+      this.registry.computers[computer.computerType] = computer;
     }
   }
 
@@ -96,7 +96,7 @@ export class Application {
     ]
 
     return configurations.map(({ type, aliasFactory }) => {
-      const original = originalDescriptions.find(description => description.type === type)
+      const original = originalDescriptions.find(description => description.computerType === type)
       if (!original) throw new Error(`No original description found for type ${type}`)
 
       return aliasFactory(original)
