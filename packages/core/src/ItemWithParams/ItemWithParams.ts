@@ -1,12 +1,12 @@
 import { ItemValue } from '../types/ItemValue';
-import { Param, EvaluatedParamValue } from '../Param';
+import { EvaluatedParamValue, Param } from '../Param';
 import { ParamEvaluator } from './ParamEvaluator';
 
 export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWithParams => {
   // This does not always catch all cases
-  if(item instanceof ItemWithParams) return true;
+  if (item instanceof ItemWithParams) return true;
 
-  if(
+  if (
     item !== null
     && typeof item === 'object'
     // @ts-ignore
@@ -16,10 +16,10 @@ export const isItemWithParams = (item: ItemWithParams | unknown): item is ItemWi
   ) return true;
 
   return false;
-}
+};
 
 export class ItemWithParams<ExpectedType extends ItemValue = ItemValue> {
-  type = 'ItemWithParams' as const
+  type = 'ItemWithParams' as const;
   value: ExpectedType;
   params: Record<string, EvaluatedParamValue>;
 
@@ -37,9 +37,9 @@ export class ItemWithParams<ExpectedType extends ItemValue = ItemValue> {
         try {
           const paramEvaluatorInstance = new ParamEvaluator();
           return paramEvaluatorInstance.evaluate(value, param, globalParams);
-        } catch (error) {
-          console.error('error', error);
-          return param.input;
+        } catch (e) {
+          console.error('Failed while evaluating param', param, e);
+          throw e;
         }
       },
     });
