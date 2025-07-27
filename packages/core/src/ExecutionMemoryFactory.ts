@@ -12,6 +12,7 @@ import { Hook } from './types/Hook'
 import { ItemValue } from './types/ItemValue'
 import { LinkId } from './types/Link'
 import { Node, NodeId } from './types/Node'
+import { withNodeExecutionErrorHandling } from './utils/withNodeExecutionErrorHandling'
 
 export class ExecutionMemoryFactory {
   constructor(
@@ -64,7 +65,7 @@ export class ExecutionMemoryFactory {
 
       // Initialize runner context
       const context = new NodeRunnerContext(node.id);
-      context.status = computer.run({
+      context.status = withNodeExecutionErrorHandling(computer.run.bind(computer), node)({
         input: inputDevice,
         output: outputDevice,
         params: this.makeParamsDevice(node, memory),
