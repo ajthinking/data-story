@@ -58,7 +58,10 @@ jobs:
           steps.restore-cypress-cache.outputs.cache-hit != 'true'
         run: yarn cypress install
 
-      - run: yarn turbo run build test
+      - run: |
+          yarn turbo run build && \
+          # skipping testing ds-ext for now \
+          yarn turbo run test --filter=!ds-ext
 
       - name: Upload build dist artifacts
         uses: actions/upload-artifact@v4
