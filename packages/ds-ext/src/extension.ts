@@ -62,5 +62,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {
   console.log('Deactivating "ds-ext" extension.');
+  console.log('Should rebuild/test in workflow');
   jsonReadonlyProvider?.dispose();
 }
