@@ -27,7 +27,6 @@
   },
   "include": [
     "../cypress.d.ts",
-    "./cypress-webpack.config.ts"
   ],
   "exclude": [
     "node_modules",
