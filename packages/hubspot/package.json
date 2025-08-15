@@ -10,7 +10,7 @@
   "scripts": {
     "watch:tsc": "tsc --watch",
     "tinker": "npx ts-node ./src/tinker.ts",
-    "test": "yarn run -T vitest",
+    "test": "yarn run -T vitest --passWithNoTests",
     "build": "tsc",
     "release": "yarn run -T release-it"
   },
