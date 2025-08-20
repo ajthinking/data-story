@@ -57,15 +57,15 @@ jobs:
         if: |
           steps.restore-cypress-cache.outputs.cache-hit != 'true'
         run: |
-          # run yarn cypress verify, if it fails, run yarn cypress install \
-          if ! yarn cypress verify; then \
-            yarn cypress install \
+          # run yarn cypress verify, if it fails, run yarn cypress install
+          if ! yarn cypress verify; then
+            yarn cypress install
           fi
 
       - name: Build and Test
         run: |
-          yarn turbo run build && \
-          # skipping testing ds-ext for now \
+          yarn turbo run build
+          # skipping testing ds-ext for now
           yarn turbo run test --filter=!ds-ext
 
       - name: Upload build dist artifacts
