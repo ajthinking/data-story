@@ -65,7 +65,7 @@ export class ExecutionMemoryFactory {
 
       // Initialize runner context
       const context = new NodeRunnerContext(node.id);
-      context.status = withNodeExecutionErrorHandling(computer.run.bind(computer), node)({
+      context.status = withNodeExecutionErrorHandling(computer.run, node)({
         input: inputDevice,
         output: outputDevice,
         params: this.makeParamsDevice(node, memory),
