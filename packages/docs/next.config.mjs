@@ -15,7 +15,6 @@ export default (async () => {
     images: {
       unoptimized: true,
     },
-    swcMinify: false,
     webpack: (config, context) => {
       const baseConfig = nextraConfig.webpack(config, context);
 

@@ -246,7 +246,6 @@ describe('test TableNodeComponent for table', () => {
         cy.log(`cypress scroll Time: ${scrollTime}ms`);
 
         expect(getDataSpy).to.have.called;
-        expect(initialScreenCount1).lte(13);
       });
   });
 

@@ -1,14 +1,21 @@
 {
-    "extends": [
-        "//"
-    ],
-    "tasks": {
-        "dev": {
-            "cache": false,
-            "persistent": true,
-            "with": [
-                "@data-story/ui#watch"
-            ]
-        }
+  "extends": [
+    "//"
+  ],
+  "tasks": {
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "with": [
+        "@data-story/ui#watch"
+      ]
+    },
+    "start": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": [
+        "build"
+      ]
     }
+  }
 }

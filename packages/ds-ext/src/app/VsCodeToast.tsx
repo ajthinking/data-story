@@ -24,7 +24,7 @@ export function VsCodeToast({ postMessage }: {
         `;
         break;
       case DataStoryEvents.RUN_ERROR:
-        info.message = `Diagram execution failed! Error was: ${event.payload.error}`;
+        info.message = `Diagram execution failed! Error was: ${event.payload.message}`;
         info.status = 'error';
         break;
       case DataStoryEvents.SAVE_SUCCESS:
