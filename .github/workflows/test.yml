@@ -67,6 +67,10 @@ jobs:
           yarn turbo run build
           # skipping testing ds-ext for now
           yarn turbo run test --filter=!ds-ext
+          npm install -g @vscode/vsce@3.1.0
+          cd packages/ds-ext
+          vsce package --no-yarn --skip-license -o ../../dist
+
 
       - name: Upload build dist artifacts
         uses: actions/upload-artifact@v4
@@ -79,6 +83,7 @@ jobs:
             packages/hubspot/dist
             packages/ds-ext/dist
             packages/docs/dist
+            dist
           retention-days: 1
 
       # Save node_modules (always execute)
