@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as cp from 'child_process';
 import * as path from 'path';
 import { DsServerHealthChecker } from './dsServerHealthChecker';
 import { BehaviorSubject, filter, firstValueFrom, mergeWith, switchMap } from 'rxjs';
@@ -92,7 +91,6 @@ export class ServerLauncher implements vscode.Disposable {
   }
 
   public async startServer(): Promise<void> {
-    await this.prepareServerEntry();
     if (this.isDisposed) {
       console.warn('[ServerLauncher] Attempted to start server after disposal.');
       return;
@@ -209,34 +207,6 @@ export class ServerLauncher implements vscode.Disposable {
   private async terminateServer(): Promise<void> {
     if (this.externalProcessServer) {
       await this.externalProcessServer.stop();
-    }
-  }
-
-  /**
-   *Prepares the server entry point by ensuring required dependencies are installed.
-   *
-   *This method:
-   *1. Executes the prepare-ds-server.js script in dry-run mode to check dependencies
-   *2. If dependencies are missing, prompts the user to install them
-   *3. Executes the installation if the user agrees
-   *
-   *@private
-   */
-  private async prepareServerEntry() {
-    const prepareScript = path.join(this.serverEntryPath, 'prepare-ds-server.js');
-    const prepareCmd = 'node';
-    const stdout = cp.execSync(`${prepareCmd} ${prepareScript} --dry-run`);
-    const output = stdout.toString().trim();
-    this.outputChannel.appendLine(`[Launcher] ${output}`);
-    if (output.includes('not found')) {
-      const selection = await vscode.window.showInformationMessage(
-        '@duckdb/node-api is required to run the server with DuckDB storage. Would you like to install it now?',
-        'Yes',
-        'Later, I\'ll do it myself',
-      );
-      if (selection === 'Yes') {
-        cp.spawn(`${prepareCmd} ${prepareScript}`, { stdio: 'inherit', cwd: this.serverEntryPath, shell: true });
-      }
     }
   }
 
