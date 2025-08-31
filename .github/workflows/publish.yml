@@ -41,7 +41,7 @@ jobs:
           PACKAGE_VERSION=$(node -p -e "require('./packages/core/package.json').version")
           echo "Version: $PACKAGE_VERSION"
           HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/core/$PACKAGE_VERSION)
-          
+
           if [ $HTTP_STATUS -eq 200 ]; then
             echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
             echo "VERSION_EXISTS=true" >> $GITHUB_ENV
@@ -49,14 +49,14 @@ jobs:
             echo "Version does not exist."
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
-      
+
       - name: Publish
         if: ${{ env.VERSION_EXISTS == 'false' }}
         run: |
           yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
           yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
           cd packages/core && yarn npm publish --access public
-    
+
   publish_ui:
     needs: publish_core
     runs-on: ubuntu-latest
@@ -84,7 +84,7 @@ jobs:
           PACKAGE_VERSION=$(node -p -e "require('./packages/ui/package.json').version")
           echo "Version: $PACKAGE_VERSION"
           HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/ui/$PACKAGE_VERSION)
-          
+
           if [ $HTTP_STATUS -eq 200 ]; then
             echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
             echo "VERSION_EXISTS=true" >> $GITHUB_ENV
@@ -98,7 +98,7 @@ jobs:
           yarn config set -H npmScopes.data-story.npmPublishRegistry "https://registry.npmjs.org/"
           yarn config set -H npmScopes.data-story.npmAuthToken "${{ secrets.NPM_DATA_STORY }}"
           cd packages/ui && yarn npm publish --access public
-  
+
   publish_nodejs:
     needs: publish_core
     runs-on: ubuntu-latest
@@ -117,7 +117,7 @@ jobs:
           PACKAGE_VERSION=$(node -p -e "require('./packages/nodejs/package.json').version")
           echo "Version: $PACKAGE_VERSION"
           HTTP_STATUS=$(curl --silent --head --write-out "%{http_code}" --output /dev/null https://registry.npmjs.org/@data-story/nodejs/$PACKAGE_VERSION)
-          
+
           if [ $HTTP_STATUS -eq 200 ]; then
             echo "Version $PACKAGE_VERSION already exists. Exiting the action script."
             echo "VERSION_EXISTS=true" >> $GITHUB_ENV
@@ -125,7 +125,7 @@ jobs:
             echo "Version does not exist."
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
-      
+
       - name: Publish
         if: ${{ env.VERSION_EXISTS == 'false' }}
         run: |
@@ -134,9 +134,13 @@ jobs:
           cd packages/nodejs && yarn npm publish --access public
 
   publish_vscode_extension:
-    needs: [publish_ui, publish_nodejs]
+    needs: [ publish_ui, publish_nodejs ]
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    permissions:
+      actions: read
+      packages: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -154,18 +158,19 @@ jobs:
           # get local version
           LOCAL_VERSION=$(node -p "require('./packages/ds-ext/package.json').version")
           echo "Local Version: $LOCAL_VERSION"
-      
+          echo "LOCAL_VERSION=$LOCAL_VERSION" >> $GITHUB_ENV
+
           # query online latest version
           RESPONSE=$(curl -s -X POST \
             -H "Content-Type: application/json" \
             -H "Accept: application/json;api-version=3.0-preview" \
             -d '{"filters":[{"criteria":[{"filterType":7,"value":"ajthinking.ds-ext"}]}],"flags":914}' \
             "https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery")
-      
+
           # parse online version
           ONLINE_VERSION=$(echo $RESPONSE | jq -r '.results[0].extensions[0].versions[0].version')
           echo "Online Version: $ONLINE_VERSION"
-      
+
           # version comparison logic
           if [ "$LOCAL_VERSION" = "$ONLINE_VERSION" ]; then
             echo "::warning::Version $LOCAL_VERSION already exists. Skipping build and publish."
@@ -174,25 +179,38 @@ jobs:
             echo "::notice::New version detected. Proceeding to build and publish."
             echo "VERSION_EXISTS=false" >> $GITHUB_ENV
           fi
-      
+
         # add error handling (continue publishing when API is unavailable)
         continue-on-error: true
 
-      - name: Install dependencies
+      - name: Download ds-ext artifact from Test CI
         if: env.VERSION_EXISTS == 'false'
-        run: |
-          # cd packages/ds-ext
-          yarn install --frozen-lockfile
-
-      - name: Build VS Code Extension
-        if: env.VERSION_EXISTS == 'false'
-        run: |
-          # cd packages/ds-ext
-          yarn build
+        uses: actions/download-artifact@v4
+        with:
+          name: ds-ext
+          path: dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Publish VS Code Extension
         if: env.VERSION_EXISTS == 'false'
         run: |
+          # publish the prebuilt vsix from the downloaded artifact
+          VSIX_FILE=$(ls dist/*.vsix | head -n 1)
+          VSIX_FILE=$(realpath "$VSIX_FILE")
+          if [ -z "$VSIX_FILE" ]; then
+            echo "No VSIX found in dist/. Did the Test CI upload the ds-ext artifact?" >&2
+            exit 1
+          fi
+          echo "Publishing $VSIX_FILE"
           cd packages/ds-ext
-          vsce package --no-yarn --skip-license
-          vsce publish --pat ${{ secrets.AZURE_ACCESS_TOKEN }} --no-yarn
+          vsce publish --pat ${{ secrets.AZURE_ACCESS_TOKEN }} --packagePath "$VSIX_FILE"
+
+      - name: Create GitHub release for ds-ext
+        if: always() && env.VERSION_EXISTS == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag_name: ds-ext@${{ env.LOCAL_VERSION }}
+          files: dist/*.vsix

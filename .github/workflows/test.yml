@@ -1,6 +1,15 @@
 name: Test CI
 
-on: [ push, pull_request ]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  pull-requests: write
 
 jobs:
   build-artifact:
@@ -67,6 +76,20 @@ jobs:
           yarn turbo run build
           # skipping testing ds-ext for now
           yarn turbo run test --filter=!ds-ext
+          npm install -g @vscode/vsce@3.1.0
+          cd packages/ds-ext
+          mkdir ../../dist
+          vsce package --no-yarn --skip-license -o ../../dist/
+
+      - name: Upload ds-ext
+        uses: actions/upload-artifact@v4
+        if: |
+          github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+        with:
+          name: ds-ext
+          path: |
+            dist/
+          retention-days: 3
 
       - name: Upload build dist artifacts
         uses: actions/upload-artifact@v4
@@ -80,6 +103,15 @@ jobs:
             packages/ds-ext/dist
             packages/docs/dist
           retention-days: 1
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v3
+        if: |
+          github.event_name == 'pull_request'
+        with:
+          comment-tag: ds-ext-artifact
+          message: |
+            Checkout ds-ext artifact: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       # Save node_modules (always execute)
       - name: Save node_modules
